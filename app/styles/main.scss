@@ -928,6 +928,12 @@ a {
     padding-top: 20px;
     background: url('../images/mingti/img/icon/sline.jpg') repeat-y 15px 0;
   }
+  .dgLevel_1:last-child,
+  .dgLevel_2:last-child,
+  .dgLevel_3:last-child,
+  .dgLevel_4:last-child{
+    background: white url('../images/mingti/img/icon/sline.jpg') no-repeat 15px -2px;
+  }
   .lastChild {
     background: white url('../images/mingti/img/icon/sline.jpg') no-repeat 15px -2px;
   }
