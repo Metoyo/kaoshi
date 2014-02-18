@@ -1,0 +1,86 @@
+<div class="container userBox">
+	<div class="row">
+		<div class="col-md-4 loginInfo">
+			<h2>
+				您好，{{#user}}
+					{{YONGHUMING}}：
+					<span class="hide userUID">{{UID}}</span>
+				{{/user}}
+				
+			</h2>
+			<h4>欢迎使用太安厅电子化考试平台</h4>
+			<p>
+				现在的时间是：2013年12月19日  11:27:32
+			</p>
+			<p>
+				您的登陆IP为：192.168.1.111
+			</p>
+			<p>
+				上次登陆时间：2013年12月17日  09:27:32
+			</p>
+			<p>
+				上次登陆IP为：192.168.1.111
+			</p>
+			<h4><a href="#">查看登录历史记录</a><a type="button" href="/logout" class="btn btn-success pull-right">注销</a></h4>
+		</div>
+		<div class="col-md-4 avatarBox">
+			<div class="thumbnail">
+				<img src="/renzheng/img/icon/avatar.png" alt="头像">
+				<div class="caption">
+					<p class="text-left">
+						数学科学学院02级3班
+					</p>
+					<p class="text-left mb0">
+						学生
+						<a href="javascript:void(0)" class="privilegeBtn pull-right"> <span class="glyphicon glyphicon-cog"> </span>权限设置 </a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 entries">
+			<h4>请选择您要进入的系统：</h4>
+			<ul class="list-unstyled">
+				<li>
+					<a href="#" class="btn btn-primary">考务系统</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-primary">命题系统</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-primary">阅卷系统</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-primary">考试系统</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-primary">作业系统</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-primary">统计查询系统</a>
+				</li>
+			</ul>
+		</div>
+		<!-- 审核权限开始  -->
+		<div class="row shenheBox">
+			<div class="col-md-12 infoBox">
+				<h3 class="text-center shTitle"> 权限审核 <a href="javascript:void(0)" class="closeShenBox pull-right" title="关闭审核窗口"> <span class="glyphicon glyphicon-remove"></span> </a></h3>
+				<form action=" " method=" " enctype="application/x-www-form-urlencoded">
+					<table class="table table-bordered shenheTable">
+						<thead>
+							<tr>
+								<th>科目</th>
+								<th>姓名</th>
+								<th>角色</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody class="shenheList">
+							
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+		<!-- 审核权限结束  -->
+	</div>
+</div>

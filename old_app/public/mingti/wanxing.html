@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>命题系统-完型填空题</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="css/common.css" type="text/css"/>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top navbar-inverse" id="header">
+			<div class="container">
+				<div class="navbar-header">
+					<h1 class="logo pull-left"><img src="img/icon/logo.png" class="img-rounded"/></h1>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="#">注册</a>
+					</li>
+					<li>
+						<a href="#">登录</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="dashboard" id="dashboard">
+			<div class="container">
+				<ul class="list-group">
+					<li class="list-group-item active">
+						<a href="javascript:void(0)" class="dropdownToggle"> <span class="glyphicon glyphicon-edit"></span>命题 </a>
+						<ul class="toggle-menu" style="display:block;">
+							<li>
+								<a href="danxuan.html" class="menuitem">单选题</a>
+							</li>
+							<li>
+								<a href="duoxuan.html" class="menuitem">多选题</a>
+							</li>
+							<li>
+								<a href="panduan.html" class="menuitem">判断题</a>
+							</li>
+							<li>
+								<a href="tiankong.html" class="menuitem">填空题</a>
+							</li>
+							<li>
+								<a href="jianda.html" class="menuitem">简答题</a>
+							</li>
+							<li>
+								<a href="yuedu.html" class="menuitem">阅读题</a>
+							</li>
+							<li>
+								<a href="wanxing.html" class="menuitem">完形填空题</a>
+							</li>
+						</ul>
+					</li>
+					<li class="list-group-item">
+						<a href="javascript:void(0)" class="dropdownToggle"> <span class="glyphicon glyphicon-tasks"></span>组卷 </a>
+						<ul class="toggle-menu">
+							<li>
+								<a href="#" class="menuitem">所有文章</a>
+							</li>
+							<li>
+								<a href="#" class="menuitem">添加</a>
+							</li>
+							<li>
+								<a href="#" class="menuitem">分类</a>
+							</li>
+							<li>
+								<a href="#" class="menuitem">标签</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="container main">
+			<div class="row content-title">
+				<span class="glyphicon glyphicon-edit"></span>完型填空题
+			</div>
+			<div class="subDashboard">
+				<div class="btn-group pointSelect">
+					<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+						知识点<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#">清华大学</a>
+						</li>
+						<li>
+							<a href="#">北京大学</a>
+						</li>
+						<li>
+							<a href="#">中国人民大学</a>
+						</li>
+						<li>
+							<a href="#">中国传媒大学</a>
+						</li>
+					</ul>
+				</div>
+				<div class="pointTree">
+					<ul class="list-unstyled levelOne">
+						<li>
+							<div class="foldBtn pull-left"></div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="point" value="知识点1"/>
+									知识点1</label>
+							</div>
+							<ul class="list-unstyled levelTwo">
+								<li>
+									<div class="foldBtn pull-left unfoldBtn"></div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="point" value="知识点1.1"/>
+											知识点1.1</label>
+									</div>
+									<ul class="list-unstyled levelThree">
+										<li pid="3">
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="point" value="知识点1.1.1"/>
+													知识点1.1.1</label>
+											</div>
+										</li>
+										<li>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="point" value="知识点1.1.2"/>
+													知识点1.1.2</label>
+											</div>
+										</li>
+										<li>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" name="point" value="知识点1.1.3"/>
+													知识点1.1.3</label>
+											</div>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="point" value="知识点1.2"/>
+											知识点1.2</label>
+									</div>
+								</li>
+								<li>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="point" value="知识点1.3"/>
+											知识点1.3</label>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div class="foldBtn pull-left"></div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="point" value="知识点2"/>
+									知识点2</label>
+							</div>
+							<ul class="list-unstyled levelTwo">
+								<li>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="point" value="知识点2.1"/>
+											知识点2.1</label>
+									</div>
+								</li>
+								<li>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="point" value="知识点2.2"/>
+											知识点2.2</label>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="point" value="知识点3"/>
+									知识点3</label>
+							</div>
+						</li>
+						<li>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="point" value="知识点4"/>
+									知识点4</label>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="content" id="content">
+				<div class="row">
+					<form class="form-horizontal" role="form">
+						<fieldset class="form-body">
+							<div class="form-group">
+								<label for="" class="col-sm-1 control-label">题目</label>
+								<div class="col-sm-8 editor" contenteditable>
+									中国的全称是<span class="uStyle">1</span>，英文简称是<span class="uStyle">2</span>。
+								</div>
+								<div class="col-sm-2 add-btn-box">
+									<button type="button" class="btn btn-success add-u-item">
+										添加一个空
+									</button>
+								</div>
+							</div>
+							<div class="completion-wrap">
+								<div class="topicBox">
+									<div class="form-group form-th">
+										<div class="col-sm-8 col-sm-offset-1 text-center">
+											第1空选项
+										</div>
+										<div class="col-sm-1">
+											正确答案
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">A.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option1">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">B.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option2">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">C.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option3">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">D.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem delete-select"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option4">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="topicBox">
+									<div class="form-group form-th">
+										<div class="col-sm-8 col-sm-offset-1 text-center">
+											第2空选项
+										</div>
+										<div class="col-sm-1">
+											正确答案
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">A.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option1">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">B.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option2">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">C.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option3">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="" class="col-sm-1 control-label">D.</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control">
+										</div>
+										<div class="col-sm-2">
+											<span class="glyphicon glyphicon-minus-sign delete-this-tiem delete-select"></span>
+											<div class="radio">
+												<input class="hide" type="radio" name="optionsRadios" value="option4">
+												<span class="glyphicon glyphicon-ok"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="form-footer">
+							<div class="form-group lessonPoint">
+								<div class="col-sm-8 col-sm-offset-1">
+									<label class="radio-inline">
+										<input type="radio" name="difficulty" value="容易">
+										容易 </label>
+									<label class="radio-inline">
+										<input type="radio" name="difficulty" value="较易">
+										较易 </label>
+									<label class="radio-inline">
+										<input type="radio" name="difficulty" value="一般">
+										一般 </label>
+									<label class="radio-inline">
+										<input type="radio" name="difficulty" value="较难">
+										较难 </label>
+									<label class="radio-inline">
+										<input type="radio" name="difficulty" value="困难">
+										困难 </label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-1 col-sm-8 text-right">
+									<button type="submit" class="btn btn-primary">
+										保存
+									</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="footer" id="footer">
+			<div class="container">
+				Copyright Cloudisan,Ltd.
+			</div>
+		</div>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<!-- Project main control js file -->
+		<script src="js/mainjs.js" type="text/javascript"></script>
+	</body>
+</html>
