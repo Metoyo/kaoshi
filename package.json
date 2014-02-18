@@ -1,7 +1,14 @@
 {
   "name": "kaoshi",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "express": "~3.4.8",
+    "connect-flash": "~0.1.1",
+    "q": "~1.0.0",
+    "winser": "~0.1.6",
+    "request": "~2.33.0",
+    "hbs": "~2.4.0"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",

@@ -36,6 +36,7 @@ app.use(express.session({
 }));
 app.use(flash());
 app.use(app.router);//注意use的顺序问题
+app.use('/mingti', express.static(path.join(__dirname, 'app')));
 app.use(express.static(path.join(__dirname, 'public')));
 //使用flash信息提示
 if ('development' == app.get('env')) {
