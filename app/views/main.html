@@ -1,8 +1,7 @@
 <div class="innerWrap">
     <div class="subDashboard">
         <h2 class="logo pull-left"><img src="images/mingti/img/icon/logo.png" alt=""/></h2>
-
-        <div class="btn-group pointSelect">
+        <!--div class="btn-group pointSelect">
             <h2 class="pointTitleBox pull-left"><span class="pointTitle pull-left">高中物理</span></h2>
             <ul class="dropdown-menu">
                 <li>
@@ -18,7 +17,7 @@
                     <a href="#">中国传媒大学</a>
                 </li>
             </ul>
-        </div>
+        </div-->
         <div class="pointTree">
             <ul class="list-unstyled list-sheet">
                 <li ng-repeat="dg in dgList">
@@ -29,13 +28,13 @@
                     </a>
                 </li>
             </ul>
-            <span class="hide cxzsdgzsd">{{cxzsdgzsd}}</span>
+            <!--span class="hide cxzsdgzsd">{{cxzsdgzsd}}</span-->
         </div>
     </div>
     <div class="content">
         <div class="row content-title">
             <div class="col-md-4 mt15">
-                <span class="itemTitle">大纲</span>
+                <span class="itemTitle"> {{itemTitle}} </span>
             </div>
             <!--div class="col-md-8 text-right mt15">
                             <button>
@@ -44,7 +43,7 @@
                         </div-->
         </div>
         <div class="row pt10 dagangInput">
-            <div class="dgInputWelcome">
+            <div class="dgInputWelcome" ng-show="dgWelcome">
                 <p>欢迎进入大纲页面，请选择左边的大纲！</p>
             </div>
             <form class="form-horizontal dagangInputForm">
@@ -141,7 +140,7 @@
                 </div>
             </form>
             <div class="col-md-6 text-right mt30 saveBtbBox">
-                <button class="btn btn-primary saveDagangBtn" ng-click="submitData()">保存修改</button>
+                <button class="btn btn-primary saveDagangBtn" ng-click="submitData()" ng-hide="saveDagangBtn">保存修改</button>
             </div>
         </div>
     </div>
