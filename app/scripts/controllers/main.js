@@ -4,7 +4,7 @@ define(['angular'], function (angular) {
   angular.module('kaoshiApp.controllers.MainCtrl', [])
     .controller('MainCtrl', function ($scope, $http) {
 
-      var baseAPIUrl = 'http://www.taianting.com:4000/api/',
+      var baseAPIUrl = 'http://192.168.1.111:4000/api/',
           token = '12345',
           caozuoyuan = 1057,
           jigouid = 2,
@@ -19,19 +19,27 @@ define(['angular'], function (angular) {
 
           qryKnowledgeUrl = '',
           submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid;
+              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid,
+
+          shuju = {};
 
       $scope.showSaveBtn = false;
 
       $http.get(qryDgUrl).success(function(data) {
           $scope.dgList = data;
+          //console.log(dg.GENJIEDIAN_ID);
       });
 
-
-
-      $scope.loadKnowledge = function(dgId) {
-          qryKnowledgeUrl = qryKnowledgeBaseUrl + dgId;
-          $scope.currentDgId = dgId;
+      $scope.loadKnowledge = function(dg) {
+          qryKnowledgeUrl = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
+          $scope.currentDgId = dg.ZHISHIDAGANG_ID;
+          shuju.ZHISHIDAGANG_ID = dg.ZHISHIDAGANG_ID;//知识点id
+          shuju.ZHISHIDAGANGMINGCHENG = dg.ZHISHIDAGANGMINGCHENG;//知识大纲名称
+          shuju.GENJIEDIAN_ID = dg.GENJIEDIAN_ID;//根节点id
+          shuju.LEIXING = dg.LEIXING;//知识大纲类型
+          shuju.DAGANGSHUOMING = '';
+          shuju.ZHUANGTAI = dg.ZHUANGTAI;//大纲状态
+          //console.log(dg.GENJIEDIAN_ID);
           $http.get(qryKnowledgeUrl).success(function(data) {
               $scope.knowledge = data;
               $scope.showSaveBtn = true;
@@ -43,7 +51,8 @@ define(['angular'], function (angular) {
 
           newNd.JIEDIAN_ID = '';
           newNd.ZHISHIDAGANG_ID = $scope.currentDgId;
-          newNd.ZHISHIDIAN_ID = nd.ZHISHIDIAN_ID;
+          //newNd.ZHISHIDIAN_ID = nd.ZHISHIDIAN_ID;
+          newNd.ZHISHIDIAN_ID = '';
           newNd.JIEDIANLEIXING = 1;
           newNd.FUJIEDIAN_ID = nd.JIEDIAN_ID;
           newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
@@ -61,7 +70,8 @@ define(['angular'], function (angular) {
       };
 
       $scope.submitData = function() {
-          console.log('submit data: ' + JSON.stringify($scope.knowledge[0]));
+          shuju.JIEDIAN = [$scope.knowledge[0]];
+          console.log('submit data: ' + JSON.stringify(shuju));
           /*$http.post(submitDataUrl, $scope.knowledge[0]).success(function(result) {
               console.log(result);
           });*/
@@ -73,10 +83,10 @@ define(['angular'], function (angular) {
                   'Authorization': 'Basic dGVzdDp0ZXN0',
                   'Content-Type': 'application/x-www-form-urlencoded'
               },
-              data: $scope.knowledge[0]
-          }).success(function(result) {
+              data: shuju
+              }).success(function(result) {
                   console.log(result);
-              });
+          });
       };
     });
 });

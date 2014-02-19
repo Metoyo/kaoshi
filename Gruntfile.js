@@ -72,6 +72,15 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.app %>'
           ]
+//          middleware: function (connect) {
+//            return [
+//                function(req, res, next) {
+//                    res.setHeader('Access-Control-Allow-Origin', '*');
+//                    res.setHeader('Access-Control-Allow-Methods', '*');
+//                    next();
+//                }
+//            ];
+//          }
         }
       },
       test: {
