@@ -5,7 +5,7 @@ var express = require('express'),
 	http = require('http'),
 	path = require('path'),
 	app = express(),
-	flash = require('connect-flash'),
+	//flash = require('connect-flash'),
 	hbs = require('hbs');
 	
 /**
@@ -21,8 +21,8 @@ app.data = {
 app.conf = require('./config').conf;
 // all environments
 app.set('port', process.env.PORT || 3003);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'hbs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
@@ -34,10 +34,21 @@ app.use(express.session({
     maxAge: new Date(Date.now() + 3600000)
     //store: new app.mongoStore(app.conf.db)
 }));
-app.use(flash());
-app.use(app.router);//注意use的顺序问题
-app.use('/mingti', express.static(path.join(__dirname, 'app')));
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(flash());
+
+app.use(function (req, resp, next) {
+    resp.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Cache-Control': 'no-cache'
+    });
+    next();
+});
+
+//app.use(app.router);//注意use的顺序问题
+app.use(express.static(path.join(__dirname, 'dist')));
+//app.use(express.static(path.join(__dirname, 'public')));
 //使用flash信息提示
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -60,4 +71,4 @@ if (!module.parent) {
 }
 
 //添加路由
-var router = require('./routes/router.js').router(app);
+//var router = require('./routes/router.js').router(app);

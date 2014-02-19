@@ -4,7 +4,7 @@ define(['angular'], function (angular) {
   angular.module('kaoshiApp.controllers.MainCtrl', [])
     .controller('MainCtrl', function ($scope, $http) {
 
-      var baseAPIUrl = 'http://192.168.1.111:4000/api/',
+      var baseAPIUrl = 'http://www.taianting.com:4000/api/', //'http://192.168.1.111:4000/api/'
           token = '12345',
           caozuoyuan = 1057,
           jigouid = 2,

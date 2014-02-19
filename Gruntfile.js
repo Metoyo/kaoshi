@@ -65,6 +65,13 @@ module.exports = function (grunt) {
         hostname: 'localhost',
         livereload: 35729
       },
+      proxies: [
+        {
+            context: '/',
+            host: 'www.taianting.com',
+            port: 4000
+        }
+      ],
       livereload: {
         options: {
           open: true,
@@ -72,15 +79,6 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.app %>'
           ]
-//          middleware: function (connect) {
-//            return [
-//                function(req, res, next) {
-//                    res.setHeader('Access-Control-Allow-Origin', '*');
-//                    res.setHeader('Access-Control-Allow-Methods', '*');
-//                    next();
-//                }
-//            ];
-//          }
         }
       },
       test: {
