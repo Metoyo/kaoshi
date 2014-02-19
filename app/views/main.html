@@ -29,13 +29,13 @@
                     </a>
                 </li>
             </ul>
-            <span class="hide cxzsdgzsd">{{cxzsdgzsd}}</span>
+            <!--span class="hide cxzsdgzsd">{{cxzsdgzsd}}</span-->
         </div>
     </div>
     <div class="content">
         <div class="row content-title">
             <div class="col-md-4 mt15">
-                <span class="itemTitle">大纲</span>
+                <span class="itemTitle"> {{itemTitle}} </span>
             </div>
             <!--div class="col-md-8 text-right mt15">
                             <button>
@@ -44,7 +44,7 @@
                         </div-->
         </div>
         <div class="row pt10 dagangInput">
-            <div class="dgInputWelcome">
+            <div class="dgInputWelcome" ng-show="dgWelcome">
                 <p>欢迎进入大纲页面，请选择左边的大纲！</p>
             </div>
             <form class="form-horizontal dagangInputForm">
@@ -141,7 +141,7 @@
                 </div>
             </form>
             <div class="col-md-6 text-right mt30 saveBtbBox">
-                <button class="btn btn-primary saveDagangBtn" ng-click="submitData()">保存修改</button>
+                <button class="btn btn-primary saveDagangBtn" ng-click="submitData()" ng-hide="saveDagangBtn">保存修改</button>
             </div>
         </div>
     </div>

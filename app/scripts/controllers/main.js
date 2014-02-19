@@ -21,17 +21,19 @@ define(['angular'], function (angular) {
           submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
               + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid,
 
-          shuju = {};
+          shuju = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
 
-      $scope.showSaveBtn = false;
+      $scope.saveDagangBtn = true;//大纲保存按钮隐藏
+      $scope.dgWelcome = true;//默认情况下显示welcome页面
+      $scope.itemTitle = "大纲";
 
       $http.get(qryDgUrl).success(function(data) {
           $scope.dgList = data;
-          //console.log(dg.GENJIEDIAN_ID);
       });
 
       $scope.loadKnowledge = function(dg) {
           qryKnowledgeUrl = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
+          $scope.itemTitle = dg.ZHISHIDAGANGMINGCHENG;
           $scope.currentDgId = dg.ZHISHIDAGANG_ID;
           shuju.ZHISHIDAGANG_ID = dg.ZHISHIDAGANG_ID;//知识点id
           shuju.ZHISHIDAGANGMINGCHENG = dg.ZHISHIDAGANGMINGCHENG;//知识大纲名称
@@ -39,11 +41,11 @@ define(['angular'], function (angular) {
           shuju.LEIXING = dg.LEIXING;//知识大纲类型
           shuju.DAGANGSHUOMING = '';
           shuju.ZHUANGTAI = dg.ZHUANGTAI;//大纲状态
-          //console.log(dg.GENJIEDIAN_ID);
           $http.get(qryKnowledgeUrl).success(function(data) {
               $scope.knowledge = data;
-              $scope.showSaveBtn = true;
+              $scope.saveDagangBtn = false;//大纲保存按钮显示
           });
+          $scope.dgWelcome = false;//点击大纲后隐藏欢迎页面
       };
 
       $scope.addNd = function(nd) {
