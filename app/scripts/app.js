@@ -1,8 +1,9 @@
 /*jshint unused: vars */
-define(['angular', 'controllers/main']/*deps*/, function (angular, MainCtrl)/*invoke*/ {
+define(['angular', 'controllers/main', 'controllers/mingti']/*deps*/, function (angular, MainCtrl, MingtiCtrl)/*invoke*/ {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
+'kaoshiApp.controllers.MingtiCtrl',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',
@@ -14,6 +15,10 @@ define(['angular', 'controllers/main']/*deps*/, function (angular, MainCtrl)/*in
         .when('/', {
           templateUrl: 'views/main.html',
           controller: 'MainCtrl'
+        })
+        .when('/mingti', {
+          templateUrl: 'views/mingti.html',
+          controller: 'MingtiCtrl'
         })
         .otherwise({
           redirectTo: '/'

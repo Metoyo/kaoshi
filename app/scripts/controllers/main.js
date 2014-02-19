@@ -5,7 +5,7 @@ define(['angular'], function (angular) {
     .controller('MainCtrl', function ($scope, $http) {
 
       var baseAPIUrl = 'http://192.168.1.111:4000/api/',
-          token = '12345',
+          token = "12345",
           caozuoyuan = 1057,
           jigouid = 2,
           lingyuid = 2,
@@ -18,10 +18,9 @@ define(['angular'], function (angular) {
               + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
 
           qryKnowledgeUrl = '',
-          submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid,
+          submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang',
 
-          shuju = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
+          dgdata = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
 
       $scope.saveDagangBtn = true;//大纲保存按钮隐藏
       $scope.dgWelcome = true;//默认情况下显示welcome页面
@@ -35,12 +34,17 @@ define(['angular'], function (angular) {
           qryKnowledgeUrl = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $scope.itemTitle = dg.ZHISHIDAGANGMINGCHENG;
           $scope.currentDgId = dg.ZHISHIDAGANG_ID;
-          shuju.ZHISHIDAGANG_ID = dg.ZHISHIDAGANG_ID;//知识点id
-          shuju.ZHISHIDAGANGMINGCHENG = dg.ZHISHIDAGANGMINGCHENG;//知识大纲名称
-          shuju.GENJIEDIAN_ID = dg.GENJIEDIAN_ID;//根节点id
-          shuju.LEIXING = dg.LEIXING;//知识大纲类型
-          shuju.DAGANGSHUOMING = '';
-          shuju.ZHUANGTAI = dg.ZHUANGTAI;//大纲状态
+          dgdata.token = token;
+          dgdata.caozuoyuan = caozuoyuan;
+          dgdata.jigouid = jigouid;
+          dgdata.lingyuid = lingyuid;
+          dgdata.shuju = dgdata.shuju || {};
+          dgdata.shuju.ZHISHIDAGANG_ID = dg.ZHISHIDAGANG_ID;//知识点id
+          dgdata.shuju.ZHISHIDAGANGMINGCHENG = dg.ZHISHIDAGANGMINGCHENG;//知识大纲名称
+          dgdata.shuju.GENJIEDIAN_ID = dg.GENJIEDIAN_ID;//根节点id
+          dgdata.shuju.LEIXING = dg.LEIXING;//知识大纲类型
+          dgdata.shuju.DAGANGSHUOMING = '';
+          dgdata.shuju.ZHUANGTAI = dg.ZHUANGTAI;//大纲状态
           $http.get(qryKnowledgeUrl).success(function(data) {
               $scope.knowledge = data;
               $scope.saveDagangBtn = false;//大纲保存按钮显示
@@ -72,13 +76,17 @@ define(['angular'], function (angular) {
       };
 
       $scope.submitData = function() {
-          shuju.JIEDIAN = [$scope.knowledge[0]];
-          console.log('submit data: ' + JSON.stringify(shuju));
+          dgdata.shuju = dgdata.shuju || {};
+          dgdata.shuju.JIEDIAN = [$scope.knowledge[0]];
           /*$http.post(submitDataUrl, $scope.knowledge[0]).success(function(result) {
               console.log(result);
           });*/
+          $http.post(submitDataUrl, dgdata).success(function(result) {
+              console.log(result);
+              alert('提交成功！');
+          });
 
-          $http({
+          /*$http({
               url:submitDataUrl,
               method:"POST",
               headers: {
@@ -88,7 +96,7 @@ define(['angular'], function (angular) {
               data: shuju
               }).success(function(result) {
                   console.log(result);
-          });
+          });*/
       };
     });
 });
