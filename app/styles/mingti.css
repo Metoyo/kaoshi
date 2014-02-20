@@ -257,6 +257,10 @@ a.add-btn:hover span {
 .main {
   padding: 0 0 20px 120px; }
 
+.content {
+  padding-left: 220px;
+  background-color: #fff; }
+
 .mingtiWrapper {
   /*sub dashboard styles begin*/
   /*sub dashboard styles begin*/ }
@@ -285,7 +289,8 @@ a.add-btn:hover span {
       left: 0;
       width: 200px;
       padding: 10px;
-      display: block; }
+      display: block;
+      z-index: 10; }
       .mingtiWrapper .subDashboard .dropdownMenu li {
         padding: 2px 0; }
         .mingtiWrapper .subDashboard .dropdownMenu li .ddmSub {
@@ -293,12 +298,12 @@ a.add-btn:hover span {
           padding: 0 0 0 10px; }
           .mingtiWrapper .subDashboard .dropdownMenu li .ddmSub a {
             padding-left: 15px;
-            background: url("/images/mingti/icon/list_icon.jpg") no-repeat 0 5px; }
+            background: url("../images/mingti/icon/list_icon.jpg") no-repeat 0 5px; }
   .mingtiWrapper .pointSelect {
     width: 100%; }
   .mingtiWrapper .pointTitleBox {
     width: 220px;
-    margin: 0 -10px;
+    margin: -1px -10px 0 -10px;
     border-top: 1px solid #cfcfcf;
     border-bottom: 1px solid #cfcfcf;
     padding: 10px 0; }
@@ -308,3 +313,25 @@ a.add-btn:hover span {
     font-size: 60%;
     font-weight: 600;
     margin-left: 10px; }
+  .mingtiWrapper .kmTxBox, .mingtiWrapper .nanduBox {
+    background-color: #f5f5f5;
+    height: 40px;
+    margin-bottom: 5px; }
+    .mingtiWrapper .kmTxBox .kmtxNdTitle, .mingtiWrapper .nanduBox .kmtxNdTitle {
+      line-height: 40px;
+      font-size: 16px;
+      color: #222; }
+      .mingtiWrapper .kmTxBox .kmtxNdTitle span, .mingtiWrapper .nanduBox .kmtxNdTitle span {
+        width: 60px;
+        margin-left: 10px;
+        font-weight: 600; }
+      .mingtiWrapper .kmTxBox .kmtxNdTitle a, .mingtiWrapper .nanduBox .kmtxNdTitle a {
+        width: 100px;
+        height: 40px;
+        background-color: #e0e0e0;
+        color: #222222; }
+    .mingtiWrapper .kmTxBox .kmTxNdList, .mingtiWrapper .nanduBox .kmTxNdList {
+      line-height: 40px; }
+      .mingtiWrapper .kmTxBox .kmTxNdList li a, .mingtiWrapper .nanduBox .kmTxNdList li a {
+        padding: 0 15px;
+        color: #444; }

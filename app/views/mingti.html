@@ -8,34 +8,48 @@
             </h2>
             <ul class="dropdownMenu" ng-hide="keMuList">
                 <li ng-repeat="lyItem in lyList">
-                    <a href="javascript:void(0)">{{lyItem.LINGYUMINGCHENG}}</a>
+                    <a href="javascript:void(0)" ng-click="cxKmTxAndDg()">{{lyItem.LINGYUMINGCHENG}}</a>
                     <ul class="ddmSub">
                         <li ng-repeat="lyChild in lyItem.CHILDREN">
-                            <a href="javascript:void(0)">{{lyChild.LINGYUMINGCHENG}}</a>
+                            <a href="javascript:void(0)" ng-click="cxKmTxAndDg()">{{lyChild.LINGYUMINGCHENG}}</a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <div class="pointTree">
-            <!--ul class="list-unstyled list-sheet">
+        <div class="btn-group pointSelect">
+            <h2 class="pointTitleBox pull-left" ng-click="showDgList()">
+                <span class="pointTitle pull-left">大纲选择</span>
+                <span class="caret pull-right"></span>
+            </h2>
+            <ul class="dropdownMenu" ng-hide="dgListBox">
                 <li ng-repeat="dg in dgList">
-                    <a href="javascript:void(0)" class="zsdg-btn" ng-click="loadKnowledge(dg)"
-                       data-gjdid="{{dg.GENJIEDIAN_ID}}" data-lyid="{{dg.LINGYU_ID}}"
-                       data-zsdid="{{dg.ZHISHIDAGANG_ID}}" data-leixing="{{dg.LEIXING}}">
-                        {{dg.ZHISHIDAGANGMINGCHENG}}
-                    </a>
+                    <a href="javascript:void(0)" ng-click="loadDagang(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
                 </li>
-            </ul-->
+            </ul>
+            <div class="pointTree">
+
+            </div>
         </div>
     </div>
     <div class="content">
-        <div ng-init="checked=true">
-            <label>
-                <input type="checkbox" ng-model="checked" style="float:left; margin-right:10px;"> Is Visible...
-            </label>
-            <div class="check-element sample-show-hide" ng-show="checked" style="clear:both;">
-                Visible...
+        <div class="kmTxWrap">
+            <div class="kmTxBox">
+                <div class="kmtxNdTitle pull-left">
+                    <span class="pull-left">题型</span>
+                    <a href="javascript:void(0)" class="pull-left text-center">全部题型</a>
+                </div>
+                <ul class="list-inline kmTxNdList">
+                    <li ng-repeat="kmtx in kmtxList">
+                        <a href="javascript:void(0)">{{ kmtx.TIXINGMINGCHENG }}</a>
+                   </li>
+                </ul>
+            </div>
+            <div class="nanduBox">
+                <div class="kmtxNdTitle pull-left">
+                    <span class="pull-left">难度</span>
+                    <a href="javascript:void(0)" class="pull-left text-center">全部难度</a>
+                </div>
             </div>
         </div>
     </div>
