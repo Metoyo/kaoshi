@@ -1,1 +1,42 @@
-<p>This is the mingti view.</p>
+<div class="innerWrap mingtiWrapper">
+    <div class="subDashboard">
+        <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
+        <div class="btn-group pointSelect">
+            <h2 class="pointTitleBox pull-left" ng-click="loadLingYu()">
+                <span class="pointTitle pull-left">科目选择</span>
+                <span class="caret pull-right"></span>
+            </h2>
+            <ul class="dropdownMenu" ng-hide="keMuList">
+                <li ng-repeat="lyItem in lyList">
+                    <a href="javascript:void(0)">{{lyItem.LINGYUMINGCHENG}}</a>
+                    <ul class="ddmSub">
+                        <li ng-repeat="lyChild in lyItem.CHILDREN">
+                            <a href="javascript:void(0)">{{lyChild.LINGYUMINGCHENG}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="pointTree">
+            <!--ul class="list-unstyled list-sheet">
+                <li ng-repeat="dg in dgList">
+                    <a href="javascript:void(0)" class="zsdg-btn" ng-click="loadKnowledge(dg)"
+                       data-gjdid="{{dg.GENJIEDIAN_ID}}" data-lyid="{{dg.LINGYU_ID}}"
+                       data-zsdid="{{dg.ZHISHIDAGANG_ID}}" data-leixing="{{dg.LEIXING}}">
+                        {{dg.ZHISHIDAGANGMINGCHENG}}
+                    </a>
+                </li>
+            </ul-->
+        </div>
+    </div>
+    <div class="content">
+        <div ng-init="checked=true">
+            <label>
+                <input type="checkbox" ng-model="checked" style="float:left; margin-right:10px;"> Is Visible...
+            </label>
+            <div class="check-element sample-show-hide" ng-show="checked" style="clear:both;">
+                Visible...
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,333 @@
+$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+
+//@import 'sass-bootstrap/lib/bootstrap';
+@mixin width($wd) {
+  width: $wd;
+}
+
+body {
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
+  sans-serif;
+  color: #67717e;
+}
+
+.h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
+  sans-serif;
+}
+/*base css begin*/
+
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
+.col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6,
+.col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9,
+.col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11,
+.col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.container {
+  @include width(10px);
+  width: 100%;
+}
+
+.footer {
+  display: none;
+}
+
+.wp10 {
+  @include width(10%);
+}
+
+.wp15 {
+  @include width(15%);
+}
+
+.wp20 {
+  @include width(20%);
+}
+
+.wp30 {
+  @include width(30%);
+}
+
+.wp40 {
+  @include width(40%);
+}
+
+.wp50 {
+  @include width(50%);
+}
+
+.wp60 {
+  @include width(60%);
+}
+
+.wp70 {
+  @include width(70%);
+}
+
+.wp75 {
+  @include width(75%);
+}
+
+.wp80 {
+  @include width(80%);
+}
+
+.wp90 {
+  @include width(90%);
+}
+
+.wp100 {
+  @include width(100%);
+}
+
+.mt15 {
+  margin-top: 15px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.pl10 {
+  padding-left: 10px;
+}
+
+.pt10 {
+  padding-top: 10px;
+}
+
+.co676767 {
+  color: #676767;
+}
+
+.btn {
+  padding: 3px 12px;
+}
+
+.radius4 {
+  border-radius: 4px;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+a.add-btn:hover span {
+  color: #00CC33;
+}
+
+.form-header {
+  margin-bottom: 10px;
+  .form-th {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+}
+
+.form-body {
+  .radio {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: 2px solid #6c92ff;
+    margin-top: 6px;
+    padding: 0;
+    span {
+      width: 20px;
+      height: 20px;
+      top: 0px;
+      margin-right: 0px;
+      color: #00CC00;
+      display: none;
+    }
+    &:hover span {
+      display: block;
+    }
+  }
+  .radio-select span {
+    display: block;
+  }
+  .delete-this-tiem {
+    color: #ccc;
+    top: 6px;
+    margin-right: 15px;
+  }
+  .delete-select {
+    color: #d9534f;
+    cursor: pointer;
+  }
+}
+
+.form-horizontal .form-group {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.logo {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 0;
+  img {
+    height: 32px;
+    width: 200px;
+  }
+}
+/*base css end*/
+/* dashboard styles begin*/
+.dashboard {
+  width: 120px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #33363b;
+  z-index: 10;
+  .container {
+    padding: 0;
+  }
+  .list-group {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .list-group-item {
+    border-radius: 0;
+    background: none;
+    padding: 10px 0;
+    border: 0;
+  }
+}
+.dropdownToggle {
+  margin-bottom: 0;
+  font-size: 115%;
+  font-weight: 600;
+  color: #67717e;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.glyphicon {
+  top: 2px;
+  margin-right: 5px;
+}
+
+.nav-icon {
+  height: 40px;
+  width: 40px;
+  margin-left: 40px;
+  display: block;
+  background: url('../images/mingti/icon/dsIcons.png') no-repeat left 0;
+}
+
+.nav-name {
+  color: #aaa;
+  margin-top: -5px;
+  display: block;
+  font-weight: normal;
+}
+
+.droTogZj .nav-icon {
+  background-position: left -40px;
+}
+
+.droTogDg .nav-icon {
+  background-position: left -80px;
+}
+
+.droTogKw .nav-icon {
+  background-position: left -120px;
+}
+
+.droTogSp .nav-icon {
+  background-position: left -160px;
+}
+
+.droTogYj .nav-icon {
+  background-position: left -200px;
+}
+
+.dropdownToggle:hover {
+  text-decoration: none;
+  .nav-icon {
+    background-position-x: right;
+  }
+  .nav-name {
+    color: #fff;
+  }
+}
+
+.dashboard .active {
+  .dropdownToggle {
+    text-decoration: none;
+  }
+  .nav-icon {
+    background-position-x: right;
+  }
+  .nav-name {
+    color: #fff;
+  }
+}
+
+.toggle-menu {
+  list-style: none;
+  padding: 0;
+  display: none;
+}
+
+.menuitem {
+  padding: 5px 15px 5px 25px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  color: #67717e;
+  &:hover {
+    text-decoration: none;
+    color: #262626;
+    background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
+  }
+}
+
+.select:focus {
+  text-decoration: none;
+  color: #262626;
+  background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
+}
+
+.userInfo {
+  text-align: center;
+  margin-top: 15px;
+  a {
+    text-decoration: none;
+    font-size: 100%;
+    color: #efefef;
+    margin-top: 5px;
+    margin-left: 5px;
+    text-align: center;
+    &:hover {
+      color: #62AC19;
+      text-decoration: underline;
+    }
+  }
+}
+
+.dsfoldBox {
+  border-top: 1px solid #7f7f7f;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  a {
+    display: block;
+    height: 30px;
+    background: url('../images/mingti/icon/foldIcon.png') no-repeat center 5px;
+  }
+}
+/* dashboard styles end*/
+.main {
+  padding: 0 0 20px 120px;
+}

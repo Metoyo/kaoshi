@@ -1,6 +1,6 @@
 $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
-@import 'sass-bootstrap/lib/bootstrap';
+//@import 'sass-bootstrap/lib/bootstrap';
 
 body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
@@ -236,7 +236,7 @@ a.add-btn:hover span {
     font-weight: 600;
     color: #67717e;
     padding-left: 25px;
-    background: url('../images/mingti/img/icon/icon-right.png') no-repeat 5px;
+    background: url('../images/mingti/icon/icon-right.png') no-repeat 5px;
   }
 }
 
@@ -292,7 +292,7 @@ a.add-btn:hover span {
   width: 40px;
   margin-left: 40px;
   display: block;
-  background: url('../images/mingti/img/icon/dsIcons.png') no-repeat left 0;
+  background: url('../images/mingti/icon/dsIcons.png') no-repeat left 0;
 }
 
 .nav-name {
@@ -301,8 +301,6 @@ a.add-btn:hover span {
   display: block;
   font-weight: normal;
 }
-
-.droTogMt! .nav-icon {}
 
 .droTogZj .nav-icon {
   background-position: left -40px;
@@ -361,14 +359,14 @@ a.add-btn:hover span {
   &:hover {
     text-decoration: none;
     color: #262626;
-    background: url('../images/mingti/img/icon/icon-right.png') no-repeat 10px 12px;
+    background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
   }
 }
 
 .select:focus {
   text-decoration: none;
   color: #262626;
-  background: url('../images/mingti/img/icon/icon-right.png') no-repeat 10px 12px;
+  background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
 }
 
 .userInfo {
@@ -397,7 +395,7 @@ a.add-btn:hover span {
   a {
     display: block;
     height: 30px;
-    background: url('../images/mingti/img/icon/foldIcon.png') no-repeat center 5px;
+    background: url('../images/mingti/icon/foldIcon.png') no-repeat center 5px;
   }
 }
 
@@ -461,7 +459,7 @@ a.add-btn:hover span {
   }
   a {
     padding-left: 15px;
-    background: url('../images/mingti/img/icon/listIcon.png') no-repeat 0 3px;
+    background: url('../images/mingti/icon/listIcon.png') no-repeat 0 3px;
   }
 }
 
@@ -486,7 +484,7 @@ a.add-btn:hover span {
   left: 0;
   top: 5px;
   cursor: pointer;
-  background: url('../images/mingti/img/icon/tree_icon.png') no-repeat 0 0;
+  background: url('../images/mingti/icon/tree_icon.png') no-repeat 0 0;
 }
 
 .unfoldBtn {
@@ -666,8 +664,6 @@ a {
 
 /*填空题  begin*/
 
-.completion-wrap! {}
-
 .topicBox {
   padding-top: 15px;
 }
@@ -701,8 +697,6 @@ a {
     width: 219px;
   }
 }
-
-.zuJuanItem! {}
 
 .question-cart h4 {
   font-size: 12px;
@@ -850,8 +844,6 @@ a {
   }
 }
 
-.zhinengxuanti! {}
-
 .content .selectPoint .dropdown-toggle {
   border: 1px solid #cfcfcf;
   min-width: 160px;
@@ -926,16 +918,16 @@ a {
     border: 0;
     margin: 0;
     padding-top: 20px;
-    background: url('../images/mingti/img/icon/sline.jpg') repeat-y 15px 0;
+    background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
   }
   .dgLevel_1:last-child,
   .dgLevel_2:last-child,
   .dgLevel_3:last-child,
   .dgLevel_4:last-child{
-    background: white url('../images/mingti/img/icon/sline.jpg') no-repeat 15px -2px;
+    background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
   }
   .lastChild {
-    background: white url('../images/mingti/img/icon/sline.jpg') no-repeat 15px -2px;
+    background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
   }
   .dagangBox {
     margin-left: 40px;
@@ -945,7 +937,7 @@ a {
   .media-object {
     width: 40px;
     height: 34px;
-    background: url('../images/mingti/img/icon/hline.jpg') no-repeat right 17px;
+    background: url('../images/mingti/icon/hline.jpg') no-repeat right 17px;
   }
   .media-heading {
     height: 34px;
@@ -955,7 +947,7 @@ a {
   }
   .media-body {
     padding: 0;
-    background: url('../images/mingti/img/icon/sline.jpg') repeat-y 15px 0;
+    background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
   }
   .media > .pull-left {
     margin-right: 0;

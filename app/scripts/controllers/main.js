@@ -2,7 +2,10 @@ define(['angular'], function (angular) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.MainCtrl', [])
-    .controller('MainCtrl', function ($scope, $http) {
+    .controller('MainCtrl', function ($rootScope, $scope, $http) {
+
+          $rootScope.pageName = "大纲";//页面名称
+          $rootScope.cssPath = "dagang";//调用dagang.css
 
       var baseAPIUrl = 'http://192.168.1.111:4000/api/',
           token = "12345",
@@ -25,6 +28,7 @@ define(['angular'], function (angular) {
       $scope.saveDagangBtn = true;//大纲保存按钮隐藏
       $scope.dgWelcome = true;//默认情况下显示welcome页面
       $scope.itemTitle = "大纲";
+
 
       $http.get(qryDgUrl).success(function(data) {
           $scope.dgList = data;
