@@ -18,18 +18,66 @@
             </ul>
         </div>
         <div class="btn-group pointSelect">
-            <h2 class="pointTitleBox pull-left" ng-click="showDgList()">
+            <h2 class="pointTitleBox pull-left" ng-click="showDgList(dgList)">
                 <span class="pointTitle pull-left">大纲选择</span>
                 <span class="caret pull-right"></span>
             </h2>
             <ul class="dropdownMenu" ng-hide="dgListBox">
                 <li ng-repeat="dg in dgList">
-                    <a href="javascript:void(0)" ng-click="loadDagang(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
+                    <a href="javascript:void(0)" ng-click="loadDgZsd(dg.ZHISHIDAGANG_ID)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
                 </li>
             </ul>
-            <div class="pointTree">
-
-            </div>
+        </div>
+        <div class="pointTree">
+            <ul class="list-unstyled levelOne">
+                <li ng-repeat="zsd in kowledgeList">
+                    <div class="foldBtn pull-left" ng-class="{'unfoldBtn': isClicked}"
+                         ng-click="toggleChildNode()"></div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="selectedZsd[]" value="{{zsd.ZHISHIDIAN_ID}}"
+                                   ng-checked="selection.indexOf(zsd.ZHISHIDIAN_ID) > -1"
+                                   g-click="toggleSelection(zsd.ZHISHIDIAN_ID)">
+                            {{zsd.ZHISHIDIANMINGCHENG}}</label>
+                    </div>
+                    <ul class="list-unstyled levelTwo" ng-hide="showNd2">
+                        <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+                            <div class="foldBtn pull-left " ng-class="{'unfoldBtn': isClicked}"
+                                 ng-click="toggleChildNode($index)"></div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="selectedZsd[]" value="{{nd2.ZHISHIDIAN_ID}}"
+                                           ng-checked="selection.indexOf(nd2.ZHISHIDIAN_ID) > -1"
+                                           g-click="toggleSelection(nd2.ZHISHIDIAN_ID)">
+                                    {{nd2.ZHISHIDIANMINGCHENG}}</label>
+                            </div>
+                            <ul class="list-unstyled levelThree" ng-hide="{{'showNd3' + $index}}">
+                                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                                    <div class="foldBtn pull-left "></div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="selectedZsd[]" value="{{nd3.ZHISHIDIAN_ID}}"
+                                                   ng-checked="selection.indexOf(nd3.ZHISHIDIAN_ID) > -1"
+                                                   g-click="toggleSelection(nd3.ZHISHIDIAN_ID)">
+                                            {{nd3.ZHISHIDIANMINGCHENG}}</label>
+                                    </div>
+                                    <ul class="list-unstyled levelFour" ng-hide="showNd4">
+                                        <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="selectedZsd[]" value="{{nd4.ZHISHIDIAN_ID}}"
+                                                           ng-checked="selection.indexOf(nd4.ZHISHIDIAN_ID) > -1"
+                                                           g-click="toggleSelection(nd4.ZHISHIDIAN_ID)">
+                                                    {{nd4.ZHISHIDIANMINGCHENG}}</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="content">
@@ -39,7 +87,7 @@
                     <span class="pull-left">题型</span>
                     <a href="javascript:void(0)" class="pull-left text-center">全部题型</a>
                 </div>
-                <ul class="list-inline kmTxNdList">
+                <ul class="list-inline kmTxNdList pull-left">
                     <li ng-repeat="kmtx in kmtxList">
                         <a href="javascript:void(0)">{{ kmtx.TIXINGMINGCHENG }}</a>
                    </li>
@@ -49,7 +97,25 @@
                 <div class="kmtxNdTitle pull-left">
                     <span class="pull-left">难度</span>
                     <a href="javascript:void(0)" class="pull-left text-center">全部难度</a>
+
                 </div>
+                <ul class="list-inline kmTxNdList pull-left">
+                    <li>
+                        <a href="javascript:void(0)">简单</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">一般</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">普通</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">困难</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">较难</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
