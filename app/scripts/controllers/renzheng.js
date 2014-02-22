@@ -6,7 +6,8 @@ define(['jquery', 'angular'], function ($, angular) {
       $rootScope.pageName = "认证";//页面名称
       //$scope.cssPath = "renzheng";//调用dagang.css
       $rootScope.styles = [
-        'styles/rezheng.css'
+        'styles/renzheng.css'
       ];
+      $rootScope.dashboard_shown = false;
     });
 });
