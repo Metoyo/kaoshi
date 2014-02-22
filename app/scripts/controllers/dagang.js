@@ -91,18 +91,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               console.log(result);
               alert('提交成功！');
           });
-
-          /*$http({
-           url:submitDataUrl,
-           method:"POST",
-           headers: {
-           'Authorization': 'Basic dGVzdDp0ZXN0',
-           'Content-Type': 'application/x-www-form-urlencoded'
-           },
-           data: shuju
-           }).success(function(result) {
-           console.log(result);
-           });*/
       };
 
     });
