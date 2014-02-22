@@ -15,7 +15,8 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/{{cssPath}}.css">
+    <link rel="stylesheet" href="styles/common.css" />
+    <link ng-repeat="style in styles" rel="stylesheet" type="text/css" ng-href="{{style}}">
     <!-- endbuild -->
   </head>
   <body ng-app="kaoshiApp">
@@ -35,7 +36,7 @@
                       <a href="javascript:void(0)" class="dropdownToggle droTogZj"> <span class="nav-icon"></span> <span class="nav-name">组卷</span> </a>
                   </li>
                   <li class="list-group-item">
-                      <a href="#/" class="dropdownToggle droTogDg"> <span class="nav-icon"></span> <span class="nav-name">大纲</span> </a>
+                      <a href="#/dagang" class="dropdownToggle droTogDg"> <span class="nav-icon"></span> <span class="nav-name">大纲</span> </a>
                   </li>
                   <li class="list-group-item">
                       <a href="javascript:void(0)" class="dropdownToggle droTogKw"> <span class="nav-icon"></span> <span class="nav-name">考务</span> </a>

@@ -2,20 +2,13 @@
 Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.
               Load path: /Users/songtao/projects/kaoshi/app/styles
         on line 3 of common.scss
-        from line 1 of dagang.scss
+        from line 1 of renzheng.scss
 
 1: @import 'common';
-2: .dagangWrapper{
-3:   .content-title {
-4:     border-bottom: 1px solid #cfcfcf;
-5:     font-size: 120%;
-6:     height: 60px;
-7:     .glyphicon {
-8:       top: 4px;
 
 Backtrace:
 common.scss:3
-dagang.scss:1
+renzheng.scss:1
 /Library/Ruby/Gems/2.0.0/gems/sass-3.2.14/lib/sass/tree/import_node.rb:67:in `rescue in import'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.2.14/lib/sass/tree/import_node.rb:45:in `import'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.2.14/lib/sass/tree/import_node.rb:28:in `imported_file'
@@ -58,4 +51,4 @@ dagang.scss:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.\A               Load path: /Users/songtao/projects/kaoshi/app/styles\A         on line 3 of common.scss\A         from line 1 of dagang.scss\A \A 1: @import 'common';\A 2: .dagangWrapper{\A 3:   .content-title {\A 4:     border-bottom: 1px solid #cfcfcf;\A 5:     font-size: 120%;\A 6:     height: 60px;\A 7:     .glyphicon {\A 8:       top: 4px;"; }
+  content: "Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.\A               Load path: /Users/songtao/projects/kaoshi/app/styles\A         on line 3 of common.scss\A         from line 1 of renzheng.scss\A \A 1: @import 'common';"; }
