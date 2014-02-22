@@ -43,32 +43,39 @@ define([
         var routes = config.routes,
             nextUrlPattern,
             nextRoute,
-            currentUrlParser = document.createElement('a'),
+            currentUrlParser = document.createElement('a'), // 使用浏览器内置的a标签进行url的解析判断
             nextUrlParser = document.createElement('a'),
             nextPath;
 
-        currentUrlParser.href = current;
-        nextUrlParser.href = next;
+        currentUrlParser.href = current; // current为当前的url地址
+        nextUrlParser.href = next; // next为即将要访问的url地址
 
         if(currentUrlParser.protocol === nextUrlParser.protocol
-            && currentUrlParser.host === nextUrlParser.host) {
+            && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
 
-          nextPath = nextUrlParser.hash.substr(1);
+          nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
 
+          /**
+           * 测试即将要访问的路由是否已经在我们的angular.js程序中定义
+           * @type {*|Mixed}
+           */
           var findRoute = _.find($route.routes, function(route, urlPattern) {
             if(route.regexp.test(nextPath)) {
-              nextUrlPattern = urlPattern;
+              nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name
               return true;
             }
             return false;
           });
 
-          if(findRoute) {
-            nextRoute = routes[nextUrlPattern];
+          if(findRoute) { // 如果在我们的路由表中已找到即将要访问的路由， 那么执行以下代码
+            nextRoute = routes[nextUrlPattern]; // 找到即将要访问的路由的配置信息
+            /**
+             * 判断即将要访问的路由是否需要登陆验证， 并且确保如果当前用户没有登陆的话，将用户重定向至登陆界面
+             */
             if(nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
-              event.preventDefault();
-              $location.path('/renzheng');
-              $rootScope.$apply();
+              event.preventDefault(); // 取消访问下一个路由地址
+              $location.path('/renzheng'); // 重定向至登陆界面
+              $rootScope.$apply(); // 触发浏览器重定向路由
             }
           }
         }
