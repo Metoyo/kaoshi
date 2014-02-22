@@ -3,9 +3,10 @@ define(['jquery', 'angular'], function ($, angular) {
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
     .controller('DagangCtrl', function ($rootScope, $scope, $http) {
-
       $rootScope.pageName = "大纲";//页面名称
-      $scope.cssPath = "dagang";//调用dagang.css
+      $rootScope.styles = [
+        'styles/dagang.css'
+      ]; //调用dagang.css
 
       var baseAPIUrl = 'http://192.168.1.111:4000/api/',
           token = "12345",

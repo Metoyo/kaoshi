@@ -5,7 +5,10 @@ define(['jquery', 'angular'], function ($, angular) {
     .controller('MingtiCtrl', function ($rootScope, $scope, $http) {
       //操作title
       $rootScope.pageName = "命题"; //page title
-      $scope.cssPath = "mingti"; //调用样式文件mingti.css
+      //$scope.cssPath = "mingti"; //调用样式文件mingti.css
+      $rootScope.styles = [
+        'styles/mingti.css'
+      ];
 
       //声明变量
       var baseRzAPIUrl = 'http://192.168.1.111:3000/api/', //renzheng的api

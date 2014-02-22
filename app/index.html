@@ -15,7 +15,8 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <!--link rel="stylesheet" href="styles/{{cssPath}}.css"-->
+    <link rel="stylesheet" href="styles/common.css" />
+    <link ng-repeat="style in styles" rel="stylesheet" type="text/css" ng-href="{{style}}">
     <!-- endbuild -->
   </head>
   <body ng-app="kaoshiApp">

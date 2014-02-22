@@ -2,19 +2,17 @@
 define([
     'jquery',
     'angular',
-    'directives/lazystyle',
     'controllers/main',
     'controllers/renzheng',
     'controllers/mingti',
     'controllers/dagang'
-   ], function ($, angular, LazystyleDirective, MainCtrl, RenzhengCtrl, MingtiCtrl, DagangCtrl) {
+   ], function ($, angular, MainCtrl, RenzhengCtrl, MingtiCtrl, DagangCtrl) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
 'kaoshiApp.controllers.MingtiCtrl',
 'kaoshiApp.controllers.DagangCtrl',
 'kaoshiApp.controllers.RenzhengCtrl',
-'kaoshiApp.directives.Lazystyle',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',
