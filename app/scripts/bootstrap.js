@@ -7,7 +7,8 @@ require.config({
     angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize',
     angularResource: '../../bower_components/angular-resource/angular-resource',
     angularMocks: '../../bower_components/angular-mocks/angular-mocks',
-    text: '../../bower_components/requirejs-text/text'
+    text: '../../bower_components/requirejs-text/text',
+    jquery: '../../bower_components/jquery/jquery'
   },
   shim: {
     'angular' : {'exports' : 'angular'},
@@ -29,13 +30,14 @@ require.config({
 window.name = 'NG_DEFER_BOOTSTRAP!';
 
 require([
+  'jquery',
   'angular',
   'app',
   'angularRoute',
   'angularCookies',
   'angularSanitize',
   'angularResource'
-], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource) {
+], function($, angular, app, ngRoutes, ngCookies, ngSanitize, ngResource) {
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);

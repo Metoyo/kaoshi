@@ -1,11 +1,11 @@
-define(['angular'], function (angular) {
+define(['jquery', 'angular'], function ($, angular) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', function ($rootScope, $scope, $http) {
       //操作title
       $rootScope.pageName = "命题"; //page title
-      $rootScope.cssPath = "mingti"; //调用样式文件mingti.css
+      $scope.cssPath = "mingti"; //调用样式文件mingti.css
 
       //声明变量
       var baseRzAPIUrl = 'http://192.168.1.111:3000/api/', //renzheng的api
