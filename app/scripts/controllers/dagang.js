@@ -7,6 +7,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       $rootScope.styles = [
         'styles/dagang.css'
       ]; //调用dagang.css
+      $rootScope.dashboard_shown = true;
 
       var baseAPIUrl = config.apiurl_mt,
           token = config.token,

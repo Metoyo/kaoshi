@@ -9,6 +9,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       $rootScope.styles = [
         'styles/mingti.css'
       ];
+      $rootScope.dashboard_shown = true;
 
       //声明变量
       var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
