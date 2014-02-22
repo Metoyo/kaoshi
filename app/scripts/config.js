@@ -23,6 +23,11 @@ define( "config", [], function () {
         templateUrl: 'views/renzheng.html',
         controller: 'RenzhengCtrl',
         requireLogin: false
+      },
+      '/user/:name': {
+        templateUrl: 'views/user.html',
+        controller: 'UserCtrl',
+        requireLogin: true
       }
     }
   };

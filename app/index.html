@@ -22,7 +22,7 @@
   <body ng-app="kaoshiApp">
     <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
-    <div class="container main" ng-view>
+    <div class="container main {{addedContainerClass}}" ng-view>
 
     </div>
     <!--[if lt IE 9]>

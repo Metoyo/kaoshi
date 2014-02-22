@@ -39,22 +39,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
             $rootScope.session = session;
 
-            console.log('login result: ');
-            console.log(result);
+            //console.log('login result: ');
+            //console.log(result);
 
             $http.get(permissionApiUrl).success(function(permissions) {
               var find_QUANXIAN_ID_4;
 
-              console.log('permission data: ');
-              console.log(permissions);
+              //console.log('permission data: ');
+              //console.log(permissions);
 
               find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                 return permission.QUANXIAN_ID == 4;
               });
 
               if(find_QUANXIAN_ID_4) {
-                //$location.path(profileUrl);
-                $location.path('/mingti');
+                $location.path(profileUrl);
+                //$location.path('/mingti');
                 $rootScope.$apply();
               } else {
                 $location.path('/dagang');
