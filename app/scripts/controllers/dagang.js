@@ -1,4 +1,4 @@
-define(['jquery', 'angular'], function ($, angular) {
+define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
@@ -8,8 +8,8 @@ define(['jquery', 'angular'], function ($, angular) {
         'styles/dagang.css'
       ]; //调用dagang.css
 
-      var baseAPIUrl = 'http://192.168.1.111:4000/api/',
-          token = "12345",
+      var baseAPIUrl = config.apiurl_mt,
+          token = config.token,
           caozuoyuan = 1057,
           jigouid = 2,
           lingyuid = 2,

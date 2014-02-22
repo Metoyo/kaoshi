@@ -1,4 +1,4 @@
-define(['jquery', 'angular'], function ($, angular) {
+define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
@@ -11,9 +11,9 @@ define(['jquery', 'angular'], function ($, angular) {
       ];
 
       //声明变量
-      var baseRzAPIUrl = 'http://192.168.1.111:3000/api/', //renzheng的api
-          baseMtAPIUrl = 'http://192.168.1.111:4000/api/', //mingti的api
-          token = "12345",
+      var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
+          baseMtAPIUrl = config.apiurl_mt, //mingti的api
+          token = config.token,
           caozuoyuan = 1057,
           jigouid = 2,
           lingyuid = 2,
