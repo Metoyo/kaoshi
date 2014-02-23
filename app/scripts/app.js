@@ -3,13 +3,14 @@ define([
     'jquery',
     'underscore',
     'angular',
+    'services/urlredirect',
     'controllers/main',
     'controllers/renzheng',
     'controllers/mingti',
     'controllers/dagang',
     'controllers/user',
     'config'
-   ], function ($, _, angular, MainCtrl, RenzhengCtrl, MingtiCtrl, DagangCtrl, UserCtrl, config) {
+   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, MingtiCtrl, DagangCtrl, UserCtrl, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -17,6 +18,7 @@ define([
 'kaoshiApp.controllers.DagangCtrl',
 'kaoshiApp.controllers.RenzhengCtrl',
 'kaoshiApp.controllers.UserCtrl',
+'kaoshiApp.services.Urlredirect',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',
@@ -35,34 +37,8 @@ define([
 
       $routeProvider.otherwise({redirectTo: '/renzheng'});
 
-    }]).run(['$rootScope', '$location', '$route', '$q', function($rootScope, $location, $route, $q) {
-
-      function checkIfUrlApplied(currentPath, nextPath) {
-        var deferred = $q.defer();
-        // async call, resolved after ajax request completes
-        if(currentPath === nextPath) {
-          deferred.resolve();
-        } else {
-          if(!$rootScope.$$phase) { // 触发浏览器重定向路由
-            $location.path(nextPath); // 重定向至登陆界面
-            $rootScope.$apply();
-            deferred.resolve();
-          } else {
-            deferred.reject();
-          }
-        }
-        return deferred.promise;
-      }
-
-      function redirectUrl(currentPath, nextPath) {
-        var checkUrlAppliedPromise = checkIfUrlApplied(currentPath, nextPath);
-        checkUrlAppliedPromise.then(function() { /* success callback*/},
-          function() { // error callback
-            setTimeout(function() {
-              redirectUrl(currentPath, nextPath);
-            }, 20);
-          });
-      }
+    }]).run(['$rootScope', '$location', '$route', 'urlRedirect', function($rootScope, $location,
+                                                                                $route, urlRedirect) {
 
       /**
        * 确保所有需要登陆才可以访问的链接进行用户登陆信息验证，如果没有登陆的话，则导向登陆界面
@@ -108,7 +84,7 @@ define([
               event.preventDefault(); // 取消访问下一个路由地址
               currentPath = $location.$$path;
 
-              redirectUrl(currentPath, '/renzheng');
+              urlRedirect.goTo(currentPath, '/renzheng');
             }
           }
         }
