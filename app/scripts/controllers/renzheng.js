@@ -54,11 +54,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
               if(find_QUANXIAN_ID_4) {
                 $location.path(profileUrl);
-                //$location.path('/mingti');
-                $rootScope.$apply();
+                if(!$rootScope.$$phase) { // 触发浏览器重定向路由
+                  $rootScope.$apply();
+                }
               } else {
                 $location.path('/dagang');
-                $rootScope.$apply();
+                if(!$rootScope.$$phase) { // 触发浏览器重定向路由
+                  $rootScope.$apply();
+                }
               }
 
             });

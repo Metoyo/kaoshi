@@ -35,7 +35,35 @@ define([
 
       $routeProvider.otherwise({redirectTo: '/renzheng'});
 
-    }]).run(['$rootScope', '$location', '$route', function($rootScope, $location, $route) {
+    }]).run(['$rootScope', '$location', '$route', '$q', function($rootScope, $location, $route, $q) {
+
+      function checkIfUrlApplied(currentPath, nextPath) {
+        var deferred = $q.defer();
+        // async call, resolved after ajax request completes
+        if(currentPath === nextPath) {
+          deferred.resolve();
+        } else {
+          if(!$rootScope.$$phase) { // 触发浏览器重定向路由
+            $location.path(nextPath); // 重定向至登陆界面
+            $rootScope.$apply();
+            deferred.resolve();
+          } else {
+            deferred.reject();
+          }
+        }
+        return deferred.promise;
+      }
+
+      function redirectUrl(currentPath, nextPath) {
+        var checkUrlAppliedPromise = checkIfUrlApplied(currentPath, nextPath);
+        checkUrlAppliedPromise.then(function() { /* success callback*/},
+          function() { // error callback
+            setTimeout(function() {
+              redirectUrl(currentPath, nextPath);
+            }, 20);
+          });
+      }
+
       /**
        * 确保所有需要登陆才可以访问的链接进行用户登陆信息验证，如果没有登陆的话，则导向登陆界面
        */
@@ -45,7 +73,9 @@ define([
             nextRoute,
             currentUrlParser = document.createElement('a'), // 使用浏览器内置的a标签进行url的解析判断
             nextUrlParser = document.createElement('a'),
-            nextPath;
+            nextPath,
+            currentPath,
+            checkUrlAppliedPromise;
 
         currentUrlParser.href = current; // current为当前的url地址
         nextUrlParser.href = next; // next为即将要访问的url地址
@@ -60,12 +90,14 @@ define([
            * @type {*|Mixed}
            */
           var findRoute = _.find($route.routes, function(route, urlPattern) {
-            if(route.regexp.test(nextPath)) {
+            if(route.regexp.test(nextPath)) { // 测试即将要访问的url是否否何定义的路由规则
               nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name
               return true;
             }
             return false;
           });
+
+
 
           if(findRoute) { // 如果在我们的路由表中已找到即将要访问的路由， 那么执行以下代码
             nextRoute = routes[nextUrlPattern]; // 找到即将要访问的路由的配置信息
@@ -74,8 +106,9 @@ define([
              */
             if(nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
               event.preventDefault(); // 取消访问下一个路由地址
-              $location.path('/renzheng'); // 重定向至登陆界面
-              $rootScope.$apply(); // 触发浏览器重定向路由
+              currentPath = $location.$$path;
+
+              redirectUrl(currentPath, '/renzheng');
             }
           }
         }

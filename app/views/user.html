@@ -29,7 +29,7 @@
                 </p>
                 <p class="text-left mb0">
                     学生
-                    <a href="javascript:void(0)" class="privilegeBtn pull-right"> <span class="glyphicon glyphicon-cog"> </span>权限设置 </a>
+                    <a href="javascript:void(0)" ng-click="setPermissions()" class="privilegeBtn pull-right"> <span class="glyphicon glyphicon-cog"> </span>权限设置 </a>
                 </p>
             </div>
         </div>
@@ -58,7 +58,7 @@
         </ul>
     </div>
     <!-- 审核权限开始  -->
-    <div class="row shenheBox">
+    <div class="row shenheBox" ng-hide="shenheList && shenheList.length">
         <div class="col-md-12 infoBox">
             <h3 class="text-center shTitle"> 权限审核 <a href="javascript:void(0)" class="closeShenBox pull-right" title="关闭审核窗口"> <span class="glyphicon glyphicon-remove"></span> </a></h3>
             <form action=" " method=" " enctype="application/x-www-form-urlencoded">
@@ -72,7 +72,36 @@
                     </tr>
                     </thead>
                     <tbody class="shenheList">
-
+                     	<tr ng-repeat="SH in shenheList">
+                            <td>
+                                {{SH.LINGYUMINGCHENG}}
+                                <span class="shYonghuId">
+                                    {{SH.UID}}
+                                </span>
+                                <span class="shJigouId">
+                                    {{SH.JIGOU_ID}}
+                                </span>
+                                <span class="shLingyuId">
+                                    {{SH.LINGYU_ID}}
+                                </span>
+                            </td>
+                         	<td>
+                                {{SH.XINGMING}}
+                            </td>
+                        	<td class="text-left">
+                                <div class="shenheJueseList">
+                                    <label ng-repeat="JS in SH.JUESE" class="checkbox-inline">
+                                        <span class="originZT">
+                                            {{JS.ZHUANGTAI}}
+                                        </span>
+                                        <input type="checkbox" name="rightName" ng-model="JS.JUESE_ID" ng-checked="JS.ZHUANGTAI > -1" />
+                                        <span>
+                                            {{JS.JUESEMINGCHENG}}
+                                        </span>
+                                    </label>
+                                </div>
+                            </td>
+                        	<td class="passBtn"><button type="button" class="btn btn-success">通过审批</button><span class="shMsgBox"></span></td></tr>
                     </tbody>
                 </table>
             </form>
