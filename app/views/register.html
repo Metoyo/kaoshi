@@ -1,0 +1,167 @@
+<div class="row registerBox">
+    <h4 class="logo text-center"><img src="/images/renzheng/icon/logo.png" alt="太安厅"></h4>
+    <div class="col-md-10 col-md-offset-1 infoBox">
+        <form action="/register/submit" method="post" enctype="application/x-www-form-urlencoded">
+            <ul class="list-unstyled list-inline nav-tabs">
+                <li class="active">
+                    个人信息
+                </li>
+                <li>
+                    学科选择
+                </li>
+                <li>
+                    确认信息
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane clearfix active">
+                    <div class="form-group col-md-6">
+                        <label><span>用户名<em>(4-30个字符)</em></span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="text" name="yonghuming" ng-minlength=4 ng-maxlength=30 ng-model="personalInfo.yonghuming" class="form-control"  placeholder="用户名" tabindex="0">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label><span>密码<em>(6-20个字符)</em></span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="password" name="mima" ng-minlength=6 ng-maxlength=20 ng-model="personalInfo.mima" class="form-control regPassword" placeholder="密码" tabindex="1">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label><span>邮箱</span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="text" name="youxiang" ng-model="personalInfo.youxiang" class="form-control" placeholder="邮箱" tabindex="3">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label><span>确认密码</span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="password" name="confirmPassword" ng-model="personalInfo.confirmPassword" class="form-control" placeholder="确认密码" tabindex="2">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label><span>真实姓名</span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="text" name="xingming" ng-model="personalInfo.xingming" class="form-control" placeholder="真实姓名" tabindex="4">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label><span>手机号码<em>(可以不用填写)</em></span><span class="msgBox">此项不能为空！</span></label>
+                        <input type="text" name="shouji" ng-model="personalInfo.shouji" class="form-control" placeholder="手机号码" tabindex="5">
+                    </div>
+                    <div class="form-group col-md-12 pull-left text-right">
+                        <button type="button" ng-click="validatePersonalInfo()" class="btn btn-success nextBtn">
+                            下一步<span></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane clearfix">
+                    <div class="form-group col-md-6 pull-left">
+                        <label><span>机构类别</span><span class="msgBox">此项不能为空！</span></label>
+                        <select class="form-control organization">
+                            <option>请选择</option>
+                            {{eachjiGouLeiBie}}
+                            <option value="{{LEIBIE_ID}}">{{LEIBIEMINGCHENG}}</option>
+                            {{each}}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6 pull-right">
+                        <label><span>机构</span><span class="msgBox">此项不能为空！</span></label>
+                        <select class="form-control subOrganization" name="jigou">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12 pull-left">
+                        <label><span>学科领域</span><span class="msgBox">此项不能为空！</span></label>
+                        <select class="form-control myField" name="lingyu">
+                            <option>请选择</option>
+                            {{eachlingyu}}
+                            <option value="{{LINGYU_ID}}">{{LINGYUMINGCHENG}}</option>
+                            {{each}}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12 pull-left objectWrap">
+                        <div class="objectWrapSub">
+                            <label class="msgLabel"><span>已选科目</span><span class="msgBox">此项不能为空！</span></label>
+                            <div class="selectedObject">
+                                <div class="selectedObjectBox pull-left">
+                                    <div class="selectedObjectList pull-left">
+                                        <p class="hide subJuese">
+
+                                        </p>
+                                        <div class="pull-left">
+                                            <p class="kemumingcheng">
+                                                <span>科目名称：</span>
+                                                <span class="objectName" tabindex=""></span>
+                                            </p>
+                                            <p class="kemuquanxian">
+                                                <span>角色：</span>
+                                                <span class="rightName"></span>
+                                            </p>
+                                        </div>
+                                        <div class="btn-can pull-right text-right">
+                                            <!--button type="button" class="btn btn-primary alterSelectedObject">
+                                            修改
+                                            </button-->
+                                            <button type="button" class="btn btn-danger delSelectedObject">
+                                                删除
+                                            </button>
+												<span class="hide radioSelectIndx">
+												</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0)" class="addNewObject"><span class="glyphicon glyphicon-plus-sign"> </span> 新增一个科目 </a>
+                            </div>
+                        </div>
+                        <div class="objectToggleBox">
+                            <div class="form-group col-md-12">
+                                <label>选择科目</label>
+                                <div class="chooseObject">
+
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>科目权限</label>
+                                <div class="chooseRight">
+                                    {{eachjueSe}}
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="rightName" value="{{JUESE_ID}}">
+                                        <span>{{JUESEMINGCHENG}}</span>
+                                    </label>
+                                    {{each}}
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12 text-right">
+                                <button type="button" class="btn btn-primary getObjectAndRight">
+                                    确定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 pull-left">
+                        <button type="button" class="btn btn-success prevBtn pull-left">
+                            上一步<span></span>
+                        </button>
+                        <button type="button" class="btn btn-success nextBtn pull-right">
+                            下一步<span></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane clearfix">
+                    <div class="col-md-6">
+                        <p>
+                            注册信息
+                        </p>
+                        <p class="text-left">
+                            <button type="button" class="btn btn-success prevBtn pull-left">
+                                上一步<span></span>
+                            </button>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            您申请的学科职务需要通过该学科负责人审核之后才可生效，请及时通知学科负责人并耐心等待
+                        </p>
+                        <p class="text-right">
+                            <button type="submit" class="btn btn-success submitBtn">
+                                提交<span></span>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <input type="text" name="juese" value="" class="jueseVal"/>
+        </form>
+    </div>
+</div>

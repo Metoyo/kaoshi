@@ -9,8 +9,11 @@ define([
     'controllers/mingti',
     'controllers/dagang',
     'controllers/user',
+    'controllers/logout',
+    'controllers/register',
     'config'
-   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, MingtiCtrl, DagangCtrl, UserCtrl, config) {
+   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, MingtiCtrl,
+                DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -19,6 +22,8 @@ define([
 'kaoshiApp.controllers.RenzhengCtrl',
 'kaoshiApp.controllers.UserCtrl',
 'kaoshiApp.services.Urlredirect',
+'kaoshiApp.controllers.LogoutCtrl',
+'kaoshiApp.controllers.RegisterCtrl',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',
@@ -66,9 +71,11 @@ define([
            * @type {*|Mixed}
            */
           var findRoute = _.find($route.routes, function(route, urlPattern) {
-            if(route && route !== 'null' && route.regexp.test(nextPath)) { // 测试即将要访问的url是否否何定义的路由规则
-              nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name
-              return true;
+            if(route && route !== 'null') { // 测试即将要访问的url是否否何定义的路由规则
+              if(route.regexp.test(nextPath)) {
+                nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name
+                return true;
+              }
             }
             return false;
           });

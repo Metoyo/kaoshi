@@ -28,6 +28,16 @@ define( "config", [], function () {
         templateUrl: 'views/user.html',
         controller: 'UserCtrl',
         requireLogin: true
+      },
+      '/logout': {
+        templateUrl: 'views/logout.html',
+        controller: 'LogoutCtrl',
+        requireLogin: true
+      },
+      '/register': {
+        templateUrl: 'views/register.html',
+        controller: 'RegisterCtrl',
+        requireLogin: false
       }
     }
   };
