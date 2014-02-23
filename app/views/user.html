@@ -58,9 +58,12 @@
         </ul>
     </div>
     <!-- 审核权限开始  -->
-    <div class="row shenheBox" ng-show="shenheList && shenheList.length">
+    <div class="row shenheBox" ng-show="showShenhe">
         <div class="col-md-12 infoBox">
-            <h3 class="text-center shTitle"> 权限审核 <a href="javascript:void(0)" class="closeShenBox pull-right" title="关闭审核窗口"> <span class="glyphicon glyphicon-remove"></span> </a></h3>
+            <h3 class="text-center shTitle"> 权限审核
+                <a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right"
+                                                     title="关闭审核窗口">
+                <span class="glyphicon glyphicon-remove"></span> </a></h3>
             <form action=" " method=" " enctype="application/x-www-form-urlencoded">
                 <table class="table table-bordered shenheTable">
                     <thead>
@@ -94,14 +97,14 @@
                                         <span class="originZT">
                                             {{JS.ZHUANGTAI}}
                                         </span>
-                                        <input type="checkbox" name="rightName" ng-model="JS.JUESE_ID" ng-checked="JS.ZHUANGTAI > -1" />
+                                        <input type="checkbox" name="rightName" ng-click="jueseClicked(SH,JS)" ng-model="JS.JUESE_CHECKED" />
                                         <span>
                                             {{JS.JUESEMINGCHENG}}
                                         </span>
                                     </label>
                                 </div>
                             </td>
-                        	<td class="passBtn"><button type="button" class="btn btn-success">通过审批</button><span class="shMsgBox"></span></td></tr>
+                        	<td class="passBtn"><button type="button" ng-click="authPerm(SH)" ng-hide="SH.AUTH_BTN_HIDE" class="btn btn-success">通过审批</button><span class="shMsgBox"></span></td></tr>
                     </tbody>
                 </table>
             </form>
