@@ -15,7 +15,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
           token = config.token,
-          caozuoyuan = 1057,
+          caozuoyuan = $rootScope.session.info.UID,//等到用户的UID
           jigouid = 2,
           lingyuid = 2,
           chaxunzilingyu = true,
@@ -38,6 +38,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       $scope.dgListBox = true; //大纲选择列表隐藏
       $scope.showNd2 = false;
       $scope.showNd3 = false;
+
       //查询科目（LingYu，url：/api/lingyu）
       $scope.loadLingYu = function(){
           if($scope.keMuList){
@@ -54,6 +55,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       //查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
       $scope.cxKmTxAndDg = function(){
           $http.get(qryKmTx).success(function(data){
+            console.log($rootScope.session);
               $scope.kmtxList = data;
               $scope.keMuList = true; //选择的科目render完成后列表显示
           });

@@ -9,11 +9,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       ]; //调用dagang.css
       $rootScope.dashboard_shown = true;
 
-      var baseAPIUrl = config.apiurl_mt,
+      var userInfo = $rootScope.session.userInfo,
+          baseAPIUrl = config.apiurl_mt,
           token = config.token,
-          caozuoyuan = 1057,
-          jigouid = 2,
-          lingyuid = 2,
+          caozuoyuan = userInfo.UID,
+          jigouid = userInfo.JIGOU[0].JIGOU_ID,
+          lingyuid = userInfo.LINGYU[0].LINGYU_ID,
           chaxunzilingyu = true,
 
           qryDgUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan

@@ -47,11 +47,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             authParam = {
               token: config.token,
               caozuoyuan: session.info.UID,
-              yonghujuese: {
+              yonghujuese: [{
                 yonghuid: shenhe.UID,
                 jigou: shenhe.JIGOU_ID,
                 lingyu: shenhe.LINGYU_ID
-              }
+              }]
             };
 
         _.chain(shenhe.JUESE)
@@ -74,17 +74,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           })
           .tap(function(){
-            authParam.yonghujuese.juese = juese;
+            authParam.yonghujuese[0].juese = juese;
 
             $http.post(shyhjsUrl, authParam).success(function(data) {
               if(data.result) {
                 shenhe.AUTH_BTN_HIDE = true;
+                console.log(data);
               }
             }).error(function(data) {
                 alert(data.error);
               });
 
-            console.log(shenhe);
+            //console.log(authParam);
+
           }).value();
       };
 
