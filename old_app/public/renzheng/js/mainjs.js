@@ -208,6 +208,7 @@ $(function() {
 				}).get();
 				console.log(jueseID);
 				//console.log(subJuese);
+
 				//获得科目权限
 				if (objectName && rightTxt) {
 					var radioSelectIndx = $('input:radio[name=objectName]:checked').closest('.radio-inline').index();

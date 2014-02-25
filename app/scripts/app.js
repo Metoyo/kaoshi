@@ -71,7 +71,7 @@ define([
            * @type {*|Mixed}
            */
           var findRoute = _.find($route.routes, function(route, urlPattern) {
-            if(route && route !== 'null') { // 测试即将要访问的url是否否何定义的路由规则
+            if(route && route !== 'null' && route.regexp) { // 测试即将要访问的url是否否何定义的路由规则
               if(route.regexp.test(nextPath)) {
                 nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name
                 return true;
