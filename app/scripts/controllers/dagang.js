@@ -10,6 +10,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       $rootScope.dashboard_shown = true;
 
       var userInfo = $rootScope.session.userInfo,
+          session = $rootScope.session,
           baseAPIUrl = config.apiurl_mt,
           token = config.token,
           caozuoyuan = userInfo.UID,

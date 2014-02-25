@@ -103,9 +103,11 @@
     .levelOne li {
       padding-left: 12px;
       position: relative;
+      ul{
+        display: none;
+      }
     }
     .levelTwo, .levelThree {
-      //display: none;
     }
     .foldBtn {
       position: absolute;

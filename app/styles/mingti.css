@@ -5344,6 +5344,8 @@ a.add-btn:hover span {
   .mingtiWrapper .pointTree .levelOne li {
     padding-left: 12px;
     position: relative; }
+    .mingtiWrapper .pointTree .levelOne li ul {
+      display: none; }
   .mingtiWrapper .pointTree .foldBtn {
     position: absolute;
     width: 14px;

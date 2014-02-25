@@ -15,7 +15,8 @@ define([
               userName: '',
               password: ''
             },
-            loginPostParams;
+            loginPostParams,
+            session = {};
         $rootScope.pageName = "认证";//页面名称
         //$scope.cssPath = "renzheng";//调用dagang.css
         $rootScope.styles = [
@@ -38,10 +39,11 @@ define([
             };
 
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
+              session.info = result[0];
               var profileUrl = '/user/' + login.userName,
-                  session = {
-                    info: result[0]
-                  },
+//                  session = {
+//                    info: result[0]
+//                  },
                   currentPath = $location.$$path,
                   permissionApiUrl = config.apiurl_rz + 'yonghu_quanxian?token=' + config.token + '&yonghuid=' +
                                       session.info.UID,//查询用户权限的url
@@ -53,6 +55,7 @@ define([
                *查询过用户的详细信息，得到jigouid,lingyuid等等
                */
               $http.get(yhxxxxApiUrl).success(function(data){
+                console.log(data);
                 session.userInfo = data;
               }).error(function(err){
                 alert(err);

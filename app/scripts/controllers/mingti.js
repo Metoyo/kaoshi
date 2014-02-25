@@ -2,7 +2,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', function ($rootScope, $scope, $http) {
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http',
+      function ($rootScope, $scope, $http) {
       //操作title
       $rootScope.pageName = "命题"; //page title
       //$scope.cssPath = "mingti"; //调用样式文件mingti.css
@@ -36,8 +37,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       //初始化是DOM元素的隐藏和显示
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
-      $scope.showNd2 = false;
-      $scope.showNd3 = false;
+      //$scope.showNd2 = false;
+      //$scope.showNd3 = false;
 
       //查询科目（LingYu，url：/api/lingyu）
       $scope.loadLingYu = function(){
@@ -84,11 +85,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               });
       };
 
-      //点击展开和收起的按钮子一级显示和隐藏
-      $scope.toggleChildNode = function(idx){
-          $scope.isClicked = true;
-          var nodeLI = '$scope.showNd3' + idx;
-          nodeLI = true;
+      //点击展开和收起的按钮子一级显示和隐藏s
+      $scope.toggleChildNode = function(idx) {
+        var onClass = '.node' + idx,//得到那个button被点击了
+            gitThisBtn = angular.element(onClass),//得到那个展开和隐藏按钮被点击了
+            getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
+        gitThisBtn.toggleClass('unfoldBtn');
+        getTargetChild.toggle();//实现子元素的显示和隐藏
+
       };
 
       // 点击checkbox得到checkbox的值
@@ -107,5 +111,5 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           console.log($scope.selection);
       };
 
-    });
+    }]);
 });

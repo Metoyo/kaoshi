@@ -31,8 +31,7 @@
         <div class="pointTree">
             <ul class="list-unstyled levelOne">
                 <li ng-repeat="zsd in kowledgeList">
-                    <div class="foldBtn pull-left" ng-class="{'unfoldBtn': isClicked}"
-                         ng-click="toggleChildNode()"></div>
+                    <div class="foldBtn pull-left {{'node1' + $index}}" ng-click="toggleChildNode('1' + $index)"></div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="selectedZsd[]" value="{{zsd.ZHISHIDIAN_ID}}"
@@ -42,8 +41,7 @@
                     </div>
                     <ul class="list-unstyled levelTwo" ng-hide="showNd2">
                         <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
-                            <div class="foldBtn pull-left " ng-class="{'unfoldBtn': isClicked}"
-                                 ng-click="toggleChildNode($index)"></div>
+                            <div class="foldBtn pull-left {{'node2' + $index}}" ng-click="toggleChildNode('2' + $index)"></div>
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="selectedZsd[]" value="{{nd2.ZHISHIDIAN_ID}}"
@@ -51,9 +49,9 @@
                                            g-click="toggleSelection(nd2.ZHISHIDIAN_ID)">
                                     {{nd2.ZHISHIDIANMINGCHENG}}</label>
                             </div>
-                            <ul class="list-unstyled levelThree" ng-hide="{{'showNd3' + $index}}">
+                            <ul class="list-unstyled levelThree">
                                 <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
-                                    <div class="foldBtn pull-left "></div>
+                                    <div class="foldBtn pull-left {{'node3' + $index}}" ng-click="toggleChildNode('3' + $index)"></div>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="selectedZsd[]" value="{{nd3.ZHISHIDIAN_ID}}"
