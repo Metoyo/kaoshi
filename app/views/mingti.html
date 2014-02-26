@@ -29,8 +29,8 @@
                     <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}" ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="selectedZsd[]" value="{{zsd.ZHISHIDIAN_ID}}"
-                                   ng-model="lv1"/>
+                            <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
+                                   class="{{'select' + zsd.JIEDIAN_ID}}" ng-click="toggleSelection(zsd.JIEDIAN_ID)"/>
                             {{zsd.ZHISHIDIANMINGCHENG}}</label>
                     </div>
                     <ul class="list-unstyled levelTwo">
@@ -38,8 +38,8 @@
                             <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}" ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="selectedZsd[]" value="{{nd2.ZHISHIDIAN_ID}}"
-                                           ng-checked="lv1" ng-model="lt"/>
+                                    <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
+                                           class="{{'select' + nd2.JIEDIAN_ID}}" ng-click="toggleSelection(nd2.JIEDIAN_ID)"/>
                                     {{nd2.ZHISHIDIANMINGCHENG}}</label>
                             </div>
                             <ul class="list-unstyled levelThree">
@@ -47,16 +47,16 @@
                                     <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}" ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="selectedZsd[]" value="{{nd3.ZHISHIDIAN_ID}}"
-                                                   ng-checked="lv1 || lt" ng-model="lth"/>
+                                            <input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"
+                                                   class="{{'select' + nd3.JIEDIAN_ID}}" ng-click="toggleSelection(nd3.JIEDIAN_ID)"/>
                                             {{nd3.ZHISHIDIANMINGCHENG}}</label>
                                     </div>
                                     <ul class="list-unstyled levelFour">
                                         <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="selectedZsd[]" value="{{nd4.ZHISHIDIAN_ID}}"
-                                                           ng-checked=" lv1 || lt || lth"/>
+                                                    <input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"
+                                                           class="{{'select' + nd4.JIEDIAN_ID}}" ng-click="toggleSelection(nd4.JIEDIAN_ID)"/>
                                                     {{nd4.ZHISHIDIANMINGCHENG}}</label>
                                             </div>
                                         </li>

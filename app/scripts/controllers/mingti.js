@@ -141,18 +141,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
       // 点击checkbox得到checkbox的值
       $scope.toggleSelection = function toggleSelection(zsdId) {
-        var idx = $scope.selection.indexOf(zsdId);
+        var onSelect = '.select' + zsdId,
+          gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
+          getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
+        gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
+        gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
 
-        // is currently selected
-        if (idx > -1) {
-            $scope.selection.splice(idx, 1);
-        }
-        // is newly selected
-        else {
-            $scope.selection.push(zsdId);
+        getTarChbxChild.find('input[type=checkbox]').each(function() {
+          if(gitThisChbx.prop("checked")) {
+            this.checked = true;
+          } else {
+            this.checked = false;
+          }
+        });
+        var cbVal = '';
+        var cbArray = $('input[type=checkbox]');
+        var cbl = cbArray.length;
+        for( var i = 0; i < cbl; i++) {
+          if(cbArray.eq(i).prop("checked")) {
+            cbVal += cbArray[i].value + ',';
+          }
         }
 
-        console.log($scope.selection);
+        console.log(cbVal);
+
       };
 
     }]);
