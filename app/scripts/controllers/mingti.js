@@ -4,14 +4,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http',
       function ($rootScope, $scope, $http) {
-      //操作title
+        /**
+         * 操作title
+         */
       $rootScope.pageName = "命题"; //page title
       $rootScope.styles = [
         'styles/mingti.css'
       ];
       $rootScope.dashboard_shown = true;
 
-      //声明变量
+      /**
+       * 声明变量
+       */
       var userInfo = $rootScope.session.userInfo,
           baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
@@ -24,7 +28,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token, //查询科目的url
 
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-                    jigouid + '&lingyuid=' + lingyuid, //查询科目包含什么题型的url
+                    jigouid + '&lingyuid=', //查询科目包含什么题型的url
 
           qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
               + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
@@ -34,11 +38,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           qryKnowledge = ''; //定义一个空的查询知识点的url
 
-      //初始化是DOM元素的隐藏和显示
+      /**
+       * 初始化是DOM元素的隐藏和显示
+       */
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
 
-      //获得大纲数据
+      /**
+       * 获得大纲数据
+       */
       $http.get(qryDgUrl).success(function(data){
         var newDgList = [];
         _.each(data, function(dg, idx, lst){
@@ -50,13 +58,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         });
         $scope.dgList = newDgList;
-        console.log(newDgList);
+
+        //获取大纲知识点
+        qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
+        $http.get(qryKnowledge).success(function(data){
+          $scope.kowledgeList = data;
+          $scope.dgListBox = true;
+        }).error(function(err){
+            alert(err);
+        });
       });
 
-      //查询科目（LingYu，url：/api/lingyu）
+
+      /**
+       *查询科目（LingYu，url：/api/ling yu）
+       */
+      $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
+
       $scope.loadLingYu = function(){
         if($scope.keMuList){
-          $scope.lyList = userInfo.LINGYU;
           $scope.keMuList = false;
         }
         else{
@@ -64,36 +84,52 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
       };
 
-      //查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
-      $scope.cxKmTxAndDg = function(){
-        $http.get(qryKmTx).success(function(data){
-          console.log($rootScope.session);
-            $scope.kmtxList = data;
-            $scope.keMuList = true; //选择的科目render完成后列表显示
+      /**
+       * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
+       */
+      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //明天页面加载的时候调用科目题型
+        $scope.kmtxList = data;
+        $scope.keMuList = true; //选择的科目render完成后列表显示
+      });
+
+      $scope.cxKmTx = function(lyt){
+
+        angular.element(".selectLyName").html(lyt.LINGYUMINGCHENG); //切换科目的名称
+
+        $http.get(qryKmTx + lyt.LINGYU_ID).success(function(data){ //查询科目题型的数据
+          $scope.kmtxList = data;
+          $scope.keMuList = true; //选择的科目render完成后列表显示
         });
       };
 
-      //点击,显示大纲列表
-      $scope.showDgList = function(dgl){//dgl是判断dagang有没有数据
+      /**
+       * 点击,显示大纲列表
+       */
+      $scope.showDgList = function(dgl){ //dgl是判断da gang有没有数据
         if(dgl.length){
             $scope.dgListBox = $scope.dgListBox === false ? true: false; //点击是大纲列表展现
         }
       };
 
-      //加载大纲知识点
-      $scope.loadDgZsd = function(dgId){
-        qryKnowledge = qryKnowledgeBaseUrl + dgId;
-        $http.get(qryKnowledge)
-          .success(function(data){
+      /**
+       * 加载大纲知识点
+       */
+      $scope.loadDgZsd = function(dg){
+
+        angular.element(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
+
+        qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
+        $http.get(qryKnowledge).success(function(data){
               $scope.kowledgeList = data;
               $scope.dgListBox = true;
-          })
-          .error(function(err){
-              alert(err);
-          });
+        }).error(function(err){
+            alert(err);
+        });
       };
 
-      //点击展开和收起的按钮子一级显示和隐藏
+      /**
+       * 点击展开和收起的按钮子一级显示和隐藏
+       */
       $scope.toggleChildNode = function(idx) {
         var onClass = '.node' + idx,//得到那个button被点击了
             gitThisBtn = angular.element(onClass),//得到那个展开和隐藏按钮被点击了

@@ -8,12 +8,7 @@
             </h2>
             <ul class="dropdownMenu lyListBox" ng-hide="keMuList">
                 <li ng-repeat="lyItem in lyList">
-                    <a href="javascript:void(0)" ng-click="cxKmTxAndDg()">{{lyItem.LINGYUMINGCHENG}}</a>
-                    <ul class="ddmSub ">
-                        <li ng-repeat="lyChild in lyItem.CHILDREN">
-                            <a href="javascript:void(0)" ng-click="cxKmTxAndDg()">{{lyItem.LINGYUMINGCHENG}}</a>
-                        </li>
-                    </ul>
+                    <a href="javascript:void(0)" ng-click="cxKmTx(lyItem)">{{lyItem.LINGYUMINGCHENG}}</a>
                 </li>
             </ul>
         </div>
@@ -24,7 +19,7 @@
             </h2>
             <ul class="dropdownMenu dgListBox" ng-hide="dgListBox">
                 <li ng-repeat="dg in dgList">
-                    <a href="javascript:void(0)" ng-click="loadDgZsd(dg.ZHISHIDAGANG_ID)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
+                    <a href="javascript:void(0)" ng-click="loadDgZsd(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
                 </li>
             </ul>
         </div>

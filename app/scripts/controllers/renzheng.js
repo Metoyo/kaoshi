@@ -41,9 +41,6 @@ define([
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
               var profileUrl = '/user/' + login.userName,
-//                  session = {
-//                    info: result[0]
-//                  },
                   currentPath = $location.$$path,
                   permissionApiUrl = config.apiurl_rz + 'yonghu_quanxian?token=' + config.token + '&yonghuid=' +
                                       session.info.UID,//查询用户权限的url
@@ -86,7 +83,9 @@ define([
                 }
 
               });
-            });
+            }).error(function(err){
+                console.log(err);
+              });
           }
         };
 
