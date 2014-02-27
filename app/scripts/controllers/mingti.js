@@ -43,6 +43,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
+      $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
+
 
       /**
        * 获得大纲数据
@@ -139,7 +141,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
       };
 
-      // 点击checkbox得到checkbox的值
+      /**
+       点击checkbox得到checkbox的值
+        */
       $scope.toggleSelection = function(zsdId) {
         var onSelect = '.select' + zsdId,
           gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
@@ -171,8 +175,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 展示不同的题型和模板
        */
        $scope.renderTpl = function(tpl){
-         $scope.txTpl = tpl;
-       }
+         $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
+         $scope.kmTxWrap = false; // 题型和难度DOM元素隐藏
+       };
+
+      /**
+       * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
+       */
+      $scope.cancelAddPattern = function(){
+        $scope.kmTxWrap = true; // 题型和难度DOM元素显示
+        $scope.txTpl = 'views/partials/testList.html';
+      };
+
 
     }]);
 });

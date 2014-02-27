@@ -118,7 +118,6 @@ body {
 a.add-btn:hover span {
   color: #00CC33;
 }
-
 .form-header {
   margin-bottom: 10px;
   .form-th {
@@ -127,15 +126,15 @@ a.add-btn:hover span {
     margin-bottom: 15px;
   }
 }
-
 .form-body {
   .radio {
     width: 20px;
     height: 20px;
     cursor: pointer;
     border: 2px solid #6c92ff;
-    margin-top: 6px;
     padding: 0;
+    margin-top: 7px;
+    margin-left: 25px;
     span {
       width: 20px;
       height: 20px;
@@ -153,20 +152,19 @@ a.add-btn:hover span {
   }
   .delete-this-tiem {
     color: #ccc;
-    top: 6px;
+    top: 10px;
     margin-right: 15px;
+    position: absolute;
   }
   .delete-select {
     color: #d9534f;
     cursor: pointer;
   }
 }
-
 .form-horizontal .form-group {
   margin-right: 0;
   margin-left: 0;
 }
-
 .logo {
   margin-top: 5px;
   margin-bottom: 15px;
