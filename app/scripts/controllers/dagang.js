@@ -88,7 +88,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          console.log(result);
          });*/
         $http.post(submitDataUrl, dgdata).success(function(result) {
-            console.log(result);
             alert('提交成功！');
         });
       };

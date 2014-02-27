@@ -52,25 +52,18 @@ define([
                *查询过用户的详细信息，得到jigouid,lingyuid等等
                */
               $http.get(yhxxxxApiUrl).success(function(data){
-                console.log(data);
                 session.userInfo = data;
               }).error(function(err){
                 alert(err);
               });
 
               $rootScope.session = session;
-              console.log($rootScope.session);
 
-              //console.log('login result: ');
-              //console.log(result);
               /**
                * 查询用胡权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                */
               $http.get(permissionApiUrl).success(function(permissions) {
                 var find_QUANXIAN_ID_4;
-
-                //console.log('permission data: ');
-                //console.log(permissions);
 
                 find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                   return permission.QUANXIAN_ID == 4;

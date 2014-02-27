@@ -140,7 +140,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       // 点击checkbox得到checkbox的值
-      $scope.toggleSelection = function toggleSelection(zsdId) {
+      $scope.toggleSelection = function(zsdId) {
         var onSelect = '.select' + zsdId,
           gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
           getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
@@ -166,6 +166,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         console.log(cbVal);
 
       };
+
+      /**
+       * 展示不同的题型和模板
+       */
+       $scope.renderTpl = function(tpl){
+         $scope.txTpl = tpl;
+       }
 
     }]);
 });

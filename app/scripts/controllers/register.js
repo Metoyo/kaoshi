@@ -26,14 +26,10 @@ define([
         $scope.lingyu_list = [];
 
         $http.get(apiUrlJglb).success(function(data) {
-          console.log('apiURLJglb:::');
-          console.log(data);
           $scope.jigoulb_list = data;
         });
 
         $http.get(apiUrlLy).success(function(data) {
-          console.log('apiUrlLy:::');
-          console.log(data);
           $scope.lingyu_list = data;
         });
 

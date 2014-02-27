@@ -79,13 +79,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(shyhjsUrl, authParam).success(function(data) {
               if(data.result) {
                 shenhe.AUTH_BTN_HIDE = true;
-                console.log(data);
               }
             }).error(function(data) {
                 alert(data.error);
               });
-
-            //console.log(authParam);
 
           }).value();
       };
