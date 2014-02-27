@@ -5,9 +5,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
     .controller('DagangCtrl', function ($rootScope, $scope, $http) {
       //声明变量
       var userInfo = $rootScope.session.userInfo,
+          info = $rootScope.session.info,
           baseAPIUrl = config.apiurl_mt,
           token = config.token,
-          caozuoyuan = userInfo.UID,
+          caozuoyuan = info.UID,
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = userInfo.LINGYU[0].LINGYU_ID,
           chaxunzilingyu = true,

@@ -1,4 +1,5 @@
 <div class="innerWrap mingtiWrapper">
+    <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
     <div class="subDashboard">
         <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
         <div class="btn-group pointSelect">
@@ -69,7 +70,27 @@
             </ul>
         </div>
     </div>
+    <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
     <div class="content">
+        <!--添加试题的按钮。开始-->
+        <div class="patternWrap">
+            <h3 class="addBtn">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                <a href="javascript:void(0)" ng-click="patternListToggle = patternListToggle === false ? true: false">添加试题</a>
+            </h3>
+            <ul class="patternList list-unstyled list-inline"
+                ng-init="patternListToggle = false" ng-show="patternListToggle" >
+                <li><a href="">单选题</a></li>
+                <li><a href="">多选题</a></li>
+                <li><a href="">判断题</a></li>
+                <li><a href="">填空题</a></li>
+                <li><a href="">简答题</a></li>
+                <li><a href="">阅读题</a></li>
+                <li><a href="">完形填空题</a></li>
+            </ul>
+        </div>
+        <!--添加试题的按钮。结束-->
+        <!--题型和难度DOM元素， 开始-->
         <div class="kmTxWrap">
             <div class="kmTxBox">
                 <div class="kmtxNdTitle pull-left">
@@ -107,6 +128,7 @@
                 </ul>
             </div>
         </div>
+        <!--题型和难度DOM元素， 结束-->
         <div class="contentWraps" ng-include="txTpl">
 
         </div>
