@@ -1,6 +1,8 @@
 .mingtiWrapper {
   /*sub dashboard styles begin*/
-  /*sub dashboard styles begin*/ }
+  /*sub dashboard styles end*/
+  /* contentWraps styles begin */
+  /* contentWraps styles end */ }
   .mingtiWrapper .subDashboard {
     width: 221px;
     height: 100%;
@@ -118,3 +120,5 @@
       padding-top: 10px;
       padding: 10px 30px 0 10px;
       text-align: right; }
+  .mingtiWrapper .contentWraps {
+    padding: 10px 0; }

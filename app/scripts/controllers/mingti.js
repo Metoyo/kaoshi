@@ -36,8 +36,41 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
               caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
 
-          qryKnowledge = ''; //定义一个空的查询知识点的url
+          xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
+          qryKnowledge = '', //定义一个空的查询知识点的url
+          timu_data = { //题目类型的数据格式公共部分
+            token: config.token,
+            caozuoyuan: userInfo.UID,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju: {
+              timuid: '',
+              tixingid: '',
+              timuleixingid: '1',
+              nanduid: '',
+              timulaiyuanid: '',
+              pingfenfangshiid: '',
+              fuzitileixing: '',
+              futiid: '',
+              chutirenuid: '',
+              tigan:'请输入题干',
+              daan: '',
+              tishi: '',
+              yuejuanbiaozhun: '',
+              timufenxi: '',
+              isfenduanpingfen: '',
+              timuwenjian:[
+                {
+                  wenjianlujing: '',
+                  wenjianleixing: '',
+                  dakaifangshi: ''
+                }
+              ],
+              zhishidian: [],
+              zhuangtai: ''
+            }
+          };
       /**
        * 初始化是DOM元素的隐藏和显示
        */
@@ -174,7 +207,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 展示不同的题型和模板
        */
-       $scope.renderTpl = function(tpl){
+       var renderTpl = function(tpl){
          $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
          $scope.kmTxWrap = false; // 题型和难度DOM元素隐藏
        };
@@ -187,6 +220,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.txTpl = 'views/partials/testList.html';
       };
 
+      /**
+       * 单选题模板加载
+       */
+      var danxuan_data = timu_data;
+      $scope.addDanXuan = function(tpl){
+        renderTpl(tpl);
+        danxuan_data.shuju.tizhishuliang = '';
+        danxuan_data.shuju.tizhineirong = ['请输入选项一','请输入选项二','请输入选项三','请输入选项四'];
+        danxuan_data.shuju.suijipaixu = '';
+        $scope.danXuanData = danxuan_data;
+        console.log(danxuan_data);
+      };
+
+      /**
+       * 单选题添加代码
+       */
+      $scope.submitShiTi = function(){
+        var tiZhiArr = angular.element('.danXuanTiZhi').find('input.tiZhi'),
+            tizhineirong = [];
+        _.each(tiZhiArr, function(tizhi, idx, lst){
+          tizhineirong.push(tizhi.value);
+        });
+
+        console.log(danxuan_data);
+
+        danxuan_data.shuju.tizhineirong = tizhineirong;
+        $http.post(xgtmUrl, danxuan_data).success(function(data){
+          console.log(data);
+          alert('提交成功！');
+        })
+        .error(function(err){
+            alert(err);
+        });
+      };
 
     }]);
 });
