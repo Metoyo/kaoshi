@@ -39,6 +39,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
           qryKnowledge = '', //定义一个空的查询知识点的url
+          selectZsd, //定义一个选中知识点的变量
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
             caozuoyuan: userInfo.UID,
@@ -47,13 +48,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             shuju: {
               TIMU_ID: '',
               TIXING_ID: '',
-              TIMULEIXING_ID: '1',
+              TIMULEIXING_ID: 1,
               NANDU_ID: '',
               TIMULAIYUAN_ID: '',
               PINGFENFANGSHI_ID: '',
               FUZITI_LEIXING: '',
               FUTI_ID: '',
-              TIGAN:'请输入题干',
+              TIGAN:'',
               DAAN: '',
               TISHI: '',
               YUEJUANBIAOZHUN: '',
@@ -63,7 +64,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
               ],
               ZHISHIDIAN: [],
-              ZHUANGTAI: ''
+              ZHUANGTAI: 1
             }
           };
       /**
@@ -186,16 +187,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             this.checked = false;
           }
         });
-        var cbVal = '';
-        var cbArray = $('input[type=checkbox]');
-        var cbl = cbArray.length;
+
+        selectZsd = [];
+        var cbArray = $('input[type=checkbox]'),
+            cbl = cbArray.length;
         for( var i = 0; i < cbl; i++) {
           if(cbArray.eq(i).prop("checked")) {
-            cbVal += cbArray[i].value + ',';
+            selectZsd.push(cbArray[i].value);
           }
         }
-
-        console.log(cbVal);
+        console.log(selectZsd);
 
       };
 
@@ -222,7 +223,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.addDanXuan = function(tpl){
         renderTpl(tpl);
         danxuan_data.shuju.TIZHISHULIANG = '';
-        danxuan_data.shuju.TIZHINEIRONG = ['请输入选项一','请输入选项二','请输入选项三','请输入选项四'];
         danxuan_data.shuju.SUIJIPAIXU = '';
         $scope.danXuanData = danxuan_data;
       };
@@ -239,6 +239,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
+        danxuan_data.shuju.ZHISHIDIAN = [selectZsd];
         $http.post(xgtmUrl, danxuan_data).success(function(data){
           console.log(data);
           alert('提交成功！');
