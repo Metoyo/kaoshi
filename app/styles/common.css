@@ -5113,7 +5113,7 @@ a.add-btn:hover span {
   display: block; }
 .form-body .delete-this-tiem {
   color: #ccc;
-  top: px;
+  top: 10px;
   margin-right: 15px;
   position: absolute; }
 .form-body .delete-select {

@@ -47,10 +47,7 @@
                 <p>欢迎进入大纲页面，请选择左边的大纲！</p>
             </div>
             <form class="form-horizontal dagangInputForm">
-                <div ng-repeat="zsd in knowledge" class="media dagangBox dgLevel_0" data-jdId="{{zsd.JIEDIAN_ID}}"
-                     data-zsdId="{{zsd.ZHISHIDIAN_ID}}" data-jdxh="{{zsd.JIEDIANXUHAO}}"
-                     data-zsdlx="{{zsd.LEIXING}}" data-jdlx="{{zsd.JIEDIANLEIXING}}"
-                     data-zt="{{zsd.ZHUANGTAI}}">
+                <div ng-repeat="zsd in knowledge" class="media dagangBox dgLevel_0">
                     <div class="media-body">
                         <div class="media-heading">
                             <div class="col-md-4">
@@ -63,10 +60,7 @@
                             </div>
                         </div>
                         <!-- 二级 -->
-                        <div ng-repeat="nd2 in zsd.ZIJIEDIAN" class="media dgLevel_1" data-jdId="{{nd2.JIEDIAN_ID}}"
-                             data-zsdId="{{nd2.ZHISHIDIAN_ID}}" data-jdxh="{{nd2.JIEDIANXUHAO}}"
-                             data-zsdlx="{{nd2.LEIXING}}" data-jdlx="{{nd2.JIEDIANLEIXING}}"
-                             data-zt="{{nd2.ZHUANGTAI}}">
+                        <div ng-repeat="nd2 in zsd.ZIJIEDIAN" class="media dgLevel_1">
                             <a class="media-object pull-left"></a>
 
                             <div class="media-body">
@@ -86,10 +80,7 @@
                                 </div>
 
                                 <!-- 三级 -->
-                                <div ng-repeat="nd3 in nd2.ZIJIEDIAN" class="media dgLevel_2"
-                                     data-jdId="{{nd3.JIEDIAN_ID}}" data-zsdId="{{nd3.ZHISHIDIAN_ID}}"
-                                     data-jdxh="{{nd3.JIEDIANXUHAO}}" data-zsdlx="{{nd3.LEIXING}}"
-                                     data-jdlx="{{nd3.JIEDIANLEIXING}}" data-zt="{{nd3.ZHUANGTAI}}">
+                                <div ng-repeat="nd3 in nd2.ZIJIEDIAN" class="media dgLevel_2">
                                     <a class="media-object pull-left"> </a>
 
                                     <div class="media-body">
@@ -111,11 +102,7 @@
                                             </div>
                                         </div>
                                         <!-- 四级 -->
-                                        <div ng-repeat="nd4 in nd3.ZIJIEDIAN" class="media dgLevel_3"
-                                             data-jdId="{{nd4.JIEDIAN_ID}}"
-                                             data-zsdId="{{nd4.ZHISHIDIAN_ID}}" data-jdxh="{{nd4.JIEDIANXUHAO}}"
-                                             data-zsdlx="{{nd4.LEIXING}}" data-jdlx="{{nd4.JIEDIANLEIXING}}"
-                                             data-zt="{{nd4.ZHUANGTAI}}">
+                                        <div ng-repeat="nd4 in nd3.ZIJIEDIAN" class="media dgLevel_3">
                                             <a class="media-object pull-left"> </a>
 
                                             <div class="media-body">

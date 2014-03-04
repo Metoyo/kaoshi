@@ -25,8 +25,8 @@
                     </div>
                     <div class="col-sm-2">
                         <span class="glyphicon glyphicon-minus-sign delete-this-tiem"></span>
-                        <div class="radio">
-                            <input class="" type="radio" name="rightAnswer" ng-model="danXuanData.shuju.daan" value="{{$index}}">
+                        <div class="radio {{'answer' + $index}}" ng-class="" ng-click="chooseDaan($index)">
+                            <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}">
                             <span class="glyphicon glyphicon-ok"></span>
                         </div>
                     </div>

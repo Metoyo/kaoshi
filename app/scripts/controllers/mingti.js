@@ -225,7 +225,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data.shuju.TIZHINEIRONG = ['请输入选项一','请输入选项二','请输入选项三','请输入选项四'];
         danxuan_data.shuju.SUIJIPAIXU = '';
         $scope.danXuanData = danxuan_data;
-        console.log(danxuan_data);
       };
 
       /**
@@ -234,12 +233,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.submitShiTi = function(){
         var tiZhiArr = angular.element('.danXuanTiZhi').find('input.tiZhi'),
             tizhineirong = [];
-        console.log(tiZhiArr.length);
         _.each(tiZhiArr, function(tizhi, idx, lst){
           tizhineirong.push(tizhi.value);
         });
-
-        console.log(danxuan_data);
 
         danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
@@ -251,6 +247,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             alert(err);
         });
       };
+
+      /**
+       * 选择答案的效果的代码
+       */
+      $scope.chooseDaan = function(idx){
+        var tgt = '.answer' + idx,
+            tgtElement = angular.element(tgt);
+        angular.element('div.radio').removeClass('radio-select');
+        tgtElement.addClass('radio-select');
+        tgtElement.find("input[name='rightAnswer']").attr('checked',true);
+        danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
+      };
+
 
     }]);
 });
