@@ -45,30 +45,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jigouid: jigouid,
             lingyuid: lingyuid,
             shuju: {
-              timuid: '',
-              tixingid: '',
-              timuleixingid: '1',
-              nanduid: '',
-              timulaiyuanid: '',
-              pingfenfangshiid: '',
-              fuzitileixing: '',
-              futiid: '',
-              chutirenuid: '',
-              tigan:'请输入题干',
-              daan: '',
-              tishi: '',
-              yuejuanbiaozhun: '',
-              timufenxi: '',
-              isfenduanpingfen: '',
-              timuwenjian:[
-                {
-                  wenjianlujing: '',
-                  wenjianleixing: '',
-                  dakaifangshi: ''
-                }
+              TIMU_ID: '',
+              TIXING_ID: '',
+              TIMULEIXING_ID: '1',
+              NANDU_ID: '',
+              TIMULAIYUAN_ID: '',
+              PINGFENFANGSHI_ID: '',
+              FUZITI_LEIXING: '',
+              FUTI_ID: '',
+              TIGAN:'请输入题干',
+              DAAN: '',
+              TISHI: '',
+              YUEJUANBIAOZHUN: '',
+              TIMUFENXI: '',
+              ISFENDUANPINGFEN: '',
+              TIMUWENJIAN:[
+
               ],
-              zhishidian: [],
-              zhuangtai: ''
+              ZHISHIDIAN: [],
+              ZHUANGTAI: ''
             }
           };
       /**
@@ -77,7 +72,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
       $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
-
+      $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
 
       /**
        * 获得大纲数据
@@ -171,7 +167,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
         gitThisBtn.toggleClass('unfoldBtn');
         getTargetChild.toggle();//实现子元素的显示和隐藏
-
       };
 
       /**
@@ -226,9 +221,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       var danxuan_data = timu_data;
       $scope.addDanXuan = function(tpl){
         renderTpl(tpl);
-        danxuan_data.shuju.tizhishuliang = '';
-        danxuan_data.shuju.tizhineirong = ['请输入选项一','请输入选项二','请输入选项三','请输入选项四'];
-        danxuan_data.shuju.suijipaixu = '';
+        danxuan_data.shuju.TIZHISHULIANG = '';
+        danxuan_data.shuju.TIZHINEIRONG = ['请输入选项一','请输入选项二','请输入选项三','请输入选项四'];
+        danxuan_data.shuju.SUIJIPAIXU = '';
         $scope.danXuanData = danxuan_data;
         console.log(danxuan_data);
       };
@@ -239,13 +234,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.submitShiTi = function(){
         var tiZhiArr = angular.element('.danXuanTiZhi').find('input.tiZhi'),
             tizhineirong = [];
+        console.log(tiZhiArr.length);
         _.each(tiZhiArr, function(tizhi, idx, lst){
           tizhineirong.push(tizhi.value);
         });
 
         console.log(danxuan_data);
 
-        danxuan_data.shuju.tizhineirong = tizhineirong;
+        danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
+        danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
         $http.post(xgtmUrl, danxuan_data).success(function(data){
           console.log(data);
           alert('提交成功！');
