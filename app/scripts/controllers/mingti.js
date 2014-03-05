@@ -20,7 +20,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
           token = config.token,
-          caozuoyuan = userInfo.UID,//等到用户的UID
+          caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = userInfo.LINGYU[0].LINGYU_ID,
           chaxunzilingyu = true,
@@ -39,6 +39,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
           qryKnowledge = '', //定义一个空的查询知识点的url
+
+          qrytimuliebiao = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
+
           selectZsd, //定义一个选中知识点的变量
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -198,8 +202,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             selectZsd.push(cbArray[i].value);
           }
         }
-        console.log(selectZsd);
-
+        if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
+          console.log(selectZsd);
+        }
       };
 
       /**
@@ -209,6 +214,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
          $scope.kmTxWrap = false; // 题型和难度DOM元素隐藏
        };
+
+      /**
+       * 查询试题的函数
+       */
+      var qryTestFun = function(){
+
+      };
 
       /**
        * 点击添加题型的取消按钮后<div class="kmTxWrap">显示

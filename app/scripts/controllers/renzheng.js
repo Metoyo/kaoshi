@@ -17,6 +17,7 @@ define([
             },
             loginPostParams,
             session = {};
+        $rootScope.session = session;
         $rootScope.pageName = "认证";//页面名称
         //$scope.cssPath = "renzheng";//调用dagang.css
         $rootScope.styles = [
@@ -53,32 +54,32 @@ define([
                */
               $http.get(yhxxxxApiUrl).success(function(data){
                 session.userInfo = data;
+
+                /**
+                 * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
+                 */
+                $http.get(permissionApiUrl).success(function(permissions) {
+                  var find_QUANXIAN_ID_4;
+
+                  find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
+                    return permission.QUANXIAN_ID == 4;
+                  });
+
+                  if(find_QUANXIAN_ID_4) {
+                    urlRedirect.goTo(currentPath, profileUrl);
+                  }
+                  else {
+                    urlRedirect.goTo(currentPath, '/dagang');
+                  }
+                });
+
               }).error(function(err){
                 alert(err);
               });
 
-              $rootScope.session = session;
-
-              /**
-               * 查询用胡权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
-               */
-              $http.get(permissionApiUrl).success(function(permissions) {
-                var find_QUANXIAN_ID_4;
-
-                find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
-                  return permission.QUANXIAN_ID == 4;
-                });
-
-                if(find_QUANXIAN_ID_4) {
-                  urlRedirect.goTo(currentPath, profileUrl);
-                } else {
-                  urlRedirect.goTo(currentPath, '/dagang');
-                }
-
-              });
             }).error(function(err){
                 console.log(err);
-              });
+            });
           }
         };
 
