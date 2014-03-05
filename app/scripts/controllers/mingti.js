@@ -66,7 +66,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHISHIDIAN: [],
               ZHUANGTAI: 1
             }
-          };
+          },
+      loopArr = [0,1,2,3]; //用于题支循环的数组
       /**
        * 初始化是DOM元素的隐藏和显示
        */
@@ -75,6 +76,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
       $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
+
 
       /**
        * 获得大纲数据
@@ -222,6 +224,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       var danxuan_data = timu_data;
       $scope.addDanXuan = function(tpl){
         renderTpl(tpl);
+        $scope.loopArr = loopArr;
         danxuan_data.shuju.TIZHISHULIANG = '';
         danxuan_data.shuju.SUIJIPAIXU = '';
         $scope.danXuanData = danxuan_data;
@@ -239,7 +242,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
-        danxuan_data.shuju.ZHISHIDIAN = [selectZsd];
+        danxuan_data.shuju.ZHISHIDIAN = selectZsd;
         $http.post(xgtmUrl, danxuan_data).success(function(data){
           console.log(data);
           alert('提交成功！');
@@ -261,6 +264,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
       };
 
+      /**
+       * 点击添加按钮添加一项题支
+       */
+      $scope.addOneItem = function(){
+        loopArr.push(loopArr.length + 1);
+      };
+
+      /**
+       * 点击删除按钮删除一项题支
+       */
+      $scope.deleteOneItem = function(){
+        loopArr.pop();
+      };
 
     }]);
 });
