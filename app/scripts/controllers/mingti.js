@@ -39,11 +39,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
           qryKnowledge = '', //定义一个空的查询知识点的url
-
-          qrytimuliebiao = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          timuleixing_id = '', //用于根据题目类型查询题目的字符串
+          nandu_id = '', //用于根据难度查询题目的字符串
+          zhishidian_id = '', //用于根据知识点查询题目的字符串
+          qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-
-          selectZsd, //定义一个选中知识点的变量
+          selectZsd, //定义一个选中知识点的变量（数组）
+          //selectZstStr, //定义一个选中知识点的变量（字符串）
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
             caozuoyuan: userInfo.UID,
@@ -195,6 +197,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
 
         selectZsd = [];
+        zhishidian_id = ' ';
         var cbArray = $('input[type=checkbox]'),
             cbl = cbArray.length;
         for( var i = 0; i < cbl; i++) {
@@ -202,8 +205,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             selectZsd.push(cbArray[i].value);
           }
         }
+        zhishidian_id = selectZsd.join(',');
         if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
-          console.log(selectZsd);
+          qryTestFun();
         }
       };
 
@@ -219,7 +223,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 查询试题的函数
        */
       var qryTestFun = function(){
-
+        var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
+          '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
+        $http.get(qrytimuliebiao).success(function(data){
+          $scope.testListId = data;
+        })
+        .error(function(err){
+          console.log(err);
+        });
       };
 
       /**
