@@ -5263,3 +5263,6 @@ a.add-btn:hover span {
 .content {
   padding-left: 220px;
   background-color: #fff; }
+
+.active {
+  color: #f60; }

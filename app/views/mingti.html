@@ -95,35 +95,46 @@
             <div class="kmTxBox">
                 <div class="kmtxNdTitle pull-left">
                     <span class="pull-left">题型</span>
-                    <a href="javascript:void(0)" class="pull-left text-center">全部题型</a>
                 </div>
-                <ul class="list-inline kmTxNdList pull-left">
-                    <li ng-repeat="kmtx in kmtxList">
-                        <a href="javascript:void(0)">{{ kmtx.TIXINGMINGCHENG }}</a>
+                <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
+                    <li class="tiXingId_all">
+                        <span class="hidden"></span>
+                        <a href="javascript:void(0)" ng-click="getTiXingId('all')">全部题型</a>
+                    </li>
+                    <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
+                        <span class="hidden">{{ kmtx.TIXING_ID }}</span>
+                        <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
                    </li>
                 </ul>
             </div>
             <div class="nanduBox">
                 <div class="kmtxNdTitle pull-left">
                     <span class="pull-left">难度</span>
-                    <a href="javascript:void(0)" class="pull-left text-center">全部难度</a>
-
                 </div>
-                <ul class="list-inline kmTxNdList pull-left">
-                    <li>
-                        <a href="javascript:void(0)">简单</a>
+                <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
+                    <li class="nanDuId_all">
+                        <span class="hidden"></span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId('all')">全部难度</a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)">一般</a>
+                    <li class="nanDuId_1">
+                        <span class="hidden">1</span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId(1)">简单</a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)">普通</a>
+                    <li class="nanDuId_2">
+                        <span class="hidden">2</span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId(2)">一般</a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)">困难</a>
+                    <li class="nanDuId_3">
+                        <span class="hidden">3</span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId(3)">普通</a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0)">较难</a>
+                    <li class="nanDuId_4">
+                        <span class="hidden">4</span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId(4)">困难</a>
+                    </li>
+                    <li class="nanDuId_5">
+                        <span class="hidden">5</span>
+                        <a href="javascript:void(0)" ng-click="getNanDuId(5)">较难</a>
                     </li>
                 </ul>
             </div>

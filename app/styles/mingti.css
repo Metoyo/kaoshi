@@ -80,6 +80,22 @@
       .mingtiWrapper .kmTxBox .kmTxNdList li a, .mingtiWrapper .nanduBox .kmTxNdList li a {
         padding: 0 15px;
         color: #444; }
+      .mingtiWrapper .kmTxBox .kmTxNdList .tiXingId_all,
+      .mingtiWrapper .kmTxBox .kmTxNdList .nanDuId_all, .mingtiWrapper .nanduBox .kmTxNdList .tiXingId_all,
+      .mingtiWrapper .nanduBox .kmTxNdList .nanDuId_all {
+        width: 100px;
+        height: 40px;
+        background-color: #e0e0e0;
+        color: #222222;
+        text-align: center;
+        padding-right: 0; }
+        .mingtiWrapper .kmTxBox .kmTxNdList .tiXingId_all a,
+        .mingtiWrapper .kmTxBox .kmTxNdList .nanDuId_all a, .mingtiWrapper .nanduBox .kmTxNdList .tiXingId_all a,
+        .mingtiWrapper .nanduBox .kmTxNdList .nanDuId_all a {
+          font-size: 16px;
+          font-weight: bold; }
+      .mingtiWrapper .kmTxBox .kmTxNdList li.active a, .mingtiWrapper .nanduBox .kmTxNdList li.active a {
+        color: #f60; }
   .mingtiWrapper .pointTree .checkbox {
     margin-bottom: 2px;
     margin-top: 2px; }

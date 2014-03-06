@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             lingyuid: lingyuid,
             shuju: {
               TIMU_ID: '',
-              TIXING_ID: '',
+              TIXING_ID: 1,
               TIMULEIXING_ID: 1,
               NANDU_ID: '',
               TIMULAIYUAN_ID: '',
@@ -74,6 +74,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           },
       loopArr = [0,1,2,3]; //用于题支循环的数组
+
+      var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
+        '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
       /**
        * 初始化是DOM元素的隐藏和显示
        */
@@ -212,12 +215,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 获得题型查询条件
+       */
+      $scope.getTiXingId = function(idx){
+        var tx_id = ".tiXingId_" + idx;
+        timuleixing_id = ' ';
+        angular.element('.getTiXingIdList li').removeClass('active');
+        angular.element(tx_id).addClass('active');
+        timuleixing_id = angular.element(tx_id).find('span').text();
+        qryTestFun();
+      };
+
+      /**
+       * 获得难度查询条件
+       */
+      $scope.getNanDuId = function(idx){
+        var tx_id = ".nanDuId_" + idx;
+        nandu_id = ' ';
+        angular.element('.getNanDuIdList li').removeClass('active');
+        angular.element(tx_id).addClass('active');
+        nandu_id = angular.element(tx_id).find('span').text();
+        qryTestFun();
+      };
+
+      /**
        * 展示不同的题型和模板
        */
-       var renderTpl = function(tpl){
-         $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
-         $scope.kmTxWrap = false; // 题型和难度DOM元素隐藏
-       };
+      var renderTpl = function(tpl){
+        $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
+        $scope.kmTxWrap = false; // 题型和难度DOM元素隐藏
+      };
 
       /**
        * 查询试题的函数
@@ -237,7 +264,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
        */
       $scope.cancelAddPattern = function(){
-        $scope.kmTxWrap = true; // 题型和难度DOM元素显示
+        $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
+        $scope.patternListToggle = false; // 明天题型列表隐藏
         $scope.txTpl = 'views/partials/testList.html';
       };
 
@@ -300,6 +328,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.deleteOneItem = function(){
         loopArr.pop();
       };
+
 
     }]);
 });

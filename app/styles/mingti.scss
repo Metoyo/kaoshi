@@ -94,6 +94,24 @@
           color: #444;
         }
       }
+      .tiXingId_all,
+      .nanDuId_all{
+        width: 100px;
+        height: 40px;
+        background-color: #e0e0e0;
+        color: #222222;
+        text-align: center;
+        padding-right: 0;
+        a{
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+      li.active{
+        a{
+          color: #f60;
+        }
+      }
     }
   }
   .pointTree {
