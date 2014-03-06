@@ -13,6 +13,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       ];
       $rootScope.dashboard_shown = true;
 
+      $scope.navClick = function(className){
+        console.log(className);
+        angular.element('.nav-list li').removeClass('active');
+        angular.element(className).addClass('active');
+      };
+
       /**
        * 声明变量
        */

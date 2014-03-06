@@ -6,19 +6,21 @@ define([
     'services/urlredirect',
     'controllers/main',
     'controllers/renzheng',
+    'controllers/nav',
     'controllers/mingti',
     'controllers/dagang',
     'controllers/user',
     'controllers/logout',
     'controllers/register',
     'config'
-   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, MingtiCtrl,
+   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl,
                 DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
 'kaoshiApp.controllers.MingtiCtrl',
 'kaoshiApp.controllers.DagangCtrl',
+'kaoshiApp.controllers.NavCtrl',
 'kaoshiApp.controllers.RenzhengCtrl',
 'kaoshiApp.controllers.UserCtrl',
 'kaoshiApp.services.Urlredirect',

@@ -3,6 +3,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
     .controller('DagangCtrl', function ($rootScope, $scope, $http) {
+
+      $scope.navClick = function(className){
+        angular.element('.nav-list li').removeClass('active');
+        angular.element(className).addClass('active');
+
+      };
       //声明变量
       var userInfo = $rootScope.session.userInfo,
           info = $rootScope.session.info,
