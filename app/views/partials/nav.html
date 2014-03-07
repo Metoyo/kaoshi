@@ -1,11 +1,11 @@
-<div class="container">
+<div class="container" ng-controller="NavCtrl">
     <div class="userInfo">
         <a href="#">
             {{session.info.YONGHUMING}}
         </a>
         <a href="/logout">退出</a>
     </div>
-    <ul class="list-group nav-list" ng-controller="NavCtrl">
+    <ul class="list-group nav-list">
         <li class="list-group-item" ng-class="navClass('mingti')">
             <a href="/mingti" class="dropdownToggle droTogMt">
                 <span class="nav-icon"></span> <span class="nav-name">命题</span>
@@ -38,6 +38,6 @@
         </li>
     </ul>
     <div class="dsfoldBox">
-        <a href="javascript:void(0)" class="dsfoldBtn"> </a>
+        <a href="javascript:void(0)" class="dsfoldBtn" ng-click="dsfoldBtn()"> </a>
     </div>
 </div>

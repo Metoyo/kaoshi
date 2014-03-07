@@ -1,3 +1,33 @@
 <div class="row">
-    <p ng-repeat="tlId in testListId">{{tlId.TIMU_ID}}</p>
+    <h2 class="total-test"> 共<strong>{{testListId.length}}</strong>题 </h2>
+    <ul class="list-unstyled testList">
+        <li ng-repeat="tm in timudetails">
+            <!--<h3 class="item-title">2013年初中毕业升学考试（天津卷）数学（带解析）</h3>-->
+            <div class="item-sub-title pull-left">
+                <p class="use-times">
+                    <span>44人</span>使用过
+                </p>
+                <p class="knowledge-point">
+                    知识点：<span ng-repeat="zsd in tm.ZHISHIDIAN">{{zsd.ZHISHIDIANMINGCHENG}}</span>
+                </p>
+                <p class="level-num">
+                    难易度：<span class="pull-right level-star-{{tm.NANDU_ID}}"></span>
+                </p>
+                <p>
+                    更新日期：2013-09-28
+                </p>
+                <button type="button" class="btn btn-success add-to-paper">加入试卷</button>
+            </div>
+            <div class="item-cont">
+                <h3 class="item-tigan">
+                    【题干】{{ tm.TIGAN.tiGan }}
+                </h3>
+                <div class="item-tizhi-wrap">
+                    <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong">
+                        {{letterArr[$index]}}.{{tz}}
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
 </div>

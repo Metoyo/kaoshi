@@ -13,12 +13,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       ];
       $rootScope.dashboard_shown = true;
 
-      $scope.navClick = function(className){
-        console.log(className);
-        angular.element('.nav-list li').removeClass('active');
-        angular.element(className).addClass('active');
-      };
-
       /**
        * 声明变量
        */
@@ -48,9 +42,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           timuleixing_id = '', //用于根据题目类型查询题目的字符串
           nandu_id = '', //用于根据难度查询题目的字符串
           zhishidian_id = '', //用于根据知识点查询题目的字符串
+
           qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-          selectZsd, //定义一个选中知识点的变量（数组）
+
+          qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
+
+          selectZsd, //定义一个选中知识点的变量（数组
           //selectZstStr, //定义一个选中知识点的变量（字符串）
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -81,8 +80,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           },
       loopArr = [0,1,2,3]; //用于题支循环的数组
 
-      var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
-        '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
       /**
        * 初始化是DOM元素的隐藏和显示
        */
@@ -91,7 +88,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
       $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
-
 
       /**
        * 获得大纲数据
@@ -257,14 +253,29 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       var qryTestFun = function(){
         var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
-          '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
+            '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id, //查询题目列表的url
+            tiMuIdArr = [],
+            timu_id = '',
+            qrytimuxiangqing;
         $http.get(qrytimuliebiao).success(function(data){
           $scope.testListId = data;
+          _.each(data, function(tm, idx, lst){
+            tiMuIdArr.push(tm.TIMU_ID);
+          });
+          timu_id = tiMuIdArr.slice(0,2).toString();
+          qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
+          $http.get(qrytimuxiangqing).success(function(data){
+            $scope.timudetails = data;
+          }).error(function(err){
+              console.log(err);
+          });
+
         })
         .error(function(err){
           console.log(err);
         });
       };
+      qryTestFun();
 
       /**
        * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
