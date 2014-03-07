@@ -4,9 +4,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http',
       function ($rootScope, $scope, $http) {
-        /**
-         * 操作title
-         */
+      /**
+       * 操作title
+       */
       $rootScope.pageName = "命题"; //page title
       $rootScope.styles = [
         'styles/mingti.css'
@@ -78,7 +78,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHUANGTAI: 1
             }
           },
-      loopArr = [0,1,2,3]; //用于题支循环的数组
+          loopArr = [0,1,2,3]; //用于题支循环的数组
 
       /**
        * 初始化是DOM元素的隐藏和显示
