@@ -346,6 +346,53 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         loopArr.pop();
       };
 
+      /**
+       * subDashboard宽度可拖拽
+       */
+      var resize = function(el){
+        //初始化参数
+        var els = document.getElementById('subDashboard').style,
+            x = 0; //鼠标的 X 和 Y 轴坐标
+
+        $(el).mousedown(function(e) {
+          //按下元素后，计算当前鼠标与对象计算后的坐标
+          x = e.clientX - el.offsetWidth - $(".subDashboard").width();
+          //在支持 setCapture 做些东东
+          el.setCapture ? (
+            //捕捉焦点
+            el.setCapture(),
+              //设置事件
+              el.onmousemove = function(ev) {
+                mouseMove(ev || event);
+              }, el.onmouseup = mouseUp
+            ) : (
+            //绑定事件
+            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+            );
+          //防止默认事件发生
+          e.preventDefault();
+        });
+        //移动事件
+        function mouseMove(e) {
+          els.width = e.clientX - x + 'px';
+          $('.content').css('padding-left',els.width);
+        }
+        //停止事件
+        function mouseUp() {
+          //在支持 releaseCapture 做些东东
+          el.releaseCapture ? (
+            //释放焦点
+            el.releaseCapture(),
+              //移除事件
+              el.onmousemove = el.onmouseup = null
+            ) : (
+            //卸载事件
+            $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
+            );
+        }
+      };
+      resize(document.getElementById('dragBtn'));//初始化拖拽
+
 
     }]);
 });

@@ -5127,7 +5127,9 @@ a.add-btn:hover span {
 .logo {
   margin-top: 5px;
   margin-bottom: 15px;
-  padding: 0; }
+  padding: 0;
+  text-align: center;
+  width: 100%; }
   .logo img {
     height: 32px;
     width: 200px; }
