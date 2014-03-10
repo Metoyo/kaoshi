@@ -339,3 +339,12 @@ a.add-btn:hover span {
 .active{
   color: #f60;
 }
+.registerBox{
+  .help-block {
+    margin-top: 0;
+    color: red;
+    position: absolute;
+    top: 0;
+    left: 60px;
+  }
+}

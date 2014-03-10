@@ -4,6 +4,7 @@ define([
     'underscore',
     'angular',
     'services/urlredirect',
+    'directives/passwordverify',
     'controllers/main',
     'controllers/renzheng',
     'controllers/nav',
@@ -13,7 +14,7 @@ define([
     'controllers/logout',
     'controllers/register',
     'config'
-   ], function ($, _, angular, UrlredirectService, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl,
+   ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl,
                 DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, config) {
   'use strict';
 
@@ -26,6 +27,7 @@ define([
 'kaoshiApp.services.Urlredirect',
 'kaoshiApp.controllers.LogoutCtrl',
 'kaoshiApp.controllers.RegisterCtrl',
+'kaoshiApp.directives.Passwordverify',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

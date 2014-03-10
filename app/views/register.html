@@ -2,7 +2,8 @@
     <h4 class="logo text-center"><img src="/images/renzheng/icon/logo.png" alt="太安厅"></h4>
     <div class="col-md-10 col-md-offset-1 infoBox">
         <!-- FORM -->
-        <form name="userForm" ng-submit="submitForm()" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+        <form name="userForm" ng-submit="submitForm()" novalidate>
+            <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
             <ul class="list-unstyled list-inline nav-tabs">
                 <li class="active">
                     个人信息
@@ -19,34 +20,37 @@
                     <!-- 用户名 -->
                     <div class="form-group col-md-6">
                         <label>用户名</label>
-                        <input type="text" name="yonghuming" placeholder="用户名" tabindex="0" class="form-control"
+                        <input type="text" name="yonghuming" placeholder="用户名" tabindex="0" class="form-control" ng-pattern="userNameRegexp"
                                ng-minlength=4 ng-maxlength=30 ng-model="personalInfo.yonghuming" required />
-                        <!--p ng-show="userForm.yonghuming.$invalid && !userForm.yonghuming.$pristine" class="help-block">用户名不能为空！</p-->
-                        <p ng-show="userForm.yonghuming.$error.minlength" class="help-block">用户名太短了！</p>
-                        <p ng-show="userForm.yonghuming.$error.maxlength" class="help-block">用户名太长了!</p>
+                        <p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>
+                        <p ng-show="userForm.yonghuming.$error.pattern" class="help-block">用户名格式不正确！</p>
                     </div>
 
                     <!-- 密码 -->
                     <div class="form-group col-md-6">
                         <label>密码</label>
-                        <input type="password" name="mima" placeholder="密码" tabindex="1" class="form-control regPassword" ng-minlength=6 ng-maxlength=20 ng-model="personalInfo.mima" required />
-                        <!--p ng-show="userForm.mima.$invalid && !userForm.mima.$pristine" class="help-block">密码不能为空！</p-->
-                        <p ng-show="userForm.mima.$error.minlength" class="help-block">密码太短了！</p>
-                        <p ng-show="userForm.mima.$error.maxlength" class="help-block">密码太长了!</p>
+                        <input type="password" name="mima" placeholder="密码" tabindex="1" class="form-control regPassword"
+                               ng-minlength=6 ng-maxlength=20 ng-model="personalInfo.mima" ng-pattern="passwordRegexp" required />
+                        <p ng-show="userForm.mima.$error.required" class="help-block">密码不能为空！</p>
+                        <p ng-show="userForm.mima.$error.pattern" class="help-block">密码格式不正确！</p>
                     </div>
 
                     <!-- 邮箱 -->
                     <div class="form-group col-md-6">
                         <label>邮箱</label>
-                        <input type="email" name="youxiang" placeholder="邮箱" tabindex="3" class="form-control" ng-model="personalInfo.youxiang" />
-                        <p ng-show="userForm.youxiang.$invalid && !userForm.youxiang.$pristine" class="help-block">请输入有效的邮箱地址！</p>
+                        <input type="email" name="youxiang" placeholder="邮箱" tabindex="3" class="form-control"
+                               ng-model="personalInfo.youxiang" ng-pattern="emailRegexp" required/>
+                        <p ng-show="userForm.youxiang.$error.required" class="help-block">邮箱不能为空！</p>
+                        <p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
                     </div>
 
                     <!-- 确认密码 -->
                     <div class="form-group col-md-6">
                         <label>确认密码</label>
-                        <input type="password" name="confirmPassword" ng-model="personalInfo.confirmPassword" password-match="mima" required placeholder="确认密码" tabindex="2" class="form-control" />
-                        <span class="help-block" ng-show="userForm.confirmPassword.$unique">确认密码和密码不匹配！</span>
+                        <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify" data-password-verify="personalInfo.mima"
+                               required placeholder="确认密码" tabindex="2" class="form-control" />
+                        <!--<p class="help-block" ng-show="userForm.confirmPassword.$error.required">确认密码不能为空！</p>-->
+                        <p class="help-block" ng-show="userForm.confirmPassword.$error.passwordVerify">确认密码和密码不匹配！</p>
                     </div>
 
                     <!-- 真实姓名 -->
@@ -54,6 +58,7 @@
                         <label>真实姓名</label>
                         <input type="text" name="xingming" placeholder="真实姓名" tabindex="4" class="form-control"
                                ng-minlength=2 ng-maxlength=30 ng-model="personalInfo.xingming" required />
+                        <p class="help-block" ng-show="userForm.xingming.$error.required">真实姓名不能为空！</p>
                         <p ng-show="userForm.xingming.$error.minlength" class="help-block">真实姓名太短了！</p>
                         <p ng-show="userForm.xingming.$error.maxlength" class="help-block">真实姓名太长了!</p>
                     </div>
@@ -68,7 +73,7 @@
 
                     <div class="form-group col-md-12 pull-left text-right">
                         <button type="button" ng-click="validatePersonalInfo()"
-                                ng-disabled="userForm.yonghuming.$invalid && userForm.mima.$invalid && userForm.youxiang.$invalid && userForm.confirmPassword.$invalid && userForm.xingming.$invalid && userForm.shouji.$invalid"
+                                ng-disabled="userForm.yonghuming.$invalid && userForm.mima.$invalid"
                                 class="btn btn-success nextBtn">
                             下一步<span></span>
                         </button>

@@ -3,8 +3,9 @@ define([
   'underscore',
   'angular',
   'config',
-  'services/urlredirect'
-], function ($, _, angular, config, UrlredirectService) {
+  'services/urlredirect',
+  'directives/passwordverify'
+], function ($, _, angular, config, UrlredirectService, passwordVerify) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
@@ -16,11 +17,14 @@ define([
            jiGou_LeiBieUrl = config.apiurl_rz + 'jiGou?token=' + config.token + '&leibieid='; //jueSe 查询科目权限的数据的api
 
         $rootScope.pageName = "新用户注册";//页面名称
-        //$scope.cssPath = "renzheng";//调用dagang.css
         $rootScope.styles = [
           'styles/renzheng.css'
         ];
         $rootScope.dashboard_shown = false;
+        $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
+        $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
+        $scope.userNameRegexp = /^.{4,30}$/;//用户名的正则表达式
+        $scope.passwordRegexp = /^.{6,20}$/;//密码的正则表达式
 
         $scope.jigoulb_list = [];
         $scope.lingyu_list = [];
@@ -36,10 +40,15 @@ define([
         $scope.personalInfo = {
           yonghuming: '',
           mima: '',
-          confirmPassword: '',
           youxiang: '',
           xingming: '',
           shouji: ''
+        };
+
+        $scope.validatePersonalInfo = function(){
+          $('.tab-pane').removeClass('active');
+          $('.tab-pane').eq(1).addClass('active');
+          console.log($scope.personalInfo);
         };
 
         $scope.selectJiGou = function(jgLeiBieId) {
