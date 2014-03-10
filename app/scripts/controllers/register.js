@@ -48,7 +48,6 @@ define([
         $scope.validatePersonalInfo = function(){
           $('.tab-pane').removeClass('active');
           $('.tab-pane').eq(1).addClass('active');
-          console.log($scope.personalInfo);
         };
 
         $scope.selectJiGou = function(jgLeiBieId) {
