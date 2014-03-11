@@ -58,8 +58,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             lingyuid: lingyuid,
             shuju: {
               TIMU_ID: '',
-              TIXING_ID: 1,
-              TIMULEIXING_ID: 1,
+              TIXING_ID: '',
+              TIMULEIXING_ID: '',
               NANDU_ID: '',
               TIMULAIYUAN_ID: '',
               PINGFENFANGSHI_ID: '',
@@ -193,7 +193,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
         gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
 
-        getTarChbxChild.find('input[type=checkbox]').each(function() {
+        getTarChbxChild.find('input[name=point]').each(function() {
           if(gitThisChbx.prop("checked")) {
             this.checked = true;
           } else {
@@ -202,8 +202,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
 
         selectZsd = [];
-        zhishidian_id = ' ';
-        var cbArray = $('input[type=checkbox]'),
+        var cbArray = $('input[name=point]'),
             cbl = cbArray.length;
         for( var i = 0; i < cbl; i++) {
           if(cbArray.eq(i).prop("checked")) {
@@ -214,6 +213,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
           qryTestFun();
         }
+        console.log(selectZsd);
       };
 
       /**
@@ -292,17 +292,39 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       var danxuan_data = timu_data;
       $scope.addDanXuan = function(tpl){
         renderTpl(tpl);
+        $('.patternList li').removeClass('active');
+        $('li.danxuan').addClass('active');
         $scope.loopArr = loopArr;
+        danxuan_data.shuju.TIXING_ID = 1;
+        danxuan_data.shuju.TIMULEIXING_ID = 1;
         danxuan_data.shuju.TIZHISHULIANG = '';
         danxuan_data.shuju.SUIJIPAIXU = '';
         $scope.danXuanData = danxuan_data;
       };
 
       /**
+       * 多选题模板加载
+       */
+      var duoxuan_data = timu_data;
+      $scope.addDuoXuan = function(tpl){
+        renderTpl(tpl);
+        $scope.loopArr = loopArr;
+        $('.patternList li').removeClass('active');
+        $('li.duoxuan').addClass('active');
+        duoxuan_data.shuju.TIXING_ID = 2;
+        duoxuan_data.shuju.TIMULEIXING_ID = 2;
+        duoxuan_data.shuju.TIZHISHULIANG = '';
+        duoxuan_data.shuju.SUIJIPAIXU = '';
+        duoxuan_data.shuju.ZUISHAOXUANZE = '';
+        duoxuan_data.shuju.ZUIDUOXUANZE = '';
+        $scope.duoXuanData = duoxuan_data;
+      };
+
+      /**
        * 单选题添加代码
        */
       $scope.submitShiTi = function(){
-        var tiZhiArr = angular.element('.danXuanTiZhi').find('input.tiZhi'),
+        var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
             tizhineirong = [];
         _.each(tiZhiArr, function(tizhi, idx, lst){
           tizhineirong.push(tizhi.value);
@@ -313,7 +335,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data.shuju.ZHISHIDIAN = selectZsd;
         $http.post(xgtmUrl, danxuan_data).success(function(data){
           console.log(data);
-          alert('提交成功！');
+          if(data.result){
+            alert('提交成功！');
+          }
         })
         .error(function(err){
             alert(err);
@@ -321,15 +345,64 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 选择答案的效果的代码
+       * 多选题添加代码
        */
-      $scope.chooseDaan = function(idx){
+      $scope.submitDuoxuanShiTi = function(){
+        var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
+          tizhineirong = [];
+        _.each(tiZhiArr, function(tizhi, idx, lst){
+          tizhineirong.push(tizhi.value);
+        });
+
+        duoxuan_data.shuju.TIZHINEIRONG = tizhineirong;
+        duoxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
+        duoxuan_data.shuju.ZHISHIDIAN = selectZsd;
+        console.log(duoxuan_data);
+        $http.post(xgtmUrl, duoxuan_data).success(function(data){
+          console.log(data);
+          if(data.result){
+            alert('提交成功！');
+          }
+        })
+          .error(function(err){
+            alert(err);
+          });
+      };
+
+      /**
+       * 单选题选择答案的效果的代码
+       */
+      $scope.chooseDanxuanDaan = function(idx){
         var tgt = '.answer' + idx,
             tgtElement = angular.element(tgt);
         angular.element('div.radio').removeClass('radio-select');
         tgtElement.addClass('radio-select');
         tgtElement.find("input[name='rightAnswer']").attr('checked',true);
         danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
+      };
+
+      /**
+       * 多选题选择答案的效果的代码
+       */
+      $scope.chooseDuoxuanDaan = function(idx){
+        var rightAnswerStr = [],
+            tgtElement = $('div.radio').eq(idx);
+
+        //angular.element('div.radio').removeClass('radio-select');
+        //tgtElement.addClass('radio-select');
+        //tgtElement.find("input[name='rightAnswer']").attr('checked',true);
+        tgtElement.toggleClass('radio-select');
+        if(tgtElement.find('input[name=rightAnswer]').prop('checked')){
+          tgtElement.find('input[name=rightAnswer]').prop('checked',false);
+        }
+        else{
+          tgtElement.find('input[name=rightAnswer]').prop('checked',true);
+        }
+        _.each($('input[name=rightAnswer]:checked'), function(rasw, idx, lst){
+          rightAnswerStr.push(rasw.value);
+        });
+        duoxuan_data.shuju.DAAN = rightAnswerStr.toString();
+        console.log(duoxuan_data.shuju.DAAN);
       };
 
       /**
@@ -406,7 +479,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
       };
       resize(document.getElementById('dragBtn'));//初始化拖拽
-
 
     }]);
 });

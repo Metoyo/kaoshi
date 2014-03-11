@@ -178,6 +178,11 @@
       padding-top: 10px;
       padding: 10px 30px 0 10px;
       text-align: right;
+      .active{
+        a{
+          color: #f60;
+        }
+      }
     }
   }
   /*sub dashboard styles end*/
