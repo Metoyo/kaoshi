@@ -357,6 +357,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $(el).mousedown(function(e) {
           //按下元素后，计算当前鼠标与对象计算后的坐标
           x = e.clientX - el.offsetWidth - $(".subDashboard").width();
+
           //在支持 setCapture 做些东东
           el.setCapture ? (
             //捕捉焦点
@@ -374,8 +375,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         //移动事件
         function mouseMove(e) {
-          els.width = e.clientX - x + 'px';
-          $('.content').css('padding-left',els.width);
+          var subDbWidth = $(".subDashboard").width();
+          if(subDbWidth < 220){
+            els.width = '221px';
+            $('.content').css('padding-left',els.width);
+            $(document).unbind("mousemove", mouseMove);
+          }
+          if(subDbWidth >= 220 && subDbWidth <= 400){
+            els.width = e.clientX - x + 'px';
+            $('.content').css('padding-left',els.width);
+          }
+          if(subDbWidth > 400){
+            els.width = '399px';
+            $('.content').css('padding-left',els.width);
+            $(document).unbind("mousemove", mouseMove);
+          }
         }
         //停止事件
         function mouseUp() {
