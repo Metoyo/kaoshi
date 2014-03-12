@@ -28,9 +28,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
           caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
+
         qryKnowledge = '', //定义一个空的查询知识点的url
         selectZsd,//定义一个选中知识点的变量（数组)
-        zhishidian_id = ''; //用于根据知识点查询题目的字符串
+        zhishidian_id = '', //用于根据知识点查询题目的字符串
+
+        qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
+          jigouid + '&lingyuid='; //查询科目包含什么题型的url
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -142,6 +146,75 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         zhishidian_id = selectZsd.toString();
 
         console.log(zhishidian_id);
+      };
+
+      /**
+       * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
+       */
+      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
+        $scope.kmtxList = data;
+      });
+
+      /**
+       * 获得难度分布的数组
+       */
+      $scope.getNanduDist = function(){
+        var x = $('input.nd-factor').val(),
+            n = $('input.dist-arr').val(),
+            nl = n - 1,
+            i, u, a, b,
+            fx = 1,
+            distArr = [];
+        if(x == 0){
+          distArr[0] = 1;
+          for(i = 1; i <= nl; i++){
+            distArr[i] = 0;
+          }
+        }
+        else if(x == 1){
+          distArr[nl] = 1;
+          for(i = 0; i < nl; i++){
+            distArr[i] = 0;
+          }
+        }
+        else{
+          u = Math.tan((x-0.5) * Math.PI)/2 + 0.5;
+          console.log(u);
+          if(u <= 0){
+            for(i = 1; i <= nl; i++){
+              a = i/n;
+              b = (i + 1)/n;
+              distArr[i] = (a-b)*(2-b-a)/u;
+              fx = fx - distArr[i];
+            }
+            distArr[0] = fx;
+          }
+          else if(u >= 1){
+            for(i = 0; i < nl; i++){
+              a = i/n;
+              b = (i + 1)/n;
+              distArr[i] = (b*b - a*a)/u;
+              fx = fx - distArr[i];
+            }
+            distArr[nl] = fx;
+          }
+          else{
+            for(i = 0; i <= nl; i++){
+              a = i/n;
+              b = (i + 1)/n;
+              if(u >= b){
+                distArr[i] = (b*b - a*a)/u;
+              }
+              else if(u <= a){
+                distArr[i] = (b-a)*(2-b-a)/u;
+              }
+              else{
+                distArr[i] = (u*u - a*a)/u + (b-u)*(2-b-u)/u;
+              }
+            }
+          }
+        }
+        console.log(distArr);
       };
 
     }]);

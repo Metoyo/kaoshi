@@ -82,15 +82,30 @@
                     <th>数量</th>
                     <th>分值</th>
                 </tr>
-                <tr>
-                    <td class="td-txName">单选题</td>
-                    <td><input type="text"/></td>
-                    <td><input type="text"/></td>
+                <tr ng-repeat="kmtx in kmtxList">
+                    <td class="td-txName">
+                        {{kmtx.TIXINGMINGCHENG}}
+                        <span class="hidden">{{kmtx.TIXING_ID}}</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-item-num" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                    </td>
+                    <td>
+                        <input type="text" class="input-item-score" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="3" class="td-total">总分：</td>
                 </tr>
             </table>
+            <div class="nandu-dist">
+                <input type="text" name="" class="nd-factor"/>
+                <input type="text" name="" class="dist-arr"/>
+                <button ng-click="getNanduDist()">提交</button>
+            </div>
+
         </div>
         <!--组卷筛选条件。 结束-->
         <!--添加试题的按钮。开始-->

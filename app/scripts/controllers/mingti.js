@@ -49,7 +49,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
 
-          selectZsd, //定义一个选中知识点的变量（数组
+          selectZsd = [], //定义一个选中知识点的变量（数组
           //selectZstStr, //定义一个选中知识点的变量（字符串）
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -78,7 +78,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHUANGTAI: 1
             }
           },
-          loopArr = [0,1,2,3]; //用于题支循环的数组
+          loopArr = [0,1,2,3], //用于题支循环的数组
+          tznrIsNull;//用了判断题支内容是否为空
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -209,7 +210,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             selectZsd.push(cbArray[i].value);
           }
         }
-        zhishidian_id = selectZsd.join(',');
+        zhishidian_id = selectZsd.toString();
         if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
           qryTestFun();
         }
@@ -330,49 +331,74 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 单选题添加代码
        */
       $scope.submitShiTi = function(){
+        tznrIsNull = true;
         var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
             tizhineirong = [];
         _.each(tiZhiArr, function(tizhi, idx, lst){
-          tizhineirong.push(tizhi.value);
+          if(tizhi.value){
+            tizhineirong.push(tizhi.value);
+          }
+          else{
+            tznrIsNull = false;
+          }
         });
 
         danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
         danxuan_data.shuju.ZHISHIDIAN = selectZsd;
-        $http.post(xgtmUrl, danxuan_data).success(function(data){
-          console.log(data);
-          if(data.result){
-            alert('提交成功！');
-          }
-        })
-        .error(function(err){
+        if(selectZsd.length && tznrIsNull && danxuan_data.shuju.NANDU_ID.length &&
+          danxuan_data.shuju.DAAN.length && danxuan_data.shuju.TIGAN.length ){
+          $http.post(xgtmUrl, danxuan_data).success(function(data){
+            console.log(data);
+            if(data.result){
+              alert('提交成功！');
+            }
+          })
+          .error(function(err){
             alert(err);
-        });
+          });
+        }
+        else{
+          alert("请确保试题的完整性！");
+        }
       };
 
       /**
        * 多选题添加代码
        */
       $scope.submitDuoxuanShiTi = function(){
+        tznrIsNull = true;
         var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
           tizhineirong = [];
         _.each(tiZhiArr, function(tizhi, idx, lst){
-          tizhineirong.push(tizhi.value);
+          if(tizhi.value){
+            tizhineirong.push(tizhi.value);
+          }
+          else{
+            tznrIsNull = false;
+          }
         });
 
         duoxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         duoxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
         duoxuan_data.shuju.ZHISHIDIAN = selectZsd;
         console.log(duoxuan_data);
-        $http.post(xgtmUrl, duoxuan_data).success(function(data){
-          console.log(data);
-          if(data.result){
-            alert('提交成功！');
-          }
-        })
+        if(selectZsd.length && tznrIsNull && duoxuan_data.shuju.NANDU_ID.length &&
+          duoxuan_data.shuju.DAAN.length && duoxuan_data.shuju.TIGAN.length ){
+          $http.post(xgtmUrl, duoxuan_data).success(function(data){
+            console.log(data);
+            if(data.result){
+              alert('提交成功！');
+            }
+          })
           .error(function(err){
             alert(err);
           });
+        }
+        else{
+          alert("请确保试题的完整性！");
+        }
+
       };
 
       /**
