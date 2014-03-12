@@ -1,4 +1,4 @@
-<div class="innerWrap innerWrapperSubDs mingtiWrapper">
+<div class="innerWrap innerWrapperSubDs zujuanWrapper">
     <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
     <div id="subDashboard" class="subDashboard">
         <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
@@ -70,11 +70,29 @@
             </ul>
         </div>
         <div id="dragBtn" class="dragBtn">
-
         </div>
     </div>
     <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
     <div class="content">
+        <!--组卷筛选条件。 开始-->
+        <div class="chooseCondition">
+            <table class="table-tixing">
+                <tr>
+                    <th></th>
+                    <th>数量</th>
+                    <th>分值</th>
+                </tr>
+                <tr>
+                    <td class="td-txName">单选题</td>
+                    <td><input type="text"/></td>
+                    <td><input type="text"/></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="td-total">总分：</td>
+                </tr>
+            </table>
+        </div>
+        <!--组卷筛选条件。 结束-->
         <!--添加试题的按钮。开始-->
         <div class="patternWrap">
             <h3 class="addBtn">
@@ -94,7 +112,7 @@
         </div>
         <!--添加试题的按钮。结束-->
         <!--题型和难度DOM元素， 开始-->
-        <div class="kmTxWrap" ng-show="kmTxWrap">
+        <!--div class="kmTxWrap" ng-show="kmTxWrap">
             <div class="kmTxBox">
                 <div class="kmtxNdTitle pull-left">
                     <span class="pull-left">题型</span>
@@ -107,7 +125,7 @@
                     <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
                         <span class="hidden">{{ kmtx.TIXING_ID }}</span>
                         <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
-                   </li>
+                    </li>
                 </ul>
             </div>
             <div class="nanduBox">
@@ -141,7 +159,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div-->
         <!--题型和难度DOM元素， 结束-->
         <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
 

@@ -37,6 +37,11 @@ define( "config", [], function () {
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl',
         requireLogin: false
+      },
+      '/zujuan': {
+        templateUrl: 'views/zujuan.html',
+        controller: 'ZujuanCtrl',
+        requireLogin: true
       }
     }
   };

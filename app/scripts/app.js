@@ -13,9 +13,10 @@ define([
     'controllers/user',
     'controllers/logout',
     'controllers/register',
+    'controllers/zujuan',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl,
-                DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, config) {
+                DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -28,6 +29,7 @@ define([
 'kaoshiApp.controllers.LogoutCtrl',
 'kaoshiApp.controllers.RegisterCtrl',
 'kaoshiApp.directives.Passwordverify',
+'kaoshiApp.controllers.ZujuanCtrl',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

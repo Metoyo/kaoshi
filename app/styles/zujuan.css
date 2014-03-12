@@ -1,0 +1,22 @@
+.zujuanWrapper .chooseCondition {
+  width: 221px;
+  height: 100%;
+  position: fixed;
+  padding-top: 10px;
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf; }
+  .zujuanWrapper .chooseCondition .table-tixing {
+    width: 100%; }
+    .zujuanWrapper .chooseCondition .table-tixing th {
+      text-align: center;
+      padding: 5px; }
+    .zujuanWrapper .chooseCondition .table-tixing td {
+      padding: 5px;
+      text-align: center; }
+      .zujuanWrapper .chooseCondition .table-tixing td input {
+        width: 36px;
+        text-align: center; }
+    .zujuanWrapper .chooseCondition .table-tixing .td-txName {
+      text-align: left; }
+    .zujuanWrapper .chooseCondition .table-tixing .td-total {
+      text-align: right; }

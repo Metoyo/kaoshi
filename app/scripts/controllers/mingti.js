@@ -132,7 +132,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
        */
-      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //明天页面加载的时候调用科目题型
+      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
         $scope.kmtxList = data;
         $scope.keMuList = true; //选择的科目render完成后列表显示
       });
@@ -485,6 +485,66 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
       };
       resize(document.getElementById('dragBtn'));//初始化拖拽
+
+      /**
+       * 选题是难度的滑动样式
+       */
+      var slide = function(el){
+        //初始化参数
+        var els = document.getElementById('subDashboard').style,
+          x = 0; //鼠标的 X 和 Y 轴坐标
+
+        $(el).mousedown(function(e) {
+          //按下元素后，计算当前鼠标与对象计算后的坐标
+          x = e.clientX - el.offsetWidth - $(".subDashboard").width();
+
+          //在支持 setCapture 做些东东
+          el.setCapture ? (
+            //捕捉焦点
+            el.setCapture(),
+              //设置事件
+              el.onmousemove = function(ev) {
+                mouseMove(ev || event);
+              }, el.onmouseup = mouseUp
+            ) : (
+            //绑定事件
+            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+            );
+          //防止默认事件发生
+          e.preventDefault();
+        });
+        //移动事件
+        function mouseMove(e) {
+          var subDbWidth = $(".subDashboard").width();
+          if(subDbWidth < 220){
+            els.width = '221px';
+            $('.content').css('padding-left',els.width);
+            $(document).unbind("mousemove", mouseMove);
+          }
+          if(subDbWidth >= 220 && subDbWidth <= 400){
+            els.width = e.clientX - x + 'px';
+            $('.content').css('padding-left',els.width);
+          }
+          if(subDbWidth > 400){
+            els.width = '399px';
+            $('.content').css('padding-left',els.width);
+            $(document).unbind("mousemove", mouseMove);
+          }
+        }
+        //停止事件
+        function mouseUp() {
+          //在支持 releaseCapture 做些东东
+          el.releaseCapture ? (
+            //释放焦点
+            el.releaseCapture(),
+              //移除事件
+              el.onmousemove = el.onmouseup = null
+            ) : (
+            //卸载事件
+            $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
+            );
+        }
+      };
 
     }]);
 });
