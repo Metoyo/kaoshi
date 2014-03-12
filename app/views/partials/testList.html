@@ -1,5 +1,6 @@
 <div class="row">
     <h2 class="total-test"> 共<strong>{{testListId.length}}</strong>题 </h2>
+    <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
     <ul class="list-unstyled testList">
         <li ng-repeat="tm in timudetails">
             <!--<h3 class="item-title">2013年初中毕业升学考试（天津卷）数学（带解析）</h3>-->

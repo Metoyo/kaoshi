@@ -265,7 +265,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           timu_id = tiMuIdArr.slice(0,2).toString();
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
-            $scope.timudetails = data;
+            console.log(data);
+            if(data.length){
+              $scope.timudetails = data;
+            }
+            else{
+              $scope.timudetails = null;
+            }
           }).error(function(err){
               console.log(err);
           });

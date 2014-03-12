@@ -189,6 +189,11 @@
   /* contentWraps styles begin */
   .contentWraps{
     padding: 10px 0;
+    .errorMsg{
+      margin-left: 10px;
+      font-size: 16px;
+      color: red;
+    }
   }
   /* contentWraps styles end */
   /* test list styls begin*/
