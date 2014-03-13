@@ -306,6 +306,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data.shuju.TIMULEIXING_ID = 1;
         danxuan_data.shuju.TIZHISHULIANG = '';
         danxuan_data.shuju.SUIJIPAIXU = '';
+        danxuan_data.shuju.TIGAN = '';
+        danxuan_data.shuju.NANDU_ID = '';
         $scope.danXuanData = danxuan_data;
       };
 
@@ -324,7 +326,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         duoxuan_data.shuju.SUIJIPAIXU = '';
         duoxuan_data.shuju.ZUISHAOXUANZE = '';
         duoxuan_data.shuju.ZUIDUOXUANZE = '';
+        danxuan_data.shuju.TIGAN = '';
+        danxuan_data.shuju.NANDU_ID = '';
         $scope.duoXuanData = duoxuan_data;
+
       };
 
       /**
@@ -409,8 +414,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tgtElement = angular.element(tgt);
         angular.element('div.radio').removeClass('radio-select');
         tgtElement.addClass('radio-select');
-        tgtElement.find("input[name='rightAnswer']").attr('checked',true);
+        tgtElement.find("input[name='rightAnswer']").prop('checked',true);
         danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
+      };
+
+      /**
+       * 单选题选择答案的效果的代码
+       */
+      $scope.resetForm = function(){
+        $('div.radio').removeClass('radio-select');
+        $("input[name=rightAnswer]").prop('checked',false);
       };
 
       /**
@@ -420,9 +433,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var rightAnswerStr = [],
             tgtElement = $('div.radio').eq(idx);
 
-        //angular.element('div.radio').removeClass('radio-select');
-        //tgtElement.addClass('radio-select');
-        //tgtElement.find("input[name='rightAnswer']").attr('checked',true);
         tgtElement.toggleClass('radio-select');
         if(tgtElement.find('input[name=rightAnswer]').prop('checked')){
           tgtElement.find('input[name=rightAnswer]').prop('checked',false);
