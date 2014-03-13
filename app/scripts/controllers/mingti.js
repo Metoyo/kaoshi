@@ -305,6 +305,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       var danxuan_data = timu_data;
       $scope.addDanXuan = function(tpl){
+        loopArr = [0,1,2,3];
         renderTpl(tpl);
         $('.patternList li').removeClass('active');
         $('li.danxuan').addClass('active');
@@ -323,6 +324,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       var duoxuan_data = timu_data;
       $scope.addDuoXuan = function(tpl){
+        loopArr = [0,1,2,3];
         renderTpl(tpl);
         $scope.loopArr = loopArr;
         $('.patternList li').removeClass('active');
