@@ -79,7 +79,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           },
           loopArr = [0,1,2,3], //用于题支循环的数组
-          tznrIsNull;//用了判断题支内容是否为空
+          tznrIsNull,//用了判断题支内容是否为空
+          deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
+          deleteTiMuData = { //删除题目的数据格式
+            token: config.token,
+            caozuoyuan: userInfo.UID,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            timu_id: ''
+          },
+          timudetails;//
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -115,12 +124,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
       });
 
-
       /**
        *查询科目（LingYu，url：/api/ling yu）
        */
       $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
-
       $scope.loadLingYu = function(){
         if($scope.keMuList){
           $scope.keMuList = false;
@@ -137,7 +144,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.kmtxList = data;
         $scope.keMuList = true; //选择的科目render完成后列表显示
       });
-
       $scope.cxKmTx = function(lyt){
 
         angular.element(".selectLyName").html(lyt.LINGYUMINGCHENG); //切换科目的名称
@@ -214,7 +220,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
           qryTestFun();
         }
-        console.log(selectZsd);
       };
 
       /**
@@ -263,12 +268,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           _.each(data, function(tm, idx, lst){
             tiMuIdArr.push(tm.TIMU_ID);
           });
-          timu_id = tiMuIdArr.slice(0,2).toString();
+          timu_id = tiMuIdArr.slice(0,10).toString();
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
-            console.log(data);
             if(data.length){
               $scope.timudetails = data;
+              $scope.caozuoyuan = caozuoyuan;
+              timudetails = data;
             }
             else{
               $scope.timudetails = null;
@@ -354,7 +360,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         if(selectZsd.length && tznrIsNull && danxuan_data.shuju.NANDU_ID.length &&
           danxuan_data.shuju.DAAN.length && danxuan_data.shuju.TIGAN.length ){
           $http.post(xgtmUrl, danxuan_data).success(function(data){
-            console.log(data);
             if(data.result){
               alert('提交成功！');
             }
@@ -387,11 +392,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         duoxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         duoxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
         duoxuan_data.shuju.ZHISHIDIAN = selectZsd;
-        console.log(duoxuan_data);
         if(selectZsd.length && tznrIsNull && duoxuan_data.shuju.NANDU_ID.length &&
           duoxuan_data.shuju.DAAN.length && duoxuan_data.shuju.TIGAN.length ){
           $http.post(xgtmUrl, duoxuan_data).success(function(data){
-            console.log(data);
             if(data.result){
               alert('提交成功！');
             }
@@ -444,7 +447,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           rightAnswerStr.push(rasw.value);
         });
         duoxuan_data.shuju.DAAN = rightAnswerStr.toString();
-        console.log(duoxuan_data.shuju.DAAN);
       };
 
       /**
@@ -459,6 +461,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.deleteOneItem = function(){
         loopArr.pop();
+      };
+
+      /**
+       * 点击删除按钮删除一项题支
+       */
+      $scope.deleteItem = function(tmid, idx){
+        var truthBeDel = window.confirm('确定要删除此题吗？'),
+            className = '.delete_' + tmid;
+        console.log(idx);
+        if (truthBeDel) {
+          deleteTiMuData.timu_id = tmid;
+          $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
+            if(data.result){
+              //$(className).slideUp();
+              $scope.timudetails.splice(idx, 1);
+            }
+          });
+        }
       };
 
       /**
@@ -521,66 +541,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
       };
       resize(document.getElementById('dragBtn'));//初始化拖拽
-
-      /**
-       * 选题是难度的滑动样式
-       */
-      var slide = function(el){
-        //初始化参数
-        var els = document.getElementById('subDashboard').style,
-          x = 0; //鼠标的 X 和 Y 轴坐标
-
-        $(el).mousedown(function(e) {
-          //按下元素后，计算当前鼠标与对象计算后的坐标
-          x = e.clientX - el.offsetWidth - $(".subDashboard").width();
-
-          //在支持 setCapture 做些东东
-          el.setCapture ? (
-            //捕捉焦点
-            el.setCapture(),
-              //设置事件
-              el.onmousemove = function(ev) {
-                mouseMove(ev || event);
-              }, el.onmouseup = mouseUp
-            ) : (
-            //绑定事件
-            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
-            );
-          //防止默认事件发生
-          e.preventDefault();
-        });
-        //移动事件
-        function mouseMove(e) {
-          var subDbWidth = $(".subDashboard").width();
-          if(subDbWidth < 220){
-            els.width = '221px';
-            $('.content').css('padding-left',els.width);
-            $(document).unbind("mousemove", mouseMove);
-          }
-          if(subDbWidth >= 220 && subDbWidth <= 400){
-            els.width = e.clientX - x + 'px';
-            $('.content').css('padding-left',els.width);
-          }
-          if(subDbWidth > 400){
-            els.width = '399px';
-            $('.content').css('padding-left',els.width);
-            $(document).unbind("mousemove", mouseMove);
-          }
-        }
-        //停止事件
-        function mouseUp() {
-          //在支持 releaseCapture 做些东东
-          el.releaseCapture ? (
-            //释放焦点
-            el.releaseCapture(),
-              //移除事件
-              el.onmousemove = el.onmouseup = null
-            ) : (
-            //卸载事件
-            $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
-            );
-        }
-      };
 
     }]);
 });

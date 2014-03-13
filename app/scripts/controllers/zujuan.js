@@ -184,7 +184,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             for(i = 1; i <= nl; i++){
               a = i/n;
               b = (i + 1)/n;
-              distArr[i] = (a-b)*(2-b-a)/u;
+              distArr[i] = (b-a)*(2-b-a)/(1-u);
               fx = fx - distArr[i];
             }
             distArr[0] = fx;
@@ -206,10 +206,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 distArr[i] = (b*b - a*a)/u;
               }
               else if(u <= a){
-                distArr[i] = (b-a)*(2-b-a)/u;
+                distArr[i] = (b-a)*(2-b-a)/(1-u);
               }
               else{
-                distArr[i] = (u*u - a*a)/u + (b-u)*(2-b-u)/u;
+                distArr[i] = (u*u - a*a)/u + (b-u)*(2-b-u)/(1-u);
               }
             }
           }

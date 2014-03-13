@@ -1,8 +1,8 @@
 <div class="row">
-    <h2 class="total-test"> 共<strong>{{testListId.length}}</strong>题 </h2>
+    <h2 class="total-test"> 共<strong>{{timudetails.length}}</strong>题 </h2>
     <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
     <ul class="list-unstyled testList">
-        <li ng-repeat="tm in timudetails">
+        <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <!--<h3 class="item-title">2013年初中毕业升学考试（天津卷）数学（带解析）</h3>-->
             <div class="item-sub-title pull-left">
                 <p class="use-times">
@@ -17,7 +17,10 @@
                 <p>
                     更新日期：2013-09-28
                 </p>
-                <button type="button" class="btn btn-success add-to-paper">加入试卷</button>
+                <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
+                    <button type="button" class="btn btn-danger" ng-click="deleteItem(tm.TIMU_ID, $index)">删除试题</button>
+                    <button type="button" class="btn btn-success" ng-click="editItem(tm)">修改试题</button>
+                </div>
             </div>
             <div class="item-cont">
                 <h3 class="item-tigan">
