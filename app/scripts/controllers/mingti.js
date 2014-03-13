@@ -297,6 +297,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
         $scope.patternListToggle = false; // 明天题型列表隐藏
         $scope.txTpl = 'views/partials/testList.html';
+        $('.pointTree').find('input[name=point]').prop('checked', false);
       };
 
       /**
@@ -362,6 +363,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.post(xgtmUrl, danxuan_data).success(function(data){
             if(data.result){
               alert('提交成功！');
+              resetFun();
             }
           })
           .error(function(err){
@@ -397,6 +399,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.post(xgtmUrl, duoxuan_data).success(function(data){
             if(data.result){
               alert('提交成功！');
+              resetFun();
             }
           })
           .error(function(err){
@@ -422,8 +425,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 单选题选择答案的效果的代码
+       * 重置输入整个form和重置函数
        */
+      var resetFun = function(){
+        $('.resetForm').click();
+        $('div.radio').removeClass('radio-select');
+        $("input[name=rightAnswer]").prop('checked',false);
+      };
       $scope.resetForm = function(){
         $('div.radio').removeClass('radio-select');
         $("input[name=rightAnswer]").prop('checked',false);
@@ -450,21 +458,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 点击添加按钮添加一项题支
+       * 点击添加按钮添加一项题支输入框
        */
       $scope.addOneItem = function(){
         loopArr.push(loopArr.length + 1);
       };
 
       /**
-       * 点击删除按钮删除一项题支
+       * 点击删除按钮删除一项题支输入框
        */
       $scope.deleteOneItem = function(){
         loopArr.pop();
       };
 
       /**
-       * 点击删除按钮删除一项题支
+       * 点击删除按钮删除一道题
        */
       $scope.deleteItem = function(tmid, idx){
         var truthBeDel = window.confirm('确定要删除此题吗？'),
@@ -474,7 +482,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           deleteTiMuData.timu_id = tmid;
           $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
             if(data.result){
-              //$(className).slideUp();
               $scope.timudetails.splice(idx, 1);
             }
           });
