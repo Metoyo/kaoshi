@@ -491,6 +491,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 修改单选题 levelFour
+       */
+      $scope.editItem = function(tmxq){
+        var selectZsdStr = '';
+        $scope.timudetail = tmxq;
+        renderTpl('views/tixing/danxuanedit.html');
+        console.log(tmxq.TIGAN.tiGan);
+        angular.element('.tiganTta').val(tmxq.TIGAN.tiGan);
+        $('ul.levelFour').css('display','block');
+        $('.levelFour').closest('li').find('.foldBtn').addClass('unfoldBtn');
+        _.each(tmxq.ZHISHIDIAN,function(zsd,idx,lst){
+          selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
+        });
+        $scope.selectZsdStr = selectZsdStr;
+        console.log($scope.selectZsdStr);
+        //$('.tiganTta').html(tmxq.TIGAN.tiGan);
+        //console.log(tmxq);
+        //var truthBeDel = window.confirm('确定保存修改吗？');
+
+      };
+
+      /**
        * subDashboard宽度可拖拽
        */
       var resize = function(el){

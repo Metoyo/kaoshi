@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal" role="form">
+            <fieldset class="form-header">
+                <div class="form-group form-th">
+                    <div class="col-sm-8 col-sm-offset-1 text-center">
+                        题干
+                    </div>
+                    <div class="col-sm-3">
+                        正确答案
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">题目</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control tiganTta" rows="3" ng-model="danXuanData.shuju.TIGAN" placeholder="请输入题干">
+
+                        </textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="form-body">
+                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong">
+                    <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control tiZhi" placeholder="请输入选项" value="{{tizhi}}">
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"></span>
+                        <div class="radio {{'answer' + $index}}"  ng-click="chooseDanxuanDaan($index)"
+                             ng-class="{'radio-select':timudetail.DAAN.indexOf({{$index}}) >= 0}">
+                            <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}"
+                                   ng-checked="timudetail.DAAN.indexOf({{$index}}) >= 0" ng-model="danXuanData.shuju.DAAN">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="form-footer">
+                <div class="form-group">
+                    <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="addOneItem()"
+                       class="col-sm-1 control-label text-right add-btn">
+                        <span class="glyphicon glyphicon-plus-sign"></span> </a>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="1"
+                                    ng-checked="timudetail.NANDU_ID == 1">
+                            容易 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="2"
+                                   ng-checked="timudetail.NANDU_ID == 2">
+                            较易 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="3"
+                                   ng-checked="timudetail.NANDU_ID == 3">
+                            一般 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="4"
+                                   ng-checked="timudetail.NANDU_ID == 4">
+                            较难 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="5"
+                                   ng-checked="timudetail.NANDU_ID == 5">
+                            困难 </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-8 text-right">
+                        <button type="button" class="btn btn-danger" ng-click="cancelAddPattern()">
+                            返回
+                        </button>
+                        <!--<button type="reset" class="btn btn-warning resetForm" ng-click="resetForm()">-->
+                            <!--重置-->
+                        <!--</button>-->
+                        <button type="button" class="btn btn-primary" ng-click="submitShiTi()">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
