@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http',
-      function ($rootScope, $scope, $http) {
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q',
+      function ($rootScope, $scope, $http, $q) {
       /**
        * 操作title
        */
@@ -90,7 +90,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             lingyuid: lingyuid,
             timu_id: ''
           },
-          timudetails;//
+          timudetails,//获得的题目数组
+          danxuanSaveSuccess = false;
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -346,10 +347,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 单选题添加代码
        */
-      $scope.submitShiTi = function(){
+      var addDanxuanFun = function() {
+        var deferred = $q.defer();
+
         tznrIsNull = true;
         var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
-            tizhineirong = [];
+          tizhineirong = [];
         _.each(tiZhiArr, function(tizhi, idx, lst){
           if(tizhi.value){
             tizhineirong.push(tizhi.value);
@@ -370,16 +373,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             console.log(data);
             if(data.result){
               alert('提交成功！');
-             resetFun();
+              deferred.resolve();
+              //resetFun();
             }
           })
           .error(function(err){
             alert(err);
+            deferred.reject();
           });
         }
         else{
           alert("请确保试题的完整性！");
+          deferred.reject();
         }
+
+        return deferred.promise;
+
+      };
+      $scope.submitShiTi = function(){
+        var promise = addDanxuanFun();
+        promise.then(function() {
+          resetFun();
+        });
       };
 
       /**
@@ -496,11 +511,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 修改单选题
+       * 加载修改单选题模板
        */
-      $scope.editItem = function(tmxq, tpl){
-        danxuan_data = timu_data;
-        $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
+      var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
         var selectZsdStr = '';
         selectZsd = [];
         $('ul.levelFour').css('display','block');//用于控制大纲 开始
@@ -510,15 +523,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
         });
         $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
-        danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-        danxuan_data.shuju.DAAN = tmxq.DAAN;
-        danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-        danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-        danxuan_data.shuju.TIZHISHULIANG = '';
-        danxuan_data.shuju.SUIJIPAIXU = '';
-        renderTpl(tpl); //render 修改过模板
-        $scope.timudetail = tmxq;
-        console.log(selectZsd);
+      };
+
+      $scope.editItem = function(tmxq){
+        var tpl;
+        if(tmxq.TIMULEIXING_ID == 1){
+          tpl = 'views/tixing/danxuanedit.html';
+          danxuan_data = timu_data;
+          $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
+          makeZsdSelect(tmxq);
+          danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          danxuan_data.shuju.DAAN = tmxq.DAAN;
+          danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          danxuan_data.shuju.TIZHISHULIANG = '';
+          danxuan_data.shuju.SUIJIPAIXU = '';
+          renderTpl(tpl); //render 修改过模板
+          $scope.timudetail = tmxq;
+        }
+
+      };
+
+      /**
+       * 修改单选题
+       */
+      $scope.saveDanxuanEdit = function(){
+        var promise = addDanxuanFun();
+        promise.then(function() {
+          $scope.cancelAddPattern();
+          qryTestFun();
+        });
       };
 
       /**

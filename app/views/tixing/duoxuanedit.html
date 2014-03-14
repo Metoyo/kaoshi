@@ -28,7 +28,7 @@
                         <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"></span>
                         <div class="radio {{'answer' + $index}}"  ng-click="chooseDanxuanDaan($index)"
                              ng-class="{'radio-select':timudetail.DAAN.indexOf({{$index}}) >= 0}">
-                            <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}"
+                            <input class="hidden" type="checkbox" name="rightAnswer" value="{{$index}}"
                                    ng-checked="timudetail.DAAN.indexOf({{$index}}) >= 0" ng-model="danXuanData.shuju.DAAN">
                             <span class="glyphicon glyphicon-ok"></span>
                         </div>
