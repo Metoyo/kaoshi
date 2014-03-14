@@ -302,6 +302,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.cancelAddPattern = function(){
         $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
         $scope.patternListToggle = false; // 明天题型列表隐藏
+        qryTestFun();
         $scope.txTpl = 'views/partials/testList.html';
         $('.pointTree').find('input[name=point]').prop('checked', false);
       };
@@ -313,9 +314,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data = timu_data;
         loopArr = [0,1,2,3];
         renderTpl(tpl);
+        $scope.loopArr = loopArr;
         $('.patternList li').removeClass('active');
         $('li.danxuan').addClass('active');
-        $scope.loopArr = loopArr;
+        danxuan_data.shuju.TIXING_ID = 1;
+        danxuan_data.shuju.TIMULEIXING_ID = 1;
         danxuan_data.shuju.TIZHISHULIANG = '';
         danxuan_data.shuju.SUIJIPAIXU = '';
         danxuan_data.shuju.TIGAN = '';
@@ -339,15 +342,66 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         duoxuan_data.shuju.SUIJIPAIXU = '';
         duoxuan_data.shuju.ZUISHAOXUANZE = '';
         duoxuan_data.shuju.ZUIDUOXUANZE = '';
-        danxuan_data.shuju.TIGAN = '';
-        danxuan_data.shuju.NANDU_ID = '';
+        duoxuan_data.shuju.TIGAN = '';
+        duoxuan_data.shuju.NANDU_ID = '';
         $scope.duoXuanData = duoxuan_data;
+      };
+
+      /**
+       * 单选题和多选题添加函数
+       */
+      var addDanDuoXuanFun = function(dataTpl) {
+        var deferred = $q.defer();
+
+        tznrIsNull = true;
+        var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
+          tizhineirong = [];
+        _.each(tiZhiArr, function(tizhi, idx, lst){
+          if(tizhi.value){
+            tizhineirong.push(tizhi.value);
+          }
+          else{
+            tznrIsNull = false;
+          }
+        });
+        if(dataTpl == danxuan_data){
+          dataTpl.shuju.TIXING_ID = 1;
+          dataTpl.shuju.TIMULEIXING_ID = 1;
+        }
+        if(dataTpl == duoxuan_data){
+          dataTpl.shuju.TIXING_ID = 2;
+          dataTpl.shuju.TIMULEIXING_ID = 2;
+        }
+        dataTpl.shuju.TIZHINEIRONG = tizhineirong;
+        dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
+        dataTpl.shuju.ZHISHIDIAN = selectZsd;
+        if(selectZsd.length && tznrIsNull && dataTpl.shuju.NANDU_ID.length &&
+          dataTpl.shuju.DAAN.length && dataTpl.shuju.TIGAN.length ){
+          $http.post(xgtmUrl, dataTpl).success(function(data){
+            console.log(data);
+            if(data.result){
+              alert('提交成功！');
+              deferred.resolve();
+              //resetFun();
+            }
+          })
+            .error(function(err){
+              alert(err);
+              deferred.reject();
+            });
+        }
+        else{
+          alert("请确保试题的完整性！");
+          deferred.reject();
+        }
+
+        return deferred.promise;
       };
 
       /**
        * 单选题添加代码
        */
-      var addDanxuanFun = function() {
+      /*var addDanxuanFun = function() {
         var deferred = $q.defer();
 
         tznrIsNull = true;
@@ -389,9 +443,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         return deferred.promise;
 
-      };
-      $scope.submitShiTi = function(){
-        var promise = addDanxuanFun();
+      };*/
+      $scope.addDanxuanShiTi = function(){
+        var promise = addDanDuoXuanFun(danxuan_data);
         promise.then(function() {
           resetFun();
         });
@@ -400,7 +454,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 多选题添加代码
        */
-      $scope.submitDuoxuanShiTi = function(){
+      /*$scope.submitDuoxuanShiTi = function(){
         tznrIsNull = true;
         var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
           tizhineirong = [];
@@ -432,6 +486,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           alert("请确保试题的完整性！");
         }
 
+      };*/
+      $scope.addDuoxuanShiTi = function(){
+        var promise = addDanDuoXuanFun(duoxuan_data);
+        promise.then(function() {
+          resetFun();
+        });
       };
 
       /**
@@ -548,7 +608,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 修改单选题
        */
       $scope.saveDanxuanEdit = function(){
-        var promise = addDanxuanFun();
+        var promise = addDanDuoXuanFun(danxuan_data);
         promise.then(function() {
           $scope.cancelAddPattern();
           qryTestFun();
