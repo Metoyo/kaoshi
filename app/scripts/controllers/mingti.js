@@ -78,6 +78,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHUANGTAI: 1
             }
           },
+          danxuan_data, //单选题数据模板
+          duoxuan_data, //多选题数据模板
           loopArr = [0,1,2,3], //用于题支循环的数组
           tznrIsNull,//用了判断题支内容是否为空
           deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
@@ -306,8 +308,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 单选题模板加载
        */
-      var danxuan_data = timu_data;
       $scope.addDanXuan = function(tpl){
+        danxuan_data = timu_data;
         loopArr = [0,1,2,3];
         renderTpl(tpl);
         $('.patternList li').removeClass('active');
@@ -323,8 +325,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 多选题模板加载
        */
-      var duoxuan_data = timu_data;
       $scope.addDuoXuan = function(tpl){
+        duoxuan_data = timu_data;
         loopArr = [0,1,2,3];
         renderTpl(tpl);
         $scope.loopArr = loopArr;
@@ -339,7 +341,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         danxuan_data.shuju.TIGAN = '';
         danxuan_data.shuju.NANDU_ID = '';
         $scope.duoXuanData = duoxuan_data;
-
       };
 
       /**
@@ -369,7 +370,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             console.log(data);
             if(data.result){
               alert('提交成功！');
-             // resetFun();
+             resetFun();
             }
           })
           .error(function(err){
@@ -497,7 +498,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 修改单选题
        */
-      $scope.editItem = function(tmxq){
+      $scope.editItem = function(tmxq, tpl){
+        danxuan_data = timu_data;
+        $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
         var selectZsdStr = '';
         selectZsd = [];
         $('ul.levelFour').css('display','block');//用于控制大纲 开始
@@ -507,14 +510,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
         });
         $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
-        renderTpl('views/tixing/danxuanedit.html'); //render 修改过模板
-        $scope.timudetail = tmxq;
         danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
         danxuan_data.shuju.DAAN = tmxq.DAAN;
         danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
         danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-        //console.log($scope.selectZsdStr);
-        //console.log(selectZsd);
+        danxuan_data.shuju.TIZHISHULIANG = '';
+        danxuan_data.shuju.SUIJIPAIXU = '';
+        renderTpl(tpl); //render 修改过模板
+        $scope.timudetail = tmxq;
+        console.log(selectZsd);
       };
 
       /**
