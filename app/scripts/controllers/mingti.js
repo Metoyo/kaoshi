@@ -193,6 +193,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        点击checkbox得到checkbox的值
         */
+      var selectZsdFun = function(){ //用于将选择的知识点变成字符串
+        selectZsd = [];
+        var cbArray = $('input[name=point]'),
+          cbl = cbArray.length;
+        for( var i = 0; i < cbl; i++) {
+          if(cbArray.eq(i).prop("checked")) {
+            selectZsd.push(cbArray[i].value);
+          }
+        }
+        zhishidian_id = selectZsd.toString();
+        console.log('知识点：' + zhishidian_id);
+      };
       $scope.toggleSelection = function(zsdId) {
         var onSelect = '.select' + zsdId,
           gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
@@ -207,16 +219,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             this.checked = false;
           }
         });
-
-        selectZsd = [];
-        var cbArray = $('input[name=point]'),
-            cbl = cbArray.length;
-        for( var i = 0; i < cbl; i++) {
-          if(cbArray.eq(i).prop("checked")) {
-            selectZsd.push(cbArray[i].value);
-          }
-        }
-        zhishidian_id = selectZsd.toString();
+        selectZsdFun();
         if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
           qryTestFun();
         }
@@ -310,8 +313,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $('.patternList li').removeClass('active');
         $('li.danxuan').addClass('active');
         $scope.loopArr = loopArr;
-        danxuan_data.shuju.TIXING_ID = 1;
-        danxuan_data.shuju.TIMULEIXING_ID = 1;
         danxuan_data.shuju.TIZHISHULIANG = '';
         danxuan_data.shuju.SUIJIPAIXU = '';
         danxuan_data.shuju.TIGAN = '';
@@ -356,16 +357,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tznrIsNull = false;
           }
         });
-
+        danxuan_data.shuju.TIXING_ID = 1;
+        danxuan_data.shuju.TIMULEIXING_ID = 1;
         danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
         danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
         danxuan_data.shuju.ZHISHIDIAN = selectZsd;
+        console.log(danxuan_data);
         if(selectZsd.length && tznrIsNull && danxuan_data.shuju.NANDU_ID.length &&
           danxuan_data.shuju.DAAN.length && danxuan_data.shuju.TIGAN.length ){
           $http.post(xgtmUrl, danxuan_data).success(function(data){
+            console.log(data);
             if(data.result){
               alert('提交成功！');
-              resetFun();
+             // resetFun();
             }
           })
           .error(function(err){
@@ -491,25 +495,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 修改单选题 levelFour
+       * 修改单选题
        */
       $scope.editItem = function(tmxq){
         var selectZsdStr = '';
-        $scope.timudetail = tmxq;
-        renderTpl('views/tixing/danxuanedit.html');
-        console.log(tmxq.TIGAN.tiGan);
-        angular.element('.tiganTta').val(tmxq.TIGAN.tiGan);
-        $('ul.levelFour').css('display','block');
+        selectZsd = [];
+        $('ul.levelFour').css('display','block');//用于控制大纲 开始
         $('.levelFour').closest('li').find('.foldBtn').addClass('unfoldBtn');
         _.each(tmxq.ZHISHIDIAN,function(zsd,idx,lst){
+          selectZsd.push(zsd.ZHISHIDIAN_ID);
           selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
         });
-        $scope.selectZsdStr = selectZsdStr;
-        console.log($scope.selectZsdStr);
-        //$('.tiganTta').html(tmxq.TIGAN.tiGan);
-        //console.log(tmxq);
-        //var truthBeDel = window.confirm('确定保存修改吗？');
-
+        $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
+        renderTpl('views/tixing/danxuanedit.html'); //render 修改过模板
+        $scope.timudetail = tmxq;
+        danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+        danxuan_data.shuju.DAAN = tmxq.DAAN;
+        danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+        danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+        //console.log($scope.selectZsdStr);
+        //console.log(selectZsd);
       };
 
       /**
