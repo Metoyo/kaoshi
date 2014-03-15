@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-sm-2">
                         <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"></span>
-                        <div class="radio {{'answer' + $index}}"  ng-click="chooseDanxuanDaan($index)"
+                        <div class="radio {{'answer' + $index}}"  ng-click="chooseDuoxuanDaan($index)"
                              ng-class="{'radio-select':timudetail.DAAN.indexOf({{$index}}) >= 0}">
                             <input class="hidden" type="checkbox" name="rightAnswer" value="{{$index}}"
                                    ng-checked="timudetail.DAAN.indexOf({{$index}}) >= 0" ng-model="danXuanData.shuju.DAAN">
@@ -73,7 +73,7 @@
                         <!--<button type="reset" class="btn btn-warning resetForm" ng-click="resetForm()">-->
                             <!--重置-->
                         <!--</button>-->
-                        <button type="button" class="btn btn-primary" ng-click="saveDanxuanEdit()">
+                        <button type="button" class="btn btn-primary" ng-click="saveDuoxuanEdit()">
                             保存
                         </button>
                     </div>

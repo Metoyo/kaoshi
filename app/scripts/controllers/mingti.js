@@ -596,11 +596,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.DAAN = tmxq.DAAN;
           danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
           danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-          danxuan_data.shuju.TIZHISHULIANG = '';
-          danxuan_data.shuju.SUIJIPAIXU = '';
           renderTpl(tpl); //render 修改过模板
           $scope.timudetail = tmxq;
         }
+        if(tmxq.TIMULEIXING_ID == 2){
+          tpl = 'views/tixing/duoxuanedit.html';
+          duoxuan_data = timu_data;
+          $scope.duoxuan_data = duoxuan_data; //数据赋值和模板展示的顺序
+          makeZsdSelect(tmxq);
+          duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          duoxuan_data.shuju.DAAN = tmxq.DAAN;
+          duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          renderTpl(tpl); //render 修改过模板
+          $scope.timudetail = tmxq;
+        }
+        console.log(tmxq);
+        //console.log(tmxq);
 
       };
 
@@ -609,6 +621,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.saveDanxuanEdit = function(){
         var promise = addDanDuoXuanFun(danxuan_data);
+        promise.then(function() {
+          $scope.cancelAddPattern();
+          qryTestFun();
+        });
+      };
+
+      /**
+       * 修改单选题
+       */
+      $scope.saveDuoxuanEdit = function(){
+        var promise = addDanDuoXuanFun(duoxuan_data);
         promise.then(function() {
           $scope.cancelAddPattern();
           qryTestFun();
