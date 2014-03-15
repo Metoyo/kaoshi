@@ -596,8 +596,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.DAAN = tmxq.DAAN;
           danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
           danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-          renderTpl(tpl); //render 修改过模板
           $scope.timudetail = tmxq;
+          renderTpl(tpl); //render 修改过模板
         }
         if(tmxq.TIMULEIXING_ID == 2){
           tpl = 'views/tixing/duoxuanedit.html';
@@ -608,8 +608,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           duoxuan_data.shuju.DAAN = tmxq.DAAN;
           duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
           duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-          renderTpl(tpl); //render 修改过模板
           $scope.timudetail = tmxq;
+          renderTpl(tpl); //render 修改过模板
         }
         console.log(tmxq);
         //console.log(tmxq);
