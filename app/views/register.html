@@ -16,7 +16,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane clearfix">
+                <div class="tab-pane clearfix active">
                     <!-- 用户名 -->
                     <div class="form-group col-md-6">
                         <label>用户名</label>
@@ -79,55 +79,54 @@
                         </button>
                     </div>
                 </div>
-                <div class="tab-pane clearfix active">
+                <div class="tab-pane clearfix">
                     <div class="form-group col-md-6 pull-left">
                         <label><span>机构类别</span><span class="msgBox">此项不能为空！</span></label>
-                        <select ng-model="selected_jglb" class="form-control organization"
+                        <select ng-model="selected_jglb" class="form-control organization" ng-change="getJglist(selected_jglb)"
                                 ng-options="lb.LEIBIE_ID as lb.LEIBIEMINGCHENG for lb in jigoulb_list">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6 pull-right">
                         <label><span>机构</span><span class="msgBox">此项不能为空！</span></label>
-                        <select class="form-control subOrganization" name="jigou">
-                            <option>请选择</option>
+                        <select class="form-control subOrganization" ng-model="selected_jg" ng-change="getJgId(selected_jg)"
+                                ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list">
+                            <option value="">请选择</option>
                         </select>
                     </div>
                     <div class="form-group col-md-12 pull-left">
                         <label><span>学科领域</span><span class="msgBox">此项不能为空！</span></label>
-                        <select ng-repeat="ly in lingyu_list" class="form-control myField" name="lingyu">
-                            <option>请选择</option>
-                            <option value="{{ly.LINGYU_ID}}">{{ly.LINGYUMINGCHENG}}</option>
+                        <select class="form-control myField" ng-model="selected_ly" ng-change="getKemuList(selected_ly)"
+                                ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in lingyu_list">
+                            <option value="">请选择</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-12 pull-left objectWrap">
+                    <div class="form-group col-md-12 pull-left objectWrap" ng-init="false"
+                         ng-show="kemu_list.error.length ? false : true">
                         <div class="objectWrapSub">
                             <label class="msgLabel"><span>已选科目</span><span class="msgBox">此项不能为空！</span></label>
                             <div class="selectedObject">
                                 <div class="selectedObjectBox pull-left">
-                                    <div class="selectedObjectList pull-left">
-                                        <p class="hide subJuese">
-
-                                        </p>
+                                    <div class="selectedObjectList pull-left" ng-repeat="oar in objAndRight">
                                         <div class="pull-left">
                                             <p class="kemumingcheng">
                                                 <span>科目名称：</span>
-                                                <span class="objectName" tabindex=""></span>
+                                                <span class="objectName">{{oar.lingyu[0].LINGYUMINGCHENG}}</span>
                                             </p>
                                             <p class="kemuquanxian">
                                                 <span>角色：</span>
-                                                <span class="rightName"></span>
+                                                <span class="rightName">{{oar.juese.jueseName.toString()}}</span>
                                             </p>
                                         </div>
                                         <div class="btn-can pull-right text-right">
                                             <!--button type="button" class="btn btn-primary alterSelectedObject">
                                             修改
                                             </button-->
-                                            <button type="button" class="btn btn-danger delSelectedObject">
+                                            <button type="button" class="btn btn-danger" ng-click="delSelectedObject($index)">
                                                 删除
                                             </button>
-												<span class="hide radioSelectIndx">
-												</span>
+                                            <span class="hide radioSelectIndx">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -138,32 +137,36 @@
                             <div class="form-group col-md-12">
                                 <label>选择科目</label>
                                 <div class="chooseObject">
-
+                                    <label class="radio-inline" ng-repeat="km in kemu_list">
+                                        <input type="radio" name="objectName" value="{{km.LINGYU_ID}}"
+                                               ng-click="getLingYuVal($index)">
+                                        <span>{{km.LINGYUMINGCHENG}}</span>
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label>科目权限</label>
                                 <div class="chooseRight">
-                                    {{eachjueSe}}
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" name="rightName" value="{{JUESE_ID}}">
-                                        <span>{{JUESEMINGCHENG}}</span>
+                                    <label class="checkbox-inline" ng-repeat="js in juese_list">
+                                        <input type="checkbox" name="rightName" value="{{js.JUESE_ID}}"
+                                               ng-click="getJueSeArr($index)">
+                                        <span>{{js.JUESEMINGCHENG}}</span>
                                     </label>
-                                    {{each}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12 text-right">
-                                <button type="button" class="btn btn-primary getObjectAndRight">
+                                <button type="button" class="btn btn-primary" ng-click="getObjectAndRight()">
                                     确定
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-md-12 pull-left">
-                        <button type="button" class="btn btn-success prevBtn pull-left">
+                        <button type="button" class="btn btn-success prevBtn pull-left" ng-click="goToPersonInfo()">
                             上一步<span></span>
                         </button>
-                        <button type="button" class="btn btn-success nextBtn pull-right">
+                        <button type="button" class="btn btn-success nextBtn pull-right" ng-click="goToSubmit()"
+                                ng-disabled="!objAndRight.length || !selected_jg">
                             下一步<span></span>
                         </button>
                     </div>
@@ -174,7 +177,7 @@
                             注册信息
                         </p>
                         <p class="text-left">
-                            <button type="button" class="btn btn-success prevBtn pull-left">
+                            <button type="button" class="btn btn-success prevBtn pull-left" ng-click="goToJueSe()">
                                 上一步<span></span>
                             </button>
                         </p>
@@ -184,14 +187,13 @@
                             您申请的学科职务需要通过该学科负责人审核之后才可生效，请及时通知学科负责人并耐心等待
                         </p>
                         <p class="text-right">
-                            <button type="submit" class="btn btn-success submitBtn">
+                            <button type="button" class="btn btn-success submitBtn" ng-click="submitRegisterInfo()">
                                 提交<span></span>
                             </button>
                         </p>
                     </div>
                 </div>
             </div>
-            <input type="text" name="juese" value="" class="jueseVal"/>
         </form>
     </div>
 </div>

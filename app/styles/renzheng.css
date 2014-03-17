@@ -120,11 +120,7 @@ h4.logo {
   background-position: 0 -45px;
   margin: 2px 5px 0 0; }
 
-.objectWrap {
-  display: none; }
-
 .objectWrapSub {
-  display: none;
   float: left;
   width: 100%; }
 
@@ -161,8 +157,7 @@ h4.logo {
   width: 100%; }
 
 .addNewObject {
-  margin-left: 10px;
-  display: none; }
+  margin-left: 10px; }
   .addNewObject span {
     font-size: 13px; }
 
