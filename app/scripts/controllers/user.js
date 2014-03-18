@@ -58,7 +58,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           .each(function(js, indx, lst) {
             var tmpJS = {};
 
-            if(js.JUESE_CHECKED && (js.ZHUANGTAI === -1 || js.zhuangtai === 0)) {
+            if(js.JUESE_CHECKED && (js.ZHUANGTAI === -1 || js.ZHUANGTAI === 0)) {
               tmpJS.juese_id = js.JUESE_ID;
               tmpJS.zhuangtai = 1;
             } else if(!js.JUESE_CHECKED && js.ZHUANGTAI === 1) {

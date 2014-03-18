@@ -41,7 +41,6 @@ define([
 
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
-              console.log(result);
               if(result.error){
                 $scope.dengluInfo = result;
               }
@@ -59,6 +58,7 @@ define([
                  */
                 $http.get(yhxxxxApiUrl).success(function(data){
                   session.userInfo = data;
+                  console.log(data);
                   /**
                    * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                    */

@@ -132,7 +132,6 @@ define([
           selectedLingYuIndex = '';
           selectedLingYuIndex = idx;
           $scope.linyuValue = idx >=0 ? true : false;
-          console.log($scope.linyuValue);
         };
 
         /**
@@ -149,7 +148,6 @@ define([
             selectJueseNameArr.push(js.nextElementSibling.textContent);
           });
           $scope.jueseValue = selectJueseIdArr.length;
-          console.log($scope.jueseValue);
         };
 
         /**
@@ -158,7 +156,6 @@ define([
         $scope.delSelectedObject = function(idx){
           var deleteObjectAndRight = $scope.objAndRight.splice(idx, 1);
           $scope.kemu_list.push(deleteObjectAndRight[0].lingyu[0]);
-          console.log($scope.objAndRight);
         };
 
         /**
@@ -206,6 +203,9 @@ define([
             if(data.result){
               alert('提交成功！');
               urlRedirect.goTo($location.$$path, '/renzheng');
+            }
+            else{
+              alert(data.error);
             }
           })
           .error(function(err){
