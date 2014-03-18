@@ -9,8 +9,8 @@ define([
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
-    .controller('RegisterCtrl', ['$rootScope', '$scope', '$http', '$q', 'urlRedirect',
-      function ($rootScope, $scope, $http, $q, urlRedirect) {
+    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', 'urlRedirect',
+      function ($rootScope, $scope,$location, $http, $q, urlRedirect) {
         var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&leibieid=1', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
             apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token, //jiGouLeiBie 机构类别的api
@@ -76,7 +76,6 @@ define([
          */
         $scope.getJgId = function(jgId){
           jigouId = jgId;
-          console.log('机构id：' + jgId);
         };
 
         /**
@@ -121,8 +120,8 @@ define([
           objAndRightList.push(objAndRightObj);
           $scope.objAndRight = objAndRightList;
           $('input[name=rightName]:checked').prop('checked', false);
-          console.log(objAndRightObj);
-          console.log(objAndRightList);
+          $scope.jueseValue = false;
+          $scope.linyuValue = false;
         };
 
         /**
@@ -132,7 +131,8 @@ define([
         $scope.getLingYuVal = function(idx){
           selectedLingYuIndex = '';
           selectedLingYuIndex = idx;
-          console.log(selectedLingYuIndex);
+          $scope.linyuValue = idx >=0 ? true : false;
+          console.log($scope.linyuValue);
         };
 
         /**
@@ -148,8 +148,8 @@ define([
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
           });
-          console.log(selectJueseIdArr);
-          console.log(selectJueseNameArr);
+          $scope.jueseValue = selectJueseIdArr.length;
+          console.log($scope.jueseValue);
         };
 
         /**
@@ -158,8 +158,7 @@ define([
         $scope.delSelectedObject = function(idx){
           var deleteObjectAndRight = $scope.objAndRight.splice(idx, 1);
           $scope.kemu_list.push(deleteObjectAndRight[0].lingyu[0]);
-          console.log(deleteObjectAndRight);
-          console.log($scope.kemu_list);
+          console.log($scope.objAndRight);
         };
 
         /**
@@ -174,7 +173,6 @@ define([
          */
         $scope.goToSubmit = function(){
           select_juese = [];
-          console.log(objAndRightList);
           _.each(objAndRightList, function(oar, indx, lst){
             _.each(oar.juese.jueseId, function(jsid, idx, lst){
               var jueseObg = {
@@ -187,12 +185,11 @@ define([
               select_juese.push(jueseObg);
             });
           });
-          console.log(select_juese);
           $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
         /**
-         * 去提交个人信息页面
+         * 去提交个人信息页面 getObjectAndRight
          */
         $scope.goToJueSe = function(){
           $('.tab-pane').removeClass('active').eq(1).addClass('active');
@@ -204,18 +201,17 @@ define([
         $scope.submitRegisterInfo = function(){
           registerDate.token = config.token;
           registerDate.juese = select_juese;
-          console.log(registerDate);
           $http.post(registerUrl, registerDate).success(function(data){
             console.log(data);
             if(data.result){
               alert('提交成功！');
+              urlRedirect.goTo($location.$$path, '/renzheng');
             }
           })
           .error(function(err){
             alert(err);
           });
         };
-
 
     }]);
 });

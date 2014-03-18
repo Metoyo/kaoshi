@@ -101,10 +101,10 @@
                             <option value="">请选择</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-12 pull-left objectWrap" ng-init="false"
-                         ng-show="kemu_list.error.length ? false : true">
+                    <div class="form-group col-md-12 pull-left objectWrap" ng-show="selected_ly">
                         <div class="objectWrapSub">
-                            <label class="msgLabel"><span>已选科目</span><span class="msgBox">此项不能为空！</span></label>
+                            <label class="msgLabel"><span>已选科目</span></label>
+                            <p ng-hide="objAndRight.length">您还没有选择科目！请在下面勾选科目和权限。</p>
                             <div class="selectedObject">
                                 <div class="selectedObjectBox pull-left">
                                     <div class="selectedObjectList pull-left" ng-repeat="oar in objAndRight">
@@ -119,21 +119,15 @@
                                             </p>
                                         </div>
                                         <div class="btn-can pull-right text-right">
-                                            <!--button type="button" class="btn btn-primary alterSelectedObject">
-                                            修改
-                                            </button-->
                                             <button type="button" class="btn btn-danger" ng-click="delSelectedObject($index)">
                                                 删除
                                             </button>
-                                            <span class="hide radioSelectIndx">
-                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="javascript:void(0)" class="addNewObject"><span class="glyphicon glyphicon-plus-sign"> </span> 新增一个科目 </a>
                             </div>
                         </div>
-                        <div class="objectToggleBox">
+                        <div class="objectToggleBox" ng-hide="!kemu_list.length">
                             <div class="form-group col-md-12">
                                 <label>选择科目</label>
                                 <div class="chooseObject">
@@ -155,8 +149,9 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12 text-right">
-                                <button type="button" class="btn btn-primary" ng-click="getObjectAndRight()">
-                                    确定
+                                <button type="button" class="btn btn-primary" ng-disabled="!linyuValue || !jueseValue"
+                                        ng-click="getObjectAndRight()">
+                                    增加科目权限
                                 </button>
                             </div>
                         </div>

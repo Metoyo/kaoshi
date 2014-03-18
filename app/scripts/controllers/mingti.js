@@ -639,6 +639,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 分页功能
+       */
+
+
+      /**
        * subDashboard宽度可拖拽
        */
       var resize = function(el){

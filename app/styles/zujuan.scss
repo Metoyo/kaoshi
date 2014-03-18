@@ -1,7 +1,7 @@
 @import "variable";
 .zujuanWrapper{
   .chooseCondition{
-    width: 221px;
+    width: 200px;
     height: 100%;
     position: fixed;
     padding-top: 10px;
@@ -28,5 +28,8 @@
         text-align: right;
       }
     }
+  }
+  .contentWraps{
+    margin-left: 200px;
   }
 }

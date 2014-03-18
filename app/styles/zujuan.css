@@ -1,5 +1,5 @@
 .zujuanWrapper .chooseCondition {
-  width: 221px;
+  width: 200px;
   height: 100%;
   position: fixed;
   padding-top: 10px;
@@ -20,3 +20,5 @@
       text-align: left; }
     .zujuanWrapper .chooseCondition .table-tixing .td-total {
       text-align: right; }
+.zujuanWrapper .contentWraps {
+  margin-left: 200px; }

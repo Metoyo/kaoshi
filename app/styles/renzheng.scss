@@ -177,6 +177,7 @@ h4.logo {
 
 .selectedObjectList {
   margin-top: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px dashed #cfcfcf;
   p {
     width: 600px;
@@ -203,6 +204,8 @@ h4.logo {
   margin-bottom: 15px;
   float: left;
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .addNewObject {
