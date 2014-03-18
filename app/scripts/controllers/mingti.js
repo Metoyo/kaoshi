@@ -287,24 +287,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           $scope.pages = pageArr;
           console.log(pageArr);
-          console.log(currentPage);
+          //getThisPageData(0);
+          //console.log(currentPage);
           //获得一共多少页的代码开始
 
           //查询10条数据开始
-          timu_id = tiMuIdArr.slice(currentPage*2, (currentPage + 1)*2 ).toString();
-          qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
-          $http.get(qrytimuxiangqing).success(function(data){
-            if(data.length){
-              $scope.timudetails = data;
-              $scope.caozuoyuan = caozuoyuan;
-              timudetails = data;
-            }
-            else{
-              $scope.timudetails = null;
-            }
-          }).error(function(err){
-              console.log(err);
-          });
+          $scope.getThisPageData();
           //查询10条数据介绍
         })
         .error(function(err){
@@ -312,6 +300,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
       };
       qryTestFun();
+
+      /**
+       * 分页的代码
+       */
+      $scope.getThisPageData = function(pgNum){
+        var qrytimuxiangqing,
+            timu_id,
+            currentPage = pgNum ? pgNum : 0;
+
+        timu_id = tiMuIdArr.slice(currentPage*2, (currentPage + 1)*2 ).toString();
+        qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
+        $http.get(qrytimuxiangqing).success(function(data){
+          if(data.length){
+            $scope.timudetails = data;
+            $scope.caozuoyuan = caozuoyuan;
+            timudetails = data;
+          }
+          else{
+            $scope.timudetails = null;
+          }
+        }).error(function(err){
+            console.log(err);
+          });
+
+      };
 
       /**
        * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
@@ -577,13 +590,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.cancelAddPattern();
           qryTestFun();
         });
-      };
-
-      /**
-       * 分页功能
-       */
-      $scope.getThisPageData = function(pgNum){
-        qryTestFun(pgNum);
       };
 
       /**
