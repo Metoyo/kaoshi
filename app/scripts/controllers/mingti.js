@@ -91,7 +91,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             timu_id: ''
           },
           timudetails,//获得的题目数组
-          danxuanSaveSuccess = false;
+          tiMuIdArr = []; //获得查询题目ID的数组
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -263,18 +263,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 查询试题的函数
        */
-      var qryTestFun = function(){
+      var qryTestFun = function(pgNum){
         var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
             '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id, //查询题目列表的url
-            tiMuIdArr = [],
             timu_id = '',
+            totalPage, //查出来的数据一共能分多少页
+            pageArr, //分页的长度得到一个数组
+            currentPage = pgNum ? pgNum : 0,
             qrytimuxiangqing;
+            tiMuIdArr = [];
+
         $http.get(qrytimuliebiao).success(function(data){
           $scope.testListId = data;
           _.each(data, function(tm, idx, lst){
             tiMuIdArr.push(tm.TIMU_ID);
           });
-          timu_id = tiMuIdArr.slice(0,10).toString();
+
+          //获得一共多少页的代码开始
+          pageArr = [];
+          totalPage = Math.ceil(data.length/2);
+          for(var i = 1; i <= totalPage; i++){
+            pageArr.push(i);
+          }
+          $scope.pages = pageArr;
+          console.log(pageArr);
+          console.log(currentPage);
+          //获得一共多少页的代码开始
+
+          //查询10条数据开始
+          timu_id = tiMuIdArr.slice(currentPage*2, (currentPage + 1)*2 ).toString();
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
             if(data.length){
@@ -288,7 +305,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }).error(function(err){
               console.log(err);
           });
-
+          //查询10条数据介绍
         })
         .error(function(err){
           console.log(err);
@@ -401,49 +418,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 单选题添加代码
        */
-      /*var addDanxuanFun = function() {
-        var deferred = $q.defer();
-
-        tznrIsNull = true;
-        var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
-          tizhineirong = [];
-        _.each(tiZhiArr, function(tizhi, idx, lst){
-          if(tizhi.value){
-            tizhineirong.push(tizhi.value);
-          }
-          else{
-            tznrIsNull = false;
-          }
-        });
-        danxuan_data.shuju.TIXING_ID = 1;
-        danxuan_data.shuju.TIMULEIXING_ID = 1;
-        danxuan_data.shuju.TIZHINEIRONG = tizhineirong;
-        danxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
-        danxuan_data.shuju.ZHISHIDIAN = selectZsd;
-        console.log(danxuan_data);
-        if(selectZsd.length && tznrIsNull && danxuan_data.shuju.NANDU_ID.length &&
-          danxuan_data.shuju.DAAN.length && danxuan_data.shuju.TIGAN.length ){
-          $http.post(xgtmUrl, danxuan_data).success(function(data){
-            console.log(data);
-            if(data.result){
-              alert('提交成功！');
-              deferred.resolve();
-              //resetFun();
-            }
-          })
-          .error(function(err){
-            alert(err);
-            deferred.reject();
-          });
-        }
-        else{
-          alert("请确保试题的完整性！");
-          deferred.reject();
-        }
-
-        return deferred.promise;
-
-      };*/
       $scope.addDanxuanShiTi = function(){
         var promise = addDanDuoXuanFun(danxuan_data);
         promise.then(function() {
@@ -454,39 +428,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 多选题添加代码
        */
-      /*$scope.submitDuoxuanShiTi = function(){
-        tznrIsNull = true;
-        var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
-          tizhineirong = [];
-        _.each(tiZhiArr, function(tizhi, idx, lst){
-          if(tizhi.value){
-            tizhineirong.push(tizhi.value);
-          }
-          else{
-            tznrIsNull = false;
-          }
-        });
-
-        duoxuan_data.shuju.TIZHINEIRONG = tizhineirong;
-        duoxuan_data.shuju.TIZHISHULIANG = tiZhiArr.length;
-        duoxuan_data.shuju.ZHISHIDIAN = selectZsd;
-        if(selectZsd.length && tznrIsNull && duoxuan_data.shuju.NANDU_ID.length &&
-          duoxuan_data.shuju.DAAN.length && duoxuan_data.shuju.TIGAN.length ){
-          $http.post(xgtmUrl, duoxuan_data).success(function(data){
-            if(data.result){
-              alert('提交成功！');
-              resetFun();
-            }
-          })
-          .error(function(err){
-            alert(err);
-          });
-        }
-        else{
-          alert("请确保试题的完整性！");
-        }
-
-      };*/
       $scope.addDuoxuanShiTi = function(){
         var promise = addDanDuoXuanFun(duoxuan_data);
         promise.then(function() {
@@ -628,7 +569,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 修改单选题
+       * 修改多选题
        */
       $scope.saveDuoxuanEdit = function(){
         var promise = addDanDuoXuanFun(duoxuan_data);
@@ -641,7 +582,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 分页功能
        */
-
+      $scope.getThisPageData = function(pgNum){
+        qryTestFun(pgNum);
+      };
 
       /**
        * subDashboard宽度可拖拽
