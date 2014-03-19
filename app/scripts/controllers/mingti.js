@@ -91,7 +91,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             timu_id: ''
           },
           timudetails,//获得的题目数组
-          tiMuIdArr = []; //获得查询题目ID的数组
+          tiMuIdArr = [], //获得查询题目ID的数组
+          pageArr = [], //根据得到的数据定义一个分页数组
+          totalPage, //符合条件的数据一共有多少页
+          itemNumPerPage = 10, //每页显示多少条数据
+          paginationLength = 11; //分页部分，页码的长度，目前设定为11
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -263,37 +267,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 查询试题的函数
        */
-      var qryTestFun = function(pgNum){
+      var qryTestFun = function(pg){
         var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
-            '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id, //查询题目列表的url
-            timu_id = '',
-            totalPage, //查出来的数据一共能分多少页
-            pageArr, //分页的长度得到一个数组
-            currentPage = pgNum ? pgNum : 0,
-            qrytimuxiangqing;
+            '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
+            pageArr = [];
 
         $http.get(qrytimuliebiao).success(function(data){
           $scope.testListId = data;
           _.each(data, function(tm, idx, lst){
             tiMuIdArr.push(tm.TIMU_ID);
           });
-
           //获得一共多少页的代码开始
-          pageArr = [];
-          totalPage = Math.ceil(data.length/2);
+          totalPage = Math.ceil(data.length/itemNumPerPage);
           for(var i = 1; i <= totalPage; i++){
             pageArr.push(i);
           }
-          $scope.pages = pageArr;
-          console.log(pageArr);
-          //getThisPageData(0);
-          //console.log(currentPage);
-          //获得一共多少页的代码开始
-
-          //查询10条数据开始
+          $scope.lastPageNum = totalPage; //最后一页的数值
+          //查询数据开始
           $scope.getThisPageData();
-          //查询10条数据介绍
         })
         .error(function(err){
           console.log(err);
@@ -304,12 +296,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 分页的代码
        */
-      $scope.getThisPageData = function(pgNum){
+      $scope.getThisPageData = function(pg){
         var qrytimuxiangqing,
+            pgNum = pg - 1,
             timu_id,
             currentPage = pgNum ? pgNum : 0;
 
-        timu_id = tiMuIdArr.slice(currentPage*2, (currentPage + 1)*2 ).toString();
+        //得到分页数组的代码
+        var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
+        if(totalPage <= paginationLength){
+          $scope.pages = pageArr;
+        }
+        if(totalPage > paginationLength){
+          if(currentPageNum > 0 && currentPageNum <= 6 ){
+            $scope.pages = pageArr.slice(0, paginationLength);
+          }
+          else if(currentPageNum > totalPage - 5 && currentPageNum <= totalPage){
+            $scope.pages = pageArr.slice(totalPage - paginationLength);
+          }
+          else{
+            $scope.pages = pageArr.slice(currentPageNum - 5, currentPageNum + 5);
+          }
+        }
+        //查询数据的代码
+        timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
         qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
         $http.get(qrytimuxiangqing).success(function(data){
           if(data.length){
@@ -321,8 +331,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.timudetails = null;
           }
         }).error(function(err){
-            console.log(err);
-          });
+          console.log(err);
+        });
 
       };
 
