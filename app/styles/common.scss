@@ -558,8 +558,9 @@ a.add-btn:hover span {
 /*edit wrap styles end*/
 /* 分页的样式 开始*/
 .paging{
-  a{
-    padding: 0 10px;
+  padding: 0 10px;
+  .pagination{
+    margin: 5px 0;
   }
 }
 /* 分页的样式 结束*/

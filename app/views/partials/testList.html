@@ -15,7 +15,7 @@
                     难易度：<span class="pull-right level-star-{{tm.NANDU_ID}}"></span>
                 </p>
                 <p>
-                    更新日期：2013-09-28
+                    更新日期：{{tm.UPDATE_TIME | date:'yyyy-MM-dd HH:mm:ss'}}
                 </p>
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
                     <button type="button" class="btn btn-danger" ng-click="deleteItem(tm.TIMU_ID, $index)">删除试题</button>

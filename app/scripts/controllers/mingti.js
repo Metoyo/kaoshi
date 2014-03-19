@@ -267,7 +267,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 查询试题的函数
        */
-      var qryTestFun = function(pg){
+      var qryTestFun = function(){
         var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
             '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
@@ -342,9 +342,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.cancelAddPattern = function(){
         $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
         $scope.patternListToggle = false; // 明天题型列表隐藏
+        $('.pointTree').find('input[name=point]').prop('checked', false);
+        zhishidian_id = '';
         qryTestFun();
         $scope.txTpl = 'views/partials/testList.html';
-        $('.pointTree').find('input[name=point]').prop('checked', false);
       };
 
       /**
@@ -550,6 +551,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       $scope.editItem = function(tmxq){
+        console.log(tmxq);
         var tpl;
         if(tmxq.TIMULEIXING_ID == 1){
           tpl = 'views/tixing/danxuanedit.html';
@@ -575,7 +577,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.timudetail = tmxq;
           renderTpl(tpl); //render 修改过模板
         }
-        console.log(tmxq);
+        //console.log(tmxq);
         //console.log(tmxq);
 
       };
