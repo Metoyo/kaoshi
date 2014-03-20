@@ -60,6 +60,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
 
+
       /**
        * 获得大纲数据
        */
@@ -84,19 +85,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             alert(err);
           });
       });
-
-      /**
-       *查询科目（LingYu，url：/api/ling yu）
-       */
-      $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
-      $scope.loadLingYu = function(){
-        if($scope.keMuList){
-          $scope.keMuList = false;
-        }
-        else{
-          $scope.keMuList = true;
-        }
-      };
 
       /**
        * 点击,显示大纲列表
@@ -164,13 +152,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 查询科目题型(chaxun_kemu_tixing)
-       */
-      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
-        $scope.kmtxList = data;
-      });
-
-      /**
        * 获得难度分布的数组
        */
       $scope.getNanduDist = function(){
@@ -231,6 +212,98 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         console.log(distArr);
       };
+
+      /**
+       * 难度分布滑块实现代码
+       */
+
+
+
+      /**
+       * dagangListWrap宽度可拖拽
+       */
+      var resize = function(el, dragItem, reductionItem, minWidth, maxWidth){
+        //初始化参数
+        var els = document.getElementById(dragItem).style,
+          x = 0, //鼠标的 X 和 Y 轴坐标
+          dragItemClass = '#' + dragItem; //得到需要元素的class
+
+
+        $(el).mousedown(function(e) {
+          //按下元素后，计算当前鼠标与对象计算后的坐标
+          x = e.clientX - el.offsetWidth - $(dragItemClass).width();
+
+          //在支持 setCapture 做些东东
+          el.setCapture ? (
+            //捕捉焦点
+            el.setCapture(),
+              //设置事件
+              el.onmousemove = function(ev) {
+                mouseMove(ev || event);
+              }, el.onmouseup = mouseUp
+            ) : (
+            //绑定事件
+            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+            );
+          //防止默认事件发生
+          e.preventDefault();
+        });
+        //移动事件
+        function mouseMove(e) {
+          var subDbWidth = $(dragItemClass).width();
+          if(subDbWidth < minWidth - 1){
+            els.width = minWidth + 'px';
+            $(reductionItem).css('padding-left',els.width);
+            $(document).unbind('mousemove', mouseMove);
+          }
+          if(subDbWidth >= minWidth - 1 && subDbWidth <= maxWidth){
+            els.width = e.clientX - x + 'px';
+            $(reductionItem).css('padding-left',els.width);
+          }
+          if(subDbWidth > maxWidth){
+            els.width = maxWidth + 'px';
+            $(reductionItem).css('padding-left',els.width);
+            $(document).unbind('mousemove', mouseMove);
+          }
+          $('.td-total').html(els.width);
+        }
+        console.log('hello');
+        //停止事件
+        function mouseUp() {
+          //在支持 releaseCapture 做些东东
+          el.releaseCapture ? (
+            //释放焦点
+            el.releaseCapture(),
+              //移除事件
+              el.onmousemove = el.onmouseup = null
+            ) : (
+            //卸载事件
+            $(document).unbind('mousemove', mouseMove).unbind('mouseup', mouseUp)
+            );
+        }
+      };
+      //resize(document.getElementById('dragBtn'), 'dagangListWrap', '.content', 220, 400);//初始化拖拽
+
+
+      /**
+       *查询科目（LingYu，url：/api/ling yu）
+       */
+      $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
+      $scope.loadLingYu = function(){
+        if($scope.keMuList){
+          $scope.keMuList = false;
+        }
+        else{
+          $scope.keMuList = true;
+        }
+      };
+
+      /**
+       * 查询科目题型(chaxun_kemu_tixing)
+       */
+      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
+        $scope.kmtxList = data;
+      });
 
       /**
        * 查询试题的函数
@@ -327,6 +400,29 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         nandu_id = angular.element(tx_id).find('span').text();
         qryTestFun();
       };
+
+      /**
+       * popupWrap显示
+       */
+      $scope.popupWrapShow = function(){
+        $('.popupWrap').animate({
+          left: '341px'
+        }, 500, function() {
+          $('.popupWrap').css('left','auto');
+        });
+      };
+
+      /**
+       * popupWrap隐藏
+       */
+      $scope.popupWrapHide = function(){
+        $('.popupWrap').css('left','341px').animate({
+          left: '-100px'
+        }, 500, function() {
+        });
+      };
+
+
 
     }]);
 });

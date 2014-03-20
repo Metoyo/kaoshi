@@ -5284,23 +5284,23 @@ a.add-btn:hover span {
   /*sub dashboard styles end*/
   /* contentWraps styles begin */
   /* contentWraps styles end */ }
-  .innerWrapperSubDs .subDashboard {
-    width: 221px;
+  .innerWrapperSubDs .dagangListWrap {
+    width: 220px;
     height: 100%;
     position: fixed;
     padding-top: 10px;
     background-color: #f5f5f5;
     border-right: 1px solid #cfcfcf; }
-    .innerWrapperSubDs .subDashboard .btn {
+    .innerWrapperSubDs .dagangListWrap .btn {
       width: 180px;
       text-align: left; }
-    .innerWrapperSubDs .subDashboard span.caret {
+    .innerWrapperSubDs .dagangListWrap span.caret {
       margin-top: 8px;
       margin-right: 10px;
       position: absolute;
       right: 0;
       top: 20%; }
-    .innerWrapperSubDs .subDashboard .dropdownMenu {
+    .innerWrapperSubDs .dagangListWrap .dropdownMenu {
       background-color: #fff;
       list-style: none;
       border-radius: 6px;
@@ -5312,15 +5312,15 @@ a.add-btn:hover span {
       padding: 10px;
       display: block;
       z-index: 10; }
-      .innerWrapperSubDs .subDashboard .dropdownMenu li {
+      .innerWrapperSubDs .dagangListWrap .dropdownMenu li {
         padding: 2px 0; }
-        .innerWrapperSubDs .subDashboard .dropdownMenu li .ddmSub {
+        .innerWrapperSubDs .dagangListWrap .dropdownMenu li .ddmSub {
           list-style: none;
           padding: 0 0 0 10px; }
-          .innerWrapperSubDs .subDashboard .dropdownMenu li .ddmSub a {
+          .innerWrapperSubDs .dagangListWrap .dropdownMenu li .ddmSub a {
             padding-left: 15px;
             background: url("../images/mingti/icon/list_icon.jpg") no-repeat 0 5px; }
-    .innerWrapperSubDs .subDashboard .dragBtn {
+    .innerWrapperSubDs .dagangListWrap .dragBtn {
       width: 2px;
       height: 100%;
       cursor: e-resize;
@@ -5439,6 +5439,63 @@ a.add-btn:hover span {
       font-size: 16px;
       color: red; }
 
+/* test list styls begin*/
+.total-test {
+  padding: 0 10px;
+  font-size: 14px; }
+
+.testList {
+  padding: 0 10px; }
+  .testList li {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d8d8d8;
+    position: relative; }
+  .testList h3 {
+    font-size: 14px;
+    margin: 0; }
+  .testList .item-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px; }
+  .testList .item-tigan {
+    margin-bottom: 10px; }
+  .testList .item-sub-title {
+    font-size: 12px;
+    width: 100%; }
+    .testList .item-sub-title p {
+      display: inline;
+      margin-right: 10px;
+      float: left; }
+    .testList .item-sub-title .use-times {
+      color: #f60; }
+    .testList .item-sub-title .add-to-paper {
+      position: absolute;
+      top: 10px;
+      right: 10px; }
+    .testList .item-sub-title .knowledge-point span {
+      margin-right: 10px; }
+    .testList .item-sub-title .level-num span {
+      width: 42px;
+      height: 10px;
+      margin-top: 2px;
+      background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0; }
+    .testList .item-sub-title .level-num .level-star-2 {
+      background-position: 0 -10px; }
+    .testList .item-sub-title .level-num .level-star-3 {
+      background-position: 0 -20px; }
+    .testList .item-sub-title .level-num .level-star-4 {
+      background-position: 0 -30px; }
+    .testList .item-sub-title .level-num .level-star-5 {
+      background-position: 0 -40px; }
+  .testList .item-cont {
+    margin-top: 35px; }
+    .testList .item-cont .item-tizhi-wrap {
+      margin-bottom: 5px; }
+      .testList .item-cont .item-tizhi-wrap .item-tizhi {
+        margin-bottom: 5px; }
+
+/* test list styls end*/
 /*edit wrap styles begin*/
 .editWrap {
   position: absolute;

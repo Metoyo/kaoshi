@@ -1,26 +1,72 @@
-.zujuanWrapper .chooseCondition {
-  width: 200px;
+.zujuanWrapper .testPaperSummary {
+  width: 221px;
   height: 100%;
   position: fixed;
+  z-index: 10;
+  padding-left: 10px;
+  padding-right: 10px;
   padding-top: 10px;
   background-color: #f5f5f5;
   border-right: 1px solid #cfcfcf; }
-  .zujuanWrapper .chooseCondition .table-tixing {
+  .zujuanWrapper .testPaperSummary .subjectBox {
+    position: relative; }
+    .zujuanWrapper .testPaperSummary .subjectBox h2 {
+      font-size: 16px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold; }
+    .zujuanWrapper .testPaperSummary .subjectBox a {
+      font-size: 12px;
+      text-decoration: none; }
+  .zujuanWrapper .testPaperSummary .selectedItems h3 {
+    font-size: 12px;
+    margin: 15px 0 5px 0; }
+  .zujuanWrapper .testPaperSummary .selectedItems table {
     width: 100%; }
-    .zujuanWrapper .chooseCondition .table-tixing th {
+    .zujuanWrapper .testPaperSummary .selectedItems table td {
+      font-size: 12px;
       text-align: center;
-      padding: 5px; }
-    .zujuanWrapper .chooseCondition .table-tixing td {
-      padding: 5px;
-      text-align: center; }
-      .zujuanWrapper .chooseCondition .table-tixing td input {
-        width: 36px;
-        text-align: center; }
-    .zujuanWrapper .chooseCondition .table-tixing .td-txName {
+      padding: 3px; }
+      .zujuanWrapper .testPaperSummary .selectedItems table td .glyphicon {
+        top: 3px;
+        margin-right: 0; }
+    .zujuanWrapper .testPaperSummary .selectedItems table .text-left {
       text-align: left; }
-    .zujuanWrapper .chooseCondition .table-tixing .td-total {
-      text-align: right; }
-.zujuanWrapper .contentWraps {
-  margin-left: 200px; }
-.zujuanWrapper .kmTxWrap {
-  margin-left: 200px; }
+    .zujuanWrapper .testPaperSummary .selectedItems table .deleteBtn {
+      width: 21px; }
+.zujuanWrapper .contentInner {
+  position: relative; }
+  .zujuanWrapper .contentInner .popupWrap {
+    position: fixed;
+    background-color: #fff;
+    height: 100%;
+    width: 440px;
+    z-index: 2;
+    left: -100px; }
+    .zujuanWrapper .contentInner .popupWrap .dagangListWrap {
+      position: absolute;
+      left: 0; }
+    .zujuanWrapper .contentInner .popupWrap .chooseCondition {
+      width: 220px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      padding-top: 10px;
+      background-color: #f5f5f5;
+      border-right: 1px solid #cfcfcf; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
+        width: 100%; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {
+          text-align: center;
+          padding: 5px; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing td {
+          padding: 5px;
+          text-align: center; }
+          .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing td input {
+            width: 36px;
+            text-align: center; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing .td-txName {
+          text-align: left; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing .td-total {
+          text-align: right; }

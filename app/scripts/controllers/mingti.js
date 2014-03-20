@@ -605,16 +605,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * subDashboard宽度可拖拽
+       * dagangListWrap宽度可拖拽
        */
       var resize = function(el){
         //初始化参数
-        var els = document.getElementById('subDashboard').style,
+        var els = document.getElementById('dagangListWrap').style,
             x = 0; //鼠标的 X 和 Y 轴坐标
 
         $(el).mousedown(function(e) {
           //按下元素后，计算当前鼠标与对象计算后的坐标
-          x = e.clientX - el.offsetWidth - $(".subDashboard").width();
+          x = e.clientX - el.offsetWidth - $(".dagangListWrap").width();
 
           //在支持 setCapture 做些东东
           el.setCapture ? (
@@ -633,7 +633,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         //移动事件
         function mouseMove(e) {
-          var subDbWidth = $(".subDashboard").width();
+          var subDbWidth = $(".dagangListWrap").width();
           if(subDbWidth < 220){
             els.width = '221px';
             $('.content').css('padding-left',els.width);

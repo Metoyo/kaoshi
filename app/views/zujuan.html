@@ -1,164 +1,282 @@
 <div class="innerWrap innerWrapperSubDs zujuanWrapper">
-    <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
-    <div id="subDashboard" class="subDashboard">
-        <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
-        <div class="btn-group pointSelect">
-            <h2 class="pointTitleBox pull-left" ng-click="loadLingYu()">
-                <span class="pointTitle pull-left selectLyName">{{lyList[0].LINGYUMINGCHENG}}</span>
-                <span class="caret pull-right"></span>
-            </h2>
-            <ul class="dropdownMenu lyListBox" ng-hide="keMuList">
-                <li ng-repeat="lyItem in lyList">
-                    <a href="javascript:void(0)" ng-click="cxKmTx(lyItem)">{{lyItem.LINGYUMINGCHENG}}</a>
-                </li>
-            </ul>
+    <div class="testPaperSummary">
+        <div class="subjectBox clearfix">
+            <h2 class="pull-left">高中物理</h2>
+            <a href="javascript:void(0)" class="pull-right">更换科目</a>
         </div>
-        <div class="btn-group pointSelect">
-            <h2 class="pointTitleBox pull-left" ng-click="showDgList(dgList)">
-                <span class="pointTitle pull-left selectDgName">{{dgList[0].ZHISHIDAGANGMINGCHENG}}</span>
-                <span class="caret pull-right"></span>
-            </h2>
-            <ul class="dropdownMenu dgListBox" ng-hide="dgListBox">
-                <li ng-repeat="dg in dgList">
-                    <a href="javascript:void(0)" ng-click="loadDgZsd(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
-                </li>
-            </ul>
-        </div>
-        <div class="pointTree">
-            <ul class="list-unstyled levelOne">
-                <li ng-repeat="zsd in kowledgeList">
-                    <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}" ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
-                                   class="{{'select' + zsd.JIEDIAN_ID}}" ng-click="toggleSelection(zsd.JIEDIAN_ID)"/>
-                            {{zsd.ZHISHIDIANMINGCHENG}}</label>
-                    </div>
-                    <ul class="list-unstyled levelTwo">
-                        <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
-                            <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}" ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
-                                           class="{{'select' + nd2.JIEDIAN_ID}}" ng-click="toggleSelection(nd2.JIEDIAN_ID)"/>
-                                    {{nd2.ZHISHIDIANMINGCHENG}}</label>
-                            </div>
-                            <ul class="list-unstyled levelThree">
-                                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
-                                    <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}" ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"
-                                                   class="{{'select' + nd3.JIEDIAN_ID}}" ng-click="toggleSelection(nd3.JIEDIAN_ID)"/>
-                                            {{nd3.ZHISHIDIANMINGCHENG}}</label>
-                                    </div>
-                                    <ul class="list-unstyled levelFour">
-                                        <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"
-                                                           class="{{'select' + nd4.JIEDIAN_ID}}" ng-click="toggleSelection(nd4.JIEDIAN_ID)"/>
-                                                    {{nd4.ZHISHIDIANMINGCHENG}}</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div id="dragBtn" class="dragBtn">
-        </div>
-    </div>
-    <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
-    <div class="content">
-        <!--组卷筛选条件。 开始-->
-        <div class="chooseCondition">
-            <table class="table-tixing">
+        <div class="selectedItems clearfix">
+            <h3 class="clearfix">
+                <span class="pull-left">已选试题()</span>
+                <a href="javascript:void(0)" class="pull-right">全部清空</a>
+            </h3>
+            <table class="table-bordered">
                 <tr>
-                    <th></th>
-                    <th>数量</th>
-                    <th>分值</th>
-                </tr>
-                <tr ng-repeat="kmtx in kmtxList">
-                    <td class="td-txName">
-                        {{kmtx.TIXINGMINGCHENG}}
-                        <span class="hidden">{{kmtx.TIXING_ID}}</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-item-num" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
-                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
-                    </td>
-                    <td>
-                        <input type="text" class="input-item-score" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
-                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                    <td class="text-left">单选题</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="td-total">总分：</td>
+                    <td class="text-left">多选题</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">填空题</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">简单题</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">完型填空题</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
                 </tr>
             </table>
-            <div class="nandu-dist">
-                <input type="text" name="" class="nd-factor"/>
-                <input type="text" name="" class="dist-arr"/>
-                <button ng-click="getNanduDist()">提交</button>
-            </div>
         </div>
-        <!--组卷筛选条件。 结束-->
-        <!--题型和难度DOM元素， 开始-->
-        <div class="kmTxWrap" ng-show="kmTxWrap">
-            <div class="kmTxBox">
-                <div class="kmtxNdTitle pull-left">
-                    <span class="pull-left">题型</span>
-                </div>
-                <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
-                    <li class="tiXingId_all">
-                        <span class="hidden"></span>
-                        <a href="javascript:void(0)" ng-click="getTiXingId('all')">全部题型</a>
-                    </li>
-                    <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
-                        <span class="hidden">{{ kmtx.TIXING_ID }}</span>
-                        <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="nanduBox">
-                <div class="kmtxNdTitle pull-left">
-                    <span class="pull-left">难度</span>
-                </div>
-                <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
-                    <li class="nanDuId_all">
-                        <span class="hidden"></span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId('all')">全部难度</a>
-                    </li>
-                    <li class="nanDuId_1">
-                        <span class="hidden">1</span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId(1)">简单</a>
-                    </li>
-                    <li class="nanDuId_2">
-                        <span class="hidden">2</span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId(2)">一般</a>
-                    </li>
-                    <li class="nanDuId_3">
-                        <span class="hidden">3</span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId(3)">普通</a>
-                    </li>
-                    <li class="nanDuId_4">
-                        <span class="hidden">4</span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId(4)">困难</a>
-                    </li>
-                    <li class="nanDuId_5">
-                        <span class="hidden">5</span>
-                        <a href="javascript:void(0)" ng-click="getNanDuId(5)">较难</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="selectedItems clearfix">
+            <h3 class="clearfix">
+                <span class="pull-left">已选试题()</span>
+                <a href="javascript:void(0)" class="pull-right">全部清空</a>
+            </h3>
+            <table class="table-bordered">
+                <tr>
+                    <td class="text-left">容易</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">较易</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">一般</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">较难</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">困难</td>
+                    <td>26</td>
+                    <td>36%</td>
+                    <td>36</td>
+                    <td class="deleteBtn">
+                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            </table>
         </div>
-        <!--题型和难度DOM元素， 结束-->
-        <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
+        <button type="button" ng-click="popupWrapShow()">点我展开</button>
+        <button type="button" ng-click="popupWrapHide()">点我隐藏</button>
+    </div>
+    <div class="content">
+        <div class="contentInner">
+            <!--组卷筛选条件。 开始-->
+            <div class="popupWrap">
+                <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
+                <div id="dagangListWrap" class="dagangListWrap">
+                    <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
+                    <div class="btn-group pointSelect">
+                        <h2 class="pointTitleBox pull-left" ng-click="loadLingYu()">
+                            <span class="pointTitle pull-left selectLyName">{{lyList[0].LINGYUMINGCHENG}}</span>
+                            <span class="caret pull-right"></span>
+                        </h2>
+                        <ul class="dropdownMenu lyListBox" ng-hide="keMuList">
+                            <li ng-repeat="lyItem in lyList">
+                                <a href="javascript:void(0)" ng-click="cxKmTx(lyItem)">{{lyItem.LINGYUMINGCHENG}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group pointSelect">
+                        <h2 class="pointTitleBox pull-left" ng-click="showDgList(dgList)">
+                            <span class="pointTitle pull-left selectDgName">{{dgList[0].ZHISHIDAGANGMINGCHENG}}</span>
+                            <span class="caret pull-right"></span>
+                        </h2>
+                        <ul class="dropdownMenu dgListBox" ng-hide="dgListBox">
+                            <li ng-repeat="dg in dgList">
+                                <a href="javascript:void(0)" ng-click="loadDgZsd(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pointTree">
+                        <ul class="list-unstyled levelOne">
+                            <li ng-repeat="zsd in kowledgeList">
+                                <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}" ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
+                                               class="{{'select' + zsd.JIEDIAN_ID}}" ng-click="toggleSelection(zsd.JIEDIAN_ID)"/>
+                                        {{zsd.ZHISHIDIANMINGCHENG}}</label>
+                                </div>
+                                <ul class="list-unstyled levelTwo">
+                                    <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+                                        <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}" ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
+                                                       class="{{'select' + nd2.JIEDIAN_ID}}" ng-click="toggleSelection(nd2.JIEDIAN_ID)"/>
+                                                {{nd2.ZHISHIDIANMINGCHENG}}</label>
+                                        </div>
+                                        <ul class="list-unstyled levelThree">
+                                            <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                                                <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}" ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"
+                                                               class="{{'select' + nd3.JIEDIAN_ID}}" ng-click="toggleSelection(nd3.JIEDIAN_ID)"/>
+                                                        {{nd3.ZHISHIDIANMINGCHENG}}</label>
+                                                </div>
+                                                <ul class="list-unstyled levelFour">
+                                                    <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"
+                                                                       class="{{'select' + nd4.JIEDIAN_ID}}" ng-click="toggleSelection(nd4.JIEDIAN_ID)"/>
+                                                                {{nd4.ZHISHIDIANMINGCHENG}}</label>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="dragBtn" class="dragBtn">
+                    </div>
+                </div>
+                <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
+                <div class="chooseCondition">
+                    <table class="table-tixing">
+                        <tr>
+                            <th></th>
+                            <th>数量</th>
+                            <th>分值</th>
+                        </tr>
+                        <tr ng-repeat="kmtx in kmtxList">
+                            <td class="td-txName">
+                                {{kmtx.TIXINGMINGCHENG}}
+                                <span class="hidden">{{kmtx.TIXING_ID}}</span>
+                            </td>
+                            <td>
+                                <input type="text" class="input-item-num" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                       onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                            </td>
+                            <td>
+                                <input type="text" class="input-item-score" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                       onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="td-total">总分：</td>
+                        </tr>
+                    </table>
+                    <div class="nandu-dist">
+                        <input type="text" name="" class="nd-factor"/>
+                        <input type="text" name="" class="dist-arr"/>
+                        <button ng-click="getNanduDist()">提交</button>
+                    </div>
+                </div>
+            </div>
+            <!--组卷筛选条件。 结束-->
+            <!--题型和难度DOM元素， 开始-->
+            <div class="kmTxWrap" ng-show="kmTxWrap">
+                <div class="kmTxBox">
+                    <div class="kmtxNdTitle pull-left">
+                        <span class="pull-left">题型</span>
+                    </div>
+                    <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
+                        <li class="tiXingId_all">
+                            <span class="hidden"></span>
+                            <a href="javascript:void(0)" ng-click="getTiXingId('all')">全部题型</a>
+                        </li>
+                        <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
+                            <span class="hidden">{{ kmtx.TIXING_ID }}</span>
+                            <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nanduBox">
+                    <div class="kmtxNdTitle pull-left">
+                        <span class="pull-left">难度</span>
+                    </div>
+                    <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
+                        <li class="nanDuId_all">
+                            <span class="hidden"></span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId('all')">全部难度</a>
+                        </li>
+                        <li class="nanDuId_1">
+                            <span class="hidden">1</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(1)">简单</a>
+                        </li>
+                        <li class="nanDuId_2">
+                            <span class="hidden">2</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(2)">一般</a>
+                        </li>
+                        <li class="nanDuId_3">
+                            <span class="hidden">3</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(3)">普通</a>
+                        </li>
+                        <li class="nanDuId_4">
+                            <span class="hidden">4</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(4)">困难</a>
+                        </li>
+                        <li class="nanDuId_5">
+                            <span class="hidden">5</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(5)">较难</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--题型和难度DOM元素， 结束-->
+            <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
 
+            </div>
         </div>
     </div>
 </div>

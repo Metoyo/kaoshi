@@ -1,38 +1,104 @@
 @import "variable";
 .zujuanWrapper{
-  .chooseCondition{
-    width: 200px;
+  .testPaperSummary{
+    width: 221px;
     height: 100%;
     position: fixed;
+    z-index: 10;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 10px;
     background-color: #f5f5f5;
     border-right: 1px solid #cfcfcf;
-    .table-tixing{
-      width: 100%;
-      th{
-        text-align: center;
-        padding: 5px;
+    .subjectBox{
+      position: relative;
+      h2{
+        font-size: 16px;
+        display: inline;
+        margin: 0;
+        color: #f60;
+        font-weight: bold;
       }
-      td{
-        padding: 5px;
-        text-align: center;
-        input{
-          width: 36px;
+      a{
+        font-size: 12px;
+        text-decoration: none;
+      }
+    }
+    .selectedItems{
+      h3{
+        font-size: 12px;
+        margin: 15px 0 5px 0;
+      }
+      table{
+        width: 100%;
+        td{
+          font-size: 12px;
           text-align: center;
+          padding: 3px;
+          .glyphicon {
+            top: 3px;
+            margin-right: 0;
+          }
         }
-      }
-      .td-txName{
-        text-align: left;
-      }
-      .td-total{
-        text-align: right;
+        .text-left{
+          text-align: left;
+        }
+        .deleteBtn{
+          width: 21px;
+        }
       }
     }
   }
+  .contentInner{
+    position: relative;
+    .popupWrap{
+      position: fixed;
+      background-color: #fff;
+      height: 100%;
+      width: 440px;
+      z-index: 2;
+      left: -100px;
+      .dagangListWrap{
+        position: absolute;
+        left: 0;
+      }
+      .chooseCondition{
+        width: 220px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        padding-top: 10px;
+        background-color: #f5f5f5;
+        border-right: 1px solid #cfcfcf;
+        .table-tixing{
+          width: 100%;
+          th{
+            text-align: center;
+            padding: 5px;
+          }
+          td{
+            padding: 5px;
+            text-align: center;
+            input{
+              width: 36px;
+              text-align: center;
+            }
+          }
+          .td-txName{
+            text-align: left;
+          }
+          .td-total{
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
   .contentWraps{
-    margin-left: 200px;
+
   }
   .kmTxWrap{
-    margin-left: 200px;
+
   }
 }

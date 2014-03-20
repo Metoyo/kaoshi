@@ -21,7 +21,7 @@
                     <div class="form-group col-md-6">
                         <label>用户名</label>
                         <input type="text" name="yonghuming" placeholder="用户名" tabindex="0" class="form-control" ng-pattern="userNameRegexp"
-                               ng-minlength=4 ng-maxlength=30 ng-model="personalInfo.yonghuming" required />
+                               ng-minlength=4 ng-maxlength=30 ng-model="personalInfo.yonghuming" required autofocus="true"/>
                         <p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>
                         <p ng-show="userForm.yonghuming.$error.pattern" class="help-block">用户名格式不正确！</p>
                     </div>

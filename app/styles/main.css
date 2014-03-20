@@ -1,6 +1,6 @@
 /*
 Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.
-              Load path: /Users/shuanghong/workspace/kaoshi/app/styles
+              Load path: /Users/songtao/projects/kaoshi/app/styles
         on line 3 of main.scss
 
 1: $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
@@ -51,4 +51,4 @@ main.scss:3
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.\A               Load path: /Users/shuanghong/workspace/kaoshi/app/styles\A         on line 3 of main.scss\A \A 1: $icon-font-path: \"/bower_components/sass-bootstrap/fonts/\";\A 2: \A 3: @import 'sass-bootstrap/lib/bootstrap';\A 4: \A 5: body {\A 6:   font-family: Helvetica, Tahoma, Arial, \"Microsoft YaHei\", \"微软雅黑\", SimSun, \"宋体\", STXihei, \"华文细黑\", Heiti, \"黑体\", sans-serif;\A 7:   color: #67717e;\A 8: }"; }
+  content: "Syntax error: File to import not found or unreadable: sass-bootstrap/lib/bootstrap.\A               Load path: /Users/songtao/projects/kaoshi/app/styles\A         on line 3 of main.scss\A \A 1: $icon-font-path: \"/bower_components/sass-bootstrap/fonts/\";\A 2: \A 3: @import 'sass-bootstrap/lib/bootstrap';\A 4: \A 5: body {\A 6:   font-family: Helvetica, Tahoma, Arial, \"Microsoft YaHei\", \"微软雅黑\", SimSun, \"宋体\", STXihei, \"华文细黑\", Heiti, \"黑体\", sans-serif;\A 7:   color: #67717e;\A 8: }"; }
