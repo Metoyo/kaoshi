@@ -31,10 +31,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         qryKnowledge = '', //定义一个空的查询知识点的url
         selectZsd,//定义一个选中知识点的变量（数组)
+        timuleixing_id = '', //用于根据题目类型查询题目的字符串
+        nandu_id = '', //用于根据难度查询题目的字符串
         zhishidian_id = '', //用于根据知识点查询题目的字符串
 
         qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-          jigouid + '&lingyuid='; //查询科目包含什么题型的url
+          jigouid + '&lingyuid=', //查询科目包含什么题型的url
+
+        qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
+
+        qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
+
+        timudetails,//获得的题目数组
+        tiMuIdArr = [], //获得查询题目ID的数组
+        pageArr = [], //根据得到的数据定义一个分页数组
+        totalPage, //符合条件的数据一共有多少页
+        itemNumPerPage = 10, //每页显示多少条数据
+        paginationLength = 11; //分页部分，页码的长度，目前设定为11
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -149,7 +164,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
+       * 查询科目题型(chaxun_kemu_tixing)
        */
       $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
         $scope.kmtxList = data;
@@ -215,6 +230,102 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         }
         console.log(distArr);
+      };
+
+      /**
+       * 查询试题的函数
+       */
+      var qryTestFun = function(){
+        var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
+          '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
+        tiMuIdArr = [];
+        pageArr = [];
+
+        $http.get(qrytimuliebiao).success(function(data){
+          $scope.testListId = data;
+          _.each(data, function(tm, idx, lst){
+            tiMuIdArr.push(tm.TIMU_ID);
+          });
+          //获得一共多少页的代码开始
+          totalPage = Math.ceil(data.length/itemNumPerPage);
+          for(var i = 1; i <= totalPage; i++){
+            pageArr.push(i);
+          }
+          $scope.lastPageNum = totalPage; //最后一页的数值
+          //查询数据开始
+          $scope.getThisPageData();
+        })
+          .error(function(err){
+            console.log(err);
+          });
+      };
+      qryTestFun();
+
+      /**
+       * 分页的代码
+       */
+      $scope.getThisPageData = function(pg){
+        var qrytimuxiangqing,
+          pgNum = pg - 1,
+          timu_id,
+          currentPage = pgNum ? pgNum : 0;
+
+        //得到分页数组的代码
+        var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
+        if(totalPage <= paginationLength){
+          $scope.pages = pageArr;
+        }
+        if(totalPage > paginationLength){
+          if(currentPageNum > 0 && currentPageNum <= 6 ){
+            $scope.pages = pageArr.slice(0, paginationLength);
+          }
+          else if(currentPageNum > totalPage - 5 && currentPageNum <= totalPage){
+            $scope.pages = pageArr.slice(totalPage - paginationLength);
+          }
+          else{
+            $scope.pages = pageArr.slice(currentPageNum - 5, currentPageNum + 5);
+          }
+        }
+        //查询数据的代码
+        timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+        qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
+        $http.get(qrytimuxiangqing).success(function(data){
+          if(data.length){
+            $scope.timudetails = data;
+            $scope.caozuoyuan = caozuoyuan;
+            timudetails = data;
+          }
+          else{
+            $scope.timudetails = null;
+          }
+        }).error(function(err){
+            console.log(err);
+          });
+
+      };
+
+      /**
+       * 获得题型查询条件
+       */
+      $scope.getTiXingId = function(idx){
+        var tx_id = ".tiXingId_" + idx;
+        timuleixing_id = ' ';
+        angular.element('.getTiXingIdList li').removeClass('active');
+        angular.element(tx_id).addClass('active');
+        timuleixing_id = angular.element(tx_id).find('span').text();
+        qryTestFun();
+      };
+
+      /**
+       * 获得难度查询条件
+       */
+      $scope.getNanDuId = function(idx){
+        var tx_id = ".nanDuId_" + idx;
+        nandu_id = ' ';
+        angular.element('.getNanDuIdList li').removeClass('active');
+        angular.element(tx_id).addClass('active');
+        nandu_id = angular.element(tx_id).find('span').text();
+        qryTestFun();
       };
 
     }]);

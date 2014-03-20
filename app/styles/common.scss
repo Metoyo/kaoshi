@@ -549,6 +549,84 @@ a.add-btn:hover span {
   }
   /* contentWraps styles end */
 }
+/* test list styls begin*/
+.total-test{
+  padding: 0 10px;
+  font-size: 14px;
+}
+.testList{
+  padding: 0 10px;
+  li{
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d8d8d8;
+    position: relative;
+  }
+  h3{
+    font-size: 14px;
+    margin: 0;
+  }
+  .item-title{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .item-tigan{
+    margin-bottom: 10px;
+  }
+  .item-sub-title{
+    font-size: 12px;
+    width: 100%;
+    p{
+      display: inline;
+      margin-right: 10px;
+      float: left;
+    }
+    .use-times{
+      color: #f60;
+    }
+    .add-to-paper{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .knowledge-point{
+      span{
+        margin-right: 10px;
+      }
+    }
+    .level-num{
+      span{
+        width: 42px;
+        height: 10px;
+        margin-top: 2px;
+        background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0;
+      }
+      .level-star-2{
+        background-position: 0 -10px;
+      }
+      .level-star-3{
+        background-position: 0 -20px;
+      }
+      .level-star-4{
+        background-position: 0 -30px;
+      }
+      .level-star-5{
+        background-position: 0 -40px;
+      }
+    }
+  }
+  .item-cont {
+    margin-top: 35px;
+    .item-tizhi-wrap{
+      margin-bottom: 5px;
+      .item-tizhi{
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+/* test list styls end*/
 /*edit wrap styles begin*/
 .editWrap{
   position: absolute;

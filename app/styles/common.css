@@ -5450,6 +5450,6 @@ a.add-btn:hover span {
 .paging {
   padding: 0 10px; }
   .paging .pagination {
-    margin: 5; }
+    margin: 5px 0; }
 
 /* 分页的样式 结束*/

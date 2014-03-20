@@ -105,29 +105,10 @@
                 <input type="text" name="" class="dist-arr"/>
                 <button ng-click="getNanduDist()">提交</button>
             </div>
-
         </div>
         <!--组卷筛选条件。 结束-->
-        <!--添加试题的按钮。开始-->
-        <div class="patternWrap">
-            <h3 class="addBtn">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-                <a href="javascript:void(0)" ng-click="patternListToggle = patternListToggle === false ? true: false">添加试题</a>
-            </h3>
-            <ul class="patternList list-unstyled list-inline"
-                ng-init="patternListToggle = false" ng-show="patternListToggle" >
-                <li class="danxuan"><a href="javascript:void(0)" ng-click="addDanXuan('views/tixing/danxuan.html')">单选题</a></li>
-                <li class="duoxuan"><a href="javascript:void(0)" ng-click="addDuoXuan('views/tixing/duoxuan.html')">多选题</a></li>
-                <li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/panduan.html')">判断题</a></li>
-                <li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/tiankong.html')">填空题</a></li>
-                <li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/jianda.html')">简答题</a></li>
-                <li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/yuedu.html')">阅读题</a></li>
-                <li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/wanxing.html')">完形填空题</a></li>
-            </ul>
-        </div>
-        <!--添加试题的按钮。结束-->
         <!--题型和难度DOM元素， 开始-->
-        <!--div class="kmTxWrap" ng-show="kmTxWrap">
+        <div class="kmTxWrap" ng-show="kmTxWrap">
             <div class="kmTxBox">
                 <div class="kmtxNdTitle pull-left">
                     <span class="pull-left">题型</span>
@@ -174,7 +155,7 @@
                     </li>
                 </ul>
             </div>
-        </div-->
+        </div>
         <!--题型和难度DOM元素， 结束-->
         <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
 
