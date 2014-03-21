@@ -55,21 +55,23 @@
       position: fixed;
       background-color: #fff;
       height: 100%;
-      width: 440px;
+      width: 600px;
       z-index: 2;
-      left: -100px;
+      left: -260px;
       .dagangListWrap{
         position: absolute;
         left: 0;
+        width: 300px;
       }
       .chooseCondition{
-        width: 220px;
+        width: 300px;
         height: 100%;
         position: absolute;
         right: 0;
-        padding-top: 10px;
+        padding: 10px;
         background-color: #f5f5f5;
         border-right: 1px solid #cfcfcf;
+        color: #000;
         .table-tixing{
           width: 100%;
           th{
@@ -89,6 +91,45 @@
           }
           .td-total{
             text-align: right;
+          }
+        }
+        .nandu-dist{
+          h4{
+            font-size: 14px;
+            em{
+              font-size: 12px;
+            }
+          }
+          .distBox{
+            position: relative;
+          }
+          .sliderBox{
+            width: 220px;
+            height: 10px;
+            margin: 3px 5px 0 5px;
+            background-color: #ddd;
+          }
+          .sliderItem{
+            width: 110px;
+            height: 10px;
+            background-color: darkseagreen;
+            position: relative;
+            .sliderItemInner{
+              max-width: 220px;
+            }
+          }
+          .sliderBtn{
+            cursor: e-resize;
+            position: absolute;
+            height: 20px;
+            top: -5px;
+            right: 0;
+            width: 5px;
+            background-color: #f60;
+            z-index: 6;
+          }
+          .maskLabel {
+            font-size: 12px;
           }
         }
       }

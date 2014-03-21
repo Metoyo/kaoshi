@@ -152,15 +152,81 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * dagangListWrap宽度可拖拽
+       */
+      var resize = function(el, dragItem, reductionItem, minWidth, maxWidth){
+        //初始化参数
+        var els = document.getElementById(dragItem).style,
+          x = 0, //鼠标的 X 和 Y 轴坐标
+          dragItemClass = '#' + dragItem, //得到需要元素的class
+          distNum = 100;
+
+        $(el).mousedown(function(e) {
+          //按下元素后，计算当前鼠标与对象计算后的坐标
+          x = e.clientX - el.offsetWidth - $(dragItemClass).width();
+          //在支持 setCapture 做些东东
+          el.setCapture ? (
+            //捕捉焦点
+            el.setCapture(),
+              //设置事件
+            el.onmousemove = function(ev) {
+              mouseMove(ev || event);
+            },
+            el.onmouseup = mouseUp
+            ) : (
+            //绑定事件
+            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+            );
+          //防止默认事件发生
+
+          e.preventDefault();
+        });
+        //移动事件
+        function mouseMove(e) {
+          var subDbWidth = $(dragItemClass).width();
+          if(subDbWidth < minWidth - 1){
+            $(document).unbind('mousemove', mouseMove);
+            els.width = minWidth + 'px';
+            $(reductionItem).css('padding-left',els.width);
+          }
+          if(subDbWidth >= minWidth - 1 && subDbWidth <= maxWidth + 4){
+            els.width = e.clientX - x + 'px';
+            $(reductionItem).css('padding-left',els.width);
+          }
+          if(subDbWidth > maxWidth + 4){
+            $(reductionItem).css('padding-left',els.width);
+            els.width = maxWidth + 'px';
+            $(document).unbind('mousemove', mouseMove);
+          }
+          distNum = $('.sliderItemInner').width()/maxWidth; //得到难度系数
+          $('.coefft').html(distNum.toFixed(2));
+        }
+        //停止事件
+        function mouseUp() {
+          //在支持 releaseCapture 做些东东
+          el.releaseCapture ? (
+            //释放焦点
+            el.releaseCapture(),
+              //移除事件
+              el.onmousemove = el.onmouseup = null
+            ) : (
+            //卸载事件
+            $(document).unbind('mousemove', mouseMove).unbind('mouseup', mouseUp)
+            );
+        }
+      };
+      resize(document.getElementById('sliderBtn'), 'sliderItem','', 0, 220);//初始化拖拽
+
+      /**
        * 获得难度分布的数组
        */
       $scope.getNanduDist = function(){
-        var x = $('input.nd-factor').val(),
-            n = $('input.dist-arr').val(),
-            nl = n - 1,
-            i, u, a, b,
-            fx = 1,
-            distArr = [];
+        var x = $('.coefft').html(),//得到难度系数
+          n = 5, //有几段难度分布
+          nl = n - 1,
+          i, u, a, b,
+          fx = 1,
+          distArr = [];
         if(x == 0){
           distArr[0] = 1;
           for(i = 1; i <= nl; i++){
@@ -212,78 +278,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         console.log(distArr);
       };
-
-      /**
-       * 难度分布滑块实现代码
-       */
-
-
-
-      /**
-       * dagangListWrap宽度可拖拽
-       */
-      var resize = function(el, dragItem, reductionItem, minWidth, maxWidth){
-        //初始化参数
-        var els = document.getElementById(dragItem).style,
-          x = 0, //鼠标的 X 和 Y 轴坐标
-          dragItemClass = '#' + dragItem; //得到需要元素的class
-
-
-        $(el).mousedown(function(e) {
-          //按下元素后，计算当前鼠标与对象计算后的坐标
-          x = e.clientX - el.offsetWidth - $(dragItemClass).width();
-
-          //在支持 setCapture 做些东东
-          el.setCapture ? (
-            //捕捉焦点
-            el.setCapture(),
-              //设置事件
-              el.onmousemove = function(ev) {
-                mouseMove(ev || event);
-              }, el.onmouseup = mouseUp
-            ) : (
-            //绑定事件
-            $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
-            );
-          //防止默认事件发生
-          e.preventDefault();
-        });
-        //移动事件
-        function mouseMove(e) {
-          var subDbWidth = $(dragItemClass).width();
-          if(subDbWidth < minWidth - 1){
-            els.width = minWidth + 'px';
-            $(reductionItem).css('padding-left',els.width);
-            $(document).unbind('mousemove', mouseMove);
-          }
-          if(subDbWidth >= minWidth - 1 && subDbWidth <= maxWidth){
-            els.width = e.clientX - x + 'px';
-            $(reductionItem).css('padding-left',els.width);
-          }
-          if(subDbWidth > maxWidth){
-            els.width = maxWidth + 'px';
-            $(reductionItem).css('padding-left',els.width);
-            $(document).unbind('mousemove', mouseMove);
-          }
-          $('.td-total').html(els.width);
-        }
-        console.log('hello');
-        //停止事件
-        function mouseUp() {
-          //在支持 releaseCapture 做些东东
-          el.releaseCapture ? (
-            //释放焦点
-            el.releaseCapture(),
-              //移除事件
-              el.onmousemove = el.onmouseup = null
-            ) : (
-            //卸载事件
-            $(document).unbind('mousemove', mouseMove).unbind('mouseup', mouseUp)
-            );
-        }
-      };
-      //resize(document.getElementById('dragBtn'), 'dagangListWrap', '.content', 220, 400);//初始化拖拽
-
 
       /**
        *查询科目（LingYu，url：/api/ling yu）
@@ -417,8 +411,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.popupWrapHide = function(){
         $('.popupWrap').css('left','341px').animate({
-          left: '-100px'
+          left: '-260px'
         }, 500, function() {
+          
         });
       };
 
