@@ -49,7 +49,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         pageArr = [], //根据得到的数据定义一个分页数组
         totalPage, //符合条件的数据一共有多少页
         itemNumPerPage = 10, //每页显示多少条数据
-        paginationLength = 11; //分页部分，页码的长度，目前设定为11
+        paginationLength = 11, //分页部分，页码的长度，目前设定为11
+        paperData =
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -293,13 +294,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 查询科目题型(chaxun_kemu_tixing)
-       */
-      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
-        $scope.kmtxList = data;
-      });
-
-      /**
        * 查询试题的函数
        */
       var qryTestFun = function(){
@@ -326,7 +320,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             console.log(err);
           });
       };
-      qryTestFun();
 
       /**
        * 分页的代码
@@ -396,27 +389,39 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * popupWrap显示
+       *  手动组卷
        */
-      $scope.popupWrapShow = function(){
+      $scope.handMakePaper = function(){
         $('.popupWrap').animate({
           left: '341px'
         }, 500, function() {
           $('.popupWrap').css('left','auto');
         });
+
+        //查询科目题型(chaxun_kemu_tixing)
+        $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
+          $scope.kmtxList = data;
+        });
+
+        //查询试题的函数
+        qryTestFun();
+
+        //加载手动组卷的模板
+        $scope.paper_hand_form = true;
+        $scope.txTpl = 'views/partials/paper_hand_form.html';
       };
 
       /**
-       * popupWrap隐藏
+       * 自动组卷
        */
-      $scope.popupWrapHide = function(){
+      $scope.autoMakePaper = function(){
         $('.popupWrap').css('left','341px').animate({
           left: '-260px'
         }, 500, function() {
           
         });
       };
-
+//      console.log('hello');
 
 
     }]);

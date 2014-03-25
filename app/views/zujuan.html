@@ -1,5 +1,8 @@
-<div class="innerWrap innerWrapperSubDs zujuanWrapper">
+<div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form, paper_auto_form: paper_auto_form}">
     <div class="testPaperSummary">
+        <div class="paper-list-btn clearfix text-center">
+            <button type="button" class="btn btn-primary">查看试卷列表</button>
+        </div>
         <div class="subjectBox clearfix">
             <h2 class="pull-left">高中物理</h2>
             <a href="javascript:void(0)" class="pull-right">更换科目</a>
@@ -110,8 +113,8 @@
                 </tr>
             </table>
         </div>
-        <button type="button" ng-click="popupWrapShow()">点我展开</button>
-        <button type="button" ng-click="popupWrapHide()">点我隐藏</button>
+        <button type="button" ng-click="handMakePaper()">点我展开</button>
+        <button type="button" ng-click="autoMakePaper()">点我隐藏</button>
     </div>
     <div class="content">
         <div class="contentInner">
@@ -232,61 +235,11 @@
                             <span class="maskLabel pull-left">困难</span>
                         </div>
                     </div>
-                    <button ng-click="getNanduDist()">提交</button>
+                    <button ng-click="getNanduDist()">自动组卷</button>
                 </div>
             </div>
             <!--组卷筛选条件。 结束-->
-            <!--题型和难度DOM元素， 开始-->
-            <div class="kmTxWrap" ng-show="kmTxWrap">
-                <div class="kmTxBox">
-                    <div class="kmtxNdTitle pull-left">
-                        <span class="pull-left">题型</span>
-                    </div>
-                    <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
-                        <li class="tiXingId_all">
-                            <span class="hidden"></span>
-                            <a href="javascript:void(0)" ng-click="getTiXingId('all')">全部题型</a>
-                        </li>
-                        <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
-                            <span class="hidden">{{ kmtx.TIXING_ID }}</span>
-                            <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nanduBox">
-                    <div class="kmtxNdTitle pull-left">
-                        <span class="pull-left">难度</span>
-                    </div>
-                    <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
-                        <li class="nanDuId_all">
-                            <span class="hidden"></span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId('all')">全部难度</a>
-                        </li>
-                        <li class="nanDuId_1">
-                            <span class="hidden">1</span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId(1)">简单</a>
-                        </li>
-                        <li class="nanDuId_2">
-                            <span class="hidden">2</span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId(2)">一般</a>
-                        </li>
-                        <li class="nanDuId_3">
-                            <span class="hidden">3</span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId(3)">普通</a>
-                        </li>
-                        <li class="nanDuId_4">
-                            <span class="hidden">4</span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId(4)">困难</a>
-                        </li>
-                        <li class="nanDuId_5">
-                            <span class="hidden">5</span>
-                            <a href="javascript:void(0)" ng-click="getNanDuId(5)">较难</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!--题型和难度DOM元素， 结束-->
-            <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
+            <div class="contentWraps" ng-init="txTpl = 'views/partials/paper_preview.html'" ng-include="txTpl">
 
             </div>
         </div>

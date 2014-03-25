@@ -12,6 +12,7 @@
     border-right: 1px solid #cfcfcf;
     .subjectBox{
       position: relative;
+      margin-top: 10px;
       h2{
         font-size: 16px;
         display: inline;
@@ -135,11 +136,123 @@
       }
     }
   }
-
-  .contentWraps{
-
+  .seal-line{
+    width: 100px;
+    margin-right: 10px;
+    margin-left: 10px;
+    a{
+      width: 100%;
+      height: 575px;
+      display: block;
+      background-image: url("../images/zujuan/sealLine.gif");
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      margin-top: 10px;
+      &:hover{
+        background-position: -100px 0;
+      }
+    }
   }
-  .kmTxWrap{
+  .contentWraps{
+    .kmTxBox,.nanduBox{
+      background: none;
+      height: auto;
+      ul{
+        line-height: 20px;
+        margin-bottom: 0;
+        li{
+          a{
+            font-size: 12px;
+            padding: 0 5px;
+          }
+        }
+        .tiXingId_all,.nanDuId_all{
+          height: auto;
+          background: none;
+          width: auto;
+          a{
+            font-size: 12px;
+            font-weight: normal;
+            padding: 0 5px 0 10px;
+          }
+        }
+      }
+    }
+    .add-page-items{
+      position: absolute;
+      right: 10px;
+      top: -5px;
+    }
+  }
+  .preview-title{
+    height: 40px;
+    background-color: #ccc;
+    position: fixed;
+    width: 100%;
+    line-height: 40px;
+    padding: 0 10px;
+  }
+  .paper-content{
+    color: #000;
+    .secret-mark{
+      font-size: 14px;
+    }
+    .paper-title{
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .paper-sub-title{
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .paper-info{
+      font-size: 14px;
+    }
+    .student-title{
+      font-size: 14px;
+    }
+    .cent-box{
+      table{
+        margin: 0 auto;
+        td{
+          border: 2px solid #666;
+          width: 50px;
+          line-height: 25px;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+    }
+    .attention{
+      font-size: 12px;
+    }
+    .hover-style{
+      cursor: pointer;
+      &:hover{
+        color: #f60;
+        table{
+          td{
+            border:2px solid #f60;
+          }
+        }
+      }
+    }
+  }
 
+}
+.paper_hand_form{
+  .contentInner{
+    .popupWrap{
+      width: 220px;
+      .dagangListWrap{
+        width: 220px;
+      }
+      .chooseCondition{
+        display: none;
+      }
+    }
+  }
+  .contentWraps{
+    padding-left: 220px;
   }
 }

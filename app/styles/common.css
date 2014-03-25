@@ -5442,7 +5442,9 @@ a.add-btn:hover span {
 /* test list styls begin*/
 .total-test {
   padding: 0 10px;
-  font-size: 14px; }
+  font-size: 14px;
+  margin-top: 10px;
+  position: relative; }
 
 .testList {
   padding: 0 10px; }
