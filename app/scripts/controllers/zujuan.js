@@ -55,21 +55,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           caozuoyuan: caozuoyuan,
           jigouid: jigouid,
           lingyuid: lingyuid,
-          SHIJUANID: '',
-          SHIJUANMINGCHENG: '', //试卷名称
-          FUBIAOTI: '', //副标题
-          SHIJUANMULUID: '', //先空
-          SHIJUANMUBANID: '', //空
-          SHIJUANTIMU: [
-            {
-              TIMUID: '',
-              MUBANDATIID: '',
-              WEIZHIXUHAO: '',
-              FENZHI: ''
-            }
-          ],
-          ZHUANGTAI: 1
+          shuju:{
+            SHIJUANID: '',
+            SHIJUANMINGCHENG: '',
+            FUBIAOTI: '',
+            SHIJUANMULUID: '',
+            SHIJUANMUBANID: '',
+            SHIJUANTIMU: [
+              {
+                TIMUID: '',
+                MUBANDATIID: '',
+                WEIZHIXUHAO: '',
+                FENZHI: ''
+              }
+            ],
+            ZHUANGTAI: 1
+          }
         },
+        xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan', //提交试卷数据的URL
         mubanData = { //模板的数据模型
           token: token,
           caozuoyuan: caozuoyuan,
@@ -85,19 +88,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             XIAOTIBIANHAOGESHI: 1,
             ZONGDAOYU: '',
             HASFUBIAOTI: 1,
-              LEIXING: 2,
-              MUBANDATI: [
+            LEIXING: 2,
+            MUBANDATI: [
               {
+                MUBANDATIID: '',
                 DATIMINGCHENG: '',
                 SHUOMINGDAOYU:'',
+                TIMUSHULIANG: '',
+                MEITIFENZHI: '',
                 XUHAO: '',
-                DATI_HUANYE: 1,
-                XIAOTI_HUANYE: 1,
                 ZHUANGTAI: 1
               }
             ]
           }
-        };
+        },
+        xgmbUrl = baseMtAPIUrl + 'xiugai_muban'; //提交模板数据的URL
+
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -107,7 +113,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
       $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
         'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
-
+      $scope.shijuanData = shijuanData; // 试卷的数据
+      $scope.mubanData = mubanData; // 模板的数据
 
       /**
        * 获得大纲数据
@@ -467,7 +474,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //
 //        });
 //      };
-//      console.log('hello');
+      console.log('hello');
 
       /**
       * 由收到组卷返回的组卷的首页
@@ -476,6 +483,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.paper_hand_form = false; //手动组卷时添加的样式
         $('.popupWrap').css('left', '-260px'); //将div.popupWrap的left属性还原
         $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+      };
+
+      $scope.getShiJuanMuBanData = function(){
+        mubanData.shuju;
+        $http.post(xgmbUrl, mubanData).success(function(data){
+          console.log(data);
+        }).error(function(err){
+            alert(err);
+          });
       };
 
     }]);

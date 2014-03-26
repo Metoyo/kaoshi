@@ -232,6 +232,27 @@
         }
       }
     }
+    .sj-param-val{
+      width: 100%;
+      display: block;
+    }
+    .sj-edit-box{
+      input{
+        font-size: 18px;
+        width: 50%;
+      }
+      textarea{
+        font-size: 14px;
+        width: 60%;
+      }
+      h5{
+        width: 60%;
+        text-align: right;
+      }
+    }
+    .form-paper-type{
+      margin-top: 20px;
+    }
   }
   .fixed-top{
     position: fixed;

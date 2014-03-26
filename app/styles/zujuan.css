@@ -170,6 +170,20 @@
       color: #f60; }
       .zujuanWrapper .paper-content .hover-style:hover table td {
         border: 2px solid #f60; }
+  .zujuanWrapper .paper-content .sj-param-val {
+    width: 100%;
+    display: block; }
+  .zujuanWrapper .paper-content .sj-edit-box input {
+    font-size: 18px;
+    width: 50%; }
+  .zujuanWrapper .paper-content .sj-edit-box textarea {
+    font-size: 14px;
+    width: 60%; }
+  .zujuanWrapper .paper-content .sj-edit-box h5 {
+    width: 60%;
+    text-align: right; }
+  .zujuanWrapper .paper-content .form-paper-type {
+    margin-top: 20px; }
 .zujuanWrapper .fixed-top {
   position: fixed;
   top: 0;

@@ -1,49 +1,76 @@
 <!--<div class="preview-title"><span>试卷预览</span></div>-->
 <!--<div class="seal-line pull-left"><a href="javascript:void(0)"></a></div>-->
 <div class="paper-content">
-    <!--<h4 class="secret-mark hover-style">绝密★启用前</h4>-->
-    <h1 class="paper-title text-center hover-style">XXX试卷</h1>
-    <h1 class="paper-sub-title text-center hover-style">试卷副标题</h1>
-    <!--<h4 class="paper-info text-center hover-style">考试范围：xxx；考试时间：xxx分钟；命题人：xxx</h4>-->
-    <!--<h4 class="student-title text-center hover-style">学校：___________姓名：___________班级：___________考号：___________</h4>-->
-    <!--<div class="cent-box text-center hover-style">
-        <table class="table-bordered">
-            <tr>
-                <td>题号</td>
-                <td>一</td>
-                <td>二</td>
-                <td>三</td>
-                <td>四</td>
-                <td>五</td>
-                <td>六</td>
-                <td>七</td>
-                <td>八</td>
-                <td>九</td>
-                <td>总分</td>
-            </tr>
-            <tr>
-                <td>得分</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-    </div>-->
-    <div class="attention hover-style">
-        <dl>
-            <dt>注意事项：</dt>
-            <dd>1. 答题前填写好自己的姓名、班级、考号等信息<br>2. 请将答案正确填写在答题卡上</dd>
-        </dl>
-    </div>
-    <div class="form-paper-type text-center">
-        <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
-        <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
-    </div>
+    <form name="shijuan">
+        <!--<h4 class="secret-mark hover-style">绝密★启用前</h4>-->
+        <h1 class="paper-title text-center hover-style" title="点击设置" ng-init="sj_mc = true">
+            <span class="sj-param-val" ng-click="sj_mc = false">
+                {{ shijuanData.shuju.SHIJUANMINGCHENG ? shijuanData.shuju.SHIJUANMINGCHENG : 'XXX试卷'}}
+            </span>
+            <div class="sj-edit-box" ng-hide="sj_mc">
+                <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" autofocus="true"/>
+                <button type="button" class="btn btn-primary" ng-click="sj_mc = true">确定</button>
+                <button type="button" class="btn btn-danger" ng-click="sj_mc = true">取消</button>
+            </div>
+        </h1>
+        <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-init="sj_fbt = true">
+            <span class="sj-param-val" ng-click="sj_fbt = false">
+                {{ shijuanData.shuju.FUBIAOTI ? shijuanData.shuju.FUBIAOTI : '试卷副标题'}}
+            </span>
+            <div class="sj-edit-box" ng-hide="sj_fbt">
+                <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" autofocus="true"/>
+                <button type="button" class="btn btn-primary" ng-click="sj_fbt = true">确定</button>
+                <button type="button" class="btn btn-danger" ng-click="sj_fbt = true">取消</button>
+            </div>
+        </h1>
+        <!--<h4 class="paper-info text-center hover-style">考试范围：xxx；考试时间：xxx分钟；命题人：xxx</h4>-->
+        <!--<h4 class="student-title text-center hover-style">学校：___________姓名：___________班级：___________考号：___________</h4>-->
+        <!--<div class="cent-box text-center hover-style">
+            <table class="table-bordered">
+                <tr>
+                    <td>题号</td>
+                    <td>一</td>
+                    <td>二</td>
+                    <td>三</td>
+                    <td>四</td>
+                    <td>五</td>
+                    <td>六</td>
+                    <td>七</td>
+                    <td>八</td>
+                    <td>九</td>
+                    <td>总分</td>
+                </tr>
+                <tr>
+                    <td>得分</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>-->
+        <div class="attention hover-style" title="点击设置" ng-init="sj_dy = true">
+            <span class="sj-param-val" ng-click="sj_dy = false">
+                {{ mubanData.shuju.FUBIAOTI ? mubanData.shuju.FUBIAOTI : '导语'}}
+            </span>
+            <div class="sj-edit-box" ng-hide="sj_dy">
+                <textarea ng-model="mubanData.shuju.FUBIAOTI" rows="5" autofocus="true"></textarea>
+                <h5>
+                    <button type="button" class="btn btn-primary" ng-click="sj_dy = true">确定</button>
+                    <button type="button" class="btn btn-danger" ng-click="sj_dy = true">取消</button>
+                </h5>
+            </div>
+        </div>
+        <div class="form-paper-type text-center">
+            <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
+            <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
+            <button type="button" class="btn btn-primary" ng-click="getShiJuanMuBanData()">获得试卷和模板的值</button>
+        </div>
+    </form>
 </div>
