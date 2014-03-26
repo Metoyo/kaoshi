@@ -50,7 +50,54 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         totalPage, //符合条件的数据一共有多少页
         itemNumPerPage = 10, //每页显示多少条数据
         paginationLength = 11, //分页部分，页码的长度，目前设定为11
-        paperData =
+        shijuanData = { //试卷的数据模型
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          SHIJUANID: '',
+          SHIJUANMINGCHENG: '', //试卷名称
+          FUBIAOTI: '', //副标题
+          SHIJUANMULUID: '', //先空
+          SHIJUANMUBANID: '', //空
+          SHIJUANTIMU: [
+            {
+              TIMUID: '',
+              MUBANDATIID: '',
+              WEIZHIXUHAO: '',
+              FENZHI: ''
+            }
+          ],
+          ZHUANGTAI: 1
+        },
+        mubanData = { //模板的数据模型
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          shuju: {
+            SHIJUANMUBAN_ID: '',
+            MUBANMINGCHENG: '',
+            SHIJUANZONGFEN: 100,
+            ISYUNXUHUITUI: 1,
+            SUIJIPAITIFANGSHI: 1,
+            DATIBIANHAOGESHI: 3,
+            XIAOTIBIANHAOGESHI: 1,
+            ZONGDAOYU: '',
+            HASFUBIAOTI: 1,
+              LEIXING: 2,
+              MUBANDATI: [
+              {
+                DATIMINGCHENG: '',
+                SHUOMINGDAOYU:'',
+                XUHAO: '',
+                DATI_HUANYE: 1,
+                XIAOTI_HUANYE: 1,
+                ZHUANGTAI: 1
+              }
+            ]
+          }
+        };
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -413,15 +460,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 自动组卷
        */
-      $scope.autoMakePaper = function(){
-        $('.popupWrap').css('left','341px').animate({
-          left: '-260px'
-        }, 500, function() {
-          
-        });
-      };
+//      $scope.autoMakePaper = function(){
+//        $('.popupWrap').css('left','341px').animate({
+//          left: '-260px'
+//        }, 500, function() {
+//
+//        });
+//      };
 //      console.log('hello');
 
+      /**
+      * 由收到组卷返回的组卷的首页
+      */
+      $scope.backToZjHome = function(){
+        $scope.paper_hand_form = false; //手动组卷时添加的样式
+        $('.popupWrap').css('left', '-260px'); //将div.popupWrap的left属性还原
+        $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+      };
 
     }]);
 });

@@ -177,11 +177,6 @@
         }
       }
     }
-    .add-page-items{
-      position: absolute;
-      right: 10px;
-      top: -5px;
-    }
   }
   .preview-title{
     height: 40px;
@@ -240,8 +235,30 @@
   }
   .fixed-top{
     position: fixed;
-    width: 100%;
     top: 0;
+    height: 65px;
+    right: 0;
+    left: 561px;
+    background-color: #F5F5F5;
+    z-index: 2;
+    border-bottom: 1px solid #cfcfcf;
+  }
+  .kmTxWrap{
+    padding-right: 160px;
+  }
+  .back-to-zujuan{
+    width: 160px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    button{
+      float: right;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+  .test-list-wrap{
+    margin-top: 60px;
   }
 }
 .paper_hand_form{

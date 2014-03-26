@@ -28,6 +28,11 @@ define(['jquery', 'angular'], function ($, angular) {
           }, 500, function() {
 
           });
+          $('.fixed-top').animate({
+            left: '461px'
+          }, 500, function() {
+
+          });
           main.animate({
             'padding-left': '20px'
           }, 500, function() {
@@ -45,6 +50,11 @@ define(['jquery', 'angular'], function ($, angular) {
             width: '120px'
           }, 500, function() {
             hideIcon.show();
+          });
+          $('.fixed-top').animate({
+            left: '561px'
+          }, 500, function() {
+
           });
         }
       };

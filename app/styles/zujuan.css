@@ -132,10 +132,6 @@
         font-size: 12px;
         font-weight: normal;
         padding: 0 5px 0 10px; }
-.zujuanWrapper .contentWraps .add-page-items {
-  position: absolute;
-  right: 10px;
-  top: -5px; }
 .zujuanWrapper .preview-title {
   height: 40px;
   background-color: #ccc;
@@ -176,8 +172,26 @@
         border: 2px solid #f60; }
 .zujuanWrapper .fixed-top {
   position: fixed;
-  width: 100%;
-  top: 0; }
+  top: 0;
+  height: 65px;
+  right: 0;
+  left: 561px;
+  background-color: #F5F5F5;
+  z-index: 2;
+  border-bottom: 1px solid #cfcfcf; }
+.zujuanWrapper .kmTxWrap {
+  padding-right: 160px; }
+.zujuanWrapper .back-to-zujuan {
+  width: 160px;
+  position: absolute;
+  top: 0;
+  right: 10px; }
+  .zujuanWrapper .back-to-zujuan button {
+    float: right;
+    margin-top: 5px;
+    font-size: 12px; }
+.zujuanWrapper .test-list-wrap {
+  margin-top: 60px; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px; }
