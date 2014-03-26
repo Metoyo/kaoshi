@@ -89,21 +89,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             ZONGDAOYU: '',
             HASFUBIAOTI: 1,
             LEIXING: 2,
-            MUBANDATI: [
-              {
-                MUBANDATIID: '',
-                DATIMINGCHENG: '',
-                SHUOMINGDAOYU:'',
-                TIMUSHULIANG: '',
-                MEITIFENZHI: '',
-                XUHAO: '',
-                ZHUANGTAI: 1
-              }
-            ]
+            MUBANDATI: []
           }
         },
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban'; //提交模板数据的URL
-
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -139,6 +128,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }).error(function(err){
             alert(err);
           });
+      });
+
+      //查询科目题型(chaxun_kemu_tixing)
+      $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
+        $scope.kmtxList = data;
+        console.log(data);
       });
 
       /**
@@ -451,11 +446,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $('.popupWrap').css('left','auto');
         });
 
-        //查询科目题型(chaxun_kemu_tixing)
-        $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
-          $scope.kmtxList = data;
-        });
-
         //查询试题的函数
         qryTestFun();
 
@@ -486,7 +476,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       $scope.getShiJuanMuBanData = function(){
-        mubanData.shuju;
+        mubanData.shuju.MUBANDATI = [];
+        _.each($scope.kmtxList, function(kmtx, idx, lst){
+          var mubandatiItem = {
+                MUBANDATIID: '',
+                DATIMINGCHENG: '',
+                SHUOMINGDAOYU:'',
+                TIMUSHULIANG: '',
+                MEITIFENZHI: '',
+                XUHAO: '',
+                ZHUANGTAI: 1
+              };
+          mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
+          mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
+          mubanData.shuju.MUBANDATI.push(mubandatiItem);
+        });
+        console.log(mubanData);
         $http.post(xgmbUrl, mubanData).success(function(data){
           console.log(data);
         }).error(function(err){

@@ -57,10 +57,10 @@
         </div>-->
         <div class="attention hover-style" title="点击设置" ng-init="sj_dy = true">
             <span class="sj-param-val" ng-click="sj_dy = false">
-                {{ mubanData.shuju.FUBIAOTI ? mubanData.shuju.FUBIAOTI : '导语'}}
+                {{ mubanData.shuju.ZONGDAOYU ? mubanData.shuju.ZONGDAOYU : '导语'}}
             </span>
             <div class="sj-edit-box" ng-hide="sj_dy">
-                <textarea ng-model="mubanData.shuju.FUBIAOTI" rows="5" autofocus="true"></textarea>
+                <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5" autofocus="true"></textarea>
                 <h5>
                     <button type="button" class="btn btn-primary" ng-click="sj_dy = true">确定</button>
                     <button type="button" class="btn btn-danger" ng-click="sj_dy = true">取消</button>

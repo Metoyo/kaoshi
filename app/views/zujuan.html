@@ -13,47 +13,11 @@
                 <a href="javascript:void(0)" class="pull-right">全部清空</a>
             </h3>
             <table class="table-bordered">
-                <tr>
-                    <td class="text-left">单选题</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">多选题</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">填空题</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">简单题</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">完型填空题</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
+                <tr ng-repeat="kmtx in kmtxList">
+                    <td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td class="deleteBtn">
                         <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
