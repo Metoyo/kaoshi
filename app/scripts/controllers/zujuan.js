@@ -148,8 +148,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         }
         zhishidian_id = selectZsd.toString();
-
-        console.log(zhishidian_id);
+        qryTestFun();
       };
 
       /**

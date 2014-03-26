@@ -15,6 +15,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  require("uglify-js");
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -386,7 +388,7 @@ module.exports = function (grunt) {
           },
           include: ['angular'],
           name: 'bootstrap',
-          out: '<%= yeoman.app %>/scripts/bootstrap-built.js'
+          out: '<%= yeoman.dist %>/scripts/bootstrap-built.js'
         }
       }
     }

@@ -138,7 +138,6 @@
   }
   .seal-line{
     width: 100px;
-    margin-right: 10px;
     margin-left: 10px;
     a{
       width: 100%;
@@ -193,6 +192,7 @@
     padding: 0 10px;
   }
   .paper-content{
+    margin-left: 10px;
     color: #000;
     .secret-mark{
       font-size: 14px;
@@ -238,7 +238,11 @@
       }
     }
   }
-
+  .fixed-top{
+    position: fixed;
+    width: 100%;
+    top: 0;
+  }
 }
 .paper_hand_form{
   .contentInner{

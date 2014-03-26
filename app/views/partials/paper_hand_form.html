@@ -1,5 +1,5 @@
 <!--题型和难度DOM元素， 开始-->
-<div class="row">
+<div class="row fixed-top">
     <div class="kmTxWrap">
         <div class="kmTxBox">
             <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
@@ -42,12 +42,15 @@
             </ul>
         </div>
     </div>
+    <div class="back-to-zujuan">
+        <button type="button" class="btn btn-success back-to-zjbtn">返回组卷页面</button>
+        <button type="button" class="btn btn-success add-page-items">将本页题目全部加入试卷</button>
+    </div>
 </div>
 <!--题型和难度DOM元素， 结束-->
 <div class="row">
     <h2 class="total-test">
         共<strong>{{testListId.length}}</strong>题
-        <button type="button" class="btn btn-success add-page-items">将本页题目全部加入试卷</button>
     </h2>
     <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
     <ul class="list-unstyled testList">
