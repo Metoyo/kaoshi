@@ -93,6 +93,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         },
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
+        mbdt_data, // 得到模板大题的数组
+        mbdtdLength, //得到模板大题的长度
         tempShiTiData = {
 
         }, //临时存放试题的数据模型
@@ -145,7 +147,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       //查询科目题型(chaxun_kemu_tixing)
       $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
         $scope.kmtxList = data;
-        console.log(data);
       });
 
       /**
@@ -410,6 +411,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
         qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
         $http.get(qrytimuxiangqing).success(function(data){
+          console.log(data);
           if(data.length){
             $scope.timudetails = data;
             $scope.caozuoyuan = caozuoyuan;
@@ -449,11 +451,84 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 提交临时模板的数据
+       */
+      var getShiJuanMuBanData = function(){
+        var deferred = $q.defer();
+        mbdt_data = []; // 得到模板大题的数组
+        mbdtdLength = 0; //得到模板大题的长度
+
+        mubanData.shuju.MUBANDATI = [];
+        _.each($scope.kmtxList, function(kmtx, idx, lst){
+          var mubandatiItem = {
+            MUBANDATIID: '',
+            DATIMINGCHENG: '',
+            SHUOMINGDAOYU:'',
+            TIMUSHULIANG: '',
+            MEITIFENZHI: '',
+            XUHAO: '',
+            ZHUANGTAI: 1,
+            TIMUARR:[]
+          };
+          mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
+          mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
+          mubandatiItem.XUHAO = idx;
+          mubanData.shuju.MUBANDATI.push(mubandatiItem);
+          mbdt_data.push(mubandatiItem);
+          mbdtdLength ++;
+        });
+        console.log(mubanData);
+        console.log(mbdt_data);
+        console.log(mbdtdLength);
+        $http.post(xgmbUrl, mubanData).success(function(data){
+          if(data.result){
+            $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
+            shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+            console.log($rootScope.session.lsmb_id);
+            deferred.resolve();
+          }
+          console.log(data);
+        }).error(function(err){
+            alert(err);
+            deferred.reject();
+          });
+
+        return deferred.promise;
+      };
+      $scope.getShiJuanMuBan = function(){
+        getShiJuanMuBanData();
+      };
+
+      /**
+       * 删除临时模板
+       */
+      var deleteLinShiMuBan = function(){
+
+        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+          console.log(data);
+        }).error(function(err){
+            alert(err);
+          });
+      };
+      deleteLinShiMuBan(); //初始化时，删除没有用到的临时模板
+
+      $scope.deleteLinShiMu = function(){ //临时性的
+        deleteLinShiMuBan();
+      };
+
+      /**
+       * 显示试题列表
+       */
+      $scope.showTestList = function(){
+
+      };
+
+      /**
        *  手动组卷
        */
       $scope.handMakePaper = function(){
-//        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
-//        promise.then(function(){
+        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+        promise.then(function(){
           $('.popupWrap').animate({
             left: '341px'
           }, 500, function() {
@@ -463,9 +538,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryTestFun();
           //加载手动组卷的模板
           $scope.paper_hand_form = true;
-          $scope.txTpl = 'views/partials/paper_hand_form.html';
-//
-//        });
+          //$scope.txTpl = 'views/partials/paper_hand_form.html';
+        });
       };
 
       /**
@@ -494,64 +568,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 将题加入试卷
+       */
+      $scope.addToPaper = function(tm){
+        for(var i = 0; i < mbdtdLength; i++){
+         if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
+           mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
+         }
+        }
+        console.log(mubanData);
+      };
+
+      /**
        * 试卷预览代码
        */
       $scope.shijuanPreview = function(){
         backToZjHomeFun();
         $scope.sjPreview = true;
-
       };
 
-      /**
-       * 提交临时模板的数据
-       */
-      var getShiJuanMuBanData = function(){
-        var deferred = $q.defer();
-        mubanData.shuju.MUBANDATI = [];
-        _.each($scope.kmtxList, function(kmtx, idx, lst){
-          var mubandatiItem = {
-                MUBANDATIID: '',
-                DATIMINGCHENG: '',
-                SHUOMINGDAOYU:'',
-                TIMUSHULIANG: '',
-                MEITIFENZHI: '',
-                XUHAO: '',
-                ZHUANGTAI: 1,
-                TIMUARR:[]
-              };
-          mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
-          mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
-          mubandatiItem.XUHAO = idx;
-          mubanData.shuju.MUBANDATI.push(mubandatiItem);
-        });
-        console.log(mubanData);
-        $http.post(xgmbUrl, mubanData).success(function(data){
-          if(data.result){
-            $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
-            shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
-            console.log($rootScope.session.lsmb_id);
-            deferred.resolve();
-          }
-          console.log(data);
-        }).error(function(err){
-            alert(err);
-            deferred.reject();
-          });
-      };
-      $scope.getShiJuanMuBan = function(){
-        getShiJuanMuBanData();
-      };
-
-      /**
-       * 删除临时模板
-       */
-      $scope.deleteLinShiMuBan = function(){
-        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
-          console.log(data);
-        }).error(function(err){
-            alert(err);
-          });
-      };
 
     }]);
 });

@@ -80,6 +80,7 @@
         <div class="sj-preview-btns">
             <button type="button" ng-click="shijuanPreview()">试卷预览</button>
             <button type="button" ng-click="backToZjHome()">返回组卷页面</button>
+            <button type="button" ng-click="showTestList()">显示试题列表</button>
         </div>
     </div>
     <div class="content">
@@ -207,6 +208,119 @@
             <!--组卷筛选条件。 结束-->
             <div class="contentWraps" ng-init="txTpl = 'views/partials/paper_preview.html'" ng-include="txTpl">
 
+            </div>
+        </div>
+    </div>
+    <div class="popup-testlist">
+        <!--题型和难度DOM元素， 开始-->
+        <div class="row fixed-top">
+            <div class="kmTxWrap pull-left">
+                <div class="kmTxBox">
+                    <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
+                        <li class="tiXingId_all">
+                            <span class="hidden"></span>
+                            <a href="javascript:void(0)" ng-click="getTiXingId('all')">全部题型</a>
+                        </li>
+                        <li ng-repeat="kmtx in kmtxList" class="{{'tiXingId_' + $index}}">
+                            <span class="hidden">{{ kmtx.TIXING_ID }}</span>
+                            <a href="javascript:void(0)" ng-click="getTiXingId($index)">{{ kmtx.TIXINGMINGCHENG }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nanduBox">
+                    <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
+                        <li class="nanDuId_all">
+                            <span class="hidden"></span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId('all')">全部难度</a>
+                        </li>
+                        <li class="nanDuId_1">
+                            <span class="hidden">1</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(1)">容易</a>
+                        </li>
+                        <li class="nanDuId_2">
+                            <span class="hidden">2</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(2)">较易</a>
+                        </li>
+                        <li class="nanDuId_3">
+                            <span class="hidden">3</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(3)">一般</a>
+                        </li>
+                        <li class="nanDuId_4">
+                            <span class="hidden">4</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(4)">较难</a>
+                        </li>
+                        <li class="nanDuId_5">
+                            <span class="hidden">5</span>
+                            <a href="javascript:void(0)" ng-click="getNanDuId(5)">困难</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="back-to-zujuan pull-left">
+                <button type="button" class="btn btn-success" ng-click="backToZjHome()">返回组卷页面</button>
+                <button type="button" class="btn btn-success">将本页题目全部加入试卷</button>
+            </div>
+        </div>
+        <!--题型和难度DOM元素， 结束-->
+        <div class="row test-list-wrap">
+            <h2 class="total-test">
+                共<strong>{{testListId.length}}</strong>题
+            </h2>
+            <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
+            <ul class="list-unstyled testList">
+                <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
+                    <h3 class="item-title text-right">
+                        <!--span>2013年初中毕业升学考试（天津卷）数学（带解析</span-->
+                        <button type="button" class="btn btn-success" ng-show="true" ng-click="addToPaper(tm)">加入试卷</button>
+                        <button type="button" class="btn btn-danger" ng-show="false" ng-click="removeOutPaper(tm)">移出试卷</button>
+                    </h3>
+                    <div class="item-sub-title pull-left">
+                        <p class="knowledge-point">
+                            知识点：<span ng-repeat="zsd in tm.ZHISHIDIAN">{{zsd.ZHISHIDIANMINGCHENG}}</span>
+                        </p>
+                        <p class="level-num">
+                            难易度：<span class="pull-right level-star-{{tm.NANDU_ID}}"></span>
+                        </p>
+                        <p>
+                            更新日期：{{tm.UPDATE_TIME | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </p>
+                    </div>
+                    <div class="item-cont">
+                        <h3 class="item-tigan">
+                            【题干】{{ tm.TIGAN.tiGan }}
+                        </h3>
+                        <div class="item-tizhi-wrap">
+                            <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong">
+                                {{letterArr[$index]}}.{{tz}}
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="paging text-right">
+                <ul class="pagination pagination-sm" ng-hide="!testListId">
+                    <li ng-class="{disabled: currentPageNum == 1}">
+                        <a href ng-click="getThisPageData(1)">首页</a>
+                    </li>
+                    <li ng-class="{disabled: currentPageNum == 1}">
+                        <a href
+                           ng-click="getThisPageData(prevPg = currentPageNum > 1 ? currentPageNum - 1 : 1)">
+                            上一页
+                        </a>
+                    </li>
+                    <li ng-repeat="pg in pages" ng-class="{active: currentPageNum == pg}">
+                        <a href ng-click="getThisPageData(pg)">{{pg}}</a>
+                    </li>
+                    <li ng-class="{disabled: currentPageNum == lastPageNum}">
+                        <a href
+                           ng-click="getThisPageData(nextPg = currentPageNum < lastPageNum ? currentPageNum + 1 : lastPageNum)">
+                            下一页
+                        </a>
+                    </li>
+                    <li ng-class="{disabled: currentPageNum == lastPageNum}">
+                        <a href  ng-click="getThisPageData(lastPageNum)">尾页</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

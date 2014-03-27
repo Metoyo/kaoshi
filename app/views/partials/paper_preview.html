@@ -71,89 +71,33 @@
             <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
             <button type="button" class="btn btn-primary" ng-click="getShiJuanMuBan()">获得试卷和模板的值</button>
-            <button type="button" class="btn btn-primary" ng-click="deleteLinShiMuBan()">删除临时模板</button>
+            <button type="button" class="btn btn-primary" ng-click="deleteLinShiMu()">删除临时模板</button>
         </div>
         <div class="shijuantimu-list" ng-show="sjPreview">
-            <h4 class="mubandati" ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
-                <span>{{cnNumArr[$index]}}、{{mbdt.DATIMINGCHENG}}</span><span class="dati-total-score">共：20分</span>
-            </h4>
-            <!--ul class="list-unstyled testList">
-                <li>
-                    <h5 class="item-title text-right">
-                        <button type="button" class="btn btn-danger">删除</button>
-                        <button type="button" class="btn btn-success">换一题</button>
-                    </h5>
-                    <div class="item-cont">
-                        <h3 class="item-tigan">
-                            1、【题干】下列关于质点的说法中，正确的是
-                        </h3>
-                        <div class="item-tizhi-wrap">
-                            <p class="item-tizhi">
-                                A.体积很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                B.质量很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                C.不论物体的质量多大，只要物体的尺寸对所研究的问题没有影响或影响可以不略不计，就可以看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                D.只有低速运动的物体才可看成质点，高速运动的物体不可看作质点
-                            </p>
+            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
+                <h4 class="mubandati">
+                    <span>{{cnNumArr[$index]}}、{{mbdt.DATIMINGCHENG}}</span><span class="dati-total-score">共：20分</span>
+                </h4>
+                <ul class="list-unstyled testList">
+                    <li ng-repeat="tmd in mbdt.TIMUARR">
+                        <h5 class="item-title text-right">
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <button type="button" class="btn btn-success">换一题</button>
+                        </h5>
+                        <div class="item-cont">
+                            <h3 class="item-tigan">
+                                {{$index + 1}}、{{ tmd.TIGAN.tiGan }}
+                            </h3>
+                            <div class="item-tizhi-wrap">
+                                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong">
+                                    {{letterArr[$index]}}.{{tz}}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <h5 class="item-title text-right">
-                        <button type="button" class="btn btn-danger" ng-show="false">删除</button>
-                        <button type="button" class="btn btn-success" ng-show="true">换一题</button>
-                    </h5>
-                    <div class="item-cont">
-                        <h3 class="item-tigan">
-                            1、【题干】下列关于质点的说法中，正确的是
-                        </h3>
-                        <div class="item-tizhi-wrap">
-                            <p class="item-tizhi">
-                                A.体积很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                B.质量很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                C.不论物体的质量多大，只要物体的尺寸对所研究的问题没有影响或影响可以不略不计，就可以看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                D.只有低速运动的物体才可看成质点，高速运动的物体不可看作质点
-                            </p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <h5 class="item-title text-right">
-                        <button type="button" class="btn btn-danger" ng-show="false">删除</button>
-                        <button type="button" class="btn btn-success" ng-show="true">换一题</button>
-                    </h5>
-                    <div class="item-cont">
-                        <h3 class="item-tigan">
-                            1、【题干】下列关于质点的说法中，正确的是
-                        </h3>
-                        <div class="item-tizhi-wrap">
-                            <p class="item-tizhi">
-                                A.体积很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                B.质量很小的物体都可看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                C.不论物体的质量多大，只要物体的尺寸对所研究的问题没有影响或影响可以不略不计，就可以看成质点
-                            </p>
-                            <p class="item-tizhi">
-                                D.只有低速运动的物体才可看成质点，高速运动的物体不可看作质点
-                            </p>
-                        </div>
-                    </div>
-                </li>
-            </ul-->
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </form>
 </div>
