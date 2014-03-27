@@ -184,6 +184,23 @@
     text-align: right; }
   .zujuanWrapper .paper-content .form-paper-type {
     margin-top: 20px; }
+  .zujuanWrapper .paper-content .shijuantimu-list .mubandati {
+    font-size: 16px;
+    cursor: pointer; }
+  .zujuanWrapper .paper-content .shijuantimu-list .testList li {
+    border: none; }
+    .zujuanWrapper .paper-content .shijuantimu-list .testList li h5.item-title {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      display: none; }
+    .zujuanWrapper .paper-content .shijuantimu-list .testList li .item-cont {
+      margin-top: 0; }
+    .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover {
+      border: 1px solid #d8d8d8;
+      background-color: #F5F5F5; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover h5.item-title {
+        display: block; }
 .zujuanWrapper .fixed-top {
   position: fixed;
   top: 0;

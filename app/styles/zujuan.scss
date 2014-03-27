@@ -253,6 +253,31 @@
     .form-paper-type{
       margin-top: 20px;
     }
+    .shijuantimu-list{
+      .mubandati{
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .testList li{
+        border: none;
+        h5.item-title{
+          position: absolute;
+          top: 0;
+          right: 10px;
+          display: none;
+        }
+        .item-cont{
+          margin-top: 0;
+        }
+        &:hover{
+          border: 1px solid #d8d8d8;
+          background-color: #F5F5F5;
+          h5.item-title{
+            display: block;
+          }
+        }
+      }
+    }
   }
   .fixed-top{
     position: fixed;

@@ -103,8 +103,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
       $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
-      $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
+      $scope.letterArr = config.letterArr; //题支的序号
 
       /**
        * 获得大纲数据

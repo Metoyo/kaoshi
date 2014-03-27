@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
-    .controller('ZujuanCtrl', ['$rootScope', '$scope', '$http',
-      function ($rootScope, $scope, $http) {
+    .controller('ZujuanCtrl', ['$rootScope', '$scope', '$http', '$q',
+      function ($rootScope, $scope, $http, $q) {
       /**
        * 操作title
        */
@@ -92,18 +92,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             MUBANDATI: []
           }
         },
-        xgmbUrl = baseMtAPIUrl + 'xiugai_muban'; //提交模板数据的URL
+        xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
+        tempShiTiData = {
+
+        }; //临时存放试题的数据模型
+
 
       /**
        * 初始化是DOM元素的隐藏和显示
        */
       $scope.keMuList = true; //科目选择列表内容隐藏
       $scope.dgListBox = true; //大纲选择列表隐藏
-      $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
-      $scope.letterArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']; //题支的序号
+      $scope.letterArr = config.letterArr; //题支的序号
+      $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
       $scope.shijuanData = shijuanData; // 试卷的数据
       $scope.mubanData = mubanData; // 模板的数据
+      $scope.sjPreview = false; //试卷预览里面的试题试题列表
 
       /**
        * 获得大纲数据
@@ -440,18 +444,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        *  手动组卷
        */
       $scope.handMakePaper = function(){
-        $('.popupWrap').animate({
-          left: '341px'
-        }, 500, function() {
-          $('.popupWrap').css('left','auto');
-        });
-
-        //查询试题的函数
-        qryTestFun();
-
-        //加载手动组卷的模板
-        $scope.paper_hand_form = true;
-        $scope.txTpl = 'views/partials/paper_hand_form.html';
+//        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+//        promise.then(function(){
+          $('.popupWrap').animate({
+            left: '341px'
+          }, 500, function() {
+            $('.popupWrap').css('left','auto');
+          });
+          //查询试题的函数
+          qryTestFun();
+          //加载手动组卷的模板
+          $scope.paper_hand_form = true;
+          $scope.txTpl = 'views/partials/paper_hand_form.html';
+//
+//        });
       };
 
       /**
@@ -464,18 +470,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //
 //        });
 //      };
-      console.log('hello');
+//      console.log('hello');
 
       /**
       * 由收到组卷返回的组卷的首页
       */
-      $scope.backToZjHome = function(){
+      var backToZjHomeFun = function(){
         $scope.paper_hand_form = false; //手动组卷时添加的样式
         $('.popupWrap').css('left', '-260px'); //将div.popupWrap的left属性还原
         $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
       };
+      $scope.backToZjHome = function(){
+        backToZjHomeFun();
+        $scope.sjPreview = false;
+      };
 
-      $scope.getShiJuanMuBanData = function(){
+      /**
+       * 试卷预览代码
+       */
+      $scope.shijuanPreview = function(){
+        backToZjHomeFun();
+        $scope.sjPreview = true;
+
+      };
+
+      /**
+       * 提交临时模板的数据
+       */
+      var getShiJuanMuBanData = function(){
+        var deferred = $q.defer();
         mubanData.shuju.MUBANDATI = [];
         _.each($scope.kmtxList, function(kmtx, idx, lst){
           var mubandatiItem = {
@@ -489,6 +512,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               };
           mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
+          mubandatiItem.XUHAO = idx;
           mubanData.shuju.MUBANDATI.push(mubandatiItem);
         });
         console.log(mubanData);
@@ -496,11 +520,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(data.result){
             $rootScope.session.lsmb_id = data.id; //新创建的临时模板id
             shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+            deferred.resolve();
           }
           console.log(data);
         }).error(function(err){
             alert(err);
+            deferred.reject();
           });
+      };
+      $scope.getShiJuanMuBan = function(){
+        getShiJuanMuBanData();
       };
 
     }]);

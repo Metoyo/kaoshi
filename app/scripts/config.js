@@ -6,7 +6,11 @@ define( "config", [], function () {
 //    apiurl_rz: "http://www.taianting.com:3000/api/",//认证的url
 //    apiurl_mt: "http://www.taianting.com:4000/api/",//命题的url
     secret: '076ee61d63aa10a125ea872411e433b9',
-    hostname:'localhost:3000',
+    hostname: 'localhost:3000',
+    letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+      'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], //英文字母序号数组
+    cnNumArr: ['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九',
+      '二十'], //中文数字序号数组
     routes: {
       '/mingti': {
         templateUrl: 'views/mingti.html',
