@@ -493,6 +493,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         console.log(mubanData);
         $http.post(xgmbUrl, mubanData).success(function(data){
+          if(data.result){
+            $rootScope.session.lsmb_id = data.id; //新创建的临时模板id
+            shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+          }
           console.log(data);
         }).error(function(err){
             alert(err);
