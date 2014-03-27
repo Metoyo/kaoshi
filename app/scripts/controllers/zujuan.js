@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         'styles/zujuan.css'
       ];
       $rootScope.dashboard_shown = true;
-
+      $rootScope.session.lsmb_id = []; //存放临时模板id的数组
       /**
        * 声明变量
        */
@@ -95,7 +95,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
         tempShiTiData = {
 
-        }; //临时存放试题的数据模型
+        }, //临时存放试题的数据模型
+        deletelsmbData = { //删除临时模板的数据模型
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          muban_id: $rootScope.session.lsmb_id
+        },
+        deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban'; //删除临时模板的url
 
 
       /**
@@ -508,7 +516,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 TIMUSHULIANG: '',
                 MEITIFENZHI: '',
                 XUHAO: '',
-                ZHUANGTAI: 1
+                ZHUANGTAI: 1,
+                TIMUARR:[]
               };
           mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
@@ -518,8 +527,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         console.log(mubanData);
         $http.post(xgmbUrl, mubanData).success(function(data){
           if(data.result){
-            $rootScope.session.lsmb_id = data.id; //新创建的临时模板id
+            $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
             shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+            console.log($rootScope.session.lsmb_id);
             deferred.resolve();
           }
           console.log(data);
@@ -530,6 +540,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
       $scope.getShiJuanMuBan = function(){
         getShiJuanMuBanData();
+      };
+
+      /**
+       * 删除临时模板
+       */
+      $scope.deleteLinShiMuBan = function(){
+        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+          console.log(data);
+        }).error(function(err){
+            alert(err);
+          });
       };
 
     }]);
