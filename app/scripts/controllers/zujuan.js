@@ -305,7 +305,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         }
         else{
           u = Math.tan((x-0.5) * Math.PI)/2 + 0.5;
-          console.log(u);
           if(u <= 0){
             for(i = 1; i <= nl; i++){
               a = i/n;
@@ -340,7 +339,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             }
           }
         }
-        console.log(distArr);
+//        console.log(distArr);
       };
 
       /**
@@ -413,7 +412,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
         qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
         $http.get(qrytimuxiangqing).success(function(data){
-          console.log(data);
           if(data.length){
             $scope.timudetails = data;
             $scope.caozuoyuan = caozuoyuan;
@@ -431,24 +429,30 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       /**
        * 获得题型查询条件
        */
-      $scope.getTiXingId = function(idx){
-        var tx_id = ".tiXingId_" + idx;
-        timuleixing_id = ' ';
-        angular.element('.getTiXingIdList li').removeClass('active');
-        angular.element(tx_id).addClass('active');
-        timuleixing_id = angular.element(tx_id).find('span').text();
+      $scope.getTiXingId = function(qrytxId){
+        if(qrytxId >= 1){
+          $('.getTiXingIdList li').removeClass('active').eq(this.$index + 1).addClass('active');
+          timuleixing_id = qrytxId;
+        }
+        else{
+          $('.getTiXingIdList li').removeClass('active').eq(0).addClass('active');
+          timuleixing_id = '';
+        }
         qryTestFun();
       };
 
       /**
        * 获得难度查询条件
        */
-      $scope.getNanDuId = function(idx){
-        var tx_id = ".nanDuId_" + idx;
-        nandu_id = ' ';
-        angular.element('.getNanDuIdList li').removeClass('active');
-        angular.element(tx_id).addClass('active');
-        nandu_id = angular.element(tx_id).find('span').text();
+      $scope.getNanDuId = function(qryndId){
+        if(qryndId >= 1){
+          $('.getNanDuIdList li').removeClass('active').eq(qryndId).addClass('active');
+          nandu_id = qryndId;
+        }
+        else{
+          $('.getNanDuIdList li').removeClass('active').eq(0).addClass('active');
+          nandu_id = '';
+        }
         qryTestFun();
       };
 
@@ -479,9 +483,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           mbdt_data.push(mubandatiItem);
           mbdtdLength ++;
         });
-        console.log(mubanData);
-        console.log(mbdt_data);
-        console.log(mbdtdLength);
+
         $http.post(xgmbUrl, mubanData).success(function(data){
           if(data.result){
             $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
@@ -489,7 +491,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             console.log($rootScope.session.lsmb_id);
             deferred.resolve();
           }
-          console.log(data);
         }).error(function(err){
             alert(err);
             deferred.reject();
@@ -497,9 +498,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
         return deferred.promise;
       };
-      $scope.getShiJuanMuBan = function(){
-        getShiJuanMuBanData();
-      };
+//      $scope.getShiJuanMuBan = function(){
+//        getShiJuanMuBanData();
+//      };
 
       /**
        * 删除临时模板
@@ -529,19 +530,21 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        *  手动组卷
        */
       $scope.handMakePaper = function(){
-        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
-        promise.then(function(){
-          $('.popupWrap').animate({
-            left: '341px'
-          }, 500, function() {
-            $('.popupWrap').css('left','auto');
-          });
-          //查询试题的函数
-          qryTestFun();
-          //加载手动组卷的模板
-          $scope.paper_hand_form = true;
-          $scope.txTpl = 'views/partials/paper_hand_form.html';
-        });
+//        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+//        promise.then(function(){
+//          $('.popupWrap').animate({
+//            left: '341px'
+//          }, 500, function() {
+//            $('.popupWrap').css('left','auto');
+//          });
+//          //查询试题的函数
+//          qryTestFun();
+//          //加载手动组卷的模板
+//          $scope.paper_hand_form = true;
+//          $scope.txTpl = 'views/partials/paper_hand_form.html';
+//        });
+        $scope.paper_hand_form = true;
+        $scope.txTpl = 'views/partials/paper_hand_form.html';
       };
 
       /**
@@ -573,8 +576,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 将题加入试卷
        */
       $scope.addToPaper = function(tm){
-        var selectTestStr = '',
-          sjtmItem = {
+        var sjtmItem = {
             TIMUID: '',
             MUBANDATIID: '',
             WEIZHIXUHAO: '',
@@ -589,16 +591,35 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         //将试题加入试卷
         sjtmItem.TIMUID = tm.TIMU_ID;
         sjtmItem.MUBANDATIID = tm.TIMULEIXING_ID;
-        sjtmItem.WEIZHIXUHAO = shijuanData.shuju.SHIJUAN_TIMU.length = 0 ? 0 : shijuanData.shuju.SHIJUAN_TIMU.length + 1;
+        //sjtmItem.WEIZHIXUHAO = shijuanData.shuju.SHIJUAN_TIMU.length = 0 ? 0 : shijuanData.shuju.SHIJUAN_TIMU.length + 1;
         shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
         //加入试卷按钮和移除试卷按钮的显示和隐藏
-        _.each(shijuanData.shuju.SHIJUAN_TIMU, function(shtm, idx, lst){
+        addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+
+      };
+
+      /**
+       * 将题移除试卷
+       */
+      $scope.removeOutPaper = function(tm){
+        shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
+          return shtm.TIMUID  == tm.TIMU_ID;
+        });
+        addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+      };
+
+      /**
+       * 加入试卷按钮和移除试卷按钮的显示和隐藏
+       */
+      var addOrRemoveItemToPaper = function(arr){
+        var selectTestStr = '';
+        _.each(arr, function(shtm, idx, lst){
           selectTestStr += 'selectTest' + shtm.TIMUID + ',';
         });
         $scope.selectTestStr = selectTestStr;
       };
 
-      /**
+        /**
        * 试卷预览代码
        */
       $scope.shijuanPreview = function(){
@@ -606,40 +627,30 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         $scope.sjPreview = true;
       };
 
+
+
       /**
        * 当离开本页的时候触发事件，删除无用的临时模板
        */
-//      $scope.$on("$destroy", function(){
-//        alert($rootScope.session.lsmb_id);
-//        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
-//          console.log(data);
-//          if(data.result){
-//            $rootScope.session.lsmb_id = [];
-//          }
-//        }).error(function(err){
-//          alert(err);
-//        });
-//      });
-        $scope.$on('$destroy', function () {
-          var nextPath = $location.$$path,
-              myInterval = setInterval(1000);
-          if($rootScope.session.lsmb_id.length){
-            alert($rootScope.session.lsmb_id);
-            $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
-              console.log(data);
-              if(data.result){
-                $rootScope.session.lsmb_id = [];
-                deletelsmbData.muban_id = [];
-                clearInterval(myInterval);
-                urlRedirect.goTo('/zujuan', nextPath);
-              }
-            }).error(function(err){
-              alert(err);
-            });
-          }
-          else{
-            urlRedirect.goTo('/zujuan', nextPath);
-          }
-        });
+      $scope.$on('$destroy', function () {
+        var nextPath = $location.$$path,
+            myInterval = setInterval(1000);
+        if($rootScope.session.lsmb_id.length){
+          $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+            if(data.result){
+              $rootScope.session.lsmb_id = [];
+              deletelsmbData.muban_id = [];
+              clearInterval(myInterval);
+              urlRedirect.goTo('/zujuan', nextPath);
+            }
+          }).error(function(err){
+            alert(err);
+          });
+        }
+        else{
+          urlRedirect.goTo('/zujuan', nextPath);
+        }
+      });
+
     }]);
 });

@@ -234,24 +234,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 获得题型查询条件
        */
-      $scope.getTiXingId = function(idx){
-        var tx_id = ".tiXingId_" + idx;
-        timuleixing_id = ' ';
-        angular.element('.getTiXingIdList li').removeClass('active');
-        angular.element(tx_id).addClass('active');
-        timuleixing_id = angular.element(tx_id).find('span').text();
+      $scope.getTiXingId = function(qrytxId){
+        if(qrytxId >= 1){
+          $('.getTiXingIdList li').removeClass('active').eq(this.$index + 1).addClass('active');
+          timuleixing_id = qrytxId;
+        }
+        else{
+          $('.getTiXingIdList li').removeClass('active').eq(0).addClass('active');
+          timuleixing_id = '';
+        }
         qryTestFun();
       };
 
       /**
        * 获得难度查询条件
        */
-      $scope.getNanDuId = function(idx){
-        var tx_id = ".nanDuId_" + idx;
-        nandu_id = ' ';
-        angular.element('.getNanDuIdList li').removeClass('active');
-        angular.element(tx_id).addClass('active');
-        nandu_id = angular.element(tx_id).find('span').text();
+      $scope.getNanDuId = function(qryndId){
+        if(qryndId >= 1){
+          $('.getNanDuIdList li').removeClass('active').eq(qryndId).addClass('active');
+          nandu_id = qryndId;
+        }
+        else{
+          $('.getNanDuIdList li').removeClass('active').eq(0).addClass('active');
+          nandu_id = '';
+        }
         qryTestFun();
       };
 
