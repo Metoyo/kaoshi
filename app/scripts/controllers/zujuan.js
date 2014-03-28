@@ -94,7 +94,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           }
         },
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
-        mbdt_data, // 得到模板大题的数组
+        mbdt_data = [], // 得到模板大题的数组
         mbdtdLength, //得到模板大题的长度
         tempShiTiData = {
 
@@ -464,7 +464,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         mbdt_data = []; // 得到模板大题的数组
         mbdtdLength = 0; //得到模板大题的长度
 
-        mubanData.shuju.MUBANDATI = [];
+        //mubanData.shuju.MUBANDATI = [];
         _.each($scope.kmtxList, function(kmtx, idx, lst){
           var mubandatiItem = {
             MUBANDATIID: '',
@@ -522,29 +522,27 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       /**
        * 显示试题列表
        */
-      $scope.showTestList = function(){
-
+      $scope.showTestList = function(txid){
+        $('.popupWrap').animate({
+          left: '341px'
+        }, 500, function() {
+          $('.popupWrap').css('left','auto');
+        });
+        //查询试题的函数
+        $scope.getTiXingId(txid);
+        //加载手动组卷的模板
+        $scope.paper_hand_form = true;
+        $scope.txTpl = 'views/partials/paper_hand_form.html';
       };
 
       /**
        *  手动组卷
        */
-      $scope.handMakePaper = function(){
-//        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
-//        promise.then(function(){
-//          $('.popupWrap').animate({
-//            left: '341px'
-//          }, 500, function() {
-//            $('.popupWrap').css('left','auto');
-//          });
-//          //查询试题的函数
-//          qryTestFun();
-//          //加载手动组卷的模板
-//          $scope.paper_hand_form = true;
-//          $scope.txTpl = 'views/partials/paper_hand_form.html';
-//        });
-        $scope.paper_hand_form = true;
-        $scope.txTpl = 'views/partials/paper_hand_form.html';
+      $scope.handMakePaper = function(txid){
+        var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+        promise.then(function(){
+          $scope.showTestList(txid);
+        });
       };
 
       /**
@@ -623,6 +621,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 试卷预览代码
        */
       $scope.shijuanPreview = function(){
+        $scope.mubanData = mubanData;
+        console.log(mubanData);
         backToZjHomeFun();
         $scope.sjPreview = true;
       };
