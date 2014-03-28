@@ -57,10 +57,10 @@
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <h3 class="item-title text-right">
                 <!--span>2013年初中毕业升学考试（天津卷）数学（带解析</span-->
-                <button type="button" class="btn btn-success" ng-show="addOrRemoveItem"
-                        ng-click="addToPaper(tm)">加入试卷</button>
-                <button type="button" class="btn btn-danger" ng-hide="addOrRemoveItem"
-                        ng-click="removeOutPaper(tm)">移出试卷</button>
+                <button type="button" class="btn btn-success" ng-click="addToPaper(tm)"
+                        ng-hide="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') >=0">加入试卷</button>
+                <button type="button" class="btn btn-danger" ng-click="removeOutPaper(tm)"
+                        ng-show="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') >=0">移出试卷</button>
             </h3>
             <div class="item-sub-title pull-left">
                 <p class="knowledge-point">

@@ -62,13 +62,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             FUBIAOTI: '',
             SHIJUANMULUID: '',
             SHIJUANMUBANID: '',
-            SHIJUANTIMU: [
-              {
-                TIMUID: '',
-                MUBANDATIID: '',
-                WEIZHIXUHAO: '',
-                FENZHI: ''
-              }
+            SHIJUAN_TIMU: [
+//              {
+//                TIMUID: '',
+//                MUBANDATIID: '',
+//                WEIZHIXUHAO: '',
+//                FENZHI: ''
+//              }
             ],
             ZHUANGTAI: 1
           }
@@ -573,13 +573,29 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 将题加入试卷
        */
       $scope.addToPaper = function(tm){
+        var selectTestStr = '',
+          sjtmItem = {
+            TIMUID: '',
+            MUBANDATIID: '',
+            WEIZHIXUHAO: '',
+            FENZHI: ''
+          };
+        //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
            mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
          }
         }
-        $scope.addOrRemoveItem = false;
-        console.log(mubanData);
+        //将试题加入试卷
+        sjtmItem.TIMUID = tm.TIMU_ID;
+        sjtmItem.MUBANDATIID = tm.TIMULEIXING_ID;
+        sjtmItem.WEIZHIXUHAO = shijuanData.shuju.SHIJUAN_TIMU.length = 0 ? 0 : shijuanData.shuju.SHIJUAN_TIMU.length + 1;
+        shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
+        //加入试卷按钮和移除试卷按钮的显示和隐藏
+        _.each(shijuanData.shuju.SHIJUAN_TIMU, function(shtm, idx, lst){
+          selectTestStr += 'selectTest' + shtm.TIMUID + ',';
+        });
+        $scope.selectTestStr = selectTestStr;
       };
 
       /**
