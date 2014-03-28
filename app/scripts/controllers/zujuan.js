@@ -1,9 +1,10 @@
-define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
+define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
+  function ($, _, angular, config, UrlredirectService) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
-    .controller('ZujuanCtrl', ['$rootScope', '$scope', '$http', '$q',
-      function ($rootScope, $scope, $http, $q) {
+    .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $q) {
       /**
        * 操作title
        */
@@ -118,6 +119,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.shijuanData = shijuanData; // 试卷的数据
       $scope.mubanData = mubanData; // 模板的数据
       $scope.sjPreview = false; //试卷预览里面的试题试题列表
+      $scope.addOrRemoveItem = true;
 
       /**
        * 获得大纲数据
@@ -502,19 +504,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 删除临时模板
        */
-      var deleteLinShiMuBan = function(){
-
-        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
-          console.log(data);
-        }).error(function(err){
-            alert(err);
-          });
-      };
-      deleteLinShiMuBan(); //初始化时，删除没有用到的临时模板
-
-      $scope.deleteLinShiMu = function(){ //临时性的
-        deleteLinShiMuBan();
-      };
+//      var deleteLinShiMuBan = function(){
+//
+//        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+//          console.log(data);
+//        }).error(function(err){
+//            alert(err);
+//          });
+//      };
+//      deleteLinShiMuBan(); //初始化时，删除没有用到的临时模板
+//
+//      $scope.deleteLinShiMu = function(){ //临时性的
+//        deleteLinShiMuBan();
+//      };
 
       /**
        * 显示试题列表
@@ -538,7 +540,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryTestFun();
           //加载手动组卷的模板
           $scope.paper_hand_form = true;
-          //$scope.txTpl = 'views/partials/paper_hand_form.html';
+          $scope.txTpl = 'views/partials/paper_hand_form.html';
         });
       };
 
@@ -552,7 +554,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //
 //        });
 //      };
-//      console.log('hello');
+      console.log('hello');
 
       /**
       * 由收到组卷返回的组卷的首页
@@ -576,6 +578,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
            mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
          }
         }
+        $scope.addOrRemoveItem = false;
         console.log(mubanData);
       };
 
@@ -587,6 +590,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.sjPreview = true;
       };
 
-
+      /**
+       * 当离开本页的时候触发事件，删除无用的临时模板
+       */
+//      $scope.$on("$destroy", function(){
+//        alert($rootScope.session.lsmb_id);
+//        $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+//          console.log(data);
+//          if(data.result){
+//            $rootScope.session.lsmb_id = [];
+//          }
+//        }).error(function(err){
+//          alert(err);
+//        });
+//      });
+        $scope.$on('$destroy', function () {
+          var nextPath = $location.$$path,
+              myInterval = setInterval(1000);
+          if($rootScope.session.lsmb_id.length){
+            alert($rootScope.session.lsmb_id);
+            $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
+              console.log(data);
+              if(data.result){
+                $rootScope.session.lsmb_id = [];
+                deletelsmbData.muban_id = [];
+                clearInterval(myInterval);
+                urlRedirect.goTo('/zujuan', nextPath);
+              }
+            }).error(function(err){
+              alert(err);
+            });
+          }
+          else{
+            urlRedirect.goTo('/zujuan', nextPath);
+          }
+        });
     }]);
 });
