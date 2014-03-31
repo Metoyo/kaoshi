@@ -529,7 +529,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.deleteItem = function(tmid, idx){
         var truthBeDel = window.confirm('确定要删除此题吗？'),
             className = '.delete_' + tmid;
-        console.log(idx);
         if (truthBeDel) {
           deleteTiMuData.timu_id = tmid;
           $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){

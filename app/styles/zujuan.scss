@@ -32,7 +32,7 @@
       }
       table{
         width: 100%;
-        td{
+        td,th{
           font-size: 12px;
           text-align: center;
           padding: 3px;
@@ -48,6 +48,9 @@
           width: 21px;
         }
       }
+    }
+    .sj-preview-btns{
+      padding: 10px 0;
     }
   }
   .contentInner{

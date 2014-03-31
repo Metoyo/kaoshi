@@ -481,7 +481,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           mubandatiItem.XUHAO = idx;
           mubanData.shuju.MUBANDATI.push(mubandatiItem);
           mbdt_data.push(mubandatiItem);
-          mbdtdLength ++;
+          mbdtdLength ++; //得到科目题型的长度
         });
 
         $http.post(xgmbUrl, mubanData).success(function(data){
@@ -580,11 +580,21 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MUBANDATIID: '',
             WEIZHIXUHAO: '',
             FENZHI: ''
-          };
+          },
+        kmtxListLength = $scope.kmtxList.length; //科目题型的长度
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
+
+         //将题加入到mubanData数据中
          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
            mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
+         }
+
+         //统计每种题型的数量
+         for(var j = 0; j < kmtxListLength; j++){
+           if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == $scope.kmtxList[j].TIXING_ID){
+             $scope.kmtxList[j].itemsNum =  mubanData.shuju.MUBANDATI[i].TIMUARR.length;
+           }
          }
         }
         //将试题加入试卷
@@ -603,15 +613,27 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       $scope.removeOutPaper = function(tm){
         var leftSjtmArr = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
           return shtm.TIMUID  == tm.TIMU_ID;
-        });
-        addOrRemoveItemToPaper(leftSjtmArr);
+        }),
+        kmtxListLength = $scope.kmtxList.length; //科目题型的长度
+        //加入试卷按钮和移除试卷按钮的显示和隐藏
+        shijuanData.shuju.SHIJUAN_TIMU = leftSjtmArr;
+        addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+        console.log(mubanData);
         //查找要删除的元素的位置
         for(var i = 0; i < mbdtdLength; i++){
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
-            var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length;
+          var eqIMbdtId = mubanData.shuju.MUBANDATI[i];
+          //从mubanData中删除数据
+          if(eqIMbdtId.MUBANDATIID == tm.TIMULEIXING_ID){ // 判断那个题目类型id
+            var tmarrLength = eqIMbdtId.TIMUARR.length; // 得到这个题目类型下面的题目数组
             for(var j = 0; j < tmarrLength; j ++){
-              if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){
-                mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
+              if(eqIMbdtId.TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
+                eqIMbdtId.TIMUARR.splice(j, 1);
+                //统计每种题型的数量
+                for(var k = 0; k < kmtxListLength; k++){
+                  if(eqIMbdtId.MUBANDATIID == $scope.kmtxList[k].TIXING_ID){
+                    $scope.kmtxList[k].itemsNum =  eqIMbdtId.TIMUARR.length;
+                  }
+                }
               }
             }
           }

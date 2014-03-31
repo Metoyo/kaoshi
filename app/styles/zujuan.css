@@ -25,17 +25,19 @@
     margin: 15px 0 5px 0; }
   .zujuanWrapper .testPaperSummary .selectedItems table {
     width: 100%; }
-    .zujuanWrapper .testPaperSummary .selectedItems table td {
+    .zujuanWrapper .testPaperSummary .selectedItems table td, .zujuanWrapper .testPaperSummary .selectedItems table th {
       font-size: 12px;
       text-align: center;
       padding: 3px; }
-      .zujuanWrapper .testPaperSummary .selectedItems table td .glyphicon {
+      .zujuanWrapper .testPaperSummary .selectedItems table td .glyphicon, .zujuanWrapper .testPaperSummary .selectedItems table th .glyphicon {
         top: 3px;
         margin-right: 0; }
     .zujuanWrapper .testPaperSummary .selectedItems table .text-left {
       text-align: left; }
     .zujuanWrapper .testPaperSummary .selectedItems table .deleteBtn {
       width: 21px; }
+  .zujuanWrapper .testPaperSummary .sj-preview-btns {
+    padding: 10px 0; }
 .zujuanWrapper .contentInner {
   position: relative; }
   .zujuanWrapper .contentInner .popupWrap {
