@@ -106,7 +106,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           lingyuid: lingyuid,
           muban_id: $rootScope.session.lsmb_id
         },
-        deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban'; //删除临时模板的url
+        deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban', //删除临时模板的url
+        kmtxListLength; //获得科目题型的长度
 
 
       /**
@@ -149,6 +150,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       //查询科目题型(chaxun_kemu_tixing)
       $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
         $scope.kmtxList = data;
+        kmtxListLength = data.length; //科目题型的长度
       });
 
       /**
@@ -580,20 +582,20 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MUBANDATIID: '',
             WEIZHIXUHAO: '',
             FENZHI: ''
-          },
-        kmtxListLength = $scope.kmtxList.length; //科目题型的长度
+          };
+
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
 
          //将题加入到mubanData数据中
          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
            mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
-         }
 
-         //统计每种题型的数量
-         for(var j = 0; j < kmtxListLength; j++){
-           if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == $scope.kmtxList[j].TIXING_ID){
-             $scope.kmtxList[j].itemsNum =  mubanData.shuju.MUBANDATI[i].TIMUARR.length;
+           //统计每种题型的数量
+           for(var j = 0; j < kmtxListLength; j++){
+             if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == $scope.kmtxList[j].TIXING_ID){
+               $scope.kmtxList[j].itemsNum =  mubanData.shuju.MUBANDATI[i].TIMUARR.length;
+             }
            }
          }
         }
@@ -613,8 +615,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       $scope.removeOutPaper = function(tm){
         var leftSjtmArr = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
           return shtm.TIMUID  == tm.TIMU_ID;
-        }),
-        kmtxListLength = $scope.kmtxList.length; //科目题型的长度
+        });
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         shijuanData.shuju.SHIJUAN_TIMU = leftSjtmArr;
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
