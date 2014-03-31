@@ -474,7 +474,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MEITIFENZHI: '',
             XUHAO: '',
             ZHUANGTAI: 1,
-            TIMUARR:[]
+            TIMUARR:[]//自己添加的数组
           };
           mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
@@ -601,10 +601,22 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 将题移除试卷
        */
       $scope.removeOutPaper = function(tm){
-        shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
+        var leftSjtmArr = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
           return shtm.TIMUID  == tm.TIMU_ID;
         });
-        addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+        addOrRemoveItemToPaper(leftSjtmArr);
+        //查找要删除的元素的位置
+        for(var i = 0; i < mbdtdLength; i++){
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
+            var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length;
+            for(var j = 0; j < tmarrLength; j ++){
+              if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){
+                mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
+              }
+            }
+          }
+        }
+
       };
 
       /**
