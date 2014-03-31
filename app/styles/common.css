@@ -5380,7 +5380,7 @@ a.add-btn:hover span {
         .innerWrapperSubDs .nanduBox .kmTxNdList .nanDuId_all a {
           font-size: 16px;
           font-weight: bold; }
-      .innerWrapperSubDs .kmTxBox .kmTxNdList li.active a, .innerWrapperSubDs .nanduBox .kmTxNdList li.active a {
+      .innerWrapperSubDs .kmTxBox .kmTxNdList li a, .innerWrapperSubDs .nanduBox .kmTxNdList li a {
         color: #f60; }
   .innerWrapperSubDs .pointTree {
     padding: 0 10px;

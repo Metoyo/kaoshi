@@ -236,12 +236,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.getTiXingId = function(qrytxId){
         if(qrytxId >= 1){
-          $('.getTiXingIdList li').removeClass('active').eq(this.$index + 1).addClass('active');
           timuleixing_id = qrytxId;
+          $scope.txSelectenIdx = qrytxId;
         }
         else{
-          $('.getTiXingIdList li').removeClass('active').eq(0).addClass('active');
           timuleixing_id = '';
+          $scope.txSelectenIdx = 0;
         }
         qryTestFun();
       };
@@ -251,12 +251,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.getNanDuId = function(qryndId){
         if(qryndId >= 1){
-          $('.getNanDuIdList li').removeClass('active').eq(qryndId).addClass('active');
           nandu_id = qryndId;
+          $scope.ndSelectenIdx = qryndId;
         }
         else{
-          $('.getNanDuIdList li').removeClass('active').eq(0).addClass('active');
           nandu_id = '';
+          $scope.ndSelectenIdx = 0;
         }
         qryTestFun();
       };

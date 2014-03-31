@@ -431,12 +431,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.getTiXingId = function(qrytxId){
         if(qrytxId >= 1){
-          $('.getTiXingIdList li').removeClass('active').eq(this.$index + 1).addClass('active');
           timuleixing_id = qrytxId;
+          $scope.txSelectenIdx = qrytxId;
         }
         else{
-          $('.getTiXingIdList li').removeClass('active').eq(0).addClass('active');
           timuleixing_id = '';
+          $scope.txSelectenIdx = 0;
         }
         qryTestFun();
       };
@@ -446,12 +446,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.getNanDuId = function(qryndId){
         if(qryndId >= 1){
-          $('.getNanDuIdList li').removeClass('active').eq(qryndId).addClass('active');
           nandu_id = qryndId;
+          $scope.ndSelectenIdx = qryndId;
         }
         else{
-          $('.getNanDuIdList li').removeClass('active').eq(0).addClass('active');
           nandu_id = '';
+          $scope.ndSelectenIdx = 0;
         }
         qryTestFun();
       };
@@ -528,10 +528,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         }, 500, function() {
           $('.popupWrap').css('left','auto');
         });
-        //查询试题的函数
-        $scope.getTiXingId(txid);
         //加载手动组卷的模板
         $scope.paper_hand_form = true;
+        //查询试题的函数
+        $scope.getTiXingId(txid);
+        $scope.txSelectenIdx = txid;
         $scope.txTpl = 'views/partials/paper_hand_form.html';
       };
 
