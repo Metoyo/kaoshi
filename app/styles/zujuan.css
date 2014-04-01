@@ -24,7 +24,8 @@
     font-size: 12px;
     margin: 15px 0 5px 0; }
   .zujuanWrapper .testPaperSummary .selectedItems table {
-    width: 100%; }
+    width: 100%;
+    margin-bottom: 10px; }
     .zujuanWrapper .testPaperSummary .selectedItems table td, .zujuanWrapper .testPaperSummary .selectedItems table th {
       font-size: 12px;
       text-align: center;
