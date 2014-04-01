@@ -60,12 +60,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             SHIJUANID: '',
             SHIJUANMINGCHENG: '',
             FUBIAOTI: '',
-            SHIJUANMULUID: '',
-            SHIJUANMUBANID: '',
+            SHIJUANMULU_ID: '',
+            SHIJUANMUBAN_ID: '',
             SHIJUAN_TIMU: [
 //              {
-//                TIMUID: '',
-//                MUBANDATIID: '',
+//                TIMU_ID: '',
+//                MUBANDATI_ID: '',
 //                WEIZHIXUHAO: '',
 //                FENZHI: ''
 //              }
@@ -73,7 +73,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             ZHUANGTAI: 1
           }
         },
-        xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan', //提交试卷数据的URL
+        xgsjUrl = 'http://192.168.1.109:4000/api/' + 'xiugai_shijuan', //提交试卷数据的URL
         mubanData = { //模板的数据模型
           token: token,
           caozuoyuan: caozuoyuan,
@@ -508,7 +508,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             TIMUARR:[]//自己添加的数组
 
           };
-          mubandatiItem.MUBANDATIID = kmtx.TIXING_ID;
+          mubandatiItem.MUBANDATI_ID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
           mubandatiItem.XUHAO = idx;
           mubanData.shuju.MUBANDATI.push(mubandatiItem);
@@ -519,8 +519,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         $http.post(xgmbUrl, mubanData).success(function(data){
           if(data.result){
             $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
-            shijuanData.shuju.SHIJUANMUBANID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
-//            console.log($rootScope.session.lsmb_id);
+            shijuanData.shuju.SHIJUANMUBAN_ID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+            console.log(shijuanData);
             deferred.resolve();
           }
         }).error(function(err){
@@ -604,7 +604,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       var tixingStatistics = function(lv1, lv2){
         for(var lp = 0; lp < lv2; lp++){
-          if(mubanData.shuju.MUBANDATI[lv1].MUBANDATIID == $scope.kmtxList[lp].TIXING_ID){
+          if(mubanData.shuju.MUBANDATI[lv1].MUBANDATI_ID == $scope.kmtxList[lp].TIXING_ID){
             $scope.kmtxList[lp].itemsNum =  mubanData.shuju.MUBANDATI[lv1].TIMUARR.length;
             //得到总题量
             var tixingSum = _.reduce($scope.kmtxList, function(memo, itm){
@@ -627,8 +627,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.addToPaper = function(tm){
         var sjtmItem = {
-            TIMUID: '',
-            MUBANDATIID: '',
+            TIMU_ID: '',
+            MUBANDATI_ID: '',
             WEIZHIXUHAO: '',
             FENZHI: ''
           };
@@ -637,7 +637,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         for(var i = 0; i < mbdtdLength; i++){
 
           //将题加入到mubanData数据中
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){
             mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
 
             //统计每种题型的数量和百分比
@@ -656,12 +656,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         }
 
         //将试题加入试卷
-        sjtmItem.TIMUID = tm.TIMU_ID;
-        sjtmItem.MUBANDATIID = tm.TIMULEIXING_ID;
+        sjtmItem.TIMU_ID = tm.TIMU_ID;
+        sjtmItem.MUBANDATI_ID = tm.TIMULEIXING_ID;
         //sjtmItem.WEIZHIXUHAO = shijuanData.shuju.SHIJUAN_TIMU.length = 0 ? 0 : shijuanData.shuju.SHIJUAN_TIMU.length + 1;
         shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+        console.log(shijuanData);
       };
 
       /**
@@ -669,7 +670,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.removeOutPaper = function(tm){
         shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
-          return shtm.TIMUID  == tm.TIMU_ID;
+          return shtm.TIMU_ID  == tm.TIMU_ID;
         });
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
@@ -692,7 +693,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         for(var i = 0; i < mbdtdLength; i++){
 
           //从mubanData中删除数据
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATIID == tm.TIMULEIXING_ID){ // 判断那个题目类型id
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){ // 判断那个题目类型id
             var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
             for(var j = 0; j < tmarrLength; j ++){
               if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
@@ -704,6 +705,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             }
           }
         }
+        console.log(shijuanData);
       };
 
       /**
@@ -712,7 +714,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       var addOrRemoveItemToPaper = function(arr){
         var selectTestStr = '';
         _.each(arr, function(shtm, idx, lst){
-          selectTestStr += 'selectTest' + shtm.TIMUID + ',';
+          selectTestStr += 'selectTest' + shtm.TIMU_ID + ',';
         });
         $scope.selectTestStr = selectTestStr;
       };
@@ -738,9 +740,19 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.shijuanPreview = function(){
         $scope.mubanData = mubanData;
-        console.log(mubanData);
         backToZjHomeFun();
         $scope.sjPreview = true;
+      };
+
+      /**
+       * 保存试卷
+       */
+      $scope.savePaper = function(){
+        $http.post(xgsjUrl, shijuanData).success(function(data){
+          console.log(data);
+        }).error(function(err){
+          alert(err);
+        });
       };
 
       /**
