@@ -38,46 +38,17 @@
             </h3>
             <table class="table-bordered">
                 <tr>
-                    <td class="text-left">容易</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
+                    <th>难度</th>
+                    <th>数量</th>
+                    <th>分数</th>
+                    <th>占比</th>
+                    <th></th>
                 </tr>
-                <tr>
-                    <td class="text-left">较易</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">一般</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">较难</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-left">困难</td>
-                    <td>26</td>
-                    <td>36%</td>
-                    <td>36</td>
+                <tr ng-repeat="ndtd in nanduTempData">
+                    <td class="text-left">{{ndtd.nanduName}}</td>
+                    <td>{{ndtd.nanduCount.length}}</td>
+                    <td></td>
+                    <td></td>
                     <td class="deleteBtn">
                         <a href="javascript:void(0)"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
