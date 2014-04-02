@@ -645,6 +645,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             //console.log(mubanData);
             //统计每种题型的数量和百分比
             tixingStatistics(i, kmtxListLength);
+
+            //均分大题分数
+            $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
           }
         }
 
@@ -704,6 +707,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
                 //统计每种题型的数量
                 tixingStatistics(i, kmtxListLength);
+
+                //均分大题分数
+                $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
               }
             }
           }
@@ -754,7 +760,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         var datiTotalScore = mbdt.datiScore, //本大题总分
             xiaotiAverageScore = (datiTotalScore/mbdt.TIMUARR.length).toFixed(0); //每小题的分数
 
-        _.each(mbdt.TIMUARR,function(xiaoti, idx, lst){
+        _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
           if(idx + 1 < mbdt.TIMUARR.length){
             xiaoti.xitaoScore = xiaotiAverageScore;
             datiTotalScore -= xiaotiAverageScore;
@@ -763,6 +769,17 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             xiaoti.xitaoScore = datiTotalScore;
           }
         });
+      };
+
+      /**
+       * 有小题的到大题的分值
+       */
+      $scope.addXiaotiScore = function(mbdt){
+        var datiScore = 0;
+        _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+          datiScore += parseInt(xiaoti.xitaoScore);
+        });
+        mbdt.datiScore = datiScore;
       };
 
       /**
