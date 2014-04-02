@@ -96,17 +96,17 @@
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
                                 <div class="item-score" ng-click="sj_item_score = false">
                                     {{$index + 1}}、{{ tmd.TIGAN.tiGan }}
-                                    （本小题 {{tmd.xitaoScore || 'X'}} 分）
+                                    （本小题 {{tmd.xiaotiScore || 'X'}} 分）
                                 </div>
                                 <div class="sj-edit-box" ng-hide="sj_item_score">
-                                    <input type="text" ng-model="tmd.xitaoScore" autofocus="true"
+                                    <input type="text" ng-model="tmd.xiaotiScore" autofocus="true"
                                            placeholder="此小题分数" maxlength="3"
                                            onkeyup="this.value=this.value.replace(/\D/g,'')"
                                            onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
                                     <button type="button" class="btn btn-primary"
                                             ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定</button>
                                     <button type="button" class="btn btn-danger"
-                                            ng-click="sj_item_score = true; tmd.xitaoScore = ''">取消</button>
+                                            ng-click="sj_item_score = true; tmd.xiaotiScore = ''">取消</button>
                                 </div>
                             </h3>
                             <div class="item-tizhi-wrap">
