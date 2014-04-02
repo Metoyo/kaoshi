@@ -258,9 +258,30 @@
       margin-top: 20px;
     }
     .shijuantimu-list{
+      margin-top: 15px;
       .mubandati{
-        font-size: 16px;
-        cursor: pointer;
+        font-weight: bold;
+        line-height: 28px;
+        .dati-name-box{
+          display: inline;
+          .dati-name{
+            cursor: pointer;
+          }
+        }
+        .dati-score-box{
+          display: inline;
+          p{
+            display: inline;
+            margin: 0;
+            padding: 0;
+            .dati-total-score{
+              cursor: pointer;
+            }
+          }
+        }
+        .btn{
+          margin-top: -2px;
+        }
       }
       .testList li{
         border: none;

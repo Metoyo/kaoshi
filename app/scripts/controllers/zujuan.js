@@ -73,7 +73,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             ZHUANGTAI: 1
           }
         },
-        xgsjUrl = 'http://192.168.1.109:4000/api/' + 'xiugai_shijuan', //提交试卷数据的URL
+        xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan', //提交试卷数据的URL
         mubanData = { //模板的数据模型
           token: token,
           caozuoyuan: caozuoyuan,
@@ -492,7 +492,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       var getShiJuanMuBanData = function(){
         var deferred = $q.defer();
-        mbdt_data = []; // 得到模板大题的数组
+        mbdt_data = []; // 得到模板大题的数组//
         mbdtdLength = 0; //得到模板大题的长度
 
         //mubanData.shuju.MUBANDATI = [];
@@ -505,7 +505,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MEITIFENZHI: '',
             XUHAO: '',
             ZHUANGTAI: 1,
-            TIMUARR:[]//自己添加的数组
+            TIMUARR:[],//自己添加的数组
+            datiScore: ''//自己定义此大题的分数
 
           };
           mubandatiItem.MUBANDATI_ID = kmtx.TIXING_ID;
@@ -520,7 +521,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           if(data.result){
             $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
             shijuanData.shuju.SHIJUANMUBAN_ID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
-            console.log(shijuanData);
+            //console.log(shijuanData);
             deferred.resolve();
           }
         }).error(function(err){
@@ -623,7 +624,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
-       * 将题加入试卷
+       * 将题加入试卷 //
        */
       $scope.addToPaper = function(tm){
         var sjtmItem = {
@@ -638,8 +639,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
           //将题加入到mubanData数据中
           if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){
+            tm.xitaoScore = '';
             mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
 
+            //console.log(mubanData);
             //统计每种题型的数量和百分比
             tixingStatistics(i, kmtxListLength);
           }
@@ -658,11 +661,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         //将试题加入试卷
         sjtmItem.TIMU_ID = tm.TIMU_ID;
         sjtmItem.MUBANDATI_ID = tm.TIMULEIXING_ID;
-        //sjtmItem.WEIZHIXUHAO = shijuanData.shuju.SHIJUAN_TIMU.length = 0 ? 0 : shijuanData.shuju.SHIJUAN_TIMU.length + 1;
         shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
-        console.log(shijuanData);
+        //console.log(shijuanData);
+        //console.log(mubanData);
       };
 
       /**
@@ -705,7 +708,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             }
           }
         }
-        console.log(shijuanData);
+        //console.log(shijuanData);
       };
 
       /**
@@ -745,11 +748,32 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
+       * 均分大题的分值
+       */
+      $scope.divideDatiScore = function(mbdt){
+        var datiTotalScore = mbdt.datiScore, //本大题总分
+            xiaotiAverageScore = (datiTotalScore/mbdt.TIMUARR.length).toFixed(0); //每小题的分数
+
+        _.each(mbdt.TIMUARR,function(xiaoti, idx, lst){
+          if(idx + 1 < mbdt.TIMUARR.length){
+            xiaoti.xitaoScore = xiaotiAverageScore;
+            datiTotalScore -= xiaotiAverageScore;
+          }
+          if(idx +1 == mbdt.TIMUARR.length){ //给最后一小题赋值
+            xiaoti.xitaoScore = datiTotalScore;
+          }
+        });
+      };
+
+      /**
        * 保存试卷
        */
       $scope.savePaper = function(){
         $http.post(xgsjUrl, shijuanData).success(function(data){
-          console.log(data);
+          //console.log(data);
+          if(data.result){
+            alert('恭喜你！试卷保存成功！');
+          }
         }).error(function(err){
           alert(err);
         });
