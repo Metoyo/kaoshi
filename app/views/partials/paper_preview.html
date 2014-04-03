@@ -44,8 +44,6 @@
         <div class="form-paper-type text-center" ng-hide="sjPreview">
             <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
-            <button type="button" class="btn btn-primary" ng-click="getShiJuanMuBan()">获得试卷和模板的值</button>
-            <button type="button" class="btn btn-primary" ng-click="deleteLinShiMu()">删除临时模板</button>
         </div>
         <div class="shijuantimu-list" ng-show="sjPreview">
             <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
