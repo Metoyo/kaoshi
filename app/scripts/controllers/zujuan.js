@@ -51,7 +51,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         totalPage, //符合条件的数据一共有多少页
         itemNumPerPage = 10, //每页显示多少条数据
         paginationLength = 11, //分页部分，页码的长度，目前设定为11
-        shijuanDataMaster = { //试卷的数据模型
+        shijuanData = { //试卷的数据模型
           token: token,
           caozuoyuan: caozuoyuan,
           jigouid: jigouid,
@@ -73,9 +73,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             ZHUANGTAI: 1
           }
         },
-        shijuanData = shijuanDataMaster,
         xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan', //提交试卷数据的URL
-        mubanDataMaster = { //模板的数据模型
+        mubanData = { //模板的数据模型
           token: token,
           caozuoyuan: caozuoyuan,
           jigouid: jigouid,
@@ -94,11 +93,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MUBANDATI: []
           }
         },
-        mubanData = mubanDataMaster,
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
         mbdt_data = [], // 得到模板大题的数组
         mbdtdLength, //得到模板大题的长度
-        nanduTempDataMaster = [ //存放题型难度的数组
+        nanduTempData = [ //存放题型难度的数组
           {
             nanduId: '1',
             nanduName:'容易',
@@ -125,7 +123,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             nanduCount: []
           }
         ],
-        nanduTempData = nanduTempDataMaster,
         nanduLength = nanduTempData.length, //难度数组的长度
         deletelsmbData = { //删除临时模板的数据模型
           token: token,
@@ -145,11 +142,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       $scope.dgListBox = true; //大纲选择列表隐藏
       $scope.letterArr = config.letterArr; //题支的序号
       $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
-      $scope.shijuanData = shijuanDataMaster; // 试卷的数据
-      $scope.mubanData = mubanDataMaster; // 模板的数据
+      $scope.shijuanData = shijuanData; // 试卷的数据
+      $scope.mubanData = mubanData; // 模板的数据
       $scope.sjPreview = false; //试卷预览里面的试题试题列表
 //      $scope.addOrRemoveItem = true;
-      $scope.nanduTempData = nanduTempDataMaster; //难度的数组
+      $scope.nanduTempData = nanduTempData; //难度的数组
 
       /**
        * 获得大纲数据
@@ -177,12 +174,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       });
 
       //查询科目题型(chaxun_kemu_tixing)
-      var kmtxListData;
       $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
-        kmtxListData = _.each(data, function(txdata, idx, lst){
+        $scope.kmtxList = _.each(data, function(txdata, idx, lst){
           txdata.itemsNum = 0;
         });
-        $scope.kmtxList = kmtxListData;
+//        $scope.kmtxList = kmtxListData;
         kmtxListLength = data.length; //科目题型的长度
       });
 
@@ -511,7 +507,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             ZHUANGTAI: 1,
             TIMUARR:[],//自己添加的数组
             datiScore: ''//自己定义此大题的分数
-
           };
           mubandatiItem.MUBANDATI_ID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
@@ -579,12 +574,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       * 由收到组卷返回的组卷的首页
       */
       var backToZjHomeFun = function(){
-//        deleteTempTemp(); //删除临时模板
-//        shijuanData = shijuanDataMaster; //初始化试卷数据
-//        mubanData = mubanDataMaster; //初始化模板数据
-//        nanduTempData = nanduTempDataMaster; //初始化难度的数据
-//        tixingStatistics(); //题型统计
-//        nanduPercent(); //难度统计
         $scope.paper_hand_form = false; //手动组卷时添加的样式
         $('.popupWrap').css('left', '-260px'); //将div.popupWrap的left属性还原
         $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
@@ -821,6 +810,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             if(data.result){
               $rootScope.session.lsmb_id = [];
               deletelsmbData.muban_id = [];
+              shijuanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
+              alert('删除成功！');
             }
           }).error(function(err){
             alert(err);
@@ -829,14 +820,24 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
-       * 清楚试卷、模板、难度、题型的数据
+       * 清除试卷、模板、难度、题型的数据
        */
       $scope.clearData = function(){
         deleteTempTemp();
-        $scope.kmtxList = kmtxListData;
-        $scope.mubanData = mubanDataMaster;
-        $scope.shijuanData = shijuanDataMaster;
-        $scope.nanduTempData = nanduTempDataMaster;
+        mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
+        shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
+        _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+            ndkmtx.nanduCount = [];
+            ndkmtx.ndPercentNum = '0%';
+          return ndkmtx;
+        });
+        _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+            tjkmtx.itemsNum = 0;
+            tjkmtx.txPercentNum = '0%';
+            return tjkmtx;
+        });
+        $scope.selectTestStr = ''; //清除试题加入和移除按钮
+        $scope.backToZjHome(); //返回选择手动和自动组卷页面
       };
 
       /**
@@ -850,7 +851,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
             if(data.result){
               $rootScope.session.lsmb_id = [];
-              deletelsmbData.muban_id = [];
               clearInterval(myInterval);
               urlRedirect.goTo('/zujuan', nextPath);
             }
