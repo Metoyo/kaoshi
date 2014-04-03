@@ -575,7 +575,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       */
       var backToZjHomeFun = function(){
         $scope.paper_hand_form = false; //手动组卷时添加的样式
-        $('.popupWrap').css('left', '-260px'); //将div.popupWrap的left属性还原
+        $('.popupWrap').css('left', '-360px'); //将div.popupWrap的left属性还原
         $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
 
       };
