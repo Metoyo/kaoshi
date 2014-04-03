@@ -50,7 +50,6 @@
     <ul class="list-unstyled testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <h3 class="item-title text-right">
-                <!--span>2013年初中毕业升学考试（天津卷）数学（带解析</span-->
                 <button type="button" class="btn btn-success" ng-click="addToPaper(tm)"
                         ng-hide="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') >=0">加入试卷</button>
                 <button type="button" class="btn btn-danger" ng-click="removeOutPaper(tm)"

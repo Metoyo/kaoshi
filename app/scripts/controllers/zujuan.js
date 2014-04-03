@@ -620,13 +620,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
-
           //将题加入到mubanData数据中
           if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){
             tm.xiaotiScore = '';
             mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
 
-            //console.log(mubanData);
+            console.log(mubanData);
+
             //统计每种题型的数量和百分比
             tixingStatistics(i, kmtxListLength);
 
@@ -770,6 +770,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 保存试卷
        */
       $scope.savePaper = function(){
+        var fenZhiIsNull = 0;
         shijuanData.shuju.SHIJUAN_TIMU = [];
 
         _.each(mubanData.shuju.MUBANDATI, function(dati, idx, lst){
@@ -783,20 +784,46 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             shijuanTimu.MUBANDATI_ID = dati.MUBANDATI_ID; //模板大题的id
             shijuanTimu.TIMU_ID = tm.TIMU_ID; //试题的id
             shijuanTimu.WEIZHIXUHAO = subidx; //位置序号
-            shijuanTimu.FENZHI = tm.xiaotiScore; //得到小题的分数
+            if(tm.xiaotiScore && tm.xiaotiScore > 0){
+              shijuanTimu.FENZHI = tm.xiaotiScore; //得到小题的分数
+            }
+            else{
+              shijuanTimu.FENZHI = '';
+              fenZhiIsNull ++;
+            }
             shijuanData.shuju.SHIJUAN_TIMU.push(shijuanTimu);
           });
         });
-        console.log(shijuanData);
-        //提交数据
-        $http.post(xgsjUrl, shijuanData).success(function(data){
-          //console.log(data);
-          if(data.result){
-            alert('恭喜你！试卷保存成功！');
+        if(!fenZhiIsNull){
+          //提交数据
+          if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){
+            $http.post(xgsjUrl, shijuanData).success(function(data){
+              //console.log(data);
+              if(data.result){
+                alert('恭喜你！试卷保存成功！');
+                $scope.clearData();
+              }
+            }).error(function(err){
+              alert(err);
+            });
+
+            //更新数据模板
+            mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
+            $http.post(xgmbUrl, mubanData).success(function(data){
+              if(data.result){
+                //$scope.clearData();
+              }
+            }).error(function(err){
+              alert(err);
+            });
           }
-        }).error(function(err){
-          alert(err);
-        });
+          else{
+            alert('请检查试卷的完整性！');
+          }
+        }
+        else{
+          alert('每小题的分数不能为空！请给每个小题一个分数！');
+        }
       };
 
       /**
@@ -811,7 +838,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               $rootScope.session.lsmb_id = [];
               deletelsmbData.muban_id = [];
               shijuanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
-              alert('删除成功！');
             }
           }).error(function(err){
             alert(err);
