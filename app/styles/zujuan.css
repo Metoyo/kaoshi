@@ -220,6 +220,10 @@
         background-color: #F5F5F5; }
         .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover h5.item-title {
           display: block; }
+  .zujuanWrapper .paper-content .save-paper-box {
+    position: fixed;
+    right: 10px;
+    bottom: 10px; }
 .zujuanWrapper .fixed-top {
   position: fixed;
   top: 0;

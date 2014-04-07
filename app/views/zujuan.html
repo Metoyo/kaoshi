@@ -1,7 +1,7 @@
 <div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form, paper_auto_form: paper_auto_form}">
     <div class="testPaperSummary">
         <div class="paper-list-btn clearfix text-center">
-            <button type="button" class="btn btn-primary">查看试卷列表</button>
+            <button type="button" class="btn btn-primary" ng-click="showPaperList()">查看试卷列表</button>
         </div>
         <div class="subjectBox clearfix">
             <h2 class="pull-left">高中物理</h2>
@@ -49,9 +49,9 @@
         </div>
         <div class="sj-preview-btns">
             <button type="button" class="btn btn-success" ng-click="shijuanPreview()">试卷预览</button>
-            <button type="button" class="btn btn-success" ng-click="backToZjHome()">返回组卷页面</button>
-            <button type="button" class="btn btn-success" ng-click="savePaper()">保存试卷</button>
-            <button type="button" class="btn btn-success" ng-click="clearData()">清楚数据</button>
+            <button type="button" class="btn btn-success" ng-click="clearData()">放弃本次组卷</button>
+            <!--<button type="button" class="btn btn-success" ng-click="backToZjHome()">返回组卷页面</button>-->
+            <!--<button type="button" class="btn btn-success" ng-click="savePaper()">保存试卷</button>-->
         </div>
     </div>
     <div class="content">

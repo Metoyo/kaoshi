@@ -57,19 +57,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           jigouid: jigouid,
           lingyuid: lingyuid,
           shuju:{
-            SHIJUANID: '',
+            SHIJUAN_ID: '',
             SHIJUANMINGCHENG: '',
             FUBIAOTI: '',
             SHIJUANMULU_ID: '',
             SHIJUANMUBAN_ID: '',
-            SHIJUAN_TIMU: [
-//              {
-//                TIMU_ID: '',
-//                MUBANDATI_ID: '',
-//                WEIZHIXUHAO: '',
-//                FENZHI: ''
-//              }
-            ],
+            SHIJUAN_TIMU: [],
             ZHUANGTAI: 1
           }
         },
@@ -82,7 +75,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           shuju: {
             SHIJUANMUBAN_ID: '',
             MUBANMINGCHENG: '',
-            SHIJUANZONGFEN: 100,
+            SHIJUANZONGFEN: '',
             ISYUNXUHUITUI: 1,
             SUIJIPAITIFANGSHI: 1,
             DATIBIANHAOGESHI: 3,
@@ -132,7 +125,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           muban_id: []
         },
         deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban', //删除临时模板的url
-        kmtxListLength; //获得科目题型的长度
+        kmtxListLength, //获得科目题型的长度
+        qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+        '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
+        qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+        '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=';//查询试卷列表url
 
 
       /**
@@ -536,11 +533,21 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 显示试题列表
        */
       $scope.showTestList = function(txid){
-        $('.popupWrap').animate({
-          left: '341px'
-        }, 500, function() {
-          $('.popupWrap').css('left','auto');
-        });
+        var dashboardWith = $('.dashboard').width();
+        if(dashboardWith == 120){
+          $('.popupWrap').animate({
+            left: '341px'
+          }, 500, function() {
+            $('.popupWrap').css('left','auto');
+          });
+        }
+        else{
+          $('.popupWrap').animate({
+            left: '241px'
+          }, 500, function() {
+            $('.popupWrap').css('left','auto');
+          });
+        }
         //加载手动组卷的模板
         $scope.paper_hand_form = true;
         //查询试题的函数
@@ -770,6 +777,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 保存试卷
        */
       $scope.savePaper = function(){
+        console.log(mubanData);
+        console.log(shijuanData);
         var fenZhiIsNull = 0;
         shijuanData.shuju.SHIJUAN_TIMU = [];
 
@@ -864,6 +873,48 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         });
         $scope.selectTestStr = ''; //清除试题加入和移除按钮
         $scope.backToZjHome(); //返回选择手动和自动组卷页面
+      };
+
+      /**
+       * 查看试卷列表
+       */
+      $scope.showPaperList = function(){
+        $http.get(qryCxsjlbUrl).success(function(data){
+          if(data.length){
+            $scope.paperListData = data;
+            $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
+          }
+        }).error(function(err){
+          alert(err);
+        });
+      };
+
+      /**
+       * 查看试卷详情
+       */
+      $scope.showPaperDetail = function(sjId){
+        var qryPaperDetailUrl = qryPaperDetailUrlBase + sjId;
+        $http.get(qryPaperDetailUrl).success(function(data){
+          if(!data.error){
+            //给临时模板赋值  MUBAN
+            mubanData.shuju.SHIJUANMUBAN_ID = data.MUBAN.SHIJUANMUBAN_ID; //模板id
+            mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
+            mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
+            //给试卷赋值
+            shijuanData.shuju.SHIJUAN_ID = data.SHIJUAN.SHIJUAN_ID; //试卷id
+            shijuanData.shuju.SHIJUANMINGCHENG = data.SHIJUAN.SHIJUANMINGCHENG; //试卷名称
+            shijuanData.shuju.FUBIAOTI = data.SHIJUAN.FUBIAOTI; //副标题
+            shijuanData.shuju.SHIJUANMUBAN_ID = data.SHIJUAN.SHIJUANMUBAN_ID; //试卷模板id
+
+            //公共部分
+
+
+            //$scope.paperDetailData = data;
+            //$scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
+          }
+        }).error(function(err){
+          alert(err);
+        });
       };
 
       /**
