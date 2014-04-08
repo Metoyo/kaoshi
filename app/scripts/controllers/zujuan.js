@@ -820,7 +820,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
             $http.post(xgmbUrl, mubanData).success(function(data){
               if(data.result){
-                //$scope.clearData();
+                $scope.clearData();
               }
             }).error(function(err){
               alert(err);
@@ -879,6 +879,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 查看试卷列表
        */
       $scope.showPaperList = function(){
+        $scope.clearData();
         $http.get(qryCxsjlbUrl).success(function(data){
           if(data.length){
             $scope.paperListData = data;
@@ -912,20 +913,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
             //将模板大题赋值到模板里面
             _.each(data.MUBANDATI, function(mbdt, indx, lst){
-//              var mubandatiItem = {
-//                MUBANDATI_ID: '',
-//                DATIMINGCHENG: '',
-//                SHUOMINGDAOYU:'',
-//                TIMUSHULIANG: '',
-//                MEITIFENZHI: '',
-//                XUHAO: '',
-//                ZHUANGTAI: 1,
-//                TIMUARR:[],//自己添加的数组
-//                datiScore: ''//自己定义此大题的分数
-//              };
-//              mubandatiItem.MUBANDATI_ID = mbdt.MUBANDATI_ID;
-//              mubandatiItem.DATIMINGCHENG = mbdt.DATIMINGCHENG;
-//              mubandatiItem.XUHAO = mbdt.XUHAO;
               mbdt.TIMUARR = []; //自己添加的数组
               mbdt.datiScore = 0; //自己定义此大题的分数
               mubanData.shuju.MUBANDATI.push(mbdt);
