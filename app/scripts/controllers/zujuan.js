@@ -604,6 +604,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               return memo + itemNumVal;
             },0);
 
+            //得到已选试题的总量
+            $scope.totalSelectedItmes = tixingSum;
+
             //计算每种题型的百分比
             _.each($scope.kmtxList, function(tjkmtx, idx, lst){
               var itemNumVal = tjkmtx.itemsNum ? tjkmtx.itemsNum : 0,
@@ -811,6 +814,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               if(data.result){
                 alert('恭喜你！试卷保存成功！');
                 $scope.clearData();
+                $scope.showPaperList();
               }
             }).error(function(err){
               alert(err);

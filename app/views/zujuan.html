@@ -9,7 +9,7 @@
         </div>
         <div class="selectedItems clearfix">
             <h3 class="clearfix">
-                <span class="pull-left">已选试题()</span>
+                <span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>
                 <a href="javascript:void(0)" class="pull-right">全部清空</a>
             </h3>
             <table class="table-bordered tixingTalbe">
@@ -50,7 +50,7 @@
         <div class="sj-preview-btns">
             <button type="button" class="btn btn-success" ng-click="shijuanPreview()">试卷预览</button>
             <button type="button" class="btn btn-success" ng-click="clearData()">放弃本次组卷</button>
-            <!--<button type="button" class="btn btn-success" ng-click="backToZjHome()">返回组卷页面</button>-->
+            <button type="button" class="btn btn-success" >组卷</button>
             <!--<button type="button" class="btn btn-success" ng-click="savePaper()">保存试卷</button>-->
         </div>
     </div>
