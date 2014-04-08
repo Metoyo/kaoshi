@@ -80,6 +80,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           },
           danxuan_data, //单选题数据模板
           duoxuan_data, //多选题数据模板
+          jisuan_data, //计算题数据模板
           loopArr = [0,1,2,3], //用于题支循环的数组
           tznrIsNull,//用了判断题支内容是否为空
           deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
@@ -211,6 +212,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         zhishidian_id = selectZsd.toString();
         console.log('知识点：' + zhishidian_id);
       };
+
       $scope.toggleSelection = function(zsdId) {
         var onSelect = '.select' + zsdId,
           gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
@@ -394,6 +396,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 计算题模板加载
+       */
+      $scope.addJiSuan = function(tpl){
+        jisuan_data = timu_data;
+        renderTpl(tpl);
+        jisuan_data.shuju.TIXING_ID = 9;
+        jisuan_data.shuju.TIMULEIXING_ID = 9;
+        $scope.jiSuanData = jisuan_data;
+      };
+
+      /**
        * 单选题和多选题添加函数
        */
       var addDanDuoXuanFun = function(dataTpl) {
@@ -465,6 +478,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 计算题添加代码
+       */
+      $scope.addJisuanShiTi = function(){
+        jisuan_data.shuju.ZHISHIDIAN = selectZsd;
+        if(selectZsd.length && jisuan_data.shuju.NANDU_ID.length &&
+          jisuan_data.shuju.DAAN.length && jisuan_data.shuju.TIGAN.length){
+          $http.post(xgtmUrl, jisuan_data).success(function(data){
+            console.log(data);
+            if(data.result){
+              alert('提交成功！');
+            }
+          })
+          .error(function(err){
+            alert(err);
+          });
+        }
+        else{
+          alert('请确保试卷的完整性！');
+        }
+      };
+
+      /**
        * 单选题选择答案的效果的代码
        */
       $scope.chooseDanxuanDaan = function(idx){
@@ -482,11 +517,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       var resetFun = function(){
         $('.resetForm').click();
         $('div.radio').removeClass('radio-select');
-        $("input[name=rightAnswer]").prop('checked',false);
+        $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
+        $("input[name=difficulty]").prop('checked',false); //重置难度的数据
       };
       $scope.resetForm = function(){
-        $('div.radio').removeClass('radio-select');
-        $("input[name=rightAnswer]").prop('checked',false);
+        resetFun();
+        jisuan_data = timu_data;
       };
 
       /**
