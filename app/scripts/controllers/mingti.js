@@ -468,7 +468,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 多选题添加代码
+       * 多选题添加代码 //
        */
       $scope.addDuoxuanShiTi = function(){
         var promise = addDanDuoXuanFun(duoxuan_data);
@@ -519,11 +519,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $('div.radio').removeClass('radio-select');
         $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
         $("input[name=difficulty]").prop('checked',false); //重置难度的数据
+        jisuan_data.shuju.DAAN = ''; //重置难度
+        jisuan_data.shuju.NANDU_ID = ''; //重置难度
+        jisuan_data.shuju.TIGAN = ''; //重置题干
       };
       $scope.resetForm = function(){
         resetFun();
-        jisuan_data = timu_data;
       };
+
 
       /**
        * 多选题选择答案的效果的代码
