@@ -142,8 +142,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       $scope.shijuanData = shijuanData; // 试卷的数据
       $scope.mubanData = mubanData; // 模板的数据
       $scope.sjPreview = false; //试卷预览里面的试题试题列表
-//      $scope.addOrRemoveItem = true;
       $scope.nanduTempData = nanduTempData; //难度的数组
+      $scope.shijuanyulanBtn = false; //试卷预览的按钮
+      $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+      $scope.baocunshijuanBtn = false; //保存试卷的按钮
 
       /**
        * 获得大纲数据
@@ -563,6 +565,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
         promise.then(function(){
           $scope.showTestList(txid);
+          $scope.shijuanyulanBtn = true; //试卷预览的按钮
+          $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
+          $scope.baocunshijuanBtn = true; //保存试卷的按钮
         });
       };
 
@@ -815,6 +820,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
                 alert('恭喜你！试卷保存成功！');
                 $scope.clearData();
                 $scope.showPaperList();
+                $scope.shijuanyulanBtn = false; //试卷预览的按钮
+                $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+                $scope.baocunshijuanBtn = false; //保存试卷的按钮
               }
             }).error(function(err){
               alert(err);
@@ -865,6 +873,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         deleteTempTemp();
         mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
         shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
+        shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
+        shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
+        mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
         _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
             ndkmtx.nanduCount = [];
             ndkmtx.ndPercentNum = '0%';
@@ -877,6 +888,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         });
         $scope.selectTestStr = ''; //清除试题加入和移除按钮
         $scope.backToZjHome(); //返回选择手动和自动组卷页面
+        $scope.shijuanyulanBtn = false; //试卷预览的按钮
+        $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+        $scope.baocunshijuanBtn = false; //保存试卷的按钮
       };
 
       /**
@@ -887,6 +901,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         $http.get(qryCxsjlbUrl).success(function(data){
           if(data.length){
             $scope.paperListData = data;
+            $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
           }
         }).error(function(err){
@@ -904,7 +919,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
         $http.get(qryPaperDetailUrl).success(function(data){
           if(!data.error){
-            //给临时模板赋值  MUBAN
+            //给临时模板赋值
             mubanData.shuju.SHIJUANMUBAN_ID = data.MUBAN.SHIJUANMUBAN_ID; //模板id
             mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
             mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
@@ -963,6 +978,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             nanduPercent(); //难度统计
             addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
             $scope.shijuanPreview(); //试卷预览
+            $scope.shijuanyulanBtn = true; //试卷预览的按钮
+            $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
+            $scope.baocunshijuanBtn = true; //保存试卷的按钮
           }
         }).error(function(err){
           alert(err);

@@ -48,10 +48,15 @@
             </table>
         </div>
         <div class="sj-preview-btns">
-            <button type="button" class="btn btn-success" ng-click="shijuanPreview()">试卷预览</button>
-            <button type="button" class="btn btn-success" ng-click="clearData()">放弃本次组卷</button>
-            <button type="button" class="btn btn-success" >组卷</button>
+            <button type="button" class="btn btn-success" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
+                试卷预览
+            </button>
+            <button type="button" class="btn btn-success" ng-click="clearData()" ng-show="fangqibencizujuanBtn">
+                放弃本次组卷
+            </button>
+            <!--<button type="button" class="btn btn-success" >组卷</button>-->
             <!--<button type="button" class="btn btn-success" ng-click="savePaper()">保存试卷</button>-->
+            <a href="javascript:void(0)" target="_blank"></a>
         </div>
     </div>
     <div class="content">
