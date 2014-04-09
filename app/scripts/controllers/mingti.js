@@ -566,8 +566,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 点击删除按钮删除一道题
        */
       $scope.deleteItem = function(tmid, idx){
-        var truthBeDel = window.confirm('确定要删除此题吗？'),
-            className = '.delete_' + tmid;
+        var truthBeDel = window.confirm('确定要删除此题吗？');
         if (truthBeDel) {
           deleteTiMuData.timu_id = tmid;
           $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
@@ -596,6 +595,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.editItem = function(tmxq){
         console.log(tmxq);
         var tpl;
+        //单选题
         if(tmxq.TIMULEIXING_ID == 1){
           tpl = 'views/tixing/danxuanedit.html';
           danxuan_data = timu_data;
@@ -608,10 +608,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.timudetail = tmxq;
           renderTpl(tpl); //render 修改过模板
         }
+        //多选题
         if(tmxq.TIMULEIXING_ID == 2){
           tpl = 'views/tixing/duoxuanedit.html';
           duoxuan_data = timu_data;
-          $scope.duoxuan_data = duoxuan_data; //数据赋值和模板展示的顺序
+          $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
           makeZsdSelect(tmxq);
           duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
           duoxuan_data.shuju.DAAN = tmxq.DAAN;
@@ -620,8 +621,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.timudetail = tmxq;
           renderTpl(tpl); //render 修改过模板
         }
-        //console.log(tmxq);
-        //console.log(tmxq);
+        //计算题
+        if(tmxq.TIMULEIXING_ID == 9){
+          tpl = 'views/tixing/jisuan.html';
+          jisuan_data = timu_data;
+          $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
+          makeZsdSelect(tmxq);
+          jisuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          jisuan_data.shuju.DAAN = tmxq.DAAN;
+          jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          renderTpl(tpl); //render 修改过模板
+        }
 
       };
 
@@ -646,6 +659,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryTestFun();
         });
       };
+
+      /**
+       * 修改计算题
+       */
+//      $scope.saveJisuanEdit = function(){
+//        var promise = addDanDuoXuanFun(duoxuan_data);
+//        promise.then(function() {
+//          $scope.cancelAddPattern();
+//          qryTestFun();
+//        });
+//      };
 
       /**
        * dagangListWrap宽度可拖拽
