@@ -220,6 +220,8 @@
         background-color: #F5F5F5; }
         .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover h5.item-title {
           display: block; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li .write-answer-region {
+        height: 150px; }
   .zujuanWrapper .paper-content .save-paper-box {
     position: fixed;
     right: 10px;

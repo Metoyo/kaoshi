@@ -782,6 +782,29 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
+       * 删除大题
+       */
+      $scope.deleteDaTi = function(idx){
+        var targetMbdtId = mubanData.shuju.MUBANDATI[idx].MUBANDATI_ID,
+            mubandatiLength, //定义一个模板大题的长度
+            i;
+        //删除试卷里面对应的数据
+        shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(sjtm){
+          return sjtm.MUBANDATI_ID == targetMbdtId;
+        });
+        console.log(shijuanData);
+        //加入试卷按钮和移除试卷按钮的显示和隐藏
+        addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+
+        mubanData.shuju.MUBANDATI.splice(idx, 1); //删除大图数据,放在最后
+        mubandatiLength = mubanData.shuju.MUBANDATI.length;
+        //统计每种题型的数量和百分比
+        for(i = 0; i < mubandatiLength; i++){
+          tixingStatistics(i, kmtxListLength);
+        }
+      };
+
+      /**
        * 保存试卷
        */
       $scope.savePaper = function(){

@@ -71,6 +71,8 @@
                             <span>分）</span>
                         </p>
                     </div>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="deleteDaTi($index)">删除大题</button>
                     <button type="button" class="btn btn-success"
                             ng-click="showTestList(mbdt.MUBANDATI_ID)">添加试题</button>
                     <div class="sj-edit-box" ng-hide="sj_dati_score">
@@ -112,6 +114,8 @@
                                     {{letterArr[$index]}}.{{tz}}
                                 </p>
                             </div>
+                        </div>
+                        <div class="write-answer-region" ng-show="tmd.TIMULEIXING_ID == 9">
                         </div>
                     </li>
                 </ul>
