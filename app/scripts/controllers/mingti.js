@@ -96,7 +96,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           pageArr = [], //根据得到的数据定义一个分页数组
           totalPage, //符合条件的数据一共有多少页
           itemNumPerPage = 10, //每页显示多少条数据
-          paginationLength = 11; //分页部分，页码的长度，目前设定为11
+          paginationLength = 11, //分页部分，页码的长度，目前设定为11
+          alterItemData; //修改试题时用来存放数据是容器
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -351,6 +352,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.patternListToggle = false; // 明天题型列表隐藏
         $('.pointTree').find('input[name=point]').prop('checked', false);
         zhishidian_id = '';
+        nandu_id = '';
+        timuleixing_id ='';
         qryTestFun();
         $scope.txTpl = 'views/partials/testList.html';
       };
@@ -441,7 +444,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(data.result){
               alert('提交成功！');
               deferred.resolve();
-              //resetFun();
             }
           })
             .error(function(err){
@@ -463,7 +465,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.addDanxuanShiTi = function(){
         var promise = addDanDuoXuanFun(danxuan_data);
         promise.then(function() {
-          resetFun();
+          resetFun(danxuan_data);
         });
       };
 
@@ -473,7 +475,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.addDuoxuanShiTi = function(){
         var promise = addDanDuoXuanFun(duoxuan_data);
         promise.then(function() {
-          resetFun();
+          resetFun(duoxuan_data);
         });
       };
 
@@ -485,9 +487,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         if(selectZsd.length && jisuan_data.shuju.NANDU_ID.length &&
           jisuan_data.shuju.DAAN.length && jisuan_data.shuju.TIGAN.length){
           $http.post(xgtmUrl, jisuan_data).success(function(data){
-            console.log(data);
             if(data.result){
-              alert('提交成功！');
+              if(jisuan_data.shuju.TIMU_ID){ //试题修改成功后！
+                alert('修改成功！');
+                $scope.cancelAddPattern();
+              }
+              else{ // 试题添加成功后！
+                alert('试题添加成功！');
+                resetFun(jisuan_data);
+              }
             }
           })
           .error(function(err){
@@ -514,14 +522,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 重置输入整个form和重置函数
        */
-      var resetFun = function(){
+      var resetFun = function(dataTpl){
         $('.resetForm').click();
         $('div.radio').removeClass('radio-select');
         $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
         $("input[name=difficulty]").prop('checked',false); //重置难度的数据
-        jisuan_data.shuju.DAAN = ''; //重置难度
-        jisuan_data.shuju.NANDU_ID = ''; //重置难度
-        jisuan_data.shuju.TIGAN = ''; //重置题干
+        dataTpl.shuju.DAAN = ''; //重置难度
+        dataTpl.shuju.NANDU_ID = ''; //重置难度
+        dataTpl.shuju.TIGAN = ''; //重置题干
       };
       $scope.resetForm = function(){
         resetFun();
@@ -609,7 +617,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           renderTpl(tpl); //render 修改过模板
         }
         //多选题
-        if(tmxq.TIMULEIXING_ID == 2){
+        if(tmxq.TIMULEIXING_ID == 2 && tmxq.TIXING_ID == 2){
           tpl = 'views/tixing/duoxuanedit.html';
           duoxuan_data = timu_data;
           $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
@@ -622,7 +630,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           renderTpl(tpl); //render 修改过模板
         }
         //计算题
-        if(tmxq.TIMULEIXING_ID == 9){
+        if(tmxq.TIMULEIXING_ID == 9 && tmxq.TIXING_ID == 9){
           tpl = 'views/tixing/jisuan.html';
           jisuan_data = timu_data;
           $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
