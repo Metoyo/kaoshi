@@ -626,6 +626,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 将题加入试卷 //
        */
       $scope.addToPaper = function(tm){
+//        if(g){
+//
+//        }
         var sjtmItem = {
             TIMU_ID: '',
             MUBANDATI_ID: '',
@@ -637,7 +640,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
           //将题加入到mubanData数据中
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ //将TIMULEIXING_ID换成TIXING_ID
             tm.xiaotiScore = '';
             mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
 
@@ -663,7 +666,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
         //将试题加入试卷
         sjtmItem.TIMU_ID = tm.TIMU_ID;
-        sjtmItem.MUBANDATI_ID = tm.TIMULEIXING_ID;
+        sjtmItem.MUBANDATI_ID = tm.TIXING_ID; //将TIMULEIXING_ID换成TIXING_ID
         shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
@@ -700,7 +703,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         for(var i = 0; i < mbdtdLength; i++){
 
           //从mubanData中删除数据
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){ // 判断那个题目类型id
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ // 判断那个题目类型id; 将TIMULEIXING_ID换成TIXING_ID
             var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
             for(var j = 0; j < tmarrLength; j ++){
               if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
