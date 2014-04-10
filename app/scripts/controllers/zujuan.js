@@ -791,14 +791,14 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       $scope.deleteDaTi = function(idx){
         var targetMbdtId = mubanData.shuju.MUBANDATI[idx].MUBANDATI_ID,
             mubandatiLength, //定义一个模板大题的长度
-            i,j;
+            i, j, k;
 
         //删除试卷里面对应的数据
         shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(sjtm){
           return sjtm.MUBANDATI_ID == targetMbdtId;
         });
 
-        //删除$scope.kmtxList中对应的元素
+        //删除$scope.kmtxList中对应的元素,此处不删除的话，试题统计就会有问题
         for(j = 0; j < kmtxListLength; j++){
           if(targetMbdtId == $scope.kmtxList[j].TIXING_ID){
             $scope.kmtxList[j].itemsNum = 0;
@@ -806,6 +806,21 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             break;
           }
         }
+
+        //删除难度中对应的数据 nanduTempData nanduLength
+        _.each(mubanData.shuju.MUBANDATI[idx].TIMUARR, function(dtm, idx, lst){
+          _.each(nanduTempData, function(ndtd, ndidx, ndlst){
+            if(ndtd.nanduId == dtm.NANDU_ID){
+              var thisNaduLength = ndtd.nanduCount.length;
+              for(k = 0; k < thisNaduLength; k++){
+                if(ndtd.nanduCount[k] == dtm.TIMU_ID){
+                  ndtd.nanduCount.splice(k, 1);
+                }
+              }
+            }
+          });
+        });
+
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
 
@@ -815,6 +830,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         for(i = 0; i < mubandatiLength; i++){
           tixingStatistics(i, kmtxListLength);
         }
+        //难度统计
+        nanduPercent();
       };
 
       /**
