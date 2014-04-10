@@ -88,7 +88,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         },
         xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
         mbdt_data = [], // 得到模板大题的数组
-        mbdtdLength, //得到模板大题的长度
+        //mbdtdLength, //得到模板大题的长度
         nanduTempData = [ //存放题型难度的数组
           {
             nanduId: '1',
@@ -492,7 +492,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       var getShiJuanMuBanData = function(){
         var deferred = $q.defer();
         mbdt_data = []; // 得到模板大题的数组//
-        mbdtdLength = 0; //得到模板大题的长度
+       // mbdtdLength = 0; //得到模板大题的长度
 
         //mubanData.shuju.MUBANDATI = [];
         _.each($scope.kmtxList, function(kmtx, idx, lst){
@@ -512,7 +512,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           mubandatiItem.XUHAO = idx;
           mubanData.shuju.MUBANDATI.push(mubandatiItem);
           mbdt_data.push(mubandatiItem);
-          mbdtdLength ++; //得到科目题型的长度
+         // mbdtdLength ++; //得到科目题型的长度
         });
 
         $http.post(xgmbUrl, mubanData).success(function(data){
@@ -631,7 +631,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             MUBANDATI_ID: '',
             WEIZHIXUHAO: '',
             FENZHI: ''
-          };
+          },
+        mbdtdLength = mubanData.shuju.MUBANDATI.length;
 
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
@@ -674,6 +675,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 将题移除试卷
        */
       $scope.removeOutPaper = function(tm){
+        var mbdtdLength = mubanData.shuju.MUBANDATI.length;
         shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
           return shtm.TIMU_ID  == tm.TIMU_ID;
         });
@@ -709,6 +711,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
                 //均分大题分数
                 $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
+
+                break;
               }
             }
           }
@@ -960,7 +964,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               mubanData.shuju.MUBANDATI.push(mbdt);
             });
 
-            mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
+            var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
 
             //将试卷详情放入临时模板的数组中
             _.each(data.TIMU, function(tm, indx, lst){
