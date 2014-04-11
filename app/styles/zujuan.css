@@ -176,15 +176,39 @@
   .zujuanWrapper .paper-content .sj-param-val {
     width: 100%;
     display: block; }
-  .zujuanWrapper .paper-content .sj-edit-box input {
-    font-size: 18px;
-    width: 50%; }
-  .zujuanWrapper .paper-content .sj-edit-box textarea {
-    font-size: 14px;
-    width: 60%; }
-  .zujuanWrapper .paper-content .sj-edit-box h5 {
-    width: 60%;
-    text-align: right; }
+  .zujuanWrapper .paper-content .sj-edit-box {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; }
+    .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner {
+      width: 600px;
+      height: 300px;
+      border: 1px solid #7A7A7A;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      margin-top: -150px;
+      left: 50%;
+      margin-left: -300px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .btn {
+        margin: 10px 10px 0 0; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner input {
+        font-size: 18px;
+        width: 100%; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner textarea {
+        font-size: 14px;
+        width: 100%; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner h5 {
+        width: 100%;
+        text-align: right; }
   .zujuanWrapper .paper-content .form-paper-type {
     margin-top: 20px; }
   .zujuanWrapper .paper-content .shijuantimu-list {
