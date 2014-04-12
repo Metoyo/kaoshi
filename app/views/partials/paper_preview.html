@@ -8,13 +8,11 @@
                 {{ shijuanData.shuju.SHIJUANMINGCHENG || 'XXX试卷'}}
             </span>
             <div class="sj-edit-box" ng-hide="sj_mc">
-                <div class="sj-edit-box-inner">
-                    <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" autofocus="true"
-                            placeholder="请输入试卷名称"/>
-                    <button type="button" class="btn btn-primary" ng-click="sj_mc = true">确定</button>
-                    <button type="button" class="btn btn-danger"
-                            ng-click="sj_mc = true; shijuanData.shuju.SHIJUANMINGCHENG = ''">取消</button>
-                </div>
+                <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" autofocus="true"
+                        placeholder="请输入试卷名称"/>
+                <button type="button" class="btn btn-primary" ng-click="sj_mc = true">确定</button>
+                <button type="button" class="btn btn-danger"
+                        ng-click="sj_mc = true; shijuanData.shuju.SHIJUANMINGCHENG = ''">取消</button>
             </div>
         </h1>
         <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-init="sj_fbt = true">
@@ -22,13 +20,11 @@
                 {{ shijuanData.shuju.FUBIAOTI || '试卷副标题'}}
             </span>
             <div class="sj-edit-box" ng-hide="sj_fbt">
-                <div class="sj-edit-box-inner">
-                    <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" autofocus="true"
-                            placeholder="请输入试卷副标题"/>
-                    <button type="button" class="btn btn-primary" ng-click="sj_fbt = true">确定</button>
-                    <button type="button" class="btn btn-danger"
-                            ng-click="sj_fbt = true; shijuanData.shuju.FUBIAOTI = ''">取消</button>
-                </div>
+                <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" autofocus="true"
+                        placeholder="请输入试卷副标题"/>
+                <button type="button" class="btn btn-primary" ng-click="sj_fbt = true">确定</button>
+                <button type="button" class="btn btn-danger"
+                        ng-click="sj_fbt = true; shijuanData.shuju.FUBIAOTI = ''">取消</button>
             </div>
         </h1>
         <div class="attention hover-style" title="点击设置" ng-init="sj_dy = true">
@@ -36,15 +32,13 @@
                 {{ mubanData.shuju.ZONGDAOYU || '导语'}}
             </span>
             <div class="sj-edit-box" ng-hide="sj_dy">
-                <div class="sj-edit-box-inner">
-                    <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5" autofocus="true"
-                            placeholder="请输入导语"></textarea>
-                    <h5>
-                        <button type="button" class="btn btn-primary" ng-click="sj_dy = true">确定</button>
-                        <button type="button" class="btn btn-danger"
-                                ng-click="sj_dy = true; mubanData.shuju.ZONGDAOYU = ''">取消</button>
-                    </h5>
-                </div>
+                <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5" autofocus="true"
+                        placeholder="请输入导语"></textarea>
+                <h5>
+                    <button type="button" class="btn btn-primary" ng-click="sj_dy = true">确定</button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="sj_dy = true; mubanData.shuju.ZONGDAOYU = ''">取消</button>
+                </h5>
             </div>
         </div>
         <div class="form-paper-type text-center" ng-hide="sjPreview">
@@ -82,23 +76,23 @@
                     <button type="button" class="btn btn-success"
                             ng-click="showTestList(mbdt.MUBANDATI_ID)">添加试题</button>
                     <div class="sj-edit-box" ng-hide="sj_dati_score">
-                        <div class="sj-edit-box-inner">
-                            <input type="text" ng-model="mbdt.datiScore" autofocus="true"
-                                   placeholder="此小题分数" maxlength="3"
-                                   onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                   onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
-                            <button type="button" class="btn btn-primary"
-                                    ng-click="divideDatiScore(mbdt); sj_dati_score = true">确定</button>
-                            <button type="button" class="btn btn-danger"
-                                    ng-click="sj_dati_score = true; mbdt.datiScore = ''">取消</button>
-                        </div>
+                        <input type="text" ng-model="mbdt.datiScore" autofocus="true"
+                               placeholder="此小题分数" maxlength="3"
+                               onkeyup="this.value=this.value.replace(/\D/g,'')"
+                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                        <button type="button" class="btn btn-primary"
+                                ng-click="divideDatiScore(mbdt); sj_dati_score = true">确定</button>
+                        <button type="button" class="btn btn-danger"
+                                ng-click="sj_dati_score = true; mbdt.datiScore = ''">取消</button>
                     </div>
                 </div>
                 <ul class="list-unstyled testList">
                     <li ng-repeat="tmd in mbdt.TIMUARR">
                         <h5 class="item-title text-right">
                             <button type="button" class="btn btn-danger" ng-click="removeOutPaper(tmd)">删除</button>
-                            <button type="button" class="btn btn-success">换一题</button>
+                            <button type="button" class="btn btn-success" ng-click="showTestList(mbdt.MUBANDATI_ID, tmd.TIMU_ID)">换一题</button>
+                            <button type="button" class="btn btn-success" ng-click="moveTM(tmd,-1)" ng-hide="$first">上移</button>
+                            <button type="button" class="btn btn-success" ng-click="moveTM(tmd,1)" ng-hide="$last">下移</button>
                         </h5>
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
@@ -107,16 +101,14 @@
                                     （本小题 {{tmd.xiaotiScore && tmd.xiaotiScore > 0 ? tmd.xiaotiScore : 'X'}} 分）
                                 </div>
                                 <div class="sj-edit-box" ng-hide="sj_item_score">
-                                    <div class="sj-edit-box-inner">
-                                        <input type="text" ng-model="tmd.xiaotiScore" autofocus="true"
-                                               placeholder="此小题分数" maxlength="3"
-                                               onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
-                                        <button type="button" class="btn btn-primary"
-                                                ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定</button>
-                                        <button type="button" class="btn btn-danger"
-                                                ng-click="sj_item_score = true; tmd.xiaotiScore = ''">取消</button>
-                                    </div>
+                                    <input type="text" ng-model="tmd.xiaotiScore" autofocus="true"
+                                           placeholder="此小题分数" maxlength="3"
+                                           onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                           onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                                    <button type="button" class="btn btn-primary"
+                                            ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定</button>
+                                    <button type="button" class="btn btn-danger"
+                                            ng-click="sj_item_score = true; tmd.xiaotiScore = ''">取消</button>
                                 </div>
                             </h3>
                             <div class="item-tizhi-wrap">

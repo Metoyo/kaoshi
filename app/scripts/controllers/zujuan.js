@@ -509,7 +509,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           };
           mubandatiItem.MUBANDATI_ID = kmtx.TIXING_ID;
           mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
-          mubandatiItem.XUHAO = kmtx.TIXING_ID;
+          mubandatiItem.XUHAO = idx;
           mubanData.shuju.MUBANDATI.push(mubandatiItem);
           mbdt_data.push(mubandatiItem);
          // mbdtdLength ++; //得到科目题型的长度
@@ -520,6 +520,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
 
             shijuanData.shuju.SHIJUANMUBAN_ID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
+            //console.log(shijuanData);
             deferred.resolve();
           }
         }).error(function(err){
@@ -533,7 +534,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       /**
        * 显示试题列表
        */
-      $scope.showTestList = function(txid){
+      $scope.showTestList = function(txid, tmid){
         var dashboardWith = $('.dashboard').width();
         if(dashboardWith == 120){
           $('.popupWrap').animate({
@@ -555,6 +556,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         $scope.getTiXingId(txid);
         $scope.txSelectenIdx = txid;
         $scope.txTpl = 'views/partials/paper_hand_form.html';
+
+        if(tmid) {
+          $scope.isreplacetm=true;
+          $scope.currenttmid = tmid;
+        }
       };
 
       /**
@@ -626,51 +632,21 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        */
       $scope.addToPaper = function(tm){
         var sjtmItem = {
-                TIMU_ID: '',
-                MUBANDATI_ID: '',
-                WEIZHIXUHAO: '',
-                FENZHI: ''
-              },
-          mbdtdLength,
-          ifMbdtIdIsExist,
-          mubandatiItem = {
+            TIMU_ID: '',
             MUBANDATI_ID: '',
-            DATIMINGCHENG: '',
-            SHUOMINGDAOYU:'',
-            TIMUSHULIANG: '',
-            MEITIFENZHI: '',
-            XUHAO: '',
-            ZHUANGTAI: 1,
-            TIMUARR:[],//自己添加的数组
-            datiScore: ''//自己定义此大题的分数
-          };
+            WEIZHIXUHAO: '',
+            FENZHI: ''
+          },
+        mbdtdLength = mubanData.shuju.MUBANDATI.length;
 
-        //判断这道试题的大题存不存在
-        ifMbdtIdIsExist = _.find(mubanData.shuju.MUBANDATI, function(mbdtItem){
-          return mbdtItem.MUBANDATI_ID == tm.TIXING_ID;
-        });
-
-        if(ifMbdtIdIsExist){
-          mbdtdLength = mubanData.shuju.MUBANDATI.length; //现有题目类型的长度
-        }
-        else{
-          _.each($scope.kmtxList, function(kmtx, idx, lst){
-            if(kmtx.TIXING_ID == tm.TIXING_ID){
-              mubandatiItem.MUBANDATI_ID = tm.TIXING_ID;
-              mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
-              mubandatiItem.XUHAO = tm.TIXING_ID;
-              mubanData.shuju.MUBANDATI.push(mubandatiItem);
-              mbdtdLength = mubanData.shuju.MUBANDATI.length; //现有题目类型的长度
-            }
-          });
-        }
         //将试题加入到对应的题目大题的数据中
         for(var i = 0; i < mbdtdLength; i++){
           //将题加入到mubanData数据中
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ //将TIMULEIXING_ID换成TIXING_ID
-
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){
             tm.xiaotiScore = '';
             mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
+
+            console.log(mubanData);
 
             //统计每种题型的数量和百分比
             tixingStatistics(i, kmtxListLength);
@@ -692,10 +668,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
 
         //将试题加入试卷
         sjtmItem.TIMU_ID = tm.TIMU_ID;
-        sjtmItem.MUBANDATI_ID = tm.TIXING_ID; //将TIMULEIXING_ID换成TIXING_ID
+        sjtmItem.MUBANDATI_ID = tm.TIMULEIXING_ID;
         shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
         //加入试卷按钮和移除试卷按钮的显示和隐藏
         addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+        //console.log(shijuanData);
+        //console.log(mubanData);
       };
 
       /**
@@ -727,7 +705,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
         for(var i = 0; i < mbdtdLength; i++){
 
           //从mubanData中删除数据
-          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ // 判断那个题目类型id; 将TIMULEIXING_ID换成TIXING_ID
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIMULEIXING_ID){ // 判断那个题目类型id
             var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
             for(var j = 0; j < tmarrLength; j ++){
               if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
@@ -744,6 +722,66 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             }
           }
         }
+        //console.log(shijuanData);
+      };
+
+      /**
+       * 替换当前题目
+       */
+      $scope.replaceCurrentTM = function(newtm){        
+        var mbdtdLength = mubanData.shuju.MUBANDATI.length;
+          //查找要删除的元素的位置
+        for(var i = 0; i < mbdtdLength; i++){
+
+          //从mubanData中删除数据
+          if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == newtm.TIMULEIXING_ID){ // 判断那个题目类型id
+
+            mubanData.shuju.MUBANDATI[i].TIMUARR
+            var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
+            for(var j = 0; j < tmarrLength; j ++){
+              if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == $scope.currenttmid){ //找到要删除的对应数据
+                //mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
+                mubanData.shuju.MUBANDATI[i].TIMUARR[j] = newtm;
+
+                //统计每种题型的数量
+                tixingStatistics(i, kmtxListLength);
+
+                //均分大题分数
+                $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
+
+                
+                //加入试卷按钮和移除试卷按钮的显示和隐藏
+                shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(ntm){
+                  return ntm.TIMU_ID  == $scope.currenttmid;
+                });
+                shijuanData.shuju.SHIJUAN_TIMU.push(newtm);
+                addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+                $scope.isreplacetm = false;
+                $scope.currenttmid = null;
+                $scope.shijuanPreview();
+                break;
+              }
+            }
+          }
+        }
+      };
+
+      /**
+       * 上下移动题目
+       */
+      $scope.moveTM = function(tm, num){
+        var dati = _.where(mubanData.shuju.MUBANDATI,{MUBANDATI_ID:tm.TIMULEIXING_ID})[0];
+        var tmIds = _.map(dati.TIMUARR,function(t){return t.TIMU_ID;});
+        var index = _.indexOf(tmIds,tm.TIMU_ID);
+        var toIndex = index+num;
+        var item = dati.TIMUARR[index];
+        if(num>0){
+          dati.TIMUARR.splice(toIndex+1,0,item);
+          dati.TIMUARR.splice(index,1);
+        }else{
+          dati.TIMUARR.splice(index,1);
+          dati.TIMUARR.splice(toIndex,0,item);
+        }        
       };
 
       /**
@@ -864,6 +902,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 保存试卷
        */
       $scope.savePaper = function(){
+        console.log(mubanData);
+        console.log(shijuanData);
         var fenZhiIsNull = 0;
         shijuanData.shuju.SHIJUAN_TIMU = [];
 
@@ -888,51 +928,39 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             shijuanData.shuju.SHIJUAN_TIMU.push(shijuanTimu);
           });
         });
-        if(shijuanData.shuju.SHIJUANMINGCHENG){ //11 检查试卷名称
-          
-          if(!fenZhiIsNull){// 22 检查每小题是否有分值 开始
-            //提交数据
-            if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
-              $http.post(xgsjUrl, shijuanData).success(function(data){
-                if(data.result){
-                  //更新数据模板
-                  var lsmbIdLenght = $rootScope.session.lsmb_id.length;
-                  mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
-                  $http.post(xgmbUrl, mubanData).success(function(data){
-                    if(data.result){
-                      for(var i = 0; i < lsmbIdLenght; i++){
-                        if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
-                          $rootScope.session.lsmb_id.splice(i, 1);
-                          deleteTempTemp(); //删除没用的其他目标
-                        }
-                      }
-                      clearData();
-                      $scope.showPaperList();
-                      $scope.shijuanyulanBtn = false; //试卷预览的按钮
-                      $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
-                      $scope.baocunshijuanBtn = false; //保存试卷的按钮
-                      alert('恭喜你！试卷保存成功！');
-                    }
-                  }).error(function(err){
-                    alert(err);
-                  });
+        if(!fenZhiIsNull){
+          //提交数据
+          if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){            
+            $http.post(xgsjUrl, shijuanData).success(function(data){
+              //console.log(data);
+              if(data.result){
+                alert('恭喜你！试卷保存成功！');
+                $scope.clearData();
+                $scope.showPaperList();
+                $scope.shijuanyulanBtn = false; //试卷预览的按钮
+                $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+                $scope.baocunshijuanBtn = false; //保存试卷的按钮
+              }
+            }).error(function(err){
+              alert(err);
+            });
 
-                }
-
-              }).error(function(err){
-                alert(err);
-              });
-            }
-            else{ //33
-              alert('请检查试卷的完整性！');
-            }
+            //更新数据模板
+            mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
+            $http.post(xgmbUrl, mubanData).success(function(data){
+              if(data.result){
+                $scope.clearData();
+              }
+            }).error(function(err){
+              alert(err);
+            });
           }
-          else{ // 22 检查每小题是否有分值 结束
-            alert('每小题的分数不能为空！请给每个小题一个分数！');
+          else{
+            alert('请检查试卷的完整性！');
           }
         }
-        else{ //11 检查试卷名称
-          alert('给我起个名字吧 ^ _ ^');
+        else{
+          alert('每小题的分数不能为空！请给每个小题一个分数！');
         }
       };
 
@@ -947,7 +975,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             if(data.result){
               $rootScope.session.lsmb_id = [];
               deletelsmbData.muban_id = [];
-              mubanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
+              shijuanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
             }
           }).error(function(err){
             alert(err);
@@ -958,12 +986,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       /**
        * 清除试卷、模板、难度、题型的数据
        */
-      var clearData = function(){
+      $scope.clearData = function(){
+        deleteTempTemp();
         mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
         shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
         shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
         shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
-        shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
         mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
         _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
             ndkmtx.nanduCount = [];
@@ -983,17 +1011,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
-       * 放弃组卷
-       */
-      $scope.dropMakePaper = function(){
-        deleteTempTemp();
-        clearData();
-      };
-
-      /**
        * 查看试卷列表
        */
       $scope.showPaperList = function(){
+        $scope.clearData();
         $http.get(qryCxsjlbUrl).success(function(data){
           if(data.length){
             $scope.paperListData = data;
@@ -1084,7 +1105,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
-       * 当离开本页的时候触发事件，删除无用的临时模板 //
+       * 当离开本页的时候触发事件，删除无用的临时模板
        */
       $scope.$on('$destroy', function () {
         var nextPath = $location.$$path,
