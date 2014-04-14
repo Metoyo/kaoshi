@@ -1128,13 +1128,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
        * 上下移动题目
        */
       $scope.moveTM = function(tm, num){
-        var dati = _.where(mubanData.shuju.MUBANDATI,{MUBANDATI_ID:tm.TIMULEIXING_ID})[0],
-            tmIds = _.map(dati.TIMUARR,function(t){return t.TIMU_ID;}),
+        var dati = _.where(mubanData.shuju.MUBANDATI,{ MUBANDATI_ID:tm.TIMULEIXING_ID })[0],
+            tmIds = _.map(dati.TIMUARR, function(t){ return t.TIMU_ID;}),
             index = _.indexOf(tmIds,tm.TIMU_ID),
             toIndex = index+num,
             item = dati.TIMUARR[index];
         if(num>0){
-          dati.TIMUARR.splice(toIndex+1, 0, item);
+          dati.TIMUARR.splice(toIndex + 1, 0, item);
           dati.TIMUARR.splice(index, 1);
         }
         else{
