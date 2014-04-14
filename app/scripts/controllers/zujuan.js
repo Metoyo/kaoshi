@@ -679,24 +679,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
                   $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
                 }
               }
-              /*
-              //统计难度的数量
-              for(var j = 0; j < nanduLength; j++){
-                if(nanduTempData[j].nanduId == tm.NANDU_ID){
-                  nanduTempData[j].nanduCount.push(tm.TIMU_ID);
-
-                  //每种难度的数量和百分比
-                  nanduPercent();
-                }
-              }
-
-              //将试题加入试卷
-              sjtmItem.TIMU_ID = tm.TIMU_ID;
-              sjtmItem.MUBANDATI_ID = tm.TIXING_ID; //将TIMULEIXING_ID换成TIXING_ID
-              shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
-              //加入试卷按钮和移除试卷按钮的显示和隐藏
-              addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
-              */
             }
             else{ //替换试题时的代码 cg_mbdt_idx, cg_timuId, cg_thisItem_idx
               mubanData.shuju.MUBANDATI[cg_mbdt_idx].TIMUARR.splice(cg_thisItem_idx, 1, tm);
@@ -729,6 +711,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
             //加入试卷按钮和移除试卷按钮的显示和隐藏
             addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+
             //如果是替换试题，替换完成后，展示试卷列表
             if(isChangeItem){
               $scope.shijuanPreview(); //试卷预览
@@ -736,6 +719,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               cg_mbdt_idx = ''; // 需要更换的模板大题Id重置
               cg_timuId = ''; // 需要被更换的题目的Id重置
               cg_thisItem_idx = ''; // 需要被更换的题目的索引重置
+              $scope.hideOrShowTixing = false; //如何是换一题，隐藏不必要的题型
             }
 
           };
@@ -905,14 +889,14 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           /**
            * 更换小题
            */
-          var isChangeItem = false,
-              cg_mbdt_idx, cg_timuId, cg_thisItem_idx;
+          var isChangeItem, cg_mbdt_idx, cg_timuId, cg_thisItem_idx;
           $scope.changeItem = function(mbdtId, timuId){
             $scope.showTestList(mbdtId); //显示试题列表
             isChangeItem = true; // 是否是题目替换
             cg_mbdt_idx = this.$parent.$index; // 需要更换的模板大题Id
             cg_timuId = timuId; // 需要被更换的题目的Id
             cg_thisItem_idx = this.$index; // 需要被更换的题目的索引
+            $scope.hideOrShowTixing = true; //如何是换一题，隐藏不必要的题型
           };
 
           /**

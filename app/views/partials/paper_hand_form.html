@@ -9,7 +9,10 @@
                 </li>
                 <li ng-repeat="kmtx in kmtxList">
                     <a href="javascript:void(0)" ng-click="getTiXingId(kmtx.TIXING_ID)"
-                            ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}">{{ kmtx.TIXINGMINGCHENG }}</a>
+                            ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}"
+                            ng-hide="hideOrShowTixing ? !(txSelectenIdx == kmtx.TIXING_ID) : false">
+                        {{ kmtx.TIXINGMINGCHENG }}
+                    </a>
                 </li>
             </ul>
         </div>
