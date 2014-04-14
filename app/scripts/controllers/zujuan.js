@@ -679,7 +679,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
                   $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
                 }
               }
-
+              /*
               //统计难度的数量
               for(var j = 0; j < nanduLength; j++){
                 if(nanduTempData[j].nanduId == tm.NANDU_ID){
@@ -696,10 +696,48 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
               //加入试卷按钮和移除试卷按钮的显示和隐藏
               addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+              */
             }
             else{ //替换试题时的代码 cg_mbdt_idx, cg_timuId, cg_thisItem_idx
               mubanData.shuju.MUBANDATI[cg_mbdt_idx].TIMUARR.splice(cg_thisItem_idx, 1, tm);
+              //从试卷中删除被替换的题目
+              shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(sjtm){
+                return sjtm.TIMU_ID == cg_timuId;
+              });
+              //从难度中删除要替换的题目
+              _.each(nanduTempData, function(ndtd, idx, lst){
+                ndtd.nanduCount = _.reject(ndtd.nanduCount, function(ndct){
+                  return ndct == cg_timuId;
+                });
+              });
+              //均分大题分数
+              $scope.divideDatiScore(mubanData.shuju.MUBANDATI[cg_mbdt_idx]);
             }
+
+            //统计难度的数量
+            for(var j = 0; j < nanduLength; j++){
+              if(nanduTempData[j].nanduId == tm.NANDU_ID){
+                nanduTempData[j].nanduCount.push(tm.TIMU_ID);
+                //每种难度的数量和百分比
+                nanduPercent();
+              }
+            }
+
+            //将试题加入试卷
+            sjtmItem.TIMU_ID = tm.TIMU_ID;
+            sjtmItem.MUBANDATI_ID = tm.TIXING_ID; //将TIMULEIXING_ID换成TIXING_ID
+            shijuanData.shuju.SHIJUAN_TIMU.push(sjtmItem);
+            //加入试卷按钮和移除试卷按钮的显示和隐藏
+            addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
+            //如果是替换试题，替换完成后，展示试卷列表
+            if(isChangeItem){
+              $scope.shijuanPreview(); //试卷预览
+              isChangeItem = false; // 是否是题目替换重置
+              cg_mbdt_idx = ''; // 需要更换的模板大题Id重置
+              cg_timuId = ''; // 需要被更换的题目的Id重置
+              cg_thisItem_idx = ''; // 需要被更换的题目的索引重置
+            }
+
           };
 
           /**
@@ -875,8 +913,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             cg_mbdt_idx = this.$parent.$index; // 需要更换的模板大题Id
             cg_timuId = timuId; // 需要被更换的题目的Id
             cg_thisItem_idx = this.$index; // 需要被更换的题目的索引
-//            alert(this.$index);
-//            alert(this.$parent.$index);
           };
 
           /**
@@ -1005,6 +1041,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
            * 放弃组卷
            */
           $scope.dropMakePaper = function(){
+            $scope.totalSelectedItmes = 0; //已选试题的总数量
             deleteTempTemp();
             clearData();
           };
@@ -1013,6 +1050,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
            * 查看试卷列表
            */
           $scope.showPaperList = function(){
+            deleteTempTemp();
+            clearData();
             $http.get(qryCxsjlbUrl).success(function(data){
               if(data.length){
                 $scope.paperListData = data;
