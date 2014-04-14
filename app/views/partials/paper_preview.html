@@ -98,7 +98,8 @@
                     <li ng-repeat="tmd in mbdt.TIMUARR">
                         <h5 class="item-title text-right">
                             <button type="button" class="btn btn-danger" ng-click="removeOutPaper(tmd)">删除</button>
-                            <button type="button" class="btn btn-success">换一题</button>
+                            <button type="button" class="btn btn-success"
+                                    ng-click="changeItem(mbdt.MUBANDATI_ID, tmd.TIMU_ID, $index)">换一题</button>
                         </h5>
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">

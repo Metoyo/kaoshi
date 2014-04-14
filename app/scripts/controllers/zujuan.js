@@ -624,7 +624,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       /**
        * 将题加入试卷 //
        */
-      $scope.addToPaper = function(tm){
+      $scope.addToPaper = function(tm, isChangeItem){
         var sjtmItem = {
                 TIMU_ID: '',
                 MUBANDATI_ID: '',
@@ -861,6 +861,15 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
+       * 换一题按钮
+       */
+      $scope.changeItem = function(mbdtid, tmid, idx){
+        //先将试卷中的要更换的题删除
+
+        //替换数组的方法 splice(position, 1, new item);
+      };
+
+      /**
        * 保存试卷
        */
       $scope.savePaper = function(){
@@ -983,7 +992,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
       };
 
       /**
-       * 放弃组卷
+       * 放弃组卷 //
        */
       $scope.dropMakePaper = function(){
         deleteTempTemp();

@@ -264,7 +264,7 @@
 .zujuanWrapper .back-to-zujuan {
   width: 160px;
   position: absolute;
-  top: 0;
+  top: 10px;
   right: 10px; }
   .zujuanWrapper .back-to-zujuan button {
     float: right;
