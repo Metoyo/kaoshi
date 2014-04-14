@@ -1142,47 +1142,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           };
 
           /**
-           * 替换当前题目 //周常文
-           */
-          $scope.replaceCurrentTM = function(newtm){
-            var mbdtdLength = mubanData.shuju.MUBANDATI.length;
-            //查找要删除的元素的位置
-            for(var i = 0; i < mbdtdLength; i++){
-
-              //从mubanData中删除数据
-              if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == newtm.TIMULEIXING_ID){ // 判断那个题目类型id
-
-    //            mubanData.shuju.MUBANDATI[i].TIMUARR
-                var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
-                for(var j = 0; j < tmarrLength; j ++){
-                  if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == $scope.currenttmid){ //找到要删除的对应数据
-                    //mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
-                    mubanData.shuju.MUBANDATI[i].TIMUARR[j] = newtm;
-
-                    //统计每种题型的数量
-                    tixingStatistics(i, kmtxListLength);
-
-                    //均分大题分数
-                    $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
-
-
-                    //加入试卷按钮和移除试卷按钮的显示和隐藏
-                    shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(ntm){
-                      return ntm.TIMU_ID == $scope.currenttmid;
-                    });
-                    shijuanData.shuju.SHIJUAN_TIMU.push(newtm);
-                    addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
-                    $scope.isreplacetm = false;
-                    $scope.currenttmid = null;
-                    $scope.shijuanPreview();
-                    break;
-                  }
-                }
-              }
-            }
-          };
-
-          /**
            * 上下移动题目 //周常文
            */
           $scope.moveTM = function(tm, num){
