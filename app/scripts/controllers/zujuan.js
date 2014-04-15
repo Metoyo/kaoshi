@@ -889,6 +889,14 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           };
 
           /**
+           * 从试题统计中删除大题
+           */
+          $scope.deleteDaTiArr = function(mbdtid){
+            var mbdtIds = _.map(mubanData.shuju.MUBANDATI, function(mbdt){ return mbdt.MUBANDATI_ID;}),
+                idx = _.indexOf(mbdtIds, mbdtid);
+            $scope.deleteDaTi(idx);
+          };
+          /**
            * 编辑试卷信息//
            */
           $scope.editMuBanDaTiNameAndScore = function(styl){
