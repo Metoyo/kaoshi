@@ -146,6 +146,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           $scope.shijuanyulanBtn = false; //试卷预览的按钮
           $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
           $scope.baocunshijuanBtn = false; //保存试卷的按钮
+          $scope.shijuan_edit = false; //试卷编辑
+//          $scope.focusMe = false; //
 
           /**
            * 获得大纲数据
@@ -887,6 +889,32 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           };
 
           /**
+           * 编辑试卷信息//
+           */
+          $scope.editMuBanDaTiNameAndScore = function(styl){
+            var focusTarget = '.' + styl;
+            $scope.shijuan_edit = true;
+            $(focusTarget).prop('autofocus', 'true');
+          };
+
+          /**
+           * 取消编辑试卷信息
+           */
+          $scope.cancelEditPaper = function(){
+            $scope.shijuan_edit = false;
+          };
+
+          /**
+           * 保存编辑试卷信息
+           */
+          $scope.saveEditPaper = function(){
+            _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){
+              $scope.divideDatiScore(mbdt);
+            });
+            $scope.shijuan_edit = false;
+          };
+
+          /**
            * 更换小题
            */
           var isChangeItem, cg_mbdt_idx, cg_timuId, cg_thisItem_idx;
@@ -991,6 +1019,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               }).error(function(err){
                 alert(err);
               });
+            }
+            else{
+              mubanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
             }
           };
 
@@ -1126,7 +1157,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           };
 
           /**
-           * 上下移动题目 //周常文
+           * 上下移动题目 //周
            */
           $scope.moveTM = function(tm, num){
             var dati = _.where(mubanData.shuju.MUBANDATI, { MUBANDATI_ID: tm.TIMULEIXING_ID })[0],

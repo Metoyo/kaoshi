@@ -1,51 +1,19 @@
-<!--<div class="preview-title"><span>试卷预览</span></div>-->
-<!--<div class="seal-line pull-left"><a href="javascript:void(0)"></a></div>-->
 <div class="paper-content">
     <form name="shijuan">
-        <!--<h4 class="secret-mark hover-style">绝密★启用前</h4>-->
-        <h1 class="paper-title text-center hover-style" title="点击设置" ng-init="sj_mc = true">
-            <span class="sj-param-val" ng-click="sj_mc = false">
+        <h1 class="paper-title text-center hover-style" title="点击设置">
+            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
                 {{ shijuanData.shuju.SHIJUANMINGCHENG || 'XXX试卷'}}
             </span>
-            <div class="sj-edit-box" ng-hide="sj_mc">
-                <div class="sj-edit-box-inner">
-                    <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" autofocus="true"
-                            placeholder="请输入试卷名称"/>
-                    <button type="button" class="btn btn-primary" ng-click="sj_mc = true">确定</button>
-                    <button type="button" class="btn btn-danger"
-                            ng-click="sj_mc = true; shijuanData.shuju.SHIJUANMINGCHENG = ''">取消</button>
-                </div>
-            </div>
         </h1>
-        <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-init="sj_fbt = true">
-            <span class="sj-param-val" ng-click="sj_fbt = false">
+        <h1 class="paper-sub-title text-center hover-style" title="点击设置">
+            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_fbt_input')">
                 {{ shijuanData.shuju.FUBIAOTI || '试卷副标题'}}
             </span>
-            <div class="sj-edit-box" ng-hide="sj_fbt">
-                <div class="sj-edit-box-inner">
-                    <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" autofocus="true"
-                            placeholder="请输入试卷副标题"/>
-                    <button type="button" class="btn btn-primary" ng-click="sj_fbt = true">确定</button>
-                    <button type="button" class="btn btn-danger"
-                            ng-click="sj_fbt = true; shijuanData.shuju.FUBIAOTI = ''">取消</button>
-                </div>
-            </div>
         </h1>
-        <div class="attention hover-style" title="点击设置" ng-init="sj_dy = true">
-            <span class="sj-param-val" ng-click="sj_dy = false">
+        <div class="attention hover-style" title="点击设置">
+            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dy_input')">
                 {{ mubanData.shuju.ZONGDAOYU || '导语'}}
             </span>
-            <div class="sj-edit-box" ng-hide="sj_dy">
-                <div class="sj-edit-box-inner">
-                    <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5" autofocus="true"
-                            placeholder="请输入导语"></textarea>
-                    <h5>
-                        <button type="button" class="btn btn-primary" ng-click="sj_dy = true">确定</button>
-                        <button type="button" class="btn btn-danger"
-                                ng-click="sj_dy = true; mubanData.shuju.ZONGDAOYU = ''">取消</button>
-                    </h5>
-                </div>
-            </div>
         </div>
         <div class="form-paper-type text-center" ng-hide="sjPreview">
             <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
@@ -53,12 +21,14 @@
         </div>
         <div class="shijuantimu-list" ng-show="sjPreview">
             <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
-                <div class="mubandati" ng-init="sj_dati_score = true">
-                    <div class="dati-name-box">
+                <div class="mubandati">
+                    <div class="dati-name-box" title="点击设置大题名称"
+                         ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
                         <span>{{cnNumArr[$index]}}、</span>
                         <span class="dati-name">{{mbdt.DATIMINGCHENG}}</span>
                     </div>
-                    <div class="dati-score-box">
+                    <div class="dati-score-box" title="点击设置大题分数"
+                         ng-click="editMuBanDaTiNameAndScore('dt_score' + $index)">
                         <p>
                             <span>（本大题共</span>
                             <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
@@ -71,7 +41,7 @@
                         </p>
                         <p>
                             <span>共</span>
-                            <span class="dati-total-score" ng-click="sj_dati_score = false">
+                            <span class="dati-total-score">
                                 {{mbdt.datiScore || 'X'}}
                             </span>
                             <span>分）</span>
@@ -81,18 +51,6 @@
                             ng-click="deleteDaTi($index)">删除大题</button>
                     <button type="button" class="btn btn-success"
                             ng-click="showTestList(mbdt.MUBANDATI_ID)">添加试题</button>
-                    <div class="sj-edit-box" ng-hide="sj_dati_score">
-                        <div class="sj-edit-box-inner">
-                            <input type="text" ng-model="mbdt.datiScore" autofocus="true"
-                                   placeholder="此小题分数" maxlength="3"
-                                   onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                   onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
-                            <button type="button" class="btn btn-primary"
-                                    ng-click="divideDatiScore(mbdt); sj_dati_score = true">确定</button>
-                            <button type="button" class="btn btn-danger"
-                                    ng-click="sj_dati_score = true; mbdt.datiScore = ''">取消</button>
-                        </div>
-                    </div>
                 </div>
                 <ul class="list-unstyled testList">
                     <li ng-repeat="tmd in mbdt.TIMUARR">
@@ -133,7 +91,46 @@
                     </li>
                 </ul>
             </div>
-
+        </div>
+        <!--弹出层用来修改题目和大题的信息-->
+        <div class="sj-edit-box" ng-show="shijuan_edit">
+            <div class="sj-edit-box-inner">
+                <h2 class="sj-setting-title">
+                    <span>试卷设置</span>
+                </h2>
+                <div class="setting-content">
+                    <div class="paper-info-edit">
+                        <div class="row">
+                            <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" placeholder="XXX试卷"
+                                   class="sj_dt_input"/>
+                        </div>
+                        <div class="row">
+                            <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" placeholder="试卷副标题"
+                                   class="sj_fbt_input"/>
+                        </div>
+                        <div class="row">
+                            <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5"  placeholder="导语" class="sj_dy_input">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="item-info-edit">
+                        <div class="row" ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
+                            <input type="text" ng-model="mbdt.DATIMINGCHENG" placeholder="此大题名称"
+                                   class="{{'dt_name' + $index}}"/>
+                            <input type="text" ng-model="mbdt.datiScore"  placeholder="此大题分数" maxlength="3"
+                                   class="{{'dt_score' + $index}}"
+                                   onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                   onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-edit-info">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="saveEditPaper()">确定</button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="cancelEditPaper()">取消</button>
+                </div>
+            </div>
         </div>
     </form>
     <div class="save-paper-box" ng-show="baocunshijuanBtn">
