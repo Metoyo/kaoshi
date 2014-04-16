@@ -2,10 +2,8 @@ define([
   'jquery',
   'underscore',
   'angular',
-  'config',
-  'services/urlredirect',
-  'directives/passwordverify'
-], function ($, _, angular, config, UrlredirectService, passwordVerify) {
+  'config'
+], function ($, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])

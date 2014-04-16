@@ -1,0 +1,17 @@
+@import "variable";
+.kaowuWrapper{
+  .active{
+    color: #000;
+  }
+  .sub-nav{
+    margin-top: 10px;
+    .nav-tabs{
+      li:first-child{
+        margin-left: 15px;
+      }
+    }
+  }
+  .tab-content{
+    padding: 15px;
+  }
+}

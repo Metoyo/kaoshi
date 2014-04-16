@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'angular',
-  'config',
-  'services/urlredirect'
-], function ($, _, angular, config, UrlredirectService) {
+  'config'
+], function ($, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])

@@ -3,8 +3,10 @@ define( "config", [], function () {
     token: '12345',
     apiurl_rz: "http://192.168.1.111:3000/api/",//认证的url
     apiurl_mt: "http://192.168.1.111:4000/api/",//命题的url
+    apiurl_kw: "http://192.168.1.111:4100/api/",//考务的url
 //    apiurl_rz: "http://www.taianting.com:3000/api/",//认证的url
 //    apiurl_mt: "http://www.taianting.com:4000/api/",//命题的url
+//    apiurl_kw: "http://www.taianting.com:4100/api/",//考务的url
     secret: '076ee61d63aa10a125ea872411e433b9',
     hostname: 'localhost:3000',
     letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -45,6 +47,11 @@ define( "config", [], function () {
       '/zujuan': {
         templateUrl: 'views/zujuan.html',
         controller: 'ZujuanCtrl',
+        requireLogin: true
+      },
+      '/kaowu': {
+        templateUrl: 'views/kaowu.html',
+        controller: 'KaowuCtrl',
         requireLogin: true
       }
     }

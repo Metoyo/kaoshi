@@ -1,0 +1,39 @@
+<div class="innerWrap innerWrapperSubDs kaowuWrapper">
+    <div class="sub-nav" ng-init="tabActive = 'ksgl'">
+        <ul class="nav nav-tabs">
+            <li ng-class="{active: tabActive == 'kcgl' }">
+                <a href="javascript:void(0)" ng-click="tabActive = 'kcgl'">考场管理</a>
+            </li>
+            <li ng-class="{active: tabActive == 'ksgl'}">
+                <a href="javascript:void(0)" ng-click="tabActive = 'ksgl'">考试管理</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in" ng-class="{active: tabActive == 'kcgl'}">
+                <p>
+                     Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+                </p>
+            </div>
+            <div class="tab-pane fade in" ng-class="{active: tabActive == 'ksgl'}">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>考试名称</th>
+                        <th>试卷</th>
+                        <th>开考时间</th>
+                        <th>考试时长</th>
+                        <th>考场</th>
+                        <th>考试状态</th>
+                    </tr>
+                    <tr ng-repeat="ks in kaoshiList">
+                        <td>{{ks.KAOSHI_MINGCHENG}}</td>
+                        <td></td>
+                        <td>{{ks.KAISHISHIJIAN | date:'yyyy-MM-dd HH:mm:ss UTC'}}</td>
+                        <td>{{ks.SHICHANG}}</td>
+                        <td></td>
+                        <td>{{ks.ZHUANGTAI}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
