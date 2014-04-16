@@ -2,7 +2,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$q', function ($rootScope, $scope, $http, $q) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
       var session = $rootScope.session,
           dshyhjsUrl = config.apiurl_rz + 'daishenhe_yonghu_juese?token='
                          + config.token + '&caozuoyuan=' + session.info.UID,

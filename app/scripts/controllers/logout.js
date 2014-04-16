@@ -1,10 +1,8 @@
 define([
   'jquery',
   'underscore',
-  'angular',
-  'config',
-  'services/urlredirect'
-], function ($, _, angular, config, UrlredirectService) {
+  'angular'
+], function ($, _, angular) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.LogoutCtrl', [])

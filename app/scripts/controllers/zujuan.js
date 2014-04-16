@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
-  function ($, _, angular, config, UrlredirectService) { // 001
+define(['jquery', 'underscore', 'angular', 'config'],
+  function ($, _, angular, config) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q',
