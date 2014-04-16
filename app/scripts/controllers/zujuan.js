@@ -184,6 +184,15 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           });
 
           /**
+           * kmtx.datiScore的值清零
+           */
+          var restoreKmtxDtscore = function(){
+            _.each($scope.kmtxList, function(kmtx, idx, lst){
+              kmtx.datiScore = 0;
+            });
+          };
+
+          /**
            * 点击,显示大纲列表
            */
           $scope.showDgList = function(dgl){ //dgl是判断da gang有没有数据
@@ -857,6 +866,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
               if(targetMbdtId == $scope.kmtxList[j].TIXING_ID){
                 $scope.kmtxList[j].itemsNum = 0;
                 $scope.kmtxList[j].txPercentNum = '0%';
+                $scope.kmtxList[j].datiScore = 0;//删除此大题在二级控制面版上的大题分数
                 break;
               }
             }
@@ -917,8 +927,16 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
            */
           $scope.saveEditPaper = function(){
             _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){
+              //均分大题分数
               $scope.divideDatiScore(mbdt);
+              //二级控制面板上的分数统计
+              _.each($scope.kmtxList, function(kmtx, idx, lst){
+                if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
+                 kmtx.datiScore = mbdt.datiScore;
+                }
+              });
             });
+            //试卷编辑层隐藏
             $scope.shijuan_edit = false;
           };
 
@@ -1067,6 +1085,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             deleteTempTemp();
             clearData();
+            restoreKmtxDtscore();
           };
 
           /**
@@ -1075,6 +1094,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
           $scope.showPaperList = function(){
             deleteTempTemp();
             clearData();
+            restoreKmtxDtscore();
             $http.get(qryCxsjlbUrl).success(function(data){
               if(data.length){
                 $scope.paperListData = data;
@@ -1154,6 +1174,17 @@ define(['jquery', 'underscore', 'angular', 'config', 'services/urlredirect'],
                 });
                 nanduPercent(); //难度统计
                 addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
+
+                //二级控制面板上的分数统计
+                restoreKmtxDtscore();
+                _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
+                  _.each($scope.kmtxList, function(kmtx, idx, lst){
+                    if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
+                      kmtx.datiScore = mbdt.datiScore;
+                    }
+                  });
+                });
+
                 $scope.shijuanPreview(); //试卷预览
                 $scope.shijuanyulanBtn = true; //试卷预览的按钮
                 $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
