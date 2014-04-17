@@ -3,7 +3,8 @@ define(['angular'], function (angular) {
 
   angular.module('kaoshiApp.filters.Mylocaldate', [])
   	.filter('myLocalDate', function () {
-      return function (input) {
+      return function (dateStr) {
+
       	return 'myLocalDate filter: ' + input;
       };
   	});
