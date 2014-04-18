@@ -1964,8 +1964,8 @@ input[type="button"].btn-block {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("/bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.eot");
-  src: url("/bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+  src: url("../bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.eot");
+  src: url("../bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.woff") format("woff"), url("../bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../bower_components/sass-bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
 
 .glyphicon {
   position: relative;
@@ -5380,7 +5380,7 @@ a.add-btn:hover span {
         .innerWrapperSubDs .nanduBox .kmTxNdList .nanDuId_all a {
           font-size: 16px;
           font-weight: bold; }
-      .innerWrapperSubDs .kmTxBox .kmTxNdList li a, .innerWrapperSubDs .nanduBox .kmTxNdList li a {
+      .innerWrapperSubDs .kmTxBox .kmTxNdList li a.active, .innerWrapperSubDs .nanduBox .kmTxNdList li a.active {
         color: #f60; }
   .innerWrapperSubDs .pointTree {
     padding: 0 10px;
