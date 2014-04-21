@@ -18,12 +18,6 @@
     float: right;
     margin-top: 5px;
     font-size: 12px; }
-.kaowuWrapper .tab-content {
-  padding: 15px; }
-  .kaowuWrapper .tab-content .help-block {
-    font-size: 13px;
-    color: indianred;
-    font-style: italic; }
 .kaowuWrapper .kaowu-table {
   margin-top: 15px; }
   .kaowuWrapper .kaowu-table th {
@@ -32,3 +26,16 @@
     vertical-align: middle; }
     .kaowuWrapper .kaowu-table td p {
       margin: 0; }
+.kaowuWrapper .paper-list li a {
+  line-height: 24px; }
+.kaowuWrapper .paper-list li .add-to-kaoshi {
+  color: #33A200;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 20px; }
+.kaowuWrapper .tab-content {
+  padding: 15px; }
+  .kaowuWrapper .tab-content .help-block {
+    font-size: 13px;
+    color: indianred;
+    font-style: italic; }

@@ -29,6 +29,31 @@
       font-size: 12px;
     }
   }
+  .kaowu-table{
+     margin-top: 15px;
+     th{
+       text-align: center;
+     }
+     td{
+       vertical-align: middle;
+       p{
+         margin: 0;
+       }
+     }
+   }
+  .paper-list{
+    li{
+      a{
+        line-height: 24px;
+      }
+      .add-to-kaoshi{
+        color: #33A200;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 20px;
+      }
+    }
+  }
   .tab-content{
     padding: 15px;
     .help-block{
@@ -37,16 +62,5 @@
       font-style: italic;
     }
   }
-  .kaowu-table{
-    margin-top: 15px;
-    th{
-      text-align: center;
-    }
-    td{
-      vertical-align: middle;
-      p{
-        margin: 0;
-      }
-    }
-  }
+
 }

@@ -31,7 +31,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试详细的url
           kaoshiNumsPerPage = 10, //每页显示多少条考试
           qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷列表url
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
+          kaoshi_data, //考试的数据格式
+          xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试的url
 
 
         /**
@@ -62,7 +64,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         /**
          * 新增一个考试 //
          */
-        var kaoshi_data;
         $scope.addNewKaoShi = function(){
           kaoshi_data = { //考试的数据格式
             token: token,
@@ -75,10 +76,11 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               KAISHISHIJIAN: '',
               JIESHUSHIJIAN: '',
               SHICHANG: '',
-              XINGZHI: '',
-              LEIXING: '',
+              XINGZHI: 1,
+              LEIXING: 1,
               XUZHI: '',
               SHIJUAN_ID: '',
+              shijuan_name: '',
               ZHUANGTAI: 0
             }
           };
@@ -102,20 +104,40 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         };
 
         /**
-         * backToAddKaoShi
+         * 返回到试卷添加页面
          */
         $scope.backToAddKaoShi = function(){
           $scope.txTpl = 'views/partials/editKaoShi.html';
         };
 
         /**
-         * 保存考试
+         * 将试卷添加到考试，目前只能添加到一个试卷
          */
-        $scope.saveKaoShi = function(){
-          console.log(kaoshi_data);
+        $scope.addToKaoShi = function(paperId){
+          kaoshi_data.shuju.SHIJUAN_ID = paperId.SHIJUAN_ID; //试卷id
+          kaoshi_data.shuju.shijuan_name = paperId.SHIJUANMINGCHENG; //试卷名称
+          $scope.backToAddKaoShi(); //返回添加试卷页面
         };
 
-      } // 002 结束 //
+        /**
+         * 保存考试 //xiuGaiKaoShiUrl toUTCString()
+         */
+        $scope.saveKaoShi = function(){
+          var startDate = new Date(kaoshi_data.shuju.KAISHISHIJIAN),
+              endDate = new Date(startDate.valueOf() + kaoshi_data.shuju.SHICHANG * 60 * 1000);
+          kaoshi_data.shuju.JIESHUSHIJIAN = endDate.toUTCString();
+          $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+            if(data.result){
+              loadKaoShi();
+              $scope.txTpl = 'views/partials/kaoshiList.html';
+              alert('考试添加成功！');
+            }
+          }).error(function(err){
+            alert(err);
+          });
+        };
+
+      } // 002 结束
     ]); //controller 结束
   } // 001 结束
 ); // 000 结束
