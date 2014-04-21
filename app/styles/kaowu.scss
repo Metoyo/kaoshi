@@ -14,4 +14,15 @@
   .tab-content{
     padding: 15px;
   }
+  .kaowu-table{
+    th{
+      text-align: center;
+    }
+    td{
+      vertical-align: middle;
+      p{
+        margin: 0;
+      }
+    }
+  }
 }

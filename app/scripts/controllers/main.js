@@ -4,9 +4,9 @@ define([
   ], function ($, angular) {
     'use strict';
 
-    angular.module('kaoshiApp.controllers.MainCtrl', [])
-        .controller('MainCtrl', function ($rootScope, $scope, $http) {
+    angular.module('kaoshiApp.controllers.MainCtrl', []).
+      controller('MainCtrl', function ($rootScope, $scope, $http) {
 
-
-        });
-});
+    });
+  }
+);

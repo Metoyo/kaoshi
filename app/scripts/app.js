@@ -16,9 +16,12 @@ define([
     'controllers/zujuan',
     'controllers/kaowu',
     'filters/mylocaldate',
+    'filters/mylocaldatewithweek',
+    'filters/examstatus',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl,
-                DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, MylocaldateFilter, config) {
+                DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, MylocaldateFilter,
+                MylocaldatewithweekFilter, ExamstatusFilter, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -34,6 +37,8 @@ define([
 'kaoshiApp.controllers.ZujuanCtrl',
 'kaoshiApp.controllers.KaowuCtrl',
 'kaoshiApp.filters.Mylocaldate',
+'kaoshiApp.filters.Mylocaldatewithweek',
+'kaoshiApp.filters.Examstatus',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

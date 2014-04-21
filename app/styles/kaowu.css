@@ -6,3 +6,9 @@
     margin-left: 15px; }
 .kaowuWrapper .tab-content {
   padding: 15px; }
+.kaowuWrapper .kaowu-table th {
+  text-align: center; }
+.kaowuWrapper .kaowu-table td {
+  vertical-align: middle; }
+  .kaowuWrapper .kaowu-table td p {
+    margin: 0; }

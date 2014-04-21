@@ -15,22 +15,41 @@
                 </p>
             </div>
             <div class="tab-pane fade in" ng-class="{active: tabActive == 'ksgl'}">
-                <table class="table table-bordered">
-                    <tr>
+                <table class="table table-bordered kaowu-table">
+                    <tr class="active">
                         <th>考试名称</th>
                         <th>试卷</th>
                         <th>开考时间</th>
                         <th>考试时长</th>
                         <th>考场</th>
                         <th>考试状态</th>
+                        <th>操作</th>
                     </tr>
                     <tr ng-repeat="ks in kaoshiList">
-                        <td>{{ks.KAOSHI_MINGCHENG}}</td>
-                        <td></td>
-                        <td>{{ks.KAISHISHIJIAN | date:'yyyy-MM-dd HH:mm:ss UTC'}}</td>
-                        <td>{{ks.SHICHANG}}</td>
-                        <td></td>
-                        <td>{{ks.ZHUANGTAI}}</td>
+                        <td>
+                            {{ks.KAOSHI_MINGCHENG}}
+                        </td>
+                        <td>
+                            <p ng-repeat="sjmc in ks.SHIJUAN">
+                                {{sjmc.SHIJUAN_MINGCHENG}}
+                            </p>
+                        </td>
+                        <td>
+                            {{ks.KAISHISHIJIAN | myLocalDateWithWeek}}
+                        </td>
+                        <td class="text-center">
+                            {{ks.SHICHANG}}
+                        </td>
+                        <td>
+                            {{ks.KAODIANKAOCHANG[0].KMINGCHENG}}
+                        </td>
+                        <td class="text-center">
+                            {{ks.ZHUANGTAI | examStatus}}
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger">删除</button>
+                            <button type="button" class="btn btn-primary">修改</button>
+                        </td>
                     </tr>
                 </table>
             </div>
