@@ -47,7 +47,8 @@
                     <!-- 确认密码 -->
                     <div class="form-group col-md-6">
                         <label>确认密码</label>
-                        <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify" data-password-verify="personalInfo.mima"
+                        <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
+                               data-password-verify="personalInfo.mima"
                                required placeholder="确认密码" tabindex="2" class="form-control" />
                         <!--<p class="help-block" ng-show="userForm.confirmPassword.$error.required">确认密码不能为空！</p>-->
                         <p class="help-block" ng-show="userForm.confirmPassword.$error.passwordVerify">确认密码和密码不匹配！</p>

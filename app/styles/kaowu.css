@@ -4,11 +4,31 @@
   margin-top: 10px; }
   .kaowuWrapper .sub-nav .nav-tabs li:first-child {
     margin-left: 15px; }
+.kaowuWrapper i {
+  color: red;
+  font-style: normal; }
+.kaowuWrapper .explain {
+  font-size: 12px; }
+.kaowuWrapper .back-to-zujuan {
+  width: 160px;
+  position: absolute;
+  top: 60px;
+  right: 10px; }
+  .kaowuWrapper .back-to-zujuan button {
+    float: right;
+    margin-top: 5px;
+    font-size: 12px; }
 .kaowuWrapper .tab-content {
   padding: 15px; }
-.kaowuWrapper .kaowu-table th {
-  text-align: center; }
-.kaowuWrapper .kaowu-table td {
-  vertical-align: middle; }
-  .kaowuWrapper .kaowu-table td p {
-    margin: 0; }
+  .kaowuWrapper .tab-content .help-block {
+    font-size: 13px;
+    color: indianred;
+    font-style: italic; }
+.kaowuWrapper .kaowu-table {
+  margin-top: 15px; }
+  .kaowuWrapper .kaowu-table th {
+    text-align: center; }
+  .kaowuWrapper .kaowu-table td {
+    vertical-align: middle; }
+    .kaowuWrapper .kaowu-table td p {
+      margin: 0; }

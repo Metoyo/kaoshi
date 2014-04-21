@@ -11,10 +11,34 @@
       }
     }
   }
+  i{
+    color: red;
+    font-style: normal;
+  }
+  .explain{
+    font-size: 12px;
+  }
+  .back-to-zujuan {
+    width: 160px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    button{
+      float: right;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
   .tab-content{
     padding: 15px;
+    .help-block{
+      font-size: 13px;
+      color: indianred;
+      font-style: italic;
+    }
   }
   .kaowu-table{
+    margin-top: 15px;
     th{
       text-align: center;
     }

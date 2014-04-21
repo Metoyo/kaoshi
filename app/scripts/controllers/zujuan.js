@@ -1099,6 +1099,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(data.length){
                 $scope.paperListData = data;
                 $scope.totalSelectedItmes = 0; //已选试题的总数量
+                $scope.showBackToMakePaperBtn = true;
                 $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
               }
             }).error(function(err){
