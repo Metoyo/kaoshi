@@ -9,7 +9,8 @@ require.config({
     angularMocks: '../../bower_components/angular-mocks/angular-mocks',
     text: '../../bower_components/requirejs-text/text',
     jquery: '../../bower_components/jquery/jquery',
-    underscore: '../../bower_components/underscore/underscore'
+    underscore: '../../bower_components/underscore/underscore',
+    datepicker: '../../bower_components/datepicker/intimidatetime.min'
   },
   shim: {
     'angular' : {'exports' : 'angular'},
@@ -20,7 +21,8 @@ require.config({
     'angularMocks': {
       deps:['angular'],
       'exports':'angular.mock'
-    }
+    },
+    'datepicker': ['jquery']
   },
   priority: [
     'angular'
