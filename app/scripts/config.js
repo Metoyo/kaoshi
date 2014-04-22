@@ -3,7 +3,7 @@ define( "config", [], function () {
     token: '12345',
     apiurl_rz: "http://192.168.1.111:3000/api/",//认证的url
     apiurl_mt: "http://192.168.1.111:4000/api/",//命题的url
-    apiurl_kw: "http://192.168.1.111:4100/api/",//考务的url
+    apiurl_kw: "http://192.168.1.110:4100/api/",//考务的url
 //    apiurl_rz: "http://www.taianting.com:3000/api/",//认证的url
 //    apiurl_mt: "http://www.taianting.com:4000/api/",//命题的url
 //    apiurl_kw: "http://www.taianting.com:4100/api/",//考务的url

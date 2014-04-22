@@ -4,13 +4,16 @@ define(['angular'], function (angular) {
   angular.module('kaoshiApp.filters.Mylocaldatewithweek', [])
   	.filter('myLocalDateWithWeek', function () {
       return function (dateStr) {
-        var mydate = new Date(dateStr),
-          year = mydate.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
-          month = mydate.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
-          day = mydate.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
-          week = mydate.getUTCDay(), //根据世界时从 Date 对象返回周中的一天 (0 ~ 6)
-          hour = mydate.getUTCHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
-          minute = mydate.getUTCMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
+        var mydateOld = new Date(dateStr),
+          difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
+          difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
+          mydateNew = new Date(difMilliseconds),
+          year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
+          month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
+          day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
+          week = mydateNew.getUTCDay(), //根据世界时从 Date 对象返回周中的一天 (0 ~ 6)
+          hour = mydateNew.getUTCHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
+          minute = mydateNew.getUTCMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
           joinDate, //返回最终时间
           weekday = new Array(7); //定义一个星期的数组
         weekday[0] = "星期日";

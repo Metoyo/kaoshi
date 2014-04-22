@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         $rootScope.styles = ['styles/kaowu.css'];
 
         /**
-         * 定义变量
+         * 定义变量 //
          */
         var userInfo = $rootScope.session.userInfo,
           baseKwAPIUrl = config.apiurl_kw, //考务的api
@@ -33,12 +33,41 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
           kaoshi_data, //考试的数据格式
-          xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试的url
+          xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi', //修改考试的url
+          tongBuShiJuanUrl = baseKwAPIUrl + 'tongbu_shijuan', // 同步试卷信息的url
+          isEditKaoShi = false, //是否为编辑考试
+          isDeleteKaoShi = false; //是否为删除考试
 
 
         /**
-         * 初始化加载的东西
+         * 格式化时间
          */
+        var formatDate = function(dateStr){
+          var mydateOld = new Date(dateStr),
+            difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
+            difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
+            mydateNew = new Date(difMilliseconds),
+            year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
+            month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
+            day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
+            hour = mydateNew.getUTCHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
+            minute = mydateNew.getUTCMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
+            joinDate; //返回最终时间
+          if(month < 10){
+            month = '0' + month;
+          }
+          if(day < 10){
+            day = '0' + day;
+          }
+          if(hour < 10){
+            hour = '0' + hour;
+          }
+          if(minute < 10){
+            minute = '0' + minute;
+          }
+          joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+          return joinDate;
+        };
 
 
         /**
@@ -64,7 +93,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         /**
          * 新增一个考试 //
          */
-        $scope.addNewKaoShi = function(){
+        $scope.addNewKaoShi = function(ks){
           kaoshi_data = { //考试的数据格式
             token: token,
             caozuoyuan: caozuoyuan,
@@ -84,8 +113,41 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               ZHUANGTAI: 0
             }
           };
-          $scope.kaoshiData = kaoshi_data;
-          $scope.txTpl = 'views/partials/editKaoShi.html';
+          if(isEditKaoShi){
+            kaoshi_data.shuju.KAOSHI_ID = ks.KAOSHI_ID;
+            kaoshi_data.shuju.KAOSHI_MINGCHENG = ks.KAOSHI_MINGCHENG;
+            kaoshi_data.shuju.KAISHISHIJIAN = formatDate(ks.KAISHISHIJIAN);
+            kaoshi_data.shuju.JIESHUSHIJIAN = ks.JIESHUSHIJIAN;
+            kaoshi_data.shuju.SHICHANG = ks.SHICHANG;
+            kaoshi_data.shuju.XINGZHI = ks.XINGZHI;
+            kaoshi_data.shuju.LEIXING = ks.LEIXING;
+            kaoshi_data.shuju.XUZHI = ks.XUZHI;
+            kaoshi_data.shuju.SHIJUAN_ID = ks.SHIJUAN[0].SHIJUAN_ID;
+            kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
+            kaoshi_data.shuju.ZHUANGTAI = ks.ZHUANGTAI;
+
+            $scope.kaoshiData = kaoshi_data;
+            $scope.txTpl = 'views/partials/editKaoShi.html';
+          }
+          else if(isDeleteKaoShi){
+            kaoshi_data.shuju.KAOSHI_ID = ks.KAOSHI_ID;
+            kaoshi_data.shuju.KAOSHI_MINGCHENG = ks.KAOSHI_MINGCHENG;
+            kaoshi_data.shuju.KAISHISHIJIAN = ks.KAISHISHIJIAN;
+            kaoshi_data.shuju.JIESHUSHIJIAN = ks.JIESHUSHIJIAN;
+            kaoshi_data.shuju.SHICHANG = ks.SHICHANG;
+            kaoshi_data.shuju.XINGZHI = ks.XINGZHI;
+            kaoshi_data.shuju.LEIXING = ks.LEIXING;
+            kaoshi_data.shuju.XUZHI = ks.XUZHI;
+            kaoshi_data.shuju.SHIJUAN_ID = ks.SHIJUAN[0].SHIJUAN_ID;
+            kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
+            kaoshi_data.shuju.ZHUANGTAI = -1;
+            console.log('hello!');
+          }
+          else{
+            $scope.kaoshiData = kaoshi_data;
+            $scope.txTpl = 'views/partials/editKaoShi.html';
+          }
+
         };
 
         /**
@@ -120,22 +182,65 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         };
 
         /**
-         * 保存考试 //xiuGaiKaoShiUrl toUTCString()
+         * 保存考试
          */
         $scope.saveKaoShi = function(){
-          var startDate = new Date(kaoshi_data.shuju.KAISHISHIJIAN),
-              endDate = new Date(startDate.valueOf() + kaoshi_data.shuju.SHICHANG * 60 * 1000);
+          var startDate = new Date(kaoshi_data.shuju.KAISHISHIJIAN), //开始时间
+            endDate = new Date(startDate.valueOf() + kaoshi_data.shuju.SHICHANG * 60 * 1000), //结束时间
+            shijuan_info = { //需要同步的试卷数据格式
+              token: token,
+              caozuoyuan: caozuoyuan,
+              jigouid: jigouid,
+              lingyuid: lingyuid,
+              shijuanid: ''
+            };
           kaoshi_data.shuju.JIESHUSHIJIAN = endDate.toUTCString();
-          $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-            if(data.result){
-              loadKaoShi();
-              $scope.txTpl = 'views/partials/kaoshiList.html';
-              alert('考试添加成功！');
+          shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
+          $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
+            if(rst.result){
+              $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+                if(data.result){
+                  loadKaoShi();
+                  $scope.txTpl = 'views/partials/kaoshiList.html';
+                  alert('考试添加成功！');
+                }
+              }).error(function(err){
+                alert(err);
+              });
             }
           }).error(function(err){
             alert(err);
           });
         };
+
+        /**
+         * 修改考试 //
+         */
+        $scope.editKaoShi = function(ks){
+          isEditKaoShi = true;
+          isDeleteKaoShi = false;
+          $scope.addNewKaoShi(ks);
+        };
+
+        /**
+         * 删除考试
+         */
+        $scope.deleteKaoShi = function(ks){
+          isEditKaoShi = false;
+          isDeleteKaoShi = true;
+          $scope.addNewKaoShi(ks);
+          $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+            if(data.result){
+              loadKaoShi();
+              $scope.txTpl = 'views/partials/kaoshiList.html';
+              alert('考试删除成功！');
+            }
+          }).error(function(err){
+            alert(err);
+          });
+        };
+
+
 
       } // 002 结束
     ]); //controller 结束
