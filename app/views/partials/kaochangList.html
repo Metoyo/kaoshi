@@ -1,3 +1,38 @@
-<p>
-    我是考场
-</p>
+<div class="row">
+    <button type="button" class="btn btn-success" ng-click="addNewKaoChang()">新增考场</button>
+</div>
+<table class="table table-bordered kaowu-table">
+    <tr class="active">
+        <th>考场名称</th>
+        <th>考位数量</th>
+        <th>考场地址</th>
+        <th>交通方式</th>
+        <th>联系人</th>
+        <th>联系方式</th>
+        <th>操作</th>
+    </tr>
+    <tr ng-repeat="kc in kaoChangList">
+        <td>
+            {{kc.KMINGCHENG}}
+        </td>
+        <td class="text-center">
+            {{kc.KAOWEISHULIANG}}
+        </td>
+        <td>
+            {{kc.XIANGXIDIZHI}}
+        </td>
+        <td>
+            {{kc.JIAOTONGFANGSHI}}
+        </td>
+        <td class="text-center">
+            {{kc.LIANXIREN}}
+        </td>
+        <td class="text-center">
+            {{kc.LIANXIFANGSHI}}
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-danger" ng-click="deleteKaoChang(kc)">删除</button>
+            <button type="button" class="btn btn-primary" ng-click="editKaoChang(kc)">修改</button>
+        </td>
+    </tr>
+</table>

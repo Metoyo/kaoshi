@@ -30,13 +30,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           qryKaoShiDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaoshi?token=' + token + '&caozuoyuan='
             + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试详细的url
           kaoshiNumsPerPage = 10, //每页显示多少条考试
+          kaoChangNumsPerPage = 10, //每页显示多少条考场信息
           qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
           kaoshi_data, //考试的数据格式
+          kaochang_data, //考场的数据格式
           xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi', //修改考试的url
           tongBuShiJuanUrl = baseKwAPIUrl + 'tongbu_shijuan', // 同步试卷信息的url
           isEditKaoShi = false, //是否为编辑考试
-          isDeleteKaoShi = false; //是否为删除考试
+          isDeleteKaoShi = false, //是否为删除考试
+          isEditKaoChang = false, //是否为编辑考场
+          isDeleteKaoChang = false, //是否为删除考场
+          xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang'; //修改考场的url
 
 
         /**
@@ -69,11 +74,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           return joinDate;
         };
 
-
         /**
-         * 考务页面加载时，加载考试列表
+         * 显示考试列表
          */
-        var loadKaoShi = function(){
+        $scope.showKaoShiList = function(){
           //先查询所有考试的Id
           $http.get(qryKaoShiListUrl).success(function(kslst){
             if(kslst.length){
@@ -83,12 +87,17 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
                 if(ksdtl.length){
                   $scope.kaoshiList = ksdtl;
+                  $scope.txTpl = 'views/partials/kaoshiList.html'
                 }
               });
             }
           });
         };
-        loadKaoShi();
+
+        /**
+         * 考务页面加载时，加载考试列表
+         */
+        $scope.showKaoShiList();
 
         /**
          * 新增一个考试 //
@@ -147,7 +156,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             $scope.kaoshiData = kaoshi_data;
             $scope.txTpl = 'views/partials/editKaoShi.html';
           }
-
         };
 
         /**
@@ -200,8 +208,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             if(rst.result){
               $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                 if(data.result){
-                  loadKaoShi();
-                  $scope.txTpl = 'views/partials/kaoshiList.html';
+                  $scope.showKaoShiList();
                   alert('考试添加成功！');
                 }
               }).error(function(err){
@@ -231,14 +238,123 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.addNewKaoShi(ks);
           $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
             if(data.result){
-              loadKaoShi();
-              $scope.txTpl = 'views/partials/kaoshiList.html';
+              $scope.showKaoShiList();
               alert('考试删除成功！');
+            }
+          }).error(function(err){K
+            alert(err);
+          });
+        };
+
+        /**
+         * 显示考场列表
+         */
+        $scope.showKaoChangList = function(){
+          //先查询所有考试的Id
+          $http.get(qryKaoChangListUrl).success(function(kclst){
+            if(kclst.length){
+              var kaoChangSubIds = kclst.slice(0, kaoChangNumsPerPage), //截取数组
+                kaoChangSelectIdsArr = _.map(kaoChangSubIds, function(kcid){ return kcid.KID; }), //提取KID
+                qrySelectKaoChangsUrl = qryKaoChangDetailBaseUrl + '&kid=' + kaoChangSelectIdsArr;
+              $http.get(qrySelectKaoChangsUrl).success(function(kcdtl){
+                if(kcdtl.length){
+                  $scope.kaoChangList = kcdtl;
+                  $scope.txTpl = 'views/partials/kaoChangList.html';
+                }
+              });
+            }
+          });
+        };
+
+        /**
+         * 新增考场
+         */
+        $scope.addNewKaoChang = function(kc){
+          kaochang_data = { //考场的数据格式
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju:{
+              KID: '',
+              KMINGCHENG: '',
+              KAOWEISHULIANG: '',
+              XIANGXIDIZHI: '',
+              JIAOTONGFANGSHI: '',
+              LIANXIREN: '',
+              LIANXIFANGSHI: '',
+              KLEIXING: 0,
+              PARENT_ID: '',
+              KAODIANXINGZHI: 0,
+              ZHUANGTAI: 1
+            }
+          };
+          if(isEditKaoChang){
+            kaochang_data.shuju.KID = kc.KID;
+            kaochang_data.shuju.KMINGCHENG = kc.KMINGCHENG;
+            kaochang_data.shuju.KAOWEISHULIANG = kc.KAOWEISHULIANG;
+            kaochang_data.shuju.XIANGXIDIZHI = kc.XIANGXIDIZHI;
+            kaochang_data.shuju.JIAOTONGFANGSHI = kc.JIAOTONGFANGSHI;
+            kaochang_data.shuju.LIANXIREN = kc.LIANXIREN;
+            kaochang_data.shuju.LIANXIFANGSHI = kc.LIANXIFANGSHI;
+            kaochang_data.shuju.KLEIXING = kc.KLEIXING;
+            kaochang_data.shuju.PARENT_ID = kc.PARENT_ID;
+            kaochang_data.shuju.KAODIANXINGZHI = kc.KAODIANXINGZHI;
+            kaochang_data.shuju.ZHUANGTAI = kc.ZHUANGTAI;
+
+            $scope.kaochangData = kaochang_data;
+            $scope.txTpl = 'views/partials/editKaoChang.html';
+          }
+          else if(isDeleteKaoChang){
+            kaochang_data.shuju = kc;
+            kaochang_data.shuju.ZHUANGTAI = -1;
+          }
+          else{
+            $scope.kaochangData = kaochang_data;
+            $scope.txTpl = 'views/partials/editKaoChang.html';
+          }
+        };
+
+        /**
+         * 删除考场
+         */
+        $scope.deleteKaoChang = function(kc){
+          isEditKaoChang = false; //是否为编辑考场
+          isDeleteKaoChang = true; //是否为删除考场
+          $scope.addNewKaoChang(kc);
+          $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
+            if(data.result){
+              $scope.showKaoChangList();
+              alert('考场删除成功！');
             }
           }).error(function(err){
             alert(err);
           });
         };
+
+        /**
+         * 修改考场
+         */
+        $scope.editKaoChang = function(kc){
+          isEditKaoChang = true; //是否为编辑考场
+          isDeleteKaoChang = false; //是否为删除考场
+          $scope.addNewKaoChang(kc);
+        };
+
+        /**
+         * 保存考场
+         */
+        $scope.saveKaoChang = function(){ //
+          $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
+            if(data.result){
+              alert('考场保存成功！');
+              $scope.showKaoChangList();
+            }
+          }).error(function(err){
+            alert(err);
+          });
+        };
+
 
 
 

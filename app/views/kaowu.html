@@ -2,12 +2,12 @@
     <div class="sub-nav" ng-init="tabActive = 'ksgl'">
         <ul class="nav nav-tabs">
             <li ng-class="{active: tabActive == 'kcgl' }">
-                <a href="javascript:void(0)" ng-click="tabActive = 'kcgl';txTpl = 'views/partials/kaochangList.html'">
+                <a href="javascript:void(0)" ng-click="tabActive = 'kcgl';showKaoChangList()">
                     考场管理
                 </a>
             </li>
             <li ng-class="{active: tabActive == 'ksgl'}">
-                <a href="javascript:void(0)" ng-click="tabActive = 'ksgl';txTpl = 'views/partials/kaoshiList.html'">
+                <a href="javascript:void(0)" ng-click="tabActive = 'ksgl';showKaoShiList()">
                     考试管理
                 </a>
             </li>
