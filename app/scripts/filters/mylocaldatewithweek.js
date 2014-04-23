@@ -4,10 +4,10 @@ define(['angular'], function (angular) {
   angular.module('kaoshiApp.filters.Mylocaldatewithweek', [])
   	.filter('myLocalDateWithWeek', function () {
       return function (dateStr) {
-        var mydateOld = new Date(dateStr),
-          difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
-          difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
-          mydateNew = new Date(difMilliseconds),
+        var mydateNew = new Date(dateStr),
+//          difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
+//          difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
+//          mydateNew = new Date(difMilliseconds),
           year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
           month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
           day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)

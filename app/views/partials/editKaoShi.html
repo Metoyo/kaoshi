@@ -33,9 +33,8 @@
                         ng-model="kaoshiData.shuju.KAISHISHIJIAN"/>
             </div>
             <div class="col-sm-2">
-                <p ng-show="kaoshiForm.ksStartTime.$error.required" class="help-block">开考时间不能为空！</p>
+                <p  class="help-block" ng-show='startDateIsNull'>开考时间不能为空！</p>
             </div>
-
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
@@ -68,6 +67,9 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.start-date').intimidatetime();
+            $('.start-date').change(function(){
+                alert('change');
+            });
         });
     </script>
 </div>

@@ -39,3 +39,5 @@
     font-size: 13px;
     color: indianred;
     font-style: italic; }
+  .kaowuWrapper .tab-content .start-date-valid {
+    display: none; }
