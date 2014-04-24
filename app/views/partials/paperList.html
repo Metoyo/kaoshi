@@ -1,20 +1,13 @@
 <div class="row">
     <div class="back-to-zujuan">
-        <button type="button" class="btn btn-success" ng-click="dropMakePaper()" ng-show="showBackToMakePaperBtn">
+        <button type="button" class="btn btn-success" ng-click="dropMakePaper()">
             返回组卷页面
-        </button>
-        <button type="button" class="btn btn-success" ng-click="backToAddKaoShi()" ng-show="showAddKaoShiBackBtn">
-            返回新增考试列表
         </button>
     </div>
     <ul class="paper-list">
         <li ng-repeat="pld in paperListData">
             <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
                 {{pld.SHIJUANMINGCHENG}} {{pld.SHIJUAN_ID}}
-            </a>
-            <a href="javascript:void(0)" class="add-to-kaoshi" ng-click="addToKaoShi(pld)"
-               ng-show="showAddKaoShiBackBtn">
-                添加到考试
             </a>
         </li>
     </ul>

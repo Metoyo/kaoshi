@@ -1,6 +1,5 @@
 <div class="row">
-    <button type="button" class="btn btn-success" ng-hide="isAddKaoShi" ng-click="addNewKaoChang()">新增考场</button>
-    <button type="button" class="btn btn-success" ng-show="isAddKaoShi" ng-click="backToKaoShi()">返回考试</button>
+    <button type="button" class="btn btn-success" ng-click="addNewKaoChang()">新增考场</button>
 </div>
 <table class="table table-bordered kaowu-table">
     <tr class="active">
@@ -34,8 +33,6 @@
         <td class="text-center">
             <button type="button" class="btn btn-danger" ng-click="deleteKaoChang(kc)">删除</button>
             <button type="button" class="btn btn-primary" ng-click="editKaoChang(kc)">修改</button>
-            <button type="button" class="btn btn-success" ng-show="isAddKaoShi"
-                    ng-click="addKaoChangToKaoShi(kc)">添加到考试</button>
         </td>
     </tr>
 </table>
