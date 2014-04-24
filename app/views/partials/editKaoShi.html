@@ -58,14 +58,19 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="row student-info">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">添加考场<i>*</i></label>
+                        <label class="col-sm-2 control-label">选择考场<i>*</i></label>
                         <div class="col-sm-8">
+                            <select class="form-control subOrganization" ng-model="selectKaoChangId"
+                                    ng-change="selectKaoChang(selectKaoChangId)"
+                                    ng-options="kcInfo.KID as kcInfo.KMINGCHENG for kcInfo in allKaoChangList">
+                                <option value="">请选择考场</option>
+                            </select>
                             <!--<input type="text" name="ksKaoChang" class="form-control" placeholder="添加考场" required-->
                                    <!--ng-model="kaoshiData.shuju.kaochangname" ng-focus="showKaoChangListInKaoShi()"/>-->
-                            <button type="button" class="btn btn-success" ng-click="showKaoChangListInKaoShi()">
-                                添加考场
-                            </button>
-                            <span>当前选中的考场为：{{kaoshiData.shuju.KAOCHANG[0].kaochangname}}</span>
+                            <!--<button type="button" class="btn btn-success" ng-click="showKaoChangListInKaoShi()">-->
+                                <!--添加考场-->
+                            <!--</button>-->
+                            <!--<span>当前选中的考场为：{{kaoshiData.shuju.KAOCHANG[0].kaochangname}}</span>-->
                         </div>
                         <div class="col-sm-2">
                             <p ng-show="kaoshiForm.ksKaoChang.$error.required" class="help-block">请选择考场！</p>
@@ -113,9 +118,9 @@
                             <th>班级</th>
                             <th width="50px">删除</th>
                         </tr>
-                        <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[0].USERS">
+                        <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
                             <td>{{usr.XINGMING}}</td>
-                            <td>{{usr.XUEHAO}}</td>
+                            <td>{{usr.XUEHAO ? usr.XUEHAO : usr.YONGHUHAO}}</td>
                             <td>{{usr.BANJI}}</td>
                             <td class="text-center">
                                 <a href="javascript:void(0)" ng-click="deleteStudent($index)">
