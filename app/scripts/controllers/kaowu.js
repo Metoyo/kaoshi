@@ -117,11 +117,14 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
               JIESHUSHIJIAN: '',
               SHICHANG: '',
               XINGZHI: 1,
-              LEIXING: 1,
+              LEIXING: 0,
               XUZHI: '',
               SHIJUAN_ID: '',
               shijuan_name: '',
-              ZHUANGTAI: 0
+              KID: '',
+              kaochangname: '',
+              ZHUANGTAI: 0,
+              USERS: {}
             }
           };
           if(isEditKaoShi){
@@ -135,6 +138,8 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
             kaoshi_data.shuju.XUZHI = ks.XUZHI;
             kaoshi_data.shuju.SHIJUAN_ID = ks.SHIJUAN[0].SHIJUAN_ID;
             kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
+            kaoshi_data.shuju.kaochangname = ks.KAODIANKAOCHANG[0].KMINGCHENG;
+            kaoshi_data.shuju.KID = ks.KAODIANKAOCHANG[0].KID;
             kaoshi_data.shuju.ZHUANGTAI = ks.ZHUANGTAI;
 
             $scope.kaoshiData = kaoshi_data;
@@ -151,6 +156,8 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
             kaoshi_data.shuju.XUZHI = ks.XUZHI;
             kaoshi_data.shuju.SHIJUAN_ID = ks.SHIJUAN[0].SHIJUAN_ID;
             kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
+            kaoshi_data.shuju.kaochangname = ks.KAODIANKAOCHANG[0].KMINGCHENG;
+            kaoshi_data.shuju.KID = ks.KAODIANKAOCHANG[0].KID;
             kaoshi_data.shuju.ZHUANGTAI = -1;
           }
           else{
@@ -189,6 +196,36 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
           kaoshi_data.shuju.shijuan_name = paperId.SHIJUANMINGCHENG; //试卷名称
           $scope.backToAddKaoShi(); //返回添加试卷页面
         };
+
+        /**
+         * 从考试的添加考场点击进入考场列表
+         */
+        $scope.showKaoChangListInKaoShi = function(){
+          $scope.isAddKaoShi = true;
+          kaoshi_data.shuju.KAISHISHIJIAN = $('.start-date').val();
+          queryKaoChangList();
+        };
+
+        /**
+         * 将考场添加到考试
+         */
+        $scope.addKaoChangToKaoShi = function(kc){
+          kaoshi_data.shuju.KID = kc.KID;
+          kaoshi_data.shuju.kaochangname = kc.KMINGCHENG;
+          $scope.txTpl = 'views/partials/editKaoShi.html';
+        };
+
+        /**
+         * 从考场返回到考试
+         */
+        $scope.backToKaoShi = function(){
+          $scope.txTpl = 'views/partials/editKaoShi.html';
+        };
+
+        /**
+         * 添加考生
+         */
+
 
         /**
          * 保存考试 //
@@ -259,9 +296,9 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
         };
 
         /**
-         * 显示考场列表
+         * 查询考场数据
          */
-        $scope.showKaoChangList = function(){
+        var queryKaoChangList = function(){
           //先查询所有考试的Id
           $http.get(qryKaoChangListUrl).success(function(kclst){
             if(kclst.length){
@@ -278,6 +315,14 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
               });
             }
           });
+        };
+
+        /**
+         * 显示考场列表
+         */
+        $scope.showKaoChangList = function(){
+          $scope.isAddKaoShi = false;
+          queryKaoChangList();
         };
 
         /**
@@ -371,7 +416,6 @@ define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开�
             alert(err);
           });
         };
-
 
 
 

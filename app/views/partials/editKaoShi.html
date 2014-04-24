@@ -48,9 +48,26 @@
             </div>
         </div>
         <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+                <button type="button" class="btn btn-success">增加考生</button>
+                <button type="button" class="btn btn-success">导入考试</button>
+                <span class="ml10">共<b>0</b>名考试</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">添加考场<i>*</i></label>
+            <div class="col-sm-8">
+                <input type="text" name="ksKaoChang" class="form-control" placeholder="添加考场" required
+                       ng-model="kaoshiData.shuju.kaochangname" ng-click="showKaoChangListInKaoShi()"/>
+            </div>
+            <div class="col-sm-2">
+                <p ng-show="kaoshiForm.ksKaoChang.$error.required" class="help-block">请选择考场！</p>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">考试须知</label>
             <div class="col-sm-8">
-                <textarea class="form-control" cols="30" rows="10" placeholder="考试须知"
+                <textarea class="form-control" cols="30" rows="6" placeholder="考试须知"
                           ng-model="kaoshiData.shuju.XUZHI"></textarea>
             </div>
             <div class="col-sm-2">
@@ -67,9 +84,6 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.start-date').intimidatetime();
-            $('.start-date').change(function(){
-                alert('change');
-            });
         });
     </script>
 </div>
