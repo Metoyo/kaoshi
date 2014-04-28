@@ -177,24 +177,78 @@
                     </div>
                     <div class="tab-pane clearfix">
                         <div class="col-md-6">
-                            <p>
-                                注册信息
-                            </p>
-                            <p class="text-left">
-                                <button type="button" class="btn btn-success prevBtn pull-left" ng-click="goToJueSe()">
-                                    上一步<span></span>
-                                </button>
-                            </p>
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        用户名
+                                    </td>
+                                    <td>
+                                        {{registerDate.yonghuming}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        姓名
+                                    </td>
+                                    <td>
+                                        {{registerDate.xingming}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        邮箱
+                                    </td>
+                                    <td>
+                                        {{registerDate.youxiang}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        手机
+                                    </td>
+                                    <td>
+                                        {{registerDate.shouji}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px">
+                                        所属机构
+                                    </td>
+                                    <td>
+                                        {{registerDate.jiGouName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        科目
+                                    </th>
+                                    <th>
+                                        职务
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="oar in objAndRight">
+                                    <td>
+                                        {{oar.lingyu[0].LINGYUMINGCHENG}}
+                                    </td>
+                                    <td>
+                                        {{oar.juese.jueseName.toString()}}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="col-md-6">
                             <p>
                                 您申请的学科职务需要通过该学科负责人审核之后才可生效，请及时通知学科负责人并耐心等待
                             </p>
-                            <p class="text-right">
-                                <button type="button" class="btn btn-success submitBtn" ng-click="submitRegisterInfo()">
-                                    提交<span></span>
-                                </button>
-                            </p>
+                        </div>
+                        <div class="col-md-12 pb10">
+                            <button type="button" class="btn btn-success prevBtn pull-left" ng-click="goToJueSe()">
+                                上一步<span></span>
+                            </button>
+                            <button type="button" class="btn btn-success submitBtn pull-right"
+                                    ng-click="submitRegisterInfo()">
+                                提交<span></span>
+                            </button>
                         </div>
                     </div>
                 </div>

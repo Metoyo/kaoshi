@@ -21,9 +21,6 @@ define([
 
         $rootScope.pageName = "新用户注册";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-//        $rootScope.styles = [
-//          'styles/renzheng.css'
-//        ];
         $rootScope.dashboard_shown = false;
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
@@ -31,13 +28,9 @@ define([
         $scope.passwordRegexp = /^.{6,20}$/;//密码的正则表达式
         $scope.objectWrap = false;
 
-        //$scope.jigoulb_list = [];
-        //$scope.lingyu_list = [];
-
         /**
          * 注册信息的第一步，个人详情信息
          */
-
         $scope.personalInfo = {
           yonghuming: '',
           mima: '',
@@ -46,6 +39,7 @@ define([
           shouji: ''
         };
         registerDate = $scope.personalInfo;
+
         /**
          * 个人详情信息完整后，去第二步
          */
@@ -63,7 +57,6 @@ define([
         /**
          * 由机构类别查询机构 getJgId
          */
-        var select
         $scope.getJglist = function(jglbId){
           $http.get(jiGou_LeiBieUrl + jglbId).success(function(data) {
             $scope.jigou_list = data;
@@ -75,6 +68,7 @@ define([
          */
         $scope.getJgId = function(jgId){
           jigouId = jgId;
+          registerDate.jiGouName = $(".subOrganization  option:selected").text();
         };
 
         /**
@@ -87,7 +81,6 @@ define([
         /**
          * 有父领域查询子领域领域（即科目）
          */
-        //$scope.objectWrap = false;
         $scope.getKemuList = function(lyId){
           $http.get(apiLyKm + lyId).success(function(data) {
             $scope.kemu_list = data;
@@ -181,6 +174,9 @@ define([
               select_juese.push(jueseObg);
             });
           });
+          registerDate.juese = select_juese;
+          $scope.registerDate = registerDate;
+          console.log(registerDate);
           $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
@@ -196,7 +192,7 @@ define([
          */
         $scope.submitRegisterInfo = function(){
           registerDate.token = config.token;
-          registerDate.juese = select_juese;
+//          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
             console.log(data);
             if(data.result){

@@ -85,6 +85,12 @@ body {
 .pt10 {
   padding-top: 10px;
 }
+.pb10 {
+  padding-bottom: 10px;
+}
+.pb20 {
+  padding-bottom: 20px;
+}
 .co676767 {
   color: #676767;
 }
@@ -779,6 +785,16 @@ a.add-btn:hover span {
   .registerBox h4.logo {
     margin-top: 50px;
     margin-bottom: 30px;
+  }
+  .registerBox{
+    .infoBox{
+      .table{
+        color: #000;
+        td{
+          border: 0;
+        }
+      }
+    }
   }
   .infoBox .list-inline li:first-child {
     padding-left: 20px;
