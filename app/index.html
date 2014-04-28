@@ -16,13 +16,13 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/common.css" />
-    <link ng-repeat="style in styles" rel="stylesheet" type="text/css" ng-href="{{style}}">
+    <!--<link ng-repeat="style in styles" rel="stylesheet" type="text/css" ng-href="{{style}}">-->
     <!-- endbuild -->
   </head>
-  <body ng-app="kaoshiApp">
+  <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
     <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
-    <div class="container main {{addedContainerClass}}" ng-view>
+    <div class="container" ng-class="{main: !isRenZheng}" ng-view>
 
     </div>
     <!--[if lt IE 9]>

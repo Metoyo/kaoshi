@@ -18,10 +18,10 @@ define([
             session = {};
         $rootScope.session = session;
         $rootScope.pageName = "认证";//页面名称
-        //$scope.cssPath = "renzheng";//调用dagang.css
-        $rootScope.styles = [
-          'styles/renzheng.css'
-        ];
+        $rootScope.isRenZheng = true; //判读页面是不是认证
+//        $rootScope.styles = [
+//          'styles/renzheng.css'
+//        ];
         $rootScope.dashboard_shown = false;
 
         $scope.login = login;

@@ -20,9 +20,10 @@ define([
             registerUrl = config.apiurl_rz + 'zhuce'; //提交注册信息的url
 
         $rootScope.pageName = "新用户注册";//页面名称
-        $rootScope.styles = [
-          'styles/renzheng.css'
-        ];
+        $rootScope.isRenZheng = true; //判读页面是不是认证
+//        $rootScope.styles = [
+//          'styles/renzheng.css'
+//        ];
         $rootScope.dashboard_shown = false;
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式

@@ -5000,7 +5000,8 @@ td.visible-print {
     display: none !important; } }
 body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
-  color: #67717e; }
+  color: #67717e;
+  background: #f0f0f0; }
 
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif; }
@@ -5015,8 +5016,10 @@ body {
   padding-right: 5px; }
 
 .container {
-  width: 10px;
   width: 100%; }
+
+.renZhengPart .container {
+  width: 960px; }
 
 .footer {
   display: none; }
@@ -5518,14 +5521,8 @@ a.add-btn:hover span {
     margin: 5px 0; }
 
 /* 分页的样式 结束*/
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*	Settings
-*/
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*	Mixins
-*/
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*	Base container
+/**
+日期选择器的样式
 */
 .intimidatetime {
   position: absolute;
@@ -5592,3 +5589,761 @@ a.add-btn:hover span {
 
 .intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit span {
   display: block; }
+
+.dagangWrapper {
+  /*main styles end*/
+  /*大纲  开始*/
+  /*大纲  end*/ }
+  .dagangWrapper .content-title {
+    border-bottom: 1px solid #cfcfcf;
+    font-size: 120%;
+    height: 60px; }
+    .dagangWrapper .content-title .glyphicon {
+      top: 4px; }
+  .dagangWrapper .itemTitle {
+    font-size: 120%;
+    font-weight: 600;
+    margin-left: 20px; }
+  .dagangWrapper .content {
+    padding-left: 220px;
+    background-color: #fff; }
+  .dagangWrapper .dagangListWrap {
+    width: 221px;
+    height: 100%;
+    position: fixed;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #cfcfcf; }
+    .dagangWrapper .dagangListWrap .btn {
+      width: 180px;
+      text-align: left; }
+    .dagangWrapper .dagangListWrap span.caret {
+      float: right;
+      margin-top: 8px; }
+    .dagangWrapper .dagangListWrap .dropdown-menu {
+      width: 190px; }
+  .dagangWrapper .pointTree {
+    margin-top: 10px; }
+  .dagangWrapper .list-sheet li {
+    margin-top: 5px; }
+  .dagangWrapper .list-sheet a {
+    padding-left: 15px;
+    background: url("../images/mingti/icon/listIcon.png") no-repeat 0 3px; }
+  .dagangWrapper .pointTree .checkbox {
+    margin-bottom: 2px;
+    margin-top: 2px; }
+  .dagangWrapper .levelOne li {
+    padding-left: 20px;
+    position: relative; }
+  .dagangWrapper .levelTwo, .dagangWrapper .levelThree {
+    display: none; }
+  .dagangWrapper .foldBtn {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    top: 5px;
+    cursor: pointer;
+    background: url("../images/mingti/icon/tree_icon.png") no-repeat 0 0; }
+  .dagangWrapper .unfoldBtn {
+    background-position: 0 bottom; }
+  .dagangWrapper .dagangInput .col-md-12 {
+    margin-top: 20px;
+    float: left; }
+  .dagangWrapper .dagangInput .btn {
+    padding: 6px 12px;
+    border-radius: 4px; }
+  .dagangWrapper .dagangInput .glyphicon {
+    top: 2px;
+    margin-right: 0; }
+  .dagangWrapper .dgLevel {
+    border: 1px solid red; }
+  .dagangWrapper .dagangInput .media {
+    border: 0;
+    margin: 0;
+    padding-top: 20px;
+    background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
+  .dagangWrapper .dagangInput .dgLevel_1:last-child,
+  .dagangWrapper .dagangInput .dgLevel_2:last-child,
+  .dagangWrapper .dagangInput .dgLevel_3:last-child,
+  .dagangWrapper .dagangInput .dgLevel_4:last-child {
+    background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
+  .dagangWrapper .dagangInput .lastChild {
+    background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
+  .dagangWrapper .dagangInput .dagangBox {
+    margin-left: 40px;
+    margin-top: 10px;
+    padding-top: 0; }
+  .dagangWrapper .dagangInput .media-object {
+    width: 40px;
+    height: 34px;
+    background: url("../images/mingti/icon/hline.jpg") no-repeat right 17px; }
+  .dagangWrapper .dagangInput .media-heading {
+    height: 34px;
+    margin: 0;
+    position: relative;
+    /*border: 1px solid red;*/ }
+  .dagangWrapper .dagangInput .media-body {
+    padding: 0;
+    background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
+  .dagangWrapper .dagangInput .media > .pull-left {
+    margin-right: 0; }
+  .dagangWrapper .dagangInput .col-md-4, .dagangWrapper .dagangInput .col-md-3 {
+    padding-left: 0;
+    padding-right: 0; }
+  .dagangWrapper .dgLevel_0 .dagangName {
+    color: #16418b;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    position: relative; }
+  .dagangWrapper .dgAddBtn {
+    background-color: #d5dadf;
+    color: #000; }
+  .dagangWrapper .dagangInput .dgAddBtn_0 {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    border-radius: 0 4px 4px 0; }
+  .dagangWrapper .dgDeleteBtn {
+    background-color: #d5dadf; }
+  .dagangWrapper .inlineBlock {
+    display: inline-block;
+    margin-right: -1px; }
+  .dagangWrapper .dgInputWelcome p {
+    margin: 20px;
+    font-size: 18px; }
+
+.mingtiWrapper {
+  /* test list styls begin*/
+  /* test list styls end*/ }
+  .mingtiWrapper .total-test {
+    padding: 0 10px;
+    font-size: 14px; }
+  .mingtiWrapper .testList {
+    padding: 0 10px; }
+    .mingtiWrapper .testList li {
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #d8d8d8;
+      position: relative; }
+    .mingtiWrapper .testList h3 {
+      font-size: 14px;
+      margin: 0; }
+    .mingtiWrapper .testList .item-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px; }
+    .mingtiWrapper .testList .item-tigan {
+      margin-bottom: 10px; }
+    .mingtiWrapper .testList .item-sub-title {
+      font-size: 12px;
+      width: 100%; }
+      .mingtiWrapper .testList .item-sub-title p {
+        display: inline;
+        margin-right: 10px;
+        float: left; }
+      .mingtiWrapper .testList .item-sub-title .use-times {
+        color: #f60; }
+      .mingtiWrapper .testList .item-sub-title .add-to-paper {
+        position: absolute;
+        top: 10px;
+        right: 10px; }
+      .mingtiWrapper .testList .item-sub-title .knowledge-point span {
+        margin-right: 10px; }
+      .mingtiWrapper .testList .item-sub-title .level-num span {
+        width: 42px;
+        height: 10px;
+        margin-top: 2px;
+        background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0; }
+      .mingtiWrapper .testList .item-sub-title .level-num .level-star-2 {
+        background-position: 0 -10px; }
+      .mingtiWrapper .testList .item-sub-title .level-num .level-star-3 {
+        background-position: 0 -20px; }
+      .mingtiWrapper .testList .item-sub-title .level-num .level-star-4 {
+        background-position: 0 -30px; }
+      .mingtiWrapper .testList .item-sub-title .level-num .level-star-5 {
+        background-position: 0 -40px; }
+    .mingtiWrapper .testList .item-cont {
+      margin-top: 35px; }
+      .mingtiWrapper .testList .item-cont .item-tizhi-wrap {
+        margin-bottom: 5px; }
+        .mingtiWrapper .testList .item-cont .item-tizhi-wrap .item-tizhi {
+          margin-bottom: 5px; }
+
+.zujuanWrapper .testPaperSummary {
+  width: 221px;
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf; }
+  .zujuanWrapper .testPaperSummary .subjectBox {
+    position: relative;
+    margin-top: 10px; }
+    .zujuanWrapper .testPaperSummary .subjectBox h2 {
+      font-size: 16px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold; }
+    .zujuanWrapper .testPaperSummary .subjectBox a {
+      font-size: 12px;
+      text-decoration: none; }
+  .zujuanWrapper .testPaperSummary .selectedItems h3 {
+    font-size: 12px;
+    margin: 15px 0 5px 0; }
+  .zujuanWrapper .testPaperSummary .selectedItems table {
+    width: 100%;
+    margin-bottom: 10px; }
+    .zujuanWrapper .testPaperSummary .selectedItems table td, .zujuanWrapper .testPaperSummary .selectedItems table th {
+      font-size: 12px;
+      text-align: center;
+      padding: 3px; }
+      .zujuanWrapper .testPaperSummary .selectedItems table td .glyphicon, .zujuanWrapper .testPaperSummary .selectedItems table th .glyphicon {
+        top: 3px;
+        margin-right: 0; }
+    .zujuanWrapper .testPaperSummary .selectedItems table .text-left {
+      text-align: left; }
+    .zujuanWrapper .testPaperSummary .selectedItems table .deleteBtn {
+      width: 21px; }
+  .zujuanWrapper .testPaperSummary .sj-preview-btns {
+    padding: 10px 0; }
+.zujuanWrapper .contentInner {
+  position: relative; }
+  .zujuanWrapper .contentInner .popupWrap {
+    position: fixed;
+    background-color: #fff;
+    height: 100%;
+    width: 600px;
+    z-index: 2;
+    left: -360px; }
+    .zujuanWrapper .contentInner .popupWrap .dagangListWrap {
+      position: absolute;
+      left: 0;
+      width: 300px; }
+    .zujuanWrapper .contentInner .popupWrap .chooseCondition {
+      width: 300px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-right: 1px solid #cfcfcf;
+      color: #000; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
+        width: 100%; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {
+          text-align: center;
+          padding: 5px; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing td {
+          padding: 5px;
+          text-align: center; }
+          .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing td input {
+            width: 36px;
+            text-align: center; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing .td-txName {
+          text-align: left; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing .td-total {
+          text-align: right; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 {
+        font-size: 14px; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 em {
+          font-size: 12px; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .distBox {
+        position: relative; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderBox {
+        width: 220px;
+        height: 10px;
+        margin: 3px 5px 0 5px;
+        background-color: #ddd; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderItem {
+        width: 110px;
+        height: 10px;
+        background-color: darkseagreen;
+        position: relative; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderItem .sliderItemInner {
+          max-width: 220px; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderBtn {
+        cursor: e-resize;
+        position: absolute;
+        height: 20px;
+        top: -5px;
+        right: 0;
+        width: 5px;
+        background-color: #f60;
+        z-index: 6; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .maskLabel {
+        font-size: 12px; }
+.zujuanWrapper .seal-line {
+  width: 100px;
+  margin-left: 10px; }
+  .zujuanWrapper .seal-line a {
+    width: 100%;
+    height: 575px;
+    display: block;
+    background-image: url("../images/zujuan/sealLine.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    margin-top: 10px; }
+    .zujuanWrapper .seal-line a:hover {
+      background-position: -100px 0; }
+.zujuanWrapper .contentWraps .kmTxBox, .zujuanWrapper .contentWraps .nanduBox {
+  background: none;
+  height: auto; }
+  .zujuanWrapper .contentWraps .kmTxBox ul, .zujuanWrapper .contentWraps .nanduBox ul {
+    line-height: 20px;
+    margin-bottom: 0; }
+    .zujuanWrapper .contentWraps .kmTxBox ul li a, .zujuanWrapper .contentWraps .nanduBox ul li a {
+      font-size: 12px;
+      padding: 0 5px; }
+    .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all {
+      height: auto;
+      background: none;
+      width: auto; }
+      .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all a, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all a {
+        font-size: 12px;
+        font-weight: normal;
+        padding: 0 5px 0 10px; }
+.zujuanWrapper .preview-title {
+  height: 40px;
+  background-color: #ccc;
+  position: fixed;
+  width: 100%;
+  line-height: 40px;
+  padding: 0 10px; }
+.zujuanWrapper .paper-content {
+  margin-left: 10px;
+  color: #000; }
+  .zujuanWrapper .paper-content .secret-mark {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .paper-title {
+    font-size: 24px;
+    margin: 10px 0; }
+  .zujuanWrapper .paper-content .paper-sub-title {
+    font-size: 24px;
+    margin: 10px 0; }
+  .zujuanWrapper .paper-content .paper-info {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .student-title {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .cent-box table {
+    margin: 0 auto; }
+    .zujuanWrapper .paper-content .cent-box table td {
+      border: 2px solid #666;
+      width: 50px;
+      line-height: 25px;
+      font-size: 14px;
+      text-align: center; }
+  .zujuanWrapper .paper-content .attention {
+    font-size: 12px; }
+  .zujuanWrapper .paper-content .hover-style {
+    cursor: pointer; }
+    .zujuanWrapper .paper-content .hover-style:hover {
+      color: #f60; }
+      .zujuanWrapper .paper-content .hover-style:hover table td {
+        border: 2px solid #f60; }
+  .zujuanWrapper .paper-content .sj-param-val {
+    width: 100%;
+    display: block; }
+  .zujuanWrapper .paper-content .form-paper-type {
+    margin-top: 20px; }
+  .zujuanWrapper .paper-content .shijuantimu-list {
+    margin-top: 15px; }
+    .zujuanWrapper .paper-content .shijuantimu-list .mubandati {
+      font-weight: bold;
+      line-height: 28px; }
+      .zujuanWrapper .paper-content .shijuantimu-list .mubandati .dati-name-box {
+        display: inline; }
+        .zujuanWrapper .paper-content .shijuantimu-list .mubandati .dati-name-box .dati-name {
+          cursor: pointer; }
+      .zujuanWrapper .paper-content .shijuantimu-list .mubandati .dati-score-box {
+        display: inline;
+        cursor: pointer; }
+        .zujuanWrapper .paper-content .shijuantimu-list .mubandati .dati-score-box p {
+          display: inline;
+          margin: 0;
+          padding: 0; }
+      .zujuanWrapper .paper-content .shijuantimu-list .mubandati .btn {
+        margin-top: -2px; }
+    .zujuanWrapper .paper-content .shijuantimu-list .testList li {
+      border: none; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li h5.item-title {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        display: none; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li .item-cont {
+        margin-top: 0; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover {
+        border: 1px solid #d8d8d8;
+        background-color: #F5F5F5; }
+        .zujuanWrapper .paper-content .shijuantimu-list .testList li:hover h5.item-title {
+          display: block; }
+      .zujuanWrapper .paper-content .shijuantimu-list .testList li .write-answer-region {
+        height: 150px; }
+  .zujuanWrapper .paper-content .sj-edit-box {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; }
+    .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner {
+      width: 600px;
+      height: 400px;
+      border: 1px solid #7A7A7A;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      margin-top: -200px;
+      left: 50%;
+      margin-left: -300px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .sj-setting-title {
+        font-size: 16px;
+        margin: 0;
+        font-weight: bold;
+        height: 40px;
+        line-height: 20px;
+        padding: 10px;
+        border-bottom: 1px solid #cfcfcf; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content {
+        overflow-y: scroll;
+        height: 310px;
+        padding: 10px; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .btn {
+        margin: 10px 10px 0 0; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner input {
+        font-size: 14px;
+        width: 100%; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner textarea {
+        font-size: 14px;
+        width: 100%; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner h5 {
+        width: 100%;
+        text-align: right; }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .submit-edit-info {
+        height: 50px;
+        line-height: 50px;
+        border-top: 1px solid #cfcfcf; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .submit-edit-info .btn {
+          margin-top: 0; }
+  .zujuanWrapper .paper-content .save-paper-box {
+    position: fixed;
+    right: 10px;
+    bottom: 10px; }
+.zujuanWrapper .fixed-top {
+  position: fixed;
+  top: 0;
+  height: 65px;
+  right: 0;
+  left: 561px;
+  background-color: #F5F5F5;
+  z-index: 2;
+  border-bottom: 1px solid #cfcfcf; }
+.zujuanWrapper .kmTxWrap {
+  padding-right: 160px; }
+.zujuanWrapper .back-to-zujuan {
+  width: 160px;
+  position: absolute;
+  top: 0;
+  right: 10px; }
+  .zujuanWrapper .back-to-zujuan button {
+    float: right;
+    margin-top: 5px;
+    font-size: 12px; }
+.zujuanWrapper .test-list-wrap {
+  margin-top: 60px; }
+.zujuanWrapper .paper-list li a {
+  line-height: 24px; }
+
+.paper_hand_form .contentInner .popupWrap {
+  width: 220px; }
+  .paper_hand_form .contentInner .popupWrap .dagangListWrap {
+    width: 220px; }
+  .paper_hand_form .contentInner .popupWrap .chooseCondition {
+    display: none; }
+.paper_hand_form .contentWraps {
+  padding-left: 220px; }
+
+.kaowuWrapper .active {
+  color: #000; }
+.kaowuWrapper .sub-nav {
+  margin-top: 10px; }
+  .kaowuWrapper .sub-nav .nav-tabs li:first-child {
+    margin-left: 15px; }
+.kaowuWrapper i {
+  color: red;
+  font-style: normal; }
+.kaowuWrapper .explain {
+  font-size: 12px; }
+.kaowuWrapper .back-to-zujuan {
+  width: 160px;
+  position: absolute;
+  top: 60px;
+  right: 10px; }
+  .kaowuWrapper .back-to-zujuan button {
+    float: right;
+    margin-top: 5px;
+    font-size: 12px; }
+.kaowuWrapper .kaowu-table {
+  margin-top: 15px; }
+  .kaowuWrapper .kaowu-table th {
+    text-align: center; }
+  .kaowuWrapper .kaowu-table td {
+    vertical-align: middle; }
+    .kaowuWrapper .kaowu-table td p {
+      margin: 0; }
+.kaowuWrapper .paper-list li a {
+  line-height: 24px; }
+.kaowuWrapper .paper-list li .add-to-kaoshi {
+  color: #33A200;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 20px; }
+.kaowuWrapper .tab-content {
+  padding: 15px; }
+  .kaowuWrapper .tab-content .help-block {
+    font-size: 13px;
+    color: indianred;
+    font-style: italic; }
+  .kaowuWrapper .tab-content .start-date-valid {
+    display: none; }
+  .kaowuWrapper .tab-content .kw-edit-box {
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; }
+    .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner {
+      width: 600px;
+      height: 500px;
+      border: 1px solid #7A7A7A;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      margin-top: -250px;
+      left: 50%;
+      margin-left: -300px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+      .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner .row {
+        height: 480px;
+        margin-top: 10px;
+        overflow-y: scroll;
+        padding: 0 10px; }
+.kaowuWrapper .student-info {
+  border-top: 2px solid #8699a4;
+  padding: 15px 10px; }
+.kaowuWrapper .student-list .kaowu-table {
+  margin-top: 0; }
+
+.rengzhengWrapper {
+  /* 审核页面样式 */
+  /* 审核页面样式 */ }
+  .rengzhengWrapper em {
+    font-weight: normal;
+    font-size: 12px; }
+  .rengzhengWrapper .mt {
+    margin-top: 8px; }
+  .rengzhengWrapper .mb0 {
+    margin-bottom: 0; }
+  .rengzhengWrapper .btn {
+    padding: 6px 20px; }
+  .rengzhengWrapper .row {
+    margin-left: 0;
+    margin-right: 0; }
+  .rengzhengWrapper label {
+    color: rgba(100, 100, 100, 0.8); }
+  .rengzhengWrapper h4.logo {
+    margin-top: 100px;
+    margin-bottom: 50px; }
+  .rengzhengWrapper h4.logo img {
+    width: 400px;
+    height: auto; }
+  .rengzhengWrapper .loginBox {
+    padding-right: 30px;
+    color: #fff;
+    border-right: 1px solid #969696; }
+  .rengzhengWrapper .loginWithXh {
+    padding-left: 30px;
+    color: #fff; }
+  .rengzhengWrapper .loginWithXh .btn {
+    margin-top: 25px;
+    width: 100%; }
+  .rengzhengWrapper .userBox {
+    padding: 50px 0; }
+  .rengzhengWrapper .thumbnail {
+    border: 0;
+    background: none;
+    margin-bottom: 0; }
+  .rengzhengWrapper .thumbnail img {
+    width: 236px;
+    height: 236px; }
+  .rengzhengWrapper .caption p {
+    padding: 0 12px; }
+  .rengzhengWrapper .loginInfo h2 {
+    margin-top: 0; }
+  .rengzhengWrapper .loginInfo h4 {
+    margin: 30px 0; }
+  .rengzhengWrapper .entries h4 {
+    margin-top: 0; }
+  .rengzhengWrapper .entries li a {
+    width: 100%;
+    margin-top: 10px; }
+  .rengzhengWrapper .registerBox h4.logo {
+    margin-top: 50px;
+    margin-bottom: 30px; }
+  .rengzhengWrapper .infoBox .list-inline li:first-child {
+    padding-left: 20px; }
+  .rengzhengWrapper .nav-tabs {
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    border-bottom: 0; }
+  .rengzhengWrapper .nav-tabs li {
+    float: left;
+    padding: 10px 20px;
+    margin-right: 5px;
+    color: #fff;
+    font-size: 14px;
+    background-color: #5b5147;
+    font-weight: 600;
+    cursor: pointer; }
+  .rengzhengWrapper .nav-tabs li.active {
+    background-color: #fff;
+    color: #5b5147; }
+  .rengzhengWrapper .tab-content {
+    float: left;
+    width: 100%;
+    background-color: #fff; }
+  .rengzhengWrapper .tab-pane {
+    padding: 20px 10px 5px 10px;
+    display: none; }
+  .rengzhengWrapper .nextBtn span, .rengzhengWrapper .prevBtn span, .rengzhengWrapper .submitBtn span {
+    float: right;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0 5px;
+    background-image: url("../images/renzheng/icon/button-icons.png");
+    background-repeat: no-repeat;
+    background-position: 0 0; }
+  .rengzhengWrapper .prevBtn span {
+    float: left;
+    background-position: 0 -45px;
+    margin: 2px 5px 0 0; }
+  .rengzhengWrapper .objectWrapSub {
+    float: left;
+    width: 100%; }
+  .rengzhengWrapper .subjectBox {
+    padding: 10px;
+    border: 1px solid #cfcfcf; }
+  .rengzhengWrapper .selectedObjectBox {
+    padding: 10px 0 5px 0;
+    margin-bottom: 15px; }
+  .rengzhengWrapper .selectedObjectList {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #cfcfcf; }
+  .rengzhengWrapper .selectedObjectList p {
+    width: 600px; }
+  .rengzhengWrapper .btn-can {
+    width: 90px; }
+  .rengzhengWrapper .btn-can .btn {
+    padding: 2px 15px;
+    border-radius: 0;
+    margin-bottom: 1px; }
+  .rengzhengWrapper .selectedObjectBox span {
+    margin-right: 10px; }
+  .rengzhengWrapper .objectToggleBox {
+    border: 1px solid #cfcfcf;
+    padding-top: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    float: left;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px; }
+  .rengzhengWrapper .addNewObject {
+    margin-left: 10px; }
+  .rengzhengWrapper .addNewObject span {
+    font-size: 13px; }
+  .rengzhengWrapper span.msgBox {
+    display: none;
+    font-weight: normal; }
+  .rengzhengWrapper .errorMsg {
+    color: red;
+    float: left;
+    margin-right: 10px; }
+  .rengzhengWrapper .errorMsg span {
+    color: red;
+    float: left;
+    margin-right: 10px; }
+  .rengzhengWrapper .errorMsg .msgBox {
+    display: block; }
+  .rengzhengWrapper .privilegeBtn:hover {
+    text-decoration: none; }
+  .rengzhengWrapper .privilegeBtn span {
+    margin-right: 5px; }
+  .rengzhengWrapper .privilegeBox {
+    position: relative;
+    border: 1px solid #cfcfcf;
+    background-color: #fff;
+    padding: 15px 10px;
+    display: none;
+    float: right; }
+  .rengzhengWrapper .privilegeBox .sanj {
+    position: absolute;
+    right: 40px;
+    top: -11px; }
+  .rengzhengWrapper .privilegeBox .btn {
+    margin-top: 10px;
+    padding: 2px 12px; }
+  .rengzhengWrapper .jueseVal {
+    width: 400px;
+    height: 40px;
+    display: none; }
+  .rengzhengWrapper .shenheBox {
+    margin-top: 10px; }
+  .rengzhengWrapper .shenheBox .infoBox {
+    background: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px; }
+  .rengzhengWrapper .shTitle {
+    margin-top: 10px; }
+  .rengzhengWrapper .closeShenBox {
+    color: #d80000;
+    font-size: 16px;
+    margin-top: 5px; }
+  .rengzhengWrapper .shenheBox .table {
+    margin-bottom: 0; }
+  .rengzhengWrapper .shenheTable thead {
+    background-color: #33363b; }
+  .rengzhengWrapper .shenheTable th {
+    text-align: center;
+    color: #fff;
+    vertical-align: middle; }
+  .rengzhengWrapper .shenheTable td {
+    text-align: center;
+    vertical-align: middle; }
+  .rengzhengWrapper .shenheTable .text-left {
+    text-align: left; }
+  .rengzhengWrapper .shenheBox .shenheTable td {
+    vertical-align: middle; }
+  .rengzhengWrapper .shenheTable .btn {
+    border-radius: 0; }
+  .rengzhengWrapper .alterBtn, .rengzhengWrapper .shYonghuId, .rengzhengWrapper .shJigouId, .rengzhengWrapper .shLingyuId, .rengzhengWrapper .originZT {
+    display: none; }
+  .rengzhengWrapper .active {
+    display: block; }

@@ -10,7 +10,7 @@ require.config({
     text: '../../bower_components/requirejs-text/text',
     jquery: '../../bower_components/jquery/jquery',
     underscore: '../../bower_components/underscore/underscore',
-    datepicker: '../../bower_components/datepicker/intimidatetime.min'
+    intimidatetime: '../../bower_components/intimidatetime/intimidatetime'
   },
   shim: {
     'angular' : {'exports' : 'angular'},

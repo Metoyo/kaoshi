@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'datepicker', 'config'], // 000 开始
+define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 开始
   function ($, _, angular, datepicker, config) { // 001 开始
   'use strict';
 

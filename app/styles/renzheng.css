@@ -11,34 +11,42 @@ em {
   font-size: 12px; }
 
 .mt {
-  margin-top: 8px; }
+  margin-top: 8px;
+}
 
 .mb0 {
   margin-bottom: 0; }
 
+
 .container {
-  width: 960px; }
+  width: 960px;
+}
 
 .btn {
-  padding: 6px 20px; }
+  padding: 6px 20px;
+}
 
 .row {
   margin-left: 0;
-  margin-right: 0; }
+  margin-right: 0;
+}
 
 label {
-  color: rgba(100, 100, 100, 0.8); }
+  color: rgba(100, 100, 100, 0.8);
+}
 
 h4.logo {
   margin-top: 100px;
-  margin-bottom: 50px; }
-  h4.logo img {
-    width: 400px; }
-
+  margin-bottom: 50px;
+}
+h4.logo img {
+width: 400px;
+}
 .loginBox {
   padding-right: 30px;
   color: #fff;
-  border-right: 1px solid #969696; }
+  border-right: 1px solid #969696;
+}
 
 .loginWithXh {
   padding-left: 30px;
