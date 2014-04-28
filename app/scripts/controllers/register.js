@@ -18,7 +18,8 @@ define([
             registerDate = {}, // 注册时用到的数据
             jigouId, //所选的机构ID
             registerUrl = config.apiurl_rz + 'zhuce', //提交注册信息的url
-            objAndRightList; //已经选择的科目和单位
+            objAndRightList, //已经选择的科目和单位
+            checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
 
         $rootScope.pageName = "新用户注册";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
@@ -40,6 +41,32 @@ define([
           shouji: ''
         };
         registerDate = $scope.personalInfo;
+
+        /**
+         * 检查输入的邮箱或者是用户名，在数据库中是否存在
+         */
+        $scope.checkUsrExist = function(nme, info){
+          var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
+          $http.get(checkUserUrl).success(function(data){
+            if(nme == 'yonghuming'){
+              if(data.result){
+                $scope.yonghumingExist = true;
+              }
+              else{
+                $scope.yonghumingExist = false;
+              }
+            }
+            else{
+              if(data.result){
+                $scope.youxiangExist = true;
+              }
+              else{
+                $scope.youxiangExist = false;
+              }
+            }
+            console.log(data);
+          });
+        };
 
         /**
          * 个人详情信息完整后，去第二步
@@ -217,7 +244,7 @@ define([
         };
 
         /**
-         * 去提交个人信息页面
+         * 提交个人信息
          */
         $scope.submitRegisterInfo = function(){
           registerDate.token = config.token;

@@ -23,9 +23,11 @@
                             <label>用户名</label>
                             <input type="text" name="yonghuming" placeholder="用户名" tabindex="1" class="form-control"
                                    ng-pattern="userNameRegexp" ng-minlength=4 ng-maxlength=30
-                                   ng-model="personalInfo.yonghuming" required autofocus="true"/>
+                                   ng-model="personalInfo.yonghuming" required autofocus="true"
+                                   ng-blur="checkUsrExist('yonghuming', personalInfo.yonghuming)"/>
                             <p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>
                             <p ng-show="userForm.yonghuming.$error.pattern" class="help-block">用户名格式不正确！</p>
+                            <p ng-show="yonghumingExist" class="help-block">用户名已存在！</p>
                         </div>
 
                         <!-- 密码 -->
@@ -42,9 +44,11 @@
                         <div class="form-group col-md-6">
                             <label>邮箱</label>
                             <input type="email" name="youxiang" placeholder="邮箱" tabindex="4" class="form-control"
-                                   ng-model="personalInfo.youxiang" ng-pattern="emailRegexp" required/>
+                                   ng-model="personalInfo.youxiang" ng-pattern="emailRegexp" required
+                                   ng-blur="checkUsrExist('youxiang', personalInfo.youxiang)"/>
                             <p ng-show="userForm.youxiang.$error.required" class="help-block">邮箱不能为空！</p>
                             <p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
+                            <p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>
                         </div>
 
                         <!-- 确认密码 -->
@@ -78,8 +82,9 @@
 
                         <div class="form-group col-md-12 pull-left text-right">
                             <button type="button" ng-click="validatePersonalInfo()" ng-disabled="userForm.yonghuming.$invalid
-                                 || userForm.mima.$invalid || userForm.confirmPassword.$invalid || userForm.youxiang.$invalid
-                                 || userForm.xingming.$invalid" class="btn btn-success nextBtn">
+                                 || yonghumingExist || userForm.mima.$invalid || userForm.confirmPassword.$invalid
+                                 || userForm.youxiang.$invalid || youxiangExist || userForm.xingming.$invalid"
+                                    class="btn btn-success nextBtn">
                                 下一步<span></span>
                             </button>
                         </div>
