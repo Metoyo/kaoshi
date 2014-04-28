@@ -86,7 +86,7 @@
                     </div>
                     <div class="tab-pane clearfix">
                         <div class="form-group col-md-6 pull-left">
-                            <label><span>机构类别</span><span class="msgBox">此项不能为空！</span></label>
+                            <label><span>单位归属类别</span><span class="msgBox">此项不能为空！</span></label>
                             <select ng-model="selected_jglb" class="form-control organization"
                                     ng-change="getJglist(selected_jglb)"
                                     ng-options="lb.LEIBIE_ID as lb.LEIBIEMINGCHENG for lb in jigoulb_list">
@@ -94,7 +94,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6 pull-right">
-                            <label><span>机构</span><span class="msgBox">此项不能为空！</span></label>
+                            <label><span>单位</span><span class="msgBox">此项不能为空！</span></label>
                             <select class="form-control subOrganization" ng-model="selected_jg"
                                     ng-change="getJgId(selected_jg)"
                                     ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list">
@@ -109,36 +109,41 @@
                                 <option value="">请选择</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-12 pull-left objectWrap" ng-show="selected_ly">
+                        <div class="form-group col-md-12 pull-left objectWrap" ng-show="keMuListLengthExist">
                             <div class="objectWrapSub">
-                                <label class="msgLabel"><span>已选科目</span></label>
-                                <p ng-hide="objAndRight.length">您还没有选择科目！请在下面勾选科目和权限。</p>
+                                <label class="msgLabel"><span>科目</span></label>
+                                <p ng-hide="objAndRight.length">请在下面勾选科目和职务。</p>
                                 <div class="selectedObject">
                                     <div class="selectedObjectBox pull-left">
-                                        <div class="selectedObjectList pull-left" ng-repeat="oar in objAndRight">
+                                        <div class="selectedObjectList" ng-class-odd="'pull-left'"
+                                             ng-class-even="'pull-right'" ng-repeat="oar in objAndRight">
                                             <div class="pull-left">
                                                 <p class="kemumingcheng">
-                                                    <span>科目名称：</span>
+                                                    <span>科目：</span>
                                                     <span class="objectName">{{oar.lingyu[0].LINGYUMINGCHENG}}</span>
                                                 </p>
                                                 <p class="kemuquanxian">
-                                                    <span>角色：</span>
+                                                    <span>职务：</span>
                                                     <span class="rightName">{{oar.juese.jueseName.toString()}}</span>
                                                 </p>
                                             </div>
-                                            <div class="btn-can pull-right text-right">
-                                                <button type="button" class="btn btn-danger"
-                                                        ng-click="delSelectedObject($index)">
-                                                    删除
-                                                </button>
+                                            <div class="btn-can">
+                                                <a href="javascript:void(0)" ng-click="delSelectedObject($index)">
+                                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="objectToggleBox" ng-hide="!kemu_list.length">
+                            <div class="col-md-12" ng-hide="keMuSelectBox">
+                                <a href="javascript:void(0)" ng-click="keMuSelectBox=true" ng-hide="ifKuMuListNull">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>新增科目
+                                </a>
+                            </div>
+                            <div class="objectToggleBox" ng-show="keMuSelectBox">
                                 <div class="form-group col-md-12">
-                                    <label>选择科目</label>
+                                    <label>科目</label>
                                     <div class="chooseObject">
                                         <label class="radio-inline" ng-repeat="km in kemu_list">
                                             <input type="radio" name="objectName" value="{{km.LINGYU_ID}}"
@@ -148,7 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label>科目权限</label>
+                                    <label>职务</label>
                                     <div class="chooseRight">
                                         <label class="checkbox-inline" ng-repeat="js in juese_list">
                                             <input type="checkbox" name="rightName" value="{{js.JUESE_ID}}"
@@ -159,8 +164,8 @@
                                 </div>
                                 <div class="form-group col-md-12 text-right">
                                     <button type="button" class="btn btn-primary" ng-disabled="!linyuValue || !jueseValue"
-                                            ng-click="getObjectAndRight()">
-                                        增加科目权限
+                                            ng-click="getObjectAndRight();keMuSelectBox=false">
+                                        确定
                                     </button>
                                 </div>
                             </div>
@@ -212,7 +217,7 @@
                                 </tr>
                                 <tr>
                                     <td style="padding-bottom: 20px">
-                                        所属机构
+                                        单位
                                     </td>
                                     <td>
                                         {{registerDate.jiGouName}}
@@ -236,8 +241,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-md-6">
-                            <p>
+                        <div class="col-md-4 col-md-offset-1">
+                            <p class="register-hero">
                                 您申请的学科职务需要通过该学科负责人审核之后才可生效，请及时通知学科负责人并耐心等待
                             </p>
                         </div>

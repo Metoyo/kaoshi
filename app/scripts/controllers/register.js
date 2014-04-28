@@ -17,7 +17,8 @@ define([
             select_juese = [], //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
             registerDate = {}, // 注册时用到的数据
             jigouId, //所选的机构ID
-            registerUrl = config.apiurl_rz + 'zhuce'; //提交注册信息的url
+            registerUrl = config.apiurl_rz + 'zhuce', //提交注册信息的url
+            objAndRightList; //已经选择的科目和单位
 
         $rootScope.pageName = "新用户注册";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
@@ -48,6 +49,15 @@ define([
         };
 
         /**
+         /重新选择时，删除已选择的科目和角色
+         */
+        var deleteAllSelectedKmAndJs = function(){
+          objAndRightList = [];
+          $scope.objAndRight = objAndRightList;
+          $scope.ifKuMuListNull = false;
+        };
+
+        /**
          * 查询机构类别
          */
         $http.get(apiUrlJglb).success(function(data) {
@@ -58,8 +68,12 @@ define([
          * 由机构类别查询机构 getJgId
          */
         $scope.getJglist = function(jglbId){
+          $scope.keMuListLengthExist = false;
+          $scope.selected_jg = '';
+          $scope.selected_ly = '';
           $http.get(jiGou_LeiBieUrl + jglbId).success(function(data) {
             $scope.jigou_list = data;
+            $scope.lingyu_list = ''; //重置领域
           });
         };
 
@@ -69,21 +83,31 @@ define([
         $scope.getJgId = function(jgId){
           jigouId = jgId;
           registerDate.jiGouName = $(".subOrganization  option:selected").text();
+          qryParentLingYu();
         };
 
         /**
          * 查询父领域的代码
          */
-        $http.get(apiUrlLy).success(function(data) {
-          $scope.lingyu_list = data;
-        });
+        var qryParentLingYu = function(){
+          $http.get(apiUrlLy).success(function(data) {
+            if(data.length){
+              $scope.lingyu_list = data;
+            }
+          });
+        };
 
         /**
          * 有父领域查询子领域领域（即科目）
          */
         $scope.getKemuList = function(lyId){
           $http.get(apiLyKm + lyId).success(function(data) {
-            $scope.kemu_list = data;
+            if(data.length){
+              $scope.kemu_list = data;
+              $scope.keMuSelectBox = true;
+              $scope.keMuListLengthExist = true;
+              deleteAllSelectedKmAndJs();
+            }
           });
         };
 
@@ -97,7 +121,6 @@ define([
         /**
          * 添加科目和权限
          */
-        var objAndRightList = [];
         $scope.getObjectAndRight = function(){
           var objAndRightObj = {
             lingyu:'',
@@ -114,6 +137,9 @@ define([
           $('input[name=rightName]:checked').prop('checked', false);
           $scope.jueseValue = false;
           $scope.linyuValue = false;
+          if(!$scope.kemu_list.length){
+            $scope.ifKuMuListNull = true; //添加按钮的显示和隐藏
+          }
         };
 
         /**
@@ -148,6 +174,9 @@ define([
         $scope.delSelectedObject = function(idx){
           var deleteObjectAndRight = $scope.objAndRight.splice(idx, 1);
           $scope.kemu_list.push(deleteObjectAndRight[0].lingyu[0]);
+          if($scope.kemu_list.length){
+            $scope.ifKuMuListNull = false;
+          }
         };
 
         /**
