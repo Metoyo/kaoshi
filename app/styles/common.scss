@@ -8,7 +8,6 @@ body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
   sans-serif;
   color: #67717e;
-  background: #f0f0f0;
 }
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
@@ -27,6 +26,7 @@ body {
   width: 100%;
 }
 .renZhengPart{
+  background: #f0f0f0;
   .container{
     width: 960px;
   }
@@ -326,7 +326,6 @@ a.add-btn:hover span {
 /* dashboard styles end*/
 .main {
   padding: 0 0 20px 120px;
-  background: #fff;
 }
 .content {
   padding-left: 221px;
@@ -334,15 +333,6 @@ a.add-btn:hover span {
 }
 .active{
   color: #f60;
-}
-.registerBox{
-  .help-block {
-    margin-top: 0;
-    color: red;
-    position: absolute;
-    top: 0;
-    left: 60px;
-  }
 }
 .messageWrap {
   color: red;
@@ -780,17 +770,22 @@ a.add-btn:hover span {
     margin: 30px 0;
   }
   .entries h4 {
-    margin-top: 0;
+    margin-top: 34px;
   }
-  .entries li a {
-    width: 100%;
-    margin-top: 10px;
-  }
-  .registerBox h4.logo {
-    margin-top: 50px;
-    margin-bottom: 30px;
+  .entries li{
+    float: left;
+    padding: 0 5px;
+    width: 25%;
+    a {
+      width: 100%;
+      margin-top: 10px;
+    }
   }
   .registerBox{
+    h4.logo {
+      margin-top: 50px;
+      margin-bottom: 30px;
+    }
     .infoBox{
       .table{
         color: #000;
@@ -804,29 +799,36 @@ a.add-btn:hover span {
         margin-top: 100px;
       }
     }
+    .help-block {
+      margin-top: 0;
+      color: red;
+      position: absolute;
+      top: 0;
+      left: 60px;
+    }
+    .nav-tabs {
+      float: left;
+      width: 100%;
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+    .nav-tabs li {
+      float: left;
+      padding: 10px 20px;
+      margin-right: 5px;
+      color: #fff;
+      font-size: 14px;
+      background-color: #5b5147;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav-tabs li.active {
+      background-color: #fff;
+      color: #5b5147;
+    }
   }
   .infoBox .list-inline li:first-child {
     padding-left: 20px;
-  }
-  .nav-tabs {
-    float: left;
-    width: 100%;
-    margin-bottom: 0;
-    border-bottom: 0;
-  }
-  .nav-tabs li {
-    float: left;
-    padding: 10px 20px;
-    margin-right: 5px;
-    color: #fff;
-    font-size: 14px;
-    background-color: #5b5147;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .nav-tabs li.active {
-    background-color: #fff;
-    color: #5b5147;
   }
   .tab-content {
     float: left;
@@ -951,45 +953,58 @@ a.add-btn:hover span {
     display: none;
   }
   /* 审核页面样式 */
+  .logoutInfo{
+    h4{
+      margin-top: 10px;
+      margin-bottom: 0;
+      float: left;
+      width: 100%;
+      .btn{
+        width: 80%;
+      }
+    }
+  }
   .shenheBox {
     margin-top: 10px;
-  }
-  .shenheBox .infoBox {
-    background: #fff;
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-  .shTitle {
-    margin-top: 10px;
+    .infoBox {
+      background: #fff;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      margin-top: 20px;
+    }
+    .table {
+      margin-bottom: 0;
+    }
+    .shenheTable thead {
+      background-color: #33363b;
+    }
+    .shenheTable th {
+      text-align: center;
+      color: #fff;
+      vertical-align: middle;
+    }
+    .shenheTable td {
+      text-align: center;
+      vertical-align: middle;
+      color: #666;
+    }
+    .shenheTable .text-left {
+      text-align: left;
+    }
+    .shenheBox .shenheTable td {
+      vertical-align: middle;
+    }
+    .shenheTable .btn {
+      border-radius: 0;
+    }
+    .shTitle {
+       margin-top: 10px;
+    }
   }
   .closeShenBox {
     color: #d80000;
     font-size: 16px;
     margin-top: 5px;
-  }
-  .shenheBox .table {
-    margin-bottom: 0;
-  }
-  .shenheTable thead {
-    background-color: #33363b;
-  }
-  .shenheTable th {
-    text-align: center;
-    color: #fff;
-    vertical-align: middle;
-  }
-  .shenheTable td {
-    text-align: center;
-    vertical-align: middle;
-  }
-  .shenheTable .text-left {
-    text-align: left;
-  }
-  .shenheBox .shenheTable td {
-    vertical-align: middle;
-  }
-  .shenheTable .btn {
-    border-radius: 0;
   }
   .alterBtn, .shYonghuId, .shJigouId, .shLingyuId, .originZT {
     display: none;
@@ -1008,18 +1023,15 @@ a.add-btn:hover span {
       top: 4px;
     }
   }
-
   .itemTitle {
     font-size: 120%;
     font-weight: 600;
     margin-left: 20px;
   }
-
   .content {
     padding-left: 220px;
     background-color: #fff;
   }
-
   .dagangListWrap {
     width: 221px;
     height: 100%;
@@ -1041,11 +1053,9 @@ a.add-btn:hover span {
       width: 190px;
     }
   }
-
   .pointTree {
     margin-top: 10px;
   }
-
   .list-sheet {
     li {
       margin-top: 5px;
@@ -1054,22 +1064,17 @@ a.add-btn:hover span {
       padding-left: 15px;
       background: url('../images/mingti/icon/listIcon.png') no-repeat 0 3px;
     }
-  }
-
-  .pointTree .checkbox {
+  }.pointTree .checkbox {
     margin-bottom: 2px;
     margin-top: 2px;
   }
-
   .levelOne li {
     padding-left: 20px;
     position: relative;
   }
-
   .levelTwo, .levelThree {
     display: none;
   }
-
   .foldBtn {
     position: absolute;
     width: 14px;
@@ -1079,13 +1084,10 @@ a.add-btn:hover span {
     cursor: pointer;
     background: url('../images/mingti/icon/tree_icon.png') no-repeat 0 0;
   }
-
   .unfoldBtn {
     background-position: 0 bottom;
   }
-
   /*main styles end*/
-
   /*大纲  开始*/
   .dagangInput {
     .col-md-12 {
@@ -1101,11 +1103,9 @@ a.add-btn:hover span {
       margin-right: 0;
     }
   }
-
   .dgLevel {
     border: 1px solid red;
   }
-
   .dagangInput {
     .media {
       border: 0;
@@ -1150,7 +1150,6 @@ a.add-btn:hover span {
       padding-right: 0;
     }
   }
-
   .dgLevel_0 .dagangName {
     color: #16418b;
     font-size: 18px;
@@ -1158,28 +1157,23 @@ a.add-btn:hover span {
     line-height: 21px;
     position: relative;
   }
-
   .dgAddBtn {
     background-color: #d5dadf;
     color: #000;
   }
-
   .dagangInput .dgAddBtn_0 {
     position: absolute;
     right: -1px;
     top: -1px;
     border-radius: 0 4px 4px 0;
   }
-
   .dgDeleteBtn {
     background-color: #d5dadf;
   }
-
   .inlineBlock {
     display: inline-block;
     margin-right: -1px;
   }
-
   .dgInputWelcome p {
     margin: 20px;
     font-size: 18px;

@@ -5000,8 +5000,7 @@ td.visible-print {
     display: none !important; } }
 body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
-  color: #67717e;
-  background: #f0f0f0; }
+  color: #67717e; }
 
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif; }
@@ -5018,8 +5017,10 @@ body {
 .container {
   width: 100%; }
 
-.renZhengPart .container {
-  width: 960px; }
+.renZhengPart {
+  background: #f0f0f0; }
+  .renZhengPart .container {
+    width: 960px; }
 
 .footer {
   display: none; }
@@ -5278,8 +5279,7 @@ a.add-btn:hover span {
 
 /* dashboard styles end*/
 .main {
-  padding: 0 0 20px 120px;
-  background: #fff; }
+  padding: 0 0 20px 120px; }
 
 .content {
   padding-left: 221px;
@@ -5287,13 +5287,6 @@ a.add-btn:hover span {
 
 .active {
   color: #f60; }
-
-.registerBox .help-block {
-  margin-top: 0;
-  color: red;
-  position: absolute;
-  top: 0;
-  left: 60px; }
 
 .messageWrap {
   color: red; }
@@ -6082,10 +6075,14 @@ a.add-btn:hover span {
   .rengzhengWrapper .loginInfo h4 {
     margin: 30px 0; }
   .rengzhengWrapper .entries h4 {
-    margin-top: 0; }
-  .rengzhengWrapper .entries li a {
-    width: 100%;
-    margin-top: 10px; }
+    margin-top: 34px; }
+  .rengzhengWrapper .entries li {
+    float: left;
+    padding: 0 5px;
+    width: 25%; }
+    .rengzhengWrapper .entries li a {
+      width: 100%;
+      margin-top: 10px; }
   .rengzhengWrapper .registerBox h4.logo {
     margin-top: 50px;
     margin-bottom: 30px; }
@@ -6097,14 +6094,18 @@ a.add-btn:hover span {
     color: #46b8da;
     font-size: 18px;
     margin-top: 100px; }
-  .rengzhengWrapper .infoBox .list-inline li:first-child {
-    padding-left: 20px; }
-  .rengzhengWrapper .nav-tabs {
+  .rengzhengWrapper .registerBox .help-block {
+    margin-top: 0;
+    color: red;
+    position: absolute;
+    top: 0;
+    left: 60px; }
+  .rengzhengWrapper .registerBox .nav-tabs {
     float: left;
     width: 100%;
     margin-bottom: 0;
     border-bottom: 0; }
-  .rengzhengWrapper .nav-tabs li {
+  .rengzhengWrapper .registerBox .nav-tabs li {
     float: left;
     padding: 10px 20px;
     margin-right: 5px;
@@ -6113,9 +6114,11 @@ a.add-btn:hover span {
     background-color: #5b5147;
     font-weight: 600;
     cursor: pointer; }
-  .rengzhengWrapper .nav-tabs li.active {
+  .rengzhengWrapper .registerBox .nav-tabs li.active {
     background-color: #fff;
     color: #5b5147; }
+  .rengzhengWrapper .infoBox .list-inline li:first-child {
+    padding-left: 20px; }
   .rengzhengWrapper .tab-content {
     float: left;
     width: 100%;
@@ -6213,35 +6216,44 @@ a.add-btn:hover span {
     width: 400px;
     height: 40px;
     display: none; }
+  .rengzhengWrapper .logoutInfo h4 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    float: left;
+    width: 100%; }
+    .rengzhengWrapper .logoutInfo h4 .btn {
+      width: 80%; }
   .rengzhengWrapper .shenheBox {
     margin-top: 10px; }
-  .rengzhengWrapper .shenheBox .infoBox {
-    background: #fff;
-    padding-top: 15px;
-    padding-bottom: 15px; }
-  .rengzhengWrapper .shTitle {
-    margin-top: 10px; }
+    .rengzhengWrapper .shenheBox .infoBox {
+      background: #fff;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      margin-top: 20px; }
+    .rengzhengWrapper .shenheBox .table {
+      margin-bottom: 0; }
+    .rengzhengWrapper .shenheBox .shenheTable thead {
+      background-color: #33363b; }
+    .rengzhengWrapper .shenheBox .shenheTable th {
+      text-align: center;
+      color: #fff;
+      vertical-align: middle; }
+    .rengzhengWrapper .shenheBox .shenheTable td {
+      text-align: center;
+      vertical-align: middle;
+      color: #666; }
+    .rengzhengWrapper .shenheBox .shenheTable .text-left {
+      text-align: left; }
+    .rengzhengWrapper .shenheBox .shenheBox .shenheTable td {
+      vertical-align: middle; }
+    .rengzhengWrapper .shenheBox .shenheTable .btn {
+      border-radius: 0; }
+    .rengzhengWrapper .shenheBox .shTitle {
+      margin-top: 10px; }
   .rengzhengWrapper .closeShenBox {
     color: #d80000;
     font-size: 16px;
     margin-top: 5px; }
-  .rengzhengWrapper .shenheBox .table {
-    margin-bottom: 0; }
-  .rengzhengWrapper .shenheTable thead {
-    background-color: #33363b; }
-  .rengzhengWrapper .shenheTable th {
-    text-align: center;
-    color: #fff;
-    vertical-align: middle; }
-  .rengzhengWrapper .shenheTable td {
-    text-align: center;
-    vertical-align: middle; }
-  .rengzhengWrapper .shenheTable .text-left {
-    text-align: left; }
-  .rengzhengWrapper .shenheBox .shenheTable td {
-    vertical-align: middle; }
-  .rengzhengWrapper .shenheTable .btn {
-    border-radius: 0; }
   .rengzhengWrapper .alterBtn, .rengzhengWrapper .shYonghuId, .rengzhengWrapper .shJigouId, .rengzhengWrapper .shLingyuId, .rengzhengWrapper .originZT {
     display: none; }
   .rengzhengWrapper .active {
