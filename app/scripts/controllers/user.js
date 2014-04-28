@@ -9,9 +9,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           shyhjsUrl = config.apiurl_rz + 'shenhe_yonghu_juese';
 
       $rootScope.pageName = "认证";//页面名称
-      $rootScope.styles = [
-        'styles/renzheng.css'
-      ];
+      $rootScope.isRenZheng = true; //判读页面是不是认证
+//      $rootScope.styles = [
+//        'styles/renzheng.css'
+//      ];
       $rootScope.dashboard_shown = false;
       $scope.addedContainerClass = 'userBox';
 

@@ -56,24 +56,30 @@ define([
                  *查询过用户的详细信息，得到jigouid,lingyuid等等
                  */
                 $http.get(yhxxxxApiUrl).success(function(data){
-                  session.userInfo = data;
-                  /**
-                   * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
-                   */
-                  $http.get(permissionApiUrl).success(function(permissions) {
-                    var find_QUANXIAN_ID_4;
+                  console.log(data);
+                  if(data.JIGOU.length){
+                    session.userInfo = data;
+                    /**
+                     * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
+                     */
+                    $http.get(permissionApiUrl).success(function(permissions) {
+                      var find_QUANXIAN_ID_4;
 
-                    find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
-                      return permission.QUANXIAN_ID == 4;
+                      find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
+                        return permission.QUANXIAN_ID == 4;
+                      });
+
+                      if(find_QUANXIAN_ID_4) {
+                        urlRedirect.goTo(currentPath, profileUrl);
+                      }
+                      else {
+                        urlRedirect.goTo(currentPath, '/dagang');
+                      }
                     });
-
-                    if(find_QUANXIAN_ID_4) {
-                      urlRedirect.goTo(currentPath, profileUrl);
-                    }
-                    else {
-                      urlRedirect.goTo(currentPath, '/dagang');
-                    }
-                  });
+                  }
+                  else{
+                    alert('您注册的信息正在审核中，新耐心等待……');
+                  }
 
                 }).error(function(err){
                   alert(err);

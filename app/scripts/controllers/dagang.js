@@ -25,9 +25,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           dgdata = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
 
       $rootScope.pageName = "大纲";//页面名称
-      $rootScope.styles = [
-        'styles/dagang.css'
-      ]; //调用dagang.css
+      $rootScope.isRenZheng = false; //判读页面是不是认证
+//      $rootScope.styles = [
+//        'styles/dagang.css'
+//      ]; //调用dagang.css
       $rootScope.dashboard_shown = true;
       $scope.saveDagangBtn = true; // 大纲保存按钮隐藏
       $scope.dgWelcome = true; // 默认情况下显示welcome页面

@@ -97,6 +97,9 @@ body {
 .clRed{
   color: red;
 }
+.cInfo{
+  color: #46b8da;
+}
 .btn {
   padding: 3px 12px;
 }
@@ -323,6 +326,7 @@ a.add-btn:hover span {
 /* dashboard styles end*/
 .main {
   padding: 0 0 20px 120px;
+  background: #fff;
 }
 .content {
   padding-left: 221px;
@@ -708,7 +712,7 @@ a.add-btn:hover span {
   display: block;
 }
 //@import "renzheng";
-@import "dagang";
+//@import "dagang";
 @import "mingti";
 @import "zujuan";
 @import "kaowu";
@@ -994,4 +998,191 @@ a.add-btn:hover span {
   .active{
     display: block;
   }
+}
+.dagangWrapper{
+  .content-title {
+    border-bottom: 1px solid #cfcfcf;
+    font-size: 120%;
+    height: 60px;
+    .glyphicon {
+      top: 4px;
+    }
+  }
+
+  .itemTitle {
+    font-size: 120%;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+
+  .content {
+    padding-left: 220px;
+    background-color: #fff;
+  }
+
+  .dagangListWrap {
+    width: 221px;
+    height: 100%;
+    position: fixed;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #cfcfcf;
+    .btn {
+      width: 180px;
+      text-align: left;
+    }
+    span.caret {
+      float: right;
+      margin-top: 8px;
+    }
+    .dropdown-menu {
+      width: 190px;
+    }
+  }
+
+  .pointTree {
+    margin-top: 10px;
+  }
+
+  .list-sheet {
+    li {
+      margin-top: 5px;
+    }
+    a {
+      padding-left: 15px;
+      background: url('../images/mingti/icon/listIcon.png') no-repeat 0 3px;
+    }
+  }
+
+  .pointTree .checkbox {
+    margin-bottom: 2px;
+    margin-top: 2px;
+  }
+
+  .levelOne li {
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .levelTwo, .levelThree {
+    display: none;
+  }
+
+  .foldBtn {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    top: 5px;
+    cursor: pointer;
+    background: url('../images/mingti/icon/tree_icon.png') no-repeat 0 0;
+  }
+
+  .unfoldBtn {
+    background-position: 0 bottom;
+  }
+
+  /*main styles end*/
+
+  /*大纲  开始*/
+  .dagangInput {
+    .col-md-12 {
+      margin-top: 20px;
+      float: left;
+    }
+    .btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    .glyphicon {
+      top: 2px;
+      margin-right: 0;
+    }
+  }
+
+  .dgLevel {
+    border: 1px solid red;
+  }
+
+  .dagangInput {
+    .media {
+      border: 0;
+      margin: 0;
+      padding-top: 20px;
+      background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
+    }
+    .dgLevel_1:last-child,
+    .dgLevel_2:last-child,
+    .dgLevel_3:last-child,
+    .dgLevel_4:last-child{
+      background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
+    }
+    .lastChild {
+      background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
+    }
+    .dagangBox {
+      margin-left: 40px;
+      margin-top: 10px;
+      padding-top: 0;
+    }
+    .media-object {
+      width: 40px;
+      height: 34px;
+      background: url('../images/mingti/icon/hline.jpg') no-repeat right 17px;
+    }
+    .media-heading {
+      height: 34px;
+      margin: 0;
+      position: relative;
+      /*border: 1px solid red;*/
+    }
+    .media-body {
+      padding: 0;
+      background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
+    }
+    .media > .pull-left {
+      margin-right: 0;
+    }
+    .col-md-4, .col-md-3 {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .dgLevel_0 .dagangName {
+    color: #16418b;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21px;
+    position: relative;
+  }
+
+  .dgAddBtn {
+    background-color: #d5dadf;
+    color: #000;
+  }
+
+  .dagangInput .dgAddBtn_0 {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .dgDeleteBtn {
+    background-color: #d5dadf;
+  }
+
+  .inlineBlock {
+    display: inline-block;
+    margin-right: -1px;
+  }
+
+  .dgInputWelcome p {
+    margin: 20px;
+    font-size: 18px;
+  }
+  /*大纲  end*/
 }

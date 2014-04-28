@@ -35,7 +35,8 @@
                             <label>密码</label>
                             <input type="password" name="mima" placeholder="密码" tabindex="2"
                                    class="form-control regPassword" ng-minlength=6 ng-maxlength=20
-                                   ng-model="personalInfo.mima" ng-pattern="passwordRegexp" required />
+                                   ng-model="personalInfo.mima" ng-pattern="passwordRegexp" required
+                                   ng-blur="checkPassword()"/>
                             <p ng-show="userForm.mima.$error.required" class="help-block">密码不能为空！</p>
                             <p ng-show="userForm.mima.$error.pattern" class="help-block">密码格式不正确！</p>
                         </div>
@@ -55,9 +56,12 @@
                         <div class="form-group col-md-6">
                             <label>确认密码</label>
                             <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
-                                   data-password-verify="personalInfo.mima"
+                                   data-password-verify="personalInfo.mima" ng-blur="checkPassword()"
                                    required placeholder="确认密码" tabindex="3" class="form-control" />
                             <p class="help-block" ng-show="userForm.confirmPassword.$error.passwordVerify">
+                                确认密码和密码不匹配！
+                            </p>
+                            <p class="help-block" ng-show="ifPswTheSame">
                                 确认密码和密码不匹配！
                             </p>
                         </div>
@@ -83,8 +87,8 @@
                         <div class="form-group col-md-12 pull-left text-right">
                             <button type="button" ng-click="validatePersonalInfo()" ng-disabled="userForm.yonghuming.$invalid
                                  || yonghumingExist || userForm.mima.$invalid || userForm.confirmPassword.$invalid
-                                 || userForm.youxiang.$invalid || youxiangExist || userForm.xingming.$invalid"
-                                    class="btn btn-success nextBtn">
+                                 || userForm.youxiang.$invalid || youxiangExist || userForm.xingming.$invalid ||
+                                 ifPswTheSame" class="btn btn-success nextBtn">
                                 下一步<span></span>
                             </button>
                         </div>
@@ -117,7 +121,7 @@
                         <div class="form-group col-md-12 pull-left objectWrap" ng-show="keMuListLengthExist">
                             <div class="objectWrapSub">
                                 <label class="msgLabel"><span>科目</span></label>
-                                <p ng-hide="objAndRight.length">请在下面勾选科目和职务。</p>
+                                <p ng-hide="objAndRight.length" class="cInfo">请在下面勾选科目和职务</p>
                                 <div class="selectedObject">
                                     <div class="selectedObjectBox pull-left">
                                         <div class="selectedObjectList" ng-class-odd="'pull-left'"

@@ -64,8 +64,26 @@ define([
                 $scope.youxiangExist = false;
               }
             }
-            console.log(data);
           });
+        };
+
+        /**
+         * 检查密码是否一致
+         */
+        $scope.checkPassword = function(){
+          var psw = $scope.personalInfo.mima,
+            pswConfirm = $scope.personalInfo.mima_verify;
+          if(pswConfirm){
+            if(psw == pswConfirm){
+              $scope.ifPswTheSame = false;
+            }
+            else{
+              $scope.ifPswTheSame = true;
+            }
+          }
+          else{
+            $scope.ifPswTheSame = false;
+          }
         };
 
         /**
