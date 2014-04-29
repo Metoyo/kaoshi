@@ -59,6 +59,13 @@ define([
                   console.log(data);
                   if(data.JIGOU.length){
                     session.userInfo = data;
+
+                    // 根据权限判断显示的功能
+                    session.jueseStr = _.chain(data.JUESE)
+                      .sortBy(function(js){ return js.JUESE_ID; })
+                      .map(function(js){ return 'juese' + js.JUESE_ID; })
+                      .uniq().value().join();
+
                     /**
                      * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                      */

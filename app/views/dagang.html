@@ -1,134 +1,25 @@
 <div class="innerWrap dagangWrapper">
     <div class="dagangListWrap">
         <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
-        <!--div class="btn-group pointSelect">
-            <h2 class="pointTitleBox pull-left"><span class="pointTitle pull-left">高中物理</span></h2>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#">清华大学</a>
-                </li>
-                <li>
-                    <a href="#">北京大学</a>
-                </li>
-                <li>
-                    <a href="#">中国人民大学</a>
-                </li>
-                <li>
-                    <a href="#">中国传媒大学</a>
-                </li>
-            </ul>
-        </div-->
-        <div class="pointTree">
-            <ul class="list-unstyled list-sheet">
-                <li ng-repeat="dg in dgList">
-                    <a href="javascript:void(0)" class="zsdg-btn" ng-click="loadKnowledge(dg)"
-                       data-gjdid="{{dg.GENJIEDIAN_ID}}" data-lyid="{{dg.LINGYU_ID}}"
-                       data-zsdid="{{dg.ZHISHIDAGANG_ID}}" data-leixing="{{dg.LEIXING}}">
-                        {{dg.ZHISHIDAGANGMINGCHENG}}
-                    </a>
-                </li>
-            </ul>
-            <!--span class="hide cxzsdgzsd">{{cxzsdgzsd}}</span-->
+        <div class="keMuName">
+            <h2>科目名称：</h2>
+            <p>高中物理</p>
+        </div>
+        <div class="selectedDgName">
+            <h2>题库默认大纲：</h2>
+            <p>{{itemTitle}}</p>
         </div>
     </div>
     <div class="content">
-        <div class="row content-title">
-            <div class="col-md-4 mt15">
-                <span class="itemTitle"> {{itemTitle}} </span>
-            </div>
-            <!--div class="col-md-8 text-right mt15">
-                            <button>
-                                添加
-                            </button>
-                        </div-->
+        <div class="back-home-box">
+            <button class="btn btn-danger" ng-click="backToDaGangHome()" ng-show="isPrivateDg || isPublicDg">返回大纲首页</button>
         </div>
-        <div class="row pt10 dagangInput">
-            <div class="dgInputWelcome" ng-show="dgWelcome">
-                <p>欢迎进入大纲页面，请选择左边的大纲！</p>
-            </div>
-            <form class="form-horizontal dagangInputForm">
-                <div ng-repeat="zsd in knowledge" class="media dagangBox dgLevel_0">
-                    <div class="media-body">
-                        <div class="media-heading">
-                            <div class="col-md-4">
-                                <div class="form-control radius4 dagangName">
-                                    {{zsd.ZHISHIDIANMINGCHENG}}
-                                    <button class="btn btn-default dgAddBtn dgAddBtn_0" ng-click="addNd(zsd)" type="button">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 二级 -->
-                        <div ng-repeat="nd2 in zsd.ZIJIEDIAN" class="media dgLevel_1">
-                            <a class="media-object pull-left"></a>
+        <div class="save-box">
+            <button class="btn btn-primary" ng-click="submitData()" ng-show="isPrivateDg">保存并用作题库默认大纲</button>
+            <button class="btn btn-primary" ng-show="isPublicDg">用作题库默认大纲</button>
+        </div>
+        <div class="row pt10 dagangInput" ng-init="dgTpl = 'views/partials/daGangHome.html'" ng-include="dgTpl">
 
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <div class="input-group col-md-4">
-                                        <input type="text" class="form-control"
-                                               ng-model="nd2.ZHISHIDIANMINGCHENG">
-                                         <span class="input-group-btn">
-                                          <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd(nd2)" type="button">
-                                              <span class="glyphicon glyphicon-plus"> </span>
-                                          </button>
-                                          <button class="btn btn-default dgDeleteBtn" ng-click="removeNd(zsd, $index)" type="button">
-                                              <span class="glyphicon glyphicon-trash"> </span>
-                                          </button>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- 三级 -->
-                                <div ng-repeat="nd3 in nd2.ZIJIEDIAN" class="media dgLevel_2">
-                                    <a class="media-object pull-left"> </a>
-
-                                    <div class="media-body">
-                                        <div class="media-heading">
-                                            <div class="input-group col-md-4">
-                                                <input type="text" class="form-control"
-                                                       ng-model="nd3.ZHISHIDIANMINGCHENG">
-                                                  <span class="input-group-btn">
-                                                     <button class="btn btn-default dgAddBtn dgAddBtn_2"
-                                                             ng-click="addNd(nd3)"
-                                                             type="button">
-                                                         <span class="glyphicon glyphicon-plus"></span>
-                                                     </button>
-                                                     <button class="btn btn-default dgDeleteBtn" ng-click="removeNd(nd2, $index)"
-                                                             type="button">
-                                                         <span class="glyphicon glyphicon-trash"> </span>
-                                                     </button>
-                                                  </span>
-                                            </div>
-                                        </div>
-                                        <!-- 四级 -->
-                                        <div ng-repeat="nd4 in nd3.ZIJIEDIAN" class="media dgLevel_3">
-                                            <a class="media-object pull-left"> </a>
-
-                                            <div class="media-body">
-                                                <div class="media-heading">
-                                                    <div class="input-group col-md-4">
-                                                        <input type="text" class="form-control"
-                                                               ng-model="nd4.ZHISHIDIANMINGCHENG">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-default dgDeleteBtn"
-                                                                    ng-click="removeNd(nd3, $index)" type="button">
-                                                                <span class="glyphicon glyphicon-trash"> </span>
-                                                            </button> </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="col-md-6 text-right mt30 saveBtbBox">
-                <button class="btn btn-primary saveDagangBtn" ng-click="submitData()" ng-hide="saveDagangBtn">保存修改</button>
-            </div>
         </div>
     </div>
 </div>

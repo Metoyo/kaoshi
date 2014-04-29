@@ -250,7 +250,6 @@ define([
           });
           registerDate.juese = select_juese;
           $scope.registerDate = registerDate;
-          console.log(registerDate);
           $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
@@ -268,7 +267,6 @@ define([
           registerDate.token = config.token;
 //          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
-            console.log(data);
             if(data.result){
               alert('提交成功！');
               urlRedirect.goTo($location.$$path, '/renzheng');

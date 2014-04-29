@@ -5524,6 +5524,16 @@ a.add-btn:hover span {
     margin: 5px 0; }
 
 /* 分页的样式 结束*/
+.back-home-box {
+  position: fixed;
+  right: 10px;
+  top: 10px; }
+
+.save-box {
+  position: fixed;
+  right: 10px;
+  bottom: 10px; }
+
 /**
 日期选择器的样式
 */
@@ -6263,19 +6273,14 @@ a.add-btn:hover span {
   /*main styles end*/
   /*大纲  开始*/
   /*大纲  end*/ }
-  .dagangWrapper .content-title {
-    border-bottom: 1px solid #cfcfcf;
-    font-size: 120%;
-    height: 60px; }
-    .dagangWrapper .content-title .glyphicon {
-      top: 4px; }
   .dagangWrapper .itemTitle {
     font-size: 120%;
     font-weight: 600;
     margin-left: 20px; }
   .dagangWrapper .content {
     padding-left: 220px;
-    background-color: #fff; }
+    background-color: #fff;
+    padding-top: 50px; }
   .dagangWrapper .dagangListWrap {
     width: 221px;
     height: 100%;
@@ -6284,7 +6289,10 @@ a.add-btn:hover span {
     padding-right: 10px;
     padding-top: 10px;
     background-color: #f5f5f5;
-    border-right: 1px solid #cfcfcf; }
+    border-right: 1px solid #cfcfcf;
+    z-index: 10; }
+    .dagangWrapper .dagangListWrap h2 {
+      font-size: 20px; }
     .dagangWrapper .dagangListWrap .btn {
       width: 180px;
       text-align: left; }
@@ -6293,37 +6301,31 @@ a.add-btn:hover span {
       margin-top: 8px; }
     .dagangWrapper .dagangListWrap .dropdown-menu {
       width: 190px; }
-  .dagangWrapper .pointTree {
-    margin-top: 10px; }
   .dagangWrapper .list-sheet li {
-    margin-top: 5px; }
+    margin-top: 5px;
+    width: 46%;
+    border: 1px solid #cfcfcf;
+    float: left;
+    margin-left: 2%; }
   .dagangWrapper .list-sheet a {
-    padding-left: 15px;
-    background: url("../images/mingti/icon/listIcon.png") no-repeat 0 3px; }
-  .dagangWrapper .pointTree .checkbox {
-    margin-bottom: 2px;
-    margin-top: 2px; }
-  .dagangWrapper .levelOne li {
-    padding-left: 20px;
-    position: relative; }
-  .dagangWrapper .levelTwo, .dagangWrapper .levelThree {
-    display: none; }
-  .dagangWrapper .foldBtn {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    left: 0;
-    top: 5px;
-    cursor: pointer;
-    background: url("../images/mingti/icon/tree_icon.png") no-repeat 0 0; }
-  .dagangWrapper .unfoldBtn {
-    background-position: 0 bottom; }
+    width: 100%;
+    text-align: center;
+    float: left;
+    padding: 80px 0;
+    font-size: 20px;
+    background-color: #f0f0f0; }
+    .dagangWrapper .list-sheet a:hover {
+      text-decoration: none;
+      background-color: #f3f3f3; }
   .dagangWrapper .dagangInput .col-md-12 {
     margin-top: 20px;
     float: left; }
   .dagangWrapper .dagangInput .btn {
     padding: 6px 12px;
-    border-radius: 4px; }
+    border-radius: 0 4px 4x 0;
+    margin-left: -5px; }
+  .dagangWrapper .dagangInput .saveDagangBtn {
+    margin-left: 10px; }
   .dagangWrapper .dagangInput .glyphicon {
     top: 2px;
     margin-right: 0; }

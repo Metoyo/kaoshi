@@ -6,33 +6,38 @@
         <a href="/logout">退出</a>
     </div>
     <ul class="list-group nav-list">
-        <li class="list-group-item" ng-class="navClass('mingti')">
+        <li class="list-group-item" ng-class="navClass('mingti')"
+            ng-show="session.jueseStr.indexOf('juese5')>=0">
             <a href="/mingti" class="dropdownToggle droTogMt">
                 <span class="nav-icon"></span> <span class="nav-name">命题</span>
             </a>
         </li>
-        <li class="list-group-item" ng-class="navClass('zujuan')">
+        <li class="list-group-item" ng-class="navClass('zujuan')"
+            ng-show="session.jueseStr.indexOf('juese6')>=0">
             <a href="/zujuan" class="dropdownToggle droTogZj">
                 <span class="nav-icon"></span> <span class="nav-name">组卷</span>
             </a>
         </li>
-        <li class="list-group-item" ng-class="navClass('dagang')">
+        <li class="list-group-item" ng-class="navClass('dagang')"
+            ng-show="session.jueseStr.indexOf('juese4')>=0">
             <a href="/dagang" class="dropdownToggle droTogDg">
                 <span class="nav-icon"></span> <span class="nav-name">大纲</span>
             </a>
         </li>
-        <li class="list-group-item" ng-class="navClass('kaowu')">
+        <li class="list-group-item" ng-class="navClass('kaowu')"
+            ng-show="session.jueseStr.indexOf('juese8')>=0">
             <a href="/kaowu" class="dropdownToggle droTogKw">
                 <span class="nav-icon"></span> <span class="nav-name">考务</span>
             </a>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item" ng-show="session.jueseStr.indexOf('juese3')>=0">
             <a href="javascript:void(0)" class="dropdownToggle droTogSp">
                 <span class="nav-icon"></span> <span class="nav-name">审批</span>
             </a>
         </li>
         <li class="list-group-item">
-            <a href="javascript:void(0)" class="dropdownToggle droTogYj">
+            <a href="javascript:void(0)" class="dropdownToggle droTogYj"
+               ng-show="session.jueseStr.indexOf('juese9')>=0 || session.jueseStr.indexOf('juese10')>=0">
                 <span class="nav-icon"></span> <span class="nav-name">阅卷</span>
             </a>
         </li>
