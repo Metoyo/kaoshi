@@ -23,15 +23,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.showShenhe = true;
           _.each(data, function(sh, indx, lst) {
             sh.AUTH_BTN_HIDE = true;
+            var zeroLength = 0; //判断有几个未审核的角色
             _.each(sh.JUESE, function(js, indx, jsLst) {
-
               js.JUESE_CHECKED = js.ZHUANGTAI > -1;
               if(js.ZHUANGTAI === 0) {
                 sh.AUTH_BTN_HIDE = false;
+                zeroLength ++;
               }
             });
+            if(zeroLength){
+              notShenHe.push(sh);
+            }
+            else{
+              hasShenHe.push(sh);
+            }
           });
-          $scope.shenheList = data;
+//          $scope.shenheList = data;
+          $scope.hasShenHeList = hasShenHe;
+          $scope.notShenHeList = notShenHe;
         });
       };
 
