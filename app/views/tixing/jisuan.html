@@ -10,8 +10,10 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.TIGAN"
-                                  placeholder="请输入题干"></textarea>
+                        <!--<textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.TIGAN"-->
+                                  <!--placeholder="请输入题干"></textarea>-->
+                        <textarea class="form-control ckeditor" rows="3" id="editorJiSuanTg"
+                                  name="editorJiSuanTg" placeholder="请输入题干"></textarea>
                     </div>
                 </div>
             </fieldset>
@@ -19,8 +21,10 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">答案</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.DAAN"
-                                  placeholder="请输入标准答案"></textarea>
+                        <!--<textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.DAAN"-->
+                                  <!--placeholder="请输入标准答案"></textarea>-->
+                        <textarea class="form-control ckeditor" rows="3" id="editorJiSuanDa"
+                                  name="editorJiSuanDa" placeholder="请输入标准答案"></textarea>
                     </div>
                 </div>
             </fieldset>
@@ -60,4 +64,9 @@
             </fieldset>
         </form>
     </div>
+    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace("editorJiSuanTg");
+        CKEDITOR.replace("editorJiSuanDa");
+    </script>
 </div>

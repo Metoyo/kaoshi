@@ -10,9 +10,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
       $rootScope.pageName = "认证";//页面名称
       $rootScope.isRenZheng = true; //判读页面是不是认证
-//      $rootScope.styles = [
-//        'styles/renzheng.css'
-//      ];
       $rootScope.dashboard_shown = false;
       $scope.addedContainerClass = 'userBox';
 
@@ -20,11 +17,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.showShenhe = false;
 
       $scope.setPermissions = function() {
+        var hasShenHe = [], //定义一个已经通过审核的数组
+            notShenHe = []; //定义一个待审核的数组
         $http.get(dshyhjsUrl).success(function(data) {
           $scope.showShenhe = true;
           _.each(data, function(sh, indx, lst) {
             sh.AUTH_BTN_HIDE = true;
             _.each(sh.JUESE, function(js, indx, jsLst) {
+
               js.JUESE_CHECKED = js.ZHUANGTAI > -1;
               if(js.ZHUANGTAI === 0) {
                 sh.AUTH_BTN_HIDE = false;

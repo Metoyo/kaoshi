@@ -429,10 +429,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         if(dataTpl == danxuan_data){
           dataTpl.shuju.TIXING_ID = 1;
           dataTpl.shuju.TIMULEIXING_ID = 1;
+          dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDanXuan.getData();
+
         }
         if(dataTpl == duoxuan_data){
           dataTpl.shuju.TIXING_ID = 2;
           dataTpl.shuju.TIMULEIXING_ID = 2;
+          dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDuoXuan.getData();
         }
         dataTpl.shuju.TIZHINEIRONG = tizhineirong;
         dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
@@ -484,6 +487,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.addJisuanShiTi = function(){
         jisuan_data.shuju.ZHISHIDIAN = selectZsd;
+        jisuan_data.shuju.TIGAN = CKEDITOR.instances.editorJiSuanTg.getData();
+        jisuan_data.shuju.DAAN = CKEDITOR.instances.editorJiSuanDa.getData();
         if(selectZsd.length && jisuan_data.shuju.NANDU_ID.length &&
           jisuan_data.shuju.DAAN.length && jisuan_data.shuju.TIGAN.length){
           $http.post(xgtmUrl, jisuan_data).success(function(data){
