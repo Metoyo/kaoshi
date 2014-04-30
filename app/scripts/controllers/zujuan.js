@@ -22,7 +22,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             token = config.token,
             caozuoyuan = userInfo.UID,//登录的用户的UID
             jigouid = userInfo.JIGOU[0].JIGOU_ID,
-            lingyuid = userInfo.LINGYU[0].LINGYU_ID,
+            lingyuid = $rootScope.session.defaultLyId,
             chaxunzilingyu = true,
             qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
               + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
@@ -154,28 +154,33 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $http.get(qryDgUrl).success(function(data){
             var newDgList = [];
-            _.each(data, function(dg, idx, lst){
-              if(dg.LEIXING == 1){
-                newDgList.push(dg);
-              }
-              if(dg.LEIXING == 2){
-                newDgList.unshift(dg);
-              }
-            });
-            $scope.dgList = newDgList;
+            if(data.length){
+              _.each(data, function(dg, idx, lst){
+                if(dg.LEIXING == 1){
+                  newDgList.push(dg);
+                }
+                if(dg.LEIXING == 2){
+                  newDgList.unshift(dg);
+                }
+              });
+              $scope.dgList = newDgList;
 
-            //获取大纲知识点
-            qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
-            $http.get(qryKnowledge).success(function(data){
-              $scope.kowledgeList = data;
-              $scope.dgListBox = true;
-            }).error(function(err){
-              alert(err);
-            });
+              //获取大纲知识点
+              qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
+              $http.get(qryKnowledge).success(function(data){
+                $scope.kowledgeList = data;
+                $scope.dgListBox = true;
+              }).error(function(err){
+                alert(err);
+              });
+            }
+            else{
+              alert('没用相对应的知识大纲！');
+            }
           });
 
           //查询科目题型(chaxun_kemu_tixing)
-          $http.get(qryKmTx + userInfo.LINGYU[0].LINGYU_ID).success(function(data){ //页面加载的时候调用科目题型
+          $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
             $scope.kmtxList = _.each(data, function(txdata, idx, lst){
               txdata.itemsNum = 0;
             });

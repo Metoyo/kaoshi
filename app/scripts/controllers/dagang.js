@@ -10,7 +10,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         token = config.token,
         caozuoyuan = info.UID,
         jigouid = userInfo.JIGOU[0].JIGOU_ID,
-        lingyuid = userInfo.LINGYU[0].LINGYU_ID,
+        lingyuid = $rootScope.session.defaultLyId,
         chaxunzilingyu = true,
 
         qryDgUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
@@ -20,7 +20,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
 
         qryKnowledgeUrl = '',
-        submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang',
+        submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang', //修改/新建知识大纲
+        xiuGaiZhiShiDian = baseAPIUrl + 'xiugai_zhishidian', //修改/新建知识点
+
         dgListLength, //大纲的长度
         dgdata = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
 
@@ -32,12 +34,59 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 加载知识大纲
        */
-      $http.get(qryDgUrl).success(function(data) {
-        if(data.length){
-          $scope.dgList = data;
-          dgListLength = data.length;
-        }
-      });
+      var loadDaGang = function(){
+        $http.get(qryDgUrl).success(function(data) {
+          if(data.length){
+            $scope.dgList = data;
+            dgListLength = data.length;
+          }
+          else {
+            addNewDaGang();
+          }
+        });
+      };
+      loadDaGang();
+
+      /**
+       * 新建知识大纲
+       */
+      var addNewDaGang = function(){
+        var newZhiShiDian ={
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju: {
+              ZHISHIDIAN_ID: '',
+              ZHISHIDIANMINGCHENG: $rootScope.session.defaultLyName,
+              LEIXING: 2,
+              DAIMA: '',
+              BIEMING: '',
+              ZHUANGTAI: 1
+            }
+          },
+          newDaGang = { //如果没有公共和自建知识大纲，新建一个
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju: {
+              ZHISHIDAGANG_ID: '',
+              ZHISHIDAGANGMINGCHENG: '自建知识大纲',
+              GENJIEDIAN_ID: '',
+              DAGANGSHUOMING: '',
+              LEIXING: 2,
+              ZHUANGTAI: 1,
+              ZHUANGTAI2: 1,
+              JIEDIAN: []
+            }
+          };
+        $http.post(submitDataUrl, newDaGang).success(function(data){
+          if(data.result){
+            loadDaGang();
+          }
+        });
+      };
 
       /**
        * 加载单独某个大纲详情
@@ -114,6 +163,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          console.log(result);
          });*/
         $http.post(submitDataUrl, dgdata).success(function(result) {
+          if(result.result)
             alert('提交成功！');
         });
       };

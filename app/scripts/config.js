@@ -1,12 +1,12 @@
 define( "config", [], function () {
   return {
     token: '12345',
-//    apiurl_rz: "http://192.168.1.111:3000/api/",//认证的url
-//    apiurl_mt: "http://192.168.1.111:4000/api/",//命题的url
-//    apiurl_kw: "http://192.168.1.111:4100/api/",//考务的url
-    apiurl_rz: "http://www.taianting.com:3000/api/",//认证的url
-    apiurl_mt: "http://www.taianting.com:4000/api/",//命题的url
-    apiurl_kw: "http://www.taianting.com:4100/api/",//考务的url
+    apiurl_rz: "http://192.168.1.111:3000/api/",//认证的url
+    apiurl_mt: "http://192.168.1.110:4000/api/",//命题的url
+    apiurl_kw: "http://192.168.1.111:4100/api/",//考务的url
+//    apiurl_rz: "http://www.taianting.com:3000/api/",//认证的url
+//    apiurl_mt: "http://www.taianting.com:4000/api/",//命题的url
+//    apiurl_kw: "http://www.taianting.com:4100/api/",//考务的url
     secret: '076ee61d63aa10a125ea872411e433b9',
     hostname: 'localhost:3000',
     letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -54,6 +54,18 @@ define( "config", [], function () {
         controller: 'KaowuCtrl',
         requireLogin: true
       }
-    }
+    },
+    jueseObj: [ //得到角色是数组
+      {juese_id: 1, juese_name:'系统管理员', juese_url: ''},
+      {juese_id: 2, juese_name:'机构管理员', juese_url: ''},
+      {juese_id: 3, juese_name:'审核人', juese_url: '/shenpi'},
+      {juese_id: 4, juese_name:'科目负责人', juese_url: '/dagang'},
+      {juese_id: 5, juese_name:'命题教师', juese_url: '/mingti'},
+      {juese_id: 6, juese_name:'组卷教师', juese_url: '/zujuan'},
+      {juese_id: 7, juese_name:'审题教师', juese_url: ''},
+      {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'},
+      {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
+      {juese_id: 10, juese_name:'阅卷教师', juese_url: ''}
+    ]
   };
 });

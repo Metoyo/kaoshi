@@ -5527,12 +5527,14 @@ a.add-btn:hover span {
 .back-home-box {
   position: fixed;
   right: 10px;
-  top: 10px; }
+  top: 10px;
+  z-index: 1000; }
 
 .save-box {
   position: fixed;
   right: 10px;
-  bottom: 10px; }
+  bottom: 10px;
+  z-index: 1000; }
 
 /**
 日期选择器的样式
@@ -6093,6 +6095,10 @@ a.add-btn:hover span {
     .rengzhengWrapper .entries li a {
       width: 100%;
       margin-top: 10px; }
+  .rengzhengWrapper .lingYuWrap {
+    padding: 20px 0 0 0; }
+    .rengzhengWrapper .lingYuWrap .btn {
+      margin-right: 20px; }
   .rengzhengWrapper .registerBox h4.logo {
     margin-top: 50px;
     margin-bottom: 30px; }
@@ -6108,8 +6114,9 @@ a.add-btn:hover span {
     margin-top: 0;
     color: red;
     position: absolute;
-    top: 0;
-    left: 60px; }
+    top: 4px;
+    right: 10px;
+    font-size: 12px; }
   .rengzhengWrapper .registerBox .nav-tabs {
     float: left;
     width: 100%;

@@ -20,7 +20,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           token = config.token,
           caozuoyuan = userInfo.UID,//登录的用户的UID   chaxun_kaoshi_liebiao
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
-          lingyuid = userInfo.LINGYU[0].LINGYU_ID,
+          lingyuid = $rootScope.session.defaultLyId,
           qryKaoChangListUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang_liebiao?token=' + token + '&caozuoyuan='
             + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考场列表的url
           qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='

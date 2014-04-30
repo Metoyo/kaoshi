@@ -15,17 +15,17 @@ define([
               password: ''
             },
             loginPostParams,
-            session = {};
+            session = {},
+          currentPath = $location.$$path;
         $rootScope.session = session;
         $rootScope.pageName = "认证";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-//        $rootScope.styles = [
-//          'styles/renzheng.css'
-//        ];
         $rootScope.dashboard_shown = false;
-
         $scope.login = login;
 
+        /**
+         * 登录程序
+         */
         $scope.signIn = function() {
           if(login.userName && login.password) {
             /**
@@ -38,6 +38,7 @@ define([
               mima : login.password
             };
 
+            //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
               if(result.error){
@@ -45,7 +46,6 @@ define([
               }
               else{
                 var profileUrl = '/user/' + login.userName,
-                  currentPath = $location.$$path,
                   permissionApiUrl = config.apiurl_rz + 'yonghu_quanxian?token=' + config.token + '&yonghuid=' +
                     session.info.UID,//查询用户权限的url
 
@@ -53,18 +53,12 @@ define([
                     session.info.UID; //通过UID查询用户详细的url
 
                 /**
-                 *查询过用户的详细信息，得到jigouid,lingyuid等等
+                 *查询过用户的详细信息，得到jigouid,lingyuid等
                  */
                 $http.get(yhxxxxApiUrl).success(function(data){
-                  console.log(data);
                   if(data.JIGOU.length){
                     session.userInfo = data;
-
-                    // 根据权限判断显示的功能
-                    session.jueseStr = _.chain(data.JUESE)
-                      .sortBy(function(js){ return js.JUESE_ID; })
-                      .map(function(js){ return 'juese' + js.JUESE_ID; })
-                      .uniq().value().join();
+                    $scope.userInfoData = data;
 
                     /**
                      * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
@@ -80,7 +74,21 @@ define([
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else {
-                        urlRedirect.goTo(currentPath, '/dagang');
+                        if(data.LINGYU.length == 1){
+                          session.defaultLyId = data.LINGYU[0].LINGYU_ID;
+                          session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
+                          var jsArr = _.chain(data.JUESE)
+                            .sortBy(function(js){ return js.JUESE_ID; })
+                            .map(function(js){ return js.JUESE_ID; })
+                            .uniq().value(), //得到角色的数组
+                            jsUrl = config.jueseObj[parseInt(jsArr[0]) - 1].juese_url; //得到数组的第一位，-1的目的是为了转化为索引
+
+                          session.jueseStr = _.map(jsArr, function(jsm){return 'juese' + jsm}).join();
+                          urlRedirect.goTo(currentPath, jsUrl);
+                        }
+                        else{
+                          $scope.rzTpl = 'views/partials/selectLingYu.html';
+                        }
                       }
                     });
                   }
@@ -98,6 +106,24 @@ define([
             });
           }
         };
+
+        /**
+         * 设置默认科目
+         */
+        $scope.goToTargetWeb = function(ly){
+          //在session中记录作为默认的领域id和领域名称
+          session.defaultLyId = ly.LINGYU_ID;
+          session.defaultLyName = ly.LINGYUMINGCHENG;
+          var needLyArr = _.chain($scope.userInfoData.JUESE)
+              .filter(function(js){if(js.LINGYU_ID == ly.LINGYU_ID){ return js;}})
+              .sortBy(function(js){ return js.JUESE_ID; })
+              .map(function(js){ return js.JUESE_ID; })
+              .uniq().value(), //得到角色的数组
+            jsUrl = config.jueseObj[parseInt(needLyArr[0]) - 1].juese_url; //得到要跳转的url
+          session.jueseStr = _.map(needLyArr, function(jsm){return 'juese' + jsm}).join();
+          urlRedirect.goTo(currentPath, jsUrl);
+//          urlRedirect.goTo(currentPath, '/dagang');
+        }
 
     }]);
 });
