@@ -18,11 +18,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
 
         qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
           + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
-
-        qryKnowledgeUrl = '',
+        xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
+//        qryKnowledgeUrl, //查询知识点的url
         submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang', //修改/新建知识大纲
         xiuGaiZhiShiDian = baseAPIUrl + 'xiugai_zhishidian', //修改/新建知识点
-
         dgListLength, //大纲的长度
         dgdata = {};//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
 
@@ -39,6 +38,11 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           if(data.length){
             $scope.dgList = data;
             dgListLength = data.length;
+            _.each(data, function(dg, idx, lst){
+              if(dg.ZHUANGTAI2 == 2){
+                $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+              }
+            });
           }
           else {
             addNewDaGang();
@@ -46,6 +50,24 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         });
       };
       loadDaGang();
+
+      /**
+       * 修改默认大纲 xgMoRenDaGangUrl
+       */
+      $scope.makeDaGangAsDefault = function(dgId){
+        var defaultDg = {
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          dagangid: dgId ? dgId : $scope.currentDgId
+        };
+        $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
+          if(result.result){
+            loadDaGang();
+          }
+        });
+      };
 
       /**
        * 新建知识大纲
@@ -72,18 +94,42 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             lingyuid: lingyuid,
             shuju: {
               ZHISHIDAGANG_ID: '',
-              ZHISHIDAGANGMINGCHENG: '自建知识大纲',
+              ZHISHIDAGANGMINGCHENG: $rootScope.session.defaultLyName + '自建知识大纲',
               GENJIEDIAN_ID: '',
               DAGANGSHUOMING: '',
               LEIXING: 2,
               ZHUANGTAI: 1,
               ZHUANGTAI2: 1,
-              JIEDIAN: []
+              JIEDIAN: [{
+                JIEDIAN_ID: '',
+                ZHISHIDIAN_ID: '',
+                ZHISHIDIANMINGCHENG: $rootScope.session.defaultLyName,
+                ZHISHIDIAN_LEIXING: "",
+                JIEDIANLEIXING: 0,
+                JIEDIANXUHAO: '',
+                ZHUANGTAI: 1,
+                ZIJIEDIAN: []
+              }]
             }
           };
-        $http.post(submitDataUrl, newDaGang).success(function(data){
-          if(data.result){
-            loadDaGang();
+        //新建知识点
+        $http.post(xiuGaiZhiShiDian, newZhiShiDian).success(function(zsd){
+          if(zsd.result){
+            newDaGang.shuju.GENJIEDIAN_ID = zsd.id;
+            newDaGang.shuju.JIEDIAN[0].ZHISHIDIAN_ID = zsd.id;
+            //创建知识大纲
+            $http.post(submitDataUrl, newDaGang).success(function(data){
+              if(data.result){
+                $scope.makeDaGangAsDefault(data.id);
+                loadDaGang();
+              }
+              else{
+                alert('创建知识大纲失败！');
+              }
+            });
+          }
+          else{
+            alert('创建知识点失败！');
           }
         });
       };
@@ -92,11 +138,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
        * 加载单独某个大纲详情
        */
       $scope.loadKnowledge = function(lx) {
+        var qryKnowledgeUrl = '';
         for(var i = 0; i < dgListLength; i++){
           if($scope.dgList[i].LEIXING == lx){
             var dg = $scope.dgList[i];
             qryKnowledgeUrl = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
-            $scope.itemTitle = dg.ZHISHIDAGANGMINGCHENG;
+//            $scope.defaultItemTitle = dg.ZHISHIDAGANGMINGCHENG;
             $scope.currentDgId = dg.ZHISHIDAGANG_ID;
             dgdata.token = token;
             dgdata.caozuoyuan = caozuoyuan;
@@ -109,20 +156,37 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             dgdata.shuju.LEIXING = dg.LEIXING;//知识大纲类型
             dgdata.shuju.DAGANGSHUOMING = '';
             dgdata.shuju.ZHUANGTAI = dg.ZHUANGTAI;//大纲状态
-            $http.get(qryKnowledgeUrl).success(function(data) {
-              $scope.knowledge = data;
-            });
           }
         }
         if(lx == 1){
-          $scope.isPrivateDg = false;
-          $scope.isPublicDg = true;
-          $scope.dgTpl = 'views/partials/daGangPublic.html';
+          if(qryKnowledgeUrl){
+            $http.get(qryKnowledgeUrl).success(function(data) {
+              if(data.length){
+                $scope.knowledgePb = data;
+                $scope.dgTpl = 'views/partials/daGangPublic.html';
+                $scope.isPrivateDg = false;
+                $scope.isPublicDg = true;
+              }
+            });
+          }
+          else{
+            alert('没有公共知识大纲！');
+          }
         }
         else{
-          $scope.dgTpl = 'views/partials/daGangPrivate.html';
-          $scope.isPrivateDg = true;
-          $scope.isPublicDg = false;
+          if(qryKnowledgeUrl){
+            $http.get(qryKnowledgeUrl).success(function(data) {
+              if(data.length){
+                $scope.knowledgePr = data;
+                $scope.dgTpl = 'views/partials/daGangPrivate.html';
+                $scope.isPrivateDg = true;
+                $scope.isPublicDg = false;
+              }
+            });
+          }
+          else{
+            alert('没有自建知识大纲！');
+          }
         }
       };
 
@@ -158,13 +222,15 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
        */
       $scope.submitData = function() {
         dgdata.shuju = dgdata.shuju || {};
-        dgdata.shuju.JIEDIAN = [$scope.knowledge[0]];
-        /*$http.post(submitDataUrl, $scope.knowledge[0]).success(function(result) {
-         console.log(result);
-         });*/
+        dgdata.shuju.JIEDIAN = [$scope.knowledgePr[0]];
         $http.post(submitDataUrl, dgdata).success(function(result) {
-          if(result.result)
-            alert('提交成功！');
+          if(result.result){
+            $scope.makeDaGangAsDefault($scope.currentDgId);
+            alert('修改大纲成功！');
+          }
+          else{
+            alert('修改大纲失败！');
+          }
         });
       };
 

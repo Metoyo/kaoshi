@@ -7,7 +7,7 @@
         </div>
         <div class="selectedDgName">
             <h2>题库默认大纲：</h2>
-            <p>{{itemTitle}}</p>
+            <p>{{defaultDaGang ? defaultDaGang : ''}}</p>
         </div>
     </div>
     <div class="content">
@@ -16,7 +16,7 @@
         </div>
         <div class="save-box">
             <button class="btn btn-primary" ng-click="submitData()" ng-show="isPrivateDg">保存并用作题库默认大纲</button>
-            <button class="btn btn-primary" ng-show="isPublicDg">用作题库默认大纲</button>
+            <button class="btn btn-primary" ng-click="makeDaGangAsDefault()" ng-show="isPublicDg">用作题库默认大纲</button>
         </div>
         <div class="row pt10 dagangInput" ng-init="dgTpl = 'views/partials/daGangHome.html'" ng-include="dgTpl">
 
