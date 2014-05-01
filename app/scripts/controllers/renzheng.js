@@ -59,7 +59,6 @@ define([
                   console.log(data);
                   if(data.JIGOU.length){
                     session.userInfo = data;
-                    $scope.userInfoData = data;
 
                     /**
                      * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
@@ -88,7 +87,7 @@ define([
                           urlRedirect.goTo(currentPath, jsUrl);
                         }
                         else{
-                          $scope.rzTpl = 'views/partials/selectLingYu.html';
+                          urlRedirect.goTo(currentPath, '/lingyu');
                         }
                       }
                     });
@@ -107,24 +106,6 @@ define([
             });
           }
         };
-
-        /**
-         * 设置默认科目
-         */
-        $scope.goToTargetWeb = function(ly){
-          //在session中记录作为默认的领域id和领域名称
-          session.defaultLyId = ly.LINGYU_ID;
-          session.defaultLyName = ly.LINGYUMINGCHENG;
-          var needLyArr = _.chain($scope.userInfoData.JUESE)
-              .filter(function(js){if(js.LINGYU_ID == ly.LINGYU_ID){ return js;}})
-              .sortBy(function(js){ return js.JUESE_ID; })
-              .map(function(js){ return js.JUESE_ID; })
-              .uniq().value(), //得到角色的数组
-            jsUrl = config.jueseObj[parseInt(needLyArr[0]) - 1].juese_url; //得到要跳转的url
-          session.jueseStr = _.map(needLyArr, function(jsm){return 'juese' + jsm}).join();
-          urlRedirect.goTo(currentPath, jsUrl);
-//          urlRedirect.goTo(currentPath, '/dagang');
-        }
 
     }]);
 });

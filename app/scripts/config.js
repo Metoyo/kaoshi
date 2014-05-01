@@ -53,6 +53,11 @@ define( "config", [], function () {
         templateUrl: 'views/kaowu.html',
         controller: 'KaowuCtrl',
         requireLogin: true
+      },
+      '/lingyu': {
+        templateUrl: 'views/selectLingYu.html',
+        controller: 'LingyuCtrl',
+        requireLogin: true
       }
     },
     jueseObj: [ //得到角色是数组
