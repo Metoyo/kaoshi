@@ -69,72 +69,77 @@
                 </li>
             </ul>
         </div>
-        <div id="dragBtn" class="dragBtn">
-
-        </div>
     </div>
     <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
     <div class="content">
-        <!--添加试题的按钮。开始-->
-        <div class="patternWrap">
-            <h3 class="addBtn">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-                <a href="javascript:void(0)" ng-click="patternListToggle = patternListToggle === false ? true: false">添加试题</a>
-            </h3>
+        <!--题型和难度DOM元素， 开始-->
+        <div class="kmTxWrap">
+            <div ng-hide="patternListToggle">
+                <div class="kmTxBox">
+                    <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
+                        <li>
+                            <a href="javascript:void(0)" ng-click="getTiXingId()"
+                               ng-class="{active:txSelectenIdx == 0}">全部题型</a>
+                        </li>
+                        <li ng-repeat="kmtx in kmtxList">
+                            <a href="javascript:void(0)" ng-click="getTiXingId(kmtx.TIXING_ID)"
+                               ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}">{{ kmtx.TIXINGMINGCHENG }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nanduBox">
+                    <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
+                        <li>
+                            <a href="javascript:void(0)" ng-click="getNanDuId()" ng-class="{active:ndSelectenIdx == 0}">全部难度</a>
+                        </li>
+                        <li class="nanDuId_1">
+                            <a href="javascript:void(0)" ng-click="getNanDuId(1)" ng-class="{active:ndSelectenIdx == 1}">容易</a>
+                        </li>
+                        <li class="nanDuId_2">
+                            <a href="javascript:void(0)" ng-click="getNanDuId(2)" ng-class="{active:ndSelectenIdx == 2}">较易</a>
+                        </li>
+                        <li class="nanDuId_3">
+                            <a href="javascript:void(0)" ng-click="getNanDuId(3)" ng-class="{active:ndSelectenIdx == 3}">一般</a>
+                        </li>
+                        <li class="nanDuId_4">
+                            <a href="javascript:void(0)" ng-click="getNanDuId(4)" ng-class="{active:ndSelectenIdx == 4}">较难</a>
+                        </li>
+                        <li class="nanDuId_5">
+                            <a href="javascript:void(0)" ng-click="getNanDuId(5)" ng-class="{active:ndSelectenIdx == 5}">困难</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <ul class="patternList list-unstyled list-inline"
                 ng-init="patternListToggle = false" ng-show="patternListToggle" >
-                <li class="danxuan"><a href="javascript:void(0)" ng-click="addDanXuan('views/tixing/danxuan.html')">单选题</a></li>
-                <li class="duoxuan"><a href="javascript:void(0)" ng-click="addDuoXuan('views/tixing/duoxuan.html')">多选题</a></li>
-                <li class="jisuan"><a href="javascript:void(0)" ng-click="addJiSuan('views/tixing/jisuan.html')">计算题</a></li>
+                <li>
+                    <a>请选择你要添加的题型：</a>
+                </li>
+                <li class="danxuan">
+                    <a href="javascript:void(0)" ng-click="addDanXuan('views/tixing/danxuan.html')">单选题</a>
+                </li>
+                <li class="duoxuan">
+                    <a href="javascript:void(0)" ng-click="addDuoXuan('views/tixing/duoxuan.html')">多选题</a>
+                </li>
+                <li class="jisuan">
+                    <a href="javascript:void(0)" ng-click="addJiSuan('views/tixing/jisuan.html')">计算题</a>
+                </li>
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/tiankong.html')">填空题</a></li>-->
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/jianda.html')">简答题</a></li>-->
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/yuedu.html')">阅读题</a></li>-->
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/wanxing.html')">完形填空题</a></li>-->
             </ul>
-        </div>
-        <!--添加试题的按钮。结束-->
-        <!--题型和难度DOM元素， 开始-->
-        <div class="kmTxWrap" ng-show="kmTxWrap">
-            <div class="kmTxBox">
-                <div class="kmtxNdTitle pull-left">
-                    <span class="pull-left">题型</span>
-                </div>
-                <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
-                    <li class="tiXingId_all">
-                        <a href="javascript:void(0)" ng-click="getTiXingId()"
-                           ng-class="{active:txSelectenIdx == 0}">全部题型</a>
-                    </li>
-                    <li ng-repeat="kmtx in kmtxList">
-                        <a href="javascript:void(0)" ng-click="getTiXingId(kmtx.TIXING_ID)"
-                           ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}">{{ kmtx.TIXINGMINGCHENG }}</a>
-                    </li>
-                </ul>
+            <div class="addNewTiMuBtn">
+                <a href="javascript:void(0)" class="btn btn-primary" ng-hide="patternListToggle"
+                   ng-click="patternListToggle = true; addDanXuan('views/tixing/danxuan.html')">
+                    <span class="glyphicon glyphicon-plus"></span> 添加试题
+                </a>
+                <button type="button" class="btn btn-danger" ng-show="patternListToggle"
+                        ng-click="patternListToggle = false; cancelAddPattern()">
+                    返回
+                </button>
             </div>
-            <div class="nanduBox">
-                <div class="kmtxNdTitle pull-left">
-                    <span class="pull-left">难度</span>
-                </div>
-                <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
-                    <li class="nanDuId_all">
-                        <a href="javascript:void(0)" ng-click="getNanDuId()" ng-class="{active:ndSelectenIdx == 0}">全部难度</a>
-                    </li>
-                    <li class="nanDuId_1">
-                        <a href="javascript:void(0)" ng-click="getNanDuId(1)" ng-class="{active:ndSelectenIdx == 1}">容易</a>
-                    </li>
-                    <li class="nanDuId_2">
-                        <a href="javascript:void(0)" ng-click="getNanDuId(2)" ng-class="{active:ndSelectenIdx == 2}">较易</a>
-                    </li>
-                    <li class="nanDuId_3">
-                        <a href="javascript:void(0)" ng-click="getNanDuId(3)" ng-class="{active:ndSelectenIdx == 3}">一般</a>
-                    </li>
-                    <li class="nanDuId_4">
-                        <a href="javascript:void(0)" ng-click="getNanDuId(4)" ng-class="{active:ndSelectenIdx == 4}">较难</a>
-                    </li>
-                    <li class="nanDuId_5">
-                        <a href="javascript:void(0)" ng-click="getNanDuId(5)" ng-class="{active:ndSelectenIdx == 5}">困难</a>
-                    </li>
-                </ul>
-            </div>
+
         </div>
         <!--题型和难度DOM元素， 结束-->
         <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">

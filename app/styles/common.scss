@@ -408,52 +408,28 @@ a.add-btn:hover span {
     margin-left: 10px;
     width: 85%;
   }
-  .kmTxBox,.nanduBox {
-    background-color: #f5f5f5;
-    height: 40px;
-    margin-bottom: 5px;
-    float: left;
-    width: 100%;
-    .kmtxNdTitle{
-      line-height: 40px;
-      font-size: 16px;
-      color: #222;
-      span{
-        @include width(60px);
-        margin-left: 10px;
-        font-weight: 600;
-      }
-      a{
-        @include width(100px);
-        height: 40px;
-        background-color: #e0e0e0;
-        color: #222222;
-      }
-    }
-    .kmTxNdList{
-      line-height: 40px;
-      li{
-        a{
-          padding: 0 15px;
-          color: #444;
+  .kmTxWrap {
+    height: 56px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #cfcfcf;
+    .kmTxBox,.nanduBox {
+      background: none;
+      height: auto;
+      float: left;
+      width: 100%;
+      .kmTxNdList{
+        margin: 5px 0 0 0;
+        li{
+          a{
+            padding: 0 5px;
+            color: #444;
+            font-size: 12px;
+          }
         }
-      }
-      .tiXingId_all,
-      .nanDuId_all{
-        width: 100px;
-        height: 40px;
-        background-color: #e0e0e0;
-        color: #222222;
-        text-align: center;
-        padding-right: 0;
-        a{
-          font-size: 16px;
-          font-weight: bold;
-        }
-      }
-      li{
-        a.active{
-          color: #f60;
+        li{
+          a.active{
+            color: #f60;
+          }
         }
       }
     }
@@ -491,36 +467,6 @@ a.add-btn:hover span {
     }
     .unfoldBtn {
       background-position: 0 bottom;
-    }
-  }
-  .patternWrap{
-    border-bottom: 1px solid #d8d8d8;
-    .addBtn{
-      color: #0b9900;
-      font-size: 14px;
-      text-align: right;
-      margin: 0;
-      padding: 10px 0;
-      a{
-        color: #222222;
-        text-decoration: none;
-        font-weight: 600;
-        margin-right: 35px;
-        &:hover{
-          color: #428bca;
-        }
-      }
-    }
-    .patternList{
-      border-top: 1px solid #d8d8d8;
-      padding-top: 10px;
-      padding: 10px 30px 0 10px;
-      text-align: right;
-      .active{
-        a{
-          color: #f60;
-        }
-      }
     }
   }
   /*sub dashboard styles end*/
@@ -714,7 +660,7 @@ a.add-btn:hover span {
 }
 //@import "renzheng";
 //@import "dagang";
-@import "mingti";
+//@import "mingti";
 @import "zujuan";
 @import "kaowu";
 .rengzhengWrapper{
@@ -1185,4 +1131,114 @@ a.add-btn:hover span {
     font-size: 18px;
   }
   /*大纲  end*/
+}
+.mingtiWrapper{
+  .patternList{
+    font-size: 13px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 20px;
+    li:first-child{
+      padding: 0;
+      a{
+        &:hover{
+          text-decoration: none;
+        }
+      }
+    }
+    a{
+      color: #333;
+    }
+    .active{
+      a{
+        color: #f60;
+      }
+    }
+  }
+  .addNewTiMuBtn{
+    position: absolute;
+    right: 15px;
+    top: 14px;
+  }
+  /* test list styls begin*/
+  .total-test{
+    padding: 0 10px;
+    font-size: 14px;
+    .checkbox{
+      margin: 0;
+    }
+  }
+  .testList{
+    padding: 0 10px;
+    li{
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #d8d8d8;
+      position: relative;
+    }
+    h3{
+      font-size: 14px;
+      margin: 0;
+    }
+    .item-title{
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .item-tigan{
+      margin-bottom: 10px;
+    }
+    .item-sub-title{
+      font-size: 12px;
+      width: 100%;
+      p{
+        display: inline;
+        margin-right: 10px;
+        float: left;
+      }
+      .use-times{
+        color: #f60;
+      }
+      .add-to-paper{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .knowledge-point{
+        span{
+          margin-right: 10px;
+        }
+      }
+      .level-num{
+        span{
+          width: 42px;
+          height: 10px;
+          margin-top: 2px;
+          background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0;
+        }
+        .level-star-2{
+          background-position: 0 -10px;
+        }
+        .level-star-3{
+          background-position: 0 -20px;
+        }
+        .level-star-4{
+          background-position: 0 -30px;
+        }
+        .level-star-5{
+          background-position: 0 -40px;
+        }
+      }
+    }
+    .item-cont {
+      margin-top: 35px;
+      .item-tizhi-wrap{
+        margin-bottom: 5px;
+        .item-tizhi{
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+  /* test list styls end*/
 }

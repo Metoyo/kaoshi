@@ -17,87 +17,87 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 声明变量
        */
       var userInfo = $rootScope.session.userInfo,
-          baseRzAPIUrl = config.apiurl_rz, //renzheng的api
-          baseMtAPIUrl = config.apiurl_mt, //mingti的api
-          token = config.token,
-          caozuoyuan = userInfo.UID,//登录的用户的UID
-          jigouid = userInfo.JIGOU[0].JIGOU_ID,
-          lingyuid = $rootScope.session.defaultLyId,
-          chaxunzilingyu = true,
+        baseRzAPIUrl = config.apiurl_rz, //renzheng的api
+        baseMtAPIUrl = config.apiurl_mt, //mingti的api
+        token = config.token,
+        caozuoyuan = userInfo.UID,//登录的用户的UID
+        jigouid = userInfo.JIGOU[0].JIGOU_ID,
+        lingyuid = $rootScope.session.defaultLyId,
+        chaxunzilingyu = true,
 
-          qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token, //查询科目的url
+        qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
+                  jigouid + '&lingyuid=', //查询科目包含什么题型的url
 
-          qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-                    jigouid + '&lingyuid=', //查询科目包含什么题型的url
+        qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
 
-          qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
+        qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
+            caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
 
-          qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
-              caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
+        xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
-          xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
+        qryKnowledge = '', //定义一个空的查询知识点的url
+        timuleixing_id = '', //用于根据题目类型查询题目的字符串
+        nandu_id = '', //用于根据难度查询题目的字符串
+        zhishidian_id = '', //用于根据知识点查询题目的字符串
 
-          qryKnowledge = '', //定义一个空的查询知识点的url
-          timuleixing_id = '', //用于根据题目类型查询题目的字符串
-          nandu_id = '', //用于根据难度查询题目的字符串
-          zhishidian_id = '', //用于根据知识点查询题目的字符串
+        qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题库
 
-          qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
+        qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
 
-          qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
+        qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
 
-          selectZsd = [], //定义一个选中知识点的变量（数组
-          //selectZstStr, //定义一个选中知识点的变量（字符串）
-          timu_data = { //题目类型的数据格式公共部分
-            token: config.token,
-            caozuoyuan: userInfo.UID,
-            jigouid: jigouid,
-            lingyuid: lingyuid,
-            shuju: {
-              TIMU_ID: '',
-              TIXING_ID: '',
-              TIMULEIXING_ID: '',
-              NANDU_ID: '',
-              TIMULAIYUAN_ID: '',
-              PINGFENFANGSHI_ID: '',
-              FUZITI_LEIXING: '',
-              FUTI_ID: '',
-              TIGAN:'',
-              DAAN: '',
-              TISHI: '',
-              YUEJUANBIAOZHUN: '',
-              TIMUFENXI: '',
-              ISFENDUANPINGFEN: '',
-              TIMUWENJIAN:[
+        selectZsd = [], //定义一个选中知识点的变量（数组
+        //selectZstStr, //定义一个选中知识点的变量（字符串）
+        timu_data = { //题目类型的数据格式公共部分
+          token: config.token,
+          caozuoyuan: userInfo.UID,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          shuju: {
+            TIMU_ID: '',
+            TIXING_ID: '',
+            TIMULEIXING_ID: '',
+            NANDU_ID: '',
+            TIMULAIYUAN_ID: '',
+            PINGFENFANGSHI_ID: '',
+            FUZITI_LEIXING: '',
+            FUTI_ID: '',
+            TIGAN:'',
+            DAAN: '',
+            TISHI: '',
+            YUEJUANBIAOZHUN: '',
+            TIMUFENXI: '',
+            ISFENDUANPINGFEN: '',
+            TIMUWENJIAN:[
 
-              ],
-              ZHISHIDIAN: [],
-              ZHUANGTAI: 1
-            }
-          },
-          danxuan_data, //单选题数据模板
-          duoxuan_data, //多选题数据模板
-          jisuan_data, //计算题数据模板
-          loopArr = [0,1,2,3], //用于题支循环的数组
-          tznrIsNull,//用了判断题支内容是否为空
-          deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
-          deleteTiMuData = { //删除题目的数据格式
-            token: config.token,
-            caozuoyuan: userInfo.UID,
-            jigouid: jigouid,
-            lingyuid: lingyuid,
-            timu_id: ''
-          },
-          timudetails,//获得的题目数组
-          tiMuIdArr = [], //获得查询题目ID的数组
-          pageArr = [], //根据得到的数据定义一个分页数组
-          totalPage, //符合条件的数据一共有多少页
-          itemNumPerPage = 10, //每页显示多少条数据
-          paginationLength = 11, //分页部分，页码的长度，目前设定为11
-          alterItemData; //修改试题时用来存放数据是容器
+            ],
+            ZHISHIDIAN: [],
+            ZHUANGTAI: 1
+          }
+        },
+        danxuan_data, //单选题数据模板
+        duoxuan_data, //多选题数据模板
+        jisuan_data, //计算题数据模板
+        loopArr = [0,1,2,3], //用于题支循环的数组
+        tznrIsNull,//用了判断题支内容是否为空
+        deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
+        deleteTiMuData = { //删除题目的数据格式
+          token: config.token,
+          caozuoyuan: userInfo.UID,
+          jigouid: jigouid,
+          lingyuid: lingyuid,
+          timu_id: ''
+        },
+        timudetails,//获得的题目数组
+        tiMuIdArr = [], //获得查询题目ID的数组
+        pageArr = [], //根据得到的数据定义一个分页数组
+        totalPage, //符合条件的数据一共有多少页
+        itemNumPerPage = 10, //每页显示多少条数据
+        paginationLength = 11; //分页部分，页码的长度，目前设定为11
 
       /**
        * 初始化是DOM元素的隐藏和显示
@@ -285,23 +285,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
             pageArr = [];
+        //查询题库
+        $http.get(qryTiKuUrl).success(function(tiku){
+          if(tiku.length){
+            //查询题目列表
+            $http.get(qrytimuliebiao).success(function(tmlb){
+              if(tmlb.length){
+                $scope.testListId = tmlb;
+                _.each(tmlb, function(tm, idx, lst){
+                  tiMuIdArr.push(tm.TIMU_ID);
+                });
+                //获得一共多少页的代码开始
+                totalPage = Math.ceil(tmlb.length/itemNumPerPage);
+                for(var i = 1; i <= totalPage; i++){
+                  pageArr.push(i);
+                }
+                $scope.lastPageNum = totalPage; //最后一页的数值
+                //查询数据开始
+                $scope.getThisPageData();
+              }
+              else{
+                alert('没有相应的题目！');
+              }
+            })
+            .error(function(err){
+              console.log(err);
+            });
 
-        $http.get(qrytimuliebiao).success(function(data){
-          $scope.testListId = data;
-          _.each(data, function(tm, idx, lst){
-            tiMuIdArr.push(tm.TIMU_ID);
-          });
-          //获得一共多少页的代码开始
-          totalPage = Math.ceil(data.length/itemNumPerPage);
-          for(var i = 1; i <= totalPage; i++){
-            pageArr.push(i);
           }
-          $scope.lastPageNum = totalPage; //最后一页的数值
-          //查询数据开始
-          $scope.getThisPageData();
+          else{
+            alert('没有题库！');
+          }
         })
         .error(function(err){
-          console.log(err);
+           console.log(err);
         });
       };
       qryTestFun();
@@ -354,7 +371,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.cancelAddPattern = function(){
         $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
-        $scope.patternListToggle = false; // 明天题型列表隐藏
+//        $scope.patternListToggle = false; // 明天题型列表隐藏
         $('.pointTree').find('input[name=point]').prop('checked', false);
         zhishidian_id = '';
         nandu_id = '';

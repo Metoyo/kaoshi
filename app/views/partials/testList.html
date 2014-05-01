@@ -1,25 +1,34 @@
 <div class="row">
-    <h2 class="total-test"> 共<strong>{{testListId.length}}</strong>题 </h2>
+    <div class="total-test clearfix">
+        <div class="pull-left">
+            共<strong>{{testListId.length}}</strong>题
+        </div>
+        <div class="checkbox pull-right">
+            <label>
+                <input type="checkbox">查看学校题库
+            </label>
+        </div>
+    </div>
     <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
     <ul class="list-unstyled testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <!--<h3 class="item-title">2013年初中毕业升学考试（天津卷）数学（带解析）</h3>-->
             <div class="item-sub-title pull-left">
-                <p class="use-times">
-                    <span>44人</span>使用过
-                </p>
+                <!--<p class="use-times">-->
+                    <!--<span>44人</span>使用过-->
+                <!--</p>-->
                 <p class="knowledge-point">
                     知识点：<span ng-repeat="zsd in tm.ZHISHIDIAN">{{zsd.ZHISHIDIANMINGCHENG}}</span>
                 </p>
                 <p class="level-num">
                     难易度：<span class="pull-right level-star-{{tm.NANDU_ID}}"></span>
                 </p>
-                <p>
-                    更新日期：{{tm.UPDATE_TIME | myLocalDate | date:'yyyy-MM-dd HH:mm:ss'}}
-                </p>
+                <!--<p>-->
+                    <!--更新日期：{{tm.UPDATE_TIME | myLocalDate | date:'yyyy-MM-dd HH:mm:ss'}}-->
+                <!--</p>-->
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
-                    <button type="button" class="btn btn-danger" ng-click="deleteItem(tm.TIMU_ID, $index)">删除试题</button>
-                    <button type="button" class="btn btn-success" ng-click="editItem(tm)">修改试题</button>
+                    <button type="button" class="btn btn-default" ng-click="deleteItem(tm.TIMU_ID, $index)">删除</button>
+                    <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
                 </div>
             </div>
             <div class="item-cont">

@@ -56,7 +56,6 @@ define([
                  *查询过用户的详细信息，得到jigouid,lingyuid等
                  */
                 $http.get(yhxxxxApiUrl).success(function(data){
-                  console.log(data);
                   if(data.JIGOU.length){
                     session.userInfo = data;
 

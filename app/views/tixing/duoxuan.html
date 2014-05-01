@@ -13,8 +13,8 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <!--&lt;!&ndash;<textarea class="form-control" rows="3" ng-model="duoXuanData.shuju.TIGAN"-->
-                        <!--placeholder="请输入题干"></textarea>&ndash;&gt;-->
+                        <textarea class="form-control" rows="3" ng-model="duoXuanData.shuju.TIGAN"
+                                  placeholder="请输入题干"></textarea>
                         <!--<textarea class="form-control ckeditor" rows="3" id="editorDuoXuan"-->
                                   <!--name="editorDuoXuan" placeholder="请输入题干"></textarea>-->
                     </div>
@@ -62,9 +62,6 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
-                        <button type="button" class="btn btn-danger" ng-click="cancelAddPattern()">
-                            返回
-                        </button>
                         <button type="reset" class="btn btn-warning resetForm" ng-click="resetForm()">
                             重置
                         </button>
@@ -76,7 +73,7 @@
             </fieldset>
         </form>
     </div>
-    <script type="text/javascript">
-        CKEDITOR.replace("editorDuoXuan");
-    </script>
+    <!--<script type="text/javascript">-->
+        <!--CKEDITOR.replace("editorDuoXuan");-->
+    <!--</script>-->
 </div>
