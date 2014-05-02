@@ -102,7 +102,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 初始化是DOM元素的隐藏和显示
          */
         $scope.keMuList = true; //科目选择列表内容隐藏
-        $scope.dgListBox = true; //大纲选择列表隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
 
@@ -113,20 +112,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var newDgList = [];
           if(data.length){
             _.each(data, function(dg, idx, lst){
-              if(dg.LEIXING == 1){
+              if(dg.ZHUANGTAI2 == 2){
                 newDgList.push(dg);
-              }
-              if(dg.LEIXING == 2){
-                newDgList.unshift(dg);
               }
             });
             $scope.dgList = newDgList;
-
             //获取大纲知识点
             qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
             $http.get(qryKnowledge).success(function(data){
               $scope.kowledgeList = data;
-              $scope.dgListBox = true;
             }).error(function(err){
               alert(err);
             });
@@ -140,14 +134,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          *查询科目（LingYu，url：/api/ling yu）
          */
         $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
-        $scope.loadLingYu = function(){
-          if($scope.keMuList){
-            $scope.keMuList = false;
-          }
-          else{
-            $scope.keMuList = true;
-          }
-        };
+//        $scope.loadLingYu = function(){
+//          if($scope.keMuList){
+//            $scope.keMuList = false;
+//          }
+//          else{
+//            $scope.keMuList = true;
+//          }
+//        };
 
         /**
          * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
@@ -169,11 +163,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 点击,显示大纲列表
          */
-        $scope.showDgList = function(dgl){ //dgl是判断da gang有没有数据
-          if(dgl.length){
-              $scope.dgListBox = $scope.dgListBox === false ? true: false; //点击是大纲列表展现
-          }
-        };
+//        $scope.showDgList = function(dgl){ //dgl是判断da gang有没有数据
+//          if(dgl.length){
+//              $scope.dgListBox = $scope.dgListBox === false ? true: false; //点击是大纲列表展现
+//          }
+//        };
 
         /**
          * 加载大纲知识点
@@ -185,7 +179,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $http.get(qryKnowledge).success(function(data){
                 $scope.kowledgeList = data;
-                $scope.dgListBox = true;
+//                $scope.dgListBox = true;
           }).error(function(err){
               alert(err);
           });

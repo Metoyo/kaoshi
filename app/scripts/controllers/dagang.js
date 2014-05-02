@@ -66,6 +66,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           if(result.result){
             loadDaGang();
           }
+          else{
+            alert('将此大纲设置为默认大纲的操作失败！');
+          }
         });
       };
 
@@ -220,7 +223,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 保存知识大纲
        */
-      $scope.submitData = function() {
+      $scope.saveDaGangData = function() {
         dgdata.shuju = dgdata.shuju || {};
         dgdata.shuju.JIEDIAN = [$scope.knowledgePr[0]];
         $http.post(submitDataUrl, dgdata).success(function(result) {
