@@ -3,7 +3,7 @@
         <div class="pull-left">
             共<strong>{{testListId.length}}</strong>题
         </div>
-        <div class="checkbox pull-right">
+        <div class="checkbox pull-left">
             <label>
                 <input type="checkbox" ng-model="isCheckSchoolTiKu" ng-change="checkSchoolTiMu(isCheckSchoolTiKu)">查看学校题库
             </label>
@@ -28,7 +28,8 @@
                 <!--</p>-->
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
                     <button type="button" class="btn btn-default" ng-click="deleteItem(tm.TIMU_ID, $index)">删除</button>
-                    <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
+                    <button type="button" class="btn btn-default"
+                            ng-click="patternListToggle = true; editItem(tm)">修改</button>
                 </div>
             </div>
             <div class="item-cont">

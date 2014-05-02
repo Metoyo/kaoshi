@@ -114,7 +114,7 @@ a.add-btn:hover span {
   color: #00CC33;
 }
 .form-header {
-  margin-bottom: 10px;
+  margin-bottom: 0;
   .form-th {
     font-size: 14px;
     font-weight: 600;
@@ -122,6 +122,9 @@ a.add-btn:hover span {
   }
 }
 .form-body {
+  .answerBox{
+    margin-bottom: 5px;
+  }
   .radio {
     width: 20px;
     height: 20px;
@@ -430,6 +433,15 @@ a.add-btn:hover span {
           a.active{
             color: #f60;
           }
+        }
+      }
+    }
+    .alterTiXingBox{
+      span{
+        margin: 18px 0 0 15px;
+        float: left;
+        strong{
+          font-weight: normal;
         }
       }
     }
@@ -1165,7 +1177,7 @@ a.add-btn:hover span {
     padding: 0 10px;
     font-size: 14px;
     .checkbox{
-      margin: 0;
+      margin: 0 0 0 80px;
     }
   }
   .testList{
@@ -1241,4 +1253,10 @@ a.add-btn:hover span {
     }
   }
   /* test list styls end*/
+  .nadu-select{
+    .radio-inline{
+      margin-left: 20px;
+      font-size: 16px;
+    }
+  }
 }

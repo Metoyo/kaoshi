@@ -379,7 +379,33 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.cancelAddPattern = function(){
           $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
-//          $scope.patternListToggle = false; // 明天题型列表隐藏
+          timu_data = { //题目类型的数据格式公共部分
+            token: config.token,
+            caozuoyuan: userInfo.UID,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju: {
+              TIMU_ID: '',
+              TIXING_ID: '',
+              TIMULEIXING_ID: '',
+              NANDU_ID: '',
+              TIMULAIYUAN_ID: '',
+              PINGFENFANGSHI_ID: '',
+              FUZITI_LEIXING: '',
+              FUTI_ID: '',
+              TIGAN:'',
+              DAAN: '',
+              TISHI: '',
+              YUEJUANBIAOZHUN: '',
+              TIMUFENXI: '',
+              ISFENDUANPINGFEN: '',
+              TIMUWENJIAN:[
+
+              ],
+              ZHISHIDIAN: [],
+              ZHUANGTAI: 1
+            }
+          };
           $('.pointTree').find('input[name=point]').prop('checked', false);
           zhishidian_id = '';
           nandu_id = '';
@@ -434,6 +460,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addJiSuan = function(tpl){
           jisuan_data = timu_data;
           renderTpl(tpl);
+          $('.patternList li').removeClass('active');
+          $('li.jisuan').addClass('active');
           jisuan_data.shuju.TIXING_ID = 9;
           jisuan_data.shuju.TIMULEIXING_ID = 9;
           $scope.jiSuanData = jisuan_data;
@@ -636,7 +664,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         $scope.editItem = function(tmxq){
-          console.log(tmxq);
           var tpl;
           //单选题
           if(tmxq.TIMULEIXING_ID == 1){
@@ -649,6 +676,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.timudetail = tmxq;
+            $scope.alterTiMuTiXing = '单选题';
             renderTpl(tpl); //render 修改过模板
           }
           //多选题
@@ -662,6 +690,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.timudetail = tmxq;
+            $scope.alterTiMuTiXing = '多选题';
             renderTpl(tpl); //render 修改过模板
           }
           //计算题
@@ -676,9 +705,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
             jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+            $scope.alterTiMuTiXing = '计算题';
             renderTpl(tpl); //render 修改过模板
           }
-
+          $scope.alterTiXingBox = true;
         };
 
         /**

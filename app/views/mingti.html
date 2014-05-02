@@ -62,8 +62,8 @@
     <div class="content">
         <!--题型和难度DOM元素， 开始-->
         <div class="kmTxWrap">
-            <div ng-hide="patternListToggle">
-                <div class="kmTxBox">
+            <div ng-hide="patternListToggle || alterTiXingBox">
+                <div class="kmTxBox" ng-init="txSelectenIdx = 0">
                     <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
                         <li>
                             <a href="javascript:void(0)" ng-click="getTiXingId()"
@@ -75,7 +75,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="nanduBox">
+                <div class="nanduBox" ng-init="ndSelectenIdx = 0">
                     <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
                         <li>
                             <a href="javascript:void(0)" ng-click="getNanDuId()" ng-class="{active:ndSelectenIdx == 0}">全部难度</a>
@@ -117,17 +117,19 @@
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/yuedu.html')">阅读题</a></li>-->
                 <!--<li><a href="javascript:void(0)" ng-click="renderTpl('views/tixing/wanxing.html')">完形填空题</a></li>-->
             </ul>
+            <div class="alterTiXingBox" ng-show="alterTiXingBox">
+                <span>目前你修改的题型为：<strong class="active">{{alterTiMuTiXing}}</strong></span>
+            </div>
             <div class="addNewTiMuBtn">
-                <a href="javascript:void(0)" class="btn btn-primary" ng-hide="patternListToggle"
+                <a href="javascript:void(0)" class="btn btn-primary" ng-hide="patternListToggle || alterTiXingBox"
                    ng-click="patternListToggle = true; addDanXuan('views/tixing/danxuan.html')">
                     <span class="glyphicon glyphicon-plus"></span> 添加试题
                 </a>
-                <button type="button" class="btn btn-danger" ng-show="patternListToggle"
-                        ng-click="patternListToggle = false; cancelAddPattern()">
+                <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox"
+                        ng-click="patternListToggle = false; alterTiXingBox = false; cancelAddPattern()">
                     返回
                 </button>
             </div>
-
         </div>
         <!--题型和难度DOM元素， 结束-->
         <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">

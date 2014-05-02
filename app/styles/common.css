@@ -1758,7 +1758,7 @@ textarea.input-lg, .input-group-lg > textarea.form-control,
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
   .btn:hover, .btn:focus {
-    color: #333333;
+    color: black;
     text-decoration: none; }
   .btn:active, .btn.active {
     outline: 0;
@@ -1774,23 +1774,23 @@ textarea.input-lg, .input-group-lg > textarea.form-control,
     box-shadow: none; }
 
 .btn-default {
-  color: #333333;
-  background-color: white;
+  color: black;
+  background-color: #f2f2f2;
   border-color: #cccccc; }
   .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active {
-    color: #333333;
-    background-color: #ebebeb;
+    color: black;
+    background-color: #dedede;
     border-color: #adadad; }
   .open .btn-default.dropdown-toggle {
-    color: #333333;
-    background-color: #ebebeb;
+    color: black;
+    background-color: #dedede;
     border-color: #adadad; }
   .btn-default:active, .btn-default.active {
     background-image: none; }
   .open .btn-default.dropdown-toggle {
     background-image: none; }
   .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled]:active, .btn-default[disabled].active, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default.active {
-    background-color: white;
+    background-color: #f2f2f2;
     border-color: #cccccc; }
 
 .btn-primary {
@@ -2694,12 +2694,12 @@ input[type="button"].btn-block {
     right: 0;
     left: auto; } }
 .btn-default .caret {
-  border-top-color: #333333; }
+  border-top-color: black; }
 .btn-primary .caret, .btn-success .caret, .btn-warning .caret, .btn-danger .caret, .btn-info .caret {
   border-top-color: #fff; }
 
 .dropup .btn-default .caret {
-  border-bottom-color: #333333; }
+  border-bottom-color: black; }
 .dropup .btn-primary .caret,
 .dropup .btn-success .caret,
 .dropup .btn-warning .caret,
@@ -5105,12 +5105,14 @@ a.add-btn:hover span {
   color: #00CC33; }
 
 .form-header {
-  margin-bottom: 10px; }
+  margin-bottom: 0; }
   .form-header .form-th {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 15px; }
 
+.form-body .answerBox {
+  margin-bottom: 5px; }
 .form-body .radio {
   width: 20px;
   height: 20px;
@@ -5370,6 +5372,11 @@ a.add-btn:hover span {
           font-size: 12px; }
         .innerWrapperSubDs .kmTxWrap .kmTxBox .kmTxNdList li a.active, .innerWrapperSubDs .kmTxWrap .nanduBox .kmTxNdList li a.active {
           color: #f60; }
+    .innerWrapperSubDs .kmTxWrap .alterTiXingBox span {
+      margin: 18px 0 0 15px;
+      float: left; }
+      .innerWrapperSubDs .kmTxWrap .alterTiXingBox span strong {
+        font-weight: normal; }
   .innerWrapperSubDs .pointTree {
     padding: 0 10px;
     position: absolute;
@@ -6315,7 +6322,7 @@ a.add-btn:hover span {
     padding: 0 10px;
     font-size: 14px; }
     .mingtiWrapper .total-test .checkbox {
-      margin: 0; }
+      margin: 0 0 0 80px; }
   .mingtiWrapper .testList {
     padding: 0 10px; }
     .mingtiWrapper .testList li {
@@ -6366,3 +6373,6 @@ a.add-btn:hover span {
         margin-bottom: 5px; }
         .mingtiWrapper .testList .item-cont .item-tizhi-wrap .item-tizhi {
           margin-bottom: 5px; }
+  .mingtiWrapper .nadu-select .radio-inline {
+    margin-left: 20px;
+    font-size: 16px; }

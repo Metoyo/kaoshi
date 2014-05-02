@@ -6,9 +6,6 @@
                     <div class="col-sm-8 col-sm-offset-1 text-center">
                         题干
                     </div>
-                    <div class="col-sm-3">
-                        正确答案
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
@@ -19,6 +16,11 @@
                 </div>
             </fieldset>
             <fieldset class="form-body">
+                <div class="form-group answerBox">
+                    <div class="col-sm-3 col-sm-offset-9">
+                        正确答案
+                    </div>
+                </div>
                 <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong">
                     <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
                     <div class="col-sm-8">
@@ -41,7 +43,7 @@
                        class="col-sm-1 control-label text-right add-btn">
                         <span class="glyphicon glyphicon-plus-sign"></span> </a>
                 </div>
-                <div class="form-group">
+                <div class="form-group nadu-select">
                     <div class="col-sm-8 col-sm-offset-1">
                         <label class="radio-inline">
                             <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="1"
@@ -67,9 +69,9 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
-                        <button type="button" class="btn btn-danger" ng-click="cancelAddPattern()">
-                            返回
-                        </button>
+                        <!--<button type="button" class="btn btn-danger" ng-click="cancelAddPattern()">-->
+                            <!--返回-->
+                        <!--</button>-->
                         <!--<button type="reset" class="btn btn-warning resetForm" ng-click="resetForm()">-->
                             <!--重置-->
                         <!--</button>-->
