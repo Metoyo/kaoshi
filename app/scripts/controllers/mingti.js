@@ -406,10 +406,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHUANGTAI: 1
             }
           };
-          $('.pointTree').find('input[name=point]').prop('checked', false);
-          zhishidian_id = '';
-          nandu_id = '';
-          timuleixing_id ='';
+//          $scope.selectZsdStr = ''; //取消选择的知识点
+//          $('.pointTree').find('input[name=point]').prop('checked', false);
+//          zhishidian_id = '';
+//          nandu_id = '';
+//          timuleixing_id ='';
           qryTestFun();
           $scope.txTpl = 'views/partials/testList.html';
         };
@@ -506,6 +507,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 alert('提交成功！');
                 deferred.resolve();
               }
+              else{
+                alert('提交失败！');
+              }
             })
               .error(function(err){
                 alert(err);
@@ -593,6 +597,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           dataTpl.shuju.DAAN = ''; //重置难度
           dataTpl.shuju.NANDU_ID = ''; //重置难度
           dataTpl.shuju.TIGAN = ''; //重置题干
+//          zhishidian_id = '';
+//          $scope.selectZsdStr = '';
         };
         $scope.resetForm = function(){
           resetFun();
@@ -649,7 +655,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 加载修改单选题模板
+         * 加载修改单多选题模板
          */
         var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
           var selectZsdStr = '';
