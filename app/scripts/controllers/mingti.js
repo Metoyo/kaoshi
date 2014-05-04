@@ -97,7 +97,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           totalPage, //符合条件的数据一共有多少页
           itemNumPerPage = 10, //每页显示多少条数据
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
-          testListStepZst; //用了保存查询试题阶段的知识点
+          testListStepZst, //用了保存查询试题阶段的知识点
+          isEditItemStep = true; //是否是编辑阶段
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -359,8 +360,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
          */
         $scope.cancelAddPattern = function(){
-//          $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           var selectZsdStr = '';
+          selectZsd = [];
           $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -394,6 +395,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           _.each(selectZsd, function(zsd,idx,lst){
             selectZsdStr += 'select' + zsd + ',';
           });
+          if(isEditItemStep){
+            $('.pointTree').find('input[name=point]').prop('checked', false); //add new 添加试题时正常
+          }
+          else{
+            _.each($('input[name=point]'), function(pnt, idx, lst){
+              if(pnt.checked){
+                var zsdVal = 'select' + pnt.value + ',';
+                if(!(selectZsdStr.indexOf(zsdVal) >= 0)){
+                  pnt.checked = false;
+                }
+              }
+            });
+          }
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
 //          zhishidian_id = '';
 //          nandu_id = '';
@@ -466,6 +480,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.addNewShiTi = function(){
           testListStepZst = selectZsd; //保存选题阶段的知识点
+          isEditItemStep = true;
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/tixing/danxuan.html');
         };
@@ -673,12 +688,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
         };
 
+        var onceMakeWord = true;
         $scope.editItem = function(tmxq){
           var tpl;
           testListStepZst = selectZsd; //保存选题阶段的知识点
           selectZsd = []; //new add
           $scope.selectZsdStr = '';
-//          $('.pointTree').find('input[name=point]').prop('checked', false); //add new
+          isEditItemStep = false;
+          if(onceMakeWord){
+              $('.pointTree').find('input[name=point]').prop('checked', false); //add new
+          }
           //单选题
           if(tmxq.TIMULEIXING_ID == 1){
             tpl = 'views/tixing/danxuanedit.html';
@@ -723,6 +742,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             renderTpl(tpl); //render 修改过模板
           }
           $scope.alterTiXingBox = true;
+          onceMakeWord = false;
         };
 
         /**
