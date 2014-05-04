@@ -96,7 +96,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           pageArr = [], //根据得到的数据定义一个分页数组
           totalPage, //符合条件的数据一共有多少页
           itemNumPerPage = 10, //每页显示多少条数据
-          paginationLength = 11; //分页部分，页码的长度，目前设定为11
+          paginationLength = 11, //分页部分，页码的长度，目前设定为11
+          testListStepZst; //用了保存查询试题阶段的知识点
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -104,6 +105,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
+        $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
 
         /**
          * 获得大纲数据
@@ -131,19 +133,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
 
         /**
-         *查询科目（LingYu，url：/api/ling yu）
-         */
-        $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
-//        $scope.loadLingYu = function(){
-//          if($scope.keMuList){
-//            $scope.keMuList = false;
-//          }
-//          else{
-//            $scope.keMuList = true;
-//          }
-//        };
-
-        /**
          * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
          */
         $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
@@ -159,15 +148,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.keMuList = true; //选择的科目render完成后列表显示
           });
         };
-
-        /**
-         * 点击,显示大纲列表
-         */
-//        $scope.showDgList = function(dgl){ //dgl是判断da gang有没有数据
-//          if(dgl.length){
-//              $scope.dgListBox = $scope.dgListBox === false ? true: false; //点击是大纲列表展现
-//          }
-//        };
 
         /**
          * 加载大纲知识点
@@ -213,6 +193,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         $scope.toggleSelection = function(zsdId) {
+          $scope.selectZsdStr = '';
           var onSelect = '.select' + zsdId,
             gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
             getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
@@ -378,6 +359,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
          */
         $scope.cancelAddPattern = function(){
+//          $('.pointTree').find('input[name=point]').prop('checked', false); //add new
+          var selectZsdStr = '';
           $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -406,8 +389,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ZHUANGTAI: 1
             }
           };
-//          $scope.selectZsdStr = ''; //取消选择的知识点
-//          $('.pointTree').find('input[name=point]').prop('checked', false);
+          selectZsd = testListStepZst;
+          zhishidian_id = selectZsd.join();
+          _.each(selectZsd, function(zsd,idx,lst){
+            selectZsdStr += 'select' + zsd + ',';
+          });
+          $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
 //          zhishidian_id = '';
 //          nandu_id = '';
 //          timuleixing_id ='';
@@ -419,6 +406,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 单选题模板加载
          */
         $scope.addDanXuan = function(tpl){
+          selectZsd = []; //new add
+          $scope.selectZsdStr = '';
           danxuan_data = timu_data;
           loopArr = [0,1,2,3];
           renderTpl(tpl);
@@ -438,6 +427,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 多选题模板加载
          */
         $scope.addDuoXuan = function(tpl){
+          selectZsd = []; //new add
+          $scope.selectZsdStr = '';
           duoxuan_data = timu_data;
           loopArr = [0,1,2,3];
           renderTpl(tpl);
@@ -459,6 +450,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 计算题模板加载
          */
         $scope.addJiSuan = function(tpl){
+          selectZsd = []; //new add
+          $scope.selectZsdStr = '';
           jisuan_data = timu_data;
           renderTpl(tpl);
           $('.patternList li').removeClass('active');
@@ -466,6 +459,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jisuan_data.shuju.TIXING_ID = 9;
           jisuan_data.shuju.TIMULEIXING_ID = 9;
           $scope.jiSuanData = jisuan_data;
+        };
+
+        /**
+         * 添加新的试题
+         */
+        $scope.addNewShiTi = function(){
+          testListStepZst = selectZsd; //保存选题阶段的知识点
+          $('.pointTree').find('input[name=point]').prop('checked', false); // add new
+          $scope.addDanXuan('views/tixing/danxuan.html');
         };
 
         /**
@@ -557,6 +559,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               if(data.result){
                 if(jisuan_data.shuju.TIMU_ID){ //试题修改成功后！
                   alert('修改成功！');
+                  $scope.patternListToggle = false;
+                  $scope.alterTiXingBox = false;
                   $scope.cancelAddPattern();
                 }
                 else{ // 试题添加成功后！
@@ -671,6 +675,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         $scope.editItem = function(tmxq){
           var tpl;
+          testListStepZst = selectZsd; //保存选题阶段的知识点
+          selectZsd = []; //new add
+          $scope.selectZsdStr = '';
+//          $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           //单选题
           if(tmxq.TIMULEIXING_ID == 1){
             tpl = 'views/tixing/danxuanedit.html';
@@ -723,6 +731,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.saveDanxuanEdit = function(){
           var promise = addDanDuoXuanFun(danxuan_data);
           promise.then(function() {
+            $scope.patternListToggle = false;
+            $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
             qryTestFun();
           });
@@ -734,6 +744,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.saveDuoxuanEdit = function(){
           var promise = addDanDuoXuanFun(duoxuan_data);
           promise.then(function() {
+            $scope.patternListToggle = false;
+            $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
             qryTestFun();
           });
