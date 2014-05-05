@@ -129,7 +129,34 @@ define(['jquery', 'underscore', 'angular', 'config'],
             qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
             qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=';//查询试卷列表url
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=',//查询试卷列表url
+            paperDetailData, //定义一个存放试卷详情的字段，用于保存试卷详情用于生成答题卡
+            daTiKaData = {
+              token: token,
+              caozuoyuan: caozuoyuan,
+              jigouid: jigouid,
+              lingyuid: lingyuid,
+              shuju: {
+                shiJuanId: '',
+                pageNo: '',
+                header: {
+                  percent: '',
+                  title: '',
+                  subTitle: ''
+                },
+                footer: {
+                  percent: '',
+                  text: ''
+                },
+                body:[
+                  {
+                    timu_id: '',
+                    percent: '',
+                    text: ''
+                  }
+                ]
+              }
+            }; //答题卡数据格式
 
 
           /**
@@ -567,6 +594,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }
             //加载手动组卷的模板
             $scope.paper_hand_form = true;
+            $scope.shijuanyulanBtn = true;
             //查询试题的函数
             $scope.getTiXingId(txid);
             $scope.txSelectenIdx = txid;
@@ -822,6 +850,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.mubanData = mubanData;
             backToZjHomeFun();
             $scope.sjPreview = true;
+            $scope.shijuanyulanBtn = false;
           };
 
           /**
@@ -1119,14 +1148,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var qryPaperDetailUrl = qryPaperDetailUrlBase + sjId;
             mubanData.shuju.MUBANDATI = [];
             shijuanData.shuju.SHIJUAN_TIMU = [];
+            paperDetailData = '';
 
             $http.get(qryPaperDetailUrl).success(function(data){
               if(!data.error){
                 //给临时模板赋值
+                paperDetailData = data; //用于答题卡赋值
                 mubanData.shuju.SHIJUANMUBAN_ID = data.MUBAN.SHIJUANMUBAN_ID; //模板id
                 mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
                 mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
     //            mubanData.shuju.MUBANDATI = data.MUBANDATI; //模板大题数组
+
                 //给试卷赋值
                 shijuanData.shuju.SHIJUAN_ID = data.SHIJUAN.SHIJUAN_ID; //试卷id
                 shijuanData.shuju.SHIJUANMINGCHENG = data.SHIJUAN.SHIJUANMINGCHENG; //试卷名称
@@ -1190,9 +1222,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                   });
                 });
-
+//                console.log(shijuanData);
+//                console.log(mubanData);
                 $scope.shijuanPreview(); //试卷预览
-                $scope.shijuanyulanBtn = true; //试卷预览的按钮
+                $scope.shijuanyulanBtn = false; //试卷预览的按钮
                 $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                 $scope.baocunshijuanBtn = true; //保存试卷的按钮
               }
@@ -1218,6 +1251,16 @@ define(['jquery', 'underscore', 'angular', 'config'],
               dati.TIMUARR.splice(index, 1);
               dati.TIMUARR.splice(toIndex, 0, item);
             }
+          };
+
+          /**
+           * 生成答题卡
+           */
+          $scope.makeDaTiKa = function(){
+            daTiKaData;
+            paperDetailData;
+
+//            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
           };
 
           /**

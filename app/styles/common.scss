@@ -1,9 +1,6 @@
 $icon-font-path: "../bower_components/sass-bootstrap/fonts/";
-
 @import "../bower_components/sass-bootstrap/lib/bootstrap";
-
 @import "variable";
-
 body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
   sans-serif;
@@ -207,12 +204,10 @@ a.add-btn:hover span {
   width: 100%;
   text-align: center;
 }
-
 .glyphicon {
   top: 2px;
   margin-right: 5px;
 }
-
 .nav-icon {
   height: 40px;
   width: 40px;
@@ -220,34 +215,27 @@ a.add-btn:hover span {
   display: block;
   background: url('../images/mingti/icon/dsIcons.png') no-repeat left 0;
 }
-
 .nav-name {
   color: #aaa;
   margin-top: -5px;
   display: block;
   font-weight: normal;
 }
-
 .droTogZj .nav-icon {
   background-position: left -40px;
 }
-
 .droTogDg .nav-icon {
   background-position: left -80px;
 }
-
 .droTogKw .nav-icon {
   background-position: left -120px;
 }
-
 .droTogSp .nav-icon {
   background-position: left -160px;
 }
-
 .droTogYj .nav-icon {
   background-position: left -200px;
 }
-
 .dropdownToggle:hover {
   text-decoration: none;
   .nav-icon {
@@ -257,7 +245,6 @@ a.add-btn:hover span {
     color: #fff;
   }
 }
-
 .dashboard .active {
   .dropdownToggle {
     text-decoration: none;
@@ -269,13 +256,11 @@ a.add-btn:hover span {
     color: #fff;
   }
 }
-
 .toggle-menu {
   list-style: none;
   padding: 0;
   display: none;
 }
-
 .menuitem {
   padding: 5px 15px 5px 25px;
   display: block;
@@ -288,13 +273,11 @@ a.add-btn:hover span {
     background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
   }
 }
-
 .select:focus {
   text-decoration: none;
   color: #262626;
   background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
 }
-
 .userInfo {
   text-align: center;
   margin-top: 15px;
@@ -313,7 +296,6 @@ a.add-btn:hover span {
     }
   }
 }
-
 .dsfoldBox {
   border-top: 1px solid #7f7f7f;
   height: 30px;
@@ -670,11 +652,7 @@ a.add-btn:hover span {
 .intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit span {
   display: block;
 }
-//@import "renzheng";
-//@import "dagang";
-//@import "mingti";
-@import "zujuan";
-@import "kaowu";
+//认证样式
 .rengzhengWrapper{
   em {
     font-weight: normal;
@@ -990,6 +968,7 @@ a.add-btn:hover span {
     display: block;
   }
 }
+//大纲样式
 .dagangWrapper{
   .itemTitle {
     font-size: 120%;
@@ -1144,6 +1123,7 @@ a.add-btn:hover span {
   }
   /*大纲  end*/
 }
+//命题样式
 .mingtiWrapper{
   .patternList{
     font-size: 13px;
@@ -1257,6 +1237,527 @@ a.add-btn:hover span {
     .radio-inline{
       margin-left: 20px;
       font-size: 16px;
+    }
+  }
+}
+//组卷样式
+.zujuanWrapper{
+  .testPaperSummary{
+    width: 221px;
+    height: 100%;
+    position: fixed;
+    z-index: 10;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #cfcfcf;
+    .subjectBox{
+      position: relative;
+      margin-top: 10px;
+      h2{
+        font-size: 16px;
+        display: inline;
+        margin: 0;
+        color: #f60;
+        font-weight: bold;
+      }
+      a{
+        font-size: 12px;
+        text-decoration: none;
+      }
+    }
+    .selectedItems{
+      h3{
+        font-size: 12px;
+        margin: 15px 0 5px 0;
+      }
+      table{
+        width: 100%;
+        margin-bottom: 10px;
+        td,th{
+          font-size: 12px;
+          text-align: center;
+          padding: 3px;
+          .glyphicon {
+            top: 3px;
+            margin-right: 0;
+          }
+        }
+        .text-left{
+          text-align: left;
+        }
+        .deleteBtn{
+          width: 21px;
+        }
+      }
+    }
+    .sj-preview-btns{
+      padding: 10px 0;
+    }
+  }
+  .contentInner{
+    position: relative;
+    .popupWrap{
+      position: fixed;
+      background-color: #fff;
+      height: 100%;
+      width: 600px;
+      z-index: 2;
+      left: -360px;
+      .dagangListWrap{
+        position: absolute;
+        left: 0;
+        width: 300px;
+      }
+      .chooseCondition{
+        width: 300px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-right: 1px solid #cfcfcf;
+        color: #000;
+        .table-tixing{
+          width: 100%;
+          th{
+            text-align: center;
+            padding: 5px;
+          }
+          td{
+            padding: 5px;
+            text-align: center;
+            input{
+              width: 36px;
+              text-align: center;
+            }
+          }
+          .td-txName{
+            text-align: left;
+          }
+          .td-total{
+            text-align: right;
+          }
+        }
+        .nandu-dist{
+          h4{
+            font-size: 14px;
+            em{
+              font-size: 12px;
+            }
+          }
+          .distBox{
+            position: relative;
+          }
+          .sliderBox{
+            width: 220px;
+            height: 10px;
+            margin: 3px 5px 0 5px;
+            background-color: #ddd;
+          }
+          .sliderItem{
+            width: 110px;
+            height: 10px;
+            background-color: darkseagreen;
+            position: relative;
+            .sliderItemInner{
+              max-width: 220px;
+            }
+          }
+          .sliderBtn{
+            cursor: e-resize;
+            position: absolute;
+            height: 20px;
+            top: -5px;
+            right: 0;
+            width: 5px;
+            background-color: #f60;
+            z-index: 6;
+          }
+          .maskLabel {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .seal-line{
+    width: 100px;
+    margin-left: 10px;
+    a{
+      width: 100%;
+      height: 575px;
+      display: block;
+      background-image: url("../images/zujuan/sealLine.gif");
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      margin-top: 10px;
+      &:hover{
+        background-position: -100px 0;
+      }
+    }
+  }
+  .contentWraps{
+    .kmTxBox,.nanduBox{
+      background: none;
+      height: auto;
+      ul{
+        line-height: 20px;
+        margin-bottom: 0;
+        li{
+          a{
+            font-size: 12px;
+            padding: 0 5px;
+          }
+        }
+        .tiXingId_all,.nanDuId_all{
+          height: auto;
+          background: none;
+          width: auto;
+          a{
+            font-size: 12px;
+            font-weight: normal;
+            padding: 0 5px 0 10px;
+          }
+        }
+      }
+    }
+    .kmTxBox{
+      ul{
+        margin-top: 10px;
+      }
+    }
+  }
+  .preview-title{
+    height: 40px;
+    background-color: #ccc;
+    position: fixed;
+    width: 100%;
+    line-height: 40px;
+    padding: 0 10px;
+  }
+  .paper-content{
+    margin-left: 10px;
+    color: #000;
+    .secret-mark{
+      font-size: 14px;
+    }
+    .paper-title{
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .paper-sub-title{
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .paper-info{
+      font-size: 14px;
+    }
+    .student-title{
+      font-size: 14px;
+    }
+    .cent-box{
+      table{
+        margin: 0 auto;
+        td{
+          border: 2px solid #666;
+          width: 50px;
+          line-height: 25px;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+    }
+    .attention{
+      font-size: 12px;
+    }
+    .hover-style{
+      cursor: pointer;
+      &:hover{
+        color: #f60;
+        table{
+          td{
+            border:2px solid #f60;
+          }
+        }
+      }
+    }
+    .sj-param-val{
+      width: 100%;
+      display: block;
+    }
+    .form-paper-type{
+      margin-top: 20px;
+    }
+    .shijuantimu-list{
+      margin-top: 15px;
+      .mubandati{
+        font-weight: bold;
+        line-height: 28px;
+        .dati-name-box{
+          display: inline;
+          .dati-name{
+            cursor: pointer;
+          }
+        }
+        .dati-score-box{
+          display: inline;
+          cursor: pointer;
+          p{
+            display: inline;
+            margin: 0;
+            padding: 0;
+          }
+        }
+        .btn{
+          margin-top: -2px;
+        }
+      }
+      .testList li{
+        border: none;
+        h5.item-title{
+          position: absolute;
+          top: 0;
+          right: 10px;
+          display: none;
+        }
+        .item-cont{
+          margin-top: 0;
+        }
+        &:hover{
+          border: 1px solid #d8d8d8;
+          background-color: #F5F5F5;
+          h5.item-title{
+            display: block;
+          }
+        }
+        .write-answer-region{
+          height: 150px;
+        }
+      }
+    }
+    .sj-edit-box{
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      vertical-align: middle;
+      background: rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      .sj-edit-box-inner{
+        width: 600px;
+        height: 400px;
+        border: 1px solid #7A7A7A;
+        background-color: #fff;
+        position: absolute;
+        top: 50%;
+        margin-top: -200px;
+        left: 50%;
+        margin-left: -300px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.6);
+        .sj-setting-title{
+          font-size: 16px;
+          margin: 0;
+          font-weight: bold;
+          height: 40px;
+          line-height: 20px;
+          padding: 10px;
+          border-bottom: 1px solid #cfcfcf;
+        }
+        .setting-content{
+          overflow-y: scroll;
+          height: 310px;
+          padding: 10px;
+        }
+        .btn{
+          margin: 10px 10px 0 0;
+        }
+        input{
+          font-size: 14px;
+          width: 100%;
+        }
+        textarea{
+          font-size: 14px;
+          width: 100%;
+        }
+        h5{
+          width: 100%;
+          text-align: right;
+        }
+        .submit-edit-info{
+          height: 50px;
+          line-height: 50px;
+          border-top: 1px solid #cfcfcf;
+          .btn{
+            margin-top: 0;
+          }
+        }
+      }
+    }
+    .save-paper-box,
+    .back-to-paper-list{
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+    }
+    .back-to-paper-list{
+      top: 10px;
+    }
+  }
+  .fixed-top{
+    position: fixed;
+    top: 0;
+    height: 55px;
+    right: 0;
+    left: 561px;
+    z-index: 2;
+  }
+  .kmTxWrap{
+    padding-right: 160px;
+  }
+  .back-to-zujuan{
+    width: 160px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    button{
+      float: right;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+  .test-list-wrap{
+    margin-top: 50px;
+  }
+  .paper-list{
+    li{
+      a{
+        line-height: 24px;
+      }
+    }
+  }
+}
+.paper_hand_form{
+  .contentInner{
+    .popupWrap{
+      width: 220px;
+      .dagangListWrap{
+        width: 220px;
+      }
+      .chooseCondition{
+        display: none;
+      }
+    }
+  }
+  .contentWraps{
+    padding-left: 220px;
+  }
+}
+//考务样式
+.kaowuWrapper{
+  .active{
+    color: #000;
+  }
+  .sub-nav{
+    margin-top: 10px;
+    .nav-tabs{
+      li:first-child{
+        margin-left: 15px;
+      }
+    }
+  }
+  i{
+    color: red;
+    font-style: normal;
+  }
+  .explain{
+    font-size: 12px;
+  }
+  .back-to-zujuan {
+    width: 160px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    button{
+      float: right;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+  .kaowu-table{
+    margin-top: 15px;
+    th{
+      text-align: center;
+    }
+    td{
+      vertical-align: middle;
+      p{
+        margin: 0;
+      }
+    }
+  }
+  .paper-list{
+    li{
+      a{
+        line-height: 24px;
+      }
+      .add-to-kaoshi{
+        color: #33A200;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 20px;
+      }
+    }
+  }
+  .tab-content{
+    padding: 15px;
+    .help-block{
+      font-size: 13px;
+      color: indianred;
+      font-style: italic;
+    }
+    .start-date-valid{
+      display: none;
+    }
+    .kw-edit-box {
+      width: 100%;
+      height: 100%;
+      vertical-align: middle;
+      background: rgba(0, 0, 0, 0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      .kw-edit-box-inner {
+        width: 600px;
+        height: 500px;
+        border: 1px solid #7A7A7A;
+        background-color: #fff;
+        position: absolute;
+        top: 50%;
+        margin-top: -250px;
+        left: 50%;
+        margin-left: -300px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        .row{
+          height: 480px;
+          margin-top: 10px;
+          overflow-y: scroll;
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+  .student-info{
+    border-top: 2px solid #8699a4;
+    padding: 15px 10px;
+  }
+  .student-list{
+    .kaowu-table{
+      margin-top: 0;
     }
   }
 }

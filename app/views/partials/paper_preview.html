@@ -1,4 +1,7 @@
 <div class="paper-content">
+    <div class="back-to-paper-list" ng-show="baocunshijuanBtn">
+        <button type="button" class="btn btn-danger" ng-click="showPaperList()">返回试卷列表</button>
+    </div>
     <form name="shijuan">
         <h1 class="paper-title text-center hover-style" title="点击设置">
             <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
@@ -134,6 +137,7 @@
         </div>
     </form>
     <div class="save-paper-box" ng-show="baocunshijuanBtn">
+        <button type="button" class="btn btn-primary" ng-click="makeDaTiKa()">生成答题卡</button>
         <button type="button" class="btn btn-primary" ng-click="savePaper()">保存试卷</button>
     </div>
 </div>
