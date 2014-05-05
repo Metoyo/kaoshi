@@ -6064,6 +6064,10 @@ a.add-btn:hover span {
       background-color: #f5f5f5;
       border-right: 1px solid #cfcfcf;
       color: #000; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper {
+        width: 100%; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .auto-make-paper-btn {
+          margin-top: 10px; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {

@@ -1319,6 +1319,12 @@ a.add-btn:hover span {
         background-color: #f5f5f5;
         border-right: 1px solid #cfcfcf;
         color: #000;
+        .auto-make-paper{
+          width: 100%;
+          .auto-make-paper-btn{
+            margin-top: 15px;
+          }
+        }
         .table-tixing{
           width: 100%;
           th{

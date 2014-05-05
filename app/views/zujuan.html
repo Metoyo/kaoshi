@@ -158,27 +158,27 @@ paper_auto_form: paper_auto_form}">
                         <tr>
                             <th></th>
                             <th>数量</th>
-                            <th>分值</th>
+                            <!--<th>分值</th>-->
                         </tr>
-                        <tr ng-repeat="kmtx in kmtxList">
+                        <tr ng-repeat="kmtx in ampKmtx">
                             <td class="td-txName">
                                 {{kmtx.TIXINGMINGCHENG}}
                                 <span class="hidden">{{kmtx.TIXING_ID}}</span>
                             </td>
                             <td>
-                                <input type="text" class="input-item-num" maxlength="3"
+                                <input type="text" class="input-item-num" maxlength="3" ng-model="kmtx.tmNum"
                                        onkeyup="this.value=this.value.replace(/\D/g,'')"
                                        onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
                             </td>
-                            <td>
-                                <input type="text" class="input-item-score" maxlength="3"
-                                       onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                       onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
-                            </td>
+                            <!--<td>-->
+                                <!--<input type="text" class="input-item-score" maxlength="3"-->
+                                       <!--onkeyup="this.value=this.value.replace(/\D/g,'')"-->
+                                       <!--onafterpaste="this.value=this.value.replace(/\D/g,'')"/>-->
+                            <!--</td>-->
                         </tr>
-                        <tr>
-                            <td colspan="3" class="td-total">总分: </td>
-                        </tr>
+                        <!--<tr>-->
+                            <!--<td colspan="3" class="td-total">总分: </td>-->
+                        <!--</tr>-->
                     </table>
                     <div class="nandu-dist">
                         <h4>难度系数:
@@ -196,7 +196,9 @@ paper_auto_form: paper_auto_form}">
                             <span class="maskLabel pull-left">困难</span>
                         </div>
                     </div>
-                    <button ng-click="getNanduDist()">自动组卷</button>
+                    <div class="auto-make-paper text-right pull-left">
+                        <button class="btn btn-primary auto-make-paper-btn" ng-click="submitAutoPaperData()">自动组卷</button>
+                    </div>
                 </div>
             </div>
             <!--组卷筛选条件。 结束-->
