@@ -1645,6 +1645,51 @@ a.add-btn:hover span {
       }
     }
   }
+  .da-ti-ka-wrap{
+    padding: 0 50px;
+    .daTiKa{
+      height: 600px;
+      width: 425px;
+      margin-bottom: 10px;
+      background-color: #f0f0f0;
+      .daTiKa-header{
+        height: 5%;
+        font-size: 14px;
+        border-bottom: 2px solid #ccc;
+        p{
+          margin: 0;
+          line-height: 30px;
+        }
+      }
+      .daTiKa-body{
+        height: 90%;
+        .daTiRegion{
+          min-height: 180px;
+          max-height: 540px;
+          position: relative;
+          border-top: 2px dashed #cccccc;
+          &:first-child{
+            border-top: 0;
+          }
+          .slideDown{
+            width: 100%;
+            height: 4px;
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            cursor: s-resize;
+            background-color: #666;
+          }
+        }
+      }
+      .daTiKa-footer{
+        font-size: 12px;
+        height: 5%;
+        line-height: 30px;
+        border-top: 2px solid #ccc;
+      }
+    }
+  }
 }
 .paper_hand_form{
   .contentInner{

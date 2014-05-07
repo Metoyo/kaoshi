@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
   function ($, _, angular, config) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
-      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q',
-        function ($rootScope, $scope, $location, $http, urlRedirect, $q) { // 002
+      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$document',
+        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $document) { // 002
           /**
            * 操作title
            */
@@ -88,7 +88,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
             },
             xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
             mbdt_data = [], // 得到模板大题的数组
-          //mbdtdLength, //得到模板大题的长度
             nanduTempData = [ //存放题型难度的数组
               {
                 nanduId: '1',
@@ -131,32 +130,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
             qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=',//查询试卷列表url
             paperDetailData, //定义一个存放试卷详情的字段，用于保存试卷详情用于生成答题卡
-            daTiKaData = {
-              token: token,
-              caozuoyuan: caozuoyuan,
-              jigouid: jigouid,
-              lingyuid: lingyuid,
-              shuju: {
-                shiJuanId: '',
-                pageNo: '',
-                header: {
-                  percent: '',
-                  title: '',
-                  subTitle: ''
-                },
-                footer: {
-                  percent: '',
-                  text: ''
-                },
-                body:[
-                  {
-                    timu_id: '',
-                    percent: '',
-                    text: ''
-                  }
-                ]
-              }
-            }, //答题卡数据格式
+            paperDetailId, //用来存放所选试卷的id
+            paperDetailName, //用来存放所选试卷的名称
             zidongzujuan = baseMtAPIUrl + 'zidongzujuan', //自动组卷的url
             autoMakePaperData = {
               token: token,
@@ -195,26 +170,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var newDgList = [];
             if(data.length){
               _.each(data, function(dg, idx, lst){
-                if(dg.LEIXING == 1){
+                if(dg.ZHUANGTAI2 == 2){
                   newDgList.push(dg);
-                }
-                if(dg.LEIXING == 2){
-                  newDgList.unshift(dg);
                 }
               });
               $scope.dgList = newDgList;
-
               //获取大纲知识点
               qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
-              $http.get(qryKnowledge).success(function(dgzsd){
-                if(dgzsd){
-                  $scope.kowledgeList = dgzsd;
-                  $scope.dgListBox = true;
-                }
-                else{
-                  alert('获取大纲知识点失败！');
-                }
-
+              $http.get(qryKnowledge).success(function(data){
+                $scope.kowledgeList = data;
               }).error(function(err){
                 alert(err);
               });
@@ -669,8 +633,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 提交自动数据的参数
            */
-          var countnum,
-            txtmLength;
+          var countnum, txtmLength;
           $scope.submitAutoPaperData = function(){
             countnum = 0;
             autoMakePaperData.shuju.TIXING = [];
@@ -1306,11 +1269,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
             mubanData.shuju.MUBANDATI = [];
             shijuanData.shuju.SHIJUAN_TIMU = [];
             paperDetailData = '';
+            paperDetailId = ''; //用来存放所选试卷的id
+            paperDetailName = ''; //用来存放所选试卷的名称
 
             $http.get(qryPaperDetailUrl).success(function(data){
               if(!data.error){
+                paperDetailId = data.SHIJUAN.SHIJUAN_ID; //用来存放所选试卷的id
+                paperDetailName =  data.SHIJUAN.SHIJUANMINGCHENG; //用来存放所选试卷的名称
                 //给临时模板赋值
-                paperDetailData = data; //用于答题卡赋值
                 mubanData.shuju.SHIJUANMUBAN_ID = data.MUBAN.SHIJUANMUBAN_ID; //模板id
                 mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
                 mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
@@ -1323,7 +1289,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 shijuanData.shuju.SHIJUANMUBAN_ID = data.SHIJUAN.SHIJUANMUBAN_ID; //试卷模板id
 
                 //给答题卡用到的数据赋值
-                daTiKaData.shiJuanId = data.SHIJUAN.SHIJUAN_ID;
+//                daTiKaData.shiJuanId = data.SHIJUAN.SHIJUAN_ID;
 
                 //将模板大题赋值到模板里面
                 _.each(data.MUBANDATI, function(mbdt, indx, lst){
@@ -1386,6 +1352,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.shijuanyulanBtn = false; //试卷预览的按钮
                 $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                 $scope.baocunshijuanBtn = true; //保存试卷的按钮
+                paperDetailData = mubanData; //用于答题卡赋值
+                console.log(mubanData);
               }
             }).error(function(err){
               alert(err);
@@ -1415,10 +1383,58 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 生成答题卡
            */
           $scope.makeDaTiKa = function(){
-//            daTiKaData;
-//            paperDetailData;
+//            paperDetailData
+            var answerCards = [],
+              daTiKaData = { //答题卡数据格式
+                token: token,
+                caozuoyuan: caozuoyuan,
+                jigouid: jigouid,
+                lingyuid: lingyuid,
+                shuju: {
+                  shiJuanId: paperDetailId,
+                  pageNo: '',
+                  header: {
+                    percent: '5%',
+                    title: paperDetailName + '答题卡',
+                    subTitle: ''
+                  },
+                  footer: {
+                    percent: '5%',
+                    text: '书写过程中不要超出书写范围，否则可能会导致答题无效。'
+                  },
+                  body:[
+                    {
+                      timu_id: '',
+                      percent: '',
+                      text: ''
+                    }
+                  ]
+                }
+              };
+            //
+            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
+          };
 
-//            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
+          /**
+           * 答题卡中的拖拽
+           */
+          $scope.resizeVertical = function(e, item){ //
+            event.preventDefault();
+            var y = 0, //Y 轴坐标
+              slideBtn = $('.slideDown'), //拖动按钮的高度
+              resizeDiv = $(item); //定义需要缩放的div
+            y = e.clientY - slideBtn.height() - resizeDiv.height();
+            $document.on('mousemove', mousemove);
+            $document.on('mouseup', mouseup);
+            //鼠标移动
+            function mousemove(event) {
+              resizeDiv.height(event.clientY - y + 'px');
+            }
+            //移除事件
+            function mouseup() {
+              $document.unbind('mousemove', mousemove);
+              $document.unbind('mouseup', mouseup);
+            }
           };
 
           /**

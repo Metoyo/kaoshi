@@ -65,6 +65,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
           if(result.result){
             loadDaGang();
+            alert('将此大纲设置为默认大纲的操作成功！');
           }
           else{
             alert('将此大纲设置为默认大纲的操作失败！');
@@ -229,7 +230,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $http.post(submitDataUrl, dgdata).success(function(result) {
           if(result.result){
             $scope.makeDaGangAsDefault($scope.currentDgId);
-            alert('修改大纲成功！');
+//            alert('修改大纲成功！');
           }
           else{
             alert('修改大纲失败！');

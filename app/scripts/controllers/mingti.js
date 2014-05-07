@@ -792,7 +792,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           $(el).mousedown(function(e) {
             //按下元素后，计算当前鼠标与对象计算后的坐标
-            x = e.clientX - el.offsetWidth - $(".dagangListWrap").width();
+            x = e.clientX - el.offsetWidth - $("#dagangListWrap").width();
 
             //在支持 setCapture 做些东东
             el.setCapture ? (

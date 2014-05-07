@@ -70,26 +70,14 @@ paper_auto_form: paper_auto_form}">
                 <div id="dagangListWrap" class="dagangListWrap">
                     <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
                     <div class="btn-group pointSelect">
-                        <h2 class="pointTitleBox pull-left" ng-click="loadLingYu()">
+                        <h2 class="pointTitleBox pull-left">
                             <span class="pointTitle pull-left selectLyName">{{lyList[0].LINGYUMINGCHENG}}</span>
-                            <span class="caret pull-right"></span>
                         </h2>
-                        <ul class="dropdownMenu lyListBox" ng-hide="keMuList">
-                            <li ng-repeat="lyItem in lyList">
-                                <a href="javascript:void(0)" ng-click="cxKmTx(lyItem)">{{lyItem.LINGYUMINGCHENG}}</a>
-                            </li>
-                        </ul>
                     </div>
                     <div class="btn-group pointSelect">
-                        <h2 class="pointTitleBox pull-left" ng-click="showDgList(dgList)">
+                        <h2 class="pointTitleBox pull-left">
                             <span class="pointTitle pull-left selectDgName">{{dgList[0].ZHISHIDAGANGMINGCHENG}}</span>
-                            <span class="caret pull-right"></span>
                         </h2>
-                        <ul class="dropdownMenu dgListBox" ng-hide="dgListBox">
-                            <li ng-repeat="dg in dgList">
-                                <a href="javascript:void(0)" ng-click="loadDgZsd(dg)">{{dg.ZHISHIDAGANGMINGCHENG}}</a>
-                            </li>
-                        </ul>
                     </div>
                     <div class="pointTree">
                         <ul class="list-unstyled levelOne">
