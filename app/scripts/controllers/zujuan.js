@@ -1380,12 +1380,37 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 生成答题卡
+           * 生成答题卡 paperDetailData
            */
+          var allTiMuForCard; //存放所有需要放到答题卡中的试题
           $scope.makeDaTiKa = function(){
-//            paperDetailData
-            var answerCards = [],
-              daTiKaData = { //答题卡数据格式
+            var answerCards = [], //存放答题卡的数组
+              yushu, //余数
+              intAnswerCardLen, //allTiMuForCard除以3得到的整数
+              answerCardLen, //答题卡长度, 用allTiMuForCard除以3得到的数据
+              idxCount = 0;
+            allTiMuForCard = [];
+            //将所有需要答题卡的试题全部添加到allTiMuForCard中
+            _.each(paperDetailData.shuju.MUBANDATI, function(mbdt, idx, lst){
+              if(mbdt.MUBANDATI_ID > 8){
+                _.each(mbdt.TIMUARR, function(tma, subIdx, lst){
+                  var tiMuInfo = {
+                    timu_id: '',
+                    percent: '',
+                    text: mbdt.DATIMINGCHENG,
+                    idxNum: idxCount
+                  };
+                  tiMuInfo.timu_id = tma.TIMU_ID;
+                  allTiMuForCard.push(tiMuInfo);
+                  idxCount ++;
+                });
+              }
+            });
+            yushu = allTiMuForCard.length % 3;
+            intAnswerCardLen = Math.floor(allTiMuForCard.length/3);
+            answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
+            for(var i = 0; i < answerCardLen; i++){
+              var daTiKa = { //答题卡数据格式
                 token: token,
                 caozuoyuan: caozuoyuan,
                 jigouid: jigouid,
@@ -1402,25 +1427,28 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     percent: '5%',
                     text: '书写过程中不要超出书写范围，否则可能会导致答题无效。'
                   },
-                  body:[
-                    {
-                      timu_id: '',
-                      percent: '',
-                      text: ''
-                    }
-                  ]
+                  body:[]
                 }
               };
-            //
+              if(i <= intAnswerCardLen){
+                daTiKa.shuju.body = allTiMuForCard.slice(i*3, (i+1)*3);
+              }
+              else{
+                daTiKa.shuju.body = allTiMuForCard.slice(i*3);
+              }
+              answerCards.push(daTiKa);
+            }
+            $scope.answerCards = answerCards;
             $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
           };
 
           /**
-           * 答题卡中的拖拽
+           * 答题卡中的拖拽 //
            */
-          $scope.resizeVertical = function(e, item){ //
+          $scope.resizeVertical = function(e, idx){ //
             event.preventDefault();
             var y = 0, //Y 轴坐标
+              item = '.daTiRegion' + idx,
               slideBtn = $('.slideDown'), //拖动按钮的高度
               resizeDiv = $(item); //定义需要缩放的div
             y = e.clientY - slideBtn.height() - resizeDiv.height();
