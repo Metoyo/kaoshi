@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
   function ($, _, angular, config) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
-      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$document',
-        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $document) { // 002
+      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$window','$document',
+        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $window, $document) { // 002
           /**
            * 操作title
            */
@@ -143,7 +143,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 ZHISHIDIAN: [],
                 TIXING: []
               }
-            }; //自动组卷的数据格式
+            }, //自动组卷的数据格式
+            saveDaTiKaUrl = baseMtAPIUrl + 'make_datika'; //保存答题卡的url
 
 
           /**
@@ -196,8 +197,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.kmtxList = _.each(kmtx, function(txdata, idx, lst){
                 txdata.itemsNum = 0;
               });
-              //        $scope.kmtxList = kmtxListData;
               kmtxListLength = kmtx.length; //科目题型的长度
+              console.log($scope.kmtxList);
             }
             else{
               alert('获取查询科目题型失败！');
@@ -1380,7 +1381,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 生成答题卡 paperDetailData
+           * 生成答题卡 paperDetailData//
            */
           var allTiMuForCard; //存放所有需要放到答题卡中的试题
           $scope.makeDaTiKa = function(){
@@ -1394,20 +1395,21 @@ define(['jquery', 'underscore', 'angular', 'config'],
             _.each(paperDetailData.shuju.MUBANDATI, function(mbdt, idx, lst){
               if(mbdt.MUBANDATI_ID > 8){
                 _.each(mbdt.TIMUARR, function(tma, subIdx, lst){
-                  var tiMuInfo = {
-                    timu_id: '',
-                    percent: '',
-                    text: mbdt.DATIMINGCHENG,
-                    idxNum: idxCount
-                  };
+                  var textCont = mbdt.DATIMINGCHENG + '题' + '第' + (subIdx + 1) + '题',
+                    tiMuInfo = {
+                      timu_id: '',
+                      percent: 0.45,
+                      text: textCont,
+                      idxNum: idxCount
+                    };
                   tiMuInfo.timu_id = tma.TIMU_ID;
                   allTiMuForCard.push(tiMuInfo);
                   idxCount ++;
                 });
               }
             });
-            yushu = allTiMuForCard.length % 3;
-            intAnswerCardLen = Math.floor(allTiMuForCard.length/3);
+            yushu = allTiMuForCard.length % 2;
+            intAnswerCardLen = Math.floor(allTiMuForCard.length/2);
             answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
             for(var i = 0; i < answerCardLen; i++){
               var daTiKa = { //答题卡数据格式
@@ -1417,24 +1419,24 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 lingyuid: lingyuid,
                 shuju: {
                   shiJuanId: paperDetailId,
-                  pageNo: '',
+                  pageNo: i,
                   header: {
-                    percent: '5%',
+                    percent: 0.05,
                     title: paperDetailName + '答题卡',
                     subTitle: ''
                   },
                   footer: {
-                    percent: '5%',
+                    percent: 0.05,
                     text: '书写过程中不要超出书写范围，否则可能会导致答题无效。'
                   },
                   body:[]
                 }
               };
               if(i <= intAnswerCardLen){
-                daTiKa.shuju.body = allTiMuForCard.slice(i*3, (i+1)*3);
+                daTiKa.shuju.body = allTiMuForCard.slice(i*2, (i+1)*2);
               }
               else{
-                daTiKa.shuju.body = allTiMuForCard.slice(i*3);
+                daTiKa.shuju.body = allTiMuForCard.slice(i*2);
               }
               answerCards.push(daTiKa);
             }
@@ -1443,30 +1445,128 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 答题卡中的拖拽 //
+           * 答题卡中的拖拽//
            */
-          $scope.resizeVertical = function(e, idx){ //
+          $scope.resizeVertical = function(e, idx, pIdx, idxNum){
             event.preventDefault();
             var y = 0, //Y 轴坐标
-              item = '.daTiRegion' + idx,
+              percentVal, //移动中的元素的百分比
+              item = '.daTiRegion' + pIdx + idx,
               slideBtn = $('.slideDown'), //拖动按钮的高度
-              resizeDiv = $(item); //定义需要缩放的div
+              resizeDiv = $(item), //定义需要缩放的div
+              yushu, //余数
+              intAnswerCardLen, //除以540得到的整数
+              answerCardLen; //答题卡长度, 除以540得到的数据
             y = e.clientY - slideBtn.height() - resizeDiv.height();
             $document.on('mousemove', mousemove);
             $document.on('mouseup', mouseup);
-            //鼠标移动
+            //鼠标移动//
             function mousemove(event) {
               resizeDiv.height(event.clientY - y + 'px');
+              allTiMuForCard[idxNum].percent = event.clientY - y; //将高度赋值给对应的数据
             }
             //移除事件
             function mouseup() {
               $document.unbind('mousemove', mousemove);
               $document.unbind('mouseup', mouseup);
             }
+
+            //得到所有答题卡的高度用来计算答题卡的帐数
+            var heightSum = _.reduce(allTiMuForCard, function(memo, num){
+              return memo + num.percent;
+            }, 0);
+            yushu = heightSum % 540;
+            intAnswerCardLen = Math.floor(heightSum/540);
+            answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
+            if(idx == 0){ //答题卡中的第一题
+              if(allTiMuForCard[idxNum].percent >180 && allTiMuForCard[idxNum].percent <= 360){
+                if(allTiMuForCard[idxNum].percent + allTiMuForCard[idxNum + 1].percent <= 540){//页面剩下两道题
+                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
+                  var  pageIdx = pIdx + 1,//页面索引
+                    heightCount = 0; //每页答题卡的高度
+                  $scope.answerCards[pageIdx].shuju.body = [];
+                  for(var i = idxNum + 2; i < answerCardLen; i++){
+                    heightCount += allTiMuForCard[i];
+                    if(heightCount <= 540){
+                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+                    }
+                    else{
+                      pageIdx ++;
+                      $scope.answerCards[pageIdx].shuju.body = [];
+                    }
+                  }
+                }
+                else{ //页面剩下一道题
+                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
+                  var  pageIdx = pIdx + 1,//页面索引
+                    heightCount = 0; //每页答题卡的高度
+                  $scope.answerCards[pageIdx].shuju.body = [];
+                  for(var i = idxNum + 1; i < answerCardLen; i++){
+                    heightCount += allTiMuForCard[i];
+                    if(heightCount <= 540){
+                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+                    }
+                    else{
+                      ++ pageIdx;
+                      $scope.answerCards[pageIdx].shuju.body = [];
+                    }
+                  }
+                }
+              }
+              else{ //页面剩下一道题
+                var  pageIdx = pIdx + 1,//页面索引
+                  heightCount = 0; //每页答题卡的高度
+                $scope.answerCards[pageIdx].shuju.body = [];
+                for(var i = idxNum + 1; i < answerCardLen; i++){
+                  heightCount += allTiMuForCard[i];
+                  if(heightCount <= 540){
+                    $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+                  }
+                  else{
+                    ++ pageIdx;
+                    $scope.answerCards[pageIdx].shuju.body = [];
+                  }
+                }
+              }
+            }
+            else if(idx == 1){ //答题卡中的第二题
+
+            }
+            else{ //答题卡中的第三题
+
+            }
+
           };
 
           /**
-           * 当离开本页的时候触发事件，删除无用的临时模板 //
+           * 保存答题卡
+           */
+          $scope.saveDaTiKa = function(){
+            var daTiKaLen = $scope.answerCards.length,
+              times = 0,
+              ifSaveDone = true,
+              daTiKaUrlArr = [];
+            var saveFun = function(){
+              if(times < daTiKaLen){
+                $http.post(saveDaTiKaUrl, $scope.answerCards[times]).success(function(data){
+                  if(data.fileName){
+                    daTiKaUrlArr.push(data.fileName);
+                    if(times == daTiKaLen - 1){
+                      $scope.daTiKaUrlArr = daTiKaUrlArr;
+                      alert('答题卡生产成功！');
+                      $scope.txTpl = 'views/partials/daTiKaDownLoad.html';
+                    }
+                    times ++;
+                    saveFun();
+                  }
+                });
+              }
+            };
+            saveFun();
+          };
+
+          /**
+           * 当离开本页的时候触发事件，删除无用的临时模板
            */
           $scope.$on('$destroy', function () {
             var nextPath = $location.$$path,

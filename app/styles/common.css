@@ -6317,25 +6317,23 @@ a.add-btn:hover span {
     .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body {
       height: 90%; }
       .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion {
-        min-height: 180px;
+        min-height: 270px;
         max-height: 540px;
-        position: relative;
-        border-top: 2px dashed #cccccc; }
+        position: relative; }
         .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion:first-child {
           border-top: 0; }
         .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion .slideDown {
           width: 100%;
-          height: 4px;
+          height: 2px;
           position: absolute;
           left: 0;
-          bottom: -2px;
+          bottom: -1px;
           cursor: s-resize;
-          background-color: #fff; }
+          background-color: #ccc; }
     .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-footer {
       font-size: 12px;
       height: 5%;
-      line-height: 30px;
-      border-top: 2px solid #ccc; }
+      line-height: 30px; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px; }

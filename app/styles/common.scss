@@ -1664,21 +1664,20 @@ a.add-btn:hover span {
       .daTiKa-body{
         height: 90%;
         .daTiRegion{
-          min-height: 180px;
+          min-height: 270px;
           max-height: 540px;
           position: relative;
-          border-top: 2px dashed #cccccc;
           &:first-child{
             border-top: 0;
           }
           .slideDown{
             width: 100%;
-            height: 4px;
+            height: 2px;
             position: absolute;
             left: 0;
-            bottom: -2px;
+            bottom: -1px;
             cursor: s-resize;
-            background-color: #666;
+            background-color: #ccc;
           }
         }
       }
@@ -1686,7 +1685,6 @@ a.add-btn:hover span {
         font-size: 12px;
         height: 5%;
         line-height: 30px;
-        border-top: 2px solid #ccc;
       }
     }
   }

@@ -1,12 +1,12 @@
 <div class="da-ti-ka-wrap">
-    <div class="daTiKa" ng-repeat="ac in answerCards">
+    <div class="daTiKa" ng-repeat="(pIdx, ac) in answerCards">
         <div class="daTiKa-header text-center">
-            <p>{{ac.shuju.header.title}}第<span>{{$index + 1}}</span>页</p>
+            <p>{{ac.shuju.header.title}}第<span>{{pIdx + 1}}</span>页</p>
         </div>
         <div class="daTiKa-body">
-            <div class="daTiRegion {{'daTiRegion' + acb.idxNum}}" ng-repeat="acb in ac.shuju.body">
-                <span>{{acb.text}}题</span><span>{{acb.idxNum + 1}}.</span>
-                <div class="slideDown" ng-mousedown="resizeVertical($event, acb.idxNum)">
+            <div class="daTiRegion {{'daTiRegion' + pIdx + $index}}" ng-repeat="acb in ac.shuju.body">
+                <span>{{acb.text}}题</span>
+                <div class="slideDown">
 
                 </div>
             </div>
@@ -14,5 +14,8 @@
         <div class="daTiKa-footer text-center">
             <span>{{ac.shuju.footer.text}}</span>
         </div>
+    </div>
+    <div class="save-box">
+        <button type="button" class="btn btn-primary" ng-click="saveDaTiKa()">保存答题卡</button>
     </div>
 </div>
