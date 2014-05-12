@@ -134,18 +134,43 @@
         </div>
         <div class="form-group" ng-show="isImportKaoSheng">
             <div class="col-sm-8 col-sm-offset-2">
-                <div class="selectFileBox">
-                    <form id="importStudentForm">
-                        <p>
-                            请选择上传考生信息的文件，格式需为Excel格式
-                        </p>
-                        <input type="file" name="students">
-                        <input type="button" value="确认上传考生信息" ng-click="uploadXlsFile()">
-                    </form>
-                </div>
-                <div id="upload-indicator" style="display:none;"></div>
-                <div class="col-sm-8 col-sm-offset-2 text-right">
-                    <button type="button" class="btn btn-danger" ng-click="cancelImportStudent()">取消</button>
+                <div class="row selectFileBox">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择考场<i>*</i></label>
+                        <div class="col-sm-8">
+                            <select class="form-control subOrganization" ng-model="selectKaoChangId"
+                                    ng-change="selectKaoChang(selectKaoChangId)"
+                                    ng-options="kcInfo.KID as kcInfo.KMINGCHENG for kcInfo in allKaoChangList">
+                                <option value="">请选择考场</option>
+                            </select>
+                            <!--<input type="text" name="ksKaoChang" class="form-control" placeholder="添加考场" required-->
+                            <!--ng-model="kaoshiData.shuju.kaochangname" ng-focus="showKaoChangListInKaoShi()"/>-->
+                            <!--<button type="button" class="btn btn-success" ng-click="showKaoChangListInKaoShi()">-->
+                            <!--添加考场-->
+                            <!--</button>-->
+                            <!--<span>当前选中的考场为：{{kaoshiData.shuju.KAOCHANG[0].kaochangname}}</span>-->
+                        </div>
+                        <div class="col-sm-2">
+                            <p ng-show="kaoshiForm.ksKaoChang.$error.required" class="help-block">请选择考场！</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <form id="importStudentForm">
+                            <em>
+                                请选择上传考生信息的文件，格式为Excel格式
+                            </em>
+                            <input type="file" name="students" value="请选择文件" class="findFileBtn">
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2 text-right">
+                            <button type="button" class="btn btn-danger" ng-click="cancelImportStudent()">取消</button>
+                            <button type="button" class="btn btn-primary" ng-click="uploadXlsFile()">
+                                确认上传考生信息
+                            </button>
+                        </div>
+                    </div>
+                    <div id="upload-indicator" style="display:none;"></div>
                 </div>
                 <div class="student-list">
                     <table class="table table-bordered kaowu-table">
@@ -155,10 +180,10 @@
                             <th>班级</th>
                             <th width="50px">删除</th>
                         </tr>
-                        <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
-                            <td>{{usr.XINGMING}}</td>
-                            <td>{{usr.XUEHAO ? usr.XUEHAO : usr.YONGHUHAO}}</td>
-                            <td>{{usr.BANJI}}</td>
+                        <tr ng-repeat="importusr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
+                            <td>{{importusr.Name}}</td>
+                            <td>{{importusr.Number}}</td>
+                            <td>{{importusr.ClassName}}</td>
                             <td class="text-center">
                                 <a href="javascript:void(0)" ng-click="deleteStudent($index)">
                                     <span class="glyphicon glyphicon-trash"></span>

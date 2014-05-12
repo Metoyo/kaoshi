@@ -250,11 +250,10 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 文件上传 importStudentForm
+         * 文件上传//
          */
         var fileUpload = function(form, action_url, div_id) {
           var eventHandler, iframe, iframeId;
-
           iframe = document.createElement("iframe");
           iframe.setAttribute("id", "upload_iframe");
           iframe.setAttribute("name", "upload_iframe");
@@ -265,6 +264,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           form.parentNode.appendChild(iframe);
           window.frames["upload_iframe"].name = "upload_iframe";
           iframeId = document.getElementById("upload_iframe");
+
           eventHandler = function() {
             var content;
             if (iframeId.detachEvent) {
@@ -285,9 +285,11 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
               }
             }
             document.getElementById(div_id).innerHTML = content;
-            console.log('上传成功！');
+            $scope.importStuds = JSON.parse($('#upload-indicator pre').html());
+            kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
             setTimeout("iframeId.parentNode.removeChild(iframeId)", 250);
           };
+
           if (iframeId.addEventListener) {
             iframeId.addEventListener("load", eventHandler, true);
           }
@@ -315,6 +317,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          */
         $scope.uploadXlsFile = function(){
           fileUpload($("#importStudentForm")[0],'/student_import','upload-indicator');
+          kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
         };
 
         /**
