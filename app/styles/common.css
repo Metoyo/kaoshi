@@ -6412,7 +6412,8 @@ a.add-btn:hover span {
         margin-top: 10px;
         overflow-y: scroll;
         padding: 0 10px; }
-.kaowuWrapper .student-info {
+.kaowuWrapper .student-info,
+.kaowuWrapper .selectFileBox {
   border-top: 2px solid #8699a4;
   padding: 15px 10px; }
 .kaowuWrapper .student-list .kaowu-table {

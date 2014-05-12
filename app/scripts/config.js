@@ -58,6 +58,11 @@ define( "config", [], function () {
         templateUrl: 'views/selectLingYu.html',
         controller: 'LingyuCtrl',
         requireLogin: true
+      },
+      '/yuejuan': {
+        templateUrl: 'views/yuejuan.html',
+        controller: 'YuejuanCtrl',
+        requireLogin: true
       }
     },
     jueseObj: [ //得到角色是数组
@@ -70,7 +75,7 @@ define( "config", [], function () {
       {juese_id: 7, juese_name:'审题教师', juese_url: ''},
       {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'},
       {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
-      {juese_id: 10, juese_name:'阅卷教师', juese_url: ''}
+      {juese_id: 10, juese_name:'阅卷教师', juese_url: '/yuejuan'}
     ]
   };
 });

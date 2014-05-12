@@ -8,9 +8,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 操作title
            */
           $rootScope.pageName = "组卷"; //page title
-          $rootScope.styles = [
-            'styles/zujuan.css'
-          ];
           $rootScope.dashboard_shown = true;
           $rootScope.session.lsmb_id = []; //存放临时模板id的数组
 
@@ -279,7 +276,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * dagangListWrap宽度可拖拽
+           * 难度选择时的拖拽
            */
           var resize = function(el, dragItem, reductionItem, minWidth, maxWidth){
             //初始化参数

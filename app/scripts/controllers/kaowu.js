@@ -244,15 +244,77 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          */
         $scope.addNewKaoSheng = function(){
           $scope.isAddNewKaoSheng = true; //显示添加单个考生页面
+          $scope.isImportKaoSheng = false; //导入考试页面隐藏
           $scope.studentNameIsNull = false; //考生姓名重置为空
           $scope.studentIDIsNull = false; //考生学号重置为空
+        };
+
+        /**
+         * 文件上传 importStudentForm
+         */
+        var fileUpload = function(form, action_url, div_id) {
+          var eventHandler, iframe, iframeId;
+
+          iframe = document.createElement("iframe");
+          iframe.setAttribute("id", "upload_iframe");
+          iframe.setAttribute("name", "upload_iframe");
+          iframe.setAttribute("width", "0");
+          iframe.setAttribute("height", "0");
+          iframe.setAttribute("border", "0");
+          iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+          form.parentNode.appendChild(iframe);
+          window.frames["upload_iframe"].name = "upload_iframe";
+          iframeId = document.getElementById("upload_iframe");
+          eventHandler = function() {
+            var content;
+            if (iframeId.detachEvent) {
+              iframeId.detachEvent("onload", eventHandler);
+            }
+            else {
+              iframeId.removeEventListener("load", eventHandler, false);
+            }
+            if (iframeId.contentDocument) {
+              content = iframeId.contentDocument.body.innerHTML;
+            }
+            else if (iframeId.contentWindow) {
+              content = iframeId.contentWindow.document.body.innerHTML;
+            }
+            else {
+              if (iframeId.document) {
+                content = iframeId.document.body.innerHTML;
+              }
+            }
+            document.getElementById(div_id).innerHTML = content;
+            console.log('上传成功！');
+            setTimeout("iframeId.parentNode.removeChild(iframeId)", 250);
+          };
+          if (iframeId.addEventListener) {
+            iframeId.addEventListener("load", eventHandler, true);
+          }
+          if (iframeId.attachEvent) {
+            iframeId.attachEvent("onload", eventHandler);
+          }
+          form.setAttribute("target", "upload_iframe");
+          form.setAttribute("action", action_url);
+          form.setAttribute("method", "post");
+          form.setAttribute("enctype", "multipart/form-data");
+          form.setAttribute("encoding", "multipart/form-data");
+          form.submit();
         };
 
         /**
          * 导入考生列表页面显示
          */
         $scope.importKaoSheng = function(){
+          $scope.isImportKaoSheng = true; //导入考生页面显示
+          $scope.isAddNewKaoSheng = false; //添加单个考生页面隐藏
+        };
 
+        /**
+         * 导入考生
+         */
+        $scope.uploadXlsFile = function(){
+          fileUpload($("#importStudentForm")[0],'/student_import','upload-indicator');
         };
 
         /**
@@ -260,6 +322,13 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          */
         $scope.cancelAddStudent = function(){
           $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
+        };
+
+        /**
+         * 取消添加新考试
+         */
+        $scope.cancelImportStudent = function(){
+          $scope.isImportKaoSheng = false; //导入考生页面显示隐藏
         };
 
         /**

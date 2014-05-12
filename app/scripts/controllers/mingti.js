@@ -8,9 +8,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 操作title
          */
         $rootScope.pageName = "命题"; //page title
-        $rootScope.styles = [
-          'styles/mingti.css'
-        ];
         $rootScope.dashboard_shown = true;
 
         /**

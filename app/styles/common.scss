@@ -1800,7 +1800,8 @@ a.add-btn:hover span {
       }
     }
   }
-  .student-info{
+  .student-info,
+  .selectFileBox{
     border-top: 2px solid #8699a4;
     padding: 15px 10px;
   }
@@ -1809,4 +1810,8 @@ a.add-btn:hover span {
       margin-top: 0;
     }
   }
+}
+//阅卷样式
+.yuejuanWrapper{
+
 }

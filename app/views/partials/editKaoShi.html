@@ -1,5 +1,5 @@
 <div class="row">
-    <form class="form-horizontal" role="form" name="kaoshiForm" novalidate>
+    <div class="form-horizontal">
         <div class="form-group explain">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10">
@@ -132,6 +132,43 @@
                 </div>
             </div>
         </div>
+        <div class="form-group" ng-show="isImportKaoSheng">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="selectFileBox">
+                    <form id="importStudentForm">
+                        <p>
+                            请选择上传考生信息的文件，格式需为Excel格式
+                        </p>
+                        <input type="file" name="students">
+                        <input type="button" value="确认上传考生信息" ng-click="uploadXlsFile()">
+                    </form>
+                </div>
+                <div id="upload-indicator" style="display:none;"></div>
+                <div class="col-sm-8 col-sm-offset-2 text-right">
+                    <button type="button" class="btn btn-danger" ng-click="cancelImportStudent()">取消</button>
+                </div>
+                <div class="student-list">
+                    <table class="table table-bordered kaowu-table">
+                        <tr class="active">
+                            <th>姓名</th>
+                            <th>学号</th>
+                            <th>班级</th>
+                            <th width="50px">删除</th>
+                        </tr>
+                        <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
+                            <td>{{usr.XINGMING}}</td>
+                            <td>{{usr.XUEHAO ? usr.XUEHAO : usr.YONGHUHAO}}</td>
+                            <td>{{usr.BANJI}}</td>
+                            <td class="text-center">
+                                <a href="javascript:void(0)" ng-click="deleteStudent($index)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">考试须知</label>
             <div class="col-sm-8">
@@ -148,7 +185,7 @@
                 <button type="button" class="btn btn-success" ng-click="saveKaoShi()">保存考试</button>
             </div>
         </div>
-    </form>
+    </div>
     <div class="kw-edit-box" ng-show="showPopupBox">
         <div class="kw-edit-box-inner">
             <div class="row" ng-show="isShowPaperList">

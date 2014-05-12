@@ -31,14 +31,15 @@
                 <span class="nav-icon"></span> <span class="nav-name">考务</span>
             </a>
         </li>
-        <li class="list-group-item" ng-show="session.jueseStr.indexOf('juese3')>=0">
+        <li class="list-group-item" ng-class="navClass('shenpi')"
+            ng-show="session.jueseStr.indexOf('juese3')>=0">
             <a href="javascript:void(0)" class="dropdownToggle droTogSp">
                 <span class="nav-icon"></span> <span class="nav-name">审批</span>
             </a>
         </li>
-        <li class="list-group-item">
-            <a href="javascript:void(0)" class="dropdownToggle droTogYj"
-               ng-show="session.jueseStr.indexOf('juese9')>=0 || session.jueseStr.indexOf('juese10')>=0">
+        <li class="list-group-item" ng-class="navClass('yuejuan')"
+            ng-show="session.jueseStr.indexOf('juese9')>=0 || session.jueseStr.indexOf('juese10')>=0">
+            <a  href="/yuejuan" class="dropdownToggle droTogYj">
                 <span class="nav-icon"></span> <span class="nav-name">阅卷</span>
             </a>
         </li>
