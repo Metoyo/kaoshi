@@ -1810,10 +1810,41 @@ a.add-btn:hover span {
       margin-top: 0;
     }
   }
+  .findFileBtn{
+    margin-top: 10px;
+  }
 }
 //阅卷样式
 .yuejuanWrapper{
-  .findFileBtn{
+  .keMuName{
+    padding: 0 10px;
+    float: left;
+    width: 100%;
+    h2{
+      font-size: 18px;
+      margin-top: 0;
+    }
+  }
+  .yjInfoBox{
+    float: left;
+    width: 100%;
     margin-top: 10px;
+    padding: 0 10px;
+  }
+  .contentWraps{
+    padding: 10px;
+  }
+  .kaoshiList{
+    margin-top: 20px;
+    li{
+      margin-bottom: 5px;
+    }
+  }
+  .shiJuanBox{
+    padding: 10px;
+    border: 1px solid #eeeeee;
+    a{
+      display: block;
+    }
   }
 }

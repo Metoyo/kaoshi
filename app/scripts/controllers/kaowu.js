@@ -214,11 +214,12 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 将考场添加到考试 //
+         * 将考场添加到考试
          */
-        var selectKaoChangIdx; //如何考场已经存在，得到他的索引位置
+        var selectKaoChangIdx, //如何考场已经存在，得到他的索引位置
+          kaoChangId; //定义一个存放考场的字段
         $scope.selectKaoChang = function(kcId){
-          console.log(kcId);
+          kaoChangId = kcId;
           var isKaoChangExist = _.find(kaoshi_data.shuju.KAOCHANG, function(kch){
               return kch.KID == kcId;
             }); //查看新添加的考场是否存在
@@ -285,9 +286,8 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
               }
             }
             document.getElementById(div_id).innerHTML = content;
-            $scope.importStuds = JSON.parse($('#upload-indicator pre').html());
-            kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
-            setTimeout("iframeId.parentNode.removeChild(iframeId)", 250);
+            setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
+            alert('导入成功！');
           };
 
           if (iframeId.addEventListener) {
@@ -310,14 +310,108 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         $scope.importKaoSheng = function(){
           $scope.isImportKaoSheng = true; //导入考生页面显示
           $scope.isAddNewKaoSheng = false; //添加单个考生页面隐藏
+          $scope.isUploadDone = false;
+          $scope.showImportStuds = false;
+          $scope.showListBtn = false;
         };
 
         /**
          * 导入考生
          */
-        $scope.uploadXlsFile = function(){
-          fileUpload($("#importStudentForm")[0],'/student_import','upload-indicator');
-          kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
+        $scope.uploadXlsFile = function(kcId){
+          var uploadDone = false,
+            form = $('#importStudentForm')[0],
+            action_url = '/student_import',
+            div_id = 'upload-indicator';
+          if(kcId){
+            if($('.findFileBtn').val()){
+              var eventHandler, iframe, iframeId;
+              iframe = document.createElement("iframe");
+              iframe.setAttribute("id", "upload_iframe");
+              iframe.setAttribute("name", "upload_iframe");
+              iframe.setAttribute("width", "0");
+              iframe.setAttribute("height", "0");
+              iframe.setAttribute("border", "0");
+              iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+              form.parentNode.appendChild(iframe);
+              window.frames["upload_iframe"].name = "upload_iframe";
+              iframeId = document.getElementById("upload_iframe");
+
+              eventHandler = function() {
+                var content;
+                if (iframeId.detachEvent) {
+                  iframeId.detachEvent("onload", eventHandler);
+                }
+                else {
+                  iframeId.removeEventListener("load", eventHandler, false);
+                }
+                if (iframeId.contentDocument) {
+                  content = iframeId.contentDocument.body.innerHTML;
+                  uploadDone = true;
+                }
+                else if (iframeId.contentWindow) {
+                  content = iframeId.contentWindow.document.body.innerHTML;
+                  uploadDone = true;
+                }
+                else {
+                  if (iframeId.document) {
+                    content = iframeId.document.body.innerHTML;
+                    uploadDone = true;
+                  }
+                }
+                document.getElementById(div_id).innerHTML = content;
+                if(uploadDone){
+                  kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
+                  setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
+                  $scope.showListBtn = true;
+                  alert('导入成功！');
+                }
+              };
+
+              if (iframeId.addEventListener) {
+                iframeId.addEventListener("load", eventHandler, true);
+              }
+              if (iframeId.attachEvent) {
+                iframeId.attachEvent("onload", eventHandler);
+              }
+              form.setAttribute("target", "upload_iframe");
+              form.setAttribute("action", action_url);
+              form.setAttribute("method", "post");
+              form.setAttribute("enctype", "multipart/form-data");
+              form.setAttribute("encoding", "multipart/form-data");
+              form.submit();
+            }
+            else{
+              alert('请选择上传文件！');
+            }
+          }
+          else{
+            alert('请选择考场！');
+          }
+        };
+
+        /**
+         * 显示导入成功后的考生列表
+         */
+        $scope.showImportList = function(){
+          if(kaoChangId){
+            if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
+              $scope.showImportStuds = true; //显示考生列表table
+            }
+            else{
+              alert('您还没有上传任何考生信息！');
+            }
+          }
+          else{
+            alert('请选择考场！');
+          }
+        };
+
+        /**
+         * 关闭导入成功后的考生列表
+         */
+        $scope.hideImportList = function(){
+          $scope.showImportStuds = false;
         };
 
         /**
@@ -328,10 +422,11 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 取消添加新考试
+         * 取消导入考生
          */
         $scope.cancelImportStudent = function(){
           $scope.isImportKaoSheng = false; //导入考生页面显示隐藏
+          $scope.showImportStuds = false; //隐藏考生列表table
         };
 
         /**

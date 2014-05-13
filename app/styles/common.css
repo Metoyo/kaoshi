@@ -6418,6 +6418,29 @@ a.add-btn:hover span {
   padding: 15px 10px; }
 .kaowuWrapper .student-list .kaowu-table {
   margin-top: 0; }
-
-.yuejuanWrapper .findFileBtn {
+.kaowuWrapper .findFileBtn {
   margin-top: 10px; }
+
+.yuejuanWrapper .keMuName {
+  padding: 0 10px;
+  float: left;
+  width: 100%; }
+  .yuejuanWrapper .keMuName h2 {
+    font-size: 18px;
+    margin-top: 0; }
+.yuejuanWrapper .yjInfoBox {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 10px; }
+.yuejuanWrapper .contentWraps {
+  padding: 10px; }
+.yuejuanWrapper .kaoshiList {
+  margin-top: 20px; }
+  .yuejuanWrapper .kaoshiList li {
+    margin-bottom: 5px; }
+.yuejuanWrapper .shiJuanBox {
+  padding: 10px;
+  border: 1px solid #eeeeee; }
+  .yuejuanWrapper .shiJuanBox a {
+    display: block; }
