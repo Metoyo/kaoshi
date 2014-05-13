@@ -53,12 +53,5 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
         $scope.showKaoShiList();
 
-        /**
-         * 点击考试显示试卷 //
-         */
-        $scope.showShiJuan = function(){
-
-        }
-
     }]);// 002
 }); // 001

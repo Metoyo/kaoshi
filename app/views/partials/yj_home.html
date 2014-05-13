@@ -2,11 +2,19 @@
     <button type="button" class="btn btn-primary">查看任务</button>
     <button type="button" class="btn btn-primary">布置任务</button>
 </div>
-<ul class="kaoshiList">
-    <li ng-repeat="ks in kaoshiList">
-        <a href="javascript:void(0)" ng-click="showShiJuan(ks)">{{ks.KAOSHI_MINGCHENG}}</a>
-        <div class="shiJuanBox">
-            <a href="javascript:void(0)" ng-repeat="sjmc in ks.SHIJUAN">{{sjmc.SHIJUAN_MINGCHENG}}</a>
-        </div>
-    </li>
-</ul>
+<div class="row">
+    <div class="col-md-6">
+        <ul class="kaoshiList">
+            <li ng-repeat="ks in kaoshiList">
+                <a href="javascript:void(0)" bn-slide-show slide-show-target="shiJuanBox">{{ks.KAOSHI_MINGCHENG}}</a>
+                <div class="shiJuanBox">
+                    <a href="javascript:void(0)" ng-repeat="sjmc in ks.SHIJUAN">{{sjmc.SHIJUAN_MINGCHENG}}</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        右边容器
+    </div>
+</div>
+<!--ng-click="showShiJuan(ks, $index)"-->

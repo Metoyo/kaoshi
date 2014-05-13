@@ -6440,6 +6440,7 @@ a.add-btn:hover span {
   .yuejuanWrapper .kaoshiList li {
     margin-bottom: 5px; }
 .yuejuanWrapper .shiJuanBox {
+  display: none;
   padding: 10px;
   border: 1px solid #eeeeee; }
   .yuejuanWrapper .shiJuanBox a {
