@@ -76,6 +76,10 @@ define( "config", [], function () {
       {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'},
       {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
       {juese_id: 10, juese_name:'阅卷教师', juese_url: '/yuejuan'}
+    ],
+    tiXingNameArr: [
+      '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',
+      '作文题','证明题','作图题','解答题'
     ]
   };
 });

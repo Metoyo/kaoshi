@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $rootScope.isRenZheng = false; //判读页面是不是认证
 
         /**
-         * 声明变量
+         * 声明变量//
          */
         var userInfo = $rootScope.session.userInfo,
           baseKwAPIUrl = config.apiurl_kw, //考务的api

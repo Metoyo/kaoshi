@@ -5946,14 +5946,18 @@ a.add-btn:hover span {
     padding: 0 10px;
     font-size: 14px; }
     .mingtiWrapper .total-test .checkbox {
-      margin: 0 0 0 80px; }
+      margin: 4px 0 0 80px; }
+    .mingtiWrapper .total-test .allTestNums {
+      margin: 4px 0 0 60px; }
   .mingtiWrapper .testList {
     padding: 0 10px; }
     .mingtiWrapper .testList li {
       padding: 10px;
       margin-top: 10px;
       border: 1px solid #d8d8d8;
-      position: relative; }
+      position: relative;
+      float: left;
+      width: 100%; }
     .mingtiWrapper .testList h3 {
       font-size: 14px;
       margin: 0; }
@@ -5962,7 +5966,9 @@ a.add-btn:hover span {
       font-weight: bold;
       margin-bottom: 5px; }
     .mingtiWrapper .testList .item-tigan {
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 24px; }
     .mingtiWrapper .testList .item-sub-title {
       font-size: 12px;
       width: 100%; }
@@ -5992,11 +5998,23 @@ a.add-btn:hover span {
       .mingtiWrapper .testList .item-sub-title .level-num .level-star-5 {
         background-position: 0 -40px; }
     .mingtiWrapper .testList .item-cont {
-      margin-top: 35px; }
+      margin-top: 10px;
+      width: 100%;
+      float: left; }
       .mingtiWrapper .testList .item-cont .item-tizhi-wrap {
         margin-bottom: 5px; }
         .mingtiWrapper .testList .item-cont .item-tizhi-wrap .item-tizhi {
           margin-bottom: 5px; }
+    .mingtiWrapper .testList .answer-cont {
+      float: left;
+      width: 100%;
+      position: relative;
+      font-size: 14px;
+      line-height: 24px; }
+      .mingtiWrapper .testList .answer-cont .daAnLabel {
+        position: absolute; }
+      .mingtiWrapper .testList .answer-cont .daAnBox {
+        margin-left: 45px; }
   .mingtiWrapper .nadu-select .radio-inline {
     margin-left: 20px;
     font-size: 16px; }
@@ -6258,10 +6276,10 @@ a.add-btn:hover span {
         margin: 10px 10px 0 0; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner input {
         font-size: 14px;
-        width: 100%; }
+        margin-bottom: 10px; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner textarea {
         font-size: 14px;
-        width: 100%; }
+        margin-bottom: 10px; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner h5 {
         width: 100%;
         text-align: right; }

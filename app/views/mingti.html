@@ -121,12 +121,8 @@
                 <span>目前你修改的题型为：<strong class="active">{{alterTiMuTiXing}}</strong></span>
             </div>
             <div class="addNewTiMuBtn">
-                <a href="javascript:void(0)" class="btn btn-primary" ng-hide="patternListToggle || alterTiXingBox"
-                   ng-click="patternListToggle = true; addNewShiTi()">
-                    <span class="glyphicon glyphicon-plus"></span> 添加试题
-                </a>
                 <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox"
-                        ng-click="patternListToggle = false; alterTiXingBox = false; cancelAddPattern()">
+                        ng-click="cancelAddPattern()">
                     返回
                 </button>
             </div>

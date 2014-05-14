@@ -1157,7 +1157,10 @@ a.add-btn:hover span {
     padding: 0 10px;
     font-size: 14px;
     .checkbox{
-      margin: 0 0 0 80px;
+      margin: 4px 0 0 80px;
+    }
+    .allTestNums{
+      margin: 4px 0 0 60px;
     }
   }
   .testList{
@@ -1167,6 +1170,8 @@ a.add-btn:hover span {
       margin-top: 10px;
       border: 1px solid #d8d8d8;
       position: relative;
+      float: left;
+      width: 100%;
     }
     h3{
       font-size: 14px;
@@ -1179,6 +1184,8 @@ a.add-btn:hover span {
     }
     .item-tigan{
       margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 24px;
     }
     .item-sub-title{
       font-size: 12px;
@@ -1223,12 +1230,27 @@ a.add-btn:hover span {
       }
     }
     .item-cont {
-      margin-top: 35px;
+      margin-top: 10px;
+      width: 100%;
+      float: left;
       .item-tizhi-wrap{
         margin-bottom: 5px;
         .item-tizhi{
           margin-bottom: 5px;
         }
+      }
+    }
+    .answer-cont{
+      float: left;
+      width: 100%;
+      position: relative;
+      font-size: 14px;
+      line-height: 24px;
+      .daAnLabel{
+        position: absolute;
+      }
+      .daAnBox{
+        margin-left: 45px;
       }
     }
   }
@@ -1583,11 +1605,11 @@ a.add-btn:hover span {
         }
         input{
           font-size: 14px;
-          width: 100%;
+          margin-bottom: 10px;
         }
         textarea{
           font-size: 14px;
-          width: 100%;
+          margin-bottom: 10px;
         }
         h5{
           width: 100%;

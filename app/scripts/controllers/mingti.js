@@ -104,6 +104,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
         $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
+        $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
 
         /**
          * 获得大纲数据
@@ -354,12 +355,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
+         * 点击添加题型的取消按钮后<div class="kmTxWrap">显示//
          */
         $scope.cancelAddPattern = function(){
           var selectZsdStr = '';
           selectZsd = [];
           $scope.kmTxWrap = true; // 题型和难度查询的DOM元素显示
+          $scope.patternListToggle = false;
+          $scope.alterTiXingBox = false;
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
             caozuoyuan: userInfo.UID,
@@ -478,6 +481,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addNewShiTi = function(){
           testListStepZst = selectZsd; //保存选题阶段的知识点
           isEditItemStep = true;
+          $scope.patternListToggle = true;
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/tixing/danxuan.html');
         };
