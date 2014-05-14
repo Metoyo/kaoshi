@@ -1233,6 +1233,7 @@ a.add-btn:hover span {
       margin-top: 10px;
       width: 100%;
       float: left;
+      cursor: pointer;
       .item-tizhi-wrap{
         margin-bottom: 5px;
         .item-tizhi{
@@ -1246,6 +1247,7 @@ a.add-btn:hover span {
       position: relative;
       font-size: 14px;
       line-height: 24px;
+      display: none;
       .daAnLabel{
         position: absolute;
       }

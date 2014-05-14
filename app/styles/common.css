@@ -6000,7 +6000,8 @@ a.add-btn:hover span {
     .mingtiWrapper .testList .item-cont {
       margin-top: 10px;
       width: 100%;
-      float: left; }
+      float: left;
+      cursor: pointer; }
       .mingtiWrapper .testList .item-cont .item-tizhi-wrap {
         margin-bottom: 5px; }
         .mingtiWrapper .testList .item-cont .item-tizhi-wrap .item-tizhi {
@@ -6010,7 +6011,8 @@ a.add-btn:hover span {
       width: 100%;
       position: relative;
       font-size: 14px;
-      line-height: 24px; }
+      line-height: 24px;
+      display: none; }
       .mingtiWrapper .testList .answer-cont .daAnLabel {
         position: absolute; }
       .mingtiWrapper .testList .answer-cont .daAnBox {

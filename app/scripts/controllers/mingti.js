@@ -158,7 +158,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $http.get(qryKnowledge).success(function(data){
                 $scope.kowledgeList = data;
-//                $scope.dgListBox = true;
           }).error(function(err){
               alert(err);
           });
