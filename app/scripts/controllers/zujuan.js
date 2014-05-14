@@ -159,7 +159,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
           $scope.baocunshijuanBtn = false; //保存试卷的按钮
           $scope.shijuan_edit = false; //试卷编辑
-//          $scope.focusMe = false; //
+          $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+          $scope.txSelectenIdx = 0;
+          $scope.ndSelectenIdx = 0;
+//          $scope.focusMe = false;
 
           /**
            * 获得大纲数据
@@ -564,7 +567,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 显示试题列表
+           * 显示试题列表 //
            */
           $scope.showTestList = function(txid){
             var dashboardWith = $('.dashboard').width();
@@ -587,7 +590,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.shijuanyulanBtn = true;
             //查询试题的函数
             $scope.getTiXingId(txid);
-            $scope.txSelectenIdx = txid;
+            $scope.txSelectenIdx = txid ? txid : 0;
             $scope.txTpl = 'views/partials/paper_hand_form.html';
           };
 
