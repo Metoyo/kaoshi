@@ -45,8 +45,7 @@
             </div>
             <div class="answer-cont">
                 <span class="daAnLabel">答案：</span>
-                <div class="daAnBox" ng-bind-html="tm.DAAN">
-                </div>
+                <div class="daAnBox" ng-bind-html="tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
             </div>
         </li>
     </ul>
