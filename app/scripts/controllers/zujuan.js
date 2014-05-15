@@ -160,8 +160,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.baocunshijuanBtn = false; //保存试卷的按钮
           $scope.shijuan_edit = false; //试卷编辑
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
-          $scope.txSelectenIdx = 0;
-          $scope.ndSelectenIdx = 0;
+          $scope.txSelectenIdx = 0; //选择题型的索引
+          $scope.ndSelectenIdx = 0; //选择难度的索引
 //          $scope.focusMe = false;
 
           /**
@@ -1155,7 +1155,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                               deleteTempTemp(); //删除没用的其他目标
                             }
                           }
-                          clearData();
                           $scope.showPaperList();
                           $scope.shijuanyulanBtn = false; //试卷预览的按钮
                           $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
@@ -1216,6 +1215,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
             shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
+            shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
             _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
@@ -1235,7 +1235,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 放弃组卷
+           * 放弃组卷//
            */
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量

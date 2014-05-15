@@ -5061,6 +5061,9 @@ body {
 .wp100 {
   width: 100%; }
 
+.mt5 {
+  margin-top: 5px; }
+
 .mt15 {
   margin-top: 15px; }
 
@@ -6086,8 +6089,9 @@ a.add-btn:hover span {
       color: #000; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper {
         width: 100%; }
-        .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .auto-make-paper-btn {
-          margin-top: 15px; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .btn {
+          margin-top: 15px;
+          margin-left: 10px; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {
@@ -6274,6 +6278,26 @@ a.add-btn:hover span {
         overflow-y: scroll;
         height: 310px;
         padding: 10px; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .showAddFuBiaoTi {
+          padding-bottom: 5px; }
+          .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .showAddFuBiaoTi a {
+            text-decoration: none; }
+            .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .showAddFuBiaoTi a:hover {
+              text-decoration: none; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .dati-box span {
+          position: absolute;
+          height: 34px;
+          line-height: 34px; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .dati-box input {
+          width: 90%;
+          margin-left: 30px; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .fenshu-box span {
+          position: absolute;
+          height: 34px;
+          line-height: 34px; }
+        .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .fenshu-box input {
+          width: 80%;
+          margin-left: 30px; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .btn {
         margin: 10px 10px 0 0; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner input {
@@ -6314,7 +6338,8 @@ a.add-btn:hover span {
   right: 10px; }
   .zujuanWrapper .back-to-zujuan button {
     float: right;
-    margin-top: 5px;
+    margin-top: 15px;
+    margin-left: 10px;
     font-size: 12px; }
 .zujuanWrapper .test-list-wrap {
   margin-top: 50px; }

@@ -67,6 +67,9 @@ body {
 .wp100 {
   @include width(100%);
 }
+.mt5 {
+  margin-top: 5px;
+}
 .mt15 {
   margin-top: 15px;
 }
@@ -1345,8 +1348,9 @@ a.add-btn:hover span {
         color: #000;
         .auto-make-paper{
           width: 100%;
-          .auto-make-paper-btn{
+          .btn{
             margin-top: 15px;
+            margin-left: 10px;
           }
         }
         .table-tixing{
@@ -1601,6 +1605,37 @@ a.add-btn:hover span {
           overflow-y: scroll;
           height: 310px;
           padding: 10px;
+          .showAddFuBiaoTi{
+            padding-bottom: 5px;
+            a{
+              text-decoration: none;
+              &:hover{
+                text-decoration: none;
+              }
+            }
+          }
+          .dati-box{
+            span{
+              position: absolute;
+              height: 34px;
+              line-height: 34px;
+            }
+            input{
+              width: 90%;
+              margin-left: 30px;
+            }
+          }
+          .fenshu-box{
+            span{
+              position: absolute;
+              height: 34px;
+              line-height: 34px;
+            }
+            input{
+              width: 78%;
+              margin-left: 35px;
+            }
+          }
         }
         .btn{
           margin: 10px 10px 0 0;
@@ -1655,7 +1690,8 @@ a.add-btn:hover span {
     right: 10px;
     button{
       float: right;
-      margin-top: 5px;
+      margin-top: 15px;
+      margin-left: 10px;
       font-size: 12px;
     }
   }
