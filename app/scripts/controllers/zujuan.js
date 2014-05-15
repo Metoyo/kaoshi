@@ -328,7 +328,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               distNum = $('.sliderItemInner').width()/maxWidth; //得到难度系数
               $('.coefft').html(distNum.toFixed(2));
-              autoMakePaperData.shuju.NANDU = distNum.toFixed(2) ? distNum.toFixed(2) : '0.5'; //为自动组卷难度赋值
+              autoMakePaperData.shuju.NANDU = distNum.toFixed(2) ? distNum.toFixed(2) : 0.5; //为自动组卷难度赋值
             }
 
             //停止事件
@@ -649,6 +649,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             });
             txtmLength = autoMakePaperData.shuju.TIXING.length;
             autoMakePaperData.shuju.ZHISHIDIAN = selectZsd;
+            autoMakePaperData.shuju.NANDU = autoMakePaperData.shuju.NANDU ? autoMakePaperData.shuju.NANDU : 0.5;
             if(autoMakePaperData.shuju.NANDU){
               if(autoMakePaperData.shuju.ZHISHIDIAN){
                 if(autoMakePaperData.shuju.TIXING.length){
