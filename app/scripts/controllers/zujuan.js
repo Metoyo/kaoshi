@@ -145,7 +145,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
 
 
           /**
-           * 初始化是DOM元素的隐藏和显示
+           * 初始化是DOM元素的隐藏和显示//
            */
           $scope.keMuList = true; //科目选择列表内容隐藏
           $scope.dgListBox = true; //大纲选择列表隐藏
@@ -969,7 +969,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 试卷预览代码
            */
           $scope.shijuanPreview = function(){
+            _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+              if(!mbdt.TIMUARR.length){
+                mubanData.shuju.MUBANDATI.splice(idx, 1);
+              }
+            });
             $scope.mubanData = mubanData;
+
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;

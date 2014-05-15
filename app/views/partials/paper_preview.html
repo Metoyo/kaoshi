@@ -1,12 +1,4 @@
 <div class="paper-content">
-    <!--<div class="back-to-paper-list" ng-show="baocunshijuanBtn">-->
-        <!--<button type="button" class="btn btn-danger" ng-click="showPaperList()">返回试卷列表</button>-->
-    <!--</div>-->
-    <!--<div>-->
-        <!--<button type="button" class="btn btn-danger" ng-click="dropMakePaper()">-->
-            <!--放弃本次组卷-->
-        <!--</button>-->
-    <!--</div>-->
     <div class="back-to-paper-list">
         <button type="button" class="btn btn-danger" ng-click="showPaperList()"
                 ng-show="shijuanData.shuju.SHIJUAN_ID">返回试卷列表</button>
@@ -21,9 +13,9 @@
                 {{ shijuanData.shuju.SHIJUANMINGCHENG || 'XXX试卷'}}
             </span>
         </h1>
-        <h1 class="paper-sub-title text-center hover-style" title="点击设置">
+        <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-show="shijuanData.shuju.FUBIAOTI">
             <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_fbt_input')">
-                {{ shijuanData.shuju.FUBIAOTI || '试卷副标题'}}
+                {{ shijuanData.shuju.FUBIAOTI}}
             </span>
         </h1>
         <div class="attention hover-style" title="点击设置">
@@ -36,7 +28,7 @@
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
         </div>
         <div class="shijuantimu-list" ng-show="sjPreview">
-            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" ng-show="mbdt.TIMUARR.length">
+            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
                 <div class="mubandati">
                     <div class="dati-name-box" title="点击设置大题名称"
                          ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
