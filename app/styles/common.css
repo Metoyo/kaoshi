@@ -5437,7 +5437,8 @@ a.add-btn:hover span {
     font-weight: bold;
     margin-bottom: 5px; }
   .testList .item-tigan {
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    line-height: 24px; }
   .testList .item-sub-title {
     font-size: 12px;
     width: 100%; }
@@ -5471,7 +5472,8 @@ a.add-btn:hover span {
     .testList .item-cont .item-tizhi-wrap {
       margin-bottom: 5px; }
       .testList .item-cont .item-tizhi-wrap .item-tizhi {
-        margin-bottom: 5px; }
+        margin-bottom: 5px;
+        line-height: 20px; }
 
 /* test list styls end*/
 /*edit wrap styles begin*/
@@ -6296,8 +6298,8 @@ a.add-btn:hover span {
           height: 34px;
           line-height: 34px; }
         .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .fenshu-box input {
-          width: 80%;
-          margin-left: 30px; }
+          width: 78%;
+          margin-left: 35px; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .btn {
         margin: 10px 10px 0 0; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner input {

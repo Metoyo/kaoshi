@@ -36,7 +36,7 @@
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
         </div>
         <div class="shijuantimu-list" ng-show="sjPreview">
-            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
+            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" ng-show="mbdt.TIMUARR.length">
                 <div class="mubandati">
                     <div class="dati-name-box" title="点击设置大题名称"
                          ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
@@ -74,9 +74,9 @@
                         </h5>
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
-                                <div class="item-score" ng-click="sj_item_score = false">
-                                    {{$index + 1}}、{{ tmd.TIGAN.tiGan }}
-                                    （本小题 {{tmd.xiaotiScore && tmd.xiaotiScore > 0 ? tmd.xiaotiScore : 'X'}} 分）
+                                <div class="item-score" ng-click="sj_item_score = false"
+                                     ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan + '（本小题'
+                                     + (tmd.xiaotiScore && tmd.xiaotiScore > 0 ? tmd.xiaotiScore : 'X') + '分）'">
                                 </div>
                                 <div class="sj-edit-box" ng-hide="sj_item_score">
                                     <div class="sj-edit-box-inner">
@@ -92,8 +92,8 @@
                                 </div>
                             </h3>
                             <div class="item-tizhi-wrap">
-                                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong">
-                                    {{letterArr[$index]}}.{{tz}}
+                                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong"
+                                   ng-bind-html="letterArr[$index] + '.' + tz">
                                 </p>
                             </div>
                         </div>
@@ -113,8 +113,8 @@
                     <div class="paper-info-edit">
                         <div class="row">
                             <label>试卷主标题：</label>
-                            <input type="text" ng-model="shijuanData.shuju.SHIJUANMINGCHENG" placeholder="XXX试卷"
-                                   class="sj_dt_input form-control"/>
+                            <input type="text" class="form-control sj_dt_input"
+                                   ng-model="shijuanData.shuju.SHIJUANMINGCHENG" placeholder="XXX试卷"/>
                         </div>
                         <div class="row showAddFuBiaoTi" ng-init="showAddFuBiaoTi = false">
                             <a href ng-click="showAddFuBiaoTi = !showAddFuBiaoTi" ng-hide="showAddFuBiaoTi">
@@ -127,12 +127,12 @@
                         </div>
                         <div class="row" ng-show="showAddFuBiaoTi">
                             <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" placeholder="试卷副标题"
-                                   class="sj_fbt_input form-control"/>
+                                   class="form-control sj_fbt_input"/>
                         </div>
                         <div class="row mt5">
                             <label>导语：</label>
                             <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5"  placeholder="导语"
-                                      class="sj_dy_input form-control">
+                                      class="form-control sj_dy_input">
                             </textarea>
                         </div>
                     </div>

@@ -1068,7 +1068,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.editMuBanDaTiNameAndScore = function(styl){
             var focusTarget = '.' + styl;
             $scope.shijuan_edit = true;
-            $(focusTarget).prop('autofocus', 'true');
+            if($scope.shijuan_edit){
+              $(focusTarget).prop('autofocus', 'true');
+            }
           };
 
           /**
