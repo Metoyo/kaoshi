@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$window','$document',
         function ($rootScope, $scope, $location, $http, urlRedirect, $q, $window, $document) { // 002
           /**
-           * 操作title
+           * 操作title、、
            */
           $rootScope.pageName = "组卷"; //page title
           $rootScope.dashboard_shown = true;

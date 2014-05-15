@@ -1,6 +1,18 @@
 <div class="paper-content">
-    <div class="back-to-paper-list" ng-show="baocunshijuanBtn">
-        <button type="button" class="btn btn-danger" ng-click="showPaperList()">返回试卷列表</button>
+    <!--<div class="back-to-paper-list" ng-show="baocunshijuanBtn">-->
+        <!--<button type="button" class="btn btn-danger" ng-click="showPaperList()">返回试卷列表</button>-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<button type="button" class="btn btn-danger" ng-click="dropMakePaper()">-->
+            <!--放弃本次组卷-->
+        <!--</button>-->
+    <!--</div>-->
+    <div class="back-to-paper-list">
+        <button type="button" class="btn btn-danger" ng-click="showPaperList()"
+                ng-show="shijuanData.shuju.SHIJUAN_ID">返回试卷列表</button>
+        <button type="button" class="btn btn-danger" ng-click="dropMakePaper()" ng-hide="shijuanData.shuju.SHIJUAN_ID">
+            放弃本次组卷
+        </button>
     </div>
     <form name="shijuan">
         <h1 class="paper-title text-center hover-style" title="点击设置">
@@ -138,7 +150,8 @@
         </div>
     </form>
     <div class="save-paper-box" ng-show="baocunshijuanBtn">
-        <button type="button" class="btn btn-primary" ng-click="makeDaTiKa()">生成答题卡</button>
+        <button type="button" class="btn btn-primary" ng-click="makeDaTiKa()"
+                ng-show="shijuanData.shuju.SHIJUAN_ID">生成答题卡</button>
         <button type="button" class="btn btn-primary" ng-click="savePaper()">保存试卷</button>
     </div>
 </div>

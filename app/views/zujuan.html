@@ -24,7 +24,7 @@ paper_auto_form: paper_auto_form}">
                 <tr ng-repeat="kmtx in kmtxList">
                     <td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>
                     <td>{{kmtx.itemsNum}}</td>
-                    <td>{{kmtx.txPercentNum}}</td>
+                    <td>{{kmtx.txPercentNum == 'NaN%' ? '0%' : kmtx.txPercentNum }}</td>
                     <td>{{kmtx.datiScore}}</td>
                     <td class="deleteBtn">
                         <a href="javascript:void(0)" ng-click="deleteDaTiArr(kmtx.TIXING_ID)">
@@ -45,20 +45,18 @@ paper_auto_form: paper_auto_form}">
                 <tr ng-repeat="ndtd in nanduTempData">
                     <td class="text-left">{{ndtd.nanduName}}</td>
                     <td>{{ndtd.nanduCount.length}}</td>
-                    <td>{{ndtd.ndPercentNum}}</td>
+                    <td>{{ndtd.ndPercentNum == 'NaN%' ? '0%' : ndtd.ndPercentNum}}</td>
                     <td></td>
                 </tr>
             </table>
         </div>
         <div class="sj-preview-btns">
-            <button type="button" class="btn btn-success" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
+            <button type="button" class="btn btn-primary" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
                 试卷预览
             </button>
-            <button type="button" class="btn btn-success" ng-click="dropMakePaper()" ng-show="fangqibencizujuanBtn">
-                放弃本次组卷
-            </button>
-            <!--<button type="button" class="btn btn-success" >组卷</button>-->
-            <!--<button type="button" class="btn btn-success" ng-click="savePaper()">保存试卷</button>-->
+            <!--<button type="button" class="btn btn-success" ng-click="dropMakePaper()" ng-show="fangqibencizujuanBtn">-->
+                <!--放弃本次组卷-->
+            <!--</button>-->
             <a href="javascript:void(0)" target="_blank"></a>
         </div>
     </div>

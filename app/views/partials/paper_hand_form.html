@@ -39,9 +39,11 @@
             </ul>
         </div>
     </div>
-    <div class="back-to-zujuan pull-left hide">
-        <button type="button" class="btn btn-success" ng-click="backToZjHome()">返回组卷页面</button>
-        <button type="button" class="btn btn-success">将本页题目全部加入试卷</button>
+    <div class="back-to-zujuan pull-left">
+        <button type="button" class="btn btn-danger" ng-click="backToZjHome()">返回组卷页面</button>
+        <button type="button" class="btn btn-danger" ng-click="dropMakePaper()">
+            放弃本次组卷
+        </button>
     </div>
 </div>
 <!--题型和难度DOM元素， 结束-->
@@ -53,13 +55,13 @@
     <ul class="list-unstyled testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <h3 class="item-title text-right" ng-hide="isreplacetm">
-                <button type="button" class="btn btn-success" ng-click="addToPaper(tm)"
+                <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)"
                         ng-hide="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') >=0">加入试卷</button>
-                <button type="button" class="btn btn-danger" ng-click="removeOutPaper(tm)"
+                <button type="button" class="btn btn-default" ng-click="removeOutPaper(tm)"
                         ng-show="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') >=0">移出试卷</button>                
             </h3>
             <h3 class="item-title text-right" ng-show="isreplacetm">
-                <button type="button" class="btn btn-success" ng-click="replaceCurrentTM(tm)"
+                <button type="button" class="btn btn-primary" ng-click="replaceCurrentTM(tm)"
                 ng-show="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') < 0">替换</button>
                 <button type="button" class="btn"
                 ng-hide="selectTestStr.indexOf('selectTest' + tm.TIMU_ID  + ',') < 0">已选</button>
