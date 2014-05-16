@@ -158,9 +158,34 @@
             </div>
         </div>
     </form>
+    <div class="sj-edit-box" ng-show="isSavePaperConfirm">
+        <div class="sj-edit-box-inner">
+            <table class="table-bordered paperConfirmTable">
+                <tr>
+                    <th>题型</th>
+                    <th>数量</th>
+                    <th>分数</th>
+                </tr>
+                <tr ng-repeat="mbdtInfo in mubanData.shuju.MUBANDATI track by $index">
+                    <td ng-bind="mbdtInfo.DATIMINGCHENG"></td>
+                    <td ng-bind="mbdtInfo.TIMUARR.length"></td>
+                    <td ng-bind="mbdtInfo.datiScore"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        总分：{{paperScore}}分
+                    </td>
+                </tr>
+            </table>
+            <div class="btnBox">
+                <button type="button" class="btn btn-primary" ng-click="savePaper()">确定</button>
+                <button type="button" class="btn btn-danger" ng-click="cancelSavePaper()">取消</button>
+            </div>
+        </div>
+    </div>
     <div class="save-paper-box" ng-show="baocunshijuanBtn">
         <button type="button" class="btn btn-primary" ng-click="makeDaTiKa()"
                 ng-show="shijuanData.shuju.SHIJUAN_ID">生成答题卡</button>
-        <button type="button" class="btn btn-primary" ng-click="savePaper()">保存试卷</button>
+        <button type="button" class="btn btn-primary" ng-click="savePaperConfirm()">保存试卷</button>
     </div>
 </div>

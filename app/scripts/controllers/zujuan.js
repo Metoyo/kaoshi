@@ -162,6 +162,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.txSelectenIdx = 0; //选择题型的索引
           $scope.ndSelectenIdx = 0; //选择难度的索引
+          $scope.isSavePaperConfirm = false; //保存试卷前的确认
 //          $scope.focusMe = false;
 
           /**
@@ -1111,13 +1112,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 保存试卷
+           * 保存试卷前的确认//
            */
-          $scope.savePaper = function(){
+          $scope.savePaperConfirm = function(){
             var fenZhiIsNull = 0;
             shijuanData.shuju.SHIJUAN_TIMU = [];
-
+            $scope.paperScore = 0;
             _.each(mubanData.shuju.MUBANDATI, function(dati, idx, lst){
+              $scope.paperScore += parseInt(dati.datiScore);
               _.each(dati.TIMUARR, function(tm, subidx, lst){
                 var  shijuanTimu = { //重组试卷数据
                   TIMU_ID: '',
@@ -1143,35 +1145,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(!fenZhiIsNull){// 22 检查每小题是否有分值 开始
                 //提交数据
                 if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
-                  $http.post(xgsjUrl, shijuanData).success(function(data){
-                    if(data.result){
-                      //更新数据模板
-                      var lsmbIdLenght = $rootScope.session.lsmb_id.length;
-                      mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
-                      $http.post(xgmbUrl, mubanData).success(function(data){
-                        if(data.result){
-                          for(var i = 0; i < lsmbIdLenght; i++){
-                            if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
-                              $rootScope.session.lsmb_id.splice(i, 1);
-                              deleteTempTemp(); //删除没用的其他目标
-                            }
-                          }
-                          $scope.showPaperList();
-                          $scope.shijuanyulanBtn = false; //试卷预览的按钮
-                          $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
-                          $scope.baocunshijuanBtn = false; //保存试卷的按钮
-                          alert('恭喜你！试卷保存成功！');
-                        }
-                      }).error(function(err){
-                        alert(err);
-                      });
-
-                    }
-
-                  }).error(function(err){
-                    alert(err);
-                  });
+                  $scope.isSavePaperConfirm = true;
                 }
+
                 else{ //33
                   alert('请检查试卷的完整性！');
                 }
@@ -1183,6 +1159,48 @@ define(['jquery', 'underscore', 'angular', 'config'],
             else{ //11 检查试卷名称
               alert('给我起个名字吧 ^ _ ^');
             }
+          };
+
+          /**
+           * 保存试卷
+           */
+          $scope.savePaper = function(){
+            $http.post(xgsjUrl, shijuanData).success(function(data){
+              if(data.result){
+                //更新数据模板
+                var lsmbIdLenght = $rootScope.session.lsmb_id.length;
+                mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
+                $http.post(xgmbUrl, mubanData).success(function(data){
+                  if(data.result){
+                    for(var i = 0; i < lsmbIdLenght; i++){
+                      if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
+                        $rootScope.session.lsmb_id.splice(i, 1);
+                        deleteTempTemp(); //删除没用的其他目标
+                      }
+                    }
+                    $scope.showPaperList();
+                    $scope.shijuanyulanBtn = false; //试卷预览的按钮
+                    $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+                    $scope.baocunshijuanBtn = false; //保存试卷的按钮
+                    $scope.isSavePaperConfirm = false;
+                    alert('恭喜你！试卷保存成功！');
+                  }
+                }).error(function(err){
+                  alert(err);
+                });
+
+              }
+
+            }).error(function(err){
+              alert(err);
+            });
+          };
+
+          /**
+           * 取消保存试卷//
+           */
+          $scope.cancelSavePaper = function(){
+            $scope.isSavePaperConfirm = false;
           };
 
           /**

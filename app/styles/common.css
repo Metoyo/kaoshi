@@ -6381,6 +6381,16 @@ a.add-btn:hover span {
       font-size: 12px;
       height: 5%;
       line-height: 30px; }
+.zujuanWrapper .paperConfirmTable {
+  width: 96%;
+  margin: 20px 0 0 2%;
+  margin-bottom: 20px; }
+  .zujuanWrapper .paperConfirmTable th {
+    text-align: center;
+    padding: 5px; }
+  .zujuanWrapper .paperConfirmTable td {
+    text-align: center;
+    padding: 5px; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px; }

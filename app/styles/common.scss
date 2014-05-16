@@ -1750,6 +1750,19 @@ a.add-btn:hover span {
       }
     }
   }
+  .paperConfirmTable{
+    width: 96%;
+    margin: 20px 0 0 2%;
+    margin-bottom: 20px;
+    th{
+      text-align: center;
+      padding: 5px;
+    }
+    td{
+      text-align: center;
+      padding: 5px;
+    }
+  }
 }
 .paper_hand_form{
   .contentInner{
