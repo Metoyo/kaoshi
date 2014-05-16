@@ -1352,7 +1352,7 @@ a.add-btn:hover span {
           width: 100%;
           .btn{
             margin-top: 15px;
-            margin-left: 10px;
+            margin-left: 5px;
           }
         }
         .table-tixing{
@@ -1374,6 +1374,26 @@ a.add-btn:hover span {
           }
           .td-total{
             text-align: right;
+          }
+        }
+        .chooseTiXingNanDu{
+          .row{
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0 10px 0;
+            .tixing-name{
+              line-height: 24px;
+            }
+            .nandu-dist{
+              padding-left: 0;
+              padding-right: 0;
+            }
+            input{
+              width: 36px;
+              text-align: center;
+              border-radius: 3px;
+              box-shadow: none;
+              border: 1px solid #ccc;
+            }
           }
         }
         .nandu-dist{

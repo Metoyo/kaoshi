@@ -6093,7 +6093,7 @@ a.add-btn:hover span {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .btn {
           margin-top: 15px;
-          margin-left: 10px; }
+          margin-left: 1px; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {
@@ -6109,6 +6109,20 @@ a.add-btn:hover span {
           text-align: left; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing .td-total {
           text-align: right; }
+      .zujuanWrapper .contentInner .popupWrap .chooseCondition .chooseTiXingNanDu .row {
+        border-bottom: 1px solid #ccc;
+        padding: 20px 0 10px 0; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .chooseTiXingNanDu .row .tixing-name {
+          line-height: 24px; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .chooseTiXingNanDu .row .nandu-dist {
+          padding-left: 0;
+          padding-right: 0; }
+        .zujuanWrapper .contentInner .popupWrap .chooseCondition .chooseTiXingNanDu .row input {
+          width: 36px;
+          text-align: center;
+          border-radius: 3px;
+          box-shadow: none;
+          border: 1px solid #ccc; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 {
         font-size: 14px; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 em {

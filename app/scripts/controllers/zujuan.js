@@ -281,11 +281,20 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 难度选择时的拖拽
            */
-          var resize = function(el, dragItem, reductionItem, minWidth, maxWidth){
+          $scope.resize = function(idx){
             //初始化参数
-            var els = document.getElementById(dragItem).style,
+            var dragBtn = 'sliderBtn' + idx,
+              dragItem = 'sliderItem' + idx,
+              showBox = 'coefft' + idx,
+              greenBox = 'sliderItemInner' + idx,
+              el = document.getElementById(dragBtn),
+              els = document.getElementById(dragItem).style,
               x = 0, //鼠标的 X 和 Y 轴坐标
-              dragItemClass = '#' + dragItem, //得到需要元素的class
+              dragItemClass = '#' + dragItem, //得到需要元素的id
+              showBoxClass = '.' + showBox, //时时显示难度的容器
+              greenBoxClass = '.' + greenBox, //绿色条的长度
+              minWidth = 0,
+              maxWidth = 220,
               distNum = 100;
 
             $(el).mousedown(function(e) {
@@ -305,7 +314,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
                 );
               //防止默认事件发生
-
               e.preventDefault();
             });
 
@@ -315,19 +323,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(subDbWidth < minWidth - 1){
                 $(document).unbind('mousemove', mouseMove);
                 els.width = minWidth + 'px';
-                $(reductionItem).css('padding-left',els.width);
               }
               if(subDbWidth >= minWidth - 1 && subDbWidth <= maxWidth + 4){
                 els.width = e.clientX - x + 'px';
-                $(reductionItem).css('padding-left',els.width);
               }
               if(subDbWidth > maxWidth + 4){
-                $(reductionItem).css('padding-left',els.width);
                 els.width = maxWidth + 'px';
                 $(document).unbind('mousemove', mouseMove);
               }
-              distNum = $('.sliderItemInner').width()/maxWidth; //得到难度系数
-              $('.coefft').html(distNum.toFixed(2));
+              distNum = $(greenBoxClass).width()/maxWidth; //得到难度系数
+              console.log(distNum);
+              $(showBoxClass).html(distNum.toFixed(2));
               autoMakePaperData.shuju.NANDU = distNum.toFixed(2) ? distNum.toFixed(2) : 0.5; //为自动组卷难度赋值
             }
 
@@ -345,7 +351,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 );
             }
           };
-          resize(document.getElementById('sliderBtn'), 'sliderItem','', 0, 220);//初始化拖拽
 
           /**
            * 获得难度分布的数组
@@ -613,6 +618,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.autoMakePaper = function(){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             promise.then(function(){
+              $scope.isAutoMakePaperDetailSetShow = false; //自动组卷加载的时候，详细设置隐藏
               autoMakePaperKmtx = $scope.kmtxList;
               _.each(autoMakePaperKmtx, function(aKmtx, idx, lst){
                 aKmtx.tmNum = '';
@@ -628,7 +634,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 提交自动数据的参数
+           * 提交自动数据的参数,难度为整张试卷难度
            */
           var countnum, txtmLength;
           $scope.submitAutoPaperData = function(){
@@ -738,6 +744,26 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }
           };
 
+          /**
+           * 提交自动数据的参数,单个题型难度设置
+           */
+          $scope.submitDistAutoPaperData = function(){
+
+          };
+
+          /**
+           * 自动组卷详细设置//
+           */
+          $scope.autoMakePaperDetailSet = function(){
+            $scope.isAutoMakePaperDetailSetShow = true;
+          };
+
+          /**
+           * 自动组卷详细设置//
+           */
+          $scope.cancelAutoMakePaperDetailSet = function(){
+            $scope.isAutoMakePaperDetailSetShow = false;
+          };
 
           /**
            * 由收到组卷返回的组卷的首页
