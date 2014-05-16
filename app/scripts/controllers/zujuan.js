@@ -198,7 +198,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 txdata.itemsNum = 0;
               });
               kmtxListLength = kmtx.length; //科目题型的长度
-              console.log($scope.kmtxList);
             }
             else{
               alert('获取查询科目题型失败！');
@@ -405,7 +404,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
               }
             }
-//            console.log(distArr);
           };
 
           /**
@@ -619,9 +617,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 aKmtx.tmNum = '';
               });
               $scope.ampKmtx = autoMakePaperKmtx;
-//              console.log('mubanData:');
-//              console.log(mubanData);
-
               $('.popupWrap').css('left','-260px').animate({
                 left: '341px'
               }, 500, function() {
@@ -658,8 +653,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       alert(sjData.error);
                     }
                     else{
-                      console.log(sjData);
-
                       var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
                       //将自动组卷生成的数据，添加到试卷模板中 TIXING_TIMU  MUBANDATI_ID
                       _.each(sjData.TIXING_TIMU, function(value, key, list){
@@ -722,8 +715,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                           }
                         }
                       });
-                      console.log('txtmLength:' + txtmLength);
-                      console.log('countnum:' + countnum);
                       if(countnum == txtmLength){
                         $scope.shijuanPreview();
                         $scope.shijuanyulanBtn = true; //试卷预览的按钮
@@ -969,13 +960,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 试卷预览代码
            */
           $scope.shijuanPreview = function(){
+            var mbdtArr = []; //定义一个空的数组用来存放模板大题
+            //数据为空的模板大题
             _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
-              if(!mbdt.TIMUARR.length){
-                mubanData.shuju.MUBANDATI.splice(idx, 1);
+              if(mbdt.TIMUARR.length){
+                mbdtArr.push(mbdt);
               }
             });
+            mubanData.shuju.MUBANDATI = mbdtArr;
             $scope.mubanData = mubanData;
-
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
@@ -1080,7 +1073,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 取消编辑试卷信息
+           * 取消编辑试卷信息//
            */
           $scope.cancelEditPaper = function(){
             $scope.shijuan_edit = false;
@@ -1199,7 +1192,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
             deletelsmbData.muban_id = $rootScope.session.lsmb_id;
             if(deletelsmbData.muban_id.length){
               $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
-                console.log(data);
                 if(data.result){
                   $rootScope.session.lsmb_id = [];
                   deletelsmbData.muban_id = [];
@@ -1363,7 +1355,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                 $scope.baocunshijuanBtn = true; //保存试卷的按钮
                 paperDetailData = mubanData; //用于答题卡赋值
-                console.log(mubanData);
               }
             }).error(function(err){
               alert(err);
