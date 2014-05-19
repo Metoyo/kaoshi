@@ -84,7 +84,7 @@
                                 </div>
                             </h3>
                             <div class="item-tizhi-wrap">
-                                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong"
+                                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index"
                                    ng-bind-html="letterArr[$index] + '.' + tz">
                                 </p>
                             </div>
