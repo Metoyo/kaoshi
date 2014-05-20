@@ -6093,7 +6093,7 @@ a.add-btn:hover span {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .btn {
           margin-top: 15px;
-          margin-left: 1px; }
+          margin-left: 5px; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .table-tixing th {
@@ -6335,9 +6335,11 @@ a.add-btn:hover span {
   .zujuanWrapper .paper-content .back-to-paper-list {
     position: fixed;
     right: 10px;
-    bottom: 10px; }
+    bottom: 10px;
+    z-index: 100; }
   .zujuanWrapper .paper-content .back-to-paper-list {
-    top: 10px; }
+    top: 10px;
+    height: 60px; }
 .zujuanWrapper .fixed-top {
   position: fixed;
   top: 0;
@@ -6359,8 +6361,13 @@ a.add-btn:hover span {
     font-size: 12px; }
 .zujuanWrapper .test-list-wrap {
   margin-top: 50px; }
-.zujuanWrapper .paper-list li a {
-  line-height: 24px; }
+.zujuanWrapper .paper-list {
+  padding: 10px 15px; }
+  .zujuanWrapper .paper-list table th {
+    text-align: center;
+    border-bottom: 0; }
+  .zujuanWrapper .paper-list table tfoot td {
+    text-align: center; }
 .zujuanWrapper .da-ti-ka-wrap {
   padding: 0 50px; }
   .zujuanWrapper .da-ti-ka-wrap .daTiKa {

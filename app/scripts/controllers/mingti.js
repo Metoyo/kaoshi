@@ -516,6 +516,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
+          console.log(dataTpl);
           if(selectZsd.length && tznrIsNull && dataTpl.shuju.NANDU_ID.length &&
             dataTpl.shuju.DAAN.length && dataTpl.shuju.TIGAN.length ){
             $http.post(xgtmUrl, dataTpl).success(function(data){

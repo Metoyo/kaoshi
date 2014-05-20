@@ -1689,9 +1689,11 @@ a.add-btn:hover span {
       position: fixed;
       right: 10px;
       bottom: 10px;
+      z-index: 100;
     }
     .back-to-paper-list{
       top: 10px;
+      height: 40px;
     }
   }
   .fixed-top{
@@ -1721,9 +1723,16 @@ a.add-btn:hover span {
     margin-top: 50px;
   }
   .paper-list{
-    li{
-      a{
-        line-height: 24px;
+    padding: 10px 15px;
+    table{
+      th{
+        text-align: center;
+        border-bottom: 0;
+      }
+      tfoot{
+        td{
+          text-align: center;
+        }
       }
     }
   }

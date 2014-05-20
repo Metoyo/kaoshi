@@ -163,7 +163,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.txSelectenIdx = 0; //选择题型的索引
           $scope.ndSelectenIdx = 0; //选择难度的索引
           $scope.isSavePaperConfirm = false; //保存试卷前的确认
-//          $scope.focusMe = false;
+          $scope.showBackToPaperListBtn = false; //加载组卷页面是，返回试卷列表页面隐藏
 
           /**
            * 获得大纲数据
@@ -601,6 +601,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.getTiXingId(txid);
             $scope.txSelectenIdx = txid ? txid : 0;
             $scope.txTpl = 'views/partials/paper_hand_form.html';
+          };
+
+          /**
+           * 点击添加新试卷，显示组卷列表
+           */
+          $scope.showZuJuanPage = function(){
+            $scope.showBackToPaperListBtn = true;
+            $scope.txTpl = 'views/partials/paper_preview.html';
           };
 
           /**
@@ -1424,7 +1432,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 放弃组卷//
+           * 放弃组卷
            */
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量
@@ -1434,22 +1442,33 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           *  查询试卷列表的函数，组卷页面加载时，查询数据
+           */
+          var qryShiJuanList = function(isBackToPaperList){
+              $http.get(qryCxsjlbUrl).success(function(data){
+                if(data.length){
+                  $scope.paperListData = data;
+                  if(isBackToPaperList){
+                    $scope.totalSelectedItmes = 0; //已选试题的总数量
+                    $scope.showBackToMakePaperBtn = true;
+                    $scope.showBackToPaperListBtn = false; //返回试卷列表
+                    $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
+                  }
+                }
+              }).error(function(err){
+                alert(err);
+              });
+            };
+          qryShiJuanList();
+
+          /**
            * 查看试卷列表
            */
-          $scope.showPaperList = function(){
+          $scope.showPaperList = function(isBackToPaperList){
             deleteTempTemp();
             clearData();
             restoreKmtxDtscore();
-            $http.get(qryCxsjlbUrl).success(function(data){
-              if(data.length){
-                $scope.paperListData = data;
-                $scope.totalSelectedItmes = 0; //已选试题的总数量
-                $scope.showBackToMakePaperBtn = true;
-                $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
-              }
-            }).error(function(err){
-              alert(err);
-            });
+            qryShiJuanList(isBackToPaperList);
           };
 
           /**
@@ -1548,6 +1567,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }).error(function(err){
               alert(err);
             });
+          };
+
+          /**
+           * 删除试卷
+           */
+          $scope.deleteThisPaper = function(papaer){
+
           };
 
           /**
