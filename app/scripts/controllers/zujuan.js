@@ -1294,13 +1294,35 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 保存试卷前的确认//
            */
           $scope.savePaperConfirm = function(){
-            var fenZhiIsNull = 0;
+            console.log(mubanData);
+            var nanDuArr = {
+                paperNanDu: '',
+                daTiNanDuArr:[]
+              },
+              fenZhiIsNull = 0,
+              muBanDaTiLen = mubanData.shuju.MUBANDATI.length,
+              ppNanDuAdd = 0; //定义一个试卷难度相加字段
             shijuanData.shuju.SHIJUAN_TIMU = [];
             $scope.paperScore = 0;
+
             _.each(mubanData.shuju.MUBANDATI, function(dati, idx, lst){
-              $scope.paperScore += parseInt(dati.datiScore);
+              $scope.paperScore += parseInt(dati.datiScore); //将试卷分数转换为整形
+              var nanDuObj = { //定义一个存放难度object对象
+                  mubandati_id: dati.MUBANDATI_ID,
+                  nanDu: ''
+                },
+                thisDaTiTiMuArrLen = dati.TIMUARR.length, //本大题的题目长度
+                dtNanDuAdd = 0; //定义一个难度求和的字段
               _.each(dati.TIMUARR, function(tm, subidx, lst){
-                var  shijuanTimu = { //重组试卷数据
+                //统计小题难度
+                dtNanDuAdd += parseInt(tm.NANDU_ID)/5;
+                if(subidx == thisDaTiTiMuArrLen - 1 ){
+                  nanDuObj.nanDu = (dtNanDuAdd/thisDaTiTiMuArrLen).toFixed(2);
+                  ppNanDuAdd += dtNanDuAdd/thisDaTiTiMuArrLen;
+                  nanDuArr.daTiNanDuArr.push(nanDuObj);
+                }
+                //重组试卷数据
+                var  shijuanTimu = {
                   TIMU_ID: '',
                   MUBANDATI_ID: '',
                   WEIZHIXUHAO: '',
@@ -1318,6 +1340,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
                 shijuanData.shuju.SHIJUAN_TIMU.push(shijuanTimu);
               });
+              if(idx == muBanDaTiLen - 1){
+                nanDuArr.paperNanDu = (ppNanDuAdd/muBanDaTiLen).toFixed(2);
+                shijuanData.shuju.NANDU = nanDuArr;
+              }
             });
             if(shijuanData.shuju.SHIJUANMINGCHENG){ //11 检查试卷名称
 
@@ -1325,8 +1351,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 //提交数据
                 if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
                   $scope.isSavePaperConfirm = true;
+                  console.log(shijuanData);
                 }
-
                 else{ //33
                   alert('请检查试卷的完整性！');
                 }
