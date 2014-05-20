@@ -770,6 +770,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 haveTmNumLen ++;
               }
             });
+            //得到题型数量和难度的数组
             for(var i = 0; i < tiXingLen; i++){
               var distAutoMakePaperData = {
                 token: token,
@@ -779,7 +780,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 shuju:{}
               },
               subShuJu = {
-                NANDU: $scope.ampKmtx[i].tmNanDu,
+                NANDU: $scope.ampKmtx[i].tmNanDu ? $scope.ampKmtx[i].tmNanDu : 0.5,
                 ZHISHIDIAN: [],
                 TIXING: [{TIXING_ID: '', COUNT: ''}]
               };
@@ -798,9 +799,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
               }
             }
-            //得到正确的题目id
+            //得到正确的题目id和题目详情
             if(tiXingLenCount){
               tmIdsChoLen = distAutoMakePaperDataArr.length; //得到符合条件自动组卷的数据长度
+              //得到正确的题目id
               var getIdsFun = function(){
                 if(times < tmIdsChoLen){
                   $http.post(zidongzujuan, distAutoMakePaperDataArr[times]).success(function(data){
@@ -810,7 +812,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     else{
                       tiXingTiMuArr.push(data);
                       if(times == tmIdsChoLen -1){
-                        //得到调用数据的对象
+                        //得到调用数据（object格式）
                         _.each(tiXingTiMuArr, function(txtma, idx, lst){
                           _.each(txtma.TIXING_TIMU, function(value, key, list){
                             tiXingTiMuObj[key] = value;
@@ -831,7 +833,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                 shijuanData.shuju.SHIJUAN_TIMU.push(sjtm);
                               });
 
-                              //操作模板
+                              //得到具体的数据
                               (function(index, tiMuIds){
                                 var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tiMuIds.toString(); //查询详情url
                                 $http.get(qrytimuxiangqing).success(function(stdata){
@@ -850,13 +852,12 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                     nanduPercent(); //难度统计
 
                                     //判读是否执行完成
-                                    if(countnum == tiXingLen - 1){
+                                    if(countnum == tmIdsChoLen - 1){
                                       $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                                       $scope.baocunshijuanBtn = true; //保存试卷的按钮
-                                      backToZjHomeFun();
-                                      $scope.sjPreview = true;
-                                      $scope.shijuanyulanBtn = false;
+                                      $scope.shijuanPreview();
                                     }
+                                    countnum ++ ;
                                   }
                                   else{
                                     $scope.timudetails = null;
@@ -864,7 +865,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                 }).error(function(err){
                                   console.log(err);
                                 });
-                                countnum ++ ;
                               })(k, value);
 
                               addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
