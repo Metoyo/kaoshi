@@ -6,6 +6,7 @@ define([
     'services/urlredirect',
     'directives/passwordverify',
     'directives/bnslideshow',
+    'directives/hoverslide',
     'controllers/main',
     'controllers/renzheng',
     'controllers/nav',
@@ -23,7 +24,7 @@ define([
     'filters/examstatus',
     'filters/outputdaan',
     'config'
-   ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective,
+   ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
                 MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl,
                 KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,MylocaldatewithweekFilter, ExamstatusFilter,
                 OutputdaanFilter, config) {
@@ -48,6 +49,7 @@ define([
 'kaoshiApp.controllers.YuejuanCtrl',
 'kaoshiApp.directives.Bnslideshow',
 'kaoshiApp.filters.Outputdaan',
+'kaoshiApp.directives.Hoverslide',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

@@ -6339,7 +6339,7 @@ a.add-btn:hover span {
     z-index: 100; }
   .zujuanWrapper .paper-content .back-to-paper-list {
     top: 10px;
-    height: 60px; }
+    height: 40px; }
 .zujuanWrapper .fixed-top {
   position: fixed;
   top: 0;
@@ -6363,11 +6363,28 @@ a.add-btn:hover span {
   margin-top: 50px; }
 .zujuanWrapper .paper-list {
   padding: 10px 15px; }
-  .zujuanWrapper .paper-list table th {
-    text-align: center;
-    border-bottom: 0; }
-  .zujuanWrapper .paper-list table tfoot td {
-    text-align: center; }
+  .zujuanWrapper .paper-list ul {
+    margin-bottom: 0; }
+    .zujuanWrapper .paper-list ul li {
+      margin-top: -1px; }
+  .zujuanWrapper .paper-list table {
+    margin-bottom: 0; }
+    .zujuanWrapper .paper-list table th {
+      text-align: center;
+      border-bottom: 0; }
+    .zujuanWrapper .paper-list table td {
+      vertical-align: middle; }
+  .zujuanWrapper .paper-list .more-info {
+    display: none;
+    padding: 10px; }
+    .zujuanWrapper .paper-list .more-info h5 {
+      font-weight: bold; }
+    .zujuanWrapper .paper-list .more-info span {
+      margin-right: 10px; }
+  .zujuanWrapper .paper-list .paging {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: -1px; }
 .zujuanWrapper .da-ti-ka-wrap {
   padding: 0 50px; }
   .zujuanWrapper .da-ti-ka-wrap .daTiKa {

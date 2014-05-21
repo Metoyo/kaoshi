@@ -1724,16 +1724,36 @@ a.add-btn:hover span {
   }
   .paper-list{
     padding: 10px 15px;
+    ul{
+      margin-bottom: 0;
+      li{
+        margin-top: -1px;
+      }
+    }
     table{
+      margin-bottom: 0;
       th{
         text-align: center;
         border-bottom: 0;
       }
-      tfoot{
-        td{
-          text-align: center;
-        }
+      td{
+        vertical-align: middle;
       }
+    }
+    .more-info{
+      display: none;
+      padding: 10px;
+      h5{
+        font-weight: bold;
+      }
+      span{
+        margin-right: 10px;
+      }
+    }
+    .paging{
+      padding: 10px 0;
+      border-top: 1px solid #ddd;
+      margin-top: -1px;
     }
   }
   .da-ti-ka-wrap{
