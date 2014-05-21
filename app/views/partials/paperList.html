@@ -21,9 +21,19 @@
                     </a>
                 </td>
                 <td>
-                    {{pld.SHIJUAN_ID}}
+                    <span ng-repeat="dati in pld.TIXING_DATA">
+                        {{tiXingNameArr[dati.TIXING_ID -1]}}:{{dati.COUNT}}
+                    </span>
                 </td>
                 <td>
+                    <p ng-bind="pld.NANDU.paperNanDu">
+
+                    </p>
+                    <div>
+                        <span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">
+                            {{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}
+                        </span>
+                    </div>
                 </td>
                 <td>
                 </td>

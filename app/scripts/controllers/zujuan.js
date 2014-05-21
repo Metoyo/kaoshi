@@ -141,7 +141,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 TIXING: []
               }
             }, //自动组卷的数据格式
-            saveDaTiKaUrl = baseMtAPIUrl + 'make_datika'; //保存答题卡的url
+            saveDaTiKaUrl = baseMtAPIUrl + 'make_datika', //保存答题卡的url
+            qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷概要的基础URL
 
 
           /**
@@ -1471,15 +1473,27 @@ define(['jquery', 'underscore', 'angular', 'config'],
            *  查询试卷列表的函数，组卷页面加载时，查询数据
            */
           var qryShiJuanList = function(isBackToPaperList){
-              $http.get(qryCxsjlbUrl).success(function(data){
-                if(data.length){
-                  $scope.paperListData = data;
-                  if(isBackToPaperList){
-                    $scope.totalSelectedItmes = 0; //已选试题的总数量
-                    $scope.showBackToMakePaperBtn = true;
-                    $scope.showBackToPaperListBtn = false; //返回试卷列表
-                    $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
-                  }
+              $http.get(qryCxsjlbUrl).success(function(sjlb){
+                if(sjlb.length){
+                  var sjlbIdArr, qryShiJuanGaiYao;
+                  sjlbIdArr = _.map(sjlb, function(sj){
+                    return sj.SHIJUAN_ID;
+                  });
+                  qryShiJuanGaiYao = qryShiJuanGaiYaoBase + sjlbIdArr.toString();
+                  $http.get(qryShiJuanGaiYao).success(function(sjlbgy){
+                    if(sjlbgy.length){
+                      _.each(sjlbgy, function(sj, idx, lst){
+                        sj.NANDU = JSON.parse(sj.NANDU);
+                      });
+                      $scope.paperListData = sjlbgy;
+                      if(isBackToPaperList){
+                        $scope.totalSelectedItmes = 0; //已选试题的总数量
+                        $scope.showBackToMakePaperBtn = true;
+                        $scope.showBackToPaperListBtn = false; //返回试卷列表
+                        $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
+                      }
+                    }
+                  });
                 }
               }).error(function(err){
                 alert(err);
