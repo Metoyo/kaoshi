@@ -1164,7 +1164,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 均分大题的分值//
+           * 均分大题的分值
            */
           $scope.divideDatiScore = function(mbdt){
             var datiTotalScore = mbdt.datiScore, //本大题总分

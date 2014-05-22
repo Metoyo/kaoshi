@@ -42,7 +42,10 @@
                             <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
                             <span>小题，</span>
                         </p>
-                        <p>
+                        <p ng-hide="mbdt.datiScore">
+                            <a href="javascript:void(0)">点击设置本大题分数</a><span>）</span>
+                        </p>
+                        <p ng-show="mbdt.datiScore">
                             <span>共</span>
                             <span class="dati-total-score" ng-bind="mbdt.datiScore >= 0 ? mbdt.datiScore : 'X'">
                             </span>
@@ -61,9 +64,14 @@
                         </h5>
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
-                                <div class="item-score" ng-click="sj_item_score = false"
-                                     ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan + '（本小题'
-                                     + (tmd.xiaotiScore >= 0 ? tmd.xiaotiScore : 'X') + '分）'">
+                                <div class="item-score" ng-click="sj_item_score = false">
+                                    <span ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan"></span>
+                                    <span ng-hide="tmd.xiaotiScore">
+                                       （<a href="javascript:void(0)">点击设置本小题分数</a>）
+                                    </span>
+                                    <span ng-show="tmd.xiaotiScore">
+                                        {{'（本小题' + (tmd.xiaotiScore >= 0 ? tmd.xiaotiScore : 'X') + '分）'}}
+                                    </span>
                                 </div>
                                 <div class="sj-edit-box" ng-hide="sj_item_score">
                                     <div class="sj-edit-box-inner">
