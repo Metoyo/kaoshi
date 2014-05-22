@@ -1496,7 +1496,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 });
                 sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
                 //查询数据开始
-                $scope.getThisSjgyPageData();
+                if(!isDeletePaper){
+                  $scope.getThisSjgyPageData();
+                  isDeletePaper = false;
+                }
               }
             }).error(function(err){
               alert(err);
@@ -1569,9 +1572,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       isFirstQryPaperList = false;
                     }
                   }
-//                  else{
-//                    alert('查询创建人名称失败！');
-//                  }
+                  else{
+                    alert('查询创建人名称失败！');
+                  }
                 });
               }
               else{
@@ -1681,10 +1684,31 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 删除试卷//
+           * 删除试卷 xgsjUrl
            */
-          $scope.deleteThisPaper = function(paper){
-
+          var isDeletePaper;
+          $scope.deleteThisPaper = function(paperId, idx){
+            var deleteDate = {
+              token: token,
+              caozuoyuan: caozuoyuan,
+              jigouid: jigouid,
+              lingyuid: lingyuid,
+              shuju:{
+                SHIJUAN_ID: paperId,
+                ZHUANGTAI: -1
+              }
+            };
+            var alertCon = confirm("确定要删除次试卷吗？");
+            if(alertCon){
+              $http.post(xgsjUrl, deleteDate).success(function(data){
+                if(data.result){
+                  $scope.paperListData.splice(idx, 1);
+                  isDeletePaper = true;
+                  qryShiJuanList();
+                  alert('删除成功！');
+                }
+              });
+            }
           };
 
           /**

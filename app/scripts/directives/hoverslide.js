@@ -10,9 +10,15 @@ define(['jquery', 'angular'], function ($, angular) {
           element.hover(
             function () {
               element.next(slideTarget).slideDown();
+//              setTimeout(function(){
+//                element.next(slideTarget).slideDown();
+//              }, 500);
             },
             function () {
               element.next(slideTarget).slideUp();
+//              setTimeout(function(){
+//                element.next(slideTarget).slideUp();
+//              }, 500);
             }
           );
         }
