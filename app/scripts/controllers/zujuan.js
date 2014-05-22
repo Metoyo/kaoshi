@@ -171,6 +171,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.ndSelectenIdx = 0; //选择难度的索引
           $scope.isSavePaperConfirm = false; //保存试卷前的确认
           $scope.showBackToPaperListBtn = false; //加载组卷页面是，返回试卷列表页面隐藏
+          $scope.addMoreTiMuBtn = false; //添加更多试题的按钮
 
           /**
            * 获得大纲数据
@@ -1159,24 +1160,54 @@ define(['jquery', 'underscore', 'angular', 'config'],
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
+            $scope.addMoreTiMuBtn = true; //添加试卷按钮显示
           };
 
           /**
-           * 均分大题的分值
+           * 均分大题的分值//
            */
           $scope.divideDatiScore = function(mbdt){
             var datiTotalScore = mbdt.datiScore, //本大题总分
-              xiaotiAverageScore = (datiTotalScore/mbdt.TIMUARR.length).toFixed(0); //每小题的分数
+              datiItemNum = mbdt.TIMUARR.length, //得到本大题下的题目数量
+              biLvVal = datiTotalScore/datiItemNum, //本大题总分/大题下的题目数量
+              xiaotiAverageScore, //每小题的平均分数
+              zeroLen = 0; //记录题目分值为0的个数
+            if(biLvVal < 1){
+              if(biLvVal == 0.5){
+                xiaotiAverageScore = 0.5; //每小题的分数
+                _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+                  xiaoti.xiaotiScore = xiaotiAverageScore;
+                });
+              }
+              else{
+                xiaotiAverageScore = 1; //每小题的分数
+                _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+                  if( idx < datiTotalScore){
+                    xiaoti.xiaotiScore = xiaotiAverageScore;
+                  }
+                  else{
+                    xiaoti.xiaotiScore = 0;
+                    zeroLen ++;
+                  }
+                });
+//                if(zeroLen){
+//                  alert('你设置的分数不合理！请检查！');
+//                }
+              }
+            }
+            else{
+              xiaotiAverageScore = biLvVal.toFixed(0); //每小题的分数
+              _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+                if(idx + 1 < mbdt.TIMUARR.length){
+                  xiaoti.xiaotiScore = xiaotiAverageScore;
+                  datiTotalScore -= xiaotiAverageScore;
+                }
+                if(idx +1 == mbdt.TIMUARR.length){ //给最后一小题赋值
+                  xiaoti.xiaotiScore = datiTotalScore;
+                }
+              });
+            }
 
-            _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
-              if(idx + 1 < mbdt.TIMUARR.length){
-                xiaoti.xiaotiScore = xiaotiAverageScore;
-                datiTotalScore -= xiaotiAverageScore;
-              }
-              if(idx +1 == mbdt.TIMUARR.length){ //给最后一小题赋值
-                xiaoti.xiaotiScore = datiTotalScore;
-              }
-            });
           };
 
           /**
@@ -1185,7 +1216,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.addXiaotiScore = function(mbdt){
             var datiScore = 0;
             _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
-              datiScore += parseInt(xiaoti.xiaotiScore);
+              datiScore += parseFloat(xiaoti.xiaotiScore);
             });
             mbdt.datiScore = datiScore;
           };
@@ -1249,7 +1280,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.deleteDaTi(idx);
           };
           /**
-           * 编辑试卷信息//
+           * 编辑试卷信息
            */
           $scope.editMuBanDaTiNameAndScore = function(styl){
             var focusTarget = '.' + styl;
@@ -1260,7 +1291,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 取消编辑试卷信息//
+           * 取消编辑试卷信息
            */
           $scope.cancelEditPaper = function(){
             $scope.shijuan_edit = false;
@@ -1298,7 +1329,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 保存试卷前的确认//
+           * 保存试卷前的确认
            */
           $scope.savePaperConfirm = function(){
             console.log(mubanData);
@@ -1395,6 +1426,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
                     $scope.baocunshijuanBtn = false; //保存试卷的按钮
                     $scope.isSavePaperConfirm = false;
+                    $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
                     alert('恭喜你！试卷保存成功！');
                   }
                 }).error(function(err){
@@ -1409,7 +1441,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 取消保存试卷//
+           * 取消保存试卷
            */
           $scope.cancelSavePaper = function(){
             $scope.isSavePaperConfirm = false;
@@ -1469,6 +1501,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量
+            $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
             deleteTempTemp();
             clearData();
             restoreKmtxDtscore();
@@ -1542,7 +1575,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.paperPages = sjlbIdArrRev.slice(currentPageVal - 5, currentPageVal + 5);
               }
             }
-            //查询数据的代码
+            //查询数据的代码 //
             timu_id = sjlbIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
             qryShiJuanGaiYao = qryShiJuanGaiYaoBase + timu_id; //查询详情url
             $http.get(qryShiJuanGaiYao).success(function(sjlbgy){
@@ -1731,7 +1764,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 生成答题卡 paperDetailData//
+           * 生成答题卡 paperDetailData
            */
           var allTiMuForCard; //存放所有需要放到答题卡中的试题
           $scope.makeDaTiKa = function(){

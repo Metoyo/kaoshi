@@ -44,16 +44,11 @@
                         </p>
                         <p>
                             <span>共</span>
-                            <span class="dati-total-score">
-                                {{mbdt.datiScore || 'X'}}
+                            <span class="dati-total-score" ng-bind="mbdt.datiScore >= 0 ? mbdt.datiScore : 'X'">
                             </span>
                             <span>分）</span>
                         </p>
                     </div>
-                    <button type="button" class="btn btn-default"
-                            ng-click="deleteDaTi($index)">删除大题</button>
-                    <button type="button" class="btn btn-primary"
-                            ng-click="showTestList(mbdt.MUBANDATI_ID)">添加试题</button>
                 </div>
                 <ul class="list-unstyled testList">
                     <li ng-repeat="tmd in mbdt.TIMUARR">
@@ -68,14 +63,14 @@
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
                                 <div class="item-score" ng-click="sj_item_score = false"
                                      ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan + '（本小题'
-                                     + (tmd.xiaotiScore && tmd.xiaotiScore > 0 ? tmd.xiaotiScore : 'X') + '分）'">
+                                     + (tmd.xiaotiScore >= 0 ? tmd.xiaotiScore : 'X') + '分）'">
                                 </div>
                                 <div class="sj-edit-box" ng-hide="sj_item_score">
                                     <div class="sj-edit-box-inner">
                                         <input type="text" ng-model="tmd.xiaotiScore" autofocus="true"
-                                               placeholder="此小题分数" maxlength="3"
-                                               onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                                               placeholder="此小题分数" maxlength="4" class="form-control xiaoTiScoreInput"
+                                               onkeyup="if(isNaN(value))execCommand('undo')"
+                                               onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                         <button type="button" class="btn btn-primary"
                                                 ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定</button>
                                         <button type="button" class="btn btn-danger"
@@ -140,10 +135,10 @@
                             </div>
                             <div class="col-sm-3 fenshu-box">
                                 <span>分数：</span>
-                                <input type="text" ng-model="mbdt.datiScore"  placeholder="此大题分数" maxlength="3"
+                                <input type="text" ng-model="mbdt.datiScore"  placeholder="此大题分数" maxlength="5"
                                        class="form-control {{'dt_score' + $index}}"
-                                       onkeyup="this.value=this.value.replace(/\D/g,'')"
-                                       onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                                       onkeyup="if(isNaN(value))execCommand('undo')"
+                                       onafterpaste="if(isNaN(value))execCommand('undo')"/>
                             </div>
 
                         </div>

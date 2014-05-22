@@ -6282,6 +6282,9 @@ a.add-btn:hover span {
       left: 50%;
       margin-left: -300px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+      .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .xiaoTiScoreInput {
+        width: 94%;
+        margin: 15px 3%; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .sj-setting-title {
         font-size: 16px;
         margin: 0;
