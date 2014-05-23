@@ -1876,8 +1876,17 @@ a.add-btn:hover span {
       }
     }
   }
+  .paper-cont{
+    height: 440px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
   .paper-list{
+    padding: 0;
+    margin: 0 0 5px 0;
     li{
+      border-bottom: 1px solid #ddd;
+      padding: 10px 10px 5px 10px;
       a{
         line-height: 24px;
       }
@@ -1887,6 +1896,12 @@ a.add-btn:hover span {
         font-weight: bold;
         margin-left: 20px;
       }
+    }
+  }
+  .paging{
+    height: 48px;
+    .pagination {
+      margin: 10px 0 0 0;
     }
   }
   .tab-content{
@@ -1922,8 +1937,26 @@ a.add-btn:hover span {
         .row{
           height: 480px;
           margin-top: 10px;
-          overflow-y: scroll;
           padding: 0 10px;
+        }
+        .closeBtn{
+          color: red;
+          position: absolute;
+          right: 3px;
+          top: 0px;
+          font-size: 18px;
+          cursor: pointer;
+          span{
+            margin: 0;
+            padding: 0;
+            &:hover {
+              color: blue;
+              -moz-transform: rotate(60deg); /* FF3.5+ */
+              -o-transform: rotate(60deg); /* Opera 10.5 */
+              -webkit-transform: rotate(60deg); /* Saf3.1+, Chrome */
+              transform:rotate(60deg);
+            }
+          }
         }
       }
     }

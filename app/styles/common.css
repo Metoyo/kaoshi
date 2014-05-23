@@ -6470,13 +6470,27 @@ a.add-btn:hover span {
     vertical-align: middle; }
     .kaowuWrapper .kaowu-table td p {
       margin: 0; }
-.kaowuWrapper .paper-list li a {
-  line-height: 24px; }
-.kaowuWrapper .paper-list li .add-to-kaoshi {
-  color: #33A200;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 20px; }
+.kaowuWrapper .paper-cont {
+  height: 440px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+.kaowuWrapper .paper-list {
+  padding: 0;
+  margin: 0 0 5px 0; }
+  .kaowuWrapper .paper-list li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 10px 5px 10px; }
+    .kaowuWrapper .paper-list li a {
+      line-height: 24px; }
+    .kaowuWrapper .paper-list li .add-to-kaoshi {
+      color: #33A200;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 20px; }
+.kaowuWrapper .paging {
+  height: 48px; }
+  .kaowuWrapper .paging .pagination {
+    margin: 10px 0 0 0; }
 .kaowuWrapper .tab-content {
   padding: 15px; }
   .kaowuWrapper .tab-content .help-block {
@@ -6508,8 +6522,26 @@ a.add-btn:hover span {
       .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner .row {
         height: 480px;
         margin-top: 10px;
-        overflow-y: scroll;
         padding: 0 10px; }
+      .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner .closeBtn {
+        color: red;
+        position: absolute;
+        right: 3px;
+        top: 0px;
+        font-size: 18px;
+        cursor: pointer; }
+        .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner .closeBtn span {
+          margin: 0;
+          padding: 0; }
+          .kaowuWrapper .tab-content .kw-edit-box .kw-edit-box-inner .closeBtn span:hover {
+            color: blue;
+            -moz-transform: rotate(60deg);
+            /* FF3.5+ */
+            -o-transform: rotate(60deg);
+            /* Opera 10.5 */
+            -webkit-transform: rotate(60deg);
+            /* Saf3.1+, Chrome */
+            transform: rotate(60deg); }
 .kaowuWrapper .student-info,
 .kaowuWrapper .selectFileBox {
   border-top: 2px solid #8699a4;

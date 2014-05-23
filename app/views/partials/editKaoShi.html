@@ -65,12 +65,6 @@
                                     ng-options="kcInfo.KID as kcInfo.KMINGCHENG for kcInfo in allKaoChangList">
                                 <option value="">请选择考场</option>
                             </select>
-                            <!--<input type="text" name="ksKaoChang" class="form-control" placeholder="添加考场" required-->
-                                   <!--ng-model="kaoshiData.shuju.kaochangname" ng-focus="showKaoChangListInKaoShi()"/>-->
-                            <!--<button type="button" class="btn btn-success" ng-click="showKaoChangListInKaoShi()">-->
-                                <!--添加考场-->
-                            <!--</button>-->
-                            <!--<span>当前选中的考场为：{{kaoshiData.shuju.KAOCHANG[0].kaochangname}}</span>-->
                         </div>
                         <div class="col-sm-2">
                             <p ng-show="kaoshiForm.ksKaoChang.$error.required" class="help-block">请选择考场！</p>
@@ -105,8 +99,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-2 text-right">
-                            <button type="button" class="btn btn-danger" ng-click="cancelAddStudent()">取消</button>
                             <button type="button" class="btn btn-primary" ng-click="saveNewStudent()">保存</button>
+                            <button type="button" class="btn btn-danger" ng-click="cancelAddStudent()">取消</button>
                         </div>
                     </div>
                 </div>
@@ -119,9 +113,6 @@
                             <th width="50px">删除</th>
                         </tr>
                         <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
-                            <!--<td>{{usr.XINGMING}}</td>-->
-                            <!--<td>{{usr.XUEHAO ? usr.XUEHAO : usr.YONGHUHAO}}</td>-->
-                            <!--<td>{{usr.BANJI}}</td>-->
                             <td>{{usr.Name}}</td>
                             <td>{{usr.Number}}</td>
                             <td>{{usr.ClassName}}</td>
@@ -210,33 +201,58 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
                 <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
-                <!--<button type="submit" class="btn btn-warning">重置</button>-->
             </div>
         </div>
     </div>
     <div class="kw-edit-box" ng-show="showPopupBox">
         <div class="kw-edit-box-inner">
-            <div class="row" ng-show="isShowPaperList">
-                <ul class="paper-list">
-                    <li ng-repeat="pld in paperListData">
-                        <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
-                            {{pld.SHIJUANMINGCHENG}} {{pld.SHIJUAN_ID}}
-                        </a>
-                        <a href="javascript:void(0)" class="add-to-kaoshi" ng-click="addToKaoShi(pld)">
-                            添加到考试
-                        </a>
-                    </li>
-                </ul>
+            <div class="closeBtn" ng-click="closePaperList()">
+                <span class="glyphicon glyphicon-remove-circle"></span>
             </div>
-            <div class="row" ng-hide="isShowPaperList">
+            <div class="row" ng-show="isShowPaperList">
+                <div class="paper-cont">
+                    <ul class="paper-list">
+                        <li ng-repeat="pld in paperListData">
+                            <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
+                                {{pld.SHIJUANMINGCHENG}}
+                            </a>
+                            <a href="javascript:void(0)" class="add-to-kaoshi" ng-click="addToKaoShi(pld)">
+                                添加到考试
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="paging text-right">
+                    <ul class="pagination pagination-sm" ng-hide="!papertListIds">
+                        <li ng-class="{disabled: currentPageVal == 1}">
+                            <a href ng-click="getThisSjgyPageData(1)">首页</a>
+                        </li>
+                        <li ng-class="{disabled: currentPageVal == 1}">
+                            <a href
+                               ng-click="getThisSjgyPageData(prevPg = currentPageVal > 1 ? currentPageVal - 1 : 1)">
+                                上一页
+                            </a>
+                        </li>
+                        <li ng-repeat="pg in paperPages" ng-class="{active: currentPageVal == pg}">
+                            <a href ng-click="getThisSjgyPageData(pg)">{{pg}}</a>
+                        </li>
+                        <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
+                            <a href
+                               ng-click="getThisSjgyPageData(nextPg = currentPageVal < lastPaperPageNum ? currentPageVal + 1 : lastPaperPageNum)">
+                                下一页
+                            </a>
+                        </li>
+                        <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
+                            <a href  ng-click="getThisSjgyPageData(lastPaperPageNum)">尾页</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--div class="row" ng-hide="isShowPaperList">
                 <table class="table table-bordered kaowu-table">
                     <tr class="active">
                         <th>考场名称</th>
                         <th width="90px">考位数量</th>
-                        <!--th>考场地址</th>
-                        <th>交通方式</th>
-                        <th>联系人</th>
-                        <th>联系方式</th-->
                         <th width="120px">操作</th>
                     </tr>
                     <tr ng-repeat="kc in kaoChangList">
@@ -246,25 +262,13 @@
                         <td class="text-center">
                             {{kc.KAOWEISHULIANG}}
                         </td>
-                        <!--td>
-                            {{kc.XIANGXIDIZHI}}
-                        </td>
-                        <td>
-                            {{kc.JIAOTONGFANGSHI}}
-                        </td>
-                        <td class="text-center">
-                            {{kc.LIANXIREN}}
-                        </td>
-                        <td class="text-center">
-                            {{kc.LIANXIFANGSHI}}
-                        </td-->
                         <td class="text-center">
                             <button type="button" class="btn btn-success" ng-click="addKaoChangToKaoShi(kc)">
                                 添加到考试
                             </button>
                         </td>
                     </tr>
-                </table>
+                </table-->
             </div>
         </div>
     </div>

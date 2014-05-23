@@ -122,7 +122,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 新增一个考试 //
+         * 新增一个考试
          */
         $scope.addNewKaoShi = function(ks){
           $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
@@ -189,33 +189,6 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
             $scope.txTpl = 'views/partials/editKaoShi.html';
           }
         };
-
-        /**
-         *  查询试卷列表的函数，组卷页面加载时，查询数据
-         */
-//        var qryShiJuanList = function(){
-//          paperPageArr = [];
-//          sjlbIdArrRev = []; //反转试卷列表id
-//          $http.get(qryCxsjlbUrl).success(function(sjlb){
-//            if(sjlb.length){
-//              $scope.papertListIds = sjlb;
-//              var sjlbIdArr; //试卷id列表数组
-//              totalPaperPage = Math.ceil(sjlb.length/itemNumPerPage); //试卷一共有多少页
-//              for(var i = 1; i <= totalPaperPage; i++){
-//                paperPageArr.push(i);
-//              }
-//              $scope.lastPaperPageNum = totalPaperPage; //最后一页的数值
-//              sjlbIdArr = _.map(sjlb, function(sj){
-//                return sj.SHIJUAN_ID;
-//              });
-//              sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
-//              //查询数据开始
-//              $scope.getThisSjgyPageData();
-//            }
-//          }).error(function(err){
-//            alert(err);
-//          });
-//        };
 
         /**
          * 查询试卷概要的分页代码
@@ -307,7 +280,14 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 返回到试卷添加页面
+         * 关闭试卷列表
+         */
+        $scope.closePaperList = function(){
+          $scope.showPopupBox = false;
+        };
+
+        /**
+         * 返回到试卷添加页面//
          */
         $scope.backToAddKaoShi = function(){
           $scope.txTpl = 'views/partials/editKaoShi.html';
