@@ -17,6 +17,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         var userInfo = $rootScope.session.userInfo,
           baseKwAPIUrl = config.apiurl_kw, //考务的api
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
+          baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           token = config.token,
           caozuoyuan = userInfo.UID,//登录的用户的UID   chaxun_kaoshi_liebiao
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
@@ -41,8 +42,15 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           isDeleteKaoShi = false, //是否为删除考试
           isEditKaoChang = false, //是否为编辑考场
           isDeleteKaoChang = false, //是否为删除考场
-          xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang'; //修改考场的url
-
+          xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang', //修改考场的url
+          paperPageArr = [], //定义试卷页码数组
+          sjlbIdArrRev = [], //存放所有试卷ID的数组
+          totalPaperPage,//符合条件的试卷一共有多少页
+          itemNumPerPage = 10, //每页显示多少条数据
+          paginationLength = 11, //分页部分，页码的长度，目前设定为11
+          qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
+          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
 
         /**
          * 格式化时间
@@ -87,7 +95,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
               $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
                 if(ksdtl.length){
                   $scope.kaoshiList = ksdtl;
-                  $scope.txTpl = 'views/partials/kaoshiList.html';
+                  $scope.txTpl = 'views/partials/kaoShiList.html';
                   $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                   isEditKaoShi = false;//是否为编辑考试
                   isDeleteKaoShi = false;//是否为删除考试
@@ -183,14 +191,115 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
+         *  查询试卷列表的函数，组卷页面加载时，查询数据
+         */
+//        var qryShiJuanList = function(){
+//          paperPageArr = [];
+//          sjlbIdArrRev = []; //反转试卷列表id
+//          $http.get(qryCxsjlbUrl).success(function(sjlb){
+//            if(sjlb.length){
+//              $scope.papertListIds = sjlb;
+//              var sjlbIdArr; //试卷id列表数组
+//              totalPaperPage = Math.ceil(sjlb.length/itemNumPerPage); //试卷一共有多少页
+//              for(var i = 1; i <= totalPaperPage; i++){
+//                paperPageArr.push(i);
+//              }
+//              $scope.lastPaperPageNum = totalPaperPage; //最后一页的数值
+//              sjlbIdArr = _.map(sjlb, function(sj){
+//                return sj.SHIJUAN_ID;
+//              });
+//              sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
+//              //查询数据开始
+//              $scope.getThisSjgyPageData();
+//            }
+//          }).error(function(err){
+//            alert(err);
+//          });
+//        };
+
+        /**
+         * 查询试卷概要的分页代码
+         */
+        $scope.getThisSjgyPageData = function(pg){
+          var qryShiJuanGaiYao,
+            pgNum = pg - 1,
+            timu_id,
+            currentPage = pgNum ? pgNum : 0,
+            userIdArr = [];//存放user id的数组
+          //得到分页数组的代码
+          var currentPageVal = $scope.currentPageVal = pg ? pg : 1;
+          if(totalPaperPage <= paginationLength){
+            $scope.paperPages = paperPageArr;
+          }
+          if(totalPaperPage > paginationLength){
+            if(currentPageVal > 0 && currentPageVal <= 6 ){
+              $scope.paperPages = sjlbIdArrRev.slice(0, paginationLength);
+            }
+            else if(currentPageVal > totalPaperPage - 5 && currentPageVal <= totalPaperPage){
+              $scope.paperPages = sjlbIdArrRev.slice(totalPaperPage - paginationLength);
+            }
+            else{
+              $scope.paperPages = sjlbIdArrRev.slice(currentPageVal - 5, currentPageVal + 5);
+            }
+          }
+          //查询数据的代码 //
+          timu_id = sjlbIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+          qryShiJuanGaiYao = qryShiJuanGaiYaoBase + timu_id; //查询详情url
+          $http.get(qryShiJuanGaiYao).success(function(sjlbgy){
+            if(sjlbgy.length){
+              _.each(sjlbgy, function(sj, idx, lst){
+                sj.NANDU = JSON.parse(sj.NANDU);
+                userIdArr.push(sj.CHUANGJIANREN_UID);
+              });
+              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+              var getUserNameUrl = getUserNameBase + userIdStr;
+              $http.get(getUserNameUrl).success(function(users){
+                if(users.length){
+                  _.each(sjlbgy, function(sj, idx, lst){
+                    _.each(users, function(usr, subidx, sublst){
+                      if(usr.UID == sj.CHUANGJIANREN_UID){
+                        sj.chuangjianren = usr.XINGMING;
+                      }
+                    });
+                  });
+                  $scope.paperListData = sjlbgy;
+                  $scope.isShowPaperList = true;
+                  $scope.showPopupBox = true; //试卷列表弹出层显示
+                }
+                else{
+                  alert('查询创建人名称失败！');
+                }
+              });
+            }
+            else{
+              alert('很遗憾！没有相关数据！');
+            }
+          }).error(function(err){
+            console.log(err);
+          });
+        };
+
+        /**
          * 显示试卷列表
          */
         $scope.showPaperList = function(){
-          $http.get(qryCxsjlbUrl).success(function(data){
-            if(data.length){
-              $scope.paperListData = data;
-              $scope.isShowPaperList = true;
-              $scope.showPopupBox = true; //试卷列表弹出层显示
+          paperPageArr = [];
+          sjlbIdArrRev = []; //反转试卷列表id
+          $http.get(qryCxsjlbUrl).success(function(sjlb){
+            if(sjlb.length){
+              $scope.papertListIds = sjlb;
+              var sjlbIdArr; //试卷id列表数组
+              totalPaperPage = Math.ceil(sjlb.length/itemNumPerPage); //试卷一共有多少页
+              for(var i = 1; i <= totalPaperPage; i++){
+                paperPageArr.push(i);
+              }
+              $scope.lastPaperPageNum = totalPaperPage; //最后一页的数值
+              sjlbIdArr = _.map(sjlb, function(sj){
+                return sj.SHIJUAN_ID;
+              });
+              sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
+              //查询数据开始
+              $scope.getThisSjgyPageData();
             }
           }).error(function(err){
             alert(err);
