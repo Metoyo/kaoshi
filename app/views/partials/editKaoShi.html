@@ -113,9 +113,9 @@
                             <th width="50px">删除</th>
                         </tr>
                         <tr ng-repeat="usr in kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS">
-                            <td>{{usr.Name}}</td>
-                            <td>{{usr.Number}}</td>
-                            <td>{{usr.ClassName}}</td>
+                            <td>{{usr.XINGMING}}</td>
+                            <td>{{usr.XUEHAO}}</td>
+                            <td>{{usr.BANJI}}</td>
                             <td class="text-center">
                                 <a href="javascript:void(0)" ng-click="deleteStudent($index)">
                                     <span class="glyphicon glyphicon-trash"></span>
@@ -213,12 +213,42 @@
                 <div class="paper-cont">
                     <ul class="paper-list">
                         <li ng-repeat="pld in paperListData">
-                            <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
-                                {{pld.SHIJUANMINGCHENG}}
-                            </a>
-                            <a href="javascript:void(0)" class="add-to-kaoshi" ng-click="addToKaoShi(pld)">
-                                添加到考试
-                            </a>
+                            <div class="pull-left paper-name">
+                                <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
+                                    {{pld.SHIJUANMINGCHENG}}
+                                </a>
+                            </div>
+                            <div class="pull-right paper-operate">
+                                <button type="button" class="btn btn-primary" ng-click="showPaperDetail(pld)">
+                                    详情
+                                </button>
+                                <button type="button" class="btn btn-primary" bn-slide-show
+                                        slide-show-target="more-info" slide-show-text="概要">
+                                    概要
+                                </button>
+                                <button type="button" class="btn btn-primary" ng-click="addToKaoShi(pld)">
+                                    添加到考试
+                                </button>
+                            </div>
+                            <div class="more-info">
+                                <p>
+                                    <span>出卷人：{{pld.chuangjianren}}</span>
+                                    <span>试卷难度：{{pld.NANDU.paperNanDu}}</span>
+                                    <span>出卷日期：{{pld.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}</span>
+                                </p>
+                                <p>
+                                    题型分布：
+                                    <span ng-repeat="dati in pld.TIXING_DATA">
+                                        {{tiXingNameArr[dati.TIXING_ID -1]}}:{{dati.COUNT}}
+                                    </span>
+                                </p>
+                                <p>
+                                    题型难度：
+                                    <span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">
+                                        {{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}
+                                    </span>
+                                </p>
+                            </div>
                         </li>
                     </ul>
                 </div>

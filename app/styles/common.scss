@@ -1884,17 +1884,31 @@ a.add-btn:hover span {
   .paper-list{
     padding: 0;
     margin: 0 0 5px 0;
+    list-style: none;
     li{
       border-bottom: 1px solid #ddd;
       padding: 10px 10px 5px 10px;
+      float: left;
+      width: 100%;
+      .paper-name{
+
+      }
+      .paper-operate{
+
+      }
+      .more-info{
+        display: none;
+        float: left;
+        width: 100%;
+        p{
+          margin-bottom: 0;
+          span{
+            margin-right: 10px;
+          }
+        }
+      }
       a{
         line-height: 24px;
-      }
-      .add-to-kaoshi{
-        color: #33A200;
-        font-size: 12px;
-        font-weight: bold;
-        margin-left: 20px;
       }
     }
   }
@@ -1924,7 +1938,7 @@ a.add-btn:hover span {
       left: 0;
       z-index: 1000;
       .kw-edit-box-inner {
-        width: 600px;
+        width: 700px;
         height: 500px;
         border: 1px solid #7A7A7A;
         background-color: #fff;
@@ -1932,7 +1946,7 @@ a.add-btn:hover span {
         top: 50%;
         margin-top: -250px;
         left: 50%;
-        margin-left: -300px;
+        margin-left: -350px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         .row{
           height: 480px;

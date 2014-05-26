@@ -54,8 +54,10 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id='; //发布考试的url
 
+        $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+
         /**
-         * 格式化时间
+         * 格式化时间、、
          */
         var formatDate = function(dateStr){
           var mydateNew = new Date(dateStr),
@@ -238,6 +240,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
                     });
                   });
                   $scope.paperListData = sjlbgy;
+                  console.log($scope.paperListData);
                   $scope.isShowPaperList = true;
                   $scope.showPopupBox = true; //试卷列表弹出层显示
                 }
@@ -568,7 +571,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
 
 
         /**
-         * 保存考试
+         * 保存考试//
          */
         $scope.saveKaoShi = function(){
           if($('.start-date').val()){

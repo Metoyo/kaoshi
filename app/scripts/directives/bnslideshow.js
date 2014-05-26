@@ -7,9 +7,18 @@ define(['jquery', 'angular'], function ($, angular) {
 //      	template: '<div></div>',
       	restrict: 'A',
       	link: function postLink(scope, element, attrs) {
-          var slideTarget = '.' + attrs.slideShowTarget;
+          var slideTarget = '.' + attrs.slideShowTarget,
+            slideText = attrs.slideShowText;
           element.on('click', function(){
-            element.next(slideTarget).slideToggle();
+            var eltTxt = element.text();
+            if(slideText){ //用在考务里面的试卷列表
+              element.text(eltTxt == '关闭' ? slideText : '关闭');
+              element.closest('div').next(slideTarget).slideToggle();
+            }
+            else{
+              element.next(slideTarget).slideToggle();
+            }
+
           });
 
 //          var expression = attrs.bnSlideShow, // 定义一个字段表示dom上的属性bnSlideShow
