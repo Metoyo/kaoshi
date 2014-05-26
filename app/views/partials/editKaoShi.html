@@ -201,6 +201,9 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
                 <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
+                <!--<button type="button" class="btn btn-primary" ng-click="showShiJuanInfo()">-->
+                    <!--详情-->
+                <!--</button>-->
             </div>
         </div>
     </div>
@@ -214,12 +217,12 @@
                     <ul class="paper-list">
                         <li ng-repeat="pld in paperListData">
                             <div class="pull-left paper-name">
-                                <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)">
+                                <a href="javascript:void(0)">
                                     {{pld.SHIJUANMINGCHENG}}
                                 </a>
                             </div>
                             <div class="pull-right paper-operate">
-                                <button type="button" class="btn btn-primary" ng-click="showPaperDetail(pld)">
+                                <button type="button" class="btn btn-primary" ng-click="showShiJuanInfo(pld.SHIJUAN_ID)">
                                     详情
                                 </button>
                                 <button type="button" class="btn btn-primary" bn-slide-show
@@ -301,6 +304,74 @@
                 </table-->
             </div>
         </div>
+    </div>
+    <!-- 试卷详情的 -->
+    <div class="paper-content" ng-show="showPaperDetail">
+        <form name="shijuan" class="paper-content-inner">
+            <div class="inner-box">
+                <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closePaperDetail()">
+                    关闭
+                </button>
+                <h1 class="paper-title text-center hover-style">
+                <span class="sj-param-val">
+                    {{ paperDetail.SHIJUAN.SHIJUANMINGCHENG}}
+                </span>
+                </h1>
+                <h1 class="paper-sub-title text-center hover-style">
+                <span class="sj-param-val">
+                    {{ paperDetail.SHIJUAN.FUBIAOTI}}
+                </span>
+                </h1>
+                <div class="attention hover-style">
+                <span class="sj-param-val">
+                    {{ paperDetail.MUBAN.ZONGDAOYU}}
+                </span>
+                </div>
+                <div class="shijuantimu-list">
+                    <div ng-repeat="mbdt in paperDetail.MUBANDATI">
+                        <div class="mubandati">
+                            <div class="dati-name-box">
+                                <span>{{cnNumArr[$index]}}、</span>
+                                <span class="dati-name">{{mbdt.DATIMINGCHENG}}</span>
+                            </div>
+                            <div class="dati-score-box">
+                                <p>
+                                    <span>（本大题共</span>
+                                    <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
+                                    <span>小题，</span>
+                                </p>
+                                <p>
+                                    <span>共</span>
+                                <span class="dati-total-score" ng-bind="mbdt.datiScore">
+                                </span>
+                                    <span>分）</span>
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled testList">
+                            <li ng-repeat="tmd in mbdt.TIMUARR">
+                                <div class="item-cont">
+                                    <h3 class="item-tigan">
+                                        <div class="item-score">
+                                            <span ng-bind-html="($index + 1) + '、' + tmd.DETAIL.TIGAN.tiGan"></span>
+                                        <span>
+                                            {{'（本小题' + tmd.FENZHI + '分）'}}
+                                        </span>
+                                        </div>
+                                    </h3>
+                                    <div class="item-tizhi-wrap">
+                                        <p class="item-tizhi" ng-repeat="tz in tmd.DETAIL.TIGAN.tiZhiNeiRong track by $index"
+                                           ng-bind-html="letterArr[$index] + '.' + tz">
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </form>
     </div>
     <script type="text/javascript">
         jQuery(function($) {

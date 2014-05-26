@@ -52,12 +52,16 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
           getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
           faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id='; //发布考试的url
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id=', //发布考试的url
+          qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷详情的url
 
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+        $scope.letterArr = config.letterArr; //题支的序号
+        $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
 
         /**
-         * 格式化时间、、
+         * 格式化时间//
          */
         var formatDate = function(dateStr){
           var mydateNew = new Date(dateStr),
@@ -115,6 +119,43 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         $scope.showKaoShiList();
 
         /**
+         * 显示试卷详情//
+         */
+        $scope.showShiJuanInfo = function(sjId){
+          console.log(sjId);
+          var qryPaperDetail = qryPaperDetailBase + sjId;
+          $http.get(qryPaperDetail).success(function(data){
+            if(data){
+              //给模板大题添加存放题目的数组
+              _.each(data.MUBANDATI, function(mbdt, idx, lst){
+                mbdt.TIMUARR = [];
+                mbdt.datiScore = 0;
+              });
+              //将各个题目添加到对应的模板大题中
+              _.each(data.TIMU, function(tm, idx, lst){
+                _.each(data.MUBANDATI, function(mbdt, subIdx, subLst){
+                  if(mbdt.MUBANDATI_ID == tm.MUBANDATI_ID){
+                    mbdt.TIMUARR.push(tm);
+                    mbdt.datiScore += parseFloat(tm.FENZHI);
+                  }
+                });
+              });
+              //赋值
+              $scope.paperDetail = data;
+              $scope.showPaperDetail = true;
+              console.log($scope.paperDetail);
+            }
+          });
+        };
+
+        /**
+         * 关闭试卷详情
+         */
+        $scope.closePaperDetail = function(){
+          $scope.showPaperDetail = false;
+        };
+
+        /**
          * 查询本机构下的所有考场
          */
         var qryAllKaoChang = function(){
@@ -130,6 +171,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          */
         $scope.addNewKaoShi = function(ks){
           $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
+          $scope.showPaperDetail = false; //控制试卷详情的显示和隐藏
           kaoshi_data = { //考试的数据格式
             token: token,
             caozuoyuan: caozuoyuan,
@@ -240,7 +282,6 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
                     });
                   });
                   $scope.paperListData = sjlbgy;
-                  console.log($scope.paperListData);
                   $scope.isShowPaperList = true;
                   $scope.showPopupBox = true; //试卷列表弹出层显示
                 }
