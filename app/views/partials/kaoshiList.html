@@ -8,7 +8,7 @@
         <th>开考时间</th>
         <th>考试时长</th>
         <th>考场</th>
-        <th>考试状态</th>
+        <th width="100px">考试状态</th>
         <th>操作</th>
     </tr>
     <tr ng-repeat="ks in kaoshiList">
@@ -33,8 +33,11 @@
             {{ks.ZHUANGTAI | examStatus}}
         </td>
         <td class="text-center">
-            <button type="button" class="btn btn-default" ng-click="deleteKaoShi(ks)">删除</button>
-            <button type="button" class="btn btn-primary" ng-click="editKaoShi(ks)">修改</button>
+            <div ng-hide="ks.ZHUANGTAI >= 3">
+                <button type="button" class="btn btn-default" ng-click="deleteKaoShi(ks)">删除</button>
+                <button type="button" class="btn btn-primary" ng-click="editKaoShi(ks)">修改</button>
+                <button type="button" class="btn btn-primary" ng-click="faBuKaoShi(ks.KAOSHI_ID)">发布</button>
+            </div>
         </td>
     </tr>
 </table>

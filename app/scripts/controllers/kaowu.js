@@ -50,7 +50,9 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
           '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
-          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
+          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
+          faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id='; //发布考试的url
 
         /**
          * 格式化时间
@@ -605,7 +607,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 修改考试 //
+         * 修改考试
          */
         $scope.editKaoShi = function(ks){
           isEditKaoShi = true;
@@ -629,6 +631,26 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
               }
             }).error(function(err){
               alert(err);
+            });
+          }
+        };
+
+        /**
+         * 发布考试 faBuKaoShiBaseUrl
+         */
+        $scope.faBuKaoShi = function(ksId){
+          var faBuKaoShiUrl = faBuKaoShiBaseUrl + ksId;
+          var confirmInfo = confirm('确定要发布本次考试吗？');
+          if(confirmInfo){
+            $http.get(faBuKaoShiUrl).success(function(data){
+              console.log(data);
+              if(data.result){
+                $scope.showKaoShiList();
+                alert('本次考试发布成功！');
+              }
+              else{
+                alert('考试发布失败！');
+              }
             });
           }
         };
