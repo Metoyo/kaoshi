@@ -31,6 +31,8 @@ define([
         $scope.realNameRegexp = /(^[A-Za-z]{2,20}$)|(^[\u4E00-\u9FA5]{2,20}$)/;//真实姓名的正则表达式
         $scope.passwordRegexp = /^.{6,20}$/;//密码的正则表达式
         $scope.objectWrap = false;
+        $scope.stepTwo = false; //第二步的显示和隐藏
+        $scope.stepThree = false; //第三步的显示和隐藏
 
         /**
          * 注册信息的第一步，个人详情信息
@@ -92,6 +94,7 @@ define([
          * 个人详情信息完整后，去第二步
          */
         $scope.validatePersonalInfo = function(){
+          $scope.stepTwo = true;
           $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
@@ -252,6 +255,7 @@ define([
           });
           registerDate.juese = select_juese;
           $scope.registerDate = registerDate;
+          $scope.stepThree = true;
           $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
@@ -271,6 +275,8 @@ define([
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
               alert('提交成功！');
+              $scope.stepTwo = false;
+              $scope.stepThree = false;
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{

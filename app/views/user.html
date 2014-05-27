@@ -98,9 +98,12 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td class="passBtn"><button type="button" ng-click="authPerm(SH)" ng-hide="SH.AUTH_BTN_HIDE"
-                                                                class="btn btn-success">通过审批</button>
-                                        <span class="shMsgBox"></span>
+                                    <td class="passBtn">
+                                        <button type="button" ng-click="authPerm(SH)" ng-hide="SH.AUTH_BTN_HIDE"
+                                                                class="btn btn-success">
+                                            通过审批
+                                        </button>
+                                        <span class="shMsgBox" ng-show="SH.AUTH_BTN_HIDE">已通过审批</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -139,16 +142,20 @@
                                                 <span class="originZT">
                                                     {{JS.ZHUANGTAI}}
                                                 </span>
-                                                <input type="checkbox" name="rightName" ng-click="jueseClicked(SH,JS)" ng-model="JS.JUESE_CHECKED" />
+                                                <input type="checkbox" name="rightName" ng-click="jueseClicked(SH,JS)"
+                                                       ng-model="JS.JUESE_CHECKED" />
                                                 <span>
                                                     {{JS.JUESEMINGCHENG}}
                                                 </span>
                                             </label>
                                         </div>
                                     </td>
-                                    <td class="passBtn"><button type="button" ng-click="authPerm(SH)" ng-hide="SH.AUTH_BTN_HIDE"
-                                                                class="btn btn-success">通过审批</button>
-                                        <span class="shMsgBox"></span>
+                                    <td class="passBtn">
+                                        <button type="button" ng-click="authPerm(SH)" ng-hide="SH.AUTH_BTN_HIDE"
+                                                                class="btn btn-success">
+                                            通过审批
+                                        </button>
+                                        <span class="shMsgBox" ng-show="SH.AUTH_BTN_HIDE">已通过审批</span>
                                     </td>
                                 </tr>
                             </tbody>

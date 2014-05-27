@@ -9,10 +9,10 @@
                     <li class="active">
                         个人信息
                     </li>
-                    <li>
+                    <li ng-show="stepTwo">
                         学科选择
                     </li>
-                    <li>
+                    <li ng-show="stepThree">
                         确认信息
                     </li>
                 </ul>
@@ -21,13 +21,13 @@
                         <!-- 用户名 -->
                         <div class="form-group col-md-6">
                             <label>系统账号<strong class="clRed">*</strong><em>(4-30个字符,由字母、数字和_组成,并以字母开头。)</em></label>
-                            <input type="text" name="yonghuming" placeholder="用户名" tabindex="1" class="form-control"
+                            <input type="text" name="yonghuming" placeholder="系统账号" tabindex="1" class="form-control"
                                    ng-pattern="userNameRegexp" ng-minlength=4 ng-maxlength=30
                                    ng-model="personalInfo.yonghuming" required autofocus="true"
                                    ng-blur="checkUsrExist('yonghuming', personalInfo.yonghuming)"/>
                             <!--<p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>-->
-                            <p ng-show="userForm.yonghuming.$error.pattern" class="help-block">用户名格式不正确！</p>
-                            <p ng-show="yonghumingExist" class="help-block">用户名已存在！</p>
+                            <p ng-show="userForm.yonghuming.$error.pattern" class="help-block yonghuming">系统账号格式不正确！</p>
+                            <p ng-show="yonghumingExist" class="help-block yonghuming">系统账号已存在！</p>
                         </div>
                         <!-- 邮箱 -->
                         <div class="form-group col-md-6">
@@ -47,7 +47,7 @@
                                    ng-model="personalInfo.mima" ng-pattern="passwordRegexp" required
                                    ng-blur="checkPassword()"/>
                             <!--<p ng-show="userForm.mima.$error.required" class="help-block">密码不能为空！</p>-->
-                            <p ng-show="userForm.mima.$error.pattern" class="help-block">密码格式不正确！</p>
+                            <p ng-show="userForm.mima.$error.pattern" class="help-block">密码需要6-20个字符！</p>
                         </div>
                         <!-- 真实姓名 -->
                         <div class="form-group col-md-6">
@@ -63,7 +63,7 @@
                         </div>
                         <!-- 确认密码 -->
                         <div class="form-group col-md-6">
-                            <label>确认密码<strong class="clRed">*</strong> <em>(6-20个字符)</em></label>
+                            <label>确认密码<strong class="clRed">*</strong><em>(6-20个字符)</em></label>
                             <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
                                    data-password-verify="personalInfo.mima" ng-blur="checkPassword()"
                                    required placeholder="确认密码" tabindex="3" class="form-control" />
@@ -83,6 +83,7 @@
                         </div>
                         <!-- 提交按钮 -->
                         <div class="form-group col-md-12 pull-left text-right">
+                           <span class="pull-left"><strong class="clRed">*</strong> 为必填项！</span>
                             <button type="button" ng-click="validatePersonalInfo()" ng-disabled="userForm.yonghuming.$invalid
                                  || yonghumingExist || userForm.mima.$invalid || userForm.confirmPassword.$invalid
                                  || userForm.youxiang.$invalid || youxiangExist || userForm.xingming.$invalid ||

@@ -5777,6 +5777,9 @@ a.add-btn:hover span {
     width: 400px;
     height: 40px;
     display: none; }
+  .rengzhengWrapper .yonghuming {
+    background-color: #fff;
+    padding-left: 10px; }
   .rengzhengWrapper .logoutInfo h4 {
     margin-top: 10px;
     margin-bottom: 0;

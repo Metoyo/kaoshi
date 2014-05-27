@@ -58,12 +58,12 @@ define( "config", [], function () {
         templateUrl: 'views/selectLingYu.html',
         controller: 'LingyuCtrl',
         requireLogin: true
-      },
-      '/yuejuan': {
-        templateUrl: 'views/yuejuan.html',
-        controller: 'YuejuanCtrl',
-        requireLogin: true
       }
+//      '/yuejuan': {
+//        templateUrl: 'views/yuejuan.html',
+//        controller: 'YuejuanCtrl',
+//        requireLogin: true
+//      }
     },
     jueseObj: [ //得到角色是数组
       {juese_id: 1, juese_name:'系统管理员', juese_url: ''},
@@ -73,9 +73,9 @@ define( "config", [], function () {
       {juese_id: 5, juese_name:'命题教师', juese_url: '/mingti'},
       {juese_id: 6, juese_name:'组卷教师', juese_url: '/zujuan'},
       {juese_id: 7, juese_name:'审题教师', juese_url: ''},
-      {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'},
-      {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
-      {juese_id: 10, juese_name:'阅卷教师', juese_url: '/yuejuan'}
+      {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'}
+//      {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
+//      {juese_id: 10, juese_name:'阅卷教师', juese_url: '/yuejuan'}
     ],
     tiXingNameArr: [
       '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',
