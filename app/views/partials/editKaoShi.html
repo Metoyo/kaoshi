@@ -307,11 +307,13 @@
     </div>
     <!-- 试卷详情的 -->
     <div class="paper-content" ng-show="showPaperDetail">
-        <form name="shijuan" class="paper-content-inner">
-            <div class="inner-box">
+        <div class="paper-content-inner">
+            <div>
                 <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closePaperDetail()">
                     关闭
                 </button>
+            </div>
+            <div class="inner-box">
                 <h1 class="paper-title text-center hover-style">
                 <span class="sj-param-val">
                     {{ paperDetail.SHIJUAN.SHIJUANMINGCHENG}}
@@ -370,8 +372,7 @@
                     </div>
                 </div>
             </div>
-
-        </form>
+        </div>
     </div>
     <script type="text/javascript">
         jQuery(function($) {

@@ -1,4 +1,8 @@
 <div class="da-ti-ka-wrap">
+    <div class="loading-box text-center">
+        <img src="/images/loading.gif" alt=""/>
+        <p>答题卡生成中，请耐心等待……</p>
+    </div>
     <div class="daTiKa" ng-repeat="(pIdx, ac) in answerCards">
         <div class="daTiKa-header text-center">
             <p>{{ac.shuju.header.title}}第<span>{{pIdx + 1}}</span>页</p>
@@ -16,6 +20,6 @@
         </div>
     </div>
     <div class="save-box">
-        <button type="button" class="btn btn-primary" ng-click="saveDaTiKa()">保存答题卡</button>
+        <button type="button" class="btn btn-primary" ng-click="saveDaTiKa()" ng-disabled="loadingImg">保存答题卡</button>
     </div>
 </div>

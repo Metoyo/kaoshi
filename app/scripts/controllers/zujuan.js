@@ -1595,7 +1595,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         }
                       });
                     });
-                    console.log(sjlbgy);
                     $scope.paperListData = sjlbgy;
                     if(isFirstQryPaperList){
                       $scope.totalSelectedItmes = 0; //已选试题的总数量
@@ -1924,7 +1923,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 保存答题卡
            */
+          $scope.loadingImg = false; //loading图片的显示和隐藏
           $scope.saveDaTiKa = function(){
+            $scope.loadingImg = true; //loading图片的显示和隐藏
             var daTiKaLen = $scope.answerCards.length,
               times = 0,
               ifSaveDone = true,
@@ -1936,6 +1937,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     daTiKaUrlArr.push(data.fileName);
                     if(times == daTiKaLen - 1){
                       $scope.daTiKaUrlArr = daTiKaUrlArr;
+                      $scope.loadingImg = false; //loading图片的显示和隐藏
                       alert('答题卡生产成功！');
                       $scope.txTpl = 'views/partials/daTiKaDownLoad.html';
                     }

@@ -61,7 +61,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
 
         /**
-         * 格式化时间//
+         * 格式化时间
          */
         var formatDate = function(dateStr){
           var mydateNew = new Date(dateStr),
@@ -119,7 +119,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         $scope.showKaoShiList();
 
         /**
-         * 显示试卷详情//
+         * 显示试卷详情
          */
         $scope.showShiJuanInfo = function(sjId){
           console.log(sjId);
