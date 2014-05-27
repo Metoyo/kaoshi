@@ -20,41 +20,50 @@
                     <div class="tab-pane clearfix active">
                         <!-- 用户名 -->
                         <div class="form-group col-md-6">
-                            <label>用户名</label>
+                            <label>系统账号<strong class="clRed">*</strong><em>(4-30个字符,由字母、数字和_组成,并以字母开头。)</em></label>
                             <input type="text" name="yonghuming" placeholder="用户名" tabindex="1" class="form-control"
                                    ng-pattern="userNameRegexp" ng-minlength=4 ng-maxlength=30
                                    ng-model="personalInfo.yonghuming" required autofocus="true"
                                    ng-blur="checkUsrExist('yonghuming', personalInfo.yonghuming)"/>
-                            <p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>
+                            <!--<p ng-show="userForm.yonghuming.$error.required" class="help-block">用户名不能为空！</p>-->
                             <p ng-show="userForm.yonghuming.$error.pattern" class="help-block">用户名格式不正确！</p>
                             <p ng-show="yonghumingExist" class="help-block">用户名已存在！</p>
                         </div>
-
+                        <!-- 邮箱 -->
+                        <div class="form-group col-md-6">
+                            <label>邮箱<strong class="clRed">*</strong></label>
+                            <input type="email" name="youxiang" placeholder="邮箱" tabindex="4" class="form-control"
+                                   ng-model="personalInfo.youxiang" ng-pattern="emailRegexp" required
+                                   ng-blur="checkUsrExist('youxiang', personalInfo.youxiang)"/>
+                            <!--<p ng-show="userForm.youxiang.$error.required" class="help-block">邮箱不能为空！</p>-->
+                            <p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
+                            <p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>
+                        </div>
                         <!-- 密码 -->
                         <div class="form-group col-md-6">
-                            <label>密码 <em>(6-20个字符)</em></label>
+                            <label>密码 <strong class="clRed">*</strong> <em>(6-20个字符)</em></label>
                             <input type="password" name="mima" placeholder="密码" tabindex="2"
                                    class="form-control regPassword" ng-minlength=6 ng-maxlength=20
                                    ng-model="personalInfo.mima" ng-pattern="passwordRegexp" required
                                    ng-blur="checkPassword()"/>
-                            <p ng-show="userForm.mima.$error.required" class="help-block">密码不能为空！</p>
+                            <!--<p ng-show="userForm.mima.$error.required" class="help-block">密码不能为空！</p>-->
                             <p ng-show="userForm.mima.$error.pattern" class="help-block">密码格式不正确！</p>
                         </div>
-
-                        <!-- 邮箱 -->
+                        <!-- 真实姓名 -->
                         <div class="form-group col-md-6">
-                            <label>邮箱</label>
-                            <input type="email" name="youxiang" placeholder="邮箱" tabindex="4" class="form-control"
-                                   ng-model="personalInfo.youxiang" ng-pattern="emailRegexp" required
-                                   ng-blur="checkUsrExist('youxiang', personalInfo.youxiang)"/>
-                            <p ng-show="userForm.youxiang.$error.required" class="help-block">邮箱不能为空！</p>
-                            <p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
-                            <p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>
+                            <label>真实姓名<strong class="clRed">*</strong></label>
+                            <input type="text" name="xingming" placeholder="真实姓名" tabindex="5" class="form-control"
+                                   ng-pattern="realNameRegexp"
+                                   ng-minlength=2 ng-maxlength=20 ng-model="personalInfo.xingming"
+                                    required />
+                            <!--<p class="help-block" ng-show="userForm.xingming.$error.required">真实姓名不能为空！</p>-->
+                            <!--<p ng-show="userForm.xingming.$error.minlength" class="help-block">真实姓名太短了！</p>-->
+                            <!--<p ng-show="userForm.xingming.$error.maxlength" class="help-block">真实姓名太长了!</p>-->
+                            <p ng-show="userForm.xingming.$error.pattern" class="help-block">真实姓名格式不正确！</p>
                         </div>
-
                         <!-- 确认密码 -->
                         <div class="form-group col-md-6">
-                            <label>确认密码</label>
+                            <label>确认密码<strong class="clRed">*</strong> <em>(6-20个字符)</em></label>
                             <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
                                    data-password-verify="personalInfo.mima" ng-blur="checkPassword()"
                                    required placeholder="确认密码" tabindex="3" class="form-control" />
@@ -65,25 +74,14 @@
                                 确认密码和密码不匹配！
                             </p>
                         </div>
-
-                        <!-- 真实姓名 -->
-                        <div class="form-group col-md-6">
-                            <label>真实姓名</label>
-                            <input type="text" name="xingming" placeholder="真实姓名" tabindex="5" class="form-control"
-                                   ng-minlength=2 ng-maxlength=30 ng-model="personalInfo.xingming" required />
-                            <p class="help-block" ng-show="userForm.xingming.$error.required">真实姓名不能为空！</p>
-                            <p ng-show="userForm.xingming.$error.minlength" class="help-block">真实姓名太短了！</p>
-                            <p ng-show="userForm.xingming.$error.maxlength" class="help-block">真实姓名太长了!</p>
-                        </div>
-
                         <!-- 手机号码 -->
                         <div class="form-group col-md-6">
                             <label>手机号码</label>
                             <input type="text" name="shouji" placeholder="手机号码" tabindex="6" class="form-control"
-                                   ng-pattern="/^[1][3458][0-9]{9}$/" ng-model="personalInfo.shouji" />
+                                   ng-pattern="/^[1][34578][0-9]{9}$/" ng-model="personalInfo.shouji" />
                             <p ng-show="userForm.shouji.$error.pattern" class="help-block">手机号码格式有误！</p>
                         </div>
-
+                        <!-- 提交按钮 -->
                         <div class="form-group col-md-12 pull-left text-right">
                             <button type="button" ng-click="validatePersonalInfo()" ng-disabled="userForm.yonghuming.$invalid
                                  || yonghumingExist || userForm.mima.$invalid || userForm.confirmPassword.$invalid

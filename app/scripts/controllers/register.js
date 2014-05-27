@@ -26,7 +26,9 @@ define([
         $rootScope.dashboard_shown = false;
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
-        $scope.userNameRegexp = /^.{4,30}$/;//用户名的正则表达式
+//        $scope.userNameRegexp = /^.{4,30}$/;//用户名的正则表达式
+        $scope.userNameRegexp = /^([a-zA-Z])([a-zA-Z0-9_]){3,29}$/;//用户名的正则表达式
+        $scope.realNameRegexp = /(^[A-Za-z]{2,20}$)|(^[\u4E00-\u9FA5]{2,20}$)/;//真实姓名的正则表达式
         $scope.passwordRegexp = /^.{6,20}$/;//密码的正则表达式
         $scope.objectWrap = false;
 
