@@ -245,7 +245,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.isPrivateDg = false;
         $scope.isPublicDg = false;
         $scope.dgTpl = 'views/partials/daGangHome.html';
-      }
+      };
 
     });
 });

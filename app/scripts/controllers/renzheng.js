@@ -41,6 +41,7 @@ define([
             //登录信息的验证 //
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
+              session.userInfo = '';
               if(result.error){
                 $scope.dengluInfo = result;
               }

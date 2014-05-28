@@ -1,8 +1,14 @@
-define(['jquery', 'angular'], function ($, angular) {
+define(['jquery', 'underscore', 'angular'], function ($, _, angular) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
     .controller('NavCtrl', function ($rootScope, $scope, $location) {
+
+      /**
+       * 定义变量//
+       */
+      $scope.userInfoLayer = false;
+
       /**
        * 控制导航的代码
        */
@@ -57,6 +63,30 @@ define(['jquery', 'angular'], function ($, angular) {
 
           });
         }
+      };
+
+      /**
+       * 显示个人详情
+       */
+      $rootScope.showUserInfo = function(){
+        var user = $rootScope.session.userInfo;
+        _.each(user.LINGYU, function(ly, index, list){
+          ly.jueseArr = [];
+          _.each(user.JUESE, function(js, idx, lst){
+            if(js.LINGYU_ID == ly.LINGYU_ID){
+              ly.jueseArr.push(js.JUESEMINGCHENG);
+            }
+          });
+        });
+        $scope.usr = user;
+        $scope.userInfoLayer = true;
+      };
+
+      /**
+       * 关闭个人详情页
+       */
+      $rootScope.closeUserInfoLayer = function(){
+        $scope.userInfoLayer = false;
       };
 
     });

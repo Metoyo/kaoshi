@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         $rootScope.styles = ['styles/kaowu.css'];
 
         /**
-         * 定义变量 //
+         * 定义变量
          */
         var userInfo = $rootScope.session.userInfo,
           baseKwAPIUrl = config.apiurl_kw, //考务的api

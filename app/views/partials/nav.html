@@ -1,7 +1,6 @@
 <div class="container" ng-controller="NavCtrl">
     <div class="userInfo">
-        <a href="#">
-            {{session.info.YONGHUMING}}
+        <a href="javascript:void(0)" ng-bind="session.userInfo.YONGHUMING" ng-click="showUserInfo()">
         </a>
         <a href="/logout">退出</a>
         <a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>
@@ -46,5 +45,73 @@
     </ul>
     <div class="dsfoldBox">
         <a href="javascript:void(0)" class="dsfoldBtn" ng-click="dsfoldBtn()"> </a>
+    </div>
+    <!-- 显示个人信息的页面 -->
+    <div class="popup-gray-box" ng-show="userInfoLayer">
+        <div class="popup-gray-box-inner">
+            <div class="innerBox">
+                <div class="pin-right-top">
+                    <button type="button" class="btn btn-danger" ng-click="closeUserInfoLayer()">关闭</button>
+                </div>
+                <table class="table changePsw">
+                    <tr>
+                        <td>
+                            系统账号
+                        </td>
+                        <td>
+                            {{usr.YONGHUMING}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            真实姓名
+                        </td>
+                        <td>
+                            {{usr.YONGHUXINXI[0].XINGMING}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            邮箱
+                        </td>
+                        <td>
+                            {{usr.YOUXIANG}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            手机
+                        </td>
+                        <td>
+                            {{usr.SHOUJI}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 20px">
+                            单位
+                        </td>
+                        <td>
+                            {{usr.JIGOU[0].JIGOUMINGCHENG}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            科目
+                        </th>
+                        <th>
+                            职务
+                        </th>
+                    </tr>
+                    <tr ng-repeat="ly in usr.LINGYU">
+                        <td>
+                            {{ly.LINGYUMINGCHENG}}
+                        </td>
+                        <td>
+                            {{ly.jueseArr.toString()}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
