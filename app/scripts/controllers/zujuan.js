@@ -473,7 +473,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var qrytimuxiangqing,
               pgNum = pg - 1,
               timu_id,
-              currentPage = pgNum ? pgNum : 0;
+              currentPage = pgNum ? pgNum : 0,
+              userIdArr = [];//存放user id的数组
 
             //得到分页数组的代码
             var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
@@ -495,14 +496,29 @@ define(['jquery', 'underscore', 'angular', 'config'],
             timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
             qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
             $http.get(qrytimuxiangqing).success(function(data){
-              if(data.length){
-                $scope.timudetails = data;
-                $scope.caozuoyuan = caozuoyuan;
-                timudetails = data;
-              }
-              else{
-                $scope.timudetails = null;
-              }
+              _.each(data, function(tm, idx, lst){
+                userIdArr.push(tm.CHUANGJIANREN_UID);
+              });
+              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+              var getUserNameUrl = getUserNameBase + userIdStr;
+              $http.get(getUserNameUrl).success(function(users){
+                if(users.length){
+                  _.each(data, function(tm, idx, lst){
+                    _.each(users, function(usr, subidx, sublst){
+                      if(usr.UID == tm.CHUANGJIANREN_UID){
+                        tm.chuangjianren = usr.XINGMING;
+                      }
+                    });
+                  });
+                  $scope.timudetails = data;
+                  $scope.caozuoyuan = caozuoyuan;
+                  timudetails = data;
+                }
+                else{
+                  $scope.timudetails = null;
+                  alert('查询创建人名称失败！');
+                }
+              });
             }).error(function(err){
               console.log(err);
             });
@@ -1575,7 +1591,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.paperPages = sjlbIdArrRev.slice(currentPageVal - 5, currentPageVal + 5);
               }
             }
-            //查询数据的代码 //
+            //查询数据的代码
             timu_id = sjlbIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
             qryShiJuanGaiYao = qryShiJuanGaiYaoBase + timu_id; //查询详情url
             $http.get(qryShiJuanGaiYao).success(function(sjlbgy){

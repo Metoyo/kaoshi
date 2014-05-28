@@ -29,6 +29,9 @@
                 <p class="level-num">
                     难易度：<span class="pull-right level-star-{{tm.NANDU_ID}}"></span>
                 </p>
+                <p class="knowledge-point">
+                    出题人：<span class="pull-right" ng-bind="tm.chuangjianren"></span>
+                </p>
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
                     <button type="button" class="btn btn-default" ng-click="deleteItem(tm.TIMU_ID, $index)">删除</button>
                     <button type="button" class="btn btn-default"

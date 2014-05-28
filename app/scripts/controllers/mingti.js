@@ -15,6 +15,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         var userInfo = $rootScope.session.userInfo,
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
+          baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           token = config.token,
           caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
@@ -95,7 +96,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           itemNumPerPage = 10, //每页显示多少条数据
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           testListStepZst, //用了保存查询试题阶段的知识点
-          isEditItemStep = true; //是否是编辑阶段
+          isEditItemStep = true, //是否是编辑阶段
+          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -301,9 +303,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.getThisPageData = function(pg){
           var qrytimuxiangqing,
-              pgNum = pg - 1,
-              timu_id,
-              currentPage = pgNum ? pgNum : 0;
+            pgNum = pg - 1,
+            timu_id,
+            currentPage = pgNum ? pgNum : 0,
+            userIdArr = [];//存放user id的数组
 
           //得到分页数组的代码
           var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
@@ -325,14 +328,29 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
-            if(data.length){
-              $scope.timudetails = data;
-              $scope.caozuoyuan = caozuoyuan;
-              timudetails = data;
-            }
-            else{
-              $scope.timudetails = null;
-            }
+            _.each(data, function(tm, idx, lst){
+              userIdArr.push(tm.CHUANGJIANREN_UID);
+            });
+            var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+            var getUserNameUrl = getUserNameBase + userIdStr;
+            $http.get(getUserNameUrl).success(function(users){
+              if(users.length){
+                _.each(data, function(tm, idx, lst){
+                  _.each(users, function(usr, subidx, sublst){
+                    if(usr.UID == tm.CHUANGJIANREN_UID){
+                      tm.chuangjianren = usr.XINGMING;
+                    }
+                  });
+                });
+                $scope.timudetails = data;
+                $scope.caozuoyuan = caozuoyuan;
+                timudetails = data;
+              }
+              else{
+                $scope.timudetails = null;
+                alert('查询创建人名称失败！');
+              }
+            });
           }).error(function(err){
             console.log(err);
           });
@@ -516,26 +534,48 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
-          console.log(dataTpl);
-          if(selectZsd.length && tznrIsNull && dataTpl.shuju.NANDU_ID.length &&
-            dataTpl.shuju.DAAN.length && dataTpl.shuju.TIGAN.length ){
-            $http.post(xgtmUrl, dataTpl).success(function(data){
-              console.log(data);
-              if(data.result){
-                alert('提交成功！');
-                deferred.resolve();
+          if(dataTpl.shuju.TIGAN.length){
+            if(tznrIsNull){
+              if(dataTpl.shuju.DAAN.length){
+                if(dataTpl.shuju.NANDU_ID.length){
+                  if(selectZsd.length){
+                    $http.post(xgtmUrl, dataTpl).success(function(data){
+                      console.log(data);
+                      if(data.result){
+                        alert('提交成功！');
+                        deferred.resolve();
+                      }
+                      else{
+                        alert('提交失败！');
+                      }
+                    })
+                    .error(function(err){
+                      alert(err);
+                      deferred.reject();
+                    });
+                  }
+                  else{
+                    alert("请选择知识点！");
+                    deferred.reject();
+                  }
+                }
+                else{
+                  alert("请选择难度！");
+                  deferred.reject();
+                }
               }
               else{
-                alert('提交失败！');
-              }
-            })
-              .error(function(err){
-                alert(err);
+                alert("请选择答案！");
                 deferred.reject();
-              });
+              }
+            }
+            else{
+              alert("请输入题支选项！");
+              deferred.reject();
+            }
           }
           else{
-            alert("请确保试题的完整性！");
+            alert("请输入题干！");
             deferred.reject();
           }
 
@@ -669,6 +709,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
               if(data.result){
                 $scope.timudetails.splice(idx, 1);
+                alert('删除成功！');
               }
             });
           }
