@@ -95,6 +95,7 @@ define([
          */
         $scope.validatePersonalInfo = function(){
           $scope.stepTwo = true;
+          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
           $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
@@ -233,6 +234,7 @@ define([
          * 回到填写个人信息页面
          */
         $scope.goToPersonInfo = function(){
+          $('.nav-tabs li').removeClass('active').eq(0).addClass('active');
           $('.tab-pane').removeClass('active').eq(0).addClass('active');
         };
 
@@ -256,6 +258,7 @@ define([
           registerDate.juese = select_juese;
           $scope.registerDate = registerDate;
           $scope.stepThree = true;
+          $('.nav-tabs li').removeClass('active').eq(2).addClass('active');
           $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
@@ -263,6 +266,7 @@ define([
          * 去提交个人信息页面 getObjectAndRight
          */
         $scope.goToJueSe = function(){
+          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
           $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
