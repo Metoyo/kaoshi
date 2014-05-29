@@ -442,39 +442,47 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查询试题的函数
            */
           var qryTestFun = function(){
+            $scope.loadingImgShow = true; //paper_hand_form.html
             var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
               '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
             pageArr = [];
 
             $http.get(qrytimuliebiao).success(function(data){
-              $scope.testListId = data;
-              _.each(data, function(tm, idx, lst){
-                tiMuIdArr.push(tm.TIMU_ID);
-              });
-              //获得一共多少页的代码开始
-              totalPage = Math.ceil(data.length/itemNumPerPage);
-              for(var i = 1; i <= totalPage; i++){
-                pageArr.push(i);
+              if(data.length){
+                $scope.testListId = data;
+                _.each(data, function(tm, idx, lst){
+                  tiMuIdArr.push(tm.TIMU_ID);
+                });
+                //获得一共多少页的代码开始
+                totalPage = Math.ceil(data.length/itemNumPerPage);
+                for(var i = 1; i <= totalPage; i++){
+                  pageArr.push(i);
+                }
+                $scope.lastPageNum = totalPage; //最后一页的数值
+                //查询数据开始
+                $scope.getThisPageData();
               }
-              $scope.lastPageNum = totalPage; //最后一页的数值
-              //查询数据开始
-              $scope.getThisPageData();
+              else{
+                alert('没有相关试题信息！');
+                $scope.loadingImgShow = false; //paper_hand_form.html
+              }
             })
-              .error(function(err){
-                console.log(err);
-              });
+            .error(function(err){
+              console.log(err);
+            });
           };
 
           /**
-           * 查询题目详情的分页代码//
+           * 查询题目详情的分页代码
            */
           $scope.getThisPageData = function(pg){
+            $scope.loadingImgShow = true; //paper_hand_form.html
             var qrytimuxiangqing,
               pgNum = pg - 1,
               timu_id,
               currentPage = pgNum ? pgNum : 0,
-              userIdArr = [];//存放user id的数组
+              userIdArr = []; //存放user id的数组
 
             //得到分页数组的代码
             var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
@@ -496,29 +504,37 @@ define(['jquery', 'underscore', 'angular', 'config'],
             timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
             qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
             $http.get(qrytimuxiangqing).success(function(data){
-              _.each(data, function(tm, idx, lst){
-                userIdArr.push(tm.CHUANGJIANREN_UID);
-              });
-              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
-              var getUserNameUrl = getUserNameBase + userIdStr;
-              $http.get(getUserNameUrl).success(function(users){
-                if(users.length){
-                  _.each(data, function(tm, idx, lst){
-                    _.each(users, function(usr, subidx, sublst){
-                      if(usr.UID == tm.CHUANGJIANREN_UID){
-                        tm.chuangjianren = usr.XINGMING;
-                      }
+              if(data.length){
+                _.each(data, function(tm, idx, lst){
+                  userIdArr.push(tm.CHUANGJIANREN_UID);
+                });
+                var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+                var getUserNameUrl = getUserNameBase + userIdStr;
+                $http.get(getUserNameUrl).success(function(users){
+                  if(users.length){
+                    _.each(data, function(tm, idx, lst){
+                      _.each(users, function(usr, subidx, sublst){
+                        if(usr.UID == tm.CHUANGJIANREN_UID){
+                          tm.chuangjianren = usr.XINGMING;
+                        }
+                      });
                     });
-                  });
-                  $scope.timudetails = data;
-                  $scope.caozuoyuan = caozuoyuan;
-                  timudetails = data;
-                }
-                else{
-                  $scope.timudetails = null;
-                  alert('查询创建人名称失败！');
-                }
-              });
+                    $scope.loadingImgShow = false; //paper_hand_form.html
+                    $scope.timudetails = data;
+                    $scope.caozuoyuan = caozuoyuan;
+                    timudetails = data;
+                  }
+                  else{
+                    $scope.timudetails = null;
+                    alert('查询创建人名称失败！');
+                    $scope.loadingImgShow = false; //paper_hand_form.html
+                  }
+                });
+              }
+              else{
+                alert('没有相关的题目！');
+                $scope.loadingImgShow = false; //paper_hand_form.html
+              }
             }).error(function(err){
               console.log(err);
             });
@@ -1528,6 +1544,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var isFirstQryPaperList;
           var qryShiJuanList = function(){
+            $scope.loadingImgShow = true;  //paperList.html loading
             paperPageArr = [];
             sjlbIdArrRev = []; //反转试卷列表id
             $http.get(qryCxsjlbUrl).success(function(sjlb){
@@ -1550,6 +1567,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   isDeletePaper = false;
                 }
               }
+              else{
+                alert('没有相关试卷信息！');
+                $scope.loadingImgShow = false;  //paperList.html loading
+              }
             }).error(function(err){
               alert(err);
             });
@@ -1570,6 +1591,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查询试卷概要的分页代码
            */
           $scope.getThisSjgyPageData = function(pg){
+            $scope.loadingImgShow = true;  //paperList.html loading
             var qryShiJuanGaiYao,
               pgNum = pg - 1,
               timu_id,
@@ -1611,6 +1633,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         }
                       });
                     });
+                    $scope.loadingImgShow = false;  //paperList.html loading
                     $scope.paperListData = sjlbgy;
                     if(isFirstQryPaperList){
                       $scope.totalSelectedItmes = 0; //已选试题的总数量
@@ -1622,11 +1645,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   }
                   else{
                     alert('查询创建人名称失败！');
+                    $scope.loadingImgShow = false;  //paperList.html loading
                   }
                 });
               }
               else{
                 alert('很遗憾！没有相关数据！');
+                $scope.loadingImgShow = false;  //paperList.html loading
               }
             }).error(function(err){
               console.log(err);

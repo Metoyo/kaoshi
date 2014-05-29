@@ -142,6 +142,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
        * 加载单独某个大纲详情
        */
       $scope.loadKnowledge = function(lx) {
+        $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
         var qryKnowledgeUrl = '';
         for(var i = 0; i < dgListLength; i++){
           if($scope.dgList[i].LEIXING == lx){
@@ -166,6 +167,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           if(qryKnowledgeUrl){
             $http.get(qryKnowledgeUrl).success(function(data) {
               if(data.length){
+                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePb = data;
                 $scope.dgTpl = 'views/partials/daGangPublic.html';
                 $scope.isPrivateDg = false;
@@ -175,12 +177,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
           else{
             alert('没有公共知识大纲！');
+            $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
           }
         }
         else{
           if(qryKnowledgeUrl){
             $http.get(qryKnowledgeUrl).success(function(data) {
               if(data.length){
+                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = data;
                 $scope.dgTpl = 'views/partials/daGangPrivate.html';
                 $scope.isPrivateDg = true;
@@ -190,6 +194,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
           else{
             alert('没有自建知识大纲！');
+            $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
           }
         }
       };

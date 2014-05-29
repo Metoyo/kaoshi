@@ -1,4 +1,8 @@
 <form class="form-horizontal dagangInputForm">
+    <div class="loading-box text-center" ng-show="loadingImgShow">
+        <img src="/images/loading.gif" alt=""/>
+        <p>数据加载中，请耐心等待……</p>
+    </div>
     <div ng-repeat="zsd in knowledgePb" class="media dagangBox dgLevel_0">
         <div class="media-body">
             <div class="media-heading">

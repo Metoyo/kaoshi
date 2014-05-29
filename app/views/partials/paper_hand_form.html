@@ -46,6 +46,10 @@
 </div>
 <!--题型和难度DOM元素， 结束-->
 <div class="row test-list-wrap">
+    <div class="loading-box text-center" ng-show="loadingImgShow">
+        <img src="/images/loading.gif" alt=""/>
+        <p>数据加载中，请耐心等待……</p>
+    </div>
     <h2 class="total-test">
         共<strong>{{testListId.length}}</strong>题
     </h2>

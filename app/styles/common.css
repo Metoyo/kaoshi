@@ -5512,6 +5512,8 @@ a.add-btn:hover span {
   .loading-box img {
     width: 64px;
     height: 64px; }
+  .loading-box p {
+    color: red; }
 
 /**
 *弹出层，背景为浅灰色

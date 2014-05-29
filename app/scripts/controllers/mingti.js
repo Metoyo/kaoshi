@@ -255,7 +255,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 查询试题的函数
          */
         var qryTestFun = function(){
-
+          $scope.loadingImgShow = true; //testList.html loading
           var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id + '&nandu_id=' + nandu_id
             + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
               tiMuIdArr = [];
@@ -281,6 +281,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 }
                 else{
                   alert('没有相应的题目！');
+                  $scope.loadingImgShow = false; //testList.html loading
                 }
               })
               .error(function(err){
@@ -290,6 +291,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             else{
               alert('没有题库！');
+              $scope.loadingImgShow = false; //testList.html loading
             }
           })
           .error(function(err){
@@ -302,6 +304,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 分页的代码
          */
         $scope.getThisPageData = function(pg){
+          $scope.loadingImgShow = true; //testList.html loading
           var qrytimuxiangqing,
             pgNum = pg - 1,
             timu_id,
@@ -328,29 +331,37 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
-            _.each(data, function(tm, idx, lst){
-              userIdArr.push(tm.CHUANGJIANREN_UID);
-            });
-            var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
-            var getUserNameUrl = getUserNameBase + userIdStr;
-            $http.get(getUserNameUrl).success(function(users){
-              if(users.length){
-                _.each(data, function(tm, idx, lst){
-                  _.each(users, function(usr, subidx, sublst){
-                    if(usr.UID == tm.CHUANGJIANREN_UID){
-                      tm.chuangjianren = usr.XINGMING;
-                    }
+            if(data.length){
+              _.each(data, function(tm, idx, lst){
+                userIdArr.push(tm.CHUANGJIANREN_UID);
+              });
+              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+              var getUserNameUrl = getUserNameBase + userIdStr;
+              $http.get(getUserNameUrl).success(function(users){
+                if(users.length){
+                  _.each(data, function(tm, idx, lst){
+                    _.each(users, function(usr, subidx, sublst){
+                      if(usr.UID == tm.CHUANGJIANREN_UID){
+                        tm.chuangjianren = usr.XINGMING;
+                      }
+                    });
                   });
-                });
-                $scope.timudetails = data;
-                $scope.caozuoyuan = caozuoyuan;
-                timudetails = data;
-              }
-              else{
-                $scope.timudetails = null;
-                alert('查询创建人名称失败！');
-              }
-            });
+                  $scope.loadingImgShow = false; //testList.html loading
+                  $scope.timudetails = data;
+                  $scope.caozuoyuan = caozuoyuan;
+                  timudetails = data;
+                }
+                else{
+                  $scope.timudetails = null;
+                  alert('查询创建人名称失败！');
+                  $scope.loadingImgShow = false; //testList.html loading
+                }
+              });
+            }
+            else{
+              alert('没有相关题目！');
+              $scope.loadingImgShow = false; //testList.html loading
+            }
           }).error(function(err){
             console.log(err);
           });
@@ -372,7 +383,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 点击添加题型的取消按钮后<div class="kmTxWrap">显示//
+         * 点击添加题型的取消按钮后<div class="kmTxWrap">显示
          */
         $scope.cancelAddPattern = function(){
           var selectZsdStr = '';
@@ -663,7 +674,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.resetForm = function(){
           resetFun();
         };
-
 
         /**
          * 多选题选择答案的效果的代码
