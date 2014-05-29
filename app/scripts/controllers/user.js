@@ -17,30 +17,37 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.showShenhe = false;
 
       $scope.setPermissions = function() {
+        $scope.loadingImgShow = true; //user.html
         var hasShenHe = [], //定义一个已经通过审核的数组
             notShenHe = []; //定义一个待审核的数组
         $http.get(dshyhjsUrl).success(function(data) {
-          $scope.showShenhe = true;
-          _.each(data, function(sh, indx, lst) {
-            sh.AUTH_BTN_HIDE = true;
-            var zeroLength = 0; //判断有几个未审核的角色
-            _.each(sh.JUESE, function(js, indx, jsLst) {
-              js.JUESE_CHECKED = js.ZHUANGTAI > -1;
-              if(js.ZHUANGTAI === 0) {
-                sh.AUTH_BTN_HIDE = false;
-                zeroLength ++;
+          if(data){
+            $scope.showShenhe = true;
+            _.each(data, function(sh, indx, lst) {
+              sh.AUTH_BTN_HIDE = true;
+              var zeroLength = 0; //判断有几个未审核的角色
+              _.each(sh.JUESE, function(js, indx, jsLst) {
+                js.JUESE_CHECKED = js.ZHUANGTAI > -1;
+                if(js.ZHUANGTAI === 0) {
+                  sh.AUTH_BTN_HIDE = false;
+                  zeroLength ++;
+                }
+              });
+              if(zeroLength){
+                notShenHe.push(sh);
+              }
+              else{
+                hasShenHe.push(sh);
               }
             });
-            if(zeroLength){
-              notShenHe.push(sh);
-            }
-            else{
-              hasShenHe.push(sh);
-            }
-          });
-//          $scope.shenheList = data;
-          $scope.hasShenHeList = hasShenHe;
-          $scope.notShenHeList = notShenHe;
+            $scope.loadingImgShow = false; //user.html
+            $scope.hasShenHeList = hasShenHe;
+            $scope.notShenHeList = notShenHe;
+          }
+          else{
+            alert('没有相关数据！');
+            $scope.loadingImgShow = false; //user.html
+          }
         });
       };
 

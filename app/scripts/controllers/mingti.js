@@ -2,10 +2,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q',
-      function ($rootScope, $scope, $http, $q) {
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window',
+      function ($rootScope, $scope, $http, $q, $window) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -177,19 +177,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         点击checkbox得到checkbox的值
+         点击checkbox得到checkbox的值//
           */
         var selectZsdFun = function(){ //用于将选择的知识点变成字符串
           selectZsd = [];
           var cbArray = $('input[name=point]'),
-            cbl = cbArray.length;
+            cbl = cbArray.length,
+            zsdName = [],
+            zsdNameStr = '';
           for( var i = 0; i < cbl; i++) {
             if(cbArray.eq(i).prop("checked")) {
               selectZsd.push(cbArray[i].value);
+              zsdName.push(cbArray[i].labels[0].innerText);
             }
           }
           zhishidian_id = selectZsd.toString();
-          console.log('知识点：' + zhishidian_id);
+          zsdNameStr = zsdName.join('；');
+          $scope.selectZhiShiDian = zsdNameStr;
         };
 
         $scope.toggleSelection = function(zsdId) {
@@ -515,6 +519,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 重置输入整个form和重置函数
+         */
+        var resetFun = function(dataTpl){
+          $('.resetForm').click();
+          $('div.radio').removeClass('radio-select');
+          $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
+//          $("input[name=difficulty]").prop('checked',false); //重置难度的数据
+          dataTpl.shuju.DAAN = ''; //重置难度
+//          dataTpl.shuju.NANDU_ID = ''; //重置难度
+          dataTpl.shuju.TIGAN = ''; //重置题干
+          dataTpl.shuju.TIZHINEIRONG = ''; //重置题支
+          $('.tiZhi').val('');
+//          zhishidian_id = '';
+//          $scope.selectZsdStr = '';
+        };
+        $scope.resetForm = function(){
+          resetFun();
+        };
+
+        /**
          * 单选题和多选题添加函数
          */
         var addDanDuoXuanFun = function(dataTpl) {
@@ -553,7 +577,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     $http.post(xgtmUrl, dataTpl).success(function(data){
                       console.log(data);
                       if(data.result){
-                        alert('提交成功！');
+                        $('.save-msg').show().fadeOut(3000);
+                        $scope.isSaveSuccessful = true;
                         deferred.resolve();
                       }
                       else{
@@ -604,7 +629,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 多选题添加代码 //
+         * 多选题添加代码
          */
         $scope.addDuoxuanShiTi = function(){
           var promise = addDanDuoXuanFun(duoxuan_data);
@@ -658,24 +683,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 重置输入整个form和重置函数
-         */
-        var resetFun = function(dataTpl){
-          $('.resetForm').click();
-          $('div.radio').removeClass('radio-select');
-          $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
-          $("input[name=difficulty]").prop('checked',false); //重置难度的数据
-          dataTpl.shuju.DAAN = ''; //重置难度
-          dataTpl.shuju.NANDU_ID = ''; //重置难度
-          dataTpl.shuju.TIGAN = ''; //重置题干
-//          zhishidian_id = '';
-//          $scope.selectZsdStr = '';
-        };
-        $scope.resetForm = function(){
-          resetFun();
-        };
-
-        /**
          * 多选题选择答案的效果的代码
          */
         $scope.chooseDuoxuanDaan = function(idx){
@@ -720,6 +727,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               if(data.result){
                 $scope.timudetails.splice(idx, 1);
                 alert('删除成功！');
+              }
+              else{
+                alert(data.error);
               }
             });
           }
