@@ -124,6 +124,12 @@ a.add-btn:hover span {
 .form-body {
   .answerBox{
     margin-bottom: 5px;
+    a{
+      color: #069200;
+      &:hover{
+        text-decoration: none;
+      }
+    }
   }
   .radio {
     width: 20px;
@@ -647,6 +653,7 @@ a.add-btn:hover span {
 }
 .save-msg{
   margin-right: 10px;
+  color: red;
   display: none;
 }
 /**

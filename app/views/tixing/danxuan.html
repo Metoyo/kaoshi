@@ -20,11 +20,19 @@
                         <!--<textarea class="form-control ckeditor" rows="3" id="editorDanXuan"-->
                                   <!--name="editorDanXuan" placeholder="请输入题干"></textarea>-->
                     </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-default" ng-click="showDanXuanTiGanEditor()">
+                            展开编辑器
+                        </button>
+                    </div>
                 </div>
             </fieldset>
             <fieldset class="form-body">
                 <div class="form-group answerBox">
-                    <div class="col-sm-3 col-sm-offset-9">
+                    <div class="col-sm-9 text-right">
+                        <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor()">编辑器</a>
+                    </div>
+                    <div class="col-sm-3">
                         正确答案
                     </div>
                 </div>
