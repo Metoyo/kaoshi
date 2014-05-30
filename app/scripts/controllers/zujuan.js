@@ -689,10 +689,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 提交自动数据的参数,难度为整张试卷难度
+           * 提交自动数据的参数,难度为整张试卷难度//
            */
           var countnum, txtmLength;
           $scope.submitAutoPaperData = function(){
+            $scope.loadingImgShow = true;  //paper_preview.html loading
             countnum = 0;
             autoMakePaperData.shuju.TIXING = [];
             autoMakePaperData.shuju.ZHISHIDIAN = [];
@@ -758,6 +759,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                   if(countnum == txtmLength){
                                     $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                                     $scope.baocunshijuanBtn = true; //保存试卷的按钮
+                                    $scope.loadingImgShow = false;  //paper_preview.html loading
                                     $scope.shijuanPreview();
                                   }
                                 }
@@ -1177,7 +1179,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 试卷预览代码
+           * 试卷预览代码//
            */
           $scope.shijuanPreview = function(){
             var mbdtArr = []; //定义一个空的数组用来存放模板大题

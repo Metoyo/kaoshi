@@ -7,6 +7,7 @@ define([
     'directives/passwordverify',
     'directives/bnslideshow',
     'directives/hoverslide',
+    'directives/saveloading',
     'controllers/main',
     'controllers/renzheng',
     'controllers/nav',
@@ -25,9 +26,9 @@ define([
     'filters/outputdaan',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
-                MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl,
-                KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,MylocaldatewithweekFilter, ExamstatusFilter,
-                OutputdaanFilter, config) {
+                SaveloadingDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, LogoutCtrl,
+                RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,
+                MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -50,6 +51,7 @@ define([
 'kaoshiApp.directives.Bnslideshow',
 'kaoshiApp.filters.Outputdaan',
 'kaoshiApp.directives.Hoverslide',
+'kaoshiApp.directives.Saveloading',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

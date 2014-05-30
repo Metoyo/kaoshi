@@ -1,4 +1,8 @@
 <div class="row">
+    <div class="loading-box text-center" ng-show="loadingImgShow">
+        <img src="/images/loading.gif" alt=""/>
+        <p>数据保存中……</p>
+    </div>
     <div class="col-md-12">
         <form class="form-horizontal" role="form">
             <fieldset class="form-header">
@@ -15,10 +19,10 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="3" ng-model="danXuanData.shuju.TIGAN" name="editor1"
-                                  placeholder="请输入题干"></textarea>
-                        <!--<textarea class="form-control ckeditor" rows="3" id="editorDanXuan"-->
-                                  <!--name="editorDanXuan" placeholder="请输入题干"></textarea>-->
+                        <!-- <textarea class="form-control" rows="3" ng-model="danXuanData.shuju.TIGAN" name="editor1"
+                                  placeholder="请输入题干"></textarea> -->
+                        <textarea class="form-control ckeditor" rows="3" ng-model="danXuanData.shuju.TIGAN"
+                                  name="editorDanXuan" placeholder="请输入题干"></textarea>
                     </div>
                     <div class="col-sm-3">
                         <button type="button" class="btn btn-default" ng-click="showDanXuanTiGanEditor()">
@@ -90,7 +94,7 @@
             </fieldset>
         </form>
     </div>
-    <!--<script type="text/javascript">-->
-        <!--CKEDITOR.replace("editorDanXuan");-->
-    <!--</script>-->
+    <!-- <script type="text/javascript">
+        CKEDITOR.replace("editorDanXuan");
+    </script> -->
 </div>

@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window',
       function ($rootScope, $scope, $http, $q, $window) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -23,13 +23,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           chaxunzilingyu = true,
 
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-                    jigouid + '&lingyuid=', //查询科目包含什么题型的url
+            jigouid + '&lingyuid=', //查询科目包含什么题型的url
 
           qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
 
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
-              caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
+            caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
 
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
@@ -42,13 +42,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题库
 
           qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
 
           qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
 
           selectZsd = [], //定义一个选中知识点的变量（数组
-          //selectZstStr, //定义一个选中知识点的变量（字符串）
+        //selectZstStr, //定义一个选中知识点的变量（字符串）
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
             caozuoyuan: userInfo.UID,
@@ -97,7 +97,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           testListStepZst, //用了保存查询试题阶段的知识点
           isEditItemStep = true, //是否是编辑阶段
-          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
+          getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
+          isDanXuanTiGanEeitorShow = false, //单选题干的编辑器是否存在
+          isDuoXuanTiGanEeitorShow = false, //多选题干的编辑器是否存在
+          isJiSuanTiGanEeitorShow = false, //计算题干的编辑器是否存在
+          isJiSuanDaAnEeitorShow = false; //计算答案的编辑器是否存在
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -159,9 +163,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $http.get(qryKnowledge).success(function(data){
-                $scope.kowledgeList = data;
+            $scope.kowledgeList = data;
           }).error(function(err){
-              alert(err);
+            alert(err);
           });
         };
 
@@ -170,15 +174,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.toggleChildNode = function(idx) {
           var onClass = '.node' + idx,//得到那个button被点击了
-              gitThisBtn = angular.element(onClass),//得到那个展开和隐藏按钮被点击了
-              getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
+            gitThisBtn = angular.element(onClass),//得到那个展开和隐藏按钮被点击了
+            getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
           gitThisBtn.toggleClass('unfoldBtn');
           getTargetChild.toggle();//实现子元素的显示和隐藏
         };
 
         /**
          点击checkbox得到checkbox的值//
-          */
+         */
         var selectZsdFun = function(){ //用于将选择的知识点变成字符串
           selectZsd = [];
           var cbArray = $('input[name=point]'),
@@ -262,8 +266,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.loadingImgShow = true; //testList.html loading
           var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id + '&nandu_id=' + nandu_id
             + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
-              tiMuIdArr = [];
-              pageArr = [];
+          tiMuIdArr = [];
+          pageArr = [];
           //查询题库
           $http.get(qryTiKuUrl).success(function(tiku){
             if(tiku.length){
@@ -288,9 +292,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.loadingImgShow = false; //testList.html loading
                 }
               })
-              .error(function(err){
-                console.log(err);
-              });
+                .error(function(err){
+                  console.log(err);
+                });
 
             }
             else{
@@ -298,9 +302,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.loadingImgShow = false; //testList.html loading
             }
           })
-          .error(function(err){
-             console.log(err);
-          });
+            .error(function(err){
+              console.log(err);
+            });
         };
         qryTestFun(caozuoyuan);
 
@@ -467,6 +471,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.TIGAN = '';
 //          danxuan_data.shuju.NANDU_ID = '';
           $scope.danXuanData = danxuan_data;
+          isDanXuanTiGanEeitorShow = false;
+          $scope.loadingImgShow = false; //danxuan.html
         };
 
         /**
@@ -490,6 +496,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           duoxuan_data.shuju.TIGAN = '';
 //          duoxuan_data.shuju.NANDU_ID = '';
           $scope.duoXuanData = duoxuan_data;
+          isDuoXuanTiGanEeitorShow = false;
+          $scope.loadingImgShow = false; //duoxuan.html
         };
 
         /**
@@ -505,6 +513,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jisuan_data.shuju.TIXING_ID = 9;
           jisuan_data.shuju.TIMULEIXING_ID = 9;
           $scope.jiSuanData = jisuan_data;
+          isJiSuanTiGanEeitorShow = false;
+          isJiSuanDaAnEeitorShow = false;
+          $scope.loadingImgShow = false; //jisuan.html
         };
 
         /**
@@ -542,8 +553,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 单选题和多选题添加函数
          */
         var addDanDuoXuanFun = function(dataTpl) {
-          var deferred = $q.defer();
 
+          var deferred = $q.defer();
           tznrIsNull = true;
           var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
             tizhineirong = [];
@@ -558,13 +569,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(dataTpl == danxuan_data){
             dataTpl.shuju.TIXING_ID = 1;
             dataTpl.shuju.TIMULEIXING_ID = 1;
-  //          dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDanXuan.getData();
-
+            if(isDanXuanTiGanEeitorShow){
+              dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDanXuan.getData();
+            }
           }
           if(dataTpl == duoxuan_data){
             dataTpl.shuju.TIXING_ID = 2;
             dataTpl.shuju.TIMULEIXING_ID = 2;
-  //          dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDuoXuan.getData();
+            if(isDuoXuanTiGanEeitorShow){
+              dataTpl.shuju.TIGAN = CKEDITOR.instances.editorDuoXuan.getData();
+            }
           }
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
@@ -574,21 +588,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               if(dataTpl.shuju.DAAN.length){
                 if(dataTpl.shuju.NANDU_ID.length){
                   if(selectZsd.length){
+                    $scope.loadingImgShow = true; //danxuan.html
                     $http.post(xgtmUrl, dataTpl).success(function(data){
                       console.log(data);
                       if(data.result){
+                        $scope.loadingImgShow = false;
                         $('.save-msg').show().fadeOut(3000);
                         $scope.isSaveSuccessful = true;
+                        $scope.loadingImgShow = false; //danxuan.html
                         deferred.resolve();
                       }
                       else{
                         alert('提交失败！');
+                        $scope.loadingImgShow = false; //danxuan.html
                       }
                     })
-                    .error(function(err){
-                      alert(err);
-                      deferred.reject();
-                    });
+                      .error(function(err){
+                        alert(err);
+                        deferred.reject();
+                      });
                   }
                   else{
                     alert("请选择知识点！");
@@ -622,9 +640,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示单选题题干编辑器
          */
         $scope.showDanXuanTiGanEditor = function(){
-
+          var editor = CKEDITOR.replace("editorDanXuan");
+          isDanXuanTiGanEeitorShow = true;
         };
-
         /**
          * 显示单选题题支编辑器
          */
@@ -639,6 +657,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var promise = addDanDuoXuanFun(danxuan_data);
           promise.then(function() {
             resetFun(danxuan_data);
+            CKEDITOR.instances.editorDanXuan.setData('');
+            $scope.loadingImgShow = false; //danxuan.html
           });
         };
 
@@ -646,7 +666,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示多选题题干编辑器
          */
         $scope.showDuoXuanTiGanEditor = function(){
-
+          var editor = CKEDITOR.replace("editorDuoXuan");
+          isDuoXuanTiGanEeitorShow = true;
         };
 
         /**
@@ -663,6 +684,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var promise = addDanDuoXuanFun(duoxuan_data);
           promise.then(function() {
             resetFun(duoxuan_data);
+            CKEDITOR.instances.editorDuoXuan.setData('');
+            $scope.loadingImgShow = false; //duoxuan.html
           });
         };
 
@@ -670,14 +693,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示计算题干编辑器
          */
         $scope.showJiSuanTiGanEditor = function(){
-
+          var editor = CKEDITOR.replace("editorJiSuanTg");
+          isJiSuanTiGanEeitorShow = true;
         };
 
         /**
          * 显示计算题答案编辑器
          */
         $scope.showJiSuanDaAnEditor = function(){
-
+          var editor = CKEDITOR.replace("editorJiSuanDa");
+          isJiSuanDaAnEeitorShow = true;
         };
 
         /**
@@ -685,13 +710,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.addJisuanShiTi = function(){
           jisuan_data.shuju.ZHISHIDIAN = selectZsd;
-  //        jisuan_data.shuju.TIGAN = CKEDITOR.instances.editorJiSuanTg.getData();
-  //        jisuan_data.shuju.DAAN = CKEDITOR.instances.editorJiSuanDa.getData();
-//           jisuan_data.shuju.NANDU_ID.length &
+          //        jisuan_data.shuju.TIGAN = CKEDITOR.instances.editorJiSuanTg.getData();
+          //        jisuan_data.shuju.DAAN = CKEDITOR.instances.editorJiSuanDa.getData();
           if(jisuan_data.shuju.TIGAN.length){
             if(jisuan_data.shuju.DAAN.length){
               if(selectZsd.length){
                 if(jisuan_data.shuju.NANDU_ID.length){
+                  $scope.loadingImgShow = true; //jisuan.html
                   $http.post(xgtmUrl, jisuan_data).success(function(data){
                     if(data.result){
                       if(jisuan_data.shuju.TIMU_ID){ //试题修改成功后！
@@ -704,14 +729,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         $('.save-msg').show().fadeOut(3000);
                         resetFun(jisuan_data);
                       }
+                      $scope.loadingImgShow = false; //jisuan.html
+                      if(isJiSuanTiGanEeitorShow){
+                        CKEDITOR.instances.editorJiSuanTg.setData('');
+                        CKEDITOR.instances.editorJiSuanDa.setData('');
+                      }
                     }
                     else{
                       alert(data.error);
+                      $scope.loadingImgShow = false; //jisuan.html
                     }
                   })
-                  .error(function(err){
-                    alert(err);
-                  });
+                    .error(function(err){
+                      alert(err);
+                    });
                 }
                 else{
                   alert('请选择难度！');
@@ -735,7 +766,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.chooseDanxuanDaan = function(idx){
           var tgt = '.answer' + idx,
-              tgtElement = angular.element(tgt);
+            tgtElement = angular.element(tgt);
           angular.element('div.radio').removeClass('radio-select');
           tgtElement.addClass('radio-select');
           tgtElement.find("input[name='rightAnswer']").prop('checked',true);
@@ -747,7 +778,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.chooseDuoxuanDaan = function(idx){
           var rightAnswerStr = [],
-              tgtElement = $('div.radio').eq(idx);
+            tgtElement = $('div.radio').eq(idx);
 
           tgtElement.toggleClass('radio-select');
           if(tgtElement.find('input[name=rightAnswer]').prop('checked')){
@@ -818,7 +849,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.selectZsdStr = '';
           isEditItemStep = false;
           if(onceMakeWord){
-              $('.pointTree').find('input[name=point]').prop('checked', false); //add new
+            $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           }
           //单选题
           if(tmxq.TIMULEIXING_ID == 1){
@@ -896,13 +927,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 修改计算题
          */
-  //      $scope.saveJisuanEdit = function(){
-  //        var promise = addDanDuoXuanFun(duoxuan_data);
-  //        promise.then(function() {
-  //          $scope.cancelAddPattern();
-  //          qryTestFun();
-  //        });
-  //      };
+        //      $scope.saveJisuanEdit = function(){
+        //        var promise = addDanDuoXuanFun(duoxuan_data);
+        //        promise.then(function() {
+        //          $scope.cancelAddPattern();
+        //          qryTestFun();
+        //        });
+        //      };
 
         /**
          * dagangListWrap宽度可拖拽
@@ -910,7 +941,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var resize = function(el){
           //初始化参数
           var els = document.getElementById('dagangListWrap').style,
-              x = 0; //鼠标的 X 和 Y 轴坐标
+            x = 0; //鼠标的 X 和 Y 轴坐标
 
           $(el).mousedown(function(e) {
             //按下元素后，计算当前鼠标与对象计算后的坐标
@@ -965,5 +996,5 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
         resize(document.getElementById('dragBtn'));//初始化拖拽
 
-    }]);
+      }]);
 });
