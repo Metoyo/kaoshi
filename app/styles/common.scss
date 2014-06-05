@@ -120,6 +120,15 @@ a.add-btn:hover span {
     font-weight: 600;
     margin-bottom: 15px;
   }
+  .answerBox{
+    margin-bottom: 5px;
+    a{
+      color: #069200;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
 }
 .form-body {
   .answerBox{
@@ -129,6 +138,16 @@ a.add-btn:hover span {
       &:hover{
         text-decoration: none;
       }
+    }
+  }
+  .assignment-box{
+    margin-top: 10px;
+    .checkbox-inline,
+    .radio-inline{
+      padding-top: 0;
+    }
+    span{
+      padding-top: 7px;
     }
   }
   .radio {
@@ -163,6 +182,13 @@ a.add-btn:hover span {
   .delete-select {
     color: #d9534f;
     cursor: pointer;
+  }
+  .imitationInput{
+    display: none;
+    height: auto;
+    p{
+      margin-bottom: 0;
+    }
   }
 }
 .form-horizontal .form-group {
@@ -397,7 +423,7 @@ a.add-btn:hover span {
   }
   .pointTitle {
     color: #1ba1e2;
-//    cursor: pointer;
+    //    cursor: pointer;
     font-size: 13px;
     margin-left: 10px;
     width: 85%;
@@ -561,6 +587,11 @@ a.add-btn:hover span {
       .item-tizhi{
         margin-bottom: 5px;
         line-height: 20px;
+        .tiZhiSpan{
+          p{
+            display: inline;
+          }
+        }
       }
     }
   }
@@ -1033,7 +1064,7 @@ a.add-btn:hover span {
       border-radius: 0;
     }
     .shTitle {
-       margin-top: 10px;
+      margin-top: 10px;
     }
   }
   .closeShenBox {

@@ -60,7 +60,6 @@ define([
                   if(data.JIGOU.length){
                     if(data.JUESE){
                       session.userInfo = data;
-                      console.log(session.userInfo);
                       /**
                        * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                        */

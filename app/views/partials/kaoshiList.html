@@ -45,3 +45,28 @@
         </td>
     </tr>
 </table>
+<div class="paging text-right">
+    <ul class="pagination pagination-sm" ng-hide="!papertListIds">
+        <li ng-class="{disabled: currentPageVal == 1}">
+            <a href ng-click="getThisSjgyPageData(1)">首页</a>
+        </li>
+        <li ng-class="{disabled: currentPageVal == 1}">
+            <a href
+               ng-click="getThisSjgyPageData(prevPg = currentPageVal > 1 ? currentPageVal - 1 : 1)">
+                上一页
+            </a>
+        </li>
+        <li ng-repeat="pg in paperPages" ng-class="{active: currentPageVal == pg}">
+            <a href ng-click="getThisSjgyPageData(pg)">{{pg}}</a>
+        </li>
+        <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
+            <a href
+               ng-click="getThisSjgyPageData(nextPg = currentPageVal < lastPaperPageNum ? currentPageVal + 1 : lastPaperPageNum)">
+                下一页
+            </a>
+        </li>
+        <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
+            <a href  ng-click="getThisSjgyPageData(lastPaperPageNum)">尾页</a>
+        </li>
+    </ul>
+</div>

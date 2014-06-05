@@ -5113,6 +5113,12 @@ a.add-btn:hover span {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 15px; }
+  .form-header .answerBox {
+    margin-bottom: 5px; }
+    .form-header .answerBox a {
+      color: #069200; }
+      .form-header .answerBox a:hover {
+        text-decoration: none; }
 
 .form-body .answerBox {
   margin-bottom: 5px; }
@@ -5120,6 +5126,13 @@ a.add-btn:hover span {
     color: #069200; }
     .form-body .answerBox a:hover {
       text-decoration: none; }
+.form-body .assignment-box {
+  margin-top: 10px; }
+  .form-body .assignment-box .checkbox-inline,
+  .form-body .assignment-box .radio-inline {
+    padding-top: 0; }
+  .form-body .assignment-box span {
+    padding-top: 7px; }
 .form-body .radio {
   width: 20px;
   height: 20px;
@@ -5147,6 +5160,11 @@ a.add-btn:hover span {
 .form-body .delete-select {
   color: #d9534f;
   cursor: pointer; }
+.form-body .imitationInput {
+  display: none;
+  height: auto; }
+  .form-body .imitationInput p {
+    margin-bottom: 0; }
 
 .form-horizontal .form-group {
   margin-right: 0;
@@ -5478,6 +5496,8 @@ a.add-btn:hover span {
       .testList .item-cont .item-tizhi-wrap .item-tizhi {
         margin-bottom: 5px;
         line-height: 20px; }
+        .testList .item-cont .item-tizhi-wrap .item-tizhi .tiZhiSpan p {
+          display: inline; }
 
 /* test list styls end*/
 /*edit wrap styles begin*/
