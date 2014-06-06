@@ -20,7 +20,7 @@
             </label>
         </div>
     </div>
-    <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>
+    <!-- <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div> -->
     <ul class="list-unstyled testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
             <div class="item-sub-title pull-left">
@@ -43,18 +43,25 @@
                 </div>
             </div>
             <div class="item-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
-                <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGan">
+                <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGanSource ? tm.TIGAN.tiGanSource : tm.TIGAN.tiGan">
                 </h3>
                 <div class="item-tizhi-wrap">
-                    <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
+                    <p class="item-tizhi" ng-show="tm.TIGAN.tiZhiSource.length"
+                       ng-repeat="tz in tm.TIGAN.tiZhiSource track by $index">
                         <span ng-bind="letterArr[$index] + '. '"></span>
-                        <span ng-bind="tz"></span>
+                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
+                    </p>
+                    <p class="item-tizhi" ng-hide="tm.TIGAN.tiZhiSource.length"
+                       ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
+                        <span ng-bind="letterArr[$index] + '. '"></span>
+                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
                     </p>
                 </div>
             </div>
             <div class="answer-cont">
                 <span class="daAnLabel">答案：</span>
-                <div class="daAnBox" ng-bind-html="tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
+                <div class="daAnBox"
+                     ng-bind-html="tm.TIGAN.daAnSource ? tm.TIGAN.daAnSource : tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
             </div>
         </li>
     </ul>

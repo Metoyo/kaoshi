@@ -18,9 +18,9 @@
                         知识点：<span ng-bind="selectZhiShiDian"></span>
                     </div>
                 </div>
-                <div class="form-group answerBox">
+                <div class="form-group answerBox" ng-hide="hideDuoXuanEdt" ng-init="hideDuoXuanEdt=false">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="showDuoXuanTiGanEditor()">题干编辑器</a>
+                        <a href="javascript:void(0)" ng-click="showDuoXuanTiGanEditor();hideDuoXuanEdt=true">题干编辑器</a>
                     </div>
                 </div>
                 <div class="form-group">

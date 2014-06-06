@@ -514,6 +514,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 计算题模板加载
          */
+        var isSaveJiSuanSource;
         $scope.addJiSuan = function(tpl){
 //          selectZsd = []; //new add
 //          $scope.selectZsdStr = '';
@@ -527,6 +528,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isJiSuanTiGanEeitorShow = false;
           isJiSuanDaAnEeitorShow = false;
           $scope.loadingImgShow = false; //jisuan.html
+          isSaveJiSuanSource = false; //判读是否使用了编辑器
         };
 
         /**
@@ -559,6 +561,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //          zhishidian_id = '';
 //          $scope.selectZsdStr = '';
         };
+
         $scope.resetForm = function(){
           resetFun();
         };
@@ -800,14 +803,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               step4 = step3.replace(/\¨([^\[\]]*)\¨/g, "'$1'"), //替换¨符号
               step5 = step4.replace(/\«/g, "<"), //替换«符号
               step6 = step5.replace(/\»/g, ">"), //替换»符号
-              step7 = step6.replace(/\§/g, "&"); //替换§符号  
+              step7 = step6.replace(/\§/g, "&"); //替换§符号
 
             $('.tizhiWrap .tiZhi').eq(idx).val(step7).hide(); //将值赋值给对应的题支
             $('.imitationInput').eq(idx).html(step2).show();
           }
           else{
             var step1 = tiZhiContent.replace(/\<p>/g, ""), //替换<p>符号
-              step2 = step1.replace(/\<\/p>/g, ""); //替换</p>符号 
+              step2 = step1.replace(/\<\/p>/g, ""); //替换</p>符号
             $('.tizhiWrap .tiZhi').eq(idx).val(step2); //将值赋值给对应的题支
           }
           //重置内容
@@ -880,6 +883,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.showJiSuanTiGanEditor = function(){
           var editor = CKEDITOR.replace("editorJiSuanTg");
           isJiSuanTiGanEeitorShow = true;
+          isSaveJiSuanSource = true; //判读是否使用了编辑器
         };
 
         /**
@@ -888,6 +892,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.showJiSuanDaAnEditor = function(){
           var editor = CKEDITOR.replace("editorJiSuanDa");
           isJiSuanDaAnEeitorShow = true;
+          isSaveJiSuanSource = true; //判读是否使用了编辑器
         };
 
         /**
@@ -895,14 +900,32 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.addJisuanShiTi = function(){
           jisuan_data.shuju.ZHISHIDIAN = selectZsd;
-          //        jisuan_data.shuju.TIGAN = CKEDITOR.instances.editorJiSuanTg.getData();
-          //        jisuan_data.shuju.DAAN = CKEDITOR.instances.editorJiSuanDa.getData();
+          if(isSaveJiSuanSource){
+            var jiSuanTiGanVal, jiSuanDaAnVal;
+            if(isJiSuanTiGanEeitorShow){
+              jiSuanTiGanVal = CKEDITOR.instances.editorJiSuanTg.getData();
+              jisuan_data.shuju.TIGAN = replaceImgFun(jiSuanTiGanVal);
+              jisuan_data.shuju.TIGAN_SOURCE = replacePFun(jiSuanTiGanVal);
+              jisuan_data.shuju.DAAN_SOURCE = jisuan_data.shuju.DAAN;
+            }
+            if(isJiSuanDaAnEeitorShow){
+              jiSuanDaAnVal = CKEDITOR.instances.editorJiSuanDa.getData();
+              jisuan_data.shuju.DAAN = replaceImgFun(jiSuanDaAnVal);
+              jisuan_data.shuju.TIGAN_SOURCE = jisuan_data.shuju.TIGAN;
+              jisuan_data.shuju.DAAN_SOURCE = replacePFun(jiSuanDaAnVal);
+            }
+          }
+          else{
+            jisuan_data.shuju.TIGAN_SOURCE = '';
+            jisuan_data.shuju.DAAN_SOURCE = '';
+          }
           if(jisuan_data.shuju.TIGAN.length){
             if(jisuan_data.shuju.DAAN.length){
               if(selectZsd.length){
                 if(jisuan_data.shuju.NANDU_ID.length){
                   $scope.loadingImgShow = true; //jisuan.html
                   $http.post(xgtmUrl, jisuan_data).success(function(data){
+                    console.log(data);
                     if(data.result){
                       if(jisuan_data.shuju.TIMU_ID){ //试题修改成功后！
                         alert('修改成功！');
@@ -917,6 +940,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                       $scope.loadingImgShow = false; //jisuan.html
                       if(isJiSuanTiGanEeitorShow){
                         CKEDITOR.instances.editorJiSuanTg.setData('');
+                      }
+                      if(isJiSuanDaAnEeitorShow){
                         CKEDITOR.instances.editorJiSuanDa.setData('');
                       }
                     }
@@ -1181,5 +1206,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
         resize(document.getElementById('dragBtn'));//初始化拖拽
 
-      }]);
+      }
+    ]
+  );
 });

@@ -18,9 +18,9 @@
                         知识点：<span ng-bind="selectZhiShiDian"></span>
                     </div>
                 </div>
-                <div class="form-group answerBox">
+                <div class="form-group answerBox" ng-hide="hideDanXuanEdt" ng-init="hideDanXuanEdt=false">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="showDanXuanTiGanEditor()">题干编辑器</a>
+                        <a href="javascript:void(0)" ng-click="showDanXuanTiGanEditor();hideDanXuanEdt=true">题干编辑器</a>
                     </div>
                 </div>
                 <div class="form-group">
@@ -69,8 +69,8 @@
                         <div class="form-control imitationInput"></div>
                     </div>
                     <div class="col-sm-2">
-                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"
-                              ng-hide="loopArr.length < 3"></span>
+            <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"
+                  ng-hide="loopArr.length < 3"></span>
                         <div class="radio {{'answer' + $index}}" ng-class="" ng-click="chooseDanxuanDaan($index)">
                             <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}">
                             <span class="glyphicon glyphicon-ok"></span>
