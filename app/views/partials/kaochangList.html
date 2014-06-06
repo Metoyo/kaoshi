@@ -40,3 +40,28 @@
         </td>
     </tr>
 </table>
+<div class="paging text-right">
+    <ul class="pagination pagination-sm" ng-hide="!kaoChangListIds">
+        <li ng-class="{disabled: currentKcPageVal == 1}">
+            <a href ng-click="getThisKaoChangPageData(1)">首页</a>
+        </li>
+        <li ng-class="{disabled: currentKcPageVal == 1}">
+            <a href
+               ng-click="getThisKaoChangPageData(prevPg = currentKcPageVal > 1 ? currentKcPageVal - 1 : 1)">
+                上一页
+            </a>
+        </li>
+        <li ng-repeat="pg in kaoChangPages" ng-class="{active: currentKcPageVal == pg}">
+            <a href ng-click="getThisKaoChangPageData(pg)">{{pg}}</a>
+        </li>
+        <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
+            <a href
+               ng-click="getThisKaoChangPageData(nextPg = currentKcPageVal < lastKaoChangPageNum ? currentKcPageVal + 1 : lastKaoChangPageNum)">
+                下一页
+            </a>
+        </li>
+        <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
+            <a href  ng-click="getThisKaoChangPageData(lastKaoChangPageNum)">尾页</a>
+        </li>
+    </ul>
+</div>

@@ -57,7 +57,10 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷详情的url
           kaoShiPageArr = [], //定义考试页码数组
           kaoShiIdArrRev = [], //存放所有考试ID的数组
-          totalKaoShiPage;//符合条件的考试一共有多少页
+          totalKaoShiPage, //符合条件的考试一共有多少页
+          kaoChangPageArr = [], //定义考场页码数组
+          kaoChangIdArrRev = [], //存放所有考场ID的数组
+          totalKaoChangPage;//符合条件的考场一共有多少页
 
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
         $scope.letterArr = config.letterArr; //题支的序号
@@ -119,7 +122,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           }
           //查询数据的代码 //
           kaoshi_id = kaoShiIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
-          qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshi_id.toString();
+          qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshi_id;
           $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
             if(ksdtl.length){
               $scope.loadingImgShow = false; //kaoShiList.html
@@ -131,6 +134,7 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
             }
           });
         };
+
         /**
          * 显示考试列表,可分页的方法
          */
@@ -163,47 +167,9 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
-         * 显示考试列表,可分页的方法
-         */
-//        $scope.showKaoShiList = function(){
-//          $scope.loadingImgShow = true; //kaoShiList.html
-//          //先查询所有考试的Id
-//          $http.get(qryKaoShiListUrl).success(function(kslst){
-//            if(kslst.length){
-//              var kaoshiSubIds = kslst.slice(0, kaoshiNumsPerPage), //截取数组
-//                kaoshiSelectIdsArr = _.map(kaoshiSubIds, function(ksid){ return ksid.KAOSHI_ID; }), //提取KAOSHI_ID
-//                qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshiSelectIdsArr.toString();
-//              $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
-//                if(ksdtl.length){
-//                  $scope.loadingImgShow = false; //kaoShiList.html
-//                  $scope.kaoshiList = ksdtl;
-//                  $scope.txTpl = 'views/partials/kaoShiList.html';
-//                  $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
-//                  isEditKaoShi = false;//是否为编辑考试
-//                  isDeleteKaoShi = false;//是否为删除考试
-//                }
-//                else{
-//                  alert('没有相关的考试！');
-//                  $scope.loadingImgShow = false; //kaoShiList.html
-//                }
-//              });
-//            }
-//            else{
-//              alert('没有相关的考试！');
-//              $scope.loadingImgShow = false; //kaoShiList.html
-//            }
-//          });
-//        };
-
-        /**
          * 考务页面加载时，加载考试列表
          */
         $scope.showKaoShiList();
-
-        /**
-         * 考试列表的分页函数
-         */
-
 
         /**
          * 显示试卷详情
@@ -246,9 +212,15 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          * 查询本机构下的所有考场
          */
         var qryAllKaoChang = function(){
+          $scope.loadingImgShow = true; //kaoChangList.html
           $http.get(qryKaoChangDetailBaseUrl).success(function(data){
             if(data.length){
               $scope.allKaoChangList = data;
+              $scope.loadingImgShow = false; //kaoChangList.html
+            }
+            else{
+              $scope.loadingImgShow = false; //kaoChangList.html
+              alert("没有相关的考场数据");
             }
           });
         };
@@ -789,27 +761,35 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         /**
          * 查询考场数据
          */
-        var queryKaoChangList = function(){
+        $scope.getThisKaoChangPageData = function(pg){
           $scope.loadingImgShow = true; //kaoChangList.html
-          //先查询所有考试的Id
-          $http.get(qryKaoChangListUrl).success(function(kclst){
-            if(kclst.length){
-              var kaoChangSubIds = kclst.slice(0, kaoChangNumsPerPage), //截取数组
-                kaoChangSelectIdsArr = _.map(kaoChangSubIds, function(kcid){ return kcid.KID; }), //提取KID
-                qrySelectKaoChangsUrl = qryKaoChangDetailBaseUrl + '&kid=' + kaoChangSelectIdsArr;
-              $http.get(qrySelectKaoChangsUrl).success(function(kcdtl){
-                if(kcdtl.length){
-                  $scope.loadingImgShow = false; //kaoChangList.html
-                  $scope.kaoChangList = kcdtl;
-                  $scope.txTpl = 'views/partials/kaoChangList.html';
-                  isEditKaoChang = false; //是否为编辑考场
-                  isDeleteKaoChang = false; //是否为删除考场
-                }
-                else{
-                  alert('没有相关的考场信息！');
-                  $scope.loadingImgShow = false; //kaoChangList.html
-                }
-              });
+          var pgNum = pg - 1,
+            kaochang_id,
+            currentPage = pgNum ? pgNum : 0,
+            qrySelectKaoChangsUrl;
+          //得到分页数组的代码
+          var currentKcPageVal = $scope.currentKcPageVal = pg ? pg : 1;
+          if(totalKaoChangPage <= paginationLength){
+            $scope.kaoChangPages = kaoChangPageArr;
+          }
+          if(totalKaoChangPage > paginationLength){
+            if(currentKcPageVal > 0 && currentKcPageVal <= 6 ){
+              $scope.kaoChangPages = kaoChangPageArr.slice(0, paginationLength);
+            }
+            else if(currentKcPageVal > totalKaoChangPage - 5 && currentKcPageVal <= totalKaoChangPage){
+              $scope.kaoChangPages = kaoChangPageArr.slice(totalKaoChangPage - paginationLength);
+            }
+            else{
+              $scope.kaoChangPages = kaoChangPageArr.slice(currentKcPageVal - 5, currentKcPageVal + 5);
+            }
+          }
+          //查询数据的代码 //
+          kaochang_id = kaoChangIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+          qrySelectKaoChangsUrl = qryKaoChangDetailBaseUrl + '&kid=' + kaochang_id;
+          $http.get(qrySelectKaoChangsUrl).success(function(kcdtl){
+            if(kcdtl.length){
+              $scope.loadingImgShow = false; //kaoChangList.html
+              $scope.kaoChangList = kcdtl;
             }
             else{
               alert('没有相关的考场信息！');
@@ -823,7 +803,28 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          */
         $scope.showKaoChangList = function(){
           $scope.loadingImgShow = true; //kaoChangList.html
-          queryKaoChangList();
+          kaoChangPageArr = []; //定义考场页码数组
+          kaoChangIdArrRev = []; //存放所有考场ID的数组
+          $http.get(qryKaoChangListUrl).success(function(kclst){
+            if(kclst.length){
+              $scope.kaoChangListIds = kclst; //得到所有的考试ids
+              totalKaoChangPage = Math.ceil(kclst.length/itemNumPerPage); //得到所有考试的页码
+              for(var i = 1; i <= totalKaoChangPage; i++){
+                kaoChangPageArr.push(i);
+              }
+              kaoChangIdArrRev = _.map(kclst, function(kcid){ return kcid.KID; });
+              $scope.lastKaoChangPageNum = totalKaoChangPage; //最后一页的数值
+              //查询数据开始
+              $scope.getThisKaoChangPageData();
+              $scope.txTpl = 'views/partials/kaoChangList.html';
+              isEditKaoChang = false; //是否为编辑考场
+              isDeleteKaoChang = false; //是否为删除考场
+            }
+            else{
+              alert('没有相关的考场信息！');
+              $scope.loadingImgShow = false; //kaoChangList.html
+            }
+          });
         };
 
         /**
@@ -908,17 +909,18 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
          * 保存考场
          */
         $scope.saveKaoChang = function(){
+          $scope.loadingImgShow = true; //保存考场
           $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
             if(data.result){
+              $scope.loadingImgShow = false; //保存考场
               alert('考场保存成功！');
               $scope.showKaoChangList();
             }
           }).error(function(err){
+            $scope.loadingImgShow = false; //保存考场
             alert(err);
           });
         };
-
-
 
       } // 002 结束
     ]); //controller 结束
