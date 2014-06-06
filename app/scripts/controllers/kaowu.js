@@ -54,7 +54,10 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
           faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id=', //发布考试的url
           qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷详情的url
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷详情的url
+          kaoShiPageArr = [], //定义考试页码数组
+          kaoShiIdArrRev = [], //存放所有考试ID的数组
+          totalKaoShiPage;//符合条件的考试一共有多少页
 
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
         $scope.letterArr = config.letterArr; //题支的序号
@@ -91,30 +94,66 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
+         * 考试的分页数据查询函数
+         */
+        $scope.getThisKaoShiPageData = function(pg){
+          var pgNum = pg - 1,
+            kaoshi_id,
+            currentPage = pgNum ? pgNum : 0,
+            qrySelectKaoShisUrl;
+          //得到分页数组的代码
+          var currentKsPageVal = $scope.currentKsPageVal = pg ? pg : 1;
+          if(totalKaoShiPage <= paginationLength){
+            $scope.kaoShiPages = kaoShiPageArr;
+          }
+          if(totalKaoShiPage > paginationLength){
+            if(currentKsPageVal > 0 && currentKsPageVal <= 6 ){
+              $scope.kaoShiPages = kaoShiPageArr.slice(0, paginationLength);
+            }
+            else if(currentKsPageVal > totalKaoShiPage - 5 && currentKsPageVal <= totalKaoShiPage){
+              $scope.kaoShiPages = kaoShiPageArr.slice(totalKaoShiPage - paginationLength);
+            }
+            else{
+              $scope.kaoShiPages = kaoShiPageArr.slice(currentKsPageVal - 5, currentKsPageVal + 5);
+            }
+          }
+          //查询数据的代码 //
+          kaoshi_id = kaoShiIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+          qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshi_id.toString();
+          $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
+            if(ksdtl.length){
+              $scope.loadingImgShow = false; //kaoShiList.html
+              $scope.kaoshiList = ksdtl;
+            }
+            else{
+              alert('没有相关的考试！');
+              $scope.loadingImgShow = false; //kaoShiList.html
+            }
+          });
+        };
+        /**
          * 显示考试列表,可分页的方法
          */
         $scope.showKaoShiList = function(){
           $scope.loadingImgShow = true; //kaoShiList.html
+          kaoShiPageArr = []; //定义考试页码数组
+          kaoShiIdArrRev = []; //存放所有考试ID的数组
           //先查询所有考试的Id
           $http.get(qryKaoShiListUrl).success(function(kslst){
             if(kslst.length){
-              var kaoshiSubIds = kslst.slice(0, kaoshiNumsPerPage), //截取数组
-                kaoshiSelectIdsArr = _.map(kaoshiSubIds, function(ksid){ return ksid.KAOSHI_ID; }), //提取KAOSHI_ID
-                qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshiSelectIdsArr.toString();
-              $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
-                if(ksdtl.length){
-                  $scope.loadingImgShow = false; //kaoShiList.html
-                  $scope.kaoshiList = ksdtl;
-                  $scope.txTpl = 'views/partials/kaoShiList.html';
-                  $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
-                  isEditKaoShi = false;//是否为编辑考试
-                  isDeleteKaoShi = false;//是否为删除考试
-                }
-                else{
-                  alert('没有相关的考试！');
-                  $scope.loadingImgShow = false; //kaoShiList.html
-                }
-              });
+              $scope.kaoShiListIds = kslst; //得到所有的考试ids
+              totalKaoShiPage = Math.ceil(kslst.length/itemNumPerPage); //得到所有考试的页码
+              for(var i = 1; i <= totalKaoShiPage; i++){
+                kaoShiPageArr.push(i);
+              }
+              kaoShiIdArrRev = _.map(kslst, function(ksid){ return ksid.KAOSHI_ID; });
+              $scope.lastKaoShiPageNum = totalKaoShiPage; //最后一页的数值
+              //查询数据开始
+              $scope.getThisKaoShiPageData();
+              $scope.txTpl = 'views/partials/kaoShiList.html';
+              $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
+              isEditKaoShi = false;//是否为编辑考试
+              isDeleteKaoShi = false;//是否为删除考试
             }
             else{
               alert('没有相关的考试！');
@@ -124,9 +163,47 @@ define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 �
         };
 
         /**
+         * 显示考试列表,可分页的方法
+         */
+//        $scope.showKaoShiList = function(){
+//          $scope.loadingImgShow = true; //kaoShiList.html
+//          //先查询所有考试的Id
+//          $http.get(qryKaoShiListUrl).success(function(kslst){
+//            if(kslst.length){
+//              var kaoshiSubIds = kslst.slice(0, kaoshiNumsPerPage), //截取数组
+//                kaoshiSelectIdsArr = _.map(kaoshiSubIds, function(ksid){ return ksid.KAOSHI_ID; }), //提取KAOSHI_ID
+//                qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshiSelectIdsArr.toString();
+//              $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
+//                if(ksdtl.length){
+//                  $scope.loadingImgShow = false; //kaoShiList.html
+//                  $scope.kaoshiList = ksdtl;
+//                  $scope.txTpl = 'views/partials/kaoShiList.html';
+//                  $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
+//                  isEditKaoShi = false;//是否为编辑考试
+//                  isDeleteKaoShi = false;//是否为删除考试
+//                }
+//                else{
+//                  alert('没有相关的考试！');
+//                  $scope.loadingImgShow = false; //kaoShiList.html
+//                }
+//              });
+//            }
+//            else{
+//              alert('没有相关的考试！');
+//              $scope.loadingImgShow = false; //kaoShiList.html
+//            }
+//          });
+//        };
+
+        /**
          * 考务页面加载时，加载考试列表
          */
         $scope.showKaoShiList();
+
+        /**
+         * 考试列表的分页函数
+         */
+
 
         /**
          * 显示试卷详情
