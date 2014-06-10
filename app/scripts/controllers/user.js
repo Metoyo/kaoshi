@@ -399,9 +399,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         {
           psw += Math.floor(Math.random()*10);
         }
-        $scope.jgAdminName = adm.YONGHUMING;
-        $scope.jgAmdinNewPsw = psw;
-        $scope.isResetJgAdminPsw = true;
+        adminData.shuju.ADMINISTRATORS[0].UID = adm.UID;
+        adminData.shuju.ADMINISTRATORS[0].YONGHUMING = adm.YONGHUMING;
+        adminData.shuju.ADMINISTRATORS[0].MIMA = psw;
+        adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
+        $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
+          if(data.result){
+            $scope.jgAdminName = adm.YONGHUMING;
+            $scope.jgAmdinNewPsw = psw;
+            $scope.isResetJgAdminPsw = true;
+            adminData.shuju.ADMINISTRATORS[0].UID = '';
+            adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
+            adminData.shuju.ADMINISTRATORS[0].MIMA = '';
+            adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
+          }
+          else{
+            alert(data.error);
+          }
+        });
       };
 
     }]);
