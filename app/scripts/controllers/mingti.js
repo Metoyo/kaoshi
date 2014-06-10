@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
+        $rootScope.isRenZheng = false; //判读页面是不是认证
 
         /**
          * 声明变量
