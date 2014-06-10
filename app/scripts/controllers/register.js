@@ -112,7 +112,12 @@ define([
          * 查询机构类别
          */
         $http.get(apiUrlJglb).success(function(data) {
-          $scope.jigoulb_list = data;
+          if(data){
+            $scope.jigoulb_list = data;
+          }
+          else{
+            alert('没用相应的机构！');
+          }
         });
 
         /**

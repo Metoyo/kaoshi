@@ -9,6 +9,7 @@ define([
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
     .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect',
       function ($rootScope, $scope, $location, $http, urlRedirect) {
+
         var loginApiUrl = config.apiurl_rz + 'denglu',
             login = {
               userName: '',
@@ -60,39 +61,48 @@ define([
                   if(data.JIGOU.length){
                     if(data.JUESE){
                       session.userInfo = data;
-                      /**
-                       * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
-                       */
-                      $http.get(permissionApiUrl).success(function(permissions) {
-                        var find_QUANXIAN_ID_4;
+                      var jsArr = _.chain(data.JUESE)
+                          .sortBy(function(js){ return js.JUESE_ID; })
+                          .map(function(js){ return js.JUESE_ID; })
+                          .uniq()
+                          .without("9", "10")
+                          .value(); //得到角色的数组
+                      if(jsArr[0] == 1){
+                        urlRedirect.goTo(currentPath, profileUrl);
+                      }
+                      else{
+                        /**
+                         * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
+                         */
+                        $http.get(permissionApiUrl).success(function(permissions) {
+                          var find_QUANXIAN_ID_4, find_QUANXIAN_ID_5;
 
-                        find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
-                          return permission.QUANXIAN_ID == 4;
+                          find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
+                            return permission.QUANXIAN_ID == 4;
+                          });
+
+                          find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
+                            return permission.QUANXIAN_ID == 5;
+                          });
+
+                          if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
+                            urlRedirect.goTo(currentPath, profileUrl);
+                          }
+                          else {
+                            if(data.LINGYU.length == 1){
+                              session.defaultLyId = data.LINGYU[0].LINGYU_ID;
+                              session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
+                              //得到数组的第一位，-1的目的是为了转化为索引
+                              var jsUrl = config.jueseObj[parseInt(jsArr[0]) - 1].juese_url;
+                              session.jueseStr = _.map(jsArr, function(jsm){return 'juese' + jsm}).join();
+                              urlRedirect.goTo(currentPath, jsUrl);
+                            }
+                            else{
+                              urlRedirect.goTo(currentPath, '/lingyu');
+                            }
+                          }
                         });
-
-                        if(find_QUANXIAN_ID_4) {
-                          urlRedirect.goTo(currentPath, profileUrl);
-                        }
-                        else {
-                          if(data.LINGYU.length == 1){
-                            session.defaultLyId = data.LINGYU[0].LINGYU_ID;
-                            session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
-                            var jsArr = _.chain(data.JUESE)
-                                .sortBy(function(js){ return js.JUESE_ID; })
-                                .map(function(js){ return js.JUESE_ID; })
-                                .uniq()
-                                .without("9", "10")
-                                .value(), //得到角色的数组
-                              jsUrl = config.jueseObj[parseInt(jsArr[0]) - 1].juese_url; //得到数组的第一位，-1的目的是为了转化为索引
-
-                            session.jueseStr = _.map(jsArr, function(jsm){return 'juese' + jsm}).join();
-                            urlRedirect.goTo(currentPath, jsUrl);
-                          }
-                          else{
-                            urlRedirect.goTo(currentPath, '/lingyu');
-                          }
-                        }
-                      });
+                      }
                     }
                     else{
                       alert('您注册的信息正在审核中，新耐心等待……');

@@ -5579,6 +5579,10 @@ a.add-btn:hover span {
   color: red;
   display: none; }
 
+.delete-msg {
+  color: red;
+  display: none; }
+
 /**
 *日期选择器的样式
 */
@@ -5648,91 +5652,92 @@ a.add-btn:hover span {
 .intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit span {
   display: block; }
 
-.rengzhengWrapper {
+.renzhengWrapper {
+  position: relative;
   /* 审核页面样式 */
   /* 审核页面样式 */ }
-  .rengzhengWrapper em {
+  .renzhengWrapper em {
     font-weight: normal;
     font-size: 12px; }
-  .rengzhengWrapper .mt {
+  .renzhengWrapper .mt {
     margin-top: 8px; }
-  .rengzhengWrapper .mb0 {
+  .renzhengWrapper .mb0 {
     margin-bottom: 0; }
-  .rengzhengWrapper .btn {
+  .renzhengWrapper .btn {
     padding: 6px 20px; }
-  .rengzhengWrapper .row {
+  .renzhengWrapper .row {
     margin-left: 0;
     margin-right: 0; }
-  .rengzhengWrapper label {
+  .renzhengWrapper label {
     color: rgba(100, 100, 100, 0.8); }
-  .rengzhengWrapper h4.logo {
+  .renzhengWrapper h4.logo {
     margin-top: 100px;
     margin-bottom: 50px; }
-  .rengzhengWrapper h4.logo img {
+  .renzhengWrapper h4.logo img {
     width: 400px;
     height: auto; }
-  .rengzhengWrapper .loginBox {
+  .renzhengWrapper .loginBox {
     padding-right: 30px;
     color: #fff;
     border-right: 1px solid #969696; }
-  .rengzhengWrapper .loginWithXh {
+  .renzhengWrapper .loginWithXh {
     padding-left: 30px;
     color: #fff; }
-  .rengzhengWrapper .loginWithXh .btn {
+  .renzhengWrapper .loginWithXh .btn {
     margin-top: 25px;
     width: 100%; }
-  .rengzhengWrapper .userBox {
+  .renzhengWrapper .userBox {
     padding: 50px 0; }
-  .rengzhengWrapper .thumbnail {
+  .renzhengWrapper .thumbnail {
     border: 0;
     background: none;
     margin-bottom: 0; }
-  .rengzhengWrapper .thumbnail img {
+  .renzhengWrapper .thumbnail img {
     width: 236px;
     height: 236px; }
-  .rengzhengWrapper .caption p {
+  .renzhengWrapper .caption p {
     padding: 0 12px; }
-  .rengzhengWrapper .loginInfo h2 {
+  .renzhengWrapper .loginInfo h2 {
     margin-top: 0; }
-  .rengzhengWrapper .loginInfo h4 {
+  .renzhengWrapper .loginInfo h4 {
     margin: 30px 0; }
-  .rengzhengWrapper .entries h4 {
+  .renzhengWrapper .entries h4 {
     margin-top: 34px; }
-  .rengzhengWrapper .entries li {
+  .renzhengWrapper .entries li {
     float: left;
     padding: 0 5px;
     width: 25%; }
-    .rengzhengWrapper .entries li a {
+    .renzhengWrapper .entries li a {
       width: 100%;
       margin-top: 10px; }
-  .rengzhengWrapper .lingYuWrap {
+  .renzhengWrapper .lingYuWrap {
     padding: 20px 0 0 0; }
-    .rengzhengWrapper .lingYuWrap .btn {
+    .renzhengWrapper .lingYuWrap .btn {
       margin-right: 20px; }
-  .rengzhengWrapper .registerBox h4.logo {
+  .renzhengWrapper .registerBox h4.logo {
     margin-top: 50px;
     margin-bottom: 30px; }
-  .rengzhengWrapper .registerBox .infoBox .table {
+  .renzhengWrapper .registerBox .infoBox .table {
     color: #000; }
-    .rengzhengWrapper .registerBox .infoBox .table td {
+    .renzhengWrapper .registerBox .infoBox .table td {
       border: 0; }
-  .rengzhengWrapper .registerBox .infoBox .register-hero {
+  .renzhengWrapper .registerBox .infoBox .register-hero {
     color: #46b8da;
     font-size: 18px;
     margin-top: 100px; }
-  .rengzhengWrapper .registerBox .help-block {
+  .renzhengWrapper .registerBox .help-block {
     margin-top: 0;
     color: red;
     position: absolute;
     top: 4px;
     right: 10px;
     font-size: 12px; }
-  .rengzhengWrapper .registerBox .nav-tabs {
+  .renzhengWrapper .registerBox .nav-tabs {
     float: left;
     width: 100%;
     margin-bottom: 0;
     border-bottom: 0; }
-  .rengzhengWrapper .registerBox .nav-tabs li {
+  .renzhengWrapper .registerBox .nav-tabs li {
     float: left;
     padding: 10px 20px;
     margin-right: 5px;
@@ -5741,19 +5746,19 @@ a.add-btn:hover span {
     background-color: #5b5147;
     font-weight: 600;
     cursor: pointer; }
-  .rengzhengWrapper .registerBox .nav-tabs li.active {
+  .renzhengWrapper .registerBox .nav-tabs li.active {
     background-color: #fff;
     color: #5b5147; }
-  .rengzhengWrapper .infoBox .list-inline li:first-child {
+  .renzhengWrapper .infoBox .list-inline li:first-child {
     padding-left: 20px; }
-  .rengzhengWrapper .tab-content {
+  .renzhengWrapper .tab-content {
     float: left;
     width: 100%;
     background-color: #fff; }
-  .rengzhengWrapper .tab-pane {
+  .renzhengWrapper .tab-pane {
     padding: 20px 10px 5px 10px;
     display: none; }
-  .rengzhengWrapper .nextBtn span, .rengzhengWrapper .prevBtn span, .rengzhengWrapper .submitBtn span {
+  .renzhengWrapper .nextBtn span, .renzhengWrapper .prevBtn span, .renzhengWrapper .submitBtn span {
     float: right;
     width: 16px;
     height: 16px;
@@ -5761,41 +5766,41 @@ a.add-btn:hover span {
     background-image: url("../images/renzheng/icon/button-icons.png");
     background-repeat: no-repeat;
     background-position: 0 0; }
-  .rengzhengWrapper .prevBtn span {
+  .renzhengWrapper .prevBtn span {
     float: left;
     background-position: 0 -45px;
     margin: 2px 5px 0 0; }
-  .rengzhengWrapper .objectWrapSub {
+  .renzhengWrapper .objectWrapSub {
     float: left;
     width: 100%; }
-  .rengzhengWrapper .subjectBox {
+  .renzhengWrapper .subjectBox {
     padding: 10px;
     border: 1px solid #cfcfcf; }
-  .rengzhengWrapper .selectedObjectBox {
+  .renzhengWrapper .selectedObjectBox {
     padding: 10px 0 5px 0;
     margin-bottom: 15px;
     color: #000;
     width: 100%; }
-  .rengzhengWrapper .selectedObjectList {
+  .renzhengWrapper .selectedObjectList {
     width: 49%;
     margin-bottom: 16px;
     background: #f0f0f0;
     padding: 10px;
     position: relative; }
-  .rengzhengWrapper .selectedObjectList p {
+  .renzhengWrapper .selectedObjectList p {
     width: 100%; }
-  .rengzhengWrapper .btn-can {
+  .renzhengWrapper .btn-can {
     position: absolute;
     top: -8px;
     right: -15px;
     font-size: 16px; }
-  .rengzhengWrapper .btn-can .btn {
+  .renzhengWrapper .btn-can .btn {
     padding: 2px 15px;
     border-radius: 0;
     margin-bottom: 1px; }
-  .rengzhengWrapper .selectedObjectBox span {
+  .renzhengWrapper .selectedObjectBox span {
     margin-right: 10px; }
-  .rengzhengWrapper .objectToggleBox {
+  .renzhengWrapper .objectToggleBox {
     border: 1px solid #cfcfcf;
     padding-top: 15px;
     margin-top: 15px;
@@ -5804,93 +5809,126 @@ a.add-btn:hover span {
     width: 100%;
     padding-left: 10px;
     padding-right: 10px; }
-  .rengzhengWrapper .addNewObject {
+  .renzhengWrapper .addNewObject {
     margin-left: 10px; }
-  .rengzhengWrapper .addNewObject span {
+  .renzhengWrapper .addNewObject span {
     font-size: 13px; }
-  .rengzhengWrapper span.msgBox {
+  .renzhengWrapper span.msgBox {
     display: none;
     font-weight: normal; }
-  .rengzhengWrapper .errorMsg {
+  .renzhengWrapper .errorMsg {
     color: red;
     float: left;
     margin-right: 10px; }
-  .rengzhengWrapper .errorMsg span {
+  .renzhengWrapper .errorMsg span {
     color: red;
     float: left;
     margin-right: 10px; }
-  .rengzhengWrapper .errorMsg .msgBox {
+  .renzhengWrapper .errorMsg .msgBox {
     display: block; }
-  .rengzhengWrapper .privilegeBtn:hover {
+  .renzhengWrapper .privilegeBtn:hover {
     text-decoration: none; }
-  .rengzhengWrapper .privilegeBtn span {
+  .renzhengWrapper .privilegeBtn span {
     margin-right: 5px; }
-  .rengzhengWrapper .privilegeBox {
+  .renzhengWrapper .privilegeBox {
     position: relative;
     border: 1px solid #cfcfcf;
     background-color: #fff;
     padding: 15px 10px;
     display: none;
     float: right; }
-  .rengzhengWrapper .privilegeBox .sanj {
+  .renzhengWrapper .privilegeBox .sanj {
     position: absolute;
     right: 40px;
     top: -11px; }
-  .rengzhengWrapper .privilegeBox .btn {
+  .renzhengWrapper .privilegeBox .btn {
     margin-top: 10px;
     padding: 2px 12px; }
-  .rengzhengWrapper .jueseVal {
+  .renzhengWrapper .jueseVal {
     width: 400px;
     height: 40px;
     display: none; }
-  .rengzhengWrapper .yonghuming {
+  .renzhengWrapper .yonghuming {
     background-color: #fff;
     padding-left: 10px; }
-  .rengzhengWrapper .messageWrap {
+  .renzhengWrapper .messageWrap {
     position: absolute;
     top: -18px; }
-  .rengzhengWrapper .logoutInfo h4 {
+  .renzhengWrapper .logoutInfo h4 {
     margin-top: 10px;
     margin-bottom: 0;
     float: left;
     width: 100%; }
-    .rengzhengWrapper .logoutInfo h4 .btn {
+    .renzhengWrapper .logoutInfo h4 .btn {
       width: 80%; }
-  .rengzhengWrapper .shenheBox {
+  .renzhengWrapper .shenheBox {
     margin-top: 10px; }
-    .rengzhengWrapper .shenheBox .infoBox {
+    .renzhengWrapper .shenheBox .infoBox {
       background: #fff;
       padding-top: 15px;
       padding-bottom: 15px;
       margin-top: 20px; }
-    .rengzhengWrapper .shenheBox .table {
+    .renzhengWrapper .shenheBox .table {
       margin-bottom: 0; }
-    .rengzhengWrapper .shenheBox .shenheTable thead {
+    .renzhengWrapper .shenheBox .shenheTable thead {
       background-color: #33363b; }
-    .rengzhengWrapper .shenheBox .shenheTable th {
+    .renzhengWrapper .shenheBox .shenheTable th {
       text-align: center;
       color: #fff;
       vertical-align: middle; }
-    .rengzhengWrapper .shenheBox .shenheTable td {
+    .renzhengWrapper .shenheBox .shenheTable td {
       text-align: center;
       vertical-align: middle;
       color: #666; }
-    .rengzhengWrapper .shenheBox .shenheTable .text-left {
+    .renzhengWrapper .shenheBox .shenheTable .text-left {
       text-align: left; }
-    .rengzhengWrapper .shenheBox .shenheBox .shenheTable td {
+    .renzhengWrapper .shenheBox .shenheBox .shenheTable td {
       vertical-align: middle; }
-    .rengzhengWrapper .shenheBox .shenheTable .btn {
+    .renzhengWrapper .shenheBox .shenheTable .btn {
       border-radius: 0; }
-    .rengzhengWrapper .shenheBox .shTitle {
+    .renzhengWrapper .shenheBox .shTitle {
       margin-top: 10px; }
-  .rengzhengWrapper .closeShenBox {
+    .renzhengWrapper .shenheBox .btn {
+      padding: 4px 10px; }
+    .renzhengWrapper .shenheBox .jg-table {
+      background-color: #fff; }
+      .renzhengWrapper .shenheBox .jg-table th {
+        background-color: #f6f6f6;
+        text-align: center; }
+      .renzhengWrapper .shenheBox .jg-table td {
+        text-align: center;
+        vertical-align: middle; }
+        .renzhengWrapper .shenheBox .jg-table td a {
+          padding: 0 2px; }
+          .renzhengWrapper .shenheBox .jg-table td a:hover {
+            text-decoration: none; }
+        .renzhengWrapper .shenheBox .jg-table td span {
+          padding: 0 5px; }
+    .renzhengWrapper .shenheBox .add-btn-box {
+      margin-top: 15px; }
+    .renzhengWrapper .shenheBox .add-new-box {
+      margin-top: 15px; }
+      .renzhengWrapper .shenheBox .add-new-box .reset-admin-psw {
+        margin-top: 15px; }
+      .renzhengWrapper .shenheBox .add-new-box h5 {
+        border-bottom: 1px solid #9C9C9C;
+        text-align: center;
+        padding: 10px 0; }
+  .renzhengWrapper .closeShenBox {
     color: #d80000;
     font-size: 16px;
     margin-top: 5px; }
-  .rengzhengWrapper .alterBtn, .rengzhengWrapper .shYonghuId, .rengzhengWrapper .shJigouId, .rengzhengWrapper .shLingyuId, .rengzhengWrapper .originZT {
+  .renzhengWrapper .alterBtn, .renzhengWrapper .shYonghuId, .renzhengWrapper .shJigouId, .renzhengWrapper .shLingyuId, .renzhengWrapper .originZT {
     display: none; }
-  .rengzhengWrapper .active {
+  .renzhengWrapper .active {
     display: block; }
+  .renzhengWrapper .fix-to-top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1; }
+    .renzhengWrapper .fix-to-top-right .btn {
+      padding: 3px 10px; }
 
 .dagangWrapper {
   /*main styles end*/

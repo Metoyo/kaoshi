@@ -687,6 +687,10 @@ a.add-btn:hover span {
   color: red;
   display: none;
 }
+.delete-msg{
+  color: red;
+  display: none;
+}
 /**
 *日期选择器的样式
 */
@@ -757,7 +761,8 @@ a.add-btn:hover span {
   display: block;
 }
 //认证样式
-.rengzhengWrapper{
+.renzhengWrapper{
+  position: relative;
   em {
     font-weight: normal;
     font-size: 12px;
@@ -1066,6 +1071,43 @@ a.add-btn:hover span {
     .shTitle {
       margin-top: 10px;
     }
+    .btn{
+      padding: 4px 10px;
+    }
+    .jg-table{
+      background-color: #fff;
+      th{
+        background-color: #f6f6f6;
+        text-align: center;
+      }
+      td{
+        text-align: center;
+        vertical-align: middle;
+        a{
+          padding: 0 2px;
+          &:hover{
+            text-decoration: none;
+          }
+        }
+        span {
+          padding: 0 5px;
+        }
+      }
+    }
+    .add-btn-box{
+      margin-top: 15px;
+    }
+    .add-new-box{
+      margin-top: 15px;
+      .reset-admin-psw{
+        margin-top: 15px;
+      }
+      h5{
+        border-bottom: 1px solid #9C9C9C;
+        text-align: center;
+        padding: 10px 0;
+      }
+    }
   }
   .closeShenBox {
     color: #d80000;
@@ -1078,6 +1120,15 @@ a.add-btn:hover span {
   /* 审核页面样式 */
   .active{
     display: block;
+  }
+  .fix-to-top-right{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    .btn{
+      padding: 3px 10px;
+    }
   }
 }
 //大纲样式

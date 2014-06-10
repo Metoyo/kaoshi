@@ -103,8 +103,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isJiSuanTiGanEeitorShow = false, //计算题干的编辑器是否存在
           isJiSuanDaAnEeitorShow = false, //计算答案的编辑器是否存在
           isDanXuanType = false, //判断是否出单选题
-          isDuoXuanType = false; //判断是否出多选题
-
+          isDuoXuanType = false, //判断是否出多选题
+          modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu';//修改题型机构领域
         /**
          * 初始化是DOM元素的隐藏和显示
          */
