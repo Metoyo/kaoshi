@@ -5583,6 +5583,86 @@ a.add-btn:hover span {
   color: red;
   display: none; }
 
+/*大纲  开始*/
+.dagangInput .col-md-12 {
+  margin-top: 20px;
+  float: left; }
+.dagangInput .btn {
+  padding: 6px 12px;
+  border-radius: 0 4px 4x 0;
+  margin-left: -5px; }
+.dagangInput .saveDagangBtn {
+  margin-left: 10px; }
+.dagangInput .glyphicon {
+  top: 2px;
+  margin-right: 0; }
+
+.dgLevel {
+  border: 1px solid red; }
+
+.dagangInput .media {
+  border: 0;
+  margin: 0;
+  padding-top: 20px;
+  background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
+.dagangInput .dgLevel_1:last-child,
+.dagangInput .dgLevel_2:last-child,
+.dagangInput .dgLevel_3:last-child,
+.dagangInput .dgLevel_4:last-child {
+  background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
+.dagangInput .lastChild {
+  background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
+.dagangInput .dagangBox {
+  margin-left: 40px;
+  margin-top: 10px;
+  padding-top: 0; }
+.dagangInput .media-object {
+  width: 40px;
+  height: 34px;
+  background: url("../images/mingti/icon/hline.jpg") no-repeat right 17px; }
+.dagangInput .media-heading {
+  height: 34px;
+  margin: 0;
+  position: relative;
+  /*border: 1px solid red;*/ }
+.dagangInput .media-body {
+  padding: 0;
+  background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
+.dagangInput .media > .pull-left {
+  margin-right: 0; }
+.dagangInput .col-md-4, .dagangInput .col-md-3 {
+  padding-left: 0;
+  padding-right: 0; }
+
+.dgLevel_0 .dagangName {
+  color: #16418b;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 21px;
+  position: relative; }
+
+.dgAddBtn {
+  background-color: #d5dadf;
+  color: #000; }
+
+.dagangInput .dgAddBtn_0 {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  border-radius: 0 4px 4px 0; }
+
+.dgDeleteBtn {
+  background-color: #d5dadf; }
+
+.inlineBlock {
+  display: inline-block;
+  margin-right: -1px; }
+
+.dgInputWelcome p {
+  margin: 20px;
+  font-size: 18px; }
+
+/*大纲  end*/
 /**
 *日期选择器的样式
 */
@@ -5929,11 +6009,14 @@ a.add-btn:hover span {
     z-index: 1; }
     .renzhengWrapper .fix-to-top-right .btn {
       padding: 3px 10px; }
+  .renzhengWrapper .dagangInput {
+    background-color: #fff;
+    padding: 5px 0 10px 0; }
+    .renzhengWrapper .dagangInput .btn {
+      padding: 6px 12px; }
 
 .dagangWrapper {
-  /*main styles end*/
-  /*大纲  开始*/
-  /*大纲  end*/ }
+  /*main styles end*/ }
   .dagangWrapper .itemTitle {
     font-size: 120%;
     font-weight: 600;
@@ -5978,75 +6061,6 @@ a.add-btn:hover span {
     .dagangWrapper .list-sheet a:hover {
       text-decoration: none;
       background-color: #f3f3f3; }
-  .dagangWrapper .dagangInput .col-md-12 {
-    margin-top: 20px;
-    float: left; }
-  .dagangWrapper .dagangInput .btn {
-    padding: 6px 12px;
-    border-radius: 0 4px 4x 0;
-    margin-left: -5px; }
-  .dagangWrapper .dagangInput .saveDagangBtn {
-    margin-left: 10px; }
-  .dagangWrapper .dagangInput .glyphicon {
-    top: 2px;
-    margin-right: 0; }
-  .dagangWrapper .dgLevel {
-    border: 1px solid red; }
-  .dagangWrapper .dagangInput .media {
-    border: 0;
-    margin: 0;
-    padding-top: 20px;
-    background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
-  .dagangWrapper .dagangInput .dgLevel_1:last-child,
-  .dagangWrapper .dagangInput .dgLevel_2:last-child,
-  .dagangWrapper .dagangInput .dgLevel_3:last-child,
-  .dagangWrapper .dagangInput .dgLevel_4:last-child {
-    background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
-  .dagangWrapper .dagangInput .lastChild {
-    background: white url("../images/mingti/icon/sline.jpg") no-repeat 15px -2px; }
-  .dagangWrapper .dagangInput .dagangBox {
-    margin-left: 40px;
-    margin-top: 10px;
-    padding-top: 0; }
-  .dagangWrapper .dagangInput .media-object {
-    width: 40px;
-    height: 34px;
-    background: url("../images/mingti/icon/hline.jpg") no-repeat right 17px; }
-  .dagangWrapper .dagangInput .media-heading {
-    height: 34px;
-    margin: 0;
-    position: relative;
-    /*border: 1px solid red;*/ }
-  .dagangWrapper .dagangInput .media-body {
-    padding: 0;
-    background: url("../images/mingti/icon/sline.jpg") repeat-y 15px 0; }
-  .dagangWrapper .dagangInput .media > .pull-left {
-    margin-right: 0; }
-  .dagangWrapper .dagangInput .col-md-4, .dagangWrapper .dagangInput .col-md-3 {
-    padding-left: 0;
-    padding-right: 0; }
-  .dagangWrapper .dgLevel_0 .dagangName {
-    color: #16418b;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 21px;
-    position: relative; }
-  .dagangWrapper .dgAddBtn {
-    background-color: #d5dadf;
-    color: #000; }
-  .dagangWrapper .dagangInput .dgAddBtn_0 {
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    border-radius: 0 4px 4px 0; }
-  .dagangWrapper .dgDeleteBtn {
-    background-color: #d5dadf; }
-  .dagangWrapper .inlineBlock {
-    display: inline-block;
-    margin-right: -1px; }
-  .dagangWrapper .dgInputWelcome p {
-    margin: 20px;
-    font-size: 18px; }
 
 .mingtiWrapper {
   /* test list styls begin*/

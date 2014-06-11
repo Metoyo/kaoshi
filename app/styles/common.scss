@@ -691,6 +691,102 @@ a.add-btn:hover span {
   color: red;
   display: none;
 }
+/*大纲  开始*/
+.dagangInput {
+  .col-md-12 {
+    margin-top: 20px;
+    float: left;
+  }
+  .btn {
+    padding: 6px 12px;
+    border-radius: 0 4px 4x 0;
+    margin-left: -5px;
+  }
+  .saveDagangBtn{
+    margin-left: 10px;
+  }
+  .glyphicon {
+    top: 2px;
+    margin-right: 0;
+  }
+}
+.dgLevel {
+  border: 1px solid red;
+}
+.dagangInput {
+  .media {
+    border: 0;
+    margin: 0;
+    padding-top: 20px;
+    background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
+  }
+  .dgLevel_1:last-child,
+  .dgLevel_2:last-child,
+  .dgLevel_3:last-child,
+  .dgLevel_4:last-child{
+    background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
+  }
+  .lastChild {
+    background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
+  }
+  .dagangBox {
+    margin-left: 40px;
+    margin-top: 10px;
+    padding-top: 0;
+  }
+  .media-object {
+    width: 40px;
+    height: 34px;
+    background: url('../images/mingti/icon/hline.jpg') no-repeat right 17px;
+  }
+  .media-heading {
+    height: 34px;
+    margin: 0;
+    position: relative;
+    /*border: 1px solid red;*/
+  }
+  .media-body {
+    padding: 0;
+    background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
+  }
+  .media > .pull-left {
+    margin-right: 0;
+  }
+  .col-md-4, .col-md-3 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.dgLevel_0 .dagangName {
+  color: #16418b;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 21px;
+  position: relative;
+}
+.dgAddBtn {
+  background-color: #d5dadf;
+  color: #000;
+}
+.dagangInput .dgAddBtn_0 {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  border-radius: 0 4px 4px 0;
+}
+.dgDeleteBtn {
+  background-color: #d5dadf;
+}
+.inlineBlock {
+  display: inline-block;
+  margin-right: -1px;
+}
+.dgInputWelcome p {
+  margin: 20px;
+  font-size: 18px;
+}
+/*大纲  end*/
+
 /**
 *日期选择器的样式
 */
@@ -1130,6 +1226,13 @@ a.add-btn:hover span {
       padding: 3px 10px;
     }
   }
+  .dagangInput{
+    background-color: #fff;
+    padding: 5px 0 10px 0;
+    .btn{
+      padding: 6px 12px;
+    }
+  }
 }
 //大纲样式
 .dagangWrapper{
@@ -1190,101 +1293,6 @@ a.add-btn:hover span {
     }
   }
   /*main styles end*/
-  /*大纲  开始*/
-  .dagangInput {
-    .col-md-12 {
-      margin-top: 20px;
-      float: left;
-    }
-    .btn {
-      padding: 6px 12px;
-      border-radius: 0 4px 4x 0;
-      margin-left: -5px;
-    }
-    .saveDagangBtn{
-      margin-left: 10px;
-    }
-    .glyphicon {
-      top: 2px;
-      margin-right: 0;
-    }
-  }
-  .dgLevel {
-    border: 1px solid red;
-  }
-  .dagangInput {
-    .media {
-      border: 0;
-      margin: 0;
-      padding-top: 20px;
-      background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
-    }
-    .dgLevel_1:last-child,
-    .dgLevel_2:last-child,
-    .dgLevel_3:last-child,
-    .dgLevel_4:last-child{
-      background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
-    }
-    .lastChild {
-      background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
-    }
-    .dagangBox {
-      margin-left: 40px;
-      margin-top: 10px;
-      padding-top: 0;
-    }
-    .media-object {
-      width: 40px;
-      height: 34px;
-      background: url('../images/mingti/icon/hline.jpg') no-repeat right 17px;
-    }
-    .media-heading {
-      height: 34px;
-      margin: 0;
-      position: relative;
-      /*border: 1px solid red;*/
-    }
-    .media-body {
-      padding: 0;
-      background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
-    }
-    .media > .pull-left {
-      margin-right: 0;
-    }
-    .col-md-4, .col-md-3 {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-  .dgLevel_0 .dagangName {
-    color: #16418b;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 21px;
-    position: relative;
-  }
-  .dgAddBtn {
-    background-color: #d5dadf;
-    color: #000;
-  }
-  .dagangInput .dgAddBtn_0 {
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    border-radius: 0 4px 4px 0;
-  }
-  .dgDeleteBtn {
-    background-color: #d5dadf;
-  }
-  .inlineBlock {
-    display: inline-block;
-    margin-right: -1px;
-  }
-  .dgInputWelcome p {
-    margin: 20px;
-    font-size: 18px;
-  }
-  /*大纲  end*/
 }
 //命题样式
 .mingtiWrapper{

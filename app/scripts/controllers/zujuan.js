@@ -608,6 +608,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 shijuanData.shuju.SHIJUANMUBAN_ID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
                 deferred.resolve();
               }
+              else{
+                alert(data.error);
+              }
             }).error(function(err){
               alert(err);
               deferred.reject();

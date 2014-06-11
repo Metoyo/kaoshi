@@ -28,21 +28,27 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid=', //由机构类别查询机构的url
         qryJiGouAdminBase = baseRzAPIUrl + 'get_jigou_admin?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=', // 查询机构管理员
         modifyJiGouUrl = baseRzAPIUrl + 'modify_jigou', //修改机构数据
+        qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token, //查询领域的url
         modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu', //修改领域数据
         modifyJiGouLingYuUrl = baseRzAPIUrl + 'modify_jigou_lingyu', //修改机构领域
-        jiGouData = {
+        jiGouData = { //新增机构的数据
           token: token,
           caozuoyuan: caozuoyuan,
           shuju:[]
-        }, //新增机构的数据
+        },
         jgLeiBieId, //机构列表id
         modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin', //修改机构管理员
-        adminData = {
+        adminData = { //新增机构管理员的数据
           token: token,
           caozuoyuan: caozuoyuan,
           shuju:{}
-        }, //新增机构管理员的数据
-        whichJiGouAddAdmin = ''; //那个机构添加管理员
+        },
+        whichJiGouAddAdmin = '', //那个机构添加管理员
+        lingYuData = { //定义一个空的object用来存放需要保存的领域数据
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:[]
+        };
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -99,7 +105,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           }
           else{
-            alert('没有相关数据！');
+            alert(data.error);
             $scope.loadingImgShow = false; //user.html
           }
         });
@@ -414,6 +420,66 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           }
           else{
+            alert(data.error);
+          }
+        });
+      };
+
+      /**
+       * 展示科目设置(领域)
+       */
+      $scope.renderLingYuSetTpl = function(){
+        $scope.loadingImgShow = true; //rz_setLingYu.html
+        // 查询机构类别
+        $http.get(qryLingYuUrl).success(function(data) {
+          if(data.length){
+            $scope.lingyu_list = data;
+            console.log($scope.lingyu_list);
+            $scope.loadingImgShow = false; //rz_setLingYu.html
+            $scope.isShenHeBox = false; //判断是不是审核页面
+            $scope.adminSubWebTpl = 'views/partials/rz_setLingYu.html';
+          }
+          else{
+            $scope.lingyu_list = '';
+            $scope.loadingImgShow = false; //rz_setLingYu.html
+            alert('没用相关的领域！');
+          }
+        });
+      };
+
+      /**
+       * 添加知识点
+       */
+      $scope.addNd = function(nd) {
+        var newNd = {};
+        newNd.LINGYU_ID = '';
+        newNd.LINGYUMINGCHENG = '';
+        newNd.BIANMA = '';
+        newNd.ZHUANGTAI = 1;
+        newNd.CHILDREN = [];
+        nd.CHILDREN.push(newNd);
+      };
+
+      /**
+       * 删除知识点//
+       */
+      $scope.removeNd = function(parentNd, idx) {
+        parentNd.CHILDREN.splice(idx, 1);
+      };
+
+      /**
+       * 保存修改过后的领域数据
+       */
+      $scope.saveLingYuChange = function(){
+        $scope.loadingImgShow = true; //rz_setLingYu.html
+        lingYuData.shuju = $scope.lingyu_list;
+        $http.post(modifyLingYuUrl, lingYuData).success(function(data){
+          if(data.result){
+            $('.save-msg').show().fadeOut(3000);
+            $scope.loadingImgShow = false; //rz_setLingYu.html
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_setLingYu.html
             alert(data.error);
           }
         });

@@ -78,11 +78,11 @@ define([
                           var find_QUANXIAN_ID_4, find_QUANXIAN_ID_5;
 
                           find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
-                            return permission.QUANXIAN_ID == 4;
+                            return permission.QUANXIAN_ID == 2004;
                           });
 
                           find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
-                            return permission.QUANXIAN_ID == 5;
+                            return permission.QUANXIAN_ID == 2005;
                           });
 
                           if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
