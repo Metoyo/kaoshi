@@ -15,8 +15,9 @@
                         <div class="input-group col-md-6">
                             <div class="form-control" ng-bind="nd1.LINGYUMINGCHENG"></div>
                             <span class="input-group-addon">
-                                <input type="checkbox" ng-click="addLingYuToSelect($event, nd1)"
-                                          ng-checked="selectedLyStr.indexOf('sly' + nd1.LINGYU_ID + ';') >= 0">
+                                <input type="checkbox" value="{{nd1.LINGYU_ID}}" class="{{'checkbox' + nd1.LINGYU_ID}}"
+                                       ng-click="addLingYuToSelect($event, nd1)"
+                                       ng-checked="selectedLyStr.indexOf('sly' + nd1.LINGYU_ID + ';') >= 0">
                             </span>
                         </div>
                     </div>
@@ -28,7 +29,8 @@
                                 <div class="input-group col-md-6">
                                     <div class="form-control" ng-bind="nd2.LINGYUMINGCHENG"></div>
                                     <span class="input-group-addon">
-                                        <input type="checkbox" ng-click="addLingYuToSelect($event, nd2)"
+                                        <input type="checkbox" value="{{nd2.LINGYU_ID}}" class="{{'checkbox' + nd2.LINGYU_ID}}"
+                                               ng-click="addLingYuToSelect($event, nd2)"
                                                ng-checked="selectedLyStr.indexOf('sly' + nd2.LINGYU_ID + ';') >= 0">
                                     </span>
                                 </div>
@@ -44,7 +46,8 @@
         <h4><strong>已选科目:</strong></h4>
         <p ng-repeat="sLy in jgSelectLingYu">
             <span ng-bind="sLy.LINGYUMINGCHENG"></span>
-            <span class="glyphicon glyphicon-remove delete-select-ly pull-right" title="删除已选科目"></span>
+            <span class="glyphicon glyphicon-remove delete-select-ly pull-right" title="删除已选科目"
+                    ng-click="deleteSelectedLingYu(sLy.LINGYU_ID, $index)"></span>
         </p>
     </div>
 </div>

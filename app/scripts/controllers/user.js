@@ -571,6 +571,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 从已选科目删除领域
+       */
+      $scope.deleteSelectedLingYu = function(lyId, idx){
+        var targetClass = '.checkbox' + lyId;
+        $('.media').find(targetClass).prop('checked', false);
+        $scope.jgSelectLingYu.splice(idx, 1);
+      };
+
+      /**
        * 科目题型选择
        */
       $scope.renderTiXingSelectTpl = function(){
