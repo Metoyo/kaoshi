@@ -42,6 +42,7 @@ define([
             //登录信息的验证 //
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
+              console.log(session.info);
               session.userInfo = '';
               if(result.error){
                 $scope.dengluInfo = result;
@@ -61,6 +62,7 @@ define([
                   if(data.JIGOU.length){
                     if(data.JUESE){
                       session.userInfo = data;
+                      console.log(session.userInfo);
                       var jsArr = _.chain(data.JUESE)
                           .sortBy(function(js){ return js.JUESE_ID; })
                           .map(function(js){ return js.JUESE_ID; })

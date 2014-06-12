@@ -9,7 +9,7 @@ define([
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
     .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', 'urlRedirect',
       function ($rootScope, $scope,$location, $http, $q, urlRedirect) {
-        var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&leibieid=1', //lingYu 学科领域的api
+        var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
             apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token, //jiGouLeiBie 机构类别的api
             apiUrlJueSe = config.apiurl_rz + 'jueSe?token=' + config.token, //jueSe 查询科目权限的数据的api
@@ -116,7 +116,7 @@ define([
             $scope.jigoulb_list = data;
           }
           else{
-            alert('没用相应的机构！');
+            alert('没用相关机构！');
           }
         });
 
@@ -128,8 +128,15 @@ define([
           $scope.selected_jg = '';
           $scope.selected_ly = '';
           $http.get(jiGou_LeiBieUrl + jglbId).success(function(data) {
-            $scope.jigou_list = data;
-            $scope.lingyu_list = ''; //重置领域
+            if(data.length){
+              $scope.jigou_list = data;
+              $scope.lingyu_list = ''; //重置领域
+            }
+            else{
+              $scope.jigou_list = '';
+              $scope.lingyu_list = ''; //重置领域
+              alert('没有相关机构！');
+            }
           });
         };
 
@@ -139,16 +146,20 @@ define([
         $scope.getJgId = function(jgId){
           jigouId = jgId;
           registerDate.jiGouName = $(".subOrganization  option:selected").text();
-          qryParentLingYu();
+          qryParentLingYu(jgId);
         };
 
         /**
          * 查询父领域的代码
          */
-        var qryParentLingYu = function(){
-          $http.get(apiUrlLy).success(function(data) {
+        var qryParentLingYu = function(jgId){
+          $http.get(apiUrlLy + jgId).success(function(data) {
             if(data.length){
               $scope.lingyu_list = data;
+            }
+            else{
+              $scope.lingyu_list = '';
+              alert('没有相关领域！');
             }
           });
         };
@@ -163,6 +174,12 @@ define([
               $scope.keMuSelectBox = true;
               $scope.keMuListLengthExist = true;
               deleteAllSelectedKmAndJs();
+            }
+            else{
+              $scope.kemu_list = '';
+              $scope.keMuSelectBox = false;
+              $scope.keMuListLengthExist = false;
+              alert('没有对应的科目！');
             }
           });
         };

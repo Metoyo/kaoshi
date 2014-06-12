@@ -693,6 +693,10 @@ a.add-btn:hover span {
 }
 /*大纲  开始*/
 .dagangInput {
+  position: relative;
+  .dgLevel {
+    border: 1px solid red;
+  }
   .col-md-12 {
     margin-top: 20px;
     float: left;
@@ -709,11 +713,6 @@ a.add-btn:hover span {
     top: 2px;
     margin-right: 0;
   }
-}
-.dgLevel {
-  border: 1px solid red;
-}
-.dagangInput {
   .media {
     border: 0;
     margin: 0;
@@ -785,7 +784,7 @@ a.add-btn:hover span {
   margin: 20px;
   font-size: 18px;
 }
-/*大纲  end*/
+/*大纲  结束*/
 
 /**
 *日期选择器的样式
@@ -1204,6 +1203,24 @@ a.add-btn:hover span {
         padding: 10px 0;
       }
     }
+    .selected-lingYu{
+      position: absolute;
+      top: 1%;
+      right: 0px;
+      width: 40%;
+      padding: 10px;
+      height: 98%;
+      border-left: 1px solid #cdcdcd;
+      p{
+        margin-bottom: 5px;
+        padding: 3px;
+        border-bottom: 1px solid #cfcfcf;
+      }
+      .delete-select-ly{
+        color: red;
+        cursor: pointer;
+      }
+    }
   }
   .closeShenBox {
     color: #d80000;
@@ -1231,6 +1248,12 @@ a.add-btn:hover span {
     padding: 5px 0 10px 0;
     .btn{
       padding: 6px 12px;
+    }
+    .selectLingYu{
+      margin-left: 10px;
+      .all-lingYu{
+        border-radius: 4px;
+      }
     }
   }
 }
