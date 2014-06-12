@@ -491,6 +491,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 学校科目选择 modifyJiGouLingYuUrl
        */
       $scope.renderLingYuSelectTpl = function(){
+        $scope.jgSelectLingYu = '';
         lingYuData.shuju = [];
         $scope.loadingImgShow = true; //rz_selectLingYu.html
         var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
@@ -524,15 +525,48 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 添加领域到已选
+       * 添加领域到已选 media-body
        */
       $scope.addLingYuToSelect = function(event, nd){
         var ifCheckOrNot = $(event.target).prop('checked');
         if(ifCheckOrNot){ //添加
-
+          if(nd.PARENT_LINGYU_ID == 0){ // 父领域
+            if(nd.CHILDREN.length){
+              _.each(nd.CHILDREN, function(ly, idx, lst){
+                var hasLingYuArr, hasIn;
+                hasLingYuArr = _.map($scope.jgSelectLingYu, function(sly){return sly.LINGYU_ID});
+                hasIn = _.contains(hasLingYuArr, ly.LINGYU_ID);
+                if(!hasIn){
+                  $scope.jgSelectLingYu.push(ly);
+                }
+              });
+              $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", true);
+            }
+          }
+          else{ //子领域
+            $scope.jgSelectLingYu.push(nd);
+          }
         }
         else{ //删除
-
+          if(nd.PARENT_LINGYU_ID == 0){ // 父领域
+            if(nd.CHILDREN.length){
+              _.each(nd.CHILDREN, function(ly,idx,lst){
+                _.each($scope.jgSelectLingYu, function(sly,sIdx,sLst){
+                  if(sly.LINGYU_ID == ly.LINGYU_ID){
+                    $scope.jgSelectLingYu.splice(sIdx, 1);
+                  }
+                });
+              });
+              $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
+            }
+          }
+          else{ //子领域
+            _.each($scope.jgSelectLingYu, function(sly,idx,lst){
+              if(sly.LINGYU_ID == nd.LINGYU_ID){
+                $scope.jgSelectLingYu.splice(idx, 1);
+              }
+            });
+          }
         }
       };
 
