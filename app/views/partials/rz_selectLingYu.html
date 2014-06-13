@@ -47,7 +47,11 @@
         <p ng-repeat="sLy in jgSelectLingYu">
             <span ng-bind="sLy.LINGYUMINGCHENG"></span>
             <span class="glyphicon glyphicon-remove delete-select-ly pull-right" title="删除已选科目"
-                    ng-click="deleteSelectedLingYu(sLy.LINGYU_ID, $index)"></span>
+                    ng-click="deleteSelectedLingYu(sLy, $index)"></span>
         </p>
     </div>
+</div>
+<div class="save-box">
+    <span class="save-msg">保存成功!</span>
+    <button class="btn btn-primary" ng-click="saveChooseLingYu()">保存</button>
 </div>

@@ -23,7 +23,8 @@
                                  <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd(nd1)" type="button">
                                      <span class="glyphicon glyphicon-plus"> </span>
                                  </button>
-                                 <button class="btn btn-default dgDeleteBtn" ng-click="removeNd(ly, $index)" type="button">
+                                 <button class="btn btn-default dgDeleteBtn" type="button"
+                                         ng-click="removeNd(ly, nd1, $index)">
                                      <span class="glyphicon glyphicon-trash"> </span>
                                  </button>
                             </span>
@@ -37,7 +38,8 @@
                                 <div class="input-group col-md-6">
                                     <input type="text" class="form-control" ng-model="nd2.LINGYUMINGCHENG">
                                     <span class="input-group-btn">
-                                         <button class="btn btn-default dgDeleteBtn" ng-click="removeNd(nd1, $index)" type="button">
+                                         <button class="btn btn-default dgDeleteBtn" type="button"
+                                                 ng-click="removeNd(nd1, nd2, $index)">
                                              <span class="glyphicon glyphicon-trash"> </span>
                                          </button>
                                     </span>

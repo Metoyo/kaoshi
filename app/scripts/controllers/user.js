@@ -449,7 +449,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 添加知识点
+       * 添加领域
        */
       $scope.addNd = function(nd) {
         var newNd = {};
@@ -458,14 +458,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         newNd.BIANMA = '';
         newNd.ZHUANGTAI = 1;
         newNd.CHILDREN = [];
+        switch (nd.LEIBIE){
+          case 0:
+            newNd.LEIBIE = 1;
+            break;
+          case 1:
+            newNd.LEIBIE = 2;
+            break;
+        }
         nd.CHILDREN.push(newNd);
       };
 
       /**
-       * 删除知识点
+       * 删除领域//
        */
-      $scope.removeNd = function(parentNd, idx) {
-        parentNd.CHILDREN.splice(idx, 1);
+      $scope.removeNd = function(parentNd, thisNd, idx) {
+        lingYuData.shuju = [];
+        thisNd.ZHUANGTAI = -1;
+        lingYuData.shuju.push(thisNd);
+        $scope.loadingImgShow = true; //rz_setLingYu.html
+        $http.post(modifyLingYuUrl, lingYuData).success(function(data){
+          if(data.result){
+            parentNd.CHILDREN.splice(idx, 1);
+            $scope.loadingImgShow = false; //rz_setLingYu.html
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_setLingYu.html
+            alert(data.error);
+          }
+        });
       };
 
       /**
@@ -573,16 +594,61 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 从已选科目删除领域
        */
-      $scope.deleteSelectedLingYu = function(lyId, idx){
-        var targetClass = '.checkbox' + lyId;
+      $scope.deleteSelectedLingYu = function(sly, idx){
+        $scope.loadingImgShow = true; //rz_selectLingYu.html
+        var targetClass = '.checkbox' + sly.LINGYU_ID,
+          slyObj = {};
         $('.media').find(targetClass).prop('checked', false);
-        $scope.jgSelectLingYu.splice(idx, 1);
+        lingYuData.shuju = [];
+        slyObj.JIGOU_ID = jigouid;
+        slyObj.LINGYU_ID = sly.LINGYU_ID;
+        slyObj.ZHUANGTAI = -1;
+        slyObj.LEIBIE = sly.LEIBIE;
+        lingYuData.shuju.push(slyObj);
+        $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
+          if(data.result){
+            $scope.jgSelectLingYu.splice(idx, 1);
+            $scope.loadingImgShow = false; //rz_selectLingYu.html
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_selectLingYu.html
+            alert(data.error);
+          }
+        });
+      };
+
+      /**
+       * 保存已选的领域
+       */
+      $scope.saveChooseLingYu = function(){
+        $scope.loadingImgShow = true; //rz_selectLingYu.html
+        lingYuData.shuju = [];
+        _.each($scope.jgSelectLingYu, function(sly){
+          var slyObj = {};
+          slyObj.JIGOU_ID = jigouid;
+          slyObj.LINGYU_ID = sly.LINGYU_ID;
+          slyObj.ZHUANGTAI = sly.ZHUANGTAI;
+          slyObj.LEIBIE = sly.LEIBIE;
+          lingYuData.shuju.push(slyObj);
+        });
+        $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
+          if(data.result){
+            $('.save-msg').show().fadeOut(3000);
+            $scope.loadingImgShow = false; //rz_selectLingYu.html
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_selectLingYu.html
+            alert(data.error);
+            console.log(data.error);
+          }
+        });
       };
 
       /**
        * 科目题型选择
        */
       $scope.renderTiXingSelectTpl = function(){
+
 
       };
 
