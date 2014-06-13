@@ -161,9 +161,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 加载大纲知识点
          */
         $scope.loadDgZsd = function(dg){
-
           angular.element(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
-
           qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $http.get(qryKnowledge).success(function(data){
             $scope.kowledgeList = data;

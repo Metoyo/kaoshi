@@ -6009,6 +6009,14 @@ a.add-btn:hover span {
       .renzhengWrapper .shenheBox .selected-lingYu .delete-select-ly {
         color: red;
         cursor: pointer; }
+    .renzhengWrapper .shenheBox .lingYu-list {
+      padding: 0 10px; }
+      .renzhengWrapper .shenheBox .lingYu-list p {
+        cursor: pointer; }
+    .renzhengWrapper .shenheBox .tiXing-list {
+      padding: 10px 0; }
+      .renzhengWrapper .shenheBox .tiXing-list .checkbox-inline:first-child {
+        margin-left: 10px; }
   .renzhengWrapper .closeShenBox {
     color: #d80000;
     font-size: 16px;
@@ -6032,8 +6040,7 @@ a.add-btn:hover span {
     .renzhengWrapper .dagangInput .selectLingYu {
       margin-left: 10px; }
       .renzhengWrapper .dagangInput .selectLingYu .all-lingYu {
-        border-radius: 4px;
-        border-top-right-radius: 4px; }
+        border-radius: 4px; }
 
 .dagangWrapper {
   /*main styles end*/ }

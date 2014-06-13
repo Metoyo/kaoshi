@@ -17,6 +17,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       var userInfo = $rootScope.session.userInfo,
         baseRzAPIUrl = config.apiurl_rz, //renzheng的api;
+        baseMtAPIUrl = config.apiurl_mt, //mingti的api
         token = config.token, //token的值
         caozuoyuan = userInfo.UID,//登录的用户的UID
         jigouid = userInfo.JIGOU[0].JIGOU_ID,
@@ -50,7 +51,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           shuju:[]
         },
         selectedLyStr = '', //已选择的领域ID
-        selectedLyArr = ''; //已选择的领域ID
+        selectedLyArr = '', //已选择的领域ID
+        qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token, //查询全部题型的url
+        qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
+          jigouid + '&lingyuid=', //查询科目包含什么题型的url
+        modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu', //修改题型机构领域
+        tiXingData = { //定义一个空的object用来存放需要保存的题型数据
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:[]
+        };
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -572,7 +582,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(nd.PARENT_LINGYU_ID == 0){ // 父领域
             if(nd.CHILDREN.length){
               _.each(nd.CHILDREN, function(ly,idx,lst){
-                _.each($scope.jgSelectLingYu, function(sly,sIdx,sLst){
+                _.each($scope.jgSelectLingYu, function(sly, sIdx, sLst){
                   if(sly.LINGYU_ID == ly.LINGYU_ID){
                     $scope.jgSelectLingYu.splice(sIdx, 1);
                   }
@@ -582,7 +592,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           else{ //子领域
-            _.each($scope.jgSelectLingYu, function(sly,idx,lst){
+            _.each($scope.jgSelectLingYu, function(sly, idx, lst){
               if(sly.LINGYU_ID == nd.LINGYU_ID){
                 $scope.jgSelectLingYu.splice(idx, 1);
               }
@@ -648,8 +658,109 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 科目题型选择
        */
       $scope.renderTiXingSelectTpl = function(){
+        $scope.loadingImgShow = true; //rz_selectTiXing.html
+        var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
+        $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
+          if(jgLy.length){
+            $http.get(qryTiXingUrl).success(function(allTx){
+              if(allTx.length){
+                $scope.selectTiXingLiYing = jgLy;
+                $scope.allTiXing = allTx;
+                $scope.loadingImgShow = false; //rz_selectTiXing.html
+                $scope.isShenHeBox = false; //判断是不是审核页面
+                $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
+              }
+              else{
+                $scope.loadingImgShow = false; //rz_selectTiXing.html
+                alert(allTx.error);
+              }
+            });
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_selectTiXing.html
+            $scope.isShenHeBox = false; //判断是不是审核页面
+            $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
+            alert(jgLy.error);
+          }
+        });
+      };
 
+      /**
+       * 那个领域被选中
+       */
+      var originKmtx;
+      $scope.whichLingYuActive = function(lyId){
+        originKmtx = '';
+        $scope.activeLingYu = lyId;
+        $http.get(qryKmTx + lyId).success(function(data){
+          if(data.error){
+            alert(data.error);
+          }
+          else{
+            $scope.kmtxList = data;
+            originKmtx = _.map(data, function(tx){return tx.TIXING_ID});
+            $scope.selectedTxLyStr = _.map(data, function(tx){return 'tx' + tx.TIXING_ID + ';'}).toString();
+          }
+        });
+      };
 
+      /**
+       * 添加或者删除题型
+       */
+      $scope.addOrRemoveTiXing = function(event, tx){
+        tiXingData.shuju = [];
+        var hasIn = _.contains(originKmtx, tx.TIXING_ID),
+          ifCheckOrNot = $(event.target).prop('checked');
+        if(ifCheckOrNot){
+          $scope.kmtxList.push(tx);
+        }
+        else{
+          if(hasIn){
+            var txObj = {};
+            txObj.TIXING_ID = tx.TIXING_ID;
+            txObj.JIGOU_ID = jigouid;
+            txObj.LINGYU_ID = $scope.activeLingYu;
+            txObj.ZHUANGTAI = -1;
+            tiXingData.shuju.push(txObj);
+            $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
+              if(data.result){
+                $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
+              }
+              else{
+                alert(data.error);
+              }
+            });
+          }
+          else{
+            $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
+          }
+        }
+      };
+
+      /**
+       * 保存已选的题型
+       */
+      $scope.saveSelectTiXing = function(){
+        $scope.loadingImgShow = true; //rz_selectTiXing.html
+        tiXingData.shuju = [];
+        _.each($scope.kmtxList, function(kmtx, idx, lst){
+          var txObj = {};
+          txObj.TIXING_ID = kmtx.TIXING_ID;
+          txObj.JIGOU_ID = jigouid;
+          txObj.LINGYU_ID = $scope.activeLingYu;
+          txObj.ZHUANGTAI = 1;
+          tiXingData.shuju.push(txObj);
+        });
+        $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
+          if(data.result){
+            $('.save-msg').show().fadeOut(3000);
+            $scope.loadingImgShow = false; //rz_selectTiXing.html
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_selectTiXing.html
+            alert(data.error);
+          }
+        });
       };
 
     }]);

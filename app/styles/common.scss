@@ -1221,6 +1221,18 @@ a.add-btn:hover span {
         cursor: pointer;
       }
     }
+    .lingYu-list{
+      padding: 0 10px;
+      p{
+        cursor: pointer;
+      }
+    }
+    .tiXing-list{
+      padding: 10px 0;
+      .checkbox-inline:first-child{
+        margin-left: 10px;
+      }
+    }
   }
   .closeShenBox {
     color: #d80000;
