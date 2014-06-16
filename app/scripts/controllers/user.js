@@ -716,20 +716,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         else{
           if(hasIn){
-            var txObj = {};
-            txObj.TIXING_ID = tx.TIXING_ID;
-            txObj.JIGOU_ID = jigouid;
-            txObj.LINGYU_ID = $scope.activeLingYu;
-            txObj.ZHUANGTAI = -1;
-            tiXingData.shuju.push(txObj);
-            $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
-              if(data.result){
-                $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
-              }
-              else{
-                alert(data.error);
-              }
-            });
+//            var txObj = {};
+//            txObj.TIXING_ID = tx.TIXING_ID;
+//            txObj.JIGOU_ID = jigouid;
+//            txObj.LINGYU_ID = $scope.activeLingYu;
+//            txObj.ZHUANGTAI = -1;
+//            tiXingData.shuju.push(txObj);
+            var indexInOkt = _.indexOf(originKmtx, tx.TIXING_ID);
+            $scope.kmtxList[indexInOkt].ZHUANGTAI = -1;
+//            $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
+//              if(data.result){
+//                $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
+//              }
+//              else{
+//                alert(data.error);
+//              }
+//            });
           }
           else{
             $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
@@ -748,7 +750,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           txObj.TIXING_ID = kmtx.TIXING_ID;
           txObj.JIGOU_ID = jigouid;
           txObj.LINGYU_ID = $scope.activeLingYu;
-          txObj.ZHUANGTAI = 1;
+          txObj.ZHUANGTAI = kmtx.ZHUANGTAI >= -1 ? kmtx.ZHUANGTAI : 1;
           tiXingData.shuju.push(txObj);
         });
         $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
