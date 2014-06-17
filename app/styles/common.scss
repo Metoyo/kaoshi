@@ -1268,6 +1268,17 @@ a.add-btn:hover span {
       }
     }
   }
+  .setDaGangBox{
+    float: left;
+    width: 100%;
+    .dagangBox{
+      margin-left: 10px;
+    }
+    .ly-select-box{
+      width: 50%;
+      margin: 10px 0 0 10px;
+    }
+  }
 }
 //大纲样式
 .dagangWrapper{

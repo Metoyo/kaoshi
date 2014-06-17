@@ -1,0 +1,85 @@
+<h4>公共知识大纲</h4>
+<div class="dagangInput setDaGangBox">
+    <div class="ly-select-box">
+        <select class="form-control daGangLySelect" ng-model="selected_ly" ng-change="getDaGangList(selected_ly)"
+                ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in lingYuChild">
+            <option value="">请选择</option>
+        </select>
+    </div>
+    <div ng-repeat="dg in daGangList" class="media dagangBox dgLevel_0">
+        <div class="media-body">
+            <div class="media-heading">
+                <div class="input-group col-md-6">
+                    <input type="text" class="form-control" ng-model="dg.ZHISHIDIANMINGCHENG">
+                    <span class="input-group-btn">
+                         <button class="btn btn-default dgAddBtn" ng-click="dgAddNd(dg)" type="button">
+                             <span class="glyphicon glyphicon-plus"> </span>
+                         </button>
+                    </span>
+                </div>
+            </div>
+            <!-- 二级 -->
+            <div ng-repeat="nd1 in dg.ZIJIEDIAN" class="media dgLevel_1">
+                <a class="media-object pull-left"></a>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <div class="input-group col-md-6">
+                            <input type="text" class="form-control" ng-model="nd1.ZHISHIDIANMINGCHENG">
+                            <span class="input-group-btn">
+                                 <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="dgAddNd(nd1)" type="button">
+                                     <span class="glyphicon glyphicon-plus"> </span>
+                                 </button>
+                                 <button class="btn btn-default dgDeleteBtn" type="button"
+                                         ng-click="dgRemoveNd(dg, $index)">
+                                     <span class="glyphicon glyphicon-trash"> </span>
+                                 </button>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 三级 -->
+                    <div ng-repeat="nd2 in nd1.ZIJIEDIAN" class="media dgLevel_2">
+                        <a class="media-object pull-left"></a>
+                        <div class="media-body">
+                            <div class="media-heading">
+                                <div class="input-group col-md-6">
+                                    <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="dgAddNd(nd2)"
+                                                type="button">
+                                            <span class="glyphicon glyphicon-plus"> </span>
+                                        </button>
+                                         <button class="btn btn-default dgDeleteBtn" type="button"
+                                                 ng-click="dgRemoveNd(nd1, $index)">
+                                             <span class="glyphicon glyphicon-trash"> </span>
+                                         </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- 四级 -->
+                            <div ng-repeat="nd3 in nd2.ZIJIEDIAN" class="media dgLevel_3">
+                                <a class="media-object pull-left"> </a>
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        <div class="input-group col-md-6">
+                                            <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default dgDeleteBtn"
+                                                        ng-click="dgRemoveNd(nd2, $index)" type="button">
+                                                    <span class="glyphicon glyphicon-trash"> </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="save-box">
+    <span class="save-msg">保存成功!</span>
+    <button class="btn btn-primary" ng-click="saveDaGangData()">保存</button>
+</div>

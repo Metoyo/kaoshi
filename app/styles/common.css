@@ -6041,6 +6041,14 @@ a.add-btn:hover span {
       margin-left: 10px; }
       .renzhengWrapper .dagangInput .selectLingYu .all-lingYu {
         border-radius: 4px; }
+  .renzhengWrapper .setDaGangBox {
+    float: left;
+    width: 100%; }
+    .renzhengWrapper .setDaGangBox .dagangBox {
+      margin-left: 10px; }
+    .renzhengWrapper .setDaGangBox .ly-select-box {
+      width: 50%;
+      margin: 10px 0 0 10px; }
 
 .dagangWrapper {
   /*main styles end*/ }

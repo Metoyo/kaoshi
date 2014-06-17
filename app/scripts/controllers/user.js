@@ -60,7 +60,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           token: token,
           caozuoyuan: caozuoyuan,
           shuju:[]
-        };
+        },
+        qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+          + jigouid + '&leixing=1' + '&lingyuid=', //查询公共知识点的url
+        qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+          + jigouid + '&lingyuid=', //查询知识大纲的url
+        qryZsdgZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
+          + '&jigouid=' + jigouid + '&leixing=1' + '&lingyuid=', //查询知识大纲知识点的url
+        daGangData = { //定义一个空的大纲数据
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          shuju:{}
+        },
+        daGangJieDianData = [], //定义一个大纲节点的数据
+        modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang'; //保存知识大纲
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -442,7 +456,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.renderLingYuSetTpl = function(){
         $scope.loadingImgShow = true; //rz_setLingYu.html
-        // 查询机构类别
+        // 查询机领域
         $http.get(qryLingYuUrl).success(function(data) {
           if(data.length){
             $scope.lingyu_list = data;
@@ -650,6 +664,174 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.loadingImgShow = false; //rz_selectLingYu.html
             alert(data.error);
             console.log(data.error);
+          }
+        });
+      };
+
+      /**
+       * 大纲设置
+       */
+      $scope.renderDaGangSetTpl = function(){
+        $scope.loadingImgShow = true; //rz_setDaGang.html
+        var lingYuChildArr = [];
+        // 查询机领域
+        $http.get(qryLingYuUrl).success(function(data) {
+          if(data.length){
+            _.each(data[0].CHILDREN, function(sub1, idx1, lst1){
+              _.each(sub1.CHILDREN, function(sub2, idx2, lst2){
+                lingYuChildArr.push(sub2);
+              });
+            });
+            $scope.lingYuChild = lingYuChildArr;
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            $scope.isShenHeBox = false; //判断是不是审核页面
+            $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
+          }
+          else{
+            $scope.lingyu_list = '';
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
+            alert('没用相关的领域！');
+          }
+        });
+      };
+
+      /**
+       * 获得大纲数据
+       */
+      var isHasPublicDaGang = false;
+      $scope.getDaGangList = function(lyId){
+        isHasPublicDaGang = false;
+        $scope.loadingImgShow = true; //rz_setDaGang.html
+        daGangJieDianData = [];
+        daGangData.lingyuid = lyId;
+        //先查询知识大纲
+        var qryZsdgUrl = qryZsdgBaseUrl + lyId,
+          selectLyText = $(".daGangLySelect").find("option:selected").text(),
+          hasPublicDg = [],
+          qryZsdgZsdUrl,
+          jieDianObj = {};
+        console.log(selectLyText);
+        $http.get(qryZsdgUrl).success(function(zsdg){
+          if(zsdg.length){ //有知识大纲
+            //判断有没有公共知识大纲
+            _.each(zsdg, function(dg){
+              if(dg.LEIXING == 1){
+                daGangData.shuju.ZHISHIDAGANG_ID = zsdg.ZHISHIDAGANG_ID;
+                daGangData.shuju.ZHISHIDAGANGMINGCHENG = zsdg.ZHISHIDAGANGMINGCHENG;
+                daGangData.shuju.DAGANGSHUOMING = zsdg.DAGANGSHUOMING;
+                daGangData.shuju.LEIXING = 1;
+                daGangData.shuju.ZHUANGTAI = zsdg.ZHUANGTAI;
+                daGangData.shuju.JIEDIAN = [];
+                isHasPublicDaGang = true;
+                hasPublicDg.push(dg.ZHISHIDAGANG_ID);
+              }
+            });
+            if(hasPublicDg.length){ //有公共知识大纲
+              qryZsdgZsdUrl = qryZsdgZsdBaseUrl + lyId + '&zhishidagangid=' + hasPublicDg[0];
+              $http.get(qryZsdgZsdUrl).success(function(zsdgZsd){
+                if(zsdgZsd.length){
+                  $scope.daGangList = zsdgZsd;
+                  $scope.loadingImgShow = false; //rz_setDaGang.html
+                }
+                else{
+                  $scope.loadingImgShow = false; //rz_setDaGang.html
+                  jieDianObj = {};
+                  jieDianObj.JIEDIAN_ID = '';
+                  jieDianObj.ZHISHIDIAN_ID = '';
+                  jieDianObj.ZHISHIDIANMINGCHENG = selectLyText + '公共知识大纲';
+                  jieDianObj.ZHISHIDIAN_LEIXING = 1;
+                  jieDianObj.JIEDIANLEIXING = '';
+                  jieDianObj.JIEDIANXUHAO = 1;
+                  jieDianObj.ZHUANGTAI = 1;
+                  jieDianObj.ZIJIEDIAN = [];
+                  daGangJieDianData.push(jieDianObj);
+                  $scope.daGangList = daGangJieDianData;
+                }
+              });
+            }
+            else{ //没有公共知识大纲
+              $scope.loadingImgShow = false; //rz_setDaGang.html
+              isHasPublicDaGang = false;
+              jieDianObj = {};
+              jieDianObj.JIEDIAN_ID = '';
+              jieDianObj.ZHISHIDIAN_ID = '';
+              jieDianObj.ZHISHIDIANMINGCHENG = selectLyText + '公共知识大纲';
+              jieDianObj.ZHISHIDIAN_LEIXING = 1;
+              jieDianObj.JIEDIANLEIXING = '';
+              jieDianObj.JIEDIANXUHAO = 1;
+              jieDianObj.ZHUANGTAI = 1;
+              jieDianObj.ZIJIEDIAN = [];
+              daGangJieDianData.push(jieDianObj);
+              $scope.daGangList = daGangJieDianData;
+            }
+          }
+          else{ //没有任何知识大纲
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            isHasPublicDaGang = false;
+            jieDianObj = {};
+            jieDianObj.JIEDIAN_ID = '';
+            jieDianObj.ZHISHIDIAN_ID = '';
+            jieDianObj.ZHISHIDIANMINGCHENG = selectLyText + '公共知识大纲';
+            jieDianObj.ZHISHIDIAN_LEIXING = 1;
+            jieDianObj.JIEDIANLEIXING = '';
+            jieDianObj.JIEDIANXUHAO = 1;
+            jieDianObj.ZHUANGTAI = 1;
+            jieDianObj.ZIJIEDIAN = [];
+            daGangJieDianData.push(jieDianObj);
+            $scope.daGangList = daGangJieDianData;
+          }
+        });
+      };
+
+      /**
+       * 添加知识点
+       */
+      $scope.dgAddNd = function(nd) {
+        var newNd = {};
+        newNd.JIEDIAN_ID = '';
+        newNd.ZHISHIDIAN_ID = '';
+        newNd.ZHISHIDIANMINGCHENG = '';
+        newNd.ZHISHIDIAN_LEIXING = 1;
+        newNd.JIEDIANLEIXING = '';
+        newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
+        newNd.ZHUANGTAI = 1;
+        newNd.ZIJIEDIAN = [];
+        nd.ZIJIEDIAN.push(newNd);
+      };
+
+      /**
+       * 删除知识点
+       */
+      $scope.dgRemoveNd = function(parentNd, idx) {
+        parentNd.ZIJIEDIAN.splice(idx, 1);
+      };
+
+      /**
+       * 保存知识大纲//
+       */
+      $scope.saveDaGangData = function() {
+        $scope.loadingImgShow = true; //rz_setDaGang.html
+        if(isHasPublicDaGang){
+          daGangData.shuju.JIEDIAN = $scope.daGangList;
+        }
+        else{
+          daGangData.shuju.ZHISHIDAGANG_ID = '';
+          daGangData.shuju.ZHISHIDAGANGMINGCHENG = $scope.daGangList[0].ZHISHIDIANMINGCHENG;
+          daGangData.shuju.DAGANGSHUOMING = '';
+          daGangData.shuju.LEIXING = 1;
+          daGangData.shuju.ZHUANGTAI = 1;
+          daGangData.shuju.JIEDIAN = $scope.daGangList;
+        }
+
+        $http.post(modifyZsdgUrl, daGangData).success(function(result) {
+          if(result.result){
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            $('.save-msg').show().fadeOut(3000);
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            alert('修改大纲失败！');
           }
         });
       };
