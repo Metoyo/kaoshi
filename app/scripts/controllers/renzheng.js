@@ -19,7 +19,7 @@ define([
             session = {},
           currentPath = $location.$$path;
         $rootScope.session = session;
-        $rootScope.pageName = "认证";//页面名称
+        $rootScope.pageName = "太安厅";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
         $scope.login = login;

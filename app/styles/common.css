@@ -6049,6 +6049,17 @@ a.add-btn:hover span {
     .renzhengWrapper .setDaGangBox .ly-select-box {
       width: 50%;
       margin: 10px 0 0 10px; }
+  .renzhengWrapper .publicKnowledgeBox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32%; }
+    .renzhengWrapper .publicKnowledgeBox .publicKnowledge {
+      border: 1px solid #cfcfcf;
+      padding: 10px; }
+      .renzhengWrapper .publicKnowledgeBox .publicKnowledge p {
+        margin-bottom: 5px;
+        cursor: pointer; }
 
 .dagangWrapper {
   /*main styles end*/ }

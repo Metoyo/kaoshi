@@ -674,7 +674,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.renderDaGangSetTpl = function(){
         $scope.loadingImgShow = true; //rz_setDaGang.html
         var lingYuChildArr = [];
-        // 查询机领域
+        $scope.daGangList = '';
+        // 查询领域
         $http.get(qryLingYuUrl).success(function(data) {
           if(data.length){
             _.each(data[0].CHILDREN, function(sub1, idx1, lst1){
@@ -699,29 +700,43 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 获得大纲数据
        */
-      var isHasPublicDaGang = false;
+      var isHasPublicDaGang = false,
+        publicKnowledgeData; //存放公共知识点的变量
       $scope.getDaGangList = function(lyId){
         isHasPublicDaGang = false;
         $scope.loadingImgShow = true; //rz_setDaGang.html
         daGangJieDianData = [];
         daGangData.lingyuid = lyId;
-        //先查询知识大纲
-        var qryZsdgUrl = qryZsdgBaseUrl + lyId,
+        publicKnowledgeData = '';
+        var zsdgZsdArr = [],
+          publicZsdArr = [],
+          differentArr,
+          diffPubZsdArr = [],
+          needPubZsd,
+          qryZsdgUrl = qryZsdgBaseUrl + lyId,
+          qryZsdUrl = qryZsdBaseUrl + lyId,
           selectLyText = $(".daGangLySelect").find("option:selected").text(),
           hasPublicDg = [],
           qryZsdgZsdUrl,
           jieDianObj = {};
-        console.log(selectLyText);
+
+        //得到知识大纲知识点的递归函数
+        function _do(item) {
+          zsdgZsdArr.push(item.ZHISHIDIAN_ID);
+          if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+            _.each(item.ZIJIEDIAN, _do);
+          }
+        }
         $http.get(qryZsdgUrl).success(function(zsdg){
           if(zsdg.length){ //有知识大纲
             //判断有没有公共知识大纲
-            _.each(zsdg, function(dg){
+            _.each(zsdg, function(dg, idx, lst){
               if(dg.LEIXING == 1){
-                daGangData.shuju.ZHISHIDAGANG_ID = zsdg.ZHISHIDAGANG_ID;
-                daGangData.shuju.ZHISHIDAGANGMINGCHENG = zsdg.ZHISHIDAGANGMINGCHENG;
-                daGangData.shuju.DAGANGSHUOMING = zsdg.DAGANGSHUOMING;
+                daGangData.shuju.ZHISHIDAGANG_ID = dg.ZHISHIDAGANG_ID;
+                daGangData.shuju.ZHISHIDAGANGMINGCHENG = dg.ZHISHIDAGANGMINGCHENG;
+                daGangData.shuju.DAGANGSHUOMING = dg.DAGANGSHUOMING;
                 daGangData.shuju.LEIXING = 1;
-                daGangData.shuju.ZHUANGTAI = zsdg.ZHUANGTAI;
+                daGangData.shuju.ZHUANGTAI = dg.ZHUANGTAI;
                 daGangData.shuju.JIEDIAN = [];
                 isHasPublicDaGang = true;
                 hasPublicDg.push(dg.ZHISHIDAGANG_ID);
@@ -781,6 +796,34 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             daGangJieDianData.push(jieDianObj);
             $scope.daGangList = daGangJieDianData;
           }
+          if(!zsdg.error){
+            $http.get(qryZsdUrl).success(function(ggzsd){
+              if(ggzsd.error){
+                alert('此领域下没有公共知识点！');
+                publicKnowledgeData = '';
+              }
+              else{
+                publicKnowledgeData = ggzsd;
+                //得到知识大纲知识点的数组
+                _.each($scope.daGangList, _do);
+                publicZsdArr = _.map(ggzsd, function(szsd){
+                  return szsd.ZHISHIDIAN_ID;
+                });
+                //从已有的公共知识点中减去知识大纲知识点
+                differentArr = _.difference(publicZsdArr, zsdgZsdArr);
+                //的到相对应的公共知识大纲知识点
+                _.each(differentArr, function(sgzsd, idx, lst){
+                  needPubZsd = _.findWhere(ggzsd, { ZHISHIDIAN_ID: sgzsd });
+                  diffPubZsdArr.push(needPubZsd);
+                });
+                $scope.publicKnowledge = diffPubZsdArr;
+              }
+            });
+          }
+          else{
+
+          }
+
         });
       };
 
@@ -803,12 +846,42 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 删除知识点
        */
-      $scope.dgRemoveNd = function(parentNd, idx) {
+      $scope.dgRemoveNd = function(parentNd, nd, idx) {
+        function getPubZsd(item) {
+          if(item.ZHISHIDIAN_ID){
+            var pubZsdObj = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
+            $scope.publicKnowledge.push(pubZsdObj);
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
+              _.each(item.ZIJIEDIAN, getPubZsd);
+            }
+          }
+        }
+        getPubZsd(nd);
         parentNd.ZIJIEDIAN.splice(idx, 1);
       };
 
       /**
-       * 保存知识大纲//
+       * 那一个输入框被选中了
+       */
+      var targetInput, targetNd;
+      $scope.getInputIndex = function(event, nd){
+        targetInput = $(event.target);
+        targetNd = nd;
+      };
+
+      /**
+       * 将公共知识点添加到知识大纲
+       */
+      $scope.addToDaGang = function(zsd, idx){
+        targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
+        targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
+        targetInput.focus();
+        targetNd = '';
+        $scope.publicKnowledge.splice(idx, 1);
+      };
+
+      /**
+       * 保存知识大纲
        */
       $scope.saveDaGangData = function() {
         $scope.loadingImgShow = true; //rz_setDaGang.html
@@ -823,15 +896,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           daGangData.shuju.ZHUANGTAI = 1;
           daGangData.shuju.JIEDIAN = $scope.daGangList;
         }
+        function _do(item) {
+          item.ZHISHIDIAN_LEIXING = item.LEIXING || 1;
+          delete item.LEIXING;
+          if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
+            _.each(item.ZIJIEDIAN, _do);
+          }
+        }
+        _.each(daGangData.shuju.JIEDIAN, _do);
 
-        $http.post(modifyZsdgUrl, daGangData).success(function(result) {
-          if(result.result){
+        $http.post(modifyZsdgUrl, daGangData).success(function(data) {
+          console.log(data);
+          if(data.result){
             $scope.loadingImgShow = false; //rz_setDaGang.html
             $('.save-msg').show().fadeOut(3000);
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alert('修改大纲失败！');
+            alert(data.error);
           }
         });
       };

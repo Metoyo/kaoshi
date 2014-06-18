@@ -10,7 +10,8 @@
         <div class="media-body">
             <div class="media-heading">
                 <div class="input-group col-md-6">
-                    <input type="text" class="form-control" ng-model="dg.ZHISHIDIANMINGCHENG">
+                    <input type="text" class="form-control" ng-model="dg.ZHISHIDIANMINGCHENG"
+                           ng-click="getInputIndex($event, dg)">
                     <span class="input-group-btn">
                          <button class="btn btn-default dgAddBtn" ng-click="dgAddNd(dg)" type="button">
                              <span class="glyphicon glyphicon-plus"> </span>
@@ -24,13 +25,14 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <div class="input-group col-md-6">
-                            <input type="text" class="form-control" ng-model="nd1.ZHISHIDIANMINGCHENG">
+                            <input type="text" class="form-control" ng-model="nd1.ZHISHIDIANMINGCHENG"
+                                   ng-click="getInputIndex($event, nd1)">
                             <span class="input-group-btn">
                                  <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="dgAddNd(nd1)" type="button">
                                      <span class="glyphicon glyphicon-plus"> </span>
                                  </button>
                                  <button class="btn btn-default dgDeleteBtn" type="button"
-                                         ng-click="dgRemoveNd(dg, $index)">
+                                         ng-click="dgRemoveNd(dg, nd1, $index)">
                                      <span class="glyphicon glyphicon-trash"> </span>
                                  </button>
                             </span>
@@ -42,14 +44,15 @@
                         <div class="media-body">
                             <div class="media-heading">
                                 <div class="input-group col-md-6">
-                                    <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG">
+                                    <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG"
+                                           ng-click="getInputIndex($event, nd2)">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="dgAddNd(nd2)"
                                                 type="button">
                                             <span class="glyphicon glyphicon-plus"> </span>
                                         </button>
                                          <button class="btn btn-default dgDeleteBtn" type="button"
-                                                 ng-click="dgRemoveNd(nd1, $index)">
+                                                 ng-click="dgRemoveNd(nd1, nd2, $index)">
                                              <span class="glyphicon glyphicon-trash"> </span>
                                          </button>
                                     </span>
@@ -61,10 +64,11 @@
                                 <div class="media-body">
                                     <div class="media-heading">
                                         <div class="input-group col-md-6">
-                                            <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG">
+                                            <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG"
+                                                   ng-click="getInputIndex($event, nd3)">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default dgDeleteBtn"
-                                                        ng-click="dgRemoveNd(nd2, $index)" type="button">
+                                                        ng-click="dgRemoveNd(nd2, nd3, $index)" type="button">
                                                     <span class="glyphicon glyphicon-trash"> </span>
                                                 </button>
                                             </span>
@@ -76,6 +80,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="publicKnowledgeBox">
+        <h4><strong>已有知识点:</strong></h4>
+        <div class="publicKnowledge" ng-show="publicKnowledge.length">
+            <p ng-repeat="zsd in publicKnowledge" title="点击加入到知识大纲" ng-click="addToDaGang(zsd, $index)">
+                <span ng-bind="zsd.ZHISHIDIANMINGCHENG"></span>
+                <!--<span class="glyphicon glyphicon-remove delete-select-ly pull-right"-->
+                <!--ng-click="addToDaGang(zsd, $index)"></span>-->
+            </p>
         </div>
     </div>
 </div>
