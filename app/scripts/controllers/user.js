@@ -881,9 +881,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 当输入介绍后检查公共知识大纲中是否已经存在知识点
+       */
+      $scope.compareInputVal = function(nd){
+        var str  = nd.ZHISHIDIANMINGCHENG;
+        str = str.replace(/\s+/g,"");
+        var result = _.findWhere($scope.publicKnowledge, { ZHISHIDIANMINGCHENG: str });
+        if(result){
+          nd.ZHISHIDIAN_ID = result.ZHISHIDIAN_ID;
+          nd.ZHISHIDIANMINGCHENG = result.ZHISHIDIANMINGCHENG;
+          $scope.publicKnowledge = _.reject($scope.publicKnowledge, function(pkg){
+            return pkg.ZHISHIDIAN_ID == result.ZHISHIDIAN_ID;
+          });
+        }
+      };
+
+      /**
        * 保存知识大纲
        */
       $scope.saveDaGangData = function() {
+        var countEmpty = true;
         $scope.loadingImgShow = true; //rz_setDaGang.html
         if(isHasPublicDaGang){
           daGangData.shuju.JIEDIAN = $scope.daGangList;
@@ -898,24 +915,29 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         function _do(item) {
           item.ZHISHIDIAN_LEIXING = item.LEIXING || 1;
+          item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
+          if(!item.ZHISHIDIANMINGCHENG){
+            countEmpty = false;
+          }
           delete item.LEIXING;
           if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
             _.each(item.ZIJIEDIAN, _do);
           }
         }
         _.each(daGangData.shuju.JIEDIAN, _do);
-
-        $http.post(modifyZsdgUrl, daGangData).success(function(data) {
-          console.log(data);
-          if(data.result){
-            $scope.loadingImgShow = false; //rz_setDaGang.html
-            $('.save-msg').show().fadeOut(3000);
-          }
-          else{
-            $scope.loadingImgShow = false; //rz_setDaGang.html
-            alert(data.error);
-          }
-        });
+        if(countEmpty){
+          $http.post(modifyZsdgUrl, daGangData).success(function(data) {
+            console.log(data);
+            if(data.result){
+              $scope.loadingImgShow = false; //rz_setDaGang.html
+              $('.save-msg').show().fadeOut(3000);
+            }
+            else{
+              $scope.loadingImgShow = false; //rz_setDaGang.html
+              alert(data.error);
+            }
+          });
+        }
       };
 
       /**

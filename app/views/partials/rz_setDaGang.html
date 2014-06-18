@@ -11,7 +11,7 @@
             <div class="media-heading">
                 <div class="input-group col-md-6">
                     <input type="text" class="form-control" ng-model="dg.ZHISHIDIANMINGCHENG"
-                           ng-click="getInputIndex($event, dg)">
+                           ng-focus="getInputIndex($event, dg)" ng-blur="compareInputVal(dg)">
                     <span class="input-group-btn">
                          <button class="btn btn-default dgAddBtn" ng-click="dgAddNd(dg)" type="button">
                              <span class="glyphicon glyphicon-plus"> </span>
@@ -26,7 +26,7 @@
                     <div class="media-heading">
                         <div class="input-group col-md-6">
                             <input type="text" class="form-control" ng-model="nd1.ZHISHIDIANMINGCHENG"
-                                   ng-click="getInputIndex($event, nd1)">
+                                   ng-focus="getInputIndex($event, nd1)" ng-blur="compareInputVal(nd1)">
                             <span class="input-group-btn">
                                  <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="dgAddNd(nd1)" type="button">
                                      <span class="glyphicon glyphicon-plus"> </span>
@@ -45,7 +45,7 @@
                             <div class="media-heading">
                                 <div class="input-group col-md-6">
                                     <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG"
-                                           ng-click="getInputIndex($event, nd2)">
+                                           ng-focus="getInputIndex($event, nd2)" ng-blur="compareInputVal(nd2)">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="dgAddNd(nd2)"
                                                 type="button">
@@ -65,7 +65,7 @@
                                     <div class="media-heading">
                                         <div class="input-group col-md-6">
                                             <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG"
-                                                   ng-click="getInputIndex($event, nd3)">
+                                                   ng-focus="getInputIndex($event, nd3)" ng-blur="compareInputVal()">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default dgDeleteBtn"
                                                         ng-click="dgRemoveNd(nd2, nd3, $index)" type="button">
