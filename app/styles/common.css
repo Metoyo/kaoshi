@@ -6055,7 +6055,7 @@ a.add-btn:hover span {
     right: 10px;
     width: 32%; }
     .renzhengWrapper .publicKnowledgeBox .publicKnowledge {
-      border: 1px solid #cfcfcf;
+      border-left: 1px solid #cfcfcf;
       padding: 10px; }
       .renzhengWrapper .publicKnowledgeBox .publicKnowledge p {
         margin-bottom: 5px;
@@ -6107,6 +6107,19 @@ a.add-btn:hover span {
     .dagangWrapper .list-sheet a:hover {
       text-decoration: none;
       background-color: #f3f3f3; }
+  .dagangWrapper .publicKnowledgeWrap {
+    position: fixed;
+    right: 20px;
+    top: 40px;
+    bottom: 0;
+    width: 250px;
+    padding-bottom: 90px; }
+    .dagangWrapper .publicKnowledgeWrap .innerBox {
+      border: 1px solid #cfcfcf;
+      height: 100%;
+      overflow-y: scroll;
+      background-color: #fff;
+      padding: 10px; }
 
 .mingtiWrapper {
   /* test list styls begin*/

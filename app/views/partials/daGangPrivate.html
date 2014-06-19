@@ -6,7 +6,7 @@
     <div ng-repeat="zsd in knowledgePr" class="media dagangBox dgLevel_0">
         <div class="media-body">
             <div class="media-heading">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-control radius4 dagangName">
                         {{zsd.ZHISHIDIANMINGCHENG}}
                         <button class="btn btn-default dgAddBtn dgAddBtn_0" ng-click="addNd(zsd)" type="button">
@@ -20,7 +20,7 @@
                 <a class="media-object pull-left"></a>
                 <div class="media-body">
                     <div class="media-heading">
-                        <div class="input-group col-md-4">
+                        <div class="input-group col-md-6">
                             <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG">
                             <span class="input-group-btn">
                                  <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd(nd2)" type="button">
@@ -39,7 +39,7 @@
 
                         <div class="media-body">
                             <div class="media-heading">
-                                <div class="input-group col-md-4">
+                                <div class="input-group col-md-6">
                                     <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="addNd(nd3)"
@@ -59,7 +59,7 @@
 
                                 <div class="media-body">
                                     <div class="media-heading">
-                                        <div class="input-group col-md-4">
+                                        <div class="input-group col-md-6">
                                             <input type="text" class="form-control" ng-model="nd4.ZHISHIDIANMINGCHENG">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default dgDeleteBtn"
@@ -75,6 +75,13 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="publicKnowledgeWrap">
+        <h4><strong>已有知识点:</strong></h4>
+        <div class="innerBox">
+            <p ng-repeat="pzsd in publicKnowledge" title="点击加入到知识大纲" ng-bind="pzsd.ZHISHIDIANMINGCHENG"
+               ng-click="addToZjDaGang(pzsd, $index)"></p>
         </div>
     </div>
 </form>

@@ -938,6 +938,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
         }
+        else{
+          $scope.loadingImgShow = false; //rz_setDaGang.html
+          alert('知识点名称不能为空！');
+        }
       };
 
       /**
