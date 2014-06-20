@@ -3,7 +3,7 @@
         返回
     </button>
 </div>
-<div class="col-md-4 logoutInfo">
+<div class="col-md-3 logoutInfo">
     <h2>
         您好，{{session.info.YONGHUMING}}
         <span class="hide userUID">{{UID}}</span>
@@ -15,7 +15,7 @@
         <a href="javascript:void(0)" ng-click="setPermissions()" class="btn btn-primary"> 权限审批 </a>
     </h4>
 </div>
-<div class="col-md-8 entries" ng-show="isShenHeBox">
+<div class="col-md-9 entries" ng-show="isShenHeBox">
     <h4>请选择您要进行的操作：</h4>
     <ul class="list-unstyled">
         <li>
@@ -27,7 +27,7 @@
     </ul>
 </div>
 <!-- 审核权限开始  -->
-<div class="shenheBox" ng-class="{row:isShenHeBox, 'col-md-8':!isShenHeBox}" ng-include="adminSubWebTpl">
+<div class="shenheBox" ng-class="{row:isShenHeBox, 'col-md-9':!isShenHeBox}" ng-include="adminSubWebTpl">
 
 </div>
 <!-- 审核权限结束  -->

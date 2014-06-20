@@ -875,6 +875,10 @@ a.add-btn:hover span {
     margin-left: 0;
     margin-right: 0;
   }
+  .admin-row{
+    margin-top: 10px;
+    padding: 0 10px;
+  }
   label {
     color: rgba(100, 100, 100, 0.8);
   }
@@ -1233,6 +1237,12 @@ a.add-btn:hover span {
         margin-left: 10px;
       }
     }
+    .admin-title{
+      a{
+        font-size: 14px;
+        margin-left: 10px;
+      }
+    }
   }
   .closeShenBox {
     color: #d80000;
@@ -1280,13 +1290,17 @@ a.add-btn:hover span {
     }
   }
   .publicKnowledgeBox{
-    position: absolute;
-    top: 10px;
+    position: fixed;
+    top: 100px;
+    bottom: 90px;
     right: 10px;
-    width: 32%;
+    width: 250px;
     .publicKnowledge{
-      border-left: 1px solid #cfcfcf;
+      border: 1px solid #cfcfcf;
+      height: 100%;
+      overflow-y: scroll;
       padding: 10px;
+      background-color: #fff;
       p{
         margin-bottom: 5px;
         cursor: pointer;
