@@ -6058,7 +6058,7 @@ a.add-btn:hover span {
   .renzhengWrapper .publicKnowledgeBox {
     position: fixed;
     top: 100px;
-    bottom: 0px;
+    bottom: 90px;
     right: 10px;
     width: 250px; }
     .renzhengWrapper .publicKnowledgeBox .publicKnowledge {
@@ -6130,6 +6130,11 @@ a.add-btn:hover span {
       overflow-y: scroll;
       background-color: #fff;
       padding: 10px; }
+  .dagangWrapper .dg-list-box {
+    width: 50%;
+    margin: -40px 0 20px 45px; }
+    .dagangWrapper .dg-list-box .daGangListSelect {
+      display: inline; }
 
 .mingtiWrapper {
   /* test list styls begin*/

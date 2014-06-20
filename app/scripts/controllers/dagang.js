@@ -20,13 +20,16 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
           + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
         xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
-//        qryKnowledgeUrl, //查询知识点的url
         submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang', //修改/新建知识大纲
         xiuGaiZhiShiDian = baseAPIUrl + 'xiugai_zhishidian', //修改/新建知识点
         dgListLength, //大纲的长度
         dgdata = {},//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
-        qryZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-          + jigouid + '&leixing=1' + '&lingyuid=' + lingyuid; //查询公共知识点的url
+        qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+          + jigouid + '&leixing=1' + '&lingyuid=' + lingyuid, //查询公共知识点的url
+        publicZsdgArr = [], //存放公共知识大纲的数组
+        privateZsdgArr = [], //存放自建知识大纲的数组
+        publicKnowledgeData, //存放领域下的公共知识点
+        publicZsdArr; //存放公共知识点的
 
       $rootScope.pageName = "大纲";//页面名称
       $rootScope.isRenZheng = false; //判读页面是不是认证
@@ -42,20 +45,120 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.dgList = data;
             dgListLength = data.length;
             _.each(data, function(dg, idx, lst){
+              //将大纲分类，分为公共大纲和自建大纲
+              if(dg.LEIXING == 1){
+                publicZsdgArr.push(dg);
+              }
+              else{
+                privateZsdgArr.push(dg);
+              }
+              //判断默认知识
               if(dg.ZHUANGTAI2 == 2){
                 $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
               }
             });
+            $scope.publicZsdgList = publicZsdgArr;
+            $scope.privateZsdgList = privateZsdgArr;
           }
           else {
-            addNewDaGang();
+//            addNewDaGang();
+            alert('没有自建知识大纲，请新增一个！');
           }
         });
       };
       loadDaGang();
 
       /**
-       * 修改默认大纲 xgMoRenDaGangUrl
+       *加载对应的大纲页面
+       */
+      $scope.renderDgPage = function(lx){
+        publicKnowledgeData = '';
+        publicZsdArr = [];
+        if(lx == 1){
+          $scope.dgTpl = 'views/partials/daGangPublic.html';
+          $scope.isPrivateDg = false;
+          $scope.isPublicDg = true;
+        }
+        if(lx == 2){
+          $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
+          //查询该领域的在公共知识点
+          $http.get(qryPubZsdUrl).success(function(ggzsd){
+            if(ggzsd.error){
+              $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+              alert('此领域下没有公共知识点！');
+              publicKnowledgeData = '';
+            }
+            else{
+              $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+              publicKnowledgeData = ggzsd;
+              $scope.publicKnowledge = ggzsd;
+              //得到公共知识点id的数组
+              publicZsdArr = _.map(ggzsd, function(szsd){
+                return szsd.ZHISHIDIAN_ID;
+              });
+            }
+          });
+          $scope.dgTpl = 'views/partials/daGangPrivate.html';
+          $scope.isPrivateDg = true;
+          $scope.isPublicDg = false;
+        }
+      };
+
+      /**
+       * 由大纲获得知识点
+       */
+      $scope.getPrivateDgZsd = function(dgId){
+        $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
+        var differentArr, //从已有的公共知识点中减去知识大纲知识点
+          needPubZsd, //从已有的公共知识点中找到对应知识点详情
+          diffPubZsdArr = [], //存放删除已使用的知识大纲后公共知识大纲
+          zsdgZsdArr = []; //存放知识大纲知识点
+
+        //得到知识大纲知识点的递归函数
+        function _do(item) {
+          zsdgZsdArr.push(item.ZHISHIDIAN_ID);
+          if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+            _.each(item.ZIJIEDIAN, _do);
+          }
+        }
+
+        if(dgId){
+          var qryDgZsdUrl = qryKnowledgeBaseUrl + dgId;
+          $http.get(qryDgZsdUrl).success(function(data) {
+            if(data.length){
+              $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+              $scope.knowledgePr = data;
+
+              //得到知识大纲知识点id的函数
+              _.each(data, _do);
+
+              //从已有的公共知识点中减去知识大纲知识点
+              differentArr = _.difference(publicZsdArr, zsdgZsdArr);
+              
+              //得到相对应的公共知识大纲知识点
+              _.each(differentArr, function(sgzsd, idx, lst){
+                needPubZsd = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: sgzsd });
+                diffPubZsdArr.push(needPubZsd);
+              });
+              $scope.publicKnowledge = diffPubZsdArr;
+            }
+            else{
+              $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+              $scope.knowledgePr = '';
+              $scope.publicKnowledge = publicKnowledgeData;
+              alert(data.error);
+            }
+          });
+        }
+        else{
+          $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+          $scope.knowledgePr = '';
+          $scope.publicKnowledge = publicKnowledgeData;
+        }
+      };
+
+      /**
+       * 修改默认大纲
        */
       $scope.makeDaGangAsDefault = function(dgId){
         var defaultDg = {
@@ -142,9 +245,15 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       };
 
       /**
-       * 加载单独某个大纲详情
+       * 新增一个自建知识大纲
        */
-      var  publicKnowledgeData;
+      $scope.addNewZjDg = function(){
+
+      };
+
+      /**
+       * 加载单独某个大纲详情 不需要的部分
+       */
       $scope.loadKnowledge = function(lx) {
         $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
         var qryKnowledgeUrl = '',
@@ -162,6 +271,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
         }
 
+        //给大纲赋值，用于保存大纲是
         for(var i = 0; i < dgListLength; i++){
           if($scope.dgList[i].LEIXING == lx){
             var dg = $scope.dgList[i];
@@ -204,7 +314,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $http.get(qryKnowledgeUrl).success(function(data) {
               if(data.length){
                 //获得公共知识点
-                $http.get(qryZsdUrl).success(function(ggzsd){
+                $http.get(qryPubZsdUrl).success(function(ggzsd){
                   if(ggzsd.error){
                     publicKnowledgeData = '';
                     //展示大纲页面的代码
@@ -243,7 +353,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             });
           }
           else{
-            $http.get(qryZsdUrl).success(function(ggzsd){
+            $http.get(qryPubZsdUrl).success(function(ggzsd){
               if(ggzsd.error){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 alert('此领域下没有公共知识点！');

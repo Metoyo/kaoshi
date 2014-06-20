@@ -1384,6 +1384,14 @@ a.add-btn:hover span {
       }
     }
   }
+  .dg-list-box{
+    width: 50%;
+    margin: -40px 0 20px 45px;
+    .daGangListSelect{
+      display: inline;
+      width: 80%;
+    }
+  }
   /*main styles end*/
 }
 //命题样式
