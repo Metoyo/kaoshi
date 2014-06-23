@@ -12,11 +12,17 @@
     </div>
     <div class="content">
         <div class="back-home-box">
-            <button class="btn btn-danger" ng-click="backToDaGangHome()" ng-show="isPrivateDg || isPublicDg">返回大纲首页</button>
+            <button class="btn btn-danger" ng-click="backToDaGangHome()" ng-show="isPrivateDg || isPublicDg">
+                返回大纲首页
+            </button>
         </div>
         <div class="save-box">
-            <button class="btn btn-primary" ng-click="saveDaGangData()" ng-show="isPrivateDg">保存并用作题库默认大纲</button>
-            <button class="btn btn-primary" ng-click="makeDaGangAsDefault()" ng-show="isPublicDg">用作题库默认大纲</button>
+            <button class="btn btn-primary" ng-click="saveZjDaGangData()" ng-show="isPrivateDg">
+                保存并用作题库默认大纲
+            </button>
+            <button class="btn btn-primary" ng-click="makeDaGangAsDefault()" ng-show="isPublicDg">
+                用作题库默认大纲
+            </button>
         </div>
         <div class="row pt10 dagangInput" ng-init="dgTpl = 'views/partials/daGangHome.html'" ng-include="dgTpl">
 

@@ -6130,11 +6130,14 @@ a.add-btn:hover span {
       overflow-y: scroll;
       background-color: #fff;
       padding: 10px; }
+      .dagangWrapper .publicKnowledgeWrap .innerBox p {
+        cursor: pointer; }
   .dagangWrapper .dg-list-box {
     width: 50%;
     margin: -40px 0 20px 45px; }
     .dagangWrapper .dg-list-box .daGangListSelect {
-      display: inline; }
+      display: inline;
+      width: 80%; }
 
 .mingtiWrapper {
   /* test list styls begin*/

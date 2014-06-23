@@ -865,7 +865,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.addToDaGang = function(zsd, idx){
         targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
         targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
-        targetInput.focus();
+//        targetInput.focus();  //此处有问题先注释掉
         targetNd = '';
         $scope.publicKnowledge.splice(idx, 1);
       };
