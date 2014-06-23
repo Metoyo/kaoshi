@@ -1,4 +1,11 @@
-<form class="form-horizontal dagangInputForm">
+<div class="dg-list-box">
+    <select class="form-control daGangListSelect" ng-model="selected_dg"
+            ng-change="getPublicDgZsd(selected_dg)"
+            ng-options="dg.ZHISHIDAGANG_ID as dg.ZHISHIDAGANGMINGCHENG for dg in publicZsdgList">
+        <option value="">请选择大纲</option>
+    </select>
+</div>
+<div class="form-horizontal dagangInputForm">
     <div class="loading-box text-center" ng-show="loadingImgShow">
         <img src="/images/loading.gif" alt=""/>
         <p>数据加载中，请耐心等待……</p>
@@ -50,4 +57,4 @@
             </div>
         </div>
     </div>
-</form>
+</div>
