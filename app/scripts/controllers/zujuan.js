@@ -620,7 +620,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 显示试题列表 //
+           * 显示试题列表
            */
           $scope.showTestList = function(txid){
             var dashboardWith = $('.dashboard').width();
@@ -1814,20 +1814,16 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var allTiMuForCard; //存放所有需要放到答题卡中的试题
           $scope.makeDaTiKa = function(){
-            var answerCards = [], //存放答题卡的数组
-              yushu, //余数
-              intAnswerCardLen, //allTiMuForCard除以3得到的整数
-              answerCardLen, //答题卡长度, 用allTiMuForCard除以3得到的数据
-              idxCount = 0;
+            var idxCount = 0;
             allTiMuForCard = [];
             //将所有需要答题卡的试题全部添加到allTiMuForCard中
             _.each(paperDetailData.shuju.MUBANDATI, function(mbdt, idx, lst){
               if(mbdt.MUBANDATI_ID > 8){
                 _.each(mbdt.TIMUARR, function(tma, subIdx, lst){
-                  var textCont = mbdt.DATIMINGCHENG + '题' + '第' + (subIdx + 1) + '题',
+                  var textCont = mbdt.DATIMINGCHENG + '第' + (subIdx + 1) + '题',
                     tiMuInfo = {
                       timu_id: '',
-                      percent: 0.45,
+                      percent: 0.9,
                       text: textCont,
                       idxNum: idxCount
                     };
@@ -1837,9 +1833,125 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 });
               }
             });
-            yushu = allTiMuForCard.length % 2;
-            intAnswerCardLen = Math.floor(allTiMuForCard.length/2);
-            answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
+            $scope.setTiMuNum(1);
+            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
+          };
+
+          /**
+           * 设置每页答题卡的题目数量
+           */
+          $scope.setTiMuNum = function(tmNum){
+            var answerCards = [], //存放答题卡的数组
+              tmn = tmNum || 1, //每页题目的数量
+              tiMuPercent = Math.floor(90/tmNum)/100, //每题在答题卡中的百分数
+              percentYuShu = 90 % tmNum, //余数百分比
+              lastTiMuPercent = tiMuPercent + percentYuShu/100, //最后一题的百分比
+              allTiMuLength = allTiMuForCard.length, //所有题目的长度
+              yushu = allTiMuForCard.length % tmn, //余数
+              intAnswerCardLen = Math.floor(allTiMuLength/tmn), //allTiMuForCard除以参数得到的整数
+              answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen; //答题卡长度, 用allTiMuForCard除以参数得到的数据
+
+            //为每道题的percent赋值
+            _.each(allTiMuForCard, function(tm, idx, lst){
+              //余数百分比弄够除尽
+              if(percentYuShu == 0){
+                //每页答题卡题目数量相同
+                if(yushu == 0){
+                  tm.percent = tiMuPercent;
+                }
+                //最后一页的题目数量少于其他答题卡
+                else{
+                  var surplus = 90 % yushu; //余数百分比
+                  //如果百分比除以最后一页题目的数量能够被整除
+                  if(surplus == 0){
+                    if(idx < allTiMuLength - yushu){
+                      tm.percent = tiMuPercent;
+                    }
+                    else{
+                      tm.percent = (90/yushu)/100;
+                    }
+                  }
+                  //如果百分比除以最后一页题目的数量不能够被整除
+                  else{
+                    var spTiMuPercent = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
+                      spLastTiMuPercent = spTiMuPercent + surplus/100; //最后一题的百分比
+                    if(idx < allTiMuLength - yushu){
+                      tm.percent = tiMuPercent;
+                    }
+                    else{
+                      if(idx < allTiMuLength){
+                        tm.percent = spTiMuPercent;
+                      }
+                      else{
+                        tm.percent = spLastTiMuPercent;
+                      }
+                    }
+                  }
+                }
+              }
+              //余数百分比弄不够除尽
+              else{
+                //每页答题卡题目数量相同
+                if(yushu == 0){
+                  if((idx + 1) % tmNum == 0){
+                    tm.percent = lastTiMuPercent;
+                  }
+                  else{
+                    tm.percent = tiMuPercent;
+                  }
+                }
+                //最后一页的题目数量少于其他答题卡
+                else{
+                  var rmSurplus = 90 % yushu; //余数百分比
+                  //如果百分比除以最后一页题目的数量能够被整除
+                  if(rmSurplus == 0){
+                    if(idx < allTiMuLength - yushu){
+                      if((idx + 1) % tmNum == 0){
+                        tm.percent = lastTiMuPercent;
+                      }
+                      else{
+                        tm.percent = tiMuPercent;
+                      }
+                    }
+                    else{
+                      tm.percent = (90/yushu)/100;
+                    }
+                  }
+                  //如果百分比除以最后一页题目的数量不能够被整除
+                  else{
+                    var spTiMuPer = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
+                      spLastTiMuPer = spTiMuPer + rmSurplus/100; //最后一题的百分比
+                    if(idx < allTiMuLength - yushu){
+                      tm.percent = tiMuPercent;
+                    }
+                    else{
+                      if(idx < allTiMuLength){
+                        tm.percent = spTiMuPer;
+                      }
+                      else{
+                        tm.percent = spLastTiMuPer;
+                      }
+                    }
+                  }
+                }
+              }
+              //没有题目数量不一样
+//              else{
+//                var surplus = 90 % yushu; //余数百分比
+//                if(surplus == 0){
+//                  if(){
+//
+//                  }
+//                  tm.percent = (90/yushu)/100;
+//                }
+//                else{
+//                  var spTiMuPercent = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
+//                    spLastTiMuPercent = spTiMuPercent + surplus/100; //最后一题的百分比
+//
+//                }
+//              }
+            });
+            //为每张答题分配题目
             for(var i = 0; i < answerCardLen; i++){
               var daTiKa = { //答题卡数据格式
                 token: token,
@@ -1862,110 +1974,109 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
               };
               if(i <= intAnswerCardLen){
-                daTiKa.shuju.body = allTiMuForCard.slice(i*2, (i+1)*2);
+                daTiKa.shuju.body = allTiMuForCard.slice(i*tmn, (i+1)*tmn);
               }
               else{
-                daTiKa.shuju.body = allTiMuForCard.slice(i*2);
+                daTiKa.shuju.body = allTiMuForCard.slice(i*tmn);
               }
               answerCards.push(daTiKa);
             }
             $scope.answerCards = answerCards;
-            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
           };
 
           /**
-           * 答题卡中的拖拽
+           * 答题卡中的拖拽（先不用）
            */
-          $scope.resizeVertical = function(e, idx, pIdx, idxNum){
-            event.preventDefault();
-            var y = 0, //Y 轴坐标
-              percentVal, //移动中的元素的百分比
-              item = '.daTiRegion' + pIdx + idx,
-              slideBtn = $('.slideDown'), //拖动按钮的高度
-              resizeDiv = $(item), //定义需要缩放的div
-              yushu, //余数
-              intAnswerCardLen, //除以540得到的整数
-              answerCardLen; //答题卡长度, 除以540得到的数据
-            y = e.clientY - slideBtn.height() - resizeDiv.height();
-            $document.on('mousemove', mousemove);
-            $document.on('mouseup', mouseup);
-            //鼠标移动//
-            function mousemove(event) {
-              resizeDiv.height(event.clientY - y + 'px');
-              allTiMuForCard[idxNum].percent = event.clientY - y; //将高度赋值给对应的数据
-            }
-            //移除事件
-            function mouseup() {
-              $document.unbind('mousemove', mousemove);
-              $document.unbind('mouseup', mouseup);
-            }
-
-            //得到所有答题卡的高度用来计算答题卡的帐数
-            var heightSum = _.reduce(allTiMuForCard, function(memo, num){
-              return memo + num.percent;
-            }, 0);
-            yushu = heightSum % 540;
-            intAnswerCardLen = Math.floor(heightSum/540);
-            answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
-            if(idx == 0){ //答题卡中的第一题
-              if(allTiMuForCard[idxNum].percent >180 && allTiMuForCard[idxNum].percent <= 360){
-                if(allTiMuForCard[idxNum].percent + allTiMuForCard[idxNum + 1].percent <= 540){//页面剩下两道题
-                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
-                  var  pageIdx = pIdx + 1,//页面索引
-                    heightCount = 0; //每页答题卡的高度
-                  $scope.answerCards[pageIdx].shuju.body = [];
-                  for(var i = idxNum + 2; i < answerCardLen; i++){
-                    heightCount += allTiMuForCard[i];
-                    if(heightCount <= 540){
-                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
-                    }
-                    else{
-                      pageIdx ++;
-                      $scope.answerCards[pageIdx].shuju.body = [];
-                    }
-                  }
-                }
-                else{ //页面剩下一道题
-                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
-                  var  pageIdx = pIdx + 1,//页面索引
-                    heightCount = 0; //每页答题卡的高度
-                  $scope.answerCards[pageIdx].shuju.body = [];
-                  for(var i = idxNum + 1; i < answerCardLen; i++){
-                    heightCount += allTiMuForCard[i];
-                    if(heightCount <= 540){
-                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
-                    }
-                    else{
-                      ++ pageIdx;
-                      $scope.answerCards[pageIdx].shuju.body = [];
-                    }
-                  }
-                }
-              }
-              else{ //页面剩下一道题
-                var  pageIdx = pIdx + 1,//页面索引
-                  heightCount = 0; //每页答题卡的高度
-                $scope.answerCards[pageIdx].shuju.body = [];
-                for(var i = idxNum + 1; i < answerCardLen; i++){
-                  heightCount += allTiMuForCard[i];
-                  if(heightCount <= 540){
-                    $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
-                  }
-                  else{
-                    ++ pageIdx;
-                    $scope.answerCards[pageIdx].shuju.body = [];
-                  }
-                }
-              }
-            }
-            else if(idx == 1){ //答题卡中的第二题
-
-            }
-            else{ //答题卡中的第三题
-
-            }
-
-          };
+//          $scope.resizeVertical = function(e, idx, pIdx, idxNum){
+//            event.preventDefault();
+//            var y = 0, //Y 轴坐标
+//              percentVal, //移动中的元素的百分比
+//              item = '.daTiRegion' + pIdx + idx,
+//              slideBtn = $('.slideDown'), //拖动按钮的高度
+//              resizeDiv = $(item), //定义需要缩放的div
+//              yushu, //余数
+//              intAnswerCardLen, //除以540得到的整数
+//              answerCardLen; //答题卡长度, 除以540得到的数据
+//            y = e.clientY - slideBtn.height() - resizeDiv.height();
+//            $document.on('mousemove', mousemove);
+//            $document.on('mouseup', mouseup);
+//            //鼠标移动//
+//            function mousemove(event) {
+//              resizeDiv.height(event.clientY - y + 'px');
+//              allTiMuForCard[idxNum].percent = event.clientY - y; //将高度赋值给对应的数据
+//            }
+//            //移除事件
+//            function mouseup() {
+//              $document.unbind('mousemove', mousemove);
+//              $document.unbind('mouseup', mouseup);
+//            }
+//
+//            //得到所有答题卡的高度用来计算答题卡的帐数
+//            var heightSum = _.reduce(allTiMuForCard, function(memo, num){
+//              return memo + num.percent;
+//            }, 0);
+//            yushu = heightSum % 540;
+//            intAnswerCardLen = Math.floor(heightSum/540);
+//            answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen;
+//            if(idx == 0){ //答题卡中的第一题
+//              if(allTiMuForCard[idxNum].percent >180 && allTiMuForCard[idxNum].percent <= 360){
+//                if(allTiMuForCard[idxNum].percent + allTiMuForCard[idxNum + 1].percent <= 540){//页面剩下两道题
+//                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
+//                  var  pageIdx = pIdx + 1,//页面索引
+//                    heightCount = 0; //每页答题卡的高度
+//                  $scope.answerCards[pageIdx].shuju.body = [];
+//                  for(var i = idxNum + 2; i < answerCardLen; i++){
+//                    heightCount += allTiMuForCard[i];
+//                    if(heightCount <= 540){
+//                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+//                    }
+//                    else{
+//                      pageIdx ++;
+//                      $scope.answerCards[pageIdx].shuju.body = [];
+//                    }
+//                  }
+//                }
+//                else{ //页面剩下一道题
+//                  $scope.answerCards[pIdx].shuju.body.pop(); //删除最后一个元素
+//                  var  pageIdx = pIdx + 1,//页面索引
+//                    heightCount = 0; //每页答题卡的高度
+//                  $scope.answerCards[pageIdx].shuju.body = [];
+//                  for(var i = idxNum + 1; i < answerCardLen; i++){
+//                    heightCount += allTiMuForCard[i];
+//                    if(heightCount <= 540){
+//                      $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+//                    }
+//                    else{
+//                      ++ pageIdx;
+//                      $scope.answerCards[pageIdx].shuju.body = [];
+//                    }
+//                  }
+//                }
+//              }
+//              else{ //页面剩下一道题
+//                var  pageIdx = pIdx + 1,//页面索引
+//                  heightCount = 0; //每页答题卡的高度
+//                $scope.answerCards[pageIdx].shuju.body = [];
+//                for(var i = idxNum + 1; i < answerCardLen; i++){
+//                  heightCount += allTiMuForCard[i];
+//                  if(heightCount <= 540){
+//                    $scope.answerCards[pageIdx].shuju.body.push(allTiMuForCard[i]);
+//                  }
+//                  else{
+//                    ++ pageIdx;
+//                    $scope.answerCards[pageIdx].shuju.body = [];
+//                  }
+//                }
+//              }
+//            }
+//            else if(idx == 1){ //答题卡中的第二题
+//
+//            }
+//            else{ //答题卡中的第三题
+//
+//            }
+//
+//          };
 
           /**
            * 保存答题卡

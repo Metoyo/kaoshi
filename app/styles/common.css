@@ -6619,9 +6619,9 @@ a.add-btn:hover span {
     .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body {
       height: 90%; }
       .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion {
-        min-height: 270px;
-        max-height: 540px;
-        position: relative; }
+        height: 100;
+        position: relative;
+        border-bottom: 2px solid #ccc; }
         .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion:first-child {
           border-top: 0; }
         .zujuanWrapper .da-ti-ka-wrap .daTiKa .daTiKa-body .daTiRegion .slideDown {
@@ -6636,6 +6636,8 @@ a.add-btn:hover span {
       font-size: 12px;
       height: 5%;
       line-height: 30px; }
+  .zujuanWrapper .da-ti-ka-wrap .set-tiMu-num {
+    margin: 10px 0 20px 0; }
 .zujuanWrapper .paperConfirmTable {
   width: 96%;
   margin: 20px 0 20px 2%; }

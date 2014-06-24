@@ -2048,9 +2048,11 @@ a.add-btn:hover span {
       .daTiKa-body{
         height: 90%;
         .daTiRegion{
-          min-height: 270px;
-          max-height: 540px;
+//          min-height: 270px;
+//          max-height: 540px;
+          height: 100%;
           position: relative;
+          border-bottom: 2px solid #ccc;
           &:first-child{
             border-top: 0;
           }
@@ -2069,7 +2071,11 @@ a.add-btn:hover span {
         font-size: 12px;
         height: 5%;
         line-height: 30px;
+//        border-top: 2px solid #ccc;
       }
+    }
+    .set-tiMu-num{
+      margin: 10px 0 20px 0;
     }
   }
   .paperConfirmTable{
