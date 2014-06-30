@@ -25,6 +25,17 @@ define([
         $scope.login = login;
 
         /**
+         * getShiYanData
+         */
+//        $scope.getShiYanData = function(){
+//          $http.get('http://192.168.1.210:3020/bloglist').success(function(data){
+//            if(data){
+//              console.log(data);
+//            }
+//          });
+//        };
+
+        /**
          * 登录程序
          */
         $scope.signIn = function() {
