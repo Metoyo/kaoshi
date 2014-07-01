@@ -18,23 +18,23 @@
                         知识点：<span ng-bind="selectZhiShiDian"></span>
                     </div>
                 </div>
-                <div class="form-group answerBox" ng-hide="hidePanDuanTiGanEdt" ng-init="hidePanDuanTiGanEdt=false">
+                <div class="form-group answerBox" ng-hide="hideJiSuanTiGanEdt" ng-init="hideJiSuanTiGanEdt=false">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="addTiGanEditor();hidePanDuanTiGanEdt=true">
+                        <a href="javascript:void(0)" ng-click="showJiSuanTiGanEditor();hideJiSuanTiGanEdt=true">
                             题干编辑器</a>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">题干</label>
+                    <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="panDuanData.shuju.TIGAN"
-                                  placeholder="请输入判断题题干"></textarea>
-                        <div class="previewBox" ng-show="hidePanDuanTiGanEdt">
+                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="jiSuanData.shuju.TIGAN"
+                                  placeholder="请输入题干"></textarea>
+                        <div class="previewBox" ng-show="hideJiSuanTiGanEdt">
                             <h4 class="title">
                                 <span class="pull-left">
                                     内容预览：
                                 </span>
-                                <span class="pull-right" ng-click="removeTiGanEditor();hidePanDuanTiGanEdt=false">
+                                <span class="pull-right" ng-click="removeTiGanEditor();hideJiSuanTiGanEdt=false">
                                     关闭题干编辑器
                                 </span>
                             </h4>
@@ -44,21 +44,29 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="form-body panDuanFb">
-                <label class="col-sm-1 control-label">答案</label>
-                <div class="col-sm-8">
-                    <div class="radio-inline">
-                        <span class="pull-left">对</span>
-                        <div class="radio answer1" ng-click="choosePanDuanDaan(1)">
-                            <input class="hidden" type="radio" name="rightAnswer" value="1">
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </div>
+            <fieldset class="form-body">
+                <div class="form-group answerBox" ng-hide="hideJiSuanDaAnEdt" ng-init="hideJiSuanDaAnEdt=false">
+                    <div class="col-sm-8 col-sm-offset-1 text-right">
+                        <a href="javascript:void(0)" ng-click="showJiSuanDaAnEditor();hideJiSuanDaAnEdt=true">
+                            答案编辑器</a>
                     </div>
-                    <div class="radio-inline">
-                        <span class="pull-left">错</span>
-                        <div class="radio answer0" ng-click="choosePanDuanDaan(0)">
-                            <input class="hidden" type="radio" name="rightAnswer" value="0">
-                            <span class="glyphicon glyphicon-ok"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">答案</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control formulaEditTiZhi" rows="6" ng-model="jiSuanData.shuju.DAAN"
+                                  placeholder="请输入标准答案"></textarea>
+                        <div class="previewBox" ng-show="hideJiSuanDaAnEdt">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <span class="pull-right" ng-click="removeTiZhiEditor('9');hideJiSuanDaAnEdt=false">
+                                    关闭答案编辑器
+                                </span>
+                            </h4>
+                            <div id="prevTiZhiDoc">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,26 +75,26 @@
                 <div class="form-group nadu-select">
                     <div class="col-sm-8 col-sm-offset-1">
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="panDuanData.shuju.NANDU_ID" value="1">
+                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="1">
                             容易 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="panDuanData.shuju.NANDU_ID" value="2">
+                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="2">
                             较易 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="panDuanData.shuju.NANDU_ID" value="3">
+                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="3">
                             一般 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="panDuanData.shuju.NANDU_ID" value="4">
+                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="4">
                             较难 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="panDuanData.shuju.NANDU_ID" value="5">
+                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="5">
                             困难 </label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
                         <span class="save-msg">保存成功!</span>
-                        <button type="button" class="btn btn-primary" ng-click="addPanDuanShiTi()">
+                        <button type="button" class="btn btn-primary" ng-click="addJisuanShiTi()">
                             保存
                         </button>
                     </div>
@@ -108,6 +116,11 @@
         $('.formulaEditTiGan').keyup(function() {
             $('#prevDoc').html($('.formulaEditTiGan').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        });
+        //题支的编辑器预览
+        $('.formulaEditTiZhi').keyup(function() {
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         });
     </script>
 </div>

@@ -14,6 +14,14 @@ define(['angular', 'config'], function (angular, config) {
           }
           return daan;
         }
+        else if(txId == 4){
+          if(input == 1){
+            return '对';
+          }
+          else{
+            return '错';
+          }
+        }
         else{
           return input;
         }

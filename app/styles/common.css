@@ -6239,6 +6239,11 @@ a.add-btn:hover span {
   .mingtiWrapper .nadu-select .radio-inline {
     margin-left: 20px;
     font-size: 16px; }
+  .mingtiWrapper .panDuanFb .radio {
+    margin-top: 0; }
+    .mingtiWrapper .panDuanFb .radio span {
+      width: 15px;
+      height: 15px; }
 
 .zujuanWrapper .testPaperSummary {
   width: 221px;

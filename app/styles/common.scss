@@ -1537,6 +1537,16 @@ a.add-btn:hover span {
       font-size: 16px;
     }
   }
+  .panDuanFb{
+    padding: 0 0 10px 0;
+    .radio{
+      margin-top: 0;
+      span{
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
 }
 //组卷样式
 .zujuanWrapper{
