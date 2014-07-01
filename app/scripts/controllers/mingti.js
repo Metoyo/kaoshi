@@ -99,13 +99,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           testListStepZst, //用了保存查询试题阶段的知识点
           isEditItemStep = true, //是否是编辑阶段
           getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
-//          isDanXuanTiGanEeitorShow = false, //单选题干的编辑器是否存在
-//          isDuoXuanTiGanEeitorShow = false, //多选题干的编辑器是否存在
-//          isJiSuanTiGanEeitorShow = false, //计算题干的编辑器是否存在
-//          isJiSuanDaAnEeitorShow = false, //计算答案的编辑器是否存在
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
           modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu';//修改题型机构领域
+
         /**
          * 初始化是DOM元素的隐藏和显示
          */
@@ -480,9 +477,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.TIGAN = '';
 //          danxuan_data.shuju.NANDU_ID = '';
           $scope.danXuanData = danxuan_data;
-//          isDanXuanTiGanEeitorShow = false;
           $scope.loadingImgShow = false; //danxuan.html
-//          $scope.showDanXuanTiZhiEdt = false; //显示单选题的题支编辑器
           editorDanXuanAddCount = 0;
           isDanXuanType = true; //判断是否出单选题
           isDuoXuanType = false; //判断是否出多选题
@@ -510,9 +505,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           duoxuan_data.shuju.TIGAN = '';
 //          duoxuan_data.shuju.NANDU_ID = '';
           $scope.duoXuanData = duoxuan_data;
-//          isDuoXuanTiGanEeitorShow = false;
           $scope.loadingImgShow = false; //duoxuan.html
-//          editorDuoXuanAddCount = 0;
           isDanXuanType = false; //判断是否出单选题
           isDuoXuanType = true; //判断是否出多选题
         };
@@ -520,7 +513,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 计算题模板加载
          */
-        var isSaveJiSuanSource;
         $scope.addJiSuan = function(tpl){
 //          selectZsd = []; //new add
 //          $scope.selectZsdStr = '';
@@ -531,10 +523,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jisuan_data.shuju.TIXING_ID = 9;
           jisuan_data.shuju.TIMULEIXING_ID = 9;
           $scope.jiSuanData = jisuan_data;
-//          isJiSuanTiGanEeitorShow = false;
-//          isJiSuanDaAnEeitorShow = false;
           $scope.loadingImgShow = false; //jisuan.html
-          isSaveJiSuanSource = false; //判读是否使用了编辑器
         };
 
         /**
@@ -570,29 +559,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         $scope.resetForm = function(){
           resetFun();
-        };
-
-        /**
-         * 使用公式编辑器输入了公式图片
-         */
-        var replaceImgFun = function(content){
-          var step1 = content.replace(/\<p>/g, ""), //替换<p>符号
-            step2 = step1.replace(/\<\/p>/g, ""), //替换</p>符号
-            step3 = step2.replace(/<img.*?data-mathml="(.*?)".*?>/gi,'$1'), //替换img标签
-            step4 = step3.replace(/\¨([^\[\]]*)\¨/g, "'$1'"), //替换¨符号
-            step5 = step4.replace(/\«/g, "<"), //替换«符号
-            step6 = step5.replace(/\»/g, ">"), //替换»符号
-            step7 = step6.replace(/\§/g, "&"); //替换§符号
-          return step7;
-        };
-
-        /**
-         * 使用公式编辑器没有输入了公式图片
-         */
-        var replacePFun = function(content){
-          var step1 = content.replace(/\<p>/g, ""), //替换<p>符号
-            step2 = step1.replace(/\<\/p>/g, ""); //替换</p>符号
-          return step2;
         };
 
         /**
@@ -687,10 +653,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 移除题支编辑器
          */
-        $scope.removeTiZhiEditor = function(){
-          $('.formulaEditTiZhi').markItUp('remove').val('');
-          $('#prevTiZhiDoc').html('');
-          $('input[name=fuzhi]').prop('checked', false);
+        $scope.removeTiZhiEditor = function(tx){
+          if(tx >= 9){
+            $('.formulaEditTiZhi').markItUp('remove');
+          }
+          else{
+            $('.formulaEditTiZhi').markItUp('remove').val('');
+            $('#prevTiZhiDoc').html('');
+            $('input[name=fuzhi]').prop('checked', false);
+          }
         };
 
         /**
@@ -698,7 +669,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showDanXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
-//          isDanXuanTiGanEeitorShow = true;
         };
 
         /**
@@ -755,44 +725,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示计算题干编辑器
          */
         $scope.showJiSuanTiGanEditor = function(){
-          var editor = CKEDITOR.replace("editorJiSuanTg");
-//          isJiSuanTiGanEeitorShow = true;
-          isSaveJiSuanSource = true; //判读是否使用了编辑器
+          $('.formulaEditTiGan').markItUp(mySettings);
         };
 
         /**
          * 显示计算题答案编辑器
          */
         $scope.showJiSuanDaAnEditor = function(){
-          var editor = CKEDITOR.replace("editorJiSuanDa");
-//          isJiSuanDaAnEeitorShow = true;
-          isSaveJiSuanSource = true; //判读是否使用了编辑器
+          $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
-         * 计算题添加代码
+         * 计算题添加代码//
          */
         $scope.addJisuanShiTi = function(){
           jisuan_data.shuju.ZHISHIDIAN = selectZsd;
-          if(isSaveJiSuanSource){
-            var jiSuanTiGanVal, jiSuanDaAnVal;
-            if(isJiSuanTiGanEeitorShow){
-              jiSuanTiGanVal = CKEDITOR.instances.editorJiSuanTg.getData();
-              jisuan_data.shuju.TIGAN = replaceImgFun(jiSuanTiGanVal);
-              jisuan_data.shuju.TIGAN_SOURCE = replacePFun(jiSuanTiGanVal);
-              jisuan_data.shuju.DAAN_SOURCE = jisuan_data.shuju.DAAN;
-            }
-            if(isJiSuanDaAnEeitorShow){
-              jiSuanDaAnVal = CKEDITOR.instances.editorJiSuanDa.getData();
-              jisuan_data.shuju.DAAN = replaceImgFun(jiSuanDaAnVal);
-              jisuan_data.shuju.TIGAN_SOURCE = jisuan_data.shuju.TIGAN;
-              jisuan_data.shuju.DAAN_SOURCE = replacePFun(jiSuanDaAnVal);
-            }
-          }
-          else{
-            jisuan_data.shuju.TIGAN_SOURCE = '';
-            jisuan_data.shuju.DAAN_SOURCE = '';
-          }
           if(jisuan_data.shuju.TIGAN.length){
             if(jisuan_data.shuju.DAAN.length){
               if(selectZsd.length){
@@ -812,12 +759,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         resetFun(jisuan_data);
                       }
                       $scope.loadingImgShow = false; //jisuan.html
-                      if(isJiSuanTiGanEeitorShow){
-                        CKEDITOR.instances.editorJiSuanTg.setData('');
-                      }
-                      if(isJiSuanDaAnEeitorShow){
-                        CKEDITOR.instances.editorJiSuanDa.setData('');
-                      }
                     }
                     else{
                       alert(data.error);

@@ -20,32 +20,54 @@
                 </div>
                 <div class="form-group answerBox" ng-hide="hideJiSuanTiGanEdt" ng-init="hideJiSuanTiGanEdt=false">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="showJiSuanTiGanEditor();hideJiSuanTiGanEdt=true">题干编辑器</a>
+                        <a href="javascript:void(0)" ng-click="showJiSuanTiGanEditor();hideJiSuanTiGanEdt=true">
+                            题干编辑器</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <!-- <textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.TIGAN"
-                        placeholder="请输入题干"></textarea> -->
-                        <textarea class="form-control ckeditor" rows="3" ng-model="jiSuanData.shuju.TIGAN"
-                                  name="editorJiSuanTg" placeholder="请输入题干"></textarea>
+                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="jiSuanData.shuju.TIGAN"
+                            placeholder="请输入题干"></textarea>
+                        <div class="previewBox" ng-show="hideJiSuanTiGanEdt">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <span class="pull-right" ng-click="removeTiGanEditor();hideJiSuanTiGanEdt=false">
+                                    关闭题干编辑器
+                                </span>
+                            </h4>
+                            <div id="prevDoc">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </fieldset>
             <fieldset class="form-body">
                 <div class="form-group answerBox" ng-hide="hideJiSuanDaAnEdt" ng-init="hideJiSuanDaAnEdt=false">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="showJiSuanDaAnEditor();hideJiSuanDaAnEdt=true">答案编辑器</a>
+                        <a href="javascript:void(0)" ng-click="showJiSuanDaAnEditor();hideJiSuanDaAnEdt=true">
+                            答案编辑器</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">答案</label>
                     <div class="col-sm-8">
-                        <!-- <textarea class="form-control" rows="6" ng-model="jiSuanData.shuju.DAAN"
-                        placeholder="请输入标准答案"></textarea> -->
-                        <textarea class="form-control ckeditor" rows="3" ng-model="jiSuanData.shuju.DAAN"
-                                  name="editorJiSuanDa" placeholder="请输入标准答案"></textarea>
+                        <textarea class="form-control formulaEditTiZhi" rows="6" ng-model="jiSuanData.shuju.DAAN"
+                            placeholder="请输入标准答案"></textarea>
+                        <div class="previewBox" ng-show="hideJiSuanDaAnEdt">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <span class="pull-right" ng-click="removeTiZhiEditor('9');hideJiSuanDaAnEdt=false">
+                                    关闭答案编辑器
+                                </span>
+                            </h4>
+                            <div id="prevTiZhiDoc">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -80,8 +102,25 @@
             </fieldset>
         </form>
     </div>
-    <!--<script type="text/javascript">-->
-    <!--CKEDITOR.replace("editorJiSuanTg");-->
-    <!--CKEDITOR.replace("editorJiSuanDa");-->
-    <!--</script>-->
+    <script type="text/javascript" src="bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
+    <!-- markItUp! toolbar settings -->
+    <script type="text/javascript" src="bower_components/markitup/set.js"></script>
+    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript">
+        //题干的编辑器预览
+        $('.formulaEditTiGan').keyup(function() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        });
+        //题支的编辑器预览
+        $('.formulaEditTiZhi').keyup(function() {
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        });
+    </script>
 </div>
