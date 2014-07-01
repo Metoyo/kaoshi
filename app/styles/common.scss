@@ -795,7 +795,7 @@ a.add-btn:hover span {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   font-size: 12px;
   font-size: 0.75pxrem;
-  line-height: 18pxpx;
+  line-height: 18px;
   line-height: 1.125pxrem;
   background-color: #ffffff;
   border: solid 2px #e4e4e4;
@@ -2357,5 +2357,100 @@ a.add-btn:hover span {
     a{
       display: block;
     }
+  }
+}
+/* -------------------------------------------------------------------
+// markItUp! Universal MarkUp Engine, JQuery plugin
+// By Jay Salvat - http://markitup.jaysalvat.com/
+// ------------------------------------------------------------------*/
+.markItUp * {
+  margin:0px; padding:0px;
+  outline:none;
+}
+.markItUp a:link,
+.markItUp a:visited {
+  color:#000;
+  text-decoration:none;
+}
+.markItUp  {
+  width:582px;
+  margin:5px 0 5px 0;
+}
+.markItUpContainer  {
+  border:1px solid #3C769D;
+  padding:5px 5px 2px 5px;
+  font:11px Verdana, Arial, Helvetica, sans-serif;
+}
+.markItUpEditor {
+  font:12px 'Courier New', Courier, monospace;
+  padding:10px;
+  border: 2px solid #3C769D;
+  width: 570px;
+  height:320px;
+  clear:both;
+  line-height:18px;
+  overflow:auto;
+}
+.markItUpPreviewFrame	{
+  overflow:auto;
+  background-color:#FFFFFF;
+  border:1px solid #3C769D;
+  width:99.9%;
+  height:300px;
+  margin:5px 0;
+}
+.markItUpFooter {
+  width:100%;
+  cursor:n-resize;
+}
+.markItUpResizeHandle {
+  overflow:hidden;
+  width:22px;
+  height:5px;
+  margin-left:auto;
+  margin-right:auto;
+  cursor:n-resize;
+}
+/***************************************************************************************/
+/* first row of buttons */
+.markItUpHeader {
+  background: url('../images/markitup/eq.png') no-repeat 0 0;
+  height: 152px;
+  margin-bottom: 10px;
+  ul{
+    li{
+      list-style:none;
+      float:left;
+      position:relative;
+      a{
+        display: block;
+        width: 37px;
+        height: 37px;
+        margin: 0px 1px 1px 0px;
+        border: solid 1px #ccc;
+        text-indent: -10000px;
+        padding: 0;
+      }
+    }
+  }
+}
+.previewBox{
+  float: left;
+  width: 100%;
+  .title{
+    font-size: 14px;
+    color: #0033CC;
+    float: left;
+    width: 100%;
+    span.pull-right{
+      color: #069200;
+      cursor: pointer;
+    }
+  }
+  #prevDoc,#prevTiZhiDoc{
+    padding: 10px;
+    background-color: #f5f5f5;
+    float: left;
+    width: 100%;
   }
 }

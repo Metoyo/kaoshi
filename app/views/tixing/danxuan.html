@@ -26,37 +26,51 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <!-- <textarea class="form-control" rows="3" ng-model="danXuanData.shuju.TIGAN" name="editor1"
-                        placeholder="请输入题干"></textarea> -->
-                        <textarea class="form-control ckeditor" rows="3" ng-model="danXuanData.shuju.TIGAN"
-                                  name="editorDanXuan" placeholder="请输入题干"></textarea>
+                        <textarea class="form-control formulaEditTiGan" rows="5" ng-model="danXuanData.shuju.TIGAN"
+                                  placeholder="请输入题干"></textarea>
+                        <div class="previewBox" ng-show="hideDanXuanEdt">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">
+                                    关闭题干编辑器
+                                </span>
+                            </h4>
+                            <div id="prevDoc">
+                            </div>
+                        </div>
                     </div>
-                    <!-- <div class="col-sm-3">
-                    <button type="button" class="btn btn-default" ng-click="showDanXuanTiGanEditor()">
-                    展开编辑器
-                    </button>
-                    </div> -->
                 </div>
             </fieldset>
             <fieldset class="form-body">
-                <div class="form-group" ng-show='showDanXuanTiZhiEdt'>
+                <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">
                     <div class="col-sm-8 col-sm-offset-1">
-                        <textarea class="form-control ckeditor" rows="3" name="editorDanXuanTiZhi">
-                        </textarea>
+                        <textarea class="form-control formulaEditTiZhi" rows="5"></textarea>
+                        <div class="previewBox">
+                            <h4 class="title">
+                            <span class="pull-left">
+                                内容预览：
+                            </span>
+                            </h4>
+                            <div id="prevTiZhiDoc">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-8 col-sm-offset-1 assignment-box">
                         <span>将题支编辑器的内容赋值给选项：</span>
                         <label class="radio-inline" ng-repeat="num in loopArr">
-                            <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
+                            <input type="radio" name="fuzhi" value="$index"
+                                   ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
                         </label>
                     </div>
                 </div>
                 <div class="form-group answerBox">
                     <div class="col-sm-8 col-sm-offset-1 text-right">
-                        <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor()"
-                           ng-hide="showDanXuanTiZhiEdt">题支编辑器</a>
-                        <a href="javascript:void(0)" ng-click="hideDanXuanTiZhiEditor()"
-                           ng-show="showDanXuanTiZhiEdt">隐藏题支编辑器</a>
+                        <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor();showTiZhiEdt=true"
+                           ng-hide="showTiZhiEdt">题支编辑器</a>
+                        <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showTiZhiEdt=false"
+                           ng-show="showTiZhiEdt">关闭题支编辑器</a>
                     </div>
                     <div class="col-sm-3">
                         正确答案
@@ -66,11 +80,10 @@
                     <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control tiZhi" placeholder="请输入选项">
-                        <div class="form-control imitationInput"></div>
                     </div>
                     <div class="col-sm-2">
-            <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"
-                  ng-hide="loopArr.length < 3"></span>
+                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"
+                            ng-hide="loopArr.length < 3"></span>
                         <div class="radio {{'answer' + $index}}" ng-class="" ng-click="chooseDanxuanDaan($index)">
                             <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}">
                             <span class="glyphicon glyphicon-ok"></span>
@@ -106,9 +119,6 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
-                        <!--<button type="reset" class="btn btn-warning resetForm hide" ng-click="resetForm()">-->
-                        <!--重置-->
-                        <!--</button>-->
                         <span class="save-msg">保存成功!</span>
                         <button type="button" class="btn btn-primary" ng-click="addDanxuanShiTi()">
                             保存
@@ -118,13 +128,25 @@
             </fieldset>
         </form>
     </div>
+    <script type="text/javascript" src="bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
+    <!-- markItUp! toolbar settings -->
+    <script type="text/javascript" src="bower_components/markitup/set.js"></script>
+    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
     <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript">
+        //题干的编辑器预览
+        $('.formulaEditTiGan').keyup(function() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        });
+        //题支的编辑器预览
+        $('.formulaEditTiZhi').keyup(function() {
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         });
     </script>
-    <script type="text/javascript" src="http://192.168.1.210:3003/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full"></script>
-    <!-- <script type="text/javascript">
-    CKEDITOR.replace("editorDanXuan");
-    </script> -->
 </div>

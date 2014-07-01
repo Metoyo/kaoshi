@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window',
-      function ($rootScope, $scope, $http, $q, $window) {
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout',
+      function ($rootScope, $scope, $http, $q, $window, $timeout) {
         /**
          * 操作title//
          */
@@ -99,10 +99,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           testListStepZst, //用了保存查询试题阶段的知识点
           isEditItemStep = true, //是否是编辑阶段
           getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
-          isDanXuanTiGanEeitorShow = false, //单选题干的编辑器是否存在
-          isDuoXuanTiGanEeitorShow = false, //多选题干的编辑器是否存在
-          isJiSuanTiGanEeitorShow = false, //计算题干的编辑器是否存在
-          isJiSuanDaAnEeitorShow = false, //计算答案的编辑器是否存在
+//          isDanXuanTiGanEeitorShow = false, //单选题干的编辑器是否存在
+//          isDuoXuanTiGanEeitorShow = false, //多选题干的编辑器是否存在
+//          isJiSuanTiGanEeitorShow = false, //计算题干的编辑器是否存在
+//          isJiSuanDaAnEeitorShow = false, //计算答案的编辑器是否存在
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
           modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu';//修改题型机构领域
@@ -378,6 +378,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          $('.reloadMath').click();
+        });
+
+        /**
          * 查询学校题库，val是true的话表示查询学校题库，否则查询个人题库
          */
         $scope.checkSchoolTiMu = function(val){
@@ -473,9 +480,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.TIGAN = '';
 //          danxuan_data.shuju.NANDU_ID = '';
           $scope.danXuanData = danxuan_data;
-          isDanXuanTiGanEeitorShow = false;
+//          isDanXuanTiGanEeitorShow = false;
           $scope.loadingImgShow = false; //danxuan.html
-          $scope.showDanXuanTiZhiEdt = false; //显示单选题的题支编辑器
+//          $scope.showDanXuanTiZhiEdt = false; //显示单选题的题支编辑器
           editorDanXuanAddCount = 0;
           isDanXuanType = true; //判断是否出单选题
           isDuoXuanType = false; //判断是否出多选题
@@ -484,7 +491,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 多选题模板加载
          */
-        var editorDuoXuanAddCount;
+//        var editorDuoXuanAddCount;
         $scope.addDuoXuan = function(tpl){
 //          selectZsd = []; //new add
 //          $scope.selectZsdStr = '';
@@ -503,9 +510,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           duoxuan_data.shuju.TIGAN = '';
 //          duoxuan_data.shuju.NANDU_ID = '';
           $scope.duoXuanData = duoxuan_data;
-          isDuoXuanTiGanEeitorShow = false;
+//          isDuoXuanTiGanEeitorShow = false;
           $scope.loadingImgShow = false; //duoxuan.html
-          editorDuoXuanAddCount = 0;
+//          editorDuoXuanAddCount = 0;
           isDanXuanType = false; //判断是否出单选题
           isDuoXuanType = true; //判断是否出多选题
         };
@@ -524,8 +531,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jisuan_data.shuju.TIXING_ID = 9;
           jisuan_data.shuju.TIMULEIXING_ID = 9;
           $scope.jiSuanData = jisuan_data;
-          isJiSuanTiGanEeitorShow = false;
-          isJiSuanDaAnEeitorShow = false;
+//          isJiSuanTiGanEeitorShow = false;
+//          isJiSuanDaAnEeitorShow = false;
           $scope.loadingImgShow = false; //jisuan.html
           isSaveJiSuanSource = false; //判读是否使用了编辑器
         };
@@ -592,115 +599,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 单选题和多选题添加函数
          */
         var addDanDuoXuanFun = function(dataTpl) {
-          var deferred = $q.defer(),
-            isSaveSource = false;
+          var deferred = $q.defer();
           tznrIsNull = true;
-          //判断题支中是否使用了编辑器
-          var tiZhiSourceArr = $('.tizhiWrap').find('div.imitationInput'); //存放图片的数组
-          _.each(tiZhiSourceArr, function(tzsa, idx, lst){
-            var tizhisource = tiZhiSourceArr[idx].innerHTML;
-            if(tizhisource.length){
-              isSaveSource = true;
-            }
-          });
           if(dataTpl == danxuan_data){
             dataTpl.shuju.TIXING_ID = 1;
             dataTpl.shuju.TIMULEIXING_ID = 1;
-            if(isDanXuanTiGanEeitorShow){ //题干使用了编辑器
-              var tiGan = CKEDITOR.instances.editorDanXuan.getData(),
-                isTiZhiUseEditor = tiGan.indexOf("«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»");
-              //dataTpl.shuju.TIGAN
-              if(isSaveSource){ //题支里面包含公式图片
-                if(isTiZhiUseEditor){ //题干里面包含公式图片
-                  isSaveSource = true;
-                  dataTpl.shuju.TIGAN = replaceImgFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-                else{ //题干里面不包含公式图片
-                  dataTpl.shuju.TIGAN = replacePFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-              }
-              else{ //题支里面不包含公式图片
-                if(isTiZhiUseEditor){ //题干里面包含公式图片
-                  isSaveSource = true;
-                  dataTpl.shuju.TIGAN = replaceImgFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-                else{ //题干里面不包含公式图片
-                  dataTpl.shuju.TIGAN = replacePFun(tiGan);
-                }
-              }
-            }
-            else{
-              if(isSaveSource){
-                dataTpl.shuju.TIGAN_SOURCE = dataTpl.shuju.TIGAN;
-              }
-            }
           }
           if(dataTpl == duoxuan_data){
             dataTpl.shuju.TIXING_ID = 2;
             dataTpl.shuju.TIMULEIXING_ID = 2;
-            if(isDuoXuanTiGanEeitorShow){ //题干使用了编辑器
-              var tiGan = CKEDITOR.instances.editorDuoXuan.getData(),
-                isTiZhiUseEditor = tiGan.indexOf("«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»");
-              if(isSaveSource){ //题支里面包含公式图片
-                if(isTiZhiUseEditor){ //题干里面包含公式图片
-                  isSaveSource = true;
-                  dataTpl.shuju.TIGAN = replaceImgFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-                else{ //题干里面不包含公式图片
-                  dataTpl.shuju.TIGAN = replacePFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-              }
-              else{ //题支里面不包含公式图片
-                if(isTiZhiUseEditor){ //题干里面包含公式图片
-                  isSaveSource = true;
-                  dataTpl.shuju.TIGAN = replaceImgFun(tiGan);
-                  dataTpl.shuju.TIGAN_SOURCE = replacePFun(tiGan);
-                }
-                else{ //题干里面不包含公式图片
-                  dataTpl.shuju.TIGAN = replacePFun(tiGan);
-                }
-              }
-            }
-            else{
-              if(isSaveSource){
-                dataTpl.shuju.TIGAN_SOURCE = dataTpl.shuju.TIGAN;
-              }
-            }
           }
           var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
-            tizhineirong = [], //存放题支内容
-            tizhineirongSource = []; //存放含有公式的题支内容
+            tizhineirong = []; //存放题支内容
           //整理题支
           _.each(tiZhiArr, function(tizhi, idx, lst){
-            var oneTzs = tiZhiSourceArr[idx].innerHTML;
             if(tizhi.value){
-              if(isSaveSource){ //题目中使用了编辑器
-                if(oneTzs.length){ //题支中使用了编辑器
-                  tizhineirong.push(tizhi.value);
-                  tizhineirongSource.push(oneTzs);
-                }
-                else{ //题支中没有使用了编辑器
-                  tizhineirong.push(tizhi.value);
-                  tizhineirongSource.push(tizhi.value);
-                }
-              }
-              else{ //题目中没有使用了编辑器
-                tizhineirong.push(tizhi.value);
-              }
+              tizhineirong.push(tizhi.value);
             }
             else{
               tznrIsNull = false;
             }
           });
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
-          if(isSaveSource){
-            dataTpl.shuju.TIZHI_SOURCE = tizhineirongSource;
-          }
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
           if(dataTpl.shuju.TIGAN.length){
@@ -716,7 +636,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         $('.save-msg').show().fadeOut(3000);
                         $scope.isSaveSuccessful = true;
                         $scope.loadingImgShow = false; //danxuan.html
-                        isSaveSource = false;
+//                        isSaveSource = false;
                         deferred.resolve();
                       }
                       else{
@@ -758,68 +678,41 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 移除题干编辑器
+         */
+        $scope.removeTiGanEditor = function(){
+          $('.formulaEditTiGan').markItUp('remove');
+        };
+
+        /**
+         * 移除题支编辑器
+         */
+        $scope.removeTiZhiEditor = function(){
+          $('.formulaEditTiZhi').markItUp('remove').val('');
+          $('#prevTiZhiDoc').html('');
+          $('input[name=fuzhi]').prop('checked', false);
+        };
+
+        /**
          * 显示单选题题干编辑器
          */
         $scope.showDanXuanTiGanEditor = function(){
-          var editor = CKEDITOR.replace("editorDanXuan");
-          isDanXuanTiGanEeitorShow = true;
+          $('.formulaEditTiGan').markItUp(mySettings);
+//          isDanXuanTiGanEeitorShow = true;
         };
 
         /**
          * 显示单选题题支编辑器
          */
         $scope.showDanXuanTiZhiEditor = function(){
-          if(!editorDanXuanAddCount){
-            var editor = CKEDITOR.replace("editorDanXuanTiZhi");
-            editorDanXuanAddCount ++;
-          }
-          $scope.showDanXuanTiZhiEdt = true; //显示单选题的题支编辑器
-        };
-
-        /**
-         * 隐藏单选题题支编辑器
-         */
-        $scope.hideDanXuanTiZhiEditor = function(){
-          $scope.showDanXuanTiZhiEdt = false; //隐藏单选题的题支编辑器
+          $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
          * 给题支选项赋值
          */
         $scope.fuZhiFun = function(idx){
-          var tiZhiContent;
-          if(isDanXuanType){
-            tiZhiContent = CKEDITOR.instances.editorDanXuanTiZhi.getData();
-          }
-          if(isDuoXuanType){
-            tiZhiContent = CKEDITOR.instances.editorDuoXuanTiZhi.getData();
-          }
-          var isTiZhiUseEditor = tiZhiContent.indexOf("«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»");
-          if(isTiZhiUseEditor >= 0){
-            var step1 = tiZhiContent.replace(/\<p>/g, ""), //替换<p>符号
-              step2 = step1.replace(/\<\/p>/g, ""), //替换</p>符号
-              step3 = step2.replace(/<img.*?data-mathml="(.*?)".*?>/gi,'$1'), //替换img标签
-              step4 = step3.replace(/\¨([^\[\]]*)\¨/g, "'$1'"), //替换¨符号
-              step5 = step4.replace(/\«/g, "<"), //替换«符号
-              step6 = step5.replace(/\»/g, ">"), //替换»符号
-              step7 = step6.replace(/\§/g, "&"); //替换§符号
-
-            $('.tizhiWrap .tiZhi').eq(idx).val(step7).hide(); //将值赋值给对应的题支
-            $('.imitationInput').eq(idx).html(step2).show();
-          }
-          else{
-            var step1 = tiZhiContent.replace(/\<p>/g, ""), //替换<p>符号
-              step2 = step1.replace(/\<\/p>/g, ""); //替换</p>符号
-            $('.tizhiWrap .tiZhi').eq(idx).val(step2); //将值赋值给对应的题支
-          }
-          //重置内容
-          $('input[name=fuzhi]').prop('checked', false);
-          if(isDanXuanType){
-            CKEDITOR.instances.editorDanXuanTiZhi.setData('');
-          }
-          if(isDuoXuanType){
-            CKEDITOR.instances.editorDuoXuanTiZhi.setData('');
-          }
+          $('.tizhiWrap .tiZhi').eq(idx).val($('.formulaEditTiZhi').val());
         };
 
         /**
@@ -829,9 +722,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var promise = addDanDuoXuanFun(danxuan_data);
           promise.then(function() {
             resetFun(danxuan_data);
-            if(isDanXuanTiGanEeitorShow){
-              CKEDITOR.instances.editorDanXuan.setData('');
-            }
             $scope.loadingImgShow = false; //danxuan.html
           });
         };
@@ -840,26 +730,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示多选题题干编辑器
          */
         $scope.showDuoXuanTiGanEditor = function(){
-          var editor = CKEDITOR.replace("editorDuoXuan");
-          isDuoXuanTiGanEeitorShow = true;
+          $('.formulaEditTiGan').markItUp(mySettings);
         };
 
         /**
          * 显示多选题题支编辑器
          */
         $scope.showDuoXuanTiZhiEditor = function(){
-          if(!editorDuoXuanAddCount){
-            var editor = CKEDITOR.replace("editorDuoXuanTiZhi");
-            editorDuoXuanAddCount ++;
-          }
-          $scope.showDuoXuanTiZhiEdt = true; //显示多选题的题支编辑器
-        };
-
-        /**
-         * 隐藏多选题题支编辑器
-         */
-        $scope.hideDuoXuanTiZhiEditor = function(){
-          $scope.showDuoXuanTiZhiEdt = false; //隐藏多选题的题支编辑器
+          $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
@@ -869,9 +747,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var promise = addDanDuoXuanFun(duoxuan_data);
           promise.then(function() {
             resetFun(duoxuan_data);
-            if(isDuoXuanTiGanEeitorShow){
-              CKEDITOR.instances.editorDuoXuan.setData('');
-            }
             $scope.loadingImgShow = false; //duoxuan.html
           });
         };
@@ -881,7 +756,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showJiSuanTiGanEditor = function(){
           var editor = CKEDITOR.replace("editorJiSuanTg");
-          isJiSuanTiGanEeitorShow = true;
+//          isJiSuanTiGanEeitorShow = true;
           isSaveJiSuanSource = true; //判读是否使用了编辑器
         };
 
@@ -890,7 +765,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showJiSuanDaAnEditor = function(){
           var editor = CKEDITOR.replace("editorJiSuanDa");
-          isJiSuanDaAnEeitorShow = true;
+//          isJiSuanDaAnEeitorShow = true;
           isSaveJiSuanSource = true; //判读是否使用了编辑器
         };
 

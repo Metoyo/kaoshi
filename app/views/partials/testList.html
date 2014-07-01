@@ -19,10 +19,10 @@
                 查看学校题库
             </label>
         </div>
+        <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
     </div>
-    <!-- <div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div> -->
-    <ul class="list-unstyled testList">
-        <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}">
+    <ul class="list-unstyled testList" id="testList">
+        <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}" repeat-done>
             <div class="item-sub-title pull-left">
                 <p class="knowledge-point">
                     题型：<span ng-bind="tiXingNameArr[tm.TIXING_ID-1]"></span>
@@ -91,3 +91,14 @@
         </ul>
     </div>
 </div>
+<script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+<script type="text/javascript">
+    $('.reloadMath').on('click', function(){
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+    });
+</script>

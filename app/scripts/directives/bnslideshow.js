@@ -18,7 +18,6 @@ define(['jquery', 'angular'], function ($, angular) {
             else{
               element.next(slideTarget).slideToggle();
             }
-
           });
 
 //          var expression = attrs.bnSlideShow, // 定义一个字段表示dom上的属性bnSlideShow
