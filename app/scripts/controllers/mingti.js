@@ -641,6 +641,69 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 保存问答题这部分题型的通用函数
+         */
+        $scope.addAskAnswerShiTi = function(tx){
+          var tx_data = '';
+          switch (tx){
+            case 'jisuan_data':
+              tx_data = jisuan_data;
+              break;
+            case 'jieda_data':
+              tx_data = jieda_data;
+              break;
+            case 'pandu_data':
+              tx_data = pandu_data;
+              break;
+          }
+          tx_data.shuju.ZHISHIDIAN = selectZsd;
+          if(tx_data.shuju.TIGAN.length){
+            if(tx_data.shuju.DAAN.length){
+              if(selectZsd.length){
+                if(tx_data.shuju.NANDU_ID.length){
+                  $scope.loadingImgShow = true; //jisuan.html
+                  $http.post(xgtmUrl, tx_data).success(function(data){
+                    console.log(data);
+                    if(data.result){
+                      if(tx_data.shuju.TIMU_ID){ //试题修改成功后！
+                        alert('修改成功！');
+                        $scope.patternListToggle = false;
+                        $scope.alterTiXingBox = false;
+                        $scope.cancelAddPattern();
+                      }
+                      else{ // 试题添加成功后！
+                        $('.save-msg').show().fadeOut(3000);
+                        resetFun(tx_data);
+                      }
+                      $scope.loadingImgShow = false; //jisuan.html
+                    }
+                    else{
+                      alert(data.error);
+                      $scope.loadingImgShow = false; //jisuan.html
+                    }
+                  })
+                    .error(function(err){
+                      alert(err);
+                    });
+                }
+                else{
+                  alert('请选择难度！');
+                }
+              }
+              else{
+                alert('请选择知识点！');
+              }
+            }
+            else{
+              alert('请输入答案！');
+            }
+          }
+          else{
+            alert('请输入题干！');
+          }
+        };
+
+        /**
          * 添加题干编辑器
          */
         $scope.addTiGanEditor = function(){
@@ -744,57 +807,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showJiSuanDaAnEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
-        };
-
-        /**
-         * 计算题添加代码
-         */
-        $scope.addJisuanShiTi = function(){
-          jisuan_data.shuju.ZHISHIDIAN = selectZsd;
-          if(jisuan_data.shuju.TIGAN.length){
-            if(jisuan_data.shuju.DAAN.length){
-              if(selectZsd.length){
-                if(jisuan_data.shuju.NANDU_ID.length){
-                  $scope.loadingImgShow = true; //jisuan.html
-                  $http.post(xgtmUrl, jisuan_data).success(function(data){
-                    console.log(data);
-                    if(data.result){
-                      if(jisuan_data.shuju.TIMU_ID){ //试题修改成功后！
-                        alert('修改成功！');
-                        $scope.patternListToggle = false;
-                        $scope.alterTiXingBox = false;
-                        $scope.cancelAddPattern();
-                      }
-                      else{ // 试题添加成功后！
-                        $('.save-msg').show().fadeOut(3000);
-                        resetFun(jisuan_data);
-                      }
-                      $scope.loadingImgShow = false; //jisuan.html
-                    }
-                    else{
-                      alert(data.error);
-                      $scope.loadingImgShow = false; //jisuan.html
-                    }
-                  })
-                    .error(function(err){
-                      alert(err);
-                    });
-                }
-                else{
-                  alert('请选择难度！');
-                }
-              }
-              else{
-                alert('请选择知识点！');
-              }
-            }
-            else{
-              alert('请输入答案！');
-            }
-          }
-          else{
-            alert('请输入题干！');
-          }
         };
 
         /**

@@ -26,12 +26,11 @@ define([
     'filters/mylocaldatewithweek',
     'filters/examstatus',
     'filters/outputdaan',
-    'filters/panduantozh',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
                 SaveloadingDirective, RepeatdoneDirective,MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,
                 UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,
-                MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, PanduantozhFilter, config) {
+                MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -56,7 +55,6 @@ define([
 'kaoshiApp.directives.Hoverslide',
 'kaoshiApp.directives.Saveloading',
 'kaoshiApp.directives.Repeatdone',
-'kaoshiApp.filters.Panduantozh',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

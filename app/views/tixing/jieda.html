@@ -27,8 +27,8 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="jiSuanData.shuju.TIGAN"
-                                  placeholder="请输入题干"></textarea>
+                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="jieDaData.shuju.TIGAN"
+                                  placeholder="请输入解答题题干"></textarea>
                         <div class="previewBox" ng-show="hideJiSuanTiGanEdt">
                             <h4 class="title">
                                 <span class="pull-left">
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">答案</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control formulaEditTiZhi" rows="6" ng-model="jiSuanData.shuju.DAAN"
+                        <textarea class="form-control formulaEditTiZhi" rows="6" ng-model="jieDaData.shuju.DAAN"
                                   placeholder="请输入标准答案"></textarea>
                         <div class="previewBox" ng-show="hideJiSuanDaAnEdt">
                             <h4 class="title">
@@ -75,26 +75,26 @@
                 <div class="form-group nadu-select">
                     <div class="col-sm-8 col-sm-offset-1">
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="1">
+                            <input type="radio" name="difficulty" ng-model="jieDaData.shuju.NANDU_ID" value="1">
                             容易 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="2">
+                            <input type="radio" name="difficulty" ng-model="jieDaData.shuju.NANDU_ID" value="2">
                             较易 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="3">
+                            <input type="radio" name="difficulty" ng-model="jieDaData.shuju.NANDU_ID" value="3">
                             一般 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="4">
+                            <input type="radio" name="difficulty" ng-model="jieDaData.shuju.NANDU_ID" value="4">
                             较难 </label>
                         <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="jiSuanData.shuju.NANDU_ID" value="5">
+                            <input type="radio" name="difficulty" ng-model="jieDaData.shuju.NANDU_ID" value="5">
                             困难 </label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
                         <span class="save-msg">保存成功!</span>
-                        <button type="button" class="btn btn-primary" ng-click="addJisuanShiTi()">
+                        <button type="button" class="btn btn-primary" ng-click="addAskAnswerShiTi('jieda_data')">
                             保存
                         </button>
                     </div>

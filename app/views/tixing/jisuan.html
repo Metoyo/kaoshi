@@ -28,7 +28,7 @@
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
                         <textarea class="form-control formulaEditTiGan" rows="6" ng-model="jiSuanData.shuju.TIGAN"
-                            placeholder="请输入题干"></textarea>
+                            placeholder="请输入计算题题干"></textarea>
                         <div class="previewBox" ng-show="hideJiSuanTiGanEdt">
                             <h4 class="title">
                                 <span class="pull-left">
@@ -94,7 +94,10 @@
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
                         <span class="save-msg">保存成功!</span>
-                        <button type="button" class="btn btn-primary" ng-click="addJisuanShiTi()">
+                        <!--<button type="button" class="btn btn-primary" ng-click="addJisuanShiTi()">-->
+                            <!--保存-->
+                        <!--</button>-->
+                        <button type="button" class="btn btn-primary" ng-click="addAskAnswerShiTi('jisuan_data')">
                             保存
                         </button>
                     </div>
