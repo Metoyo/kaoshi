@@ -1,1 +1,141 @@
-<p>我是填空题</p>
+<div class="row">
+    <div class="loading-box text-center" ng-show="loadingImgShow">
+        <img src="/images/loading.gif" alt=""/>
+        <p>
+            数据保存中……
+        </p>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" role="form">
+            <fieldset class="form-header">
+                <div class="form-group form-th">
+                    <div class="col-sm-8 col-sm-offset-1 text-center">
+                        题干
+                    </div>
+                </div>
+                <div class="form-group zsdNameBox">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        知识点：<span ng-bind="selectZhiShiDian"></span>
+                    </div>
+                </div>
+                <!--<div class="form-group answerBox hide">-->
+                    <!--<div class="col-sm-8 col-sm-offset-1 text-right">-->
+                        <!--<a href="javascript:void(0)" ng-click="addTkTiGanEditor()">题干编辑器</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">题目</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control formulaEditTiGan" rows="5" ng-model="tianKongData.shuju.TIGAN"
+                                  placeholder="请输入题干">
+                        </textarea>
+                        <div class="previewBox">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <!--<span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">-->
+                                    <!--关闭题干编辑器-->
+                                <!--</span>-->
+                            </h4>
+                            <div id="prevDoc">
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-3">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="addOenBlank()">加个空</button>-->
+                    <!--</div>-->
+                </div>
+            </fieldset>
+            <fieldset class="form-body">
+                <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <textarea class="form-control formulaEditTiZhi" rows="5"></textarea>
+                        <div class="previewBox">
+                            <h4 class="title">
+                            <span class="pull-left">
+                                内容预览：
+                            </span>
+                            </h4>
+                            <div id="prevTiZhiDoc">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-sm-offset-1 assignment-box">
+                        <span>将题支编辑器的内容赋值给选项：</span>
+                        <label class="radio-inline" ng-repeat="num in loopArr">
+                            <input type="radio" name="fuzhi" value="$index"
+                                   ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group answerBox">
+                    <div class="col-sm-8 col-sm-offset-1 text-right">
+                        <a href="javascript:void(0)" ng-click="addTiZhiEditor();showTiZhiEdt=true"
+                           ng-hide="showTiZhiEdt">题支编辑器</a>
+                        <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showTiZhiEdt=false"
+                           ng-show="showTiZhiEdt">关闭题支编辑器</a>
+                    </div>
+                </div>
+                <div class="form-group tizhiWrap" ng-repeat="num in loopArr">
+                    <label class="col-sm-1 control-label">{{'答案' + ($index + 1)}}.</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control tiZhi" placeholder="请输入此空的答案">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="form-footer">
+                <div class="form-group nadu-select">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="tianKongData.shuju.NANDU_ID" value="1">
+                            容易 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="tianKongData.shuju.NANDU_ID" value="2">
+                            较易 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="tianKongData.shuju.NANDU_ID" value="3">
+                            一般 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="tianKongData.shuju.NANDU_ID" value="4">
+                            较难 </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="difficulty" ng-model="tianKongData.shuju.NANDU_ID" value="5">
+                            困难 </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-8 text-right">
+                        <span class="save-msg">保存成功!</span>
+                        <button type="button" class="btn btn-primary" ng-click="addTianKongShiTi()">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script type="text/javascript" src="bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
+    <!-- markItUp! toolbar settings -->
+    <script type="text/javascript" src="bower_components/markitup/set.js"></script>
+    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript">
+        var tiGanClass = $('.formulaEditTiGan');
+        tiGanClass.markItUp(mySettingsTk);
+        //题干的编辑器预览
+        tiGanClass.keyup(function() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        });
+        //题支的编辑器预览
+        $('.formulaEditTiZhi').keyup(function() {
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        });
+    </script>
+</div>
