@@ -117,7 +117,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
 
         /**
-         * 获得大纲数据
+         * 获得大纲数据//
          */
         $http.get(qryDgUrl).success(function(data){
           var newDgList = [];
@@ -945,20 +945,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
             reg = new RegExp('<span>.*?</span>', 'g'),
             count = 0,
-            tizhineirong = []; //存放题支内容;
+            tizhineirong = [], //存放题支内容;
+            tgVal = $('.formulaEditTiGan').val();
           tznrIsNull = true;
-//          _.each(loopArr, function(num, idx, lst){
-//            var tzCont = tiZhiArr[idx].value,
-//              oldStr = '(' + num + ')' + '_____',
-//              newStr,
-//              tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
-//            tzJson.size = tzCont.length + 10;
-//            tzJson.answer = tzCont;
-//            newStr = '<%' + JSON.stringify(tzJson) + '%>';
-//            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(oldStr, newStr);
-//          });
 
-          //整理题支
+          //整理题支//
           _.each(tiZhiArr, function(tizhi, idx, lst){
             if(tizhi.value){
               tizhineirong.push(tizhi.value);
@@ -968,7 +959,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
           if(tznrIsNull){
-            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(reg, function(arg) {
+            tiankong_data.shuju.TIGAN = tgVal.replace(reg, function(arg) {
               var innerCount = count,
                 tzCont = tiZhiArr[innerCount].value,
                 tzJson = {"size": "", "placeholder": "请填写", "answer": ""};

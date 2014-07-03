@@ -43,7 +43,8 @@
                 </div>
             </div>
             <div class="item-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
-                <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGanSource ? tm.TIGAN.tiGanSource : tm.TIGAN.tiGan">
+                <h3 class="item-tigan"
+                    ng-bind="tm.TIGAN.tiGanSource ? tm.TIGAN.tiGanSource : tm.TIGAN.tiGan | outTiGan:tm.TIXING_ID">
                 </h3>
                 <div class="item-tizhi-wrap">
                     <p class="item-tizhi" ng-show="tm.TIGAN.tiZhiSource.length"
@@ -61,7 +62,7 @@
             <div class="answer-cont">
                 <span class="daAnLabel">答案：</span>
                 <div class="daAnBox"
-                     ng-bind-html="tm.TIGAN.daAnSource ? tm.TIGAN.daAnSource : tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
+                     ng-bind="tm.TIGAN.daAnSource ? tm.TIGAN.daAnSource : tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
             </div>
         </li>
     </ul>

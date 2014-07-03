@@ -31,8 +31,9 @@
             <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
         </div>
-        <div class="shijuantimu-list" ng-show="sjPreview">
-            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
+        <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
+        <div class="shijuantimu-list" ng-show="sjPreview" id="testList">
+            <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" repeat-done>
                 <div class="mubandati">
                     <div class="dati-name-box" title="点击设置大题名称"
                          ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
@@ -69,7 +70,7 @@
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
                                 <div class="item-score" ng-click="sj_item_score = false">
-                                    <span ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan"></span>
+                                    <span ng-bind="($index + 1) + '、' + tmd.TIGAN.tiGan | outTiGan:tm.TIXING_ID"></span>
                                     <span ng-hide="tmd.xiaotiScore">
                                        （<a href="javascript:void(0)">点击设置本小题分数</a>）
                                     </span>
@@ -92,7 +93,7 @@
                             </h3>
                             <div class="item-tizhi-wrap">
                                 <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index"
-                                   ng-bind-html="letterArr[$index] + '.' + tz">
+                                   ng-bind="letterArr[$index] + '.' + tz">
                                 </p>
                             </div>
                         </div>
@@ -196,3 +197,14 @@
         <button type="button" class="btn btn-primary" ng-click="savePaperConfirm()">保存试卷</button>
     </div>
 </div>
+<script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+<script type="text/javascript">
+    $('.reloadMath').on('click', function(){
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+    });
+</script>

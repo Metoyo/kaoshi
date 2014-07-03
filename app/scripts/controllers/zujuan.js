@@ -440,6 +440,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           * 重新加载mathjax
+           */
+          $scope.$on('onRepeatLast', function(scope, element, attrs){
+            $('.reloadMath').click();
+          });
+
+          /**
            * 查询试题的函数
            */
           var qryTestFun = function(){
@@ -958,7 +965,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 自动组卷详细设置//
+           * 自动组卷详细设置
            */
           $scope.cancelAutoMakePaperDetailSet = function(){
             $scope.isAutoMakePaperDetailSetShow = false;
@@ -971,7 +978,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.paper_hand_form = false; //手动组卷时添加的样式
             $('.popupWrap').css('left', '-360px'); //将div.popupWrap的left属性还原
             $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
-
+//            $('.reloadMath').click();
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -1005,7 +1012,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 将题加入试卷 //
+           * 将题加入试卷
            */
           $scope.addToPaper = function(tm){
             var sjtmItem = {
@@ -1199,6 +1206,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
             $scope.addMoreTiMuBtn = true; //添加试卷按钮显示
+//            $('.reloadMath').click();
           };
 
           /**

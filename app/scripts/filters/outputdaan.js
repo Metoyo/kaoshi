@@ -22,6 +22,14 @@ define(['angular', 'config'], function (angular, config) {
             return '错';
           }
         }
+        else if(txId == 6){
+          var tkDaAnArr = [],
+            tkDaAn = JSON.parse(input);
+          _.each(tkDaAn, function(da, idx, lst){
+            tkDaAnArr.push(da.answer);
+          });
+          return tkDaAnArr.join(';');
+        }
         else{
           return input;
         }
