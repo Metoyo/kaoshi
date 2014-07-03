@@ -36,6 +36,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           qryKnowledge = '', //定义一个空的查询知识点的url
           timuleixing_id = '', //用于根据题目类型查询题目的字符串
+          tixing_id = '', //用于根据题型id查询题目的字符串
           nandu_id = '', //用于根据难度查询题目的字符串
           zhishidian_id = '', //用于根据知识点查询题目的字符串
           checkSchoolTiKu = caozuoyuan, //查看学校题库需要传的参数
@@ -227,11 +228,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.getTiXingId = function(qrytxId){
           if(qrytxId >= 1){
-            timuleixing_id = qrytxId;
+            tixing_id = qrytxId;
             $scope.txSelectenIdx = qrytxId;
           }
           else{
-            timuleixing_id = '';
+            tixing_id = '';
             $scope.txSelectenIdx = 0;
           }
           qryTestFun();
@@ -265,7 +266,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         var qryTestFun = function(){
           $scope.loadingImgShow = true; //testList.html loading
-          var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id + '&nandu_id=' + nandu_id
+          var qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
             + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
           tiMuIdArr = [];
           pageArr = [];
@@ -872,7 +873,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 判断题选择答案的效果的代码//
+         * 判断题选择答案的效果的代码
          */
         $scope.choosePanDuanDaan = function(idx){
           var tgt = '.answer' + idx,
@@ -900,72 +901,129 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 添加一个空
+         * 查找字符串出现的次数
          */
-        $scope.addOenBlank = function(){
-          tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN + '(' + (loopArr.length + 1) + ')' + '_____';
-          loopArr.push(loopArr.length + 1);
-          $('.formulaEditTiGan').focus();
-//          console.log(tiankong_data.shuju.TIGAN);
+        var countInstances = function(mainStr, subStr) {
+          var count = 0; var offset = 0;
+          do{
+            offset = mainStr.indexOf(subStr, offset); if(offset != -1)
+            {
+              count++;
+              offset += subStr.length;
+            }
+          }
+          while(offset != -1) return count;
+        };
 
+        /**
+         * 填空题编辑keyup后执行的函数
+         */
+        $scope.reloadTkTiGanCont = function(){
+          var tgVal = $('.formulaEditTiGan').val();
+          $('#prevDoc').html(tgVal);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        };
+
+        /**
+         * loopArr //
+         */
+        $scope.addTkDaanInput = function(){
+          loopArr = [];
+          var tgVal = $('.formulaEditTiGan').val(),
+            cnum;
+          cnum = countInstances(tgVal, '<span>');
+          for(var i = 1; i <= cnum; i++){
+            loopArr.push(i);
+          }
+          $scope.loopArr = loopArr;
         };
 
         /**
          * 保存填空试题
          */
         $scope.addTianKongShiTi = function(){
-          var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi');
-          _.each(loopArr, function(num, idx, lst){
-            var tzCont = tiZhiArr[idx].value,
-              oldStr = '(' + num + ')' + '_____',
-              newStr,
-              tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
-            tzJson.size = tzCont.length + 10;
-            tzJson.answer = tzCont;
-            newStr = '<%' + JSON.stringify(tzJson) + '%>';
-            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(oldStr, newStr);
+          var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
+            reg = new RegExp('<span>.*?</span>', 'g'),
+            count = 0,
+            tizhineirong = []; //存放题支内容;
+          tznrIsNull = true;
+//          _.each(loopArr, function(num, idx, lst){
+//            var tzCont = tiZhiArr[idx].value,
+//              oldStr = '(' + num + ')' + '_____',
+//              newStr,
+//              tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
+//            tzJson.size = tzCont.length + 10;
+//            tzJson.answer = tzCont;
+//            newStr = '<%' + JSON.stringify(tzJson) + '%>';
+//            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(oldStr, newStr);
+//          });
+
+          //整理题支
+          _.each(tiZhiArr, function(tizhi, idx, lst){
+            if(tizhi.value){
+              tizhineirong.push(tizhi.value);
+            }
+            else{
+              tznrIsNull = false;
+            }
           });
-          tiankong_data.shuju.ZHISHIDIAN = selectZsd;
-          tiankong_data.shuju.DAAN = '';
-          if(tiankong_data.shuju.TIGAN.length){
-            if(selectZsd.length){
-              if(tiankong_data.shuju.NANDU_ID.length){
-                $scope.loadingImgShow = true; //jisuan.html
-                $http.post(xgtmUrl, tiankong_data).success(function(data){
-                  console.log(data);
-                  if(data.result){
-                    if(tiankong_data.shuju.TIMU_ID){ //试题修改成功后！
-                      alert('修改成功！');
-                      $scope.patternListToggle = false;
-                      $scope.alterTiXingBox = false;
-                      $scope.cancelAddPattern();
+          if(tznrIsNull){
+            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(reg, function(arg) {
+              var innerCount = count,
+                tzCont = tiZhiArr[innerCount].value,
+                tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
+              tzJson.size = tzCont.length + 10;
+              tzJson.answer = tzCont;
+
+              count ++;
+              return '<%' + JSON.stringify(tzJson) + '%>';
+            });
+            tiankong_data.shuju.ZHISHIDIAN = selectZsd;
+            tiankong_data.shuju.DAAN = tizhineirong.join(';');
+            if(tiankong_data.shuju.TIGAN.length){
+              if(selectZsd.length){
+                if(tiankong_data.shuju.NANDU_ID.length){
+                  $scope.loadingImgShow = true; //jisuan.html
+                  $http.post(xgtmUrl, tiankong_data).success(function(data){
+                    console.log(data);
+                    if(data.result){
+                      if(tiankong_data.shuju.TIMU_ID){ //试题修改成功后！
+                        alert('修改成功！');
+                        $scope.patternListToggle = false;
+                        $scope.alterTiXingBox = false;
+                        $scope.cancelAddPattern();
+                      }
+                      else{ // 试题添加成功后！
+                        $('.save-msg').show().fadeOut(3000);
+                        resetFun(tiankong_data);
+                      }
+                      $scope.loadingImgShow = false; //jisuan.html
                     }
-                    else{ // 试题添加成功后！
-                      $('.save-msg').show().fadeOut(3000);
-                      resetFun(tiankong_data);
+                    else{
+                      alert(data.error);
+                      $scope.loadingImgShow = false; //jisuan.html
                     }
-                    $scope.loadingImgShow = false; //jisuan.html
-                  }
-                  else{
-                    alert(data.error);
-                    $scope.loadingImgShow = false; //jisuan.html
-                  }
-                })
-                  .error(function(err){
-                    alert(err);
-                  });
+                  })
+                    .error(function(err){
+                      alert(err);
+                    });
+                }
+                else{
+                  alert('请选择难度！');
+                }
               }
               else{
-                alert('请选择难度！');
+                alert('请选择知识点！');
               }
             }
             else{
-              alert('请选择知识点！');
+              alert('请输入题干！');
             }
           }
           else{
-            alert('请输入题干！');
+            alert('请输入填空题答案！');
           }
+
         };
 
         /**
