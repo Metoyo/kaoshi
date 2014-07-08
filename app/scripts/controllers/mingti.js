@@ -1284,26 +1284,49 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         resize(document.getElementById('dragBtn'));//初始化拖拽
 
         /**
-         * 文件上传
+         * 文件上传//
          */
-        //an array of files selected
+        //存放上传文件的数组
         $scope.uploadFiles = [];
 
-        //listen for the file selected event
+        //将选择的文件加入到数组
         $scope.$on("fileSelected", function (event, args) {
           $scope.$apply(function () {
-            //add the file object to the scope's files collection
             $scope.uploadFiles.push(args.file);
           });
         });
 
-        //the save method
-        $scope.uploadForm = function() {
-          var file = $scope.files[0];
-          console.log('file is ' + JSON.stringify(file));
-          var uploadUrl = "http://www.taianting.com:4000/api/upload_file";
-          var fields = [{"name": "token", "data": '12345'}];
-          Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadUrl);
+        //添加文件
+        $scope.addMyFile = function(){
+          $('input.addFileBtn').click();
+        };
+
+        //删除选择的文件
+        $scope.deleteSelectFile = function(idx){
+          $scope.uploadFiles.splice(idx, 1);
+        };
+
+        //保存上传文件
+        $scope.uploadMyFiles = function() {
+          var file = $scope.uploadFiles,
+            fields = [{"name": "token", "data": token}],
+            isFileSizeRight = true,
+            limitedFileSize = config.uploadFileSizeLimit; //文件大小限制，目前大小限制2MB
+          _.each($scope.uploadFiles, function(fl, idx, lst){
+            if(fl.size > limitedFileSize){
+              isFileSizeRight = false;
+            }
+          });
+          if(isFileSizeRight){
+            Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadFileUrl).then(function(result){
+              $scope.uploadFileUrl = result.data;
+              console.log($scope.uploadFileUrl);
+              $scope.uploadFiles = [];
+            });
+          }
+          else{
+            alert('文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
+          }
         };
 
       }

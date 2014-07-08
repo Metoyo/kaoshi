@@ -9,8 +9,8 @@ require.config({
     angularMocks: '../../bower_components/angular-mocks/angular-mocks',
     text: '../../bower_components/requirejs-text/text',
     jquery: '../../bower_components/jquery/jquery',
-    underscore: '../../bower_components/underscore/underscore',
-    intimidatetime: '../../bower_components/intimidatetime/intimidatetime'
+    underscore: '../../bower_components/underscore/underscore'
+//    intimidatetime: '../../bower_components/intimidatetime/intimidatetime'
   },
   shim: {
     'angular' : {'exports' : 'angular'},

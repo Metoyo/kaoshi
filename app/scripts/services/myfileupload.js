@@ -5,19 +5,21 @@ define(['angular'], function (angular) {
 	.service('Myfileupload', ['$http', function Myfileupload($http) {
       this.uploadFileAndFieldsToUrl = function(file, fields, uploadUrl){
         var fd = new FormData();
-        fd.append('file', file);
+        for(var j = 1; j <= file.length; j++){
+          fd.append('file' + j, file[j - 1]);
+        }
         for(var i = 0; i < fields.length; i++){
           fd.append(fields[i].name, fields[i].data)
         }
-        $http.post(uploadUrl, fd, {
+        return $http.post(uploadUrl, fd, {
           transformRequest: angular.identity,
           headers: {'Content-Type': undefined}
         })
           .success(function(data){
-            console.log(data);
+            return data;
           })
           .error(function(error){
-            console.log(error);
+            return error;
           });
       }
 	}]);

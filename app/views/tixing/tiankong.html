@@ -41,6 +41,21 @@
                         <!--<button type="button" class="btn btn-default" ng-click="addOenBlank()">加个空</button>-->
                     <!--</div>-->
                 </div>
+                <div class="form-group fileUploadBox">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <p class="uploadBtnBox">
+                            <input type="file" file-upload multiple class="pull-left hide addFileBtn"/>
+                            <button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>
+                            <span ng-show="uploadFiles.length">{{uploadFiles.length}}个文件</span>
+                            <button ng-click="uploadMyFiles()" class="btn btn-default pull-right">上传</button>
+                        </p>
+                        <p ng-repeat="fl in uploadFiles track by $index">
+                            <span ng-bind="fl.name"></span>
+                            <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
+                            <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
+                        </p>
+                    </div>
+                </div>
             </fieldset>
             <fieldset class="form-body">
                 <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">

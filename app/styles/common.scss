@@ -2468,3 +2468,22 @@ a.add-btn:hover span {
   width: 75px;
   background-image:url('../images/markitup/addBlank.png');
 }
+//文件上传样式
+.fileUploadBox{
+  p{
+    span{
+      margin-right: 20px;
+    }
+    .glyphicon-remove{
+      color: red;
+    }
+  }
+  .uploadBtnBox{
+    float: left;
+    width: 100%;
+    span{
+      margin: 4px 0 0 10px;
+      float: left;
+    }
+  }
+}

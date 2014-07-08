@@ -27,13 +27,12 @@ define([
     'filters/outputdaan',
     'filters/outtigan',
     'services/myfileupload',
-    'directives/filemodel',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
-                FileuploadDirective, RepeatdoneDirective,MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,
+                FileuploadDirective, RepeatdoneDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,
                 UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,
                 MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService,
-                FilemodelDirective, config) {
+                config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -60,7 +59,6 @@ define([
 'kaoshiApp.filters.Outtigan',
 'kaoshiApp.directives.Fileupload',
 'kaoshiApp.services.Myfileupload',
-'kaoshiApp.directives.Filemodel',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

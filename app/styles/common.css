@@ -6942,3 +6942,11 @@ a.add-btn:hover span {
 .mktEditorTk .markItUpButton61 a {
   width: 75px;
   background-image: url("../images/markitup/addBlank.png"); }
+
+.fileUploadBox p span {
+  margin-right: 20px; }
+.fileUploadBox p .glyphicon-remove {
+  color: red; }
+.fileUploadBox .uploadBtnBox {
+  float: left;
+  width: 100%; }
