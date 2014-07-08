@@ -4,7 +4,7 @@ define(['angular', 'config'], function (angular, config) {
   angular.module('kaoshiApp.filters.Outputdaan', [])
   	.filter('outputDaAn', function () {
       return function (input, txId) {
-          var letterArr = config.letterArr;
+        var letterArr = config.letterArr;
         if(txId <= 3){
           var daanArr = input.split(','),
             daanLen = daanArr.length,
@@ -24,11 +24,13 @@ define(['angular', 'config'], function (angular, config) {
         }
         else if(txId == 6){
           var tkDaAnArr = [],
-            tkDaAn = JSON.parse(input);
+            tkDaAn = JSON.parse(input),
+            tkDaAnStr;
           _.each(tkDaAn, function(da, idx, lst){
             tkDaAnArr.push(da.answer);
           });
-          return tkDaAnArr.join(';');
+          tkDaAnStr = tkDaAnArr.join(';');
+          return tkDaAnStr;
         }
         else{
           return input;

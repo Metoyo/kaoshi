@@ -44,25 +44,19 @@
             </div>
             <div class="item-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
                 <h3 class="item-tigan"
-                    ng-bind="tm.TIGAN.tiGanSource ? tm.TIGAN.tiGanSource : tm.TIGAN.tiGan | outTiGan:tm.TIXING_ID">
+                    ng-bind="tm.TIGAN.tiGan">
                 </h3>
                 <div class="item-tizhi-wrap">
-                    <p class="item-tizhi" ng-show="tm.TIGAN.tiZhiSource.length"
-                       ng-repeat="tz in tm.TIGAN.tiZhiSource track by $index">
+                    <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
                         <span ng-bind="letterArr[$index] + '. '"></span>
-                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
-                    </p>
-                    <p class="item-tizhi" ng-hide="tm.TIGAN.tiZhiSource.length"
-                       ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
-                        <span ng-bind="letterArr[$index] + '. '"></span>
-                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
+                        <span class="tiZhiSpan" ng-bind="tz"></span>
                     </p>
                 </div>
             </div>
             <div class="answer-cont">
                 <span class="daAnLabel">答案：</span>
                 <div class="daAnBox"
-                     ng-bind="tm.TIGAN.daAnSource ? tm.TIGAN.daAnSource : tm.DAAN | outputDaAn:tm.TIXING_ID"></div>
+                     ng-bind="tm.DAAN"></div>
             </div>
         </li>
     </ul>

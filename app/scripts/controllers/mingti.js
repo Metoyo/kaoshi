@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout',
-      function ($rootScope, $scope, $http, $q, $window, $timeout) {
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
+      function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
          * 操作title//
          */
@@ -21,6 +21,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = $rootScope.session.defaultLyId,
+          letterArr = config.letterArr,
           chaxunzilingyu = true,
 
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
@@ -84,6 +85,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jieda_data, //解答题数据模板
           pandu_data, //判断题数据模板
           tiankong_data, //填空题数据模板
+          yuedu_data, //阅读题数据模板
           loopArr = [0,1,2,3], //用于题支循环的数组
           tznrIsNull,//用了判断题支内容是否为空
           deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
@@ -105,7 +107,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
-          modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu';//修改题型机构领域
+          modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu',//修改题型机构领域
+          uploadFileUrl = baseMtAPIUrl + 'upload_file';//文件上传
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -311,7 +314,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         qryTestFun(caozuoyuan);
 
         /**
-         * 分页的代码
+         * 分页的代码//
          */
         $scope.getThisPageData = function(pg){
           $scope.loadingImgShow = true; //testList.html loading
@@ -319,7 +322,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             pgNum = pg - 1,
             timu_id,
             currentPage = pgNum ? pgNum : 0,
-            userIdArr = [];//存放user id的数组
+            userIdArr = [],//存放user id的数组
+            newCont,
+            tgReg = new RegExp('<\%{.*?}\%>', 'g');
 
           //得到分页数组的代码
           var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
@@ -342,8 +347,52 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
             if(data.length){
+              //在此将答案和题干转换
               _.each(data, function(tm, idx, lst){
                 userIdArr.push(tm.CHUANGJIANREN_UID);
+                if(tm.TIXING_ID <= 3){
+                  var daanArr = tm.DAAN.split(','),
+                    daanLen = daanArr.length,
+                    daan = [];
+                  for(var i = 0; i < daanLen; i++){
+                    daan.push(letterArr[daanArr[i]]);
+                  }
+                  tm.DAAN = daan.join(',');
+                }
+                else if(tm.TIXING_ID == 4){
+                  if(tm.DAAN == 1){
+                    tm.DAAN = '对';
+                  }
+                  else{
+                    tm.DAAN = '错';
+                  }
+                }
+                else if(tm.TIXING_ID == 6){ //填空题
+                  //修改填空题的答案
+                  var tkDaAnArr = [],
+                    tkDaAn = JSON.parse(tm.DAAN),
+                    tkDaAnStr;
+                  _.each(tkDaAn, function(da, idx, lst){
+                    tkDaAnArr.push(da.answer);
+                  });
+                  tkDaAnStr = tkDaAnArr.join(';');
+                  tm.DAAN = tkDaAnStr;
+                  //修改填空题的题干
+                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+                    var text = arg.slice(2, -2),
+                      textJson = JSON.parse(text),
+                      _len = textJson.size,
+                      i, xhStr = '';
+                    for(i = 0; i < _len; i ++ ){
+                      xhStr += '_';
+                    }
+                    return xhStr;
+                  });
+                  tm.TIGAN.tiGan = newCont;
+                }
+                else{
+
+                }
               });
               var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
               var getUserNameUrl = getUserNameBase + userIdStr;
@@ -925,7 +974,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * loopArr //
+         * loopArr//
          */
         $scope.addTkDaanInput = function(){
           loopArr = [];
@@ -1018,6 +1067,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 阅读题
+         */
+        $scope.addYueDu = function(tpl){
+          yuedu_data = timu_data;
+          renderTpl(tpl);
+          $('.patternList li').removeClass('active');
+          $('li.yuedu').addClass('active');
+          yuedu_data.shuju.TIXING_ID = '';
+          yuedu_data.shuju.TIMULEIXING_ID = '';
+          $scope.yueDuData = yuedu_data;
+          $scope.loadingImgShow = false; //panduan.html
+        };
+
+        /**
          * 点击添加按钮添加一项题支输入框
          */
         $scope.addOneItem = function(){
@@ -1025,7 +1088,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 点击删除按钮删除一项题支输入框
+         * 点击删除按钮删除一项题支输入框//
          */
         $scope.deleteOneItem = function(){
           loopArr.pop();
@@ -1219,6 +1282,29 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         };
         resize(document.getElementById('dragBtn'));//初始化拖拽
+
+        /**
+         * 文件上传
+         */
+        //an array of files selected
+        $scope.uploadFiles = [];
+
+        //listen for the file selected event
+        $scope.$on("fileSelected", function (event, args) {
+          $scope.$apply(function () {
+            //add the file object to the scope's files collection
+            $scope.uploadFiles.push(args.file);
+          });
+        });
+
+        //the save method
+        $scope.uploadForm = function() {
+          var file = $scope.files[0];
+          console.log('file is ' + JSON.stringify(file));
+          var uploadUrl = "http://www.taianting.com:4000/api/upload_file";
+          var fields = [{"name": "token", "data": '12345'}];
+          Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadUrl);
+        };
 
       }
     ]
