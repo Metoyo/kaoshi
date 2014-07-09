@@ -108,7 +108,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
           modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu',//修改题型机构领域
-          uploadFileUrl = baseMtAPIUrl + 'upload_file';//文件上传
+          uploadFileUrl = baseMtAPIUrl + 'upload_file',//文件上传
+          showFileUrl = baseMtAPIUrl + 'show_file/';//文件显示
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -1306,7 +1307,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.uploadFiles.splice(idx, 1);
         };
 
-        //保存上传文件
+        //关闭上传文件弹出层
+        $scope.closeMediaPlugin = function(){
+          $('#mediaPlugin').hide();
+        };
+
+        //保存上传文件、、
         $scope.uploadMyFiles = function() {
           var file = $scope.uploadFiles,
             fields = [{"name": "token", "data": token}],
@@ -1322,6 +1328,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.uploadFileUrl = result.data;
               console.log($scope.uploadFileUrl);
               $scope.uploadFiles = [];
+              if(result.data.length){
+                var src = showFileUrl + result.data[0];
+                $.markItUp(
+                  { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
+                );
+                $('#mediaPlugin').hide();
+                $('.formulaEditTiGan').keyup();
+                return false;
+              }
             });
           }
           else{
