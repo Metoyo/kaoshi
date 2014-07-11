@@ -1,0 +1,66 @@
+<div class="row ruleMakePaper-header">
+    <table>
+        <tr>
+            <th>题型</th>
+            <th width="80px">数量</th>
+            <th width="300px">难度：
+                <span class="coefftRule">0.50</span>
+                <em>(建议0.20-0.80之间)</em>
+            </th>
+            <th>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <select class="form-control ruleMakePaperSelectId" ng-model="ruleMakePaper.selectTx"
+                        ng-change="rmpGetTxId(ruleMakePaper.selectTx)"
+                        ng-options="tx.TIXING_ID as tx.TIXINGMINGCHENG for tx in kmtxList">
+                    <option value="">请选择</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control txNum" maxlength="3"
+                       onkeyup="this.value=this.value.replace(/\D/g,'')"
+                       onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+            </td>
+            <td class="nandu-dist" ng-mouseover="resize('Rule')">
+                <div class="distBox">
+                    <span class="maskLabel pull-left">容易</span>
+                    <div class="sliderBox pull-left">
+                        <div id="sliderItemRule" class="sliderItem">
+                            <div class="sliderItemInner sliderItemInnerRule"></div>
+                            <div id="sliderBtnRule" class="sliderBtn"></div>
+                        </div>
+                    </div>
+                    <span class="maskLabel pull-left">困难</span>
+                </div>
+            </td>
+            <td class="text-right">
+                <button type="button" class="btn btn-primary" ng-click="addRuleCondition()">
+                    添加试题
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="backToZuJuanHome()">
+                    返回
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="row ruleMakePaper-body">
+    <div ng-repeat="txw in ampKmtxWeb">
+        <h4 ng-bind="txw.TIXINGMINGCHENG">单选题</h4>
+        <table>
+            <tr ng-repeat="xttj in txw.zsdXuanTiArr">
+                <td ng-bind="xttj.dagangArr.toString()"></td>
+                <td ng-bind="xttj.tmNum"></td>
+                <td ng-bind="xttj.tmNanDu"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row fixed-bottom">
+    <label class="checkbox-inline">
+        <input type="checkbox" value="" ng-click="">题目去重（一年）
+    </label>
+    <button type="button" class="btn btn-primary">生成试卷</button>
+</div>

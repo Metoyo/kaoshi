@@ -410,7 +410,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.timudetails = data;
                   $scope.caozuoyuan = caozuoyuan;
                   timudetails = data;
-                  console.log($scope.timudetails);
                 }
                 else{
                   $scope.timudetails = null;
@@ -646,7 +645,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   if(selectZsd.length){
                     $scope.loadingImgShow = true; //danxuan.html
                     $http.post(xgtmUrl, dataTpl).success(function(data){
-                      console.log(data);
                       if(data.result){
                         $scope.loadingImgShow = false;
                         $('.save-msg').show().fadeOut(3000);
@@ -716,7 +714,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 if(tx_data.shuju.NANDU_ID.length){
                   $scope.loadingImgShow = true; //jisuan.html
                   $http.post(xgtmUrl, tx_data).success(function(data){
-                    console.log(data);
                     if(data.result){
                       if(tx_data.shuju.TIMU_ID){ //试题修改成功后！
                         alert('修改成功！');
@@ -1026,7 +1023,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 if(tiankong_data.shuju.NANDU_ID.length){
                   $scope.loadingImgShow = true; //jisuan.html
                   $http.post(xgtmUrl, tiankong_data).success(function(data){
-                    console.log(data);
                     if(data.result){
                       if(tiankong_data.shuju.TIMU_ID){ //试题修改成功后！
                         alert('修改成功！');

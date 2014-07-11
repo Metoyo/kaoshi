@@ -470,7 +470,7 @@ a.add-btn:hover span {
     top: 135px;
     left: 0;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     .checkbox {
       margin-bottom: 2px;
       margin-top: 2px;
@@ -1298,7 +1298,7 @@ a.add-btn:hover span {
     .publicKnowledge{
       border: 1px solid #cfcfcf;
       height: 100%;
-      overflow-y: scroll;
+      overflow-y: auto;
       padding: 10px;
       background-color: #fff;
       p{
@@ -1376,7 +1376,7 @@ a.add-btn:hover span {
     .innerBox{
       border: 1px solid #cfcfcf;
       height: 100%;
-      overflow-y: scroll;
+      overflow-y: auto;
       background-color: #fff;
       padding: 10px;
       p{
@@ -1604,6 +1604,45 @@ a.add-btn:hover span {
       padding: 10px 0;
     }
   }
+  .nandu-dist{
+    h4{
+      font-size: 14px;
+      em{
+        font-size: 12px;
+      }
+    }
+    .distBox{
+      position: relative;
+    }
+    .sliderBox{
+      width: 220px;
+      height: 10px;
+      margin: 3px 5px 0 5px;
+      background-color: #ddd;
+    }
+    .sliderItem{
+      width: 110px;
+      height: 10px;
+      background-color: darkseagreen;
+      position: relative;
+      .sliderItemInner{
+        max-width: 220px;
+      }
+    }
+    .sliderBtn{
+      cursor: e-resize;
+      position: absolute;
+      height: 20px;
+      top: -5px;
+      right: 0;
+      width: 5px;
+      background-color: #f60;
+      z-index: 6;
+    }
+    .maskLabel {
+      font-size: 12px;
+    }
+  }
   .contentInner{
     position: relative;
     .popupWrap{
@@ -1627,6 +1666,7 @@ a.add-btn:hover span {
         background-color: #f5f5f5;
         border-right: 1px solid #cfcfcf;
         color: #000;
+        overflow-y: auto;
         .auto-make-paper{
           width: 100%;
           .btn{
@@ -1673,45 +1713,6 @@ a.add-btn:hover span {
               box-shadow: none;
               border: 1px solid #ccc;
             }
-          }
-        }
-        .nandu-dist{
-          h4{
-            font-size: 14px;
-            em{
-              font-size: 12px;
-            }
-          }
-          .distBox{
-            position: relative;
-          }
-          .sliderBox{
-            width: 220px;
-            height: 10px;
-            margin: 3px 5px 0 5px;
-            background-color: #ddd;
-          }
-          .sliderItem{
-            width: 110px;
-            height: 10px;
-            background-color: darkseagreen;
-            position: relative;
-            .sliderItemInner{
-              max-width: 220px;
-            }
-          }
-          .sliderBtn{
-            cursor: e-resize;
-            position: absolute;
-            height: 20px;
-            top: -5px;
-            right: 0;
-            width: 5px;
-            background-color: #f60;
-            z-index: 6;
-          }
-          .maskLabel {
-            font-size: 12px;
           }
         }
       }
@@ -1907,7 +1908,7 @@ a.add-btn:hover span {
           border-bottom: 1px solid #cfcfcf;
         }
         .setting-content{
-          overflow-y: scroll;
+          overflow-y: auto;
           height: 310px;
           padding: 10px;
           .showAddFuBiaoTi{
@@ -2098,6 +2099,43 @@ a.add-btn:hover span {
     td{
       text-align: center;
       padding: 5px;
+    }
+  }
+  .ruleMakePaper-header{
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+    background-color: #f5f5f5;
+    margin-top: -10px;
+    table{
+      width: 100%;
+      th,td{
+        padding: 5px;
+      }
+    }
+    .form-control{
+      height: 28px;
+      padding: 3px 12px;
+    }
+    em{
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .txNum{
+      width: 50px;
+    }
+  }
+  .fixed-bottom{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+  }
+  .ruleMakePaper-body{
+    padding: 10px;
+    table{
+      td{
+        padding-right: 30px;
+      }
     }
   }
 }
@@ -2295,7 +2333,7 @@ a.add-btn:hover span {
         width: 100%;
         height: 100%;
         position: relative;
-        overflow-y: scroll;
+        overflow-y: auto;
         padding: 0 15px;
       }
       .paper-title{

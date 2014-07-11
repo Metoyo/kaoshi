@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$window','$document',
         function ($rootScope, $scope, $location, $http, urlRedirect, $q, $window, $document) { // 002
           /**
-           * 操作title、、
+           * 操作title
            */
           $rootScope.pageName = "组卷"; //page title
           $rootScope.dashboard_shown = true;
@@ -30,7 +30,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
 
             qryKnowledge = '', //定义一个空的查询知识点的url
-            selectZsd,//定义一个选中知识点的变量（数组)
+            selectZsd = [],//定义一个选中知识点的变量（数组)
             timuleixing_id = '', //用于根据题目类型查询题目的字符串
             nandu_id = '', //用于根据难度查询题目的字符串
             zhishidian_id = '', //用于根据知识点查询题目的字符串
@@ -173,6 +173,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.isSavePaperConfirm = false; //保存试卷前的确认
           $scope.showBackToPaperListBtn = false; //加载组卷页面是，返回试卷列表页面隐藏
           $scope.addMoreTiMuBtn = false; //添加更多试题的按钮
+          $scope.isTestPaperSummaryShow = true; //div.testPaperSummary显示
 
           /**
            * 获得大纲数据
@@ -367,66 +368,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 获得难度分布的数组
-           */
-          $scope.getNanduDist = function(){
-            var x = $('.coefft').html(),//得到难度系数
-              n = 5, //有几段难度分布
-              nl = n - 1,
-              i, u, a, b,
-              fx = 1,
-              distArr = [];
-            if(x == 0){
-              distArr[0] = 1;
-              for(i = 1; i <= nl; i++){
-                distArr[i] = 0;
-              }
-            }
-            else if(x == 1){
-              distArr[nl] = 1;
-              for(i = 0; i < nl; i++){
-                distArr[i] = 0;
-              }
-            }
-            else{
-              u = Math.tan((x-0.5) * Math.PI)/2 + 0.5;
-              if(u <= 0){
-                for(i = 1; i <= nl; i++){
-                  a = i/n;
-                  b = (i + 1)/n;
-                  distArr[i] = (b-a)*(2-b-a)/(1-u);
-                  fx = fx - distArr[i];
-                }
-                distArr[0] = fx;
-              }
-              else if(u >= 1){
-                for(i = 0; i < nl; i++){
-                  a = i/n;
-                  b = (i + 1)/n;
-                  distArr[i] = (b*b - a*a)/u;
-                  fx = fx - distArr[i];
-                }
-                distArr[nl] = fx;
-              }
-              else{
-                for(i = 0; i <= nl; i++){
-                  a = i/n;
-                  b = (i + 1)/n;
-                  if(u >= b){
-                    distArr[i] = (b*b - a*a)/u;
-                  }
-                  else if(u <= a){
-                    distArr[i] = (b-a)*(2-b-a)/(1-u);
-                  }
-                  else{
-                    distArr[i] = (u*u - a*a)/u + (b-u)*(2-b-u)/(1-u);
-                  }
-                }
-              }
-            }
-          };
-
-          /**
            *查询科目（LingYu，url：/api/ling yu）
            */
           $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
@@ -440,7 +381,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 重新加载mathjax
+           * 重新加载 mathjax
            */
           $scope.$on('onRepeatLast', function(scope, element, attrs){
             $('.reloadMath').click();
@@ -482,7 +423,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 查询题目详情的分页代码
+           * 查询题目详情的分页代码//
            */
           $scope.getThisPageData = function(pg){
             $scope.loadingImgShow = true; //paper_hand_form.html
@@ -678,9 +619,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 自动组卷 autoMakePaperData
            */
-          var autoMakePaperKmtx;
           $scope.autoMakePaper = function(){
-            var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+            var autoMakePaperKmtx,
+              promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             promise.then(function(){
               $scope.isAutoMakePaperDetailSetShow = false; //自动组卷加载的时候，详细设置隐藏
               autoMakePaperKmtx = $scope.kmtxList;
@@ -696,11 +637,93 @@ define(['jquery', 'underscore', 'angular', 'config'],
 
               });
             });
-
           };
 
           /**
-           * 提交自动数据的参数,难度为整张试卷难度//
+           * 规则组卷//
+           */
+          $scope.ruleMakePaper = function(){
+            var promise = getShiJuanMuBanData(),
+              ruleMakePaperWebData; //保存试卷模板成功以后
+            promise.then(function(){
+              $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
+              ruleMakePaperWebData = $scope.kmtxList;
+              _.each(ruleMakePaperWebData, function(rwKmtx, idx, lst){
+                rwKmtx.zsdXuanTiArr = [];
+              });
+              $scope.ampKmtxWeb = ruleMakePaperWebData;
+              $('.popupWrap').css({width:'300px', left: '120px'});
+              $('.content').css('padding-left', '300px');
+              $scope.ruleMakePaper = { selectTx: null };
+              $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
+
+            });
+          };
+
+          /**
+           * 返回到组卷的3中情形页面
+           */
+          $scope.backToZuJuanHome = function(){
+            $('.popupWrap').css({width:'600px', left: '-360px'});
+            $('.content').css('padding-left', '221px');
+            $scope.txTpl = 'views/partials/paper_preview.html'; //加载规则组卷模板
+            $scope.isTestPaperSummaryShow = true; //div.testPaperSummary隐藏
+          };
+
+          /**
+           * 规则组卷得到题型题型信息
+           */
+          var ruleMakePaperSelectTxid; //规则组卷，题型ID
+
+          $scope.rmpGetTxId = function(txId){
+            console.log(txId);
+            ruleMakePaperSelectTxid = txId;
+          };
+
+          /**
+           * 规则组卷将条件添加到相应的数组
+           */
+          $scope.addRuleCondition = function(){
+            var targetTx;
+            if(ruleMakePaperSelectTxid){
+              targetTx = _.find($scope.kmtxList, function(kmtx, idx, lst){
+                return kmtx.TIXING_ID == ruleMakePaperSelectTxid
+              });
+              targetTx.tmNum = $('.ruleMakePaper-header input.txNum').val();
+              targetTx.tmNanDu = $('.coefftRule').html();
+              targetTx.dagangArr = selectZsd;
+            }
+            if(selectZsd.length){
+              if(ruleMakePaperSelectTxid){
+                if(targetTx.tmNum){
+                  if(targetTx.tmNanDu){
+                    _.each($scope.ampKmtxWeb, function(txw, idx, lst){
+                      if(txw.TIXING_ID == targetTx.TIXING_ID){
+                        txw.zsdXuanTiArr.push(targetTx);
+                      }
+                    });
+                    ruleMakePaperSelectTxid = '';
+                    $scope.ruleMakePaper = { selectTx: null };
+                  }
+                  else{
+                    alert('请选择难度！');
+                  }
+                }
+                else{
+                  alert('请填写数量！');
+                }
+              }
+              else{
+                alert('请选择题型！');
+              }
+            }
+            else{
+              alert('请选择知识点！');
+            }
+          };
+
+          /**
+           * 提交自动数据的参数,难度为整张试卷难度
            */
           var countnum, txtmLength;
           $scope.submitAutoPaperData = function(){

@@ -14,7 +14,7 @@
     <form name="shijuan">
         <h1 class="paper-title text-center hover-style" title="点击设置">
             <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
-                {{ shijuanData.shuju.SHIJUANMINGCHENG || 'XXX试卷'}}
+                {{ shijuanData.shuju.SHIJUANMINGCHENG || '点击设置试卷名称'}}
             </span>
         </h1>
         <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-show="shijuanData.shuju.FUBIAOTI">
@@ -30,6 +30,7 @@
         <div class="form-paper-type text-center" ng-hide="sjPreview">
             <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
             <button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>
+            <button type="button" class="btn btn-primary" ng-click="ruleMakePaper()">规则组卷</button>
         </div>
         <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
         <div class="shijuantimu-list" ng-show="sjPreview" id="testList">
@@ -114,7 +115,7 @@
                         <div class="row">
                             <label>试卷主标题：</label>
                             <input type="text" class="form-control sj_dt_input"
-                                   ng-model="shijuanData.shuju.SHIJUANMINGCHENG" placeholder="XXX试卷"/>
+                                   ng-model="shijuanData.shuju.SHIJUANMINGCHENG" placeholder="试卷名称"/>
                         </div>
                         <div class="row showAddFuBiaoTi" ng-init="showAddFuBiaoTi = false">
                             <a href ng-click="showAddFuBiaoTi = !showAddFuBiaoTi" ng-hide="showAddFuBiaoTi">

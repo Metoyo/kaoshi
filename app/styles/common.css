@@ -5409,7 +5409,7 @@ a.add-btn:hover span {
     top: 135px;
     left: 0;
     width: 100%;
-    overflow-y: scroll; }
+    overflow-y: auto; }
     .innerWrapperSubDs .pointTree .checkbox {
       margin-bottom: 2px;
       margin-top: 2px; }
@@ -6064,7 +6064,7 @@ a.add-btn:hover span {
     .renzhengWrapper .publicKnowledgeBox .publicKnowledge {
       border: 1px solid #cfcfcf;
       height: 100%;
-      overflow-y: scroll;
+      overflow-y: auto;
       padding: 10px;
       background-color: #fff; }
       .renzhengWrapper .publicKnowledgeBox .publicKnowledge p {
@@ -6127,7 +6127,7 @@ a.add-btn:hover span {
     .dagangWrapper .publicKnowledgeWrap .innerBox {
       border: 1px solid #cfcfcf;
       height: 100%;
-      overflow-y: scroll;
+      overflow-y: auto;
       background-color: #fff;
       padding: 10px; }
       .dagangWrapper .publicKnowledgeWrap .innerBox p {
@@ -6288,6 +6288,35 @@ a.add-btn:hover span {
       width: 21px; }
   .zujuanWrapper .testPaperSummary .sj-preview-btns {
     padding: 10px 0; }
+.zujuanWrapper .nandu-dist h4 {
+  font-size: 14px; }
+  .zujuanWrapper .nandu-dist h4 em {
+    font-size: 12px; }
+.zujuanWrapper .nandu-dist .distBox {
+  position: relative; }
+.zujuanWrapper .nandu-dist .sliderBox {
+  width: 220px;
+  height: 10px;
+  margin: 3px 5px 0 5px;
+  background-color: #ddd; }
+.zujuanWrapper .nandu-dist .sliderItem {
+  width: 110px;
+  height: 10px;
+  background-color: darkseagreen;
+  position: relative; }
+  .zujuanWrapper .nandu-dist .sliderItem .sliderItemInner {
+    max-width: 220px; }
+.zujuanWrapper .nandu-dist .sliderBtn {
+  cursor: e-resize;
+  position: absolute;
+  height: 20px;
+  top: -5px;
+  right: 0;
+  width: 5px;
+  background-color: #f60;
+  z-index: 6; }
+.zujuanWrapper .nandu-dist .maskLabel {
+  font-size: 12px; }
 .zujuanWrapper .contentInner {
   position: relative; }
   .zujuanWrapper .contentInner .popupWrap {
@@ -6309,7 +6338,8 @@ a.add-btn:hover span {
       padding: 10px;
       background-color: #f5f5f5;
       border-right: 1px solid #cfcfcf;
-      color: #000; }
+      color: #000;
+      overflow-y: auto; }
       .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper {
         width: 100%; }
         .zujuanWrapper .contentInner .popupWrap .chooseCondition .auto-make-paper .btn {
@@ -6344,35 +6374,6 @@ a.add-btn:hover span {
           border-radius: 3px;
           box-shadow: none;
           border: 1px solid #ccc; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 {
-        font-size: 14px; }
-        .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist h4 em {
-          font-size: 12px; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .distBox {
-        position: relative; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderBox {
-        width: 220px;
-        height: 10px;
-        margin: 3px 5px 0 5px;
-        background-color: #ddd; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderItem {
-        width: 110px;
-        height: 10px;
-        background-color: darkseagreen;
-        position: relative; }
-        .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderItem .sliderItemInner {
-          max-width: 220px; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .sliderBtn {
-        cursor: e-resize;
-        position: absolute;
-        height: 20px;
-        top: -5px;
-        right: 0;
-        width: 5px;
-        background-color: #f60;
-        z-index: 6; }
-      .zujuanWrapper .contentInner .popupWrap .chooseCondition .nandu-dist .maskLabel {
-        font-size: 12px; }
 .zujuanWrapper .seal-line {
   width: 100px;
   margin-left: 10px; }
@@ -6515,7 +6516,7 @@ a.add-btn:hover span {
         padding: 10px;
         border-bottom: 1px solid #cfcfcf; }
       .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content {
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 310px;
         padding: 10px; }
         .zujuanWrapper .paper-content .sj-edit-box .sj-edit-box-inner .setting-content .showAddFuBiaoTi {
@@ -6654,6 +6655,32 @@ a.add-btn:hover span {
   .zujuanWrapper .paperConfirmTable td {
     text-align: center;
     padding: 5px; }
+.zujuanWrapper .ruleMakePaper-header {
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+  background-color: #f5f5f5;
+  margin-top: -10px; }
+  .zujuanWrapper .ruleMakePaper-header table {
+    width: 100%; }
+    .zujuanWrapper .ruleMakePaper-header table th, .zujuanWrapper .ruleMakePaper-header table td {
+      padding: 5px; }
+  .zujuanWrapper .ruleMakePaper-header .form-control {
+    height: 28px;
+    padding: 3px 12px; }
+  .zujuanWrapper .ruleMakePaper-header em {
+    font-weight: normal;
+    font-size: 12px; }
+  .zujuanWrapper .ruleMakePaper-header .txNum {
+    width: 50px; }
+.zujuanWrapper .fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 10px; }
+.zujuanWrapper .ruleMakePaper-body {
+  padding: 10px; }
+  .zujuanWrapper .ruleMakePaper-body table td {
+    padding-right: 30; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px; }
@@ -6801,7 +6828,7 @@ a.add-btn:hover span {
       width: 100%;
       height: 100%;
       position: relative;
-      overflow-y: scroll;
+      overflow-y: auto;
       padding: 0 15px; }
     .kaowuWrapper .paper-content .paper-content-inner .paper-title {
       font-size: 20px; }
