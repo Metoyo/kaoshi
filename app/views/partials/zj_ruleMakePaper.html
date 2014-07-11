@@ -50,10 +50,10 @@
     <div ng-repeat="txw in ampKmtxWeb">
         <h4 ng-bind="txw.TIXINGMINGCHENG">单选题</h4>
         <table>
-            <tr ng-repeat="xttj in txw.zsdXuanTiArr">
-                <td ng-bind="xttj.dagangArr.toString()"></td>
-                <td ng-bind="xttj.tmNum"></td>
-                <td ng-bind="xttj.tmNanDu"></td>
+            <tr ng-repeat="xttj in txw.zsdXuanTiArr track by $index">
+                <td ng-bind="xttj.zsdNameArr.join('；')"></td>
+                <td ng-bind="xttj.TIXING[0].COUNT"></td>
+                <td ng-bind="xttj.NANDU"></td>
             </tr>
         </table>
     </div>

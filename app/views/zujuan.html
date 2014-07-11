@@ -89,7 +89,8 @@ paper_auto_form: paper_auto_form}">
                                     <label>
                                         <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
                                                class="{{'select' + zsd.JIEDIAN_ID}}"
-                                               ng-click="toggleSelection(zsd.JIEDIAN_ID)"/>
+                                               ng-click="toggleSelection(zsd.JIEDIAN_ID)"
+                                               data-zsdName="{{zsd.ZHISHIDIANMINGCHENG}}"/>
                                         {{zsd.ZHISHIDIANMINGCHENG}}
                                     </label>
                                 </div>
@@ -101,7 +102,8 @@ paper_auto_form: paper_auto_form}">
                                             <label>
                                                 <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
                                                        class="{{'select' + nd2.JIEDIAN_ID}}"
-                                                       ng-click="toggleSelection(nd2.JIEDIAN_ID)"/>
+                                                       ng-click="toggleSelection(nd2.JIEDIAN_ID)"
+                                                       data-zsdName="{{nd2.ZHISHIDIANMINGCHENG}}"/>
                                                 {{nd2.ZHISHIDIANMINGCHENG}}
                                             </label>
                                         </div>
@@ -114,7 +116,8 @@ paper_auto_form: paper_auto_form}">
                                                         <input type="checkbox" name="point"
                                                                value="{{nd3.ZHISHIDIAN_ID}}"
                                                                class="{{'select' + nd3.JIEDIAN_ID}}"
-                                                               ng-click="toggleSelection(nd3.JIEDIAN_ID)"/>
+                                                               ng-click="toggleSelection(nd3.JIEDIAN_ID)"
+                                                               data-zsdName="{{nd3.ZHISHIDIANMINGCHENG}}"/>
                                                         {{nd3.ZHISHIDIANMINGCHENG}}
                                                     </label>
                                                 </div>
@@ -125,7 +128,8 @@ paper_auto_form: paper_auto_form}">
                                                                 <input type="checkbox" name="point"
                                                                        value="{{nd4.ZHISHIDIAN_ID}}"
                                                                        class="{{'select' + nd4.JIEDIAN_ID}}"
-                                                                       ng-click="toggleSelection(nd4.JIEDIAN_ID)"/>
+                                                                       ng-click="toggleSelection(nd4.JIEDIAN_ID)"
+                                                                       data-zsdName="{{nd4.ZHISHIDIANMINGCHENG}}"/>
                                                                 {{nd4.ZHISHIDIANMINGCHENG}}
                                                             </label>
                                                         </div>
