@@ -6679,8 +6679,16 @@ a.add-btn:hover span {
   padding: 10px; }
 .zujuanWrapper .ruleMakePaper-body {
   padding: 10px; }
-  .zujuanWrapper .ruleMakePaper-body table td {
-    padding-right: 30; }
+  .zujuanWrapper .ruleMakePaper-body table {
+    width: 100%; }
+    .zujuanWrapper .ruleMakePaper-body table th {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center; }
+    .zujuanWrapper .ruleMakePaper-body table td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px; }

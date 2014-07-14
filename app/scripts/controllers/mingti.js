@@ -972,7 +972,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * loopArr//
+         * loopArr
          */
         $scope.addTkDaanInput = function(){
           loopArr = [];
@@ -1281,7 +1281,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         resize(document.getElementById('dragBtn'));//初始化拖拽
 
         /**
-         * 文件上传//
+         * 文件上传
          */
         //存放上传文件的数组
         $scope.uploadFiles = [];
@@ -1308,7 +1308,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $('#mediaPlugin').hide();
         };
 
-        //保存上传文件、、
+        //保存上传文件
         $scope.uploadMyFiles = function() {
           var file = $scope.uploadFiles,
             fields = [{"name": "token", "data": token}],
@@ -1322,7 +1322,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(isFileSizeRight){
             Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadFileUrl).then(function(result){
               $scope.uploadFileUrl = result.data;
-              console.log($scope.uploadFileUrl);
               $scope.uploadFiles = [];
               if(result.data.length){
                 var src = showFileUrl + result.data[0];

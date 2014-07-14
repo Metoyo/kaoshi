@@ -1,3 +1,7 @@
+<div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt=""/>
+    <p>数据加载中，请耐心等待……</p>
+</div>
 <div class="row ruleMakePaper-header">
     <table>
         <tr>
@@ -47,9 +51,14 @@
     </table>
 </div>
 <div class="row ruleMakePaper-body">
-    <div ng-repeat="txw in ampKmtxWeb">
+    <div ng-repeat="txw in ampKmtxWeb" ng-show="txw.zsdXuanTiArr.length">
         <h4 ng-bind="txw.TIXINGMINGCHENG">单选题</h4>
         <table>
+            <tr>
+                <th>知识点</th>
+                <th>数量</th>
+                <th>难度</th>
+            </tr>
             <tr ng-repeat="xttj in txw.zsdXuanTiArr track by $index">
                 <td ng-bind="xttj.zsdNameArr.join('；')"></td>
                 <td ng-bind="xttj.TIXING[0].COUNT"></td>
@@ -60,7 +69,7 @@
 </div>
 <div class="row fixed-bottom">
     <label class="checkbox-inline">
-        <input type="checkbox" value="" ng-click="">题目去重（一年）
+        <input type="checkbox" value="" ng-model="isTiMuQuChong">题目去重（一年）
     </label>
-    <button type="button" class="btn btn-primary">生成试卷</button>
+    <button type="button" class="btn btn-primary" ng-click="addRuleMakePaperShiJuan(isTiMuQuChong)">生成试卷</button>
 </div>

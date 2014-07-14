@@ -2133,8 +2133,16 @@ a.add-btn:hover span {
   .ruleMakePaper-body{
     padding: 10px;
     table{
+      width: 100%;
+      th{
+        border: 1px solid #ccc;
+        padding: 5px;
+        text-align: center;
+      }
       td{
-        padding-right: 30px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        text-align: center;
       }
     }
   }
