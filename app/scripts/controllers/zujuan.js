@@ -360,7 +360,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
 
             //停止事件
             function mouseUp() {
-              //在支持 releaseCapture 做些东东
+              //在支持 releaseCapture
               el.releaseCapture ? (
                 //释放焦点
                 el.releaseCapture(),
@@ -709,11 +709,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         txw.zsdXuanTiArr.push(targetTx);
                       }
                     });
-                    ruleMakePaperSelectTxid = '';
-                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
+//                    ruleMakePaperSelectTxid = '';
+//                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
                     $('.ruleMakePaper-header input.txNum').val(''); //重置题目数量
-                    $('#sliderItemRule').width('109px'); //重置滑动块的长度
-                    $('.coefftRule').html('0.50'); //重置难度系数
+//                    $('#sliderItemRule').width('109px'); //重置滑动块的长度
+//                    $('.coefftRule').html('0.50'); //重置难度系数
                     $('input[name=point]:checked').prop('checked', false);//重置知识点
                   }
                   else{
