@@ -2147,10 +2147,11 @@ a.add-btn:hover span {
     }
   }
 }
-.paper_hand_form{
+.paper_hand_form{ //手动组卷样式
   .contentInner{
     .popupWrap{
       width: 220px;
+      left: 341px;
       .dagangListWrap{
         width: 220px;
       }
@@ -2161,6 +2162,32 @@ a.add-btn:hover span {
   }
   .contentWraps{
     padding-left: 220px;
+  }
+}
+.auto_make_paper{
+  .content {
+    .contentInner{
+      .popupWrap{
+        left: 341px;
+      }
+    }
+  }
+}
+.rule_make_paper{ //规则组卷样式
+  .testPaperSummary{
+    display: none;
+  }
+  .content {
+    padding-left: 300px;
+    .contentInner{
+      .popupWrap{
+        left: 120px;
+        width: 300px;
+        .chooseCondition{
+          display: none;
+        }
+      }
+    }
   }
 }
 //考务样式

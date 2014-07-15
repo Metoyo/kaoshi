@@ -6691,13 +6691,27 @@ a.add-btn:hover span {
       text-align: center; }
 
 .paper_hand_form .contentInner .popupWrap {
-  width: 220px; }
+  width: 220px;
+  left: 341px; }
   .paper_hand_form .contentInner .popupWrap .dagangListWrap {
     width: 220px; }
   .paper_hand_form .contentInner .popupWrap .chooseCondition {
     display: none; }
 .paper_hand_form .contentWraps {
   padding-left: 220px; }
+
+.auto_make_paper .content .contentInner .popupWrap {
+  left: 341px; }
+
+.rule_make_paper .testPaperSummary {
+  display: none; }
+.rule_make_paper .content {
+  padding-left: 300px; }
+  .rule_make_paper .content .contentInner .popupWrap {
+    left: 120px;
+    width: 300px; }
+    .rule_make_paper .content .contentInner .popupWrap .chooseCondition {
+      display: none; }
 
 .kaowuWrapper .active {
   color: #000; }

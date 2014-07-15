@@ -1,6 +1,6 @@
 <div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form,
-paper_auto_form: paper_auto_form}">
-    <div class="testPaperSummary" ng-show="isTestPaperSummaryShow">
+rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
+    <div class="testPaperSummary">
         <div class="paper-list-btn clearfix text-center">
             <button type="button" class="btn btn-primary" ng-show="showBackToPaperListBtn"
                     ng-click="showPaperList(true)">查看试卷列表</button>
@@ -146,7 +146,7 @@ paper_auto_form: paper_auto_form}">
                     </div>
                 </div>
                 <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
-                <div class="chooseCondition" ng-show="isTestPaperSummaryShow">
+                <div class="chooseCondition">
                     <div class="chooseTiXingNanDu">
                         <div class="row">
                             <div class="col-sm-8">

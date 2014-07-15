@@ -289,7 +289,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
             }
             zhishidian_id = selectZsd.toString();
-            qryTestFun();
+            if($scope.txTpl == 'views/partials/paper_hand_form.html'){
+              qryTestFun();
+            }
           };
 
           /**
@@ -529,7 +531,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var getShiJuanMuBanData = function(){
             var deferred = $q.defer();
-            mbdt_data = []; // 得到模板大题的数组//
+            mbdt_data = []; // 得到模板大题的数组
             // mbdtdLength = 0; //得到模板大题的长度
 
             //mubanData.shuju.MUBANDATI = [];
@@ -577,17 +579,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.showTestList = function(txid){
             var dashboardWith = $('.dashboard').width();
             if(dashboardWith == 120){
-              $('.popupWrap').animate({
-                left: '341px'
-              }, 500, function() {
-                $('.popupWrap').css('left','auto');
-              });
             }
             else{
               $('.popupWrap').animate({
                 left: '241px'
               }, 500, function() {
-                $('.popupWrap').css('left','auto');
               });
             }
             //加载手动组卷的模板
@@ -634,17 +630,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 aKmtx.tmNanDu = '';
                 aKmtx.dagangArr = [];
               });
+              $scope.autoMakePaperClass = true; //加载自动组卷的样式
               $scope.ampKmtx = autoMakePaperKmtx;
-              $('.popupWrap').css('left','-260px').animate({
-                left: '341px'
-              }, 500, function() {
-
-              });
             });
           };
 
           /**
-           * 规则组卷//
+           * 规则组卷
            */
           $scope.ruleMakePaper = function(){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
@@ -661,11 +653,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 txBoj.TIXINGMINGCHENG = kmtx.TIXINGMINGCHENG;
                 $scope.ampKmtxWeb.push(txBoj);
               });
-              $('.popupWrap').css({width:'300px', left: '120px'});
-              $('.content').css('padding-left', '300px');
-              $scope.ruleMakePaper = { selectTx: null };
+              $scope.ruleMakePaperTx = { selectTx: null };
+              $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
               $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
-
             });
           };
 
@@ -673,10 +663,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 返回到组卷的3中情形页面
            */
           $scope.backToZuJuanHome = function(){
-            $('.popupWrap').css({width:'600px', left: '-360px'});
-            $('.content').css('padding-left', '221px');
-            $scope.txTpl = 'views/partials/paper_preview.html'; //加载规则组卷模板
-            $scope.isTestPaperSummaryShow = true; //div.testPaperSummary隐藏
+            $scope.dropMakePaper();
+            $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
           };
 
           /**
@@ -722,7 +710,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       }
                     });
                     ruleMakePaperSelectTxid = '';
-                    $scope.ruleMakePaper = { selectTx: null }; //重置题型选择
+                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
                     $('.ruleMakePaper-header input.txNum').val(''); //重置题目数量
                     $('#sliderItemRule').width('109px'); //重置滑动块的长度
                     $('.coefftRule').html('0.50'); //重置难度系数
@@ -749,24 +737,16 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 保存规则组卷数据
            */
           $scope.addRuleMakePaperShiJuan = function(isQuChong){
-//            $scope.loadingImgShow = true;
-            var countnum = 0,
-              tiXingLenCount = 0, //定义一个变量用了判断当所有题型长度为空是给出提示
-              distAutoMakePaperData = {
+            $scope.loadingImgShow = true;
+            var distAutoMakePaperData = {
                 token: token,
                 caozuoyuan: caozuoyuan,
                 jigouid: jigouid,
                 lingyuid: lingyuid,
                 shuju:{
-                  items: [],
-                  exclude:{}
+                  items: []
                 }
-              },
-              times = 0,
-              tmIdsChoLen = 0, //得到符合条件自动组卷的数据长度
-              tiXingTiMuObj = {}, //定义一个空对象，用来临时存放返回的题型题目
-              tiXingTiMuArr = [],
-              mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
+              };
             //得到题型数量和难度的数组
             _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
               if(txArr.zsdXuanTiArr.length){
@@ -780,142 +760,49 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }
             if(distAutoMakePaperData.shuju.items.length){
               $http.post(guiZeZuJuanUrl, distAutoMakePaperData).success(function(tmIdsData){
-                var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
-                $http.get(qrytimuxiangqing).success(function(stdata){
-                  if(stdata.length){
-                    _.each(stdata, function(tm, idx, lst){
-                      //将试题详情添加到mabandData
-                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
-                        if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
-                          mbdt.TIMUARR.push(tm);
+                if(tmIdsData.length){
+                  var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
+                  $http.get(qrytimuxiangqing).success(function(stdata){
+                    if(stdata.length){
+                      _.each(stdata, function(tm, idx, lst){
+                        //将试题详情添加到mabandData
+                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+                          if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
+                            mbdt.TIMUARR.push(tm);
+                          }
+                        });
+                        //难度统计  nanduTempData NANDU_ID
+                        for(var j = 0; j < nanduLength; j++){
+                          if(nanduTempData[j].nanduId == tm.NANDU_ID){
+                            nanduTempData[j].nanduCount.push(tm.TIMU_ID);
+                          }
                         }
                       });
-                      //难度统计  nanduTempData NANDU_ID
-                      for(var j = 0; j < nanduLength; j++){
-                        if(nanduTempData[j].nanduId == tm.NANDU_ID){
-                          nanduTempData[j].nanduCount.push(tm.TIMU_ID);
-                        }
-                      }
-                    });
-                    //统计每种题型的数量和百分比
-                    _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
-                      tixingStatistics(idx, kmtxListLength);
-                    });
-                    nanduPercent(); //难度统计
+                      //统计每种题型的数量和百分比
+                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+                        tixingStatistics(idx, kmtxListLength);
+                      });
+                      nanduPercent(); //难度统计
 
-                    //判读是否执行完成
-                    $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
-                    $scope.baocunshijuanBtn = true; //保存试卷的按钮
-                    $scope.shijuanPreview();
-                  }
-                  else{
-//                    $scope.timudetails = null;
-                    console.log(stdata.error);
-                  }
-                }).error(function(err){
-                  console.log(err);
-                });
+                      //判读是否执行完成
+                      $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
+                      $scope.baocunshijuanBtn = true; //保存试卷的按钮
+                      $scope.shijuanPreview();
+                      $scope.isTestPaperSummaryShow = true;
+                      $scope.loadingImgShow = false;
+                      $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+                    }
+                    else{
+                      $scope.timudetails = null;
+                      console.log(stdata.error);
+                    }
+                  });
+                }
+                else{
+                  alert(tmIdsData.error);
+                }
               });
             }
-            //得到正确的题目id和题目详情
-//            if(tiXingLenCount){
-//              tmIdsChoLen = distAutoMakePaperDataArr.length; //得到符合条件自动组卷的数据长度
-//              //得到正确的题目id
-//              var getIdsFun = function(){
-//                if(times < tmIdsChoLen){
-//                  $http.post(zidongzujuan, distAutoMakePaperDataArr[times]).success(function(data){
-//                    if(data.error){
-//                      alert(data.error);
-//                    }
-//                    else{
-//                      tiXingTiMuArr.push(data);
-//                      if(times == tmIdsChoLen -1){
-//                        //得到调用数据（object格式）
-//                        _.each(tiXingTiMuArr, function(txtma, idx, lst){
-//                          _.each(txtma.TIXING_TIMU, function(value, key, list){
-//                            tiXingTiMuObj[key] = value;
-//                          });
-//                        });
-//                        _.each(tiXingTiMuObj, function(value, key, list){
-//                          for(var k = 0; k < mbdtdLength; k++){
-//                            if(mubanData.shuju.MUBANDATI[k].MUBANDATI_ID == key){
-//                              //将本题加入试卷
-//                              _.each(value, function(tmId, idx, list){
-//                                var sjtm = {
-//                                  TIMU_ID: '',
-//                                  MUBANDATI_ID: key,
-//                                  WEIZHIXUHAO: idx,
-//                                  FENZHI: ''
-//                                };
-//                                sjtm.TIMU_ID = tmId;
-//                                shijuanData.shuju.SHIJUAN_TIMU.push(sjtm);
-//                              });
-//
-//                              //得到具体的数据
-//                              (function(index, tiMuIds){
-//                                var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tiMuIds.toString(); //查询详情url
-//                                $http.get(qrytimuxiangqing).success(function(stdata){
-//                                  if(stdata.length){
-//                                    mubanData.shuju.MUBANDATI[index].TIMUARR.push(stdata);
-//                                    _.each(stdata, function(tm, idx, lst){
-//                                      //难度统计  nanduTempData NANDU_ID
-//                                      for(var j = 0; j < nanduLength; j++){
-//                                        if(nanduTempData[j].nanduId == tm.NANDU_ID){
-//                                          nanduTempData[j].nanduCount.push(tm.TIMU_ID);
-//                                        }
-//                                      }
-//                                    });
-//                                    //统计每种题型的数量和百分比
-//                                    tixingStatistics(index, kmtxListLength);
-//                                    nanduPercent(); //难度统计
-//
-//                                    //判读是否执行完成
-//                                    if(countnum == tmIdsChoLen - 1){
-//                                      console.log(mubanData);
-//                                      $scope.loadingImgShow = false;
-//                                      $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
-//                                      $scope.baocunshijuanBtn = true; //保存试卷的按钮
-//                                      $scope.shijuanPreview();
-//                                    }
-//                                    countnum ++ ;
-//                                  }
-//                                  else{
-//                                    $scope.timudetails = null;
-//                                    $scope.loadingImgShow = false;
-//                                  }
-//                                }).error(function(err){
-//                                  console.log(err);
-//                                  $scope.loadingImgShow = false;
-//                                });
-//                              })(k, value);
-//
-//                              addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
-//
-//                              //二级控制面板上的分数统计
-//                              restoreKmtxDtscore();
-//                              _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
-//                                _.each($scope.kmtxList, function(kmtx, idx, lst){
-//                                  if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
-//                                    kmtx.datiScore = mbdt.datiScore;
-//                                  }
-//                                });
-//                              });
-//                            }
-//                          }
-//                        });
-//                      }
-//                      times ++;
-//                      getIdsFun();
-//                    }
-//                  });
-//                }
-//              };
-//              getIdsFun();
-//            }
-//            else{
-//              $scope.loadingImgShow = false;
-//              alert('请至少选择一种题型！');
-//            }
           };
 
           /**
@@ -990,6 +877,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                     $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                                     $scope.baocunshijuanBtn = true; //保存试卷的按钮
                                     $scope.loadingImgShow = false;  //paper_preview.html loading
+                                    $scope.autoMakePaperClass = false; //自动组卷删除样式
                                     $scope.shijuanPreview();
                                   }
                                 }
@@ -1195,9 +1083,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-            $('.popupWrap').css('left', '-360px'); //将div.popupWrap的left属性还原
+//            $('.popupWrap').css('left', '-360px'); //将div.popupWrap的left属性还原
             $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
-//            $('.reloadMath').click();
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -1421,12 +1308,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
             });
             mubanData.shuju.MUBANDATI = mbdtArr;
             $scope.mubanData = mubanData;
-            console.log($scope.mubanData);
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
             $scope.addMoreTiMuBtn = true; //添加试卷按钮显示
-//            $('.reloadMath').click();
           };
 
           /**
@@ -1768,6 +1653,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+            $scope.autoMakePaperClass = false; //加载自动组卷的样式
             deleteTempTemp();
             clearData();
             restoreKmtxDtscore();

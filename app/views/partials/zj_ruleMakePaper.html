@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td>
-                <select class="form-control ruleMakePaperSelectId" ng-model="ruleMakePaper.selectTx"
+                <select class="form-control ruleMakePaperSelectId" ng-model="ruleMakePaperTx.selectTx"
                         ng-change="rmpGetTxId(ruleMakePaper.selectTx)"
                         ng-options="tx.TIXING_ID as tx.TIXINGMINGCHENG for tx in kmtxList">
                     <option value="">请选择</option>
@@ -71,5 +71,5 @@
     <label class="checkbox-inline">
         <input type="checkbox" value="" ng-model="isTiMuQuChong">题目去重（一年）
     </label>
-    <button type="button" class="btn btn-primary" ng-click="addRuleMakePaperShiJuan(isTiMuQuChong)">生成试卷</button>
+    <button type="button" class="btn btn-primary" ng-click="addRuleMakePaperShiJuan()">生成试卷</button>
 </div>
