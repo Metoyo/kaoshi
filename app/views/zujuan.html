@@ -58,7 +58,11 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                     ng-click="showZuJuanPage()">
                 添加新试卷
             </button>
-            <button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="addMoreTiMuBtn && !shijuanyulanBtn">
+            <!--<button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="addMoreTiMuBtn && !shijuanyulanBtn">-->
+                <!--添加试题-->
+            <!--</button>-->
+            <button type="button" class="btn btn-primary" ng-click="showTestList()"
+                    ng-show="$scope.txTpl == 'views/partials/paper_preview.html'">
                 添加试题
             </button>
         </div>

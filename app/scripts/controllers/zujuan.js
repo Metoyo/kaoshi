@@ -647,6 +647,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 var txBoj = {
                   TIXING_ID: '',
                   TIXINGMINGCHENG: '',
+                  txTotalNum: 0,
                   zsdXuanTiArr: []
                 };
                 txBoj.TIXING_ID = kmtx.TIXING_ID;
@@ -681,40 +682,43 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $scope.addRuleCondition = function(){
             var targetTx = {
-              NANDU: '', // 难度系数
-              ZHISHIDIAN: [], //知识点ID, 数组
-              zsdNameArr: [], //知识点名称, 数组
-              TIXING: [{
-                TIXING_ID: '',
-                COUNT: ''
-              }] //{TIXING_ID: 1, COUNT: 10}
-            };
-            if(ruleMakePaperSelectTxid){
-              _.each($scope.kmtxList, function(kmtx, idx, lst){
-                if(kmtx.TIXING_ID == ruleMakePaperSelectTxid){
-                  targetTx.TIXING[0].TIXING_ID = ruleMakePaperSelectTxid;
-                  targetTx.TIXING[0].COUNT = $('.ruleMakePaper-header input.txNum').val();
-                  targetTx.NANDU = $('.coefftRule').html();
-                  targetTx.ZHISHIDIAN = selectZsd;
-                  targetTx.zsdNameArr = selectZsdName;
-                }
-              });
-            }
+                NANDU: '', // 难度系数
+                ZHISHIDIAN: [], //知识点ID, 数组
+                zsdNameArr: [], //知识点名称, 数组
+                TIXING: [{
+                  TIXING_ID: '',
+                  COUNT: ''
+                }] //{TIXING_ID: 1, COUNT: 10}
+              },
+              txNumClass = $('.ruleMakePaper-header input.txNum'),
+              txNum = parseInt(txNumClass.val()),
+              coefftRule = $('.coefftRule').html();
+
             if(selectZsd.length){
               if(ruleMakePaperSelectTxid){
-                if(targetTx.TIXING[0].COUNT){
-                  if(targetTx.NANDU){
+                if(txNum){
+                  if(coefftRule){
+                    targetTx.TIXING[0].TIXING_ID = ruleMakePaperSelectTxid;
+                    targetTx.TIXING[0].COUNT = txNum;
+                    targetTx.NANDU = coefftRule;
+                    targetTx.ZHISHIDIAN = selectZsd;
+                    targetTx.zsdNameArr = selectZsdName;
                     _.each($scope.ampKmtxWeb, function(txw, idx, lst){
                       if(txw.TIXING_ID == targetTx.TIXING[0].TIXING_ID){
                         txw.zsdXuanTiArr.push(targetTx);
+                        txw.txTotalNum += targetTx.TIXING[0].COUNT;//统计题目数量
                       }
                     });
+                    txNumClass.val(''); //重置题目数量
+                    $('input[name=point]:checked').prop('checked', false);//重置知识点
+                    selectZsd = [];
+                    selectZsdName = [];
 //                    ruleMakePaperSelectTxid = '';
 //                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
-                    $('.ruleMakePaper-header input.txNum').val(''); //重置题目数量
+
 //                    $('#sliderItemRule').width('109px'); //重置滑动块的长度
 //                    $('.coefftRule').html('0.50'); //重置难度系数
-                    $('input[name=point]:checked').prop('checked', false);//重置知识点
+
                   }
                   else{
                     alert('请选择难度！');
@@ -731,6 +735,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
             else{
               alert('请选择知识点！');
             }
+          };
+
+          /**
+           * 删除组卷的条件
+           */
+          $scope.deleteRuleCondition = function(txw, idx){
+            txw.txTotalNum -= parseInt(txw.zsdXuanTiArr[idx].TIXING[0].COUNT);
+            txw.zsdXuanTiArr.splice(idx, 1);
           };
 
           /**
@@ -928,16 +940,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
               tiXingLenCount = 0, //定义一个变量用了判断当所有题型长度为空是给出提示
               distAutoMakePaperDataArr = [],
               times = 0,
-//              haveTmNumLen = 0,
               tmIdsChoLen = 0, //得到符合条件自动组卷的数据长度
               tiXingTiMuObj = {}, //定义一个空对象，用来临时存放返回的题型题目
               tiXingTiMuArr = [],
               mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
-//            _.each($scope.ampKmtx, function(aktm, idx, lst){
-//              if(aktm.tmNum){
-//                haveTmNumLen ++;
-//              }
-//            });
             //得到题型数量和难度的数组
             for(var i = 0; i < tiXingLen; i++){
               var distAutoMakePaperData = {
@@ -1083,7 +1089,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-//            $('.popupWrap').css('left', '-360px'); //将div.popupWrap的left属性还原
             $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
           };
           $scope.backToZjHome = function(){
@@ -1296,7 +1301,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 试卷预览代码//
+           * 试卷预览代码
            */
           $scope.shijuanPreview = function(){
             var mbdtArr = []; //定义一个空的数组用来存放模板大题

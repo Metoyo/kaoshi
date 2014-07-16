@@ -52,17 +52,25 @@
 </div>
 <div class="row ruleMakePaper-body">
     <div ng-repeat="txw in ampKmtxWeb" ng-show="txw.zsdXuanTiArr.length">
-        <h4 ng-bind="txw.TIXINGMINGCHENG">单选题</h4>
+        <h4><span ng-bind="txw.TIXINGMINGCHENG"></span>
+            <span class="txTotalNum">共<strong ng-bind="txw.txTotalNum"></strong>题</span>
+        </h4>
         <table>
             <tr>
-                <th>知识点</th>
-                <th>数量</th>
-                <th>难度</th>
+                <th width="70%">知识点</th>
+                <th width="10%">数量</th>
+                <th width="10%">难度</th>
+                <th>删除</th>
             </tr>
             <tr ng-repeat="xttj in txw.zsdXuanTiArr track by $index">
-                <td ng-bind="xttj.zsdNameArr.join('；')"></td>
+                <td>
+                    <input type="text" value="{{xttj.zsdNameArr.join('；')}}" disabled class="font-cut">
+                </td>
                 <td ng-bind="xttj.TIXING[0].COUNT"></td>
                 <td ng-bind="xttj.NANDU"></td>
+                <td>
+                    <span class="glyphicon glyphicon-trash" ng-click="deleteRuleCondition(txw, $index)"></span>
+                </td>
             </tr>
         </table>
     </div>

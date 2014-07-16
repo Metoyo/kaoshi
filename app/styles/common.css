@@ -5104,6 +5104,11 @@ body {
   margin-left: 0;
   margin-right: 0; }
 
+.font-cut {
+  width: 100%;
+  border: 0;
+  text-overflow: ellipsis; }
+
 a.add-btn:hover span {
   color: #00CC33; }
 
@@ -6671,7 +6676,8 @@ a.add-btn:hover span {
     font-weight: normal;
     font-size: 12px; }
   .zujuanWrapper .ruleMakePaper-header .txNum {
-    width: 50px; }
+    width: 50px;
+    text-align: center; }
 .zujuanWrapper .fixed-bottom {
   position: fixed;
   bottom: 0;
@@ -6689,6 +6695,13 @@ a.add-btn:hover span {
       border: 1px solid #ccc;
       padding: 5px;
       text-align: center; }
+      .zujuanWrapper .ruleMakePaper-body table td .glyphicon-trash {
+        cursor: pointer; }
+        .zujuanWrapper .ruleMakePaper-body table td .glyphicon-trash:hover {
+          color: red; }
+  .zujuanWrapper .ruleMakePaper-body .txTotalNum {
+    font-size: 14px;
+    margin-left: 15px; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px;
