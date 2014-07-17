@@ -362,6 +362,15 @@ a.add-btn:hover span {
 .messageWrap {
   color: red;
 }
+//考务和组卷的 sliding tab
+.sub-nav{
+  margin-top: 10px;
+  .nav-tabs{
+    li:first-child{
+      margin-left: 15px;
+    }
+  }
+}
 /*sub dashboard styles begin*/
 .innerWrapperSubDs{
   .dagangListWrap {
@@ -2162,6 +2171,27 @@ a.add-btn:hover span {
       margin-left: 15px;
     }
   }
+  .zsdPreview{
+    position: fixed;
+    width: 500px;
+    height: 300px;
+    z-index: 2000;
+    background-color: #F8F8F8;
+    margin: -150px 0 0 -250px;
+    top: 50%;
+    left: 50%;
+    display: none;
+    border: 1px solid #ccc;
+    .zsdPreviewInner{
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 10px;
+    }
+  }
+  .sub-nav {
+    margin-top: 0;
+  }
 }
 .paper_hand_form{ //手动组卷样式
   .contentInner{
@@ -2210,14 +2240,6 @@ a.add-btn:hover span {
 .kaowuWrapper{
   .active{
     color: #000;
-  }
-  .sub-nav{
-    margin-top: 10px;
-    .nav-tabs{
-      li:first-child{
-        margin-left: 15px;
-      }
-    }
   }
   i{
     color: red;

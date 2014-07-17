@@ -1033,7 +1033,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                       else{ // 试题添加成功后！
                         $('.save-msg').show().fadeOut(3000);
                         resetFun(tiankong_data);
-                        loopArr = []; //重置填空题支
+                        $scope.loopArr = []; //重置填空题支
                       }
                       $scope.loadingImgShow = false; //jisuan.html
                     }

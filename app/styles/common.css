@@ -5323,6 +5323,11 @@ a.add-btn:hover span {
 .messageWrap {
   color: red; }
 
+.sub-nav {
+  margin-top: 10px; }
+  .sub-nav .nav-tabs li:first-child {
+    margin-left: 15px; }
+
 /*sub dashboard styles begin*/
 .innerWrapperSubDs {
   /*sub dashboard styles end*/
@@ -6702,6 +6707,24 @@ a.add-btn:hover span {
   .zujuanWrapper .ruleMakePaper-body .txTotalNum {
     font-size: 14px;
     margin-left: 15px; }
+.zujuanWrapper .zsdPreview {
+  position: fixed;
+  width: 500px;
+  height: 300px;
+  z-index: 2000;
+  background-color: #F8F8F8;
+  margin: -150px 0 0 -250px;
+  top: 50%;
+  left: 50%;
+  display: none;
+  border: 1px solid #ccc; }
+  .zujuanWrapper .zsdPreview .zsdPreviewInner {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px; }
+.zujuanWrapper .sub-nav {
+  margin-top: 10px; }
 
 .paper_hand_form .contentInner .popupWrap {
   width: 220px;
@@ -6728,10 +6751,6 @@ a.add-btn:hover span {
 
 .kaowuWrapper .active {
   color: #000; }
-.kaowuWrapper .sub-nav {
-  margin-top: 10px; }
-  .kaowuWrapper .sub-nav .nav-tabs li:first-child {
-    margin-left: 15px; }
 .kaowuWrapper i {
   color: red;
   font-style: normal; }

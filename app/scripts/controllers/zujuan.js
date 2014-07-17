@@ -1304,11 +1304,32 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 试卷预览代码
            */
           $scope.shijuanPreview = function(){
-            var mbdtArr = []; //定义一个空的数组用来存放模板大题
-            //数据为空的模板大题
+            var mbdtArr = [], //定义一个空的数组用来存放模板大题
+              newCont,
+              tgReg = new RegExp('<\%{.*?}\%>', 'g');
+            //删除数据为空的模板大题
             _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
               if(mbdt.TIMUARR.length){
-                mbdtArr.push(mbdt);
+                if(mbdt.MUBANDATI_ID == 6){
+                  _.each(mbdt.TIMUARR, function(tm, subIdx, subLst){
+                    //修改填空题的题干
+                    newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+                      var text = arg.slice(2, -2), //提起内容
+                        textJson = JSON.parse(text),
+                        _len = textJson.size,
+                        i, xhStr = '';
+                      for(i = 0; i < _len; i ++ ){
+                        xhStr += '_';
+                      }
+                      return xhStr;
+                    });
+                    tm.TIGAN.tiGan = newCont;
+                  });
+                  mbdtArr.push(mbdt);
+                }
+                else{
+                  mbdtArr.push(mbdt);
+                }
               }
             });
             mubanData.shuju.MUBANDATI = mbdtArr;
@@ -1525,6 +1546,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 shijuanTimu.MUBANDATI_ID = dati.MUBANDATI_ID; //模板大题的id
                 shijuanTimu.TIMU_ID = tm.TIMU_ID; //试题的id
                 shijuanTimu.WEIZHIXUHAO = subidx; //位置序号
+                //给题目类型是9的题添加分页符
+                if(tm.TIMULEIXING_ID == 9){
+                  shijuanTimu.HUANYE = 1;
+                }
+                //得到小题的分数
                 if(tm.xiaotiScore && tm.xiaotiScore > 0){
                   shijuanTimu.FENZHI = tm.xiaotiScore; //得到小题的分数
                 }
@@ -1545,7 +1571,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 //提交数据
                 if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
                   $scope.isSavePaperConfirm = true;
-                  console.log(shijuanData);
                 }
                 else{ //33
                   alert('请检查试卷的完整性！');
@@ -1669,7 +1694,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var isFirstQryPaperList;
           var qryShiJuanList = function(){
-            $scope.loadingImgShow = true;  //paperList.html loading
+            $scope.loadingImgShow = true;  //zj_paperList.html loading
             paperPageArr = [];
             sjlbIdArrRev = []; //反转试卷列表id
             $http.get(qryCxsjlbUrl).success(function(sjlb){
@@ -1694,7 +1719,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               else{
                 alert('没有相关试卷信息！');
-                $scope.loadingImgShow = false;  //paperList.html loading
+                $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
             }).error(function(err){
               alert(err);
@@ -1713,10 +1738,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           * 查看组卷规则列表
+           */
+          $scope.showZuJuanRuleList = function(){
+
+          };
+
+          /**
            * 查询试卷概要的分页代码
            */
           $scope.getThisSjgyPageData = function(pg){
-            $scope.loadingImgShow = true;  //paperList.html loading
+            $scope.loadingImgShow = true;  //zj_paperList.html loading
             var qryShiJuanGaiYao,
               pgNum = pg - 1,
               timu_id,
@@ -1758,25 +1790,25 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         }
                       });
                     });
-                    $scope.loadingImgShow = false;  //paperList.html loading
+                    $scope.loadingImgShow = false;  //zj_paperList.html loading
                     $scope.paperListData = sjlbgy;
                     if(isFirstQryPaperList){
                       $scope.totalSelectedItmes = 0; //已选试题的总数量
                       $scope.showBackToMakePaperBtn = true;
                       $scope.showBackToPaperListBtn = false; //返回试卷列表
-                      $scope.txTpl = 'views/partials/paperList.html'; //加载试卷列表模板
+                      $scope.txTpl = 'views/partials/zj_home.html'; //加载试卷列表模板
                       isFirstQryPaperList = false;
                     }
                   }
                   else{
                     alert('查询创建人名称失败！');
-                    $scope.loadingImgShow = false;  //paperList.html loading
+                    $scope.loadingImgShow = false;  //zj_paperList.html loading
                   }
                 });
               }
               else{
                 alert('很遗憾！没有相关数据！');
-                $scope.loadingImgShow = false;  //paperList.html loading
+                $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
             }).error(function(err){
               console.log(err);

@@ -63,7 +63,8 @@
                 <th>删除</th>
             </tr>
             <tr ng-repeat="xttj in txw.zsdXuanTiArr track by $index">
-                <td>
+                <td hover-slide hover-slide-target="zsdPreview" hover-slide-getval="font-cut"
+                    hover-slide-setval="zsdPreviewInner">
                     <input type="text" value="{{xttj.zsdNameArr.join('；')}}" disabled class="font-cut">
                 </td>
                 <td ng-bind="xttj.TIXING[0].COUNT"></td>
@@ -73,6 +74,11 @@
                 </td>
             </tr>
         </table>
+    </div>
+</div>
+<div class="zsdPreview">
+    <div class="zsdPreviewInner">
+        laskjdflksa
     </div>
 </div>
 <div class="row fixed-bottom">
