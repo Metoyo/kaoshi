@@ -151,7 +151,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
             qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
             getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //规则组卷
-            guiZeZuJuanUrl = baseMtAPIUrl + 'guizezujuan'; //规则组卷的url
+            guiZeZuJuanUrl = baseMtAPIUrl + 'guizezujuan', //规则组卷的url
+            updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize', //修改选题规则
+            updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize', //更新选题规则使用次数
+            qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan, //更新选题规则使用次数
+            zuJuanRuleStr; //存放组卷规则的字符串，有json数据格式转化而来
 
 
           /**
@@ -715,7 +719,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     selectZsdName = [];
 //                    ruleMakePaperSelectTxid = '';
 //                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
-
 //                    $('#sliderItemRule').width('109px'); //重置滑动块的长度
 //                    $('.coefftRule').html('0.50'); //重置难度系数
 
@@ -743,6 +746,72 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.deleteRuleCondition = function(txw, idx){
             txw.txTotalNum -= parseInt(txw.zsdXuanTiArr[idx].TIXING[0].COUNT);
             txw.zsdXuanTiArr.splice(idx, 1);
+          };
+
+          /**
+           * 组卷规则的增删改
+           */
+          $scope.saveZjRule = function(rule, opt){
+            //rule是具体的数据，opt是要实现的功能sav(保存), upd(修改), del(删除)
+            var ruleData = {
+                token: token,
+                caozuoyuan: caozuoyuan,
+                lingyuid: lingyuid,
+                shuju:{
+                  XUANTIGUIZE_ID: '',//选题规则ID (留空表示新建)
+                  GUIZEMINGCHENG: '',// 规则名称
+                  GUIZEBIANMA: '',//规则编码
+                  GUIZESHUOMING: '', //规则说明
+                  ZHUANGTAI: 1 //状态(-1表示删除, 否则表示添加或修改)
+                }
+              },
+              date = new Date(),
+              currentDate = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))
+                + date.getDate(); //当前的日期
+            if(opt == 'sav'){
+              ruleData.shuju.GUIZEMINGCHENG = '组卷规则' + currentDate;
+              ruleData.shuju.GUIZEBIANMA = rule;
+            }
+            if(opt == 'upd'){
+
+            }
+            if(opt == 'del'){
+
+            }
+            if(ruleData.shuju.GUIZEBIANMA.length){
+              $http.post(updateXuanTiRule, ruleData).success(function(data){
+                if(data.id){
+                  console.log('保存成功！');
+                }
+                else{
+                  alert(data.error);
+                }
+              });
+            }
+          };
+
+          /**
+           * 查询组卷规则
+           */
+          var qryZjRule = function(rId){
+            $scope.loadingImgShow = true; //zj_ruleList.html
+            var qryXuanTiRule;
+            if(rId){
+              qryXuanTiRule = qryXuanTiRuleBase + '&xuantiguize_id=' + rId;
+            }
+            else{
+              qryXuanTiRule = qryXuanTiRuleBase;
+            }
+            $http.get(qryXuanTiRule).success(function(data){
+              if(data){
+                $scope.loadingImgShow = false; //zj_ruleList.html
+                $scope.zjRuleData = data;
+              }
+              else{
+                $scope.loadingImgShow = false; //zj_ruleList.html
+                alert(data.error);
+              }
+            });
           };
 
           /**
@@ -803,6 +872,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.isTestPaperSummaryShow = true;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+                      //保存规则
+                      zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
+                      $scope.saveZjRule(zuJuanRuleStr, 'sav');
+
                     }
                     else{
                       $scope.timudetails = null;
@@ -1274,7 +1347,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 加入试卷按钮和移除试卷按钮的显示和隐藏
+           * 加入试卷按钮和移除试卷按钮的显示和隐藏//
            */
           var addOrRemoveItemToPaper = function(arr){
             var selectTestStr = '';
@@ -1728,20 +1801,52 @@ define(['jquery', 'underscore', 'angular', 'config'],
           qryShiJuanList();
 
           /**
+           * 返回组卷首页//
+           */
+          $scope.showZuJuan = function(){
+            $scope.txTpl = 'views/partials/zj_home.html';
+            $scope.showPaperList();
+
+            mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
+            shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
+            shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
+            shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
+            shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
+            shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
+            mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
+            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+              ndkmtx.nanduCount = [];
+              ndkmtx.ndPercentNum = '0%';
+              return ndkmtx;
+            });
+            _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+              tjkmtx.itemsNum = 0;
+              tjkmtx.txPercentNum = '0%';
+              return tjkmtx;
+            });
+            $scope.selectTestStr = ''; //清除试题加入和移除按钮
+            $scope.shijuanyulanBtn = false; //试卷预览的按钮
+            $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+            $scope.baocunshijuanBtn = false; //保存试卷的按钮
+            $scope.sjPreview = false; //试卷预览
+            deleteTempTemp();
+            restoreKmtxDtscore();
+          };
+
+          /**
            * 查看试卷列表
            */
           $scope.showPaperList = function(isBackToPaperList){
-            deleteTempTemp();
-            clearData();
-            restoreKmtxDtscore();
             qryShiJuanList(isBackToPaperList);
+            $scope.zjTpl = 'views/partials/zj_paperList.html';
           };
 
           /**
            * 查看组卷规则列表
            */
           $scope.showZuJuanRuleList = function(){
-
+            qryZjRule();
+            $scope.zjTpl = 'views/partials/zj_ruleList.html'; //加载试卷列表模板
           };
 
           /**
@@ -1796,7 +1901,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.totalSelectedItmes = 0; //已选试题的总数量
                       $scope.showBackToMakePaperBtn = true;
                       $scope.showBackToPaperListBtn = false; //返回试卷列表
-                      $scope.txTpl = 'views/partials/zj_home.html'; //加载试卷列表模板
+                      $scope.zjTpl = 'views/partials/zj_paperList.html'; //加载试卷列表模板
                       isFirstQryPaperList = false;
                     }
                   }
