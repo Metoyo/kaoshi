@@ -749,7 +749,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 组卷规则的增删改
+           * 组卷规则的增删改//
            */
           $scope.saveZjRule = function(rule, opt){
             //rule是具体的数据，opt是要实现的功能sav(保存), upd(修改), del(删除)
@@ -773,15 +773,20 @@ define(['jquery', 'underscore', 'angular', 'config'],
               ruleData.shuju.GUIZEBIANMA = rule;
             }
             if(opt == 'upd'){
-
+              ruleData.shuju.XUANTIGUIZE_ID = rule.XUANTIGUIZE_ID;
+              ruleData.shuju.GUIZEMINGCHENG = rule.GUIZEMINGCHENG;
+              ruleData.shuju.GUIZEBIANMA = rule.GUIZEBIANMA;
+              ruleData.shuju.GUIZESHUOMING = rule.GUIZESHUOMING;
             }
             if(opt == 'del'){
-
+              ruleData.shuju.XUANTIGUIZE_ID = rule;
+              ruleData.shuju.ZHUANGTAI = -1;
             }
-            if(ruleData.shuju.GUIZEBIANMA.length){
+            if(ruleData.shuju.GUIZEBIANMA.length || ruleData.shuju.XUANTIGUIZE_ID){
               $http.post(updateXuanTiRule, ruleData).success(function(data){
                 if(data.id){
-                  console.log('保存成功！');
+//                  console.log('保存成功！');
+                  qryZjRule();
                 }
                 else{
                   alert(data.error);
