@@ -155,8 +155,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
             updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize', //修改选题规则
             updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize', //更新选题规则使用次数
             qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan, //更新选题规则使用次数
-            zuJuanRuleStr, //存放组卷规则的字符串，有json数据格式转化而来
-            isComeFromRuleList = false; //是否由规则列表点进去的
+            zuJuanRuleStr = '', //存放组卷规则的字符串，有json数据格式转化而来
+            isComeFromRuleList = false, //是否由规则列表点进去的
+            comeFromRuleListData = ''; //存放已选组卷规则的变量
 
 
           /**
@@ -663,6 +664,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(zjr){
                 $scope.ampKmtxWeb = zjr.txTongJi;
                 isComeFromRuleList = true;
+                comeFromRuleListData = zjr;
+              }
+              else{
+                _.each($scope.ampKmtxWeb, function(ampw, idx, lst){
+                  ampw.txTotalNum = 0;
+                  ampw.zsdXuanTiArr = [];
+                });
+                isComeFromRuleList = false;
+                comeFromRuleListData = '';
               }
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
@@ -673,13 +683,51 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 返回到组卷的3中情形页面
            */
-          $scope.backToZuJuanHome = function(){
+          $scope.ruleBackToZuJuanHome = function(){
             _.each($scope.ampKmtxWeb, function(ampw, idx, lst){
               ampw.txTotalNum = 0;
               ampw.zsdXuanTiArr = [];
             });
-            $scope.dropMakePaper();
+            $scope.totalSelectedItmes = 0; //已选试题的总数量
+            $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+            $scope.autoMakePaperClass = false; //加载自动组卷的样式
+            //clearData()代码
+            mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
+            shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
+            shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
+            shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
+            shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
+            shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
+            mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
+            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+              ndkmtx.nanduCount = [];
+              ndkmtx.ndPercentNum = '0%';
+              return ndkmtx;
+            });
+            _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+              tjkmtx.itemsNum = 0;
+              tjkmtx.txPercentNum = '0%';
+              return tjkmtx;
+            });
+            $scope.selectTestStr = ''; //清除试题加入和移除按钮
+            $scope.shijuanyulanBtn = false; //试卷预览的按钮
+            $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+            $scope.baocunshijuanBtn = false; //保存试卷的按钮
+            deleteTempTemp();
+            restoreKmtxDtscore();
             $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+            //返回组卷页面还是组卷规则列表页
+            $scope.paper_hand_form = false; //手动组卷时添加的样式
+            $scope.sjPreview = false;
+            if(isComeFromRuleList){
+              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
+              $scope.zj_tabActive = 'zjRule';
+              isComeFromRuleList = false;
+              comeFromRuleListData = '';
+            }
+            else{
+              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+            }
           };
 
           /**
@@ -761,7 +809,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 组卷规则的增删改//
            */
-          $scope.saveZjRule = function(rule, opt){
+          $scope.saveZjRule = function(rule, opt, isSavePaper){
             //rule是具体的数据，opt是要实现的功能sav(保存), upd(修改), del(删除)
             var ruleData = {
                 token: token,
@@ -795,8 +843,26 @@ define(['jquery', 'underscore', 'angular', 'config'],
             if(ruleData.shuju.GUIZEBIANMA.length || ruleData.shuju.XUANTIGUIZE_ID){
               $http.post(updateXuanTiRule, ruleData).success(function(data){
                 if(data.id){
-//                  console.log('保存成功！');
-                  qryZjRule();
+                  if(isSavePaper){ //判断是否为保存试卷，如果是话，更新使用次数
+                    var guizeTouch = {
+                      token: token,
+                      caozuoyuan: caozuoyuan,
+                      xuantiguize_id: data.id
+                    };
+                    $http.post(updateRuleUseTimes, guizeTouch).success(function(subData){
+                      if(subData.result){
+//                        alert('使用次数更新成功!');
+                        isComeFromRuleList = false;
+                        comeFromRuleListData = '';
+                      }
+                      else{
+                        alert(subData.error);
+                      }
+                    });
+                  }
+                  else{
+                    qryZjRule();
+                  }
                 }
                 else{
                   alert(data.error);
@@ -806,7 +872,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 查询组卷规则//
+           * 查询组卷规则
            */
           var qryZjRule = function(rId){
             $scope.loadingImgShow = true; //zj_ruleList.html
@@ -912,9 +978,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.isTestPaperSummaryShow = true;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
-                      //保存规则
+                      //保存规则用到的转化
                       zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
-                      $scope.saveZjRule(zuJuanRuleStr, 'sav');
+//                      $scope.saveZjRule(zuJuanRuleStr, 'sav');
 
                     }
                     else{
@@ -1202,14 +1268,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-            if(isComeFromRuleList){
-              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
-              $scope.zj_tabActive == 'zjRule';
-            }
-            else{
-              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
-            }
+            $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
 
+//            if(isComeFromRuleList){
+//              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
+//              $scope.zj_tabActive == 'zjRule';
+//            }
+//            else{
+//              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+//            }
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -1454,6 +1521,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             });
             mubanData.shuju.MUBANDATI = mbdtArr;
             $scope.mubanData = mubanData;
+//            isComeFromRuleList = false;
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
@@ -1716,6 +1784,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
                 $http.post(xgmbUrl, mubanData).success(function(data){
                   if(data.result){
+                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
                     for(var i = 0; i < lsmbIdLenght; i++){
                       if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
                         $rootScope.session.lsmb_id.splice(i, 1);
@@ -1728,6 +1797,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $scope.baocunshijuanBtn = false; //保存试卷的按钮
                     $scope.isSavePaperConfirm = false;
                     $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+                    //保存组卷规则
+                    if(isComeFromRuleList){
+                      comeFromRuleListData.GUIZEBIANMA = zuJuanRuleStr;
+                      $scope.saveZjRule(comeFromRuleListData, 'upd', true);
+                    }
+                    else{
+                      $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
+                    }
                     alert('恭喜你！试卷保存成功！');
                   }
                 }).error(function(err){
