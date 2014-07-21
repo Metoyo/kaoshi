@@ -211,8 +211,19 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $http.get(qryKmTx + lingyuid).success(function(kmtx){ //页面加载的时候调用科目题型
             if(kmtx){
+              $scope.ampKmtxWeb = [];
               $scope.kmtxList = _.each(kmtx, function(txdata, idx, lst){
                 txdata.itemsNum = 0;
+                var txBoj = {
+                  TIXING_ID: '',
+                  TIXINGMINGCHENG: '',
+                  txTotalNum: 0,
+                  ruleTxNum: 0,
+                  zsdXuanTiArr: []
+                };
+                txBoj.TIXING_ID = txdata.TIXING_ID;
+                txBoj.TIXINGMINGCHENG = txdata.TIXINGMINGCHENG;
+                $scope.ampKmtxWeb.push(txBoj);
               });
               kmtxListLength = kmtx.length; //科目题型的长度
             }
@@ -640,24 +651,24 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 规则组卷
+           * 规则组卷//
            */
           $scope.ruleMakePaper = function(){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             promise.then(function(){
               $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
-              $scope.ampKmtxWeb = [];
-              _.each($scope.kmtxList, function(kmtx, idx, lst){
-                var txBoj = {
-                  TIXING_ID: '',
-                  TIXINGMINGCHENG: '',
-                  txTotalNum: 0,
-                  zsdXuanTiArr: []
-                };
-                txBoj.TIXING_ID = kmtx.TIXING_ID;
-                txBoj.TIXINGMINGCHENG = kmtx.TIXINGMINGCHENG;
-                $scope.ampKmtxWeb.push(txBoj);
-              });
+//              $scope.ampKmtxWeb = [];
+//              _.each($scope.kmtxList, function(kmtx, idx, lst){
+//                var txBoj = {
+//                  TIXING_ID: '',
+//                  TIXINGMINGCHENG: '',
+//                  txTotalNum: 0,
+//                  zsdXuanTiArr: []
+//                };
+//                txBoj.TIXING_ID = kmtx.TIXING_ID;
+//                txBoj.TIXINGMINGCHENG = kmtx.TIXINGMINGCHENG;
+//                $scope.ampKmtxWeb.push(txBoj);
+//              });
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
               $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
@@ -796,7 +807,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 查询组卷规则
+           * 查询组卷规则//
            */
           var qryZjRule = function(rId){
             $scope.loadingImgShow = true; //zj_ruleList.html
@@ -810,6 +821,29 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $http.get(qryXuanTiRule).success(function(data){
               if(data){
                 $scope.loadingImgShow = false; //zj_ruleList.html
+                _.each(data, function(rule, idx, lst){
+                  //给查询出来的数组重新赋值
+                  rule.txTongJi = [];
+                  _.each($scope.ampKmtxWeb, function(wcont, idx1, lst1){
+                    var txTotalObj = {
+                      TIXING_ID: '',
+                      TIXINGMINGCHENG: '',
+                      ruleTxNum: 0
+                    };
+                    txTotalObj.TIXING_ID = wcont.TIXING_ID;
+                    txTotalObj.TIXINGMINGCHENG = wcont.TIXINGMINGCHENG;
+                    rule.txTongJi.push(txTotalObj);
+                  });
+                  //统计具体的数字
+                  var ruleObj = JSON.parse(rule.GUIZEBIANMA);
+                  _.each(ruleObj.shuju.items, function(it, subIdx, subLst){
+                    _.each(rule.txTongJi, function(ampw, idx3, lst3){
+                      if(ampw.TIXING_ID == it.TIXING[0].TIXING_ID){
+                        ampw.ruleTxNum += it.TIXING[0].COUNT;
+                      }
+                    });
+                  });
+                });
                 $scope.zjRuleData = data;
               }
               else{
