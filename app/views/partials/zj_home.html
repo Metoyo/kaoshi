@@ -1,12 +1,12 @@
-<div class="sub-nav" ng-init="tabActive = 'shiJuan'">
+<div class="sub-nav">
     <ul class="nav nav-tabs">
-        <li ng-class="{active: tabActive == 'shiJuan' }">
-            <a href="javascript:void(0)" ng-click="tabActive = 'shiJuan';showPaperList()">
+        <li ng-class="{active: zj_tabActive == 'shiJuan' }">
+            <a href="javascript:void(0)" ng-click="showPaperList()">
                 试卷列表
             </a>
         </li>
-        <li ng-class="{active: tabActive == 'zjRule'}">
-            <a href="javascript:void(0)" ng-click="tabActive = 'zjRule';showZuJuanRuleList()">
+        <li ng-class="{active: zj_tabActive == 'zjRule'}">
+            <a href="javascript:void(0)" ng-click="showZuJuanRuleList()">
                 组卷规则
             </a>
         </li>

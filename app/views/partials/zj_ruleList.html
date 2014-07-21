@@ -20,7 +20,7 @@
                 <tr ng-init="zjRuleNameInputShow=false">
                     <td>
                         <a href="javascript:void(0)" ng-bind="zjr.GUIZEMINGCHENG" ng-hide="zjRuleNameInputShow"
-                                ng-click="ruleMakePaper()"></a>
+                                ng-click="ruleMakePaper(zjr)"></a>
                         <input type="text" class="zjRuleName" ng-model="zjr.GUIZEMINGCHENG" ng-show="zjRuleNameInputShow"
                                ng-blur="saveZjRule(zjr, 'upd');zjRuleNameInputShow=false"/>
                     </td>
@@ -44,8 +44,8 @@
                         题型分布：
                     </h5>
                     <p>
-                        <span ng-repeat="tx in zjr.txTongJi" ng-show="tx.ruleTxNum>0">
-                            {{tx.TIXINGMINGCHENG}}:{{tx.ruleTxNum}}
+                        <span ng-repeat="tx in zjr.txTongJi" ng-show="tx.txTotalNum>0">
+                            {{tx.TIXINGMINGCHENG}}:{{tx.txTotalNum}}
                         </span>
                     </p>
                 </div>

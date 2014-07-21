@@ -155,7 +155,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
             updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize', //修改选题规则
             updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize', //更新选题规则使用次数
             qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan, //更新选题规则使用次数
-            zuJuanRuleStr; //存放组卷规则的字符串，有json数据格式转化而来
+            zuJuanRuleStr, //存放组卷规则的字符串，有json数据格式转化而来
+            isComeFromRuleList = false; //是否由规则列表点进去的
 
 
           /**
@@ -180,6 +181,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.showBackToPaperListBtn = false; //加载组卷页面是，返回试卷列表页面隐藏
           $scope.addMoreTiMuBtn = false; //添加更多试题的按钮
           $scope.isTestPaperSummaryShow = true; //div.testPaperSummary显示
+          $scope.zj_tabActive = 'shiJuan'; //初始化组卷页面的tab的显示和隐藏
 
           /**
            * 获得大纲数据
@@ -218,7 +220,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   TIXING_ID: '',
                   TIXINGMINGCHENG: '',
                   txTotalNum: 0,
-                  ruleTxNum: 0,
+//                  ruleTxNum: 0,
                   zsdXuanTiArr: []
                 };
                 txBoj.TIXING_ID = txdata.TIXING_ID;
@@ -653,22 +655,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 规则组卷//
            */
-          $scope.ruleMakePaper = function(){
+          $scope.ruleMakePaper = function(zjr){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+            isComeFromRuleList = false;
             promise.then(function(){
               $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
-//              $scope.ampKmtxWeb = [];
-//              _.each($scope.kmtxList, function(kmtx, idx, lst){
-//                var txBoj = {
-//                  TIXING_ID: '',
-//                  TIXINGMINGCHENG: '',
-//                  txTotalNum: 0,
-//                  zsdXuanTiArr: []
-//                };
-//                txBoj.TIXING_ID = kmtx.TIXING_ID;
-//                txBoj.TIXINGMINGCHENG = kmtx.TIXINGMINGCHENG;
-//                $scope.ampKmtxWeb.push(txBoj);
-//              });
+              if(zjr){
+                $scope.ampKmtxWeb = zjr.txTongJi;
+                isComeFromRuleList = true;
+              }
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
               $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
@@ -679,6 +674,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 返回到组卷的3中情形页面
            */
           $scope.backToZuJuanHome = function(){
+            _.each($scope.ampKmtxWeb, function(ampw, idx, lst){
+              ampw.txTotalNum = 0;
+              ampw.zsdXuanTiArr = [];
+            });
             $scope.dropMakePaper();
             $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
           };
@@ -828,7 +827,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     var txTotalObj = {
                       TIXING_ID: '',
                       TIXINGMINGCHENG: '',
-                      ruleTxNum: 0
+                      txTotalNum: 0,
+                      zsdXuanTiArr:[]
                     };
                     txTotalObj.TIXING_ID = wcont.TIXING_ID;
                     txTotalObj.TIXINGMINGCHENG = wcont.TIXINGMINGCHENG;
@@ -839,7 +839,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   _.each(ruleObj.shuju.items, function(it, subIdx, subLst){
                     _.each(rule.txTongJi, function(ampw, idx3, lst3){
                       if(ampw.TIXING_ID == it.TIXING[0].TIXING_ID){
-                        ampw.ruleTxNum += it.TIXING[0].COUNT;
+                        ampw.txTotalNum += it.TIXING[0].COUNT;
+                        ampw.zsdXuanTiArr.push(it);
                       }
                     });
                   });
@@ -1201,7 +1202,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-            $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+            if(isComeFromRuleList){
+              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
+              $scope.zj_tabActive == 'zjRule';
+            }
+            else{
+              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+            }
+
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -1876,6 +1884,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查看试卷列表
            */
           $scope.showPaperList = function(isBackToPaperList){
+            $scope.zj_tabActive = 'shiJuan';
             qryShiJuanList(isBackToPaperList);
             $scope.zjTpl = 'views/partials/zj_paperList.html';
           };
@@ -1884,6 +1893,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查看组卷规则列表
            */
           $scope.showZuJuanRuleList = function(){
+            $scope.zj_tabActive = 'zjRule';
             qryZjRule();
             $scope.zjTpl = 'views/partials/zj_ruleList.html'; //加载试卷列表模板
           };
