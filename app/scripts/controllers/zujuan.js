@@ -661,7 +661,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             isComeFromRuleList = false;
             promise.then(function(){
               $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
-              if(zjr){
+              if(zjr.txTongJi.length){
                 $scope.ampKmtxWeb = zjr.txTongJi;
                 isComeFromRuleList = true;
                 comeFromRuleListData = zjr;
@@ -1269,14 +1269,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
             $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
-
-//            if(isComeFromRuleList){
-//              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
-//              $scope.zj_tabActive == 'zjRule';
-//            }
-//            else{
-//              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
-//            }
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -1784,14 +1776,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
                 $http.post(xgmbUrl, mubanData).success(function(data){
                   if(data.result){
-                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
+//                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
                     for(var i = 0; i < lsmbIdLenght; i++){
                       if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
                         $rootScope.session.lsmb_id.splice(i, 1);
                         deleteTempTemp(); //删除没用的其他目标
                       }
                     }
-                    $scope.showPaperList();
+                    $scope.showZuJuan();
                     $scope.shijuanyulanBtn = false; //试卷预览的按钮
                     $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
                     $scope.baocunshijuanBtn = false; //保存试卷的按钮
@@ -1913,6 +1905,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   $scope.getThisSjgyPageData();
                   isDeletePaper = false;
                 }
+                $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
               else{
                 alert('没有相关试卷信息！');
@@ -1925,7 +1918,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           qryShiJuanList();
 
           /**
-           * 返回组卷首页//
+           * 返回组卷首页
            */
           $scope.showZuJuan = function(){
             $scope.txTpl = 'views/partials/zj_home.html';
