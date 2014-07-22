@@ -654,7 +654,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 规则组卷//
+           * 规则组卷
            */
           $scope.ruleMakePaper = function(zjr){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
@@ -677,6 +677,71 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
               $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
+            });
+          };
+
+          /**
+           * 由规则列表页直接组卷
+           */
+          $scope.directRuleMakePaper = function(dzjr){
+            $scope.loadingImgShow = true;
+            var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
+            promise.then(function(){
+              //去选题
+              var directRuleMakePaperData = JSON.parse(dzjr.GUIZEBIANMA);
+              $http.post(guiZeZuJuanUrl, directRuleMakePaperData).success(function(tmIdsData){
+                if(tmIdsData.length){
+                  var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
+                  $http.get(qrytimuxiangqing).success(function(stdata){
+                    if(stdata.length){
+                      _.each(stdata, function(tm, idx, lst){
+                        //将试题详情添加到mabandData
+                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+                          if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
+                            mbdt.TIMUARR.push(tm);
+                          }
+                        });
+                        //难度统计  nanduTempData NANDU_ID
+                        for(var j = 0; j < nanduLength; j++){
+                          if(nanduTempData[j].nanduId == tm.NANDU_ID){
+                            nanduTempData[j].nanduCount.push(tm.TIMU_ID);
+                          }
+                        }
+                      });
+                      //统计每种题型的数量和百分比
+                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+                        tixingStatistics(idx, kmtxListLength);
+                      });
+                      nanduPercent(); //难度统计
+
+                      //判读是否执行完成
+                      $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
+                      $scope.baocunshijuanBtn = true; //保存试卷的按钮
+                      $scope.isTestPaperSummaryShow = true;
+                      $scope.loadingImgShow = false;
+                      $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+
+                      //新增加
+                      zuJuanRuleStr = JSON.stringify(directRuleMakePaperData);
+                      $scope.showBackToPaperListBtn = true;
+                      isComeFromRuleList = true;
+                      comeFromRuleListData = dzjr;
+
+                      //试卷预览
+                      $scope.shijuanPreview();
+                    }
+                    else{
+                      $scope.timudetails = null;
+                      $scope.loadingImgShow = false;
+                      console.log(stdata.error);
+                    }
+                  });
+                }
+                else{
+                  $scope.loadingImgShow = false;
+                  alert(tmIdsData.error);
+                }
+              });
             });
           };
 
@@ -980,8 +1045,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
                       //保存规则用到的转化
                       zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
-//                      $scope.saveZjRule(zuJuanRuleStr, 'sav');
-
                     }
                     else{
                       $scope.timudetails = null;
@@ -1513,7 +1576,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
             });
             mubanData.shuju.MUBANDATI = mbdtArr;
             $scope.mubanData = mubanData;
-//            isComeFromRuleList = false;
             backToZjHomeFun();
             $scope.sjPreview = true;
             $scope.shijuanyulanBtn = false;
