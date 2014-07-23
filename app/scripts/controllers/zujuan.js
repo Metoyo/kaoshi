@@ -661,7 +661,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             isComeFromRuleList = false;
             promise.then(function(){
               $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
-              if(zjr.txTongJi.length){
+              if(zjr){
                 $scope.ampKmtxWeb = zjr.txTongJi;
                 isComeFromRuleList = true;
                 comeFromRuleListData = zjr;

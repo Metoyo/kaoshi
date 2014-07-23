@@ -2488,7 +2488,8 @@ a.add-btn:hover span {
 // By Jay Salvat - http://markitup.jaysalvat.com/
 // ------------------------------------------------------------------*/
 .markItUp * {
-  margin:0px; padding:0px;
+  margin:0px;
+  padding:0px;
   outline:none;
 }
 .markItUp a:link,
@@ -2497,25 +2498,23 @@ a.add-btn:hover span {
   text-decoration:none;
 }
 .markItUp  {
-  width:582px;
-  margin:5px 0 5px 0;
+
 }
 .markItUpContainer  {
   border:1px solid #3C769D;
-  padding:5px 5px 2px 5px;
+  padding:5px;
   font:11px Verdana, Arial, Helvetica, sans-serif;
 }
 .markItUpEditor {
-  font:12px 'Courier New', Courier, monospace;
+  font: 12px 'Courier New', Courier, monospace;
   padding:10px;
   border: 2px solid #3C769D;
-  width: 570px;
   height:320px;
   clear:both;
   line-height:18px;
   overflow:auto;
 }
-.markItUpPreviewFrame	{
+.markItUpPreviewFrame {
   overflow:auto;
   background-color:#FFFFFF;
   border:1px solid #3C769D;
@@ -2538,9 +2537,8 @@ a.add-btn:hover span {
 /***************************************************************************************/
 /* first row of buttons */
 .markItUpHeader {
-  background: url('../images/markitup/eq.png') no-repeat 0 0;
-  height: 152px;
-  margin-bottom: 10px;
+  float: left;
+  margin-bottom: 5px;
   ul{
     li{
       list-style:none;
@@ -2548,12 +2546,73 @@ a.add-btn:hover span {
       position:relative;
       a{
         display: block;
-        width: 37px;
-        height: 37px;
+        width: 25px;
+        height: 25px;
         margin: 0px 1px 1px 0px;
         border: solid 1px #ccc;
         text-indent: -10000px;
         padding: 0;
+        background-size: 18px 18px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      /* next rows of buttons */
+      ul {
+        display:none;
+        position:absolute;
+        top:25px;
+        left:0px;
+        z-index: 2;
+        background:#FFF;
+        border:1px solid #ccc;
+        border-top: 0;
+        width: 103px;
+      }
+      ul li {
+        width: 25px;
+      }
+      ul li a{
+        width: 25px;
+        height: 25px;
+        background-size: 18px 18px;
+        border: 0;
+      }
+      .markItUpSeparator {
+        margin:0 10px;
+        width:1px;
+        height:16px;
+        overflow:hidden;
+        background-color:#CCC;
+      }
+      ul .markItUpSeparator {
+        width:auto;
+        height:1px;
+        margin:0px;
+      }
+    }
+    .markItUpDropMenu {
+    }
+    .markItUpDropMenu a{
+    }
+    .width70{
+      a{
+        width: 51px;
+        height: 25px;
+        background-size: 35px 18px;
+      }
+      ul li a{
+        width: 25px;
+        height: 25px;
+        background-size: 18px 18px;
+        border: 0;
+      }
+      &:hover{
+        > a{
+          border-bottom: 0;
+        }
+        > ul{
+          display: block;
+        }
       }
     }
   }
@@ -2578,10 +2637,175 @@ a.add-btn:hover span {
     width: 100%;
   }
 }
-.mktEditorTk .markItUpButton61 a {
-  width: 75px;
-  background-image:url('../images/markitup/addBlank.png');
+//------1-------
+.mktEditor .markItUpButton1 a {
+  background-image:url('../bower_components/markitup/images/a01.png');
 }
+.mktEditor .markItUpButton1-1 a {
+  background-image:url('../bower_components/markitup/images/1001.png');
+}
+.mktEditor .markItUpButton1-2 a {
+  background-image:url('../bower_components/markitup/images/1002.png');
+}
+.mktEditor .markItUpButton1-3 a {
+  background-image:url('../bower_components/markitup/images/1003.png');
+}
+.mktEditor .markItUpButton1-4 a {
+  background-image:url('../bower_components/markitup/images/1004.png');
+}
+.mktEditor .markItUpButton1-5 a {
+  background-image:url('../bower_components/markitup/images/1005.png');
+}
+.mktEditor .markItUpButton1-6 a {
+  background-image:url('../bower_components/markitup/images/1006.png');
+}
+.mktEditor .markItUpButton1-7 a {
+  background-image:url('../bower_components/markitup/images/1007.png');
+}
+.mktEditor .markItUpButton1-8 a {
+  background-image:url('../bower_components/markitup/images/1008.png');
+}
+.mktEditor .markItUpButton1-9 a {
+  background-image:url('../bower_components/markitup/images/1009.png');
+}
+.mktEditor .markItUpButton1-10 a {
+  background-image:url('../bower_components/markitup/images/1010.png');
+}
+.mktEditor .markItUpButton1-11 a {
+  background-image:url('../bower_components/markitup/images/1011.png');
+}
+.mktEditor .markItUpButton1-12 a {
+   background-image:url('../bower_components/markitup/images/1012.png');
+ }
+.mktEditor .markItUpButton1-13 a {
+  background-image:url('../bower_components/markitup/images/1013.png');
+}
+.mktEditor .markItUpButton1-14 a {
+  background-image:url('../bower_components/markitup/images/1014.png');
+}
+.mktEditor .markItUpButton1-15 a {
+  background-image:url('../bower_components/markitup/images/1015.png');
+}
+.mktEditor .markItUpButton1-16 a {
+  background-image:url('../bower_components/markitup/images/1016.png');
+}
+.mktEditor .markItUpButton1-17 a {
+  background-image:url('../bower_components/markitup/images/1017.png');
+}
+.mktEditor .markItUpButton1-18 a {
+  background-image:url('../bower_components/markitup/images/1018.png');
+}
+//------2-------
+.mktEditor .markItUpButton2 a {
+  background-image:url('../bower_components/markitup/images/a02.png');
+}
+.mktEditor .markItUpButton3 a {
+  background-image:url('../bower_components/markitup/images/a03.png');
+}
+.mktEditor .markItUpButton4 a {
+  background-image:url('../bower_components/markitup/images/a04.png');
+}
+.mktEditor .markItUpButton5 a {
+  background-image:url('../bower_components/markitup/images/a05.png');
+}
+.mktEditor .markItUpButton6 a {
+  background-image:url('../bower_components/markitup/images/a06.png');
+}
+.mktEditor .markItUpButton7 a {
+  background-image:url('../bower_components/markitup/images/a07.png');
+}
+.mktEditor .markItUpButton8 a {
+  background-image:url('../bower_components/markitup/images/a08.png');
+}
+.mktEditor .markItUpButton9 a {
+  background-image:url('../bower_components/markitup/images/b01.png');
+}
+.mktEditor .markItUpButton10 a {
+  background-image:url('../bower_components/markitup/images/b02.png');
+}
+.mktEditor .markItUpButton11 a {
+  background-image:url('../bower_components/markitup/images/b03.png');
+}
+.mktEditor .markItUpButton12 a {
+  background-image:url('../bower_components/markitup/images/b04.png');
+}
+.mktEditor .markItUpButton13 a {
+  background-image:url('../bower_components/markitup/images/b05.png');
+}
+.mktEditor .markItUpButton14 a {
+  background-image:url('../bower_components/markitup/images/b06.png');
+}
+.mktEditor .markItUpButton15 a {
+  background-image:url('../bower_components/markitup/images/b07.png');
+}
+.mktEditor .markItUpButton16 a {
+  background-image:url('../bower_components/markitup/images/b08.png');
+}
+.mktEditor .markItUpButton17 a {
+  background-image:url('../bower_components/markitup/images/b09.png');
+}
+.mktEditor .markItUpButton18 a {
+  background-image:url('../bower_components/markitup/images/b10.png');
+}
+.mktEditor .markItUpButton19 a {
+  background-image:url('../bower_components/markitup/images/c01.png');
+}
+.mktEditor .markItUpButton20 a {
+  background-image:url('../bower_components/markitup/images/c02.png');
+}
+.mktEditor .markItUpButton21 a {
+  background-image:url('../bower_components/markitup/images/c03.png');
+}
+.mktEditor .markItUpButton22 a {
+  background-image:url('../bower_components/markitup/images/c04.png');
+}
+.mktEditor .markItUpButton23 a {
+  background-image:url('../bower_components/markitup/images/c05.png');
+}
+.mktEditor .markItUpButton24 a {
+  background-image:url('../bower_components/markitup/images/c06.png');
+}
+.mktEditor .markItUpButton25 a {
+  background-image:url('../bower_components/markitup/images/c07.png');
+}
+.mktEditor .markItUpButton26 a {
+  background-image:url('../bower_components/markitup/images/c08.png');
+}
+.mktEditor .markItUpButton27 a {
+  background-image:url('../bower_components/markitup/images/c09.png');
+}
+.mktEditor .markItUpButton28 a {
+  background-image:url('../bower_components/markitup/images/c10.png');
+}
+.mktEditor .markItUpButton29 a {
+  background-image:url('../bower_components/markitup/images/c11.png');
+}
+.mktEditor .markItUpButton30 a {
+  background-image:url('../bower_components/markitup/images/c12.png');
+}
+.mktEditor .markItUpButton31 a {
+  background-image:url('../bower_components/markitup/images/c13.png');
+}
+.mktEditor .markItUpButton32 a {
+  background-image:url('../bower_components/markitup/images/c14.png');
+}
+.mktEditor .markItUpButton33 a {
+  background-image:url('../bower_components/markitup/images/c15.png');
+}
+.mktEditor .markItUpButton34 a {
+  background-image:url('../bower_components/markitup/images/c16.png');
+}
+.mktEditor .markItUpButton35 a {
+  background-image:url('../bower_components/markitup/images/c17.png');
+}
+.mktEditor .markItUpButton36 a {
+  background-image:url('../bower_components/markitup/images/c18.png');
+}
+//.mktEditorTk .markItUpButton61 a {
+//  width: 75px;
+//  background-image:url('../images/markitup/addBlank.png');
+//}
+
 //文件上传样式
 .fileUploadBox{
   p{
