@@ -45,31 +45,28 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 加载知识大纲
        */
-      var loadDaGang = function(){
-        publicZsdgArr = [];
-        privateZsdgArr = [];
-        $http.get(qryDgUrl).success(function(data) {
+      var loadDaGang = function(lx){
+        var dgLeiXing = lx || 2,
+          newQryDgUrl = qryDgUrl + '&leixing=' + dgLeiXing;
+        $http.get(newQryDgUrl).success(function(data) {
           if(data.length){
-            $scope.dgList = data;
-            dgListLength = data.length;
+            if(dgLeiXing == 1){ //公共大纲
+              publicZsdgArr = data;
+              $scope.publicZsdgList = publicZsdgArr;
+            }
+            if(dgLeiXing == 2){ //自建大纲
+              privateZsdgArr = data;
+              $scope.privateZsdgList = privateZsdgArr;
+            }
+            //判断默认知识大纲
             _.each(data, function(dg, idx, lst){
-              //将大纲分类，分为公共大纲和自建大纲
-              if(dg.LEIXING == 1){
-                publicZsdgArr.push(dg);
-              }
-              else{
-                privateZsdgArr.push(dg);
-              }
-              //判断默认知识
               if(dg.ZHUANGTAI2 == 2){
                 $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
               }
             });
-            $scope.publicZsdgList = publicZsdgArr;
-            $scope.privateZsdgList = privateZsdgArr;
           }
           else {
-            alert('没有自建知识大纲，请新增一个！');
+            alert('没有知识大纲，请新增一个！');
           }
         });
       };
@@ -82,9 +79,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         publicKnowledgeData = '';
         publicZsdArr = [];
         if(lx == 1){
-          if(!$scope.publicZsdgList){
-            alert('没有大纲，请新建一个！');
-          }
+          loadDaGang('1');
+//          if(!$scope.publicZsdgList){
+//            alert('没有大纲，请新建一个！');
+//          }
           $scope.dgTpl = 'views/partials/daGangPublic.html';
           $scope.isPrivateDg = false;
           $scope.isPublicDg = true;
@@ -239,7 +237,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         //保存大纲时的数据
         dgdata.shuju = {};
         dgdata.shuju.ZHISHIDAGANG_ID = '';
-        dgdata.shuju.ZHISHIDAGANGMINGCHENG = $rootScope.session.defaultLyName + '自建知识大纲';
+        dgdata.shuju.ZHISHIDAGANGMINGCHENG = '新建' + $rootScope.session.defaultLyName + '自建知识大纲';
         dgdata.shuju.DAGANGSHUOMING = '';
         dgdata.shuju.GENJIEDIAN_ID = '';
         dgdata.shuju.LEIXING = 2; //自建知识大纲
@@ -251,7 +249,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         daGangJieDianData = []; //定义一个大纲节点的数据
         jieDianObj.JIEDIAN_ID = '';
         jieDianObj.ZHISHIDIAN_ID = '';
-        jieDianObj.ZHISHIDIANMINGCHENG = $rootScope.session.defaultLyName + '自建知识大纲';
+        jieDianObj.ZHISHIDIANMINGCHENG = '新建' + $rootScope.session.defaultLyName + '自建知识大纲';
         jieDianObj.ZHISHIDIAN_LEIXING = 2;
         jieDianObj.LEIXING = 2;
         jieDianObj.JIEDIANLEIXING = '';
@@ -337,7 +335,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 保存知识大纲
        */
-      $scope.saveZjDaGangData = function() {
+      $scope.saveZjDaGangData = function(isSetAsDefaultDg) {
         var countEmpty = true;
         $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
         //将LEIXING转化为ZHISHIDIAN_LEIXING
@@ -360,7 +358,11 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             if(result.result){
               $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
               $('.save-msg').show().fadeOut(3000);
-              $scope.makeDaGangAsDefault(result.id);
+              //判读是否设置为默认大纲
+              if(isSetAsDefaultDg){
+                $scope.makeDaGangAsDefault(result.id);
+              }
+              loadDaGang();
             }
             else{
               $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html

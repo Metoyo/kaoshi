@@ -28,7 +28,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jigouid + '&lingyuid=', //查询科目包含什么题型的url
 
           qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu
+            + '&leixing=2',//查询大纲的url(自建)
 
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
             caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
@@ -121,7 +122,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
 
         /**
-         * 获得大纲数据//
+         * 获得大纲数据
          */
         $http.get(qryDgUrl).success(function(data){
           var newDgList = [];
@@ -888,7 +889,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           _.each($('input[name=rightAnswer]:checked'), function(rasw, idx, lst){
             rightAnswerStr.push(rasw.value);
           });
-          duoxuan_data.shuju.DAAN = rightAnswerStr.toString();
+          duoxuan_data.shuju.DAAN = rightAnswerStr.join();
         };
 
         /**
