@@ -20,6 +20,8 @@ define(['jquery', 'angular'], function ($, angular) {
               }
               clickCss = 'starClick' + hoverIdx;
               element.addClass(clickCss);
+              nanduTarget.val(clickCss.slice(-1));
+              console.log(clickCss.slice(-1));
             });
           },function(){
             element.removeClass(hoverCss);
