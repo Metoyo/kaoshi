@@ -437,10 +437,14 @@ a.add-btn:hover span {
   }
   .pointTitle {
     color: #1ba1e2;
-    //    cursor: pointer;
     font-size: 13px;
     margin-left: 10px;
     width: 85%;
+  }
+  .selectLyName{
+    font-size: 16px;
+    color: #f60;
+    font-weight: bold;
   }
   .kmTxWrap {
     height: 56px;
@@ -1406,6 +1410,15 @@ a.add-btn:hover span {
       width: 80%;
     }
   }
+  .keMuName{
+    .keMuNameDetail{
+      font-size: 16px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold;
+    }
+  }
   /*main styles end*/
 }
 //命题样式
@@ -1545,7 +1558,7 @@ a.add-btn:hover span {
     }
   }
   /* test list styls end*/
-  .nadu-select{
+  .nandu-select{
     .radio-inline{
       margin-left: 20px;
       font-size: 16px;
@@ -1560,6 +1573,47 @@ a.add-btn:hover span {
         height: 15px;
       }
     }
+  }
+  .nandu-star-box{
+    width: 250px;
+    height: 32px;
+    background-image: url('../images/mingti/icon/nadustar.png');
+    background-position: 0 0;
+    a{
+      width: 50px;
+      height: 32px;
+      float: left;
+    }
+  }
+  .starHover1{
+    background-position: 0 -50px;
+  }
+  .starHover2{
+    background-position: 0 -100px;
+  }
+  .starHover3{
+    background-position: 0 -150px;
+  }
+  .starHover4{
+    background-position: 0 -200px;
+  }
+  .starHover5{
+    background-position: 0 -250px;
+  }
+  .starClick1{
+    background-position: 0 -50px;
+  }
+  .starClick2{
+    background-position: 0 -100px;
+  }
+  .starClick3{
+    background-position: 0 -150px;
+  }
+  .starClick4{
+    background-position: 0 -200px;
+  }
+  .starClick5{
+    background-position: 0 -250px;
   }
 }
 //组卷样式

@@ -27,12 +27,13 @@ define([
     'filters/outputdaan',
     'filters/outtigan',
     'services/myfileupload',
+    'directives/nandustar',
     'config'
    ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
                 FileuploadDirective, RepeatdoneDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,
                 UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,
                 MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService,
-                config) {
+                NandustarDirective, config) {
   'use strict';
 
   return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
@@ -59,6 +60,7 @@ define([
 'kaoshiApp.filters.Outtigan',
 'kaoshiApp.directives.Fileupload',
 'kaoshiApp.services.Myfileupload',
+'kaoshiApp.directives.Nandustar',
 /*angJSDeps*/
   'ngCookies',
   'ngResource',

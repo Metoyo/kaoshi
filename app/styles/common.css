@@ -5390,6 +5390,10 @@ a.add-btn:hover span {
     font-size: 13px;
     margin-left: 10px;
     width: 85%; }
+  .innerWrapperSubDs .selectLyName {
+    font-size: 16px;
+    color: #f60;
+    font-weight: bold; }
   .innerWrapperSubDs .kmTxWrap {
     height: 56px;
     background-color: #F5F5F5;
@@ -6148,6 +6152,12 @@ a.add-btn:hover span {
     .dagangWrapper .dg-list-box .daGangListSelect {
       display: inline;
       width: 80%; }
+  .dagangWrapper .keMuName .keMuNameDetail {
+    font-size: 16px;
+    display: inline;
+    margin: 0;
+    color: #f60;
+    font-weight: bold; }
 
 .mingtiWrapper {
   /* test list styls begin*/
@@ -6246,7 +6256,7 @@ a.add-btn:hover span {
         position: absolute; }
       .mingtiWrapper .testList .answer-cont .daAnBox {
         margin-left: 45px; }
-  .mingtiWrapper .nadu-select .radio-inline {
+  .mingtiWrapper .nandu-select .radio-inline {
     margin-left: 20px;
     font-size: 16px; }
   .mingtiWrapper .panDuanFb {
@@ -6256,6 +6266,35 @@ a.add-btn:hover span {
       .mingtiWrapper .panDuanFb .radio span {
         width: 15px;
         height: 15px; }
+  .mingtiWrapper .nandu-star-box {
+    width: 250px;
+    height: 32px;
+    background-image: url("../images/mingti/icon/nadustar.png");
+    background-position: 0 0; }
+    .mingtiWrapper .nandu-star-box a {
+      width: 50px;
+      height: 32px;
+      float: left; }
+  .mingtiWrapper .starHover1 {
+    background-position: 0 -50px; }
+  .mingtiWrapper .starHover2 {
+    background-position: 0 -100px; }
+  .mingtiWrapper .starHover3 {
+    background-position: 0 -150px; }
+  .mingtiWrapper .starHover4 {
+    background-position: 0 -200px; }
+  .mingtiWrapper .starHover5 {
+    background-position: 0 -250px; }
+  .mingtiWrapper .starClick1 {
+    background-position: 0 -50px; }
+  .mingtiWrapper .starClick12 {
+    background-position: 0 -100px; }
+  .mingtiWrapper .starClick13 {
+    background-position: 0 -150px; }
+  .mingtiWrapper .starClick4 {
+    background-position: 0 -200px; }
+  .mingtiWrapper .starClick5 {
+    background-position: 0 -250px; }
 
 .zujuanWrapper .testPaperSummary {
   width: 221px;
