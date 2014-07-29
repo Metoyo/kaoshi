@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'intimidatetime', 'config'], // 000 开始
-  function ($, _, angular, datepicker, config) { // 001 开始
+define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
+  function ($, _, angular, config) { // 001 开始
   'use strict';
 
   angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始

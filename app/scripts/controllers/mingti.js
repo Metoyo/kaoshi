@@ -612,7 +612,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 单选题和多选题添加函数
+         * 单选题和多选题添加函数//
          */
         var addDanDuoXuanFun = function(dataTpl) {
           var deferred = $q.defer();
@@ -636,8 +636,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tznrIsNull = false;
             }
           });
-          dataTpl.shuju.NANDU_ID = $('input.nandu-input').val();
-          console.log(dataTpl.shuju.NANDU_ID);
+          dataTpl.shuju.NANDU_ID = $('input.nandu-input').val(); //改造成星星选择难度后的代码
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
@@ -695,7 +694,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 保存问答题这部分题型的通用函数//
+         * 保存问答题这部分题型的通用函数
          */
         $scope.addAskAnswerShiTi = function(tx){
           var tx_data = '';
@@ -711,6 +710,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               break;
           }
           tx_data.shuju.ZHISHIDIAN = selectZsd;
+          tx_data.shuju.NANDU_ID = $('input.nandu-input').val(); //改造成星星选择难度后的代码
           if(tx_data.shuju.TIGAN.length){
             if(tx_data.shuju.DAAN.length){
               if(selectZsd.length){
@@ -1020,6 +1020,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               return '<%' + JSON.stringify(tzJson) + '%>';
             });
             tiankong_data.shuju.ZHISHIDIAN = selectZsd;
+            tiankong_data.shuju.NANDU_ID = $('input.nandu-input').val(); //改造成星星选择难度后的代码
             tiankong_data.shuju.DAAN = tizhineirong.join(';');
             if(tiankong_data.shuju.TIGAN.length){
               if(selectZsd.length){

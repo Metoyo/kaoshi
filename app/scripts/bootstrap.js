@@ -21,8 +21,8 @@ require.config({
     'angularMocks': {
       deps:['angular'],
       'exports':'angular.mock'
-    },
-    'datepicker': ['jquery']
+    }
+//    'datepicker': ['jquery']
   },
   priority: [
     'angular'
