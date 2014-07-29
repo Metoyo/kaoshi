@@ -297,10 +297,15 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 那一个输入框被选中
        */
-      var targetInput = '', targetNd = '';
+      var targetInput = '', targetNd = '', oldNdId;
       $scope.privateDgInputIdx = function(event, nd){
+        targetNd = '';
+        targetInput = '';
         targetInput = $(event.target);
         targetNd = nd;
+        oldNdId = nd.ZHISHIDIAN_ID;
+        console.log(targetInput);
+        console.log(targetNd);
       };
 
       /**
@@ -341,6 +346,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.publicKnowledge = _.reject($scope.publicKnowledge, function(pkg){
             return pkg.ZHISHIDIAN_ID == result.ZHISHIDIAN_ID;
           });
+          if(oldNdId){
+            if(oldNdId !== result.ZHISHIDIAN_ID){
+              var originData = _.find(publicKnowledgeData, function(pkd){
+                return pkd.ZHISHIDIAN_ID == oldNdId;
+              });
+              $scope.publicKnowledge.push(originData);
+            }
+          }
         }
       };
 
