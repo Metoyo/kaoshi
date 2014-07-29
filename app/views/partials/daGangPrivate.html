@@ -20,7 +20,7 @@
                     <input type="text" class="form-control" ng-model="zsd.ZHISHIDIANMINGCHENG"
                            ng-focus="privateDgInputIdx($event, zsd)" ng-blur="compareZjInputVal(zsd)">
                     <span class="input-group-btn">
-                         <button class="btn btn-default dgAddBtn" ng-click="addNd(zsd)" type="button">
+                         <button class="btn btn-default dgAddBtn" ng-click="addNd($event, zsd)" type="button">
                              <span class="glyphicon glyphicon-plus"> </span>
                          </button>
                     </span>
@@ -35,7 +35,8 @@
                             <input type="text" class="form-control" ng-model="nd2.ZHISHIDIANMINGCHENG"
                                    ng-focus="privateDgInputIdx($event, nd2)" ng-blur="compareZjInputVal(nd2)">
                             <span class="input-group-btn">
-                                 <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd(nd2)" type="button">
+                                 <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd($event, nd2)"
+                                         type="button">
                                      <span class="glyphicon glyphicon-plus"> </span>
                                  </button>
                                  <button class="btn btn-default dgDeleteBtn" ng-click="removeNd(zsd, nd2, $index)"
@@ -56,7 +57,7 @@
                                     <input type="text" class="form-control" ng-model="nd3.ZHISHIDIANMINGCHENG"
                                            ng-focus="privateDgInputIdx($event, nd3)" ng-blur="compareZjInputVal(nd3)">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="addNd(nd3)"
+                                        <button class="btn btn-default dgAddBtn dgAddBtn_2" ng-click="addNd($event, nd3)"
                                                  type="button">
                                              <span class="glyphicon glyphicon-plus"></span>
                                         </button>
@@ -91,6 +92,8 @@
                 </div>
             </div>
         </div>
+        <!--<input type="text" class="bbbbb"/>-->
+        <!--<button ng-click="focusInput()" class="ccc">点我</button>-->
     </div>
     <div class="publicKnowledgeWrap">
         <h4><strong>已有知识点:</strong></h4>

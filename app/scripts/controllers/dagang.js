@@ -263,7 +263,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 添加知识点
        */
-      $scope.addNd = function(nd) {
+      $scope.addNd = function(event, nd) {
         var newNd = {};
         newNd.JIEDIAN_ID = '';
         newNd.ZHISHIDIAN_ID = '';
@@ -297,7 +297,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
       /**
        * 那一个输入框被选中
        */
-      var targetInput, targetNd;
+      var targetInput = '', targetNd = '';
       $scope.privateDgInputIdx = function(event, nd){
         targetInput = $(event.target);
         targetNd = nd;
@@ -307,12 +307,24 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
        * 将公共知识点添加到知识大纲
        */
       $scope.addToZjDaGang = function(zsd, idx){
-        targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
-        targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
-        targetNd.LEIXING = zsd.LEIXING;
+        if(targetNd){ //判断聚焦的是那个输入框
+          if(targetNd.ZHISHIDIAN_ID){ //判断输入框中是否有知识点
+            var originData = _.find(publicKnowledgeData, function(pkd){
+              return pkd.ZHISHIDIAN_ID == targetNd.ZHISHIDIAN_ID;
+            });
+            $scope.publicKnowledge.push(originData);
+          }
+          targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
+          targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
+          targetNd.LEIXING = zsd.LEIXING;
 //        targetInput.focus();
-        targetNd = '';
-        $scope.publicKnowledge.splice(idx, 1);
+          targetNd = '';
+          $scope.publicKnowledge.splice(idx, 1);
+          console.log(publicKnowledgeData);
+        }
+        else{
+          alert('请选择要输入的目标！');
+        }
       };
 
       /**
