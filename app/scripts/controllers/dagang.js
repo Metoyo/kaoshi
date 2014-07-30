@@ -262,10 +262,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           daGangJieDianData.push(jieDianObj);
           $scope.knowledgePr = daGangJieDianData;
           //用于新建大纲的名称聚焦
-          var countUp = function() {
+          var focusFun = function() {
             $('.dagangBox input').focus();
           };
-          $timeout(countUp, 500);
+          $timeout(focusFun, 500);
           $scope.selectZjDgId = ''; //已经选择的自建知识大纲的值
         };
 
@@ -284,8 +284,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
           };
           deleteZjDgData.shuju.ZHISHIDAGANG_ID = $scope.selectZjDgId;
+          console.log($scope.selectZjDgId);
           if(deleteZjDgData.shuju.ZHISHIDAGANG_ID){
-            $http.post(submitDataUrl, dgdata).success(function(result) {
+            $http.post(submitDataUrl, deleteZjDgData).success(function(result) {
               if(result.result){
                 $scope.privateZsdgList = _.reject($scope.privateZsdgList, function(zjdg){
                   return zjdg.ZHISHIDAGANG_ID == deleteZjDgData.shuju.ZHISHIDAGANG_ID;
@@ -317,6 +318,11 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           newNd.ZHISHIDIAN_LEIXING = 2;
           newNd.ZIJIEDIAN = [];
           nd.ZIJIEDIAN.push(newNd);
+          var parentNd = $(event.target);
+          var focusFun = function() {
+            parentNd.closest('.media-body').find('.media').last().find('input').last().focus();
+          };
+          $timeout(focusFun, 500);
         };
 
         /**
