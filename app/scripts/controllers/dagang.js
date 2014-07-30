@@ -284,19 +284,20 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
           };
           deleteZjDgData.shuju.ZHISHIDAGANG_ID = $scope.selectZjDgId;
-          console.log($scope.selectZjDgId);
           if(deleteZjDgData.shuju.ZHISHIDAGANG_ID){
-            $http.post(submitDataUrl, deleteZjDgData).success(function(result) {
-              if(result.result){
-                $scope.privateZsdgList = _.reject($scope.privateZsdgList, function(zjdg){
-                  return zjdg.ZHISHIDAGANG_ID == deleteZjDgData.shuju.ZHISHIDAGANG_ID;
-                });
-                $scope.knowledgePr = '';
-              }
-              else{
-                alert(result.error);
-              }
-            });
+            if(confirm("确定要删除此大纲吗？")){
+              $http.post(submitDataUrl, deleteZjDgData).success(function(result) {
+                if(result.result){
+                  $scope.privateZsdgList = _.reject($scope.privateZsdgList, function(zjdg){
+                    return zjdg.ZHISHIDAGANG_ID == deleteZjDgData.shuju.ZHISHIDAGANG_ID;
+                  });
+                  $scope.knowledgePr = '';
+                }
+                else{
+                  alert(result.error);
+                }
+              });
+            }
           }
           else{
             alert('请选择要删除的大纲！');
@@ -318,8 +319,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           newNd.ZHISHIDIAN_LEIXING = 2;
           newNd.ZIJIEDIAN = [];
           nd.ZIJIEDIAN.push(newNd);
-          var parentNd = $(event.target);
-          var focusFun = function() {
+          var parentNd = $(event.target),
+          focusFun = function() {
             parentNd.closest('.media-body').find('.media').last().find('input').last().focus();
           };
           $timeout(focusFun, 500);

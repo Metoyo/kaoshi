@@ -21,7 +21,7 @@
                         正确答案
                     </div>
                 </div>
-                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong">
+                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong track by $index">
                     <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control tiZhi" placeholder="请输入选项" value="{{tizhi}}">
@@ -29,9 +29,9 @@
                     <div class="col-sm-2">
                         <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"></span>
                         <div class="radio {{'answer' + $index}}"  ng-click="chooseDanxuanDaan($index)"
-                             ng-class="{'radio-select':timudetail.DAAN.indexOf({{$index}}) >= 0}">
+                             ng-class="{'radio-select':timudetail.DAAN.indexOf($index) >= 0}">
                             <input class="hidden" type="radio" name="rightAnswer" value="{{$index}}"
-                                   ng-checked="timudetail.DAAN.indexOf({{$index}}) >= 0" ng-model="danXuanData.shuju.DAAN">
+                                   ng-checked="timudetail.DAAN.indexOf($index) >= 0" ng-model="danXuanData.shuju.DAAN">
                             <span class="glyphicon glyphicon-ok"></span>
                         </div>
                     </div>
@@ -44,27 +44,16 @@
                         <span class="glyphicon glyphicon-plus-sign"></span> </a>
                 </div>
                 <div class="form-group nandu-select">
-                    <div class="col-sm-8 col-sm-offset-1">
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="1"
-                                    ng-checked="timudetail.NANDU_ID == 1">
-                            容易 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="2"
-                                   ng-checked="timudetail.NANDU_ID == 2">
-                            较易 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="3"
-                                   ng-checked="timudetail.NANDU_ID == 3">
-                            一般 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="4"
-                                   ng-checked="timudetail.NANDU_ID == 4">
-                            较难 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="danXuanData.shuju.NANDU_ID" value="5"
-                                   ng-checked="timudetail.NANDU_ID == 5">
-                            困难 </label>
+                    <label class="col-sm-1 control-label">难度：</label>
+                    <div class="col-sm-8">
+                        <div class="nandu-star-box" nandu-star>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <input type="text" class="hide nandu-input" value="">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

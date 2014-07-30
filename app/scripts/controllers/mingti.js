@@ -1116,6 +1116,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         *
+         */
+
+        /**
          * 加载修改单多选题模板
          */
         var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
@@ -1132,7 +1136,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         var onceMakeWord = true;
         $scope.editItem = function(tmxq){
-          var tpl;
+          var tpl, editDaAnArr = [],
+            nanDuClass;
           testListStepZst = selectZsd; //保存选题阶段的知识点
           selectZsd = []; //new add
           $scope.selectZsdStr = '';
@@ -1141,11 +1146,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           }
           //单选题
-          if(tmxq.TIMULEIXING_ID == 1){
+          if(tmxq.TIXING_ID == 1){
             tpl = 'views/tixing/danxuanedit.html';
             danxuan_data = timu_data;
             $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
             makeZsdSelect(tmxq);
+            _.each(tmxq.DAAN, function(da, idx, lst){
+              var daLetter = _.indexOf(letterArr, da);
+              editDaAnArr.push(daLetter);
+            });
+            tmxq.DAAN = editDaAnArr.join();
             danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             danxuan_data.shuju.DAAN = tmxq.DAAN;
             danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
@@ -1183,8 +1193,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.alterTiMuTiXing = '计算题';
             renderTpl(tpl); //render 修改过模板
           }
+          //难度反向选择代码
+          var nanDuSelectFun = function() {
+            nanDuClass = 'starClick' + tmxq.NANDU_ID;
+            $('.nandu-star-box').addClass(nanDuClass);
+            $('.nandu-input').val(tmxq.NANDU_ID);
+          };
           $scope.alterTiXingBox = true;
           onceMakeWord = false;
+          $timeout(nanDuSelectFun, 500);
         };
 
         /**
