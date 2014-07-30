@@ -4,7 +4,7 @@
             ng-options="dg.ZHISHIDAGANG_ID as dg.ZHISHIDAGANGMINGCHENG for dg in privateZsdgList">
         <option value="">请选择大纲</option>
     </select>
-    <button type="button" class="btn btn-default pull-right" ng-click="addNewZjDg()">
+    <button type="button" class="btn btn-default pull-right" ng-click="addNewZjDg();selected_dg=''">
         新建
     </button>
 </div>
