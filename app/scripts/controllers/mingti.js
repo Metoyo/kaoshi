@@ -1177,6 +1177,34 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.alterTiMuTiXing = '多选题';
             renderTpl(tpl); //render 修改过模板
           }
+          //判断题
+          if(tmxq.TIXING_ID == 4){
+            tpl = 'views/tixing/panduan.html';
+            pandu_data = timu_data;
+            $scope.panDuanData = pandu_data; //数据赋值和模板展示的顺序
+            if(tmxq.DAAN == '对'){
+              pandu_data.shuju.DAAN = 1;
+            }
+            else{
+              pandu_data.shuju.DAAN = 0;
+            }
+            pandu_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+            pandu_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+            pandu_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+            pandu_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+            pandu_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            $scope.alterTiMuTiXing = '判断题';
+            renderTpl(tpl); //render 修改过模板
+            var daAnSelectFun = function() {
+              if(pandu_data.shuju.DAAN == 1){
+                $scope.choosePanDuanDaan(1);
+              }
+              else{
+                $scope.choosePanDuanDaan(0);
+              }
+            };
+            $timeout(daAnSelectFun, 500);
+          }
           //计算题
           if(tmxq.TIMULEIXING_ID == 9 && tmxq.TIXING_ID == 9){
             tpl = 'views/tixing/jisuan.html';
