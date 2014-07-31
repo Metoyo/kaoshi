@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-sm-8 col-sm-offset-1 assignment-box">
                         <span>将题支编辑器的内容赋值给选项：</span>
-                        <label class="radio-inline" ng-repeat="num in loopArr">
+                        <label class="radio-inline" ng-repeat="num in loopArr track by $index">
                             <input type="radio" name="fuzhi" value="$index"
                                    ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
                         </label>
@@ -161,10 +161,10 @@
             </fieldset>
         </form>
     </div>
-    <script type="text/javascript" src="bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
+    <script type="text/javascript" src="/bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
     <!-- markItUp! toolbar settings -->
-    <script type="text/javascript" src="bower_components/markitup/set.js"></script>
-    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+    <script type="text/javascript" src="/bower_components/markitup/set.js"></script>
+    <script type="text/javascript" src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}

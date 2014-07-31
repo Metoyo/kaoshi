@@ -1116,10 +1116,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         *
-         */
-
-        /**
          * 加载修改单多选题模板
          */
         var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
@@ -1127,7 +1123,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           selectZsd = [];
           $('ul.levelFour').css('display','block');//用于控制大纲 开始
           $('.levelFour').closest('li').find('.foldBtn').addClass('unfoldBtn');
-          _.each(tmxq.ZHISHIDIAN,function(zsd,idx,lst){
+          _.each(tmxq.ZHISHIDIAN, function(zsd, idx, lst){
             selectZsd.push(zsd.ZHISHIDIAN_ID);
             selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
           });
@@ -1145,17 +1141,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(onceMakeWord){
             $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           }
-          //单选题
-          if(tmxq.TIXING_ID == 1){
-            tpl = 'views/tixing/danxuanedit.html';
-            danxuan_data = timu_data;
-            $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
-            makeZsdSelect(tmxq);
+          //生成题支编辑器的素组
+          if(tmxq.TIXING_ID <= 3){
+            //处理答案的代码将字母转换为数字
             _.each(tmxq.DAAN, function(da, idx, lst){
               var daLetter = _.indexOf(letterArr, da);
               editDaAnArr.push(daLetter);
             });
             tmxq.DAAN = editDaAnArr.join();
+          }
+          //单选题
+          if(tmxq.TIXING_ID == 1){
+            tpl = 'views/tixing/danxuanedit.html';
+            danxuan_data = timu_data;
+            $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
             danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             danxuan_data.shuju.DAAN = tmxq.DAAN;
             danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
@@ -1169,7 +1168,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tpl = 'views/tixing/duoxuanedit.html';
             duoxuan_data = timu_data;
             $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
-            makeZsdSelect(tmxq);
             duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             duoxuan_data.shuju.DAAN = tmxq.DAAN;
             duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
@@ -1183,7 +1181,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tpl = 'views/tixing/jisuan.html';
             jisuan_data = timu_data;
             $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
-            makeZsdSelect(tmxq);
             jisuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             jisuan_data.shuju.DAAN = tmxq.DAAN;
             jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
@@ -1193,15 +1190,39 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.alterTiMuTiXing = '计算题';
             renderTpl(tpl); //render 修改过模板
           }
+          //反选知识点
+          makeZsdSelect(tmxq);
           //难度反向选择代码
           var nanDuSelectFun = function() {
             nanDuClass = 'starClick' + tmxq.NANDU_ID;
             $('.nandu-star-box').addClass(nanDuClass);
             $('.nandu-input').val(tmxq.NANDU_ID);
+            selectZsdFun(); //加载知识大纲名称
           };
           $scope.alterTiXingBox = true;
           onceMakeWord = false;
           $timeout(nanDuSelectFun, 500);
+        };
+
+        /**
+         * 修改题目的增加一项
+         */
+        $scope.editAddOneItem = function(){
+          $scope.timudetail.TIGAN.tiZhiNeiRong.push('');
+        };
+
+        /**
+         * 修改题目删除一项
+         */
+        $scope.editDeleteOneItem = function(idx){
+          var daAnArrOne = $scope.timudetail.DAAN.split(','),
+            ifHasIn = _.contains(daAnArrOne, idx.toString());
+          if(ifHasIn){
+            alert('此项为正确答案不能删除！');
+          }
+          else{
+            $scope.timudetail.TIGAN.tiZhiNeiRong.splice(idx, 1);
+          }
         };
 
         /**

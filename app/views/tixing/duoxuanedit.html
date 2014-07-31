@@ -44,27 +44,16 @@
                         <span class="glyphicon glyphicon-plus-sign"></span> </a>
                 </div>
                 <div class="form-group nandu-select">
-                    <div class="col-sm-8 col-sm-offset-1">
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="1"
-                                    ng-checked="timudetail.NANDU_ID == 1">
-                            容易 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="2"
-                                   ng-checked="timudetail.NANDU_ID == 2">
-                            较易 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="3"
-                                   ng-checked="timudetail.NANDU_ID == 3">
-                            一般 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="4"
-                                   ng-checked="timudetail.NANDU_ID == 4">
-                            较难 </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="difficulty" ng-model="duoXuanData.shuju.NANDU_ID" value="5"
-                                   ng-checked="timudetail.NANDU_ID == 5">
-                            困难 </label>
+                    <label class="col-sm-1 control-label">难度：</label>
+                    <div class="col-sm-8">
+                        <div class="nandu-star-box" nandu-star>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <a href="javascript:void(0)"></a>
+                            <input type="text" class="hide nandu-input" value="">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
