@@ -1143,8 +1143,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //生成题支编辑器的素组
           if(tmxq.TIXING_ID <= 3){
+            var daAnArray = tmxq.DAAN.split(",");
             //处理答案的代码将字母转换为数字
-            _.each(tmxq.DAAN, function(da, idx, lst){
+            _.each(daAnArray, function(da, idx, lst){
               var daLetter = _.indexOf(letterArr, da);
               editDaAnArr.push(daLetter);
             });

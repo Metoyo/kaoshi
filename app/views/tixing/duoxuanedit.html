@@ -7,31 +7,89 @@
                         题干
                     </div>
                 </div>
+                <div class="form-group zsdNameBox">
+                    <div class="col-sm-8 col-sm-offset-1">
+                        知识点：<span ng-bind="selectZhiShiDian"></span>
+                    </div>
+                </div>
+                <div class="form-group answerBox" ng-hide="hideDuoXuanEdt" ng-init="hideDuoXuanEdt=false">
+                    <div class="col-sm-8 col-sm-offset-1 text-right">
+                        <a href="javascript:void(0)" ng-click="showDuoXuanTiGanEditor();hideDuoXuanEdt=true">题干编辑器</a>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" rows="3" ng-model="duoXuanData.shuju.TIGAN" placeholder="请输入题干">
-                        </textarea>
+                        <textarea class="form-control formulaEditTiGan" rows="5" ng-model="duoXuanData.shuju.TIGAN"
+                                  placeholder="请输入题干"></textarea>
+                        <div class="previewBox" ng-show="hideDuoXuanEdt">
+                            <h4 class="title">
+                                <span class="pull-left">
+                                    内容预览：
+                                </span>
+                                <span class="pull-right" ng-click="removeTiGanEditor();hideDuoXuanEdt=false">
+                                    关闭题干编辑器
+                                </span>
+                            </h4>
+                            <div id="prevDoc">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-1 control-label">题目</label>-->
+                    <!--<div class="col-sm-8">-->
+                        <!--<textarea class="form-control" rows="3" ng-model="duoXuanData.shuju.TIGAN" placeholder="请输入题干">-->
+                        <!--</textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
             </fieldset>
             <fieldset class="form-body">
+                <div class="form-group" ng-show='showDuoXuanTiZhiEdt'>
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <textarea class="form-control formulaEditTiZhi" rows="5">
+                        </textarea>
+                        <div class="previewBox">
+                            <h4 class="title">
+                            <span class="pull-left">
+                                内容预览：
+                            </span>
+                            </h4>
+                            <div id="prevTiZhiDoc">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-sm-offset-1 assignment-box">
+                        <span>将题支编辑器的内容赋值给选项：</span>
+                        <label class="radio-inline" ng-repeat="num in timudetail.TIGAN.tiZhiNeiRong track by $index">
+                            <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFun($index)'>
+                            {{letterArr[$index]}}
+                        </label>
+                    </div>
+                </div>
                 <div class="form-group answerBox">
-                    <div class="col-sm-3 col-sm-offset-9">
+                    <div class="col-sm-8 col-sm-offset-1 text-right">
+                        <a href="javascript:void(0)" ng-click="showDuoXuanTiZhiEditor();showDuoXuanTiZhiEdt=true"
+                           ng-hide="showDuoXuanTiZhiEdt">题支编辑器</a>
+                        <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showDuoXuanTiZhiEdt=false"
+                           ng-show="showDuoXuanTiZhiEdt">隐藏题支编辑器</a>
+                    </div>
+                    <div class="col-sm-3">
                         正确答案
                     </div>
                 </div>
-                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong">
+                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong track by $index">
                     <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control tiZhi" placeholder="请输入选项" value="{{tizhi}}">
                     </div>
                     <div class="col-sm-2">
-                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem()"></span>
+                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem"
+                              ng-click="editDeleteOneItem($index)"></span>
                         <div class="radio {{'answer' + $index}}"  ng-click="chooseDuoxuanDaan($index)"
-                             ng-class="{'radio-select':timudetail.DAAN.indexOf({{$index}}) >= 0}">
+                             ng-class="{'radio-select':timudetail.DAAN.indexOf($index) >= 0}">
                             <input class="hidden" type="checkbox" name="rightAnswer" value="{{$index}}"
-                                   ng-checked="timudetail.DAAN.indexOf({{$index}}) >= 0" ng-model="duoXuanData.shuju.DAAN">
+                                   ng-checked="timudetail.DAAN.indexOf($index) >= 0" ng-model="duoXuanData.shuju.DAAN">
                             <span class="glyphicon glyphicon-ok"></span>
                         </div>
                     </div>
@@ -39,7 +97,7 @@
             </fieldset>
             <fieldset class="form-footer">
                 <div class="form-group">
-                    <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="addOneItem()"
+                    <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="editAddOneItem()"
                        class="col-sm-1 control-label text-right add-btn">
                         <span class="glyphicon glyphicon-plus-sign"></span> </a>
                 </div>
@@ -58,12 +116,6 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">
-                        <!--<button type="button" class="btn btn-danger" ng-click="cancelAddPattern()">-->
-                            <!--返回-->
-                        <!--</button>-->
-                        <!--<button type="reset" class="btn btn-warning resetForm" ng-click="resetForm()">-->
-                            <!--重置-->
-                        <!--</button>-->
                         <button type="button" class="btn btn-primary" ng-click="saveDuoxuanEdit()">
                             保存
                         </button>
@@ -72,4 +124,28 @@
             </fieldset>
         </form>
     </div>
+    <script type="text/javascript" src="/bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
+    <!-- markItUp! toolbar settings -->
+    <script type="text/javascript" src="/bower_components/markitup/set.js"></script>
+    <script type="text/javascript" src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript">
+        //题干的编辑器预览
+
+        $('.formulaEditTiGan').keyup(function() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        });
+
+        //题支的编辑器预览
+
+        $('.formulaEditTiZhi').keyup(function() {
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        });
+    </script>
 </div>

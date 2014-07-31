@@ -105,7 +105,7 @@
                     上一页
                 </a>
             </li>
-            <li ng-repeat="pg in pages" ng-class="{active: currentPageNum == pg}">
+            <li ng-repeat="pg in pages track by $index" ng-class="{active: currentPageNum == pg}">
                 <a href ng-click="getThisPageData(pg)">{{pg}}</a>
             </li>
             <li ng-class="{disabled: currentPageNum == lastPageNum}">
