@@ -136,9 +136,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             //获取大纲知识点
             qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
             $http.get(qryKnowledge).success(function(data){
-              $scope.kowledgeList = data;
-            }).error(function(err){
-              alert(err);
+              if(data.length){
+                $scope.kowledgeList = data;
+              }
+              else{
+                alert('查询大纲失败！错误信息为：' + data.error);
+              }
             });
           }
           else{
@@ -150,29 +153,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
          */
         $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
-          $scope.kmtxList = data;
-          $scope.keMuList = true; //选择的科目render完成后列表显示
-        });
-        $scope.cxKmTx = function(lyt){
-
-          angular.element(".selectLyName").html(lyt.LINGYUMINGCHENG); //切换科目的名称
-
-          $http.get(qryKmTx + lyt.LINGYU_ID).success(function(data){ //查询科目题型的数据
+          if(data.length){
             $scope.kmtxList = data;
             $scope.keMuList = true; //选择的科目render完成后列表显示
+          }
+          else{
+            alert('查询科目题型失败！错误信息为：' + data.error);
+          }
+        });
+        $scope.cxKmTx = function(lyt){
+          angular.element(".selectLyName").html(lyt.LINGYUMINGCHENG); //切换科目的名称
+          $http.get(qryKmTx + lyt.LINGYU_ID).success(function(data){ //查询科目题型的数据
+            if(data.length){
+              $scope.kmtxList = data;
+              $scope.keMuList = true; //选择的科目render完成后列表显示
+            }
+            else{
+              alert('查询科目题型失败！错误信息为：' + data.error);
+            }
           });
         };
 
         /**
-         * 加载大纲知识点
+         * 加载大纲知识点,用于切换大纲，目前没有用到
          */
         $scope.loadDgZsd = function(dg){
           angular.element(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
           qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           $http.get(qryKnowledge).success(function(data){
-            $scope.kowledgeList = data;
-          }).error(function(err){
-            alert(err);
+            if(data.length){
+              $scope.kowledgeList = data;
+            }
+            else{
+              alert('查询知识点失败！错误信息：' + data.error)
+            }
           });
         };
 
@@ -1165,7 +1179,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             renderTpl(tpl); //render 修改过模板
           }
           //多选题
-          if(tmxq.TIMULEIXING_ID == 2 && tmxq.TIXING_ID == 2){
+          if(tmxq.TIXING_ID == 2){
             tpl = 'views/tixing/duoxuanedit.html';
             duoxuan_data = timu_data;
             $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
@@ -1206,17 +1220,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $timeout(daAnSelectFun, 500);
           }
           //计算题
-          if(tmxq.TIMULEIXING_ID == 9 && tmxq.TIXING_ID == 9){
+          if(tmxq.TIXING_ID == 9){
             tpl = 'views/tixing/jisuan.html';
             jisuan_data = timu_data;
             $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
+            jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+            jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
             jisuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             jisuan_data.shuju.DAAN = tmxq.DAAN;
             jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-            jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-            jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
             $scope.alterTiMuTiXing = '计算题';
+            renderTpl(tpl); //render 修改过模板
+          }
+          //解答题
+          if(tmxq.TIXING_ID == 17){
+            tpl = 'views/tixing/jieda.html';
+            jieda_data = timu_data;
+            $scope.jieDaData = jieda_data; //数据赋值和模板展示的顺序
+            jieda_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+            jieda_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+            jieda_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+            jieda_data.shuju.DAAN = tmxq.DAAN;
+            jieda_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+            jieda_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            $scope.alterTiMuTiXing = '解答题';
             renderTpl(tpl); //render 修改过模板
           }
           //反选知识点
