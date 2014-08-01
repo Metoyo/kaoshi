@@ -532,6 +532,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addDanXuan = function(tpl){
 //          selectZsd = []; //new add
 //          $scope.selectZsdStr = '';
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           danxuan_data = timu_data;
           loopArr = [0,1,2,3];
           renderTpl(tpl);
@@ -556,6 +557,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addDuoXuan = function(tpl){
 //          selectZsd = []; //new add
 //          $scope.selectZsdStr = '';
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           duoxuan_data = timu_data;
           loopArr = [0,1,2,3];
           renderTpl(tpl);
@@ -580,6 +582,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 计算题模板加载
          */
         $scope.addJiSuan = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           jisuan_data = timu_data;
           renderTpl(tpl);
           $('.patternList li').removeClass('active');
@@ -912,6 +915,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 解答题模板添加
          */
         $scope.addJieDa = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           jieda_data = timu_data;
           renderTpl(tpl);
           $('.patternList li').removeClass('active');
@@ -926,6 +930,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 判断题模板添加
          */
         $scope.addPanDuan = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           pandu_data = timu_data;
           renderTpl(tpl);
           $('.patternList li').removeClass('active');
@@ -952,6 +957,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 填空题模板添加
          */
         $scope.addTianKong = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
           tiankong_data = timu_data;
           loopArr = [];
           renderTpl(tpl);
@@ -970,7 +976,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var countInstances = function(mainStr, subStr) {
           var count = 0; var offset = 0;
           do{
-            offset = mainStr.indexOf(subStr, offset); if(offset != -1)
+            offset = mainStr.indexOf(subStr, offset);
+            if(offset != -1)
             {
               count++;
               offset += subStr.length;
@@ -1219,6 +1226,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             };
             $timeout(daAnSelectFun, 500);
           }
+          //填空题
+          if(tmxq.TIXING_ID == 6){
+            var tkEdReg = new RegExp('<%{.*?}%>', 'g'),
+              dataFirst,
+              tkCount = 0,
+              tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
+            loopArr = [];
+            tpl = 'views/tixing/tiankong.html';
+            tiankong_data = timu_data;
+            $scope.tianKongData = tiankong_data; //数据赋值和模板展示的顺序
+            //查询填空题详情
+            $http.get(tkqrytimuxiangqing).success(function(data){
+              if(data.length){
+                dataFirst = data[0];
+                //题干转换
+                tiankong_data.shuju.TIGAN = dataFirst.TIGAN.tiGan.replace(tkEdReg, function(arg) {
+                  loopArr.push(tkCount);
+                  tkCount ++;
+                  return '<span>_____</span>';
+                });
+                $scope.loopArr = loopArr;
+              }
+              else{
+                alert(data.error);
+              }
+            });
+            //赋值
+            tiankong_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+            tiankong_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+            tiankong_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+            tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            $scope.alterTiMuTiXing = '填空题';
+            renderTpl(tpl); //render 修改过模板
+          }
           //计算题
           if(tmxq.TIXING_ID == 9){
             tpl = 'views/tixing/jisuan.html';
@@ -1255,6 +1296,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $('.nandu-star-box').addClass(nanDuClass);
             $('.nandu-input').val(tmxq.NANDU_ID);
             selectZsdFun(); //加载知识大纲名称
+            if(tmxq.TIXING_ID == 6){
+              var tkTiZhiArr = $('.tizhiWrap').find('input.tiZhi'),
+                tkcnum,
+                tkEditDaAnArr = tmxq.DAAN.split(';');
+              tkcnum = $scope.loopArr.length;
+              for(var i = 0; i < tkcnum; i++){
+                tkTiZhiArr.eq(i).val(tkEditDaAnArr[i]);
+              }
+            }
+
           };
           $scope.alterTiXingBox = true;
           onceMakeWord = false;
