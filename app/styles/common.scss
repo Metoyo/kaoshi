@@ -2077,10 +2077,14 @@ a.add-btn:hover span {
   .paper-list{
     padding: 10px 15px;
     ul{
-      margin-bottom: 0;
+      margin: 0;
+      padding: 0;
       li{
         margin-top: -1px;
       }
+    }
+    .zj_paperList{
+
     }
     table{
       margin-bottom: 0;
@@ -2090,6 +2094,11 @@ a.add-btn:hover span {
       }
       td{
         vertical-align: middle;
+      }
+    }
+    .table-title{
+      th{
+        border-top: 0;
       }
     }
     .more-info{

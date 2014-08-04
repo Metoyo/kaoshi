@@ -6638,7 +6638,8 @@ a.add-btn:hover span {
 .zujuanWrapper .paper-list {
   padding: 10px 15px; }
   .zujuanWrapper .paper-list ul {
-    margin-bottom: 0; }
+    margin: 0;
+    padding: 0; }
     .zujuanWrapper .paper-list ul li {
       margin-top: -1px; }
   .zujuanWrapper .paper-list table {
@@ -6648,6 +6649,8 @@ a.add-btn:hover span {
       border-bottom: 0; }
     .zujuanWrapper .paper-list table td {
       vertical-align: middle; }
+  .zujuanWrapper .paper-list .table-title th {
+    border-top: 0; }
   .zujuanWrapper .paper-list .more-info {
     display: none;
     padding: 10px; }

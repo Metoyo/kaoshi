@@ -2,10 +2,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
   function ($, _, angular, config) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
-      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$window','$document',
-        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $window, $document) { // 002
+      .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
+        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout) { // 002
           /**
-           * 操作title
+           * 操作title//
            */
           $rootScope.pageName = "组卷"; //page title
           $rootScope.dashboard_shown = true;
@@ -890,7 +890,35 @@ define(['jquery', 'underscore', 'angular', 'config'],
               },
               date = new Date(),
               currentDate = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))
-                + date.getDate(); //当前的日期
+                + date.getDate(), //当前的日期
+              saveZjRuleFun = function(){
+                $http.post(updateXuanTiRule, ruleData).success(function(data){
+                  if(data.id){
+                    if(isSavePaper){ //判断是否为保存试卷，如果是话，更新使用次数
+                      var guizeTouch = {
+                        token: token,
+                        caozuoyuan: caozuoyuan,
+                        xuantiguize_id: data.id
+                      };
+                      $http.post(updateRuleUseTimes, guizeTouch).success(function(subData){
+                        if(subData.result){
+                          isComeFromRuleList = false;
+                          comeFromRuleListData = '';
+                        }
+                        else{
+                          alert(subData.error);
+                        }
+                      });
+                    }
+                    else{
+                      qryZjRule();
+                    }
+                  }
+                  else{
+                    alert(data.error);
+                  }
+                });
+              };
             if(opt == 'sav'){
               ruleData.shuju.GUIZEMINGCHENG = '组卷规则' + currentDate;
               ruleData.shuju.GUIZEBIANMA = rule;
@@ -906,33 +934,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
               ruleData.shuju.ZHUANGTAI = -1;
             }
             if(ruleData.shuju.GUIZEBIANMA.length || ruleData.shuju.XUANTIGUIZE_ID){
-              $http.post(updateXuanTiRule, ruleData).success(function(data){
-                if(data.id){
-                  if(isSavePaper){ //判断是否为保存试卷，如果是话，更新使用次数
-                    var guizeTouch = {
-                      token: token,
-                      caozuoyuan: caozuoyuan,
-                      xuantiguize_id: data.id
-                    };
-                    $http.post(updateRuleUseTimes, guizeTouch).success(function(subData){
-                      if(subData.result){
-//                        alert('使用次数更新成功!');
-                        isComeFromRuleList = false;
-                        comeFromRuleListData = '';
-                      }
-                      else{
-                        alert(subData.error);
-                      }
-                    });
-                  }
-                  else{
-                    qryZjRule();
-                  }
+              if(opt == 'del'){
+                if(confirm('确定要删除此规则吗？')){
+                  saveZjRuleFun();
                 }
-                else{
-                  alert(data.error);
-                }
-              });
+              }
+              else{
+                saveZjRuleFun();
+              }
             }
           };
 
@@ -1941,6 +1950,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           * 当考试和考试规则列表加载时，变换tab-content的宽度
+           */
+          var widthChangeFun = function() {
+            $('.tab-content').width($('.sub-nav').width() - 16 + 'px');
+          };
+
+          /**
            *  查询试卷列表的函数，组卷页面加载时，查询数据
            */
           var isFirstQryPaperList;
@@ -2028,6 +2044,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.zj_tabActive = 'zjRule';
             qryZjRule();
             $scope.zjTpl = 'views/partials/zj_ruleList.html'; //加载试卷列表模板
+            $timeout(widthChangeFun, 100);
           };
 
           /**
@@ -2084,6 +2101,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.showBackToPaperListBtn = false; //返回试卷列表
                       $scope.zjTpl = 'views/partials/zj_paperList.html'; //加载试卷列表模板
                       isFirstQryPaperList = false;
+                      $timeout(widthChangeFun, 100);
                     }
                   }
                   else{
@@ -2372,21 +2390,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   }
                 }
               }
-              //没有题目数量不一样
-//              else{
-//                var surplus = 90 % yushu; //余数百分比
-//                if(surplus == 0){
-//                  if(){
-//
-//                  }
-//                  tm.percent = (90/yushu)/100;
-//                }
-//                else{
-//                  var spTiMuPercent = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
-//                    spLastTiMuPercent = spTiMuPercent + surplus/100; //最后一题的百分比
-//
-//                }
-//              }
             });
             //为每张答题分配题目
             for(var i = 0; i < answerCardLen; i++){
