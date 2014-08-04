@@ -1,8 +1,7 @@
 <div class="da-ti-ka-wrap">
-    <!--<div class="loading-box text-center">-->
-        <!--<img src="/images/loading.gif" alt=""/>-->
-        <!--<p>答题卡生成中，请耐心等待……</p>-->
-    <!--</div>-->
+    <div class="back-home-box">
+        <button type="button" class="btn btn-danger" ng-click="shijuanPreview()">返回试卷</button>
+    </div>
     <div class="set-tiMu-num">
         <span>每页显示道题数量：</span>
         <label class="radio-inline">
@@ -35,7 +34,7 @@
             <span>{{ac.shuju.footer.text}}</span>
         </div>
     </div>
-    <div class="save-box">
-        <button type="button" class="btn btn-primary" ng-click="saveDaTiKa()" ng-disabled="loadingImg">保存答题卡</button>
-    </div>
+    <!--<div class="save-box">-->
+        <!--<button type="button" class="btn btn-primary" ng-click="saveDaTiKa()" ng-disabled="loadingImg">保存答题卡</button>-->
+    <!--</div>-->
 </div>

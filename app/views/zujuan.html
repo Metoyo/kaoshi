@@ -1,69 +1,72 @@
 <div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form,
 rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
     <div class="testPaperSummary">
-        <div class="paper-list-btn clearfix text-center">
-            <button type="button" class="btn btn-primary" ng-show="showBackToPaperListBtn"
-                    ng-click="showZuJuan()">查看试卷列表</button>
-        </div>
+        <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""></h2>
         <div class="subjectBox clearfix">
             <h2 class="pull-left">高中物理</h2>
         </div>
-        <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
-            <h3 class="clearfix">
-                <span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>
-                <a href="javascript:void(0)" class="pull-right">全部清空</a>
-            </h3>
-            <table class="table-bordered tixingTalbe">
-                <tr>
-                    <th>题型</th>
-                    <th>数量</th>
-                    <th>占比</th>
-                    <th>分数</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="kmtx in kmtxList">
-                    <td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>
-                    <td>{{kmtx.itemsNum}}</td>
-                    <td>{{kmtx.txPercentNum == 'NaN%' ? '0%' : kmtx.txPercentNum }}</td>
-                    <td>{{kmtx.datiScore}}</td>
-                    <td class="deleteBtn">
-                        <a href="javascript:void(0)" ng-click="deleteDaTiArr(kmtx.TIXING_ID)">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
-            <table class="table-bordered nanduTable">
-                <tr>
-                    <th>难度</th>
-                    <th>数量</th>
-                    <th>占比</th>
-                    <th>分数</th>
-                </tr>
-                <tr ng-repeat="ndtd in nanduTempData">
-                    <td class="text-left">{{ndtd.nanduName}}</td>
-                    <td>{{ndtd.nanduCount.length}}</td>
-                    <td>{{ndtd.ndPercentNum == 'NaN%' ? '0%' : ndtd.ndPercentNum}}</td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-        <div class="sj-preview-btns">
-            <button type="button" class="btn btn-primary" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
-                试卷预览
-            </button>
-            <button type="button" class="btn btn-primary" ng-hide="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID"
-                    ng-click="showZuJuanPage()">
-                添加新试卷
-            </button>
-            <!--<button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="addMoreTiMuBtn && !shijuanyulanBtn">-->
+        <div class="plr10">
+            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
+                <h3 class="clearfix">
+                    <span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>
+                    <a href="javascript:void(0)" class="pull-right">全部清空</a>
+                </h3>
+                <table class="table-bordered tixingTalbe">
+                    <tr>
+                        <th>题型</th>
+                        <th>数量</th>
+                        <th>占比</th>
+                        <th>分数</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="kmtx in kmtxList">
+                        <td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>
+                        <td>{{kmtx.itemsNum}}</td>
+                        <td>{{kmtx.txPercentNum == 'NaN%' ? '0%' : kmtx.txPercentNum }}</td>
+                        <td>{{kmtx.datiScore}}</td>
+                        <td class="deleteBtn">
+                            <a href="javascript:void(0)" ng-click="deleteDaTiArr(kmtx.TIXING_ID)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
+                <table class="table-bordered nanduTable">
+                    <tr>
+                        <th>难度</th>
+                        <th>数量</th>
+                        <th>占比</th>
+                        <th>分数</th>
+                    </tr>
+                    <tr ng-repeat="ndtd in nanduTempData">
+                        <td class="text-left">{{ndtd.nanduName}}</td>
+                        <td>{{ndtd.nanduCount.length}}</td>
+                        <td>{{ndtd.ndPercentNum == 'NaN%' ? '0%' : ndtd.ndPercentNum}}</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="paper-list-btn clearfix text-center">
+                <button type="button" class="btn btn-primary" ng-show="showBackToPaperListBtn"
+                        ng-click="showZuJuan()">查看试卷列表</button>
+            </div>
+            <div class="sj-preview-btns">
+                <button type="button" class="btn btn-primary" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
+                    试卷预览
+                </button>
+                <button type="button" class="btn btn-primary" ng-hide="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID"
+                        ng-click="showZuJuanPage()">
+                    添加新试卷
+                </button>
+                <!--<button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="addMoreTiMuBtn && !shijuanyulanBtn">-->
                 <!--添加试题-->
-            <!--</button>-->
-            <button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="sjPreview">
-                添加试题
-            </button>
+                <!--</button>-->
+                <button type="button" class="btn btn-primary" ng-click="showTestList()" ng-show="sjPreview">
+                    添加试题
+                </button>
+            </div>
         </div>
     </div>
     <div class="content">
@@ -72,12 +75,6 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
             <div class="popupWrap">
                 <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
                 <div id="dagangListWrap" class="dagangListWrap">
-                    <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
-                    <div class="btn-group pointSelect">
-                        <h2 class="pointTitleBox pull-left">
-                            <span class="pointTitle pull-left selectLyName">{{lyList[0].LINGYUMINGCHENG}}</span>
-                        </h2>
-                    </div>
                     <div class="btn-group pointSelect">
                         <h2 class="pointTitleBox pull-left">
                             <span class="pointTitle pull-left selectDgName">{{dgList[0].ZHISHIDAGANGMINGCHENG}}</span>
@@ -189,7 +186,7 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                         </div>
                     </div>
                     <div class="nandu-dist" ng-mouseover="resize('All')" ng-hide="isAutoMakePaperDetailSetShow">
-                        <h4>难度系数:
+                        <h4>整卷难度系数:
                             <span class="coefftAll">0.50</span>
                             <em>(建议0.20-0.80之间)</em>
                         </h4>
@@ -210,11 +207,11 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                         </button>
                         <button type="button" class="btn btn-danger" ng-hide="isAutoMakePaperDetailSetShow"
                                 ng-click="autoMakePaperDetailSet()">
-                            详细设置
+                            分题型难度设置
                         </button>
                         <button type="button" class="btn btn-danger" ng-show="isAutoMakePaperDetailSetShow"
                                 ng-click="cancelAutoMakePaperDetailSet()">
-                            取消详细设置
+                            取消分题型难度设置
                         </button>
                         <button class="btn btn-primary auto-make-paper-btn" ng-hide="isAutoMakePaperDetailSetShow"
                                 ng-click="submitAutoPaperData()">

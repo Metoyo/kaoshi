@@ -147,7 +147,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 TIXING: []
               }
             }, //自动组卷的数据格式
-            saveDaTiKaUrl = baseMtAPIUrl + 'make_datika', //保存答题卡的url
+            saveDaTiKaUrl = baseMtAPIUrl + 'set_datika', //保存答题卡的url
             qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
             getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //规则组卷
@@ -307,7 +307,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
             }
             zhishidian_id = selectZsd.toString();
-            if($scope.txTpl == 'views/partials/paper_hand_form.html'){
+            if($scope.txTpl == 'views/partials/zj_testList.html'){
               qryTestFun();
             }
           };
@@ -415,7 +415,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查询试题的函数
            */
           var qryTestFun = function(){
-            $scope.loadingImgShow = true; //paper_hand_form.html
+            $scope.loadingImgShow = true; //zj_testList.html
             var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
               '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
@@ -438,7 +438,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               else{
                 alert('没有相关试题信息！');
-                $scope.loadingImgShow = false; //paper_hand_form.html
+                $scope.loadingImgShow = false; //zj_testList.html
               }
             })
             .error(function(err){
@@ -450,7 +450,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查询题目详情的分页代码
            */
           $scope.getThisPageData = function(pg){
-            $scope.loadingImgShow = true; //paper_hand_form.html
+            $scope.loadingImgShow = true; //zj_testList.html
             var qrytimuxiangqing,
               pgNum = pg - 1,
               timu_id,
@@ -492,7 +492,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         }
                       });
                     });
-                    $scope.loadingImgShow = false; //paper_hand_form.html
+                    $scope.loadingImgShow = false; //zj_testList.html
                     $scope.timudetails = data;
                     $scope.caozuoyuan = caozuoyuan;
                     timudetails = data;
@@ -500,13 +500,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   else{
                     $scope.timudetails = null;
                     alert('查询创建人名称失败！');
-                    $scope.loadingImgShow = false; //paper_hand_form.html
+                    $scope.loadingImgShow = false; //zj_testList.html
                   }
                 });
               }
               else{
                 alert('没有相关的题目！');
-                $scope.loadingImgShow = false; //paper_hand_form.html
+                $scope.loadingImgShow = false; //zj_testList.html
               }
             }).error(function(err){
               console.log(err);
@@ -610,7 +610,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
             //查询试题的函数
             $scope.getTiXingId(txid);
             $scope.txSelectenIdx = txid ? txid : 0;
-            $scope.txTpl = 'views/partials/paper_hand_form.html';
+            $scope.txTpl = 'views/partials/zj_testList.html';
+            $scope.sjPreview = false;
           };
 
           /**
@@ -872,7 +873,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 组卷规则的增删改//
+           * 组卷规则的增删改
            */
           $scope.saveZjRule = function(rule, opt, isSavePaper){
             //rule是具体的数据，opt是要实现的功能sav(保存), upd(修改), del(删除)
@@ -1552,7 +1553,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 试卷预览代码
+           * 试卷预览代码//
            */
           $scope.shijuanPreview = function(){
             var mbdtArr = [], //定义一个空的数组用来存放模板大题
@@ -1760,7 +1761,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 保存试卷前的确认
            */
           $scope.savePaperConfirm = function(){
-            console.log(mubanData);
             var nanDuArr = {
                 paperNanDu: '',
                 daTiNanDuArr:[]
@@ -1845,15 +1845,49 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 //更新数据模板
                 var lsmbIdLenght = $rootScope.session.lsmb_id.length;
                 mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
-                $http.post(xgmbUrl, mubanData).success(function(data){
-                  if(data.result){
+                $http.post(xgmbUrl, mubanData).success(function(mbdata){
+                  if(mbdata.result){
 //                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
                     for(var i = 0; i < lsmbIdLenght; i++){
                       if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
                         $rootScope.session.lsmb_id.splice(i, 1);
-                        deleteTempTemp(); //删除没用的其他目标
+//                        deleteTempTemp(); //删除没用的其他目标
                       }
                     }
+                    //保存大题卡
+                    var daTiKaDataRule = {
+                      token: token,
+                      caozuoyuan: caozuoyuan,
+                      jigouid: jigouid,
+                      lingyuid: lingyuid,
+                      shuju:{
+                        shiJuanId: '',
+                        pages: []
+                      }
+                    };
+                    if($scope.answerCards){
+                      daTiKaDataRule.shuju.shiJuanId = paperDetailId;
+                    }
+                    else{
+                      paperDetailData = mubanData;
+                      $scope.setDaTiKa();
+                      daTiKaDataRule.shuju.shiJuanId = data.id;
+                    }
+
+                    _.each($scope.answerCards, function(dtk, idx, lst){
+                      daTiKaDataRule.shuju.pages.push(dtk.shuju);
+                    });
+                    $http.post(saveDaTiKaUrl, daTiKaDataRule).success(function(dtkdata){
+                      if(dtkdata.result){
+                        deleteTempTemp(); //删除没用的其他目标
+                        $scope.answerCards = '';
+                        paperDetailData = '';
+                        console.log('答题卡生成规则保存成功！');
+                      }
+                      else{
+                        alert('保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
+                      }
+                    });
                     $scope.showZuJuan();
                     $scope.shijuanyulanBtn = false; //试卷预览的按钮
                     $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
@@ -1870,10 +1904,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                     alert('恭喜你！试卷保存成功！');
                   }
-                }).error(function(err){
-                  alert(err);
+                  else{
+                    alert('更新试卷模板是错误！错误信息为：' + mbdata.error);
+                  };
                 });
-
               }
 
             }).error(function(err){
@@ -2268,7 +2302,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 生成答题卡 paperDetailData
            */
           var allTiMuForCard; //存放所有需要放到答题卡中的试题
-          $scope.makeDaTiKa = function(){
+          $scope.setDaTiKa = function(){
             var idxCount = 0;
             allTiMuForCard = [];
             //将所有需要答题卡的试题全部添加到allTiMuForCard中
@@ -2289,7 +2323,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
             });
             $scope.setTiMuNum(1);
-            $scope.txTpl = 'views/partials/daTiKa.html'; //加载答题卡页面
+            $scope.txTpl = 'views/partials/zj_daTiKa.html'; //加载答题卡页面
           };
 
           /**
@@ -2398,8 +2432,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 caozuoyuan: caozuoyuan,
                 jigouid: jigouid,
                 lingyuid: lingyuid,
+                shiJuanId: paperDetailId,
                 shuju: {
-                  shiJuanId: paperDetailId,
                   pageNo: i,
                   header: {
                     percent: 0.05,
@@ -2519,34 +2553,42 @@ define(['jquery', 'underscore', 'angular', 'config'],
 //          };
 
           /**
-           * 保存答题卡
+           * 保存答题卡生成规则
            */
-          $scope.loadingImg = false; //loading图片的显示和隐藏
-          $scope.saveDaTiKa = function(){
-            $scope.loadingImg = true; //loading图片的显示和隐藏
-            var daTiKaLen = $scope.answerCards.length,
-              times = 0,
-              ifSaveDone = true,
-              daTiKaUrlArr = [];
-            var saveFun = function(){
-              if(times < daTiKaLen){
-                $http.post(saveDaTiKaUrl, $scope.answerCards[times]).success(function(data){
-                  if(data.fileName){
-                    daTiKaUrlArr.push(data.fileName);
-                    if(times == daTiKaLen - 1){
-                      $scope.daTiKaUrlArr = daTiKaUrlArr;
-                      $scope.loadingImg = false; //loading图片的显示和隐藏
-                      alert('答题卡生产成功！');
-                      $scope.txTpl = 'views/partials/daTiKaDownLoad.html';
-                    }
-                    times ++;
-                    saveFun();
-                  }
-                });
-              }
-            };
-            saveFun();
-          };
+//          $scope.saveDaTiKaGuiZe = function(){
+//
+//            $http.post(saveDaTiKaUrl, daTiKaDataRule).success(function(data){
+//              if(data.fileName){
+//
+//              }
+//            });
+//          };
+//          $scope.loadingImg = false; //loading图片的显示和隐藏
+//          $scope.saveDaTiKa = function(){
+//            $scope.loadingImg = true; //loading图片的显示和隐藏
+//            var daTiKaLen = $scope.answerCards.length,
+//              times = 0,
+//              ifSaveDone = true,
+//              daTiKaUrlArr = [];
+//            var saveFun = function(){
+//              if(times < daTiKaLen){
+//                $http.post(saveDaTiKaUrl, $scope.answerCards[times]).success(function(data){
+//                  if(data.fileName){
+//                    daTiKaUrlArr.push(data.fileName);
+//                    if(times == daTiKaLen - 1){
+//                      $scope.daTiKaUrlArr = daTiKaUrlArr;
+//                      $scope.loadingImg = false; //loading图片的显示和隐藏
+//                      alert('答题卡生产成功！');
+//                      $scope.txTpl = 'views/partials/daTiKaDownLoad.html';
+//                    }
+//                    times ++;
+//                    saveFun();
+//                  }
+//                });
+//              }
+//            };
+//            saveFun();
+//          };
 
           /**
            * 当离开本页的时候触发事件，删除无用的临时模板
