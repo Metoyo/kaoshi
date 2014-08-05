@@ -31,8 +31,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试列表的url
           qryKaoShiDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaoshi?token=' + token + '&caozuoyuan='
             + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试详细的url
-          kaoshiNumsPerPage = 10, //每页显示多少条考试
-          kaoChangNumsPerPage = 10, //每页显示多少条考场信息
           qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
           kaoshi_data, //考试的数据格式
@@ -176,7 +174,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
          * 显示试卷详情
          */
         $scope.showShiJuanInfo = function(sjId){
-          console.log(sjId);
           var qryPaperDetail = qryPaperDetailBase + sjId;
           $http.get(qryPaperDetail).success(function(data){
             if(data){
@@ -197,7 +194,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               //赋值
               $scope.paperDetail = data;
               $scope.showPaperDetail = true;
-              console.log($scope.paperDetail);
+            }
+            else{
+              alert('查询试卷失败！错误信息为：' + data.error);
             }
           });
         };
@@ -403,9 +402,36 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
          * 将试卷添加到考试，目前只能添加到一个试卷
          */
         $scope.addToKaoShi = function(paperId){
-          kaoshi_data.shuju.SHIJUAN_ID = paperId.SHIJUAN_ID; //试卷id
-          kaoshi_data.shuju.shijuan_name = paperId.SHIJUANMINGCHENG; //试卷名称
-          $scope.showPopupBox = false;
+          var qryPaperDetail = qryPaperDetailBase + paperId.SHIJUAN_ID;
+          $http.get(qryPaperDetail).success(function(data){
+            if(!data.error){
+              //给模板大题添加存放题目的数组
+              _.each(data.MUBANDATI, function(mbdt, idx, lst){
+                mbdt.TIMUARR = [];
+                mbdt.datiScore = 0;
+              });
+              //将各个题目添加到对应的模板大题中
+              _.each(data.TIMU, function(tm, idx, lst){
+                _.each(data.MUBANDATI, function(mbdt, subIdx, subLst){
+                  if(mbdt.MUBANDATI_ID == tm.MUBANDATI_ID){
+                    mbdt.TIMUARR.push(tm);
+                    mbdt.datiScore += parseFloat(tm.FENZHI);
+                  }
+                });
+              });
+              //将答题卡内容有字符串转换为数字
+              data.SHIJUAN.DATIKA = JSON.parse(data.SHIJUAN.DATIKA);
+              //赋值
+              $scope.paperDetail = data;
+
+              kaoshi_data.shuju.SHIJUAN_ID = paperId.SHIJUAN_ID; //试卷id
+              kaoshi_data.shuju.shijuan_name = paperId.SHIJUANMINGCHENG; //试卷名称
+              $scope.showPopupBox = false;
+            }
+            else{
+              alert('查询试卷失败！错误信息为：' + data.error);
+            }
+          });
         };
 
         /**

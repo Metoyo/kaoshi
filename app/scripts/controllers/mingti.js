@@ -1360,17 +1360,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 修改计算题
-         */
-        //      $scope.saveJisuanEdit = function(){
-        //        var promise = addDanDuoXuanFun(duoxuan_data);
-        //        promise.then(function() {
-        //          $scope.cancelAddPattern();
-        //          qryTestFun();
-        //        });
-        //      };
-
-        /**
          * dagangListWrap宽度可拖拽
          */
         var resize = function(el){

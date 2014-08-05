@@ -2157,6 +2157,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 查看试卷详情
            */
           $scope.showPaperDetail = function(sjId){
+            console.log(sjId);
             var qryPaperDetailUrl = qryPaperDetailUrlBase + sjId;
             mubanData.shuju.MUBANDATI = [];
             shijuanData.shuju.SHIJUAN_TIMU = [];

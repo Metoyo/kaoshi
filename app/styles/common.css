@@ -5139,6 +5139,17 @@ a.add-btn:hover span {
   .form-body .assignment-box .checkbox-inline,
   .form-body .assignment-box .radio-inline {
     padding-top: 0; }
+  .form-body .assignment-box .radio-inline {
+    background-color: #fafafa;
+    border: 1px solid #cacece;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    line-height: 12px; }
+    .form-body .assignment-box .radio-inline input[name=fuzhi] {
+      display: none; }
   .form-body .assignment-box span {
     padding-top: 7px; }
 .form-body .radio {
@@ -5189,6 +5200,27 @@ a.add-btn:hover span {
     height: 32px;
     width: 200px;
     margin-top: 12px; }
+
+.moreBtn {
+  cursor: pointer;
+  border: 1px solid #fff;
+  z-index: 2;
+  position: relative; }
+
+.moreBtnCont {
+  display: none;
+  position: absolute;
+  width: 192px;
+  right: 34px;
+  top: 3px;
+  background-color: #FFFFFF;
+  border: 1px solid #AFC1CF;
+  padding: 10px;
+  text-align: right;
+  z-index: 1;
+  overflow: hidden; }
+  .moreBtnCont .mbc-inner {
+    width: 170px; }
 
 /*base css end*/
 /* dashboard styles begin*/
@@ -6854,7 +6886,8 @@ a.add-btn:hover span {
   .kaowuWrapper .kaowu-table th {
     text-align: center; }
   .kaowuWrapper .kaowu-table td {
-    vertical-align: middle; }
+    vertical-align: middle;
+    position: relative; }
     .kaowuWrapper .kaowu-table td p {
       margin: 0; }
 .kaowuWrapper .paper-cont {

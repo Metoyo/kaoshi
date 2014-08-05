@@ -154,6 +154,19 @@ a.add-btn:hover span {
     .radio-inline{
       padding-top: 0;
     }
+    .radio-inline{
+      background-color: #fafafa;
+      border: 1px solid #cacece;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+      padding: 9px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+      line-height: 12px;
+      input[name=fuzhi]{
+        display: none;
+      }
+    }
     span{
       padding-top: 7px;
     }
@@ -214,6 +227,28 @@ a.add-btn:hover span {
     height: 32px;
     width: 200px;
     margin-top: 12px;
+  }
+}
+.moreBtn{
+  cursor: pointer;
+  border: 1px solid #fff;
+  z-index: 2;
+  position: relative;
+}
+.moreBtnCont{
+  display: none;
+  position: absolute;
+  width: 192px;
+  right: 34px;
+  top: 3px;
+  background-color: #FFFFFF;
+  border: 1px solid #AFC1CF;
+  padding: 10px;
+  text-align: right;
+  z-index: 1;
+  overflow: hidden;
+  .mbc-inner{
+    width: 170px;
   }
 }
 /*base css end*/
@@ -2380,6 +2415,7 @@ a.add-btn:hover span {
     }
     td{
       vertical-align: middle;
+      position: relative;
       p{
         margin: 0;
       }
@@ -2399,12 +2435,6 @@ a.add-btn:hover span {
       padding: 10px 10px 5px 10px;
       float: left;
       width: 100%;
-      .paper-name{
-
-      }
-      .paper-operate{
-
-      }
       .more-info{
         display: none;
         float: left;

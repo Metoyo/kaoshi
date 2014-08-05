@@ -53,6 +53,10 @@
                 <button type="button" class="btn btn-primary" ng-click="importKaoSheng()">导入考生</button>
                 <span class="ml10">共<b>{{kaoshiData.shuju.KAOCHANG.USERS.length}}</b>名考试</span>
             </div>
+            <div class="col-sm-3 text-right" ng-show="paperDetail.SHIJUAN.DATIKA">
+                <button type="button" class="btn btn-primary" ng-click="">设置答题卡</button>
+                <button type="button" class="btn btn-primary" ng-click="">下载答题卡</button>
+            </div>
         </div>
         <div class="form-group" ng-show="isAddNewKaoSheng">
             <div class="col-sm-8 col-sm-offset-2">
