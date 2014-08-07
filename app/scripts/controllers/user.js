@@ -576,6 +576,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var ifCheckOrNot = $(event.target).prop('checked');
         if(ifCheckOrNot){ //添加
           if(nd.PARENT_LINGYU_ID == 0){ // 父领域
+            $scope.jgSelectLingYu.push(nd);
             if(nd.CHILDREN.length){
               _.each(nd.CHILDREN, function(ly, idx, lst){
                 var hasLingYuArr, hasIn;
@@ -594,9 +595,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         else{ //删除
           if(nd.PARENT_LINGYU_ID == 0){ // 父领域
+
             if(nd.CHILDREN.length){
               _.each(nd.CHILDREN, function(ly,idx,lst){
                 _.each($scope.jgSelectLingYu, function(sly, sIdx, sLst){
+                  if(sly.LINGYU_ID == nd.LINGYU_ID){
+                    $scope.jgSelectLingYu.splice(sIdx, 1);
+                  }
                   if(sly.LINGYU_ID == ly.LINGYU_ID){
                     $scope.jgSelectLingYu.splice(sIdx, 1);
                   }

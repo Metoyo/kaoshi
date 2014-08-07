@@ -131,7 +131,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.kaoshiList = ksdtl;
             }
             else{
-              alert('没有相关的考试！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('没有相关的考试！'); //mesSuccess mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               $scope.loadingImgShow = false; //kaoShiList.html
             }
           });
@@ -162,7 +164,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               isDeleteKaoShi = false;//是否为删除考试
             }
             else{
-              alert('没有相关的考试！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('没有相关的考试！'); //mesSuccess mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               $scope.loadingImgShow = false; //kaoShiList.html
             }
           });
@@ -199,7 +203,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.showPaperDetail = true;
             }
             else{
-              alert('查询试卷失败！错误信息为：' + data.error);
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('查询试卷失败！错误信息为：' + data.error); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -223,7 +229,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             else{
               $scope.loadingImgShow = false; //kaoChangList.html
-              alert("没有相关的考场数据");
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('没有相关的考场数据!'); //mesSuccess mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -348,15 +356,17 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                   $scope.showPopupBox = true; //试卷列表弹出层显示
                 }
                 else{
-                  alert('查询创建人名称失败！');
+                  $('.messageTd').css('display', 'none').html('');
+                  $('.mesError').css('display', 'block').html('查询创建人名称失败！'); //mesSuccess mesPrompt
+                  $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                 }
               });
             }
             else{
-              alert('很遗憾！没有相关数据！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('没有相关数据！'); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
-          }).error(function(err){
-            console.log(err);
           });
         };
 
@@ -382,8 +392,11 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               //查询数据开始
               $scope.getThisSjgyPageData();
             }
-          }).error(function(err){
-            alert(err);
+            else{
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html(sjlb.error); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+            }
           });
         };
 
@@ -432,7 +445,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.showPopupBox = false;
             }
             else{
-              alert('查询试卷失败！错误信息为：' + data.error);
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('查询试卷失败！错误信息为：' + data.error); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -657,7 +672,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $timeout(cancelDisabled, 25000);
             }
             else{
-              alert('保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
+              //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -736,7 +754,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             document.getElementById(div_id).innerHTML = content;
             setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
-            alert('导入成功！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesSuccess').css('display', 'block').html('导入成功！'); // mesPrompt mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           };
 
           if (iframeId.addEventListener) {
@@ -813,7 +833,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                   kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
                   setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
                   $scope.showListBtn = true;
-                  alert('导入成功！');
+                  $('.messageTd').css('display', 'none').html('');
+                  $('.mesSuccess').css('display', 'block').html('导入成功！'); // mesPrompt mesError
+                  $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                 }
               };
 
@@ -831,11 +853,15 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               form.submit();
             }
             else{
-              alert('请选择上传文件！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('请选择上传文件！'); //mesSuccess  mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           }
           else{
-            alert('请选择考场！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesPrompt').css('display', 'block').html('请选择考场！'); //mesSuccess  mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           }
         };
 
@@ -848,11 +874,15 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.showImportStuds = true; //显示考生列表table
             }
             else{
-              alert('您还没有上传任何考生信息！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('您还没有上传任何考生信息！'); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           }
           else{
-            alert('请选择考场！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesPrompt').css('display', 'block').html('请选择考场！'); //mesSuccess  mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           }
         };
 
@@ -925,7 +955,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         };
 
         /**
-         * 保存考试、、
+         * 保存考试
          */
         $scope.saveKaoShi = function(){
           if($scope.paperDetail.SHIJUAN.DATIKA){
@@ -954,14 +984,22 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                     $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                       if(data.result){
                         $scope.showKaoShiList();
-                        alert('考试添加成功！');
+                        $('.messageTd').css('display', 'none').html('');
+                        $('.mesSuccess').css('display', 'block').html('考试添加成功！'); // mesPrompt mesError
+                        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                       }
-                    }).error(function(err){
-                      alert(err);
+                      else{
+                        $('.messageTd').css('display', 'none').html('');
+                        $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+                      }
                     });
                   }
-                }).error(function(err){
-                  alert(err);
+                  else{
+                    $('.messageTd').css('display', 'none').html('');
+                    $('.mesError').css('display', 'block').html(rst.error); //mesSuccess mesPrompt
+                    $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+                  }
                 });
               }
               else{
@@ -990,14 +1028,22 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                   $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                     if(data.result){
                       $scope.showKaoShiList();
-                      alert('考试添加成功！');
+                      $('.messageTd').css('display', 'none').html('');
+                      $('.mesSuccess').css('display', 'block').html('考试添加成功！'); // mesPrompt mesError
+                      $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                     }
-                  }).error(function(err){
-                    alert(err);
+                    else{
+                      $('.messageTd').css('display', 'none').html('');
+                      $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                      $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+                    }
                   });
                 }
-              }).error(function(err){
-                alert(err);
+                else{
+                  $('.messageTd').css('display', 'none').html('');
+                  $('.mesError').css('display', 'block').html(rst.error); //mesSuccess mesPrompt
+                  $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+                }
               });
             }
             else{
@@ -1027,10 +1073,15 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
               if(data.result){
                 $scope.showKaoShiList();
-                alert('考试删除成功！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesSuccess').css('display', 'block').html('考试删除成功！'); // mesPrompt mesError
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
-            }).error(function(err){
-              alert(err);
+              else{
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+              }
             });
           }
         };
@@ -1046,10 +1097,14 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               console.log(data);
               if(data.result){
                 $scope.showKaoShiList();
-                alert('本次考试发布成功！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesSuccess').css('display', 'block').html('本次考试发布成功！'); // mesPrompt mesError
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
               else{
-                alert('考试发布失败！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html('考试发布失败！'); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
             });
           }
@@ -1080,7 +1135,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.kaoChangPages = kaoChangPageArr.slice(currentKcPageVal - 5, currentKcPageVal + 5);
             }
           }
-          //查询数据的代码 //
+          //查询数据的代码
           kaochang_id = kaoChangIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
           qrySelectKaoChangsUrl = qryKaoChangDetailBaseUrl + '&kid=' + kaochang_id;
           $http.get(qrySelectKaoChangsUrl).success(function(kcdtl){
@@ -1089,7 +1144,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.kaoChangList = kcdtl;
             }
             else{
-              alert('没有相关的考场信息！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('没有相关的考场信息！'); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               $scope.loadingImgShow = false; //kaoChangList.html
             }
           });
@@ -1118,7 +1175,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               isDeleteKaoChang = false; //是否为删除考场
             }
             else{
-              alert('没有相关的考场信息！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('没有相关的考场信息！'); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               $scope.loadingImgShow = false; //kaoChangList.html
             }
           });
@@ -1185,10 +1244,15 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
               if(data.result){
                 $scope.showKaoChangList();
-                alert('考场删除成功！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesSuccess').css('display', 'block').html('考场删除成功！'); // mesPrompt mesError
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
-            }).error(function(err){
-              alert(err);
+              else{
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+              }
             });
           }
         };
@@ -1210,15 +1274,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
             if(data.result){
               $scope.loadingImgShow = false; //保存考场
-              alert('考场保存成功！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesSuccess').css('display', 'block').html('考场保存成功！'); // mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               $scope.showKaoChangList();
             }
-          }).error(function(err){
-            $scope.loadingImgShow = false; //保存考场
-            alert(err);
+            else{
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+            }
           });
         };
-
       } // 002 结束
     ]); //controller 结束
   } // 001 结束

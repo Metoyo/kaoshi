@@ -5,9 +5,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
         function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout) { // 002
           /**
-           * 操作title//
+           * 操作title
            */
-          $rootScope.pageName = "组卷"; //page title
+          $rootScope.pageName = "组卷";
           $rootScope.dashboard_shown = true;
           $rootScope.session.lsmb_id = []; //存放临时模板id的数组
           $rootScope.isRenZheng = false; //判读页面是不是认证
@@ -1171,14 +1171,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   });
                 }
                 else{
+                  $scope.loadingImgShow = false;
                   alert('请您选择一个题型呗！');
                 }
               }
               else{
+                $scope.loadingImgShow = false;
                 alert('请高抬贵手选择一个知识点吧！');
               }
             }
             else{
+              $scope.loadingImgShow = false;
               alert('请给难度一个数值吧！');
             }
           };
@@ -1715,7 +1718,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var focusTarget = '.' + styl;
             $scope.shijuan_edit = true;
             if($scope.shijuan_edit){
-              $(focusTarget).prop('autofocus', 'true');
+              var setScoreFun = function(){
+                $(focusTarget).focus();
+              };
+              $timeout(setScoreFun, 500);
             }
           };
 

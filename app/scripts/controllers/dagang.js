@@ -66,7 +66,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               });
             }
             else {
-              alert('没有知识大纲，请新增一个！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('没有知识大纲，请新增一个！'); //mesSuccess mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -81,28 +83,28 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           publicZsdArr = [];
           if(lx == 1){
             loadDaGang('1');
-  //          if(!$scope.publicZsdgList){
-  //            alert('没有大纲，请新建一个！');
-  //          }
             $scope.dgTpl = 'views/partials/daGangPublic.html';
             $scope.isPrivateDg = false;
             $scope.isPublicDg = true;
           }
           if(lx == 2){
             if(!$scope.privateZsdgList){
-              alert('没有大纲，请新建一个！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesPrompt').css('display', 'block').html('没有大纲，请新建一个！'); //mesSuccess mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
             $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
             //查询该领域的在公共知识点
             $http.get(qryPubZsdUrl).success(function(ggzsd){
               if(ggzsd.error){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                alert('此领域下没有公共知识点！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesPrompt').css('display', 'block').html('此领域下没有公共知识点！'); //mesSuccess mesPrompt mesError
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                 publicKnowledgeData = '';
               }
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-
                 publicKnowledgeData = ggzsd;
                 $scope.publicKnowledge = ggzsd;
                 //得到公共知识点id的数组
@@ -173,7 +175,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = '';
                 $scope.publicKnowledge = publicKnowledgeData;
-                alert(data.error);
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
             });
           }
@@ -201,7 +205,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePb = '';
-                alert(data.error);
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html(data.error); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
             });
           }
@@ -211,7 +217,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 修改默认大纲
+         * 修改默认大纲//
          */
         $scope.makeDaGangAsDefault = function(dgId){
           var defaultDg = {
@@ -224,10 +230,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
               loadDaGang();
-              alert('将此大纲设置为默认大纲的操作成功！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesSuccess').css('display', 'block').html('将此大纲设置为默认大纲的操作成功！'); // mesPrompt mesError
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
             else{
-              alert('将此大纲设置为默认大纲的操作失败！');
+              $('.messageTd').css('display', 'none').html('');
+              $('.mesError').css('display', 'block').html('将此大纲设置为默认大纲的操作失败！'); //mesSuccess mesPrompt
+              $('.popInfoWrap').css('display', 'block').fadeOut(3000);
             }
           });
         };
@@ -294,13 +304,17 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   $scope.knowledgePr = '';
                 }
                 else{
-                  alert(result.error);
+                  $('.messageTd').css('display', 'none').html('');
+                  $('.mesError').css('display', 'block').html(result.error); //mesSuccess mesPrompt
+                  $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                 }
               });
             }
           }
           else{
-            alert('请选择要删除的大纲！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesPrompt').css('display', 'block').html('请选择要删除的大纲！'); //mesSuccess mesPrompt mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           }
         };
 
@@ -375,7 +389,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             console.log(publicKnowledgeData);
           }
           else{
-            alert('请选择要输入的目标！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesPrompt').css('display', 'block').html('请选择要输入的目标！'); //mesSuccess mesPrompt mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           }
         };
 
@@ -438,13 +454,17 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               }
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                alert('修改大纲失败！');
+                $('.messageTd').css('display', 'none').html('');
+                $('.mesError').css('display', 'block').html('修改大纲失败！'); //mesSuccess mesPrompt
+                $('.popInfoWrap').css('display', 'block').fadeOut(3000);
               }
             });
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alert('知识点名称不能为空！');
+            $('.messageTd').css('display', 'none').html('');
+            $('.mesPrompt').css('display', 'block').html('知识点名称不能为空！'); //mesSuccess mesPrompt mesError
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
           }
         };
 
