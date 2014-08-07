@@ -2300,7 +2300,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 生成答题卡 paperDetailData
+           *设置答题卡 paperDetailData
            */
           var allTiMuForCard; //存放所有需要放到答题卡中的试题
           $scope.setDaTiKa = function(){

@@ -389,6 +389,57 @@ a.add-btn:hover span {
   }
 }
 /* dashboard styles end*/
+/* 答题卡样式开始*/
+.da-ti-ka-wrap{
+  padding: 0 50px;
+  .back-home-box{
+    z-index: 1;
+  }
+  .daTiKa{
+    height: 600px;
+    width: 425px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    .daTiKa-header{
+      height: 5%;
+      font-size: 14px;
+      border-bottom: 2px solid #ccc;
+      p{
+        margin: 0;
+        line-height: 30px;
+      }
+    }
+    .daTiKa-body{
+      height: 90%;
+      .daTiRegion{
+        height: 100%;
+        position: relative;
+        border-bottom: 2px solid #ccc;
+        &:first-child{
+          border-top: 0;
+        }
+        .slideDown{
+          width: 100%;
+          height: 2px;
+          position: absolute;
+          left: 0;
+          bottom: -1px;
+          cursor: s-resize;
+          background-color: #ccc;
+        }
+      }
+    }
+    .daTiKa-footer{
+      font-size: 12px;
+      height: 5%;
+      line-height: 30px;
+    }
+  }
+  .set-tiMu-num{
+    margin: 10px 0 20px 0;
+  }
+}
+/* 答题卡样式结束*/
 .main {
   padding: 0 0 20px 120px;
 }
@@ -703,6 +754,17 @@ a.add-btn:hover span {
 /**
 *弹出层，背景为浅灰色
 */
+.popup-all-height{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: none;
+}
 .popup-gray-box {
   width: 100%;
   height: 100%;
@@ -2180,57 +2242,6 @@ a.add-btn:hover span {
       margin-top: -1px;
     }
   }
-  .da-ti-ka-wrap{
-    padding: 0 50px;
-    .back-home-box{
-      z-index: 1;
-    }
-    .daTiKa{
-      height: 600px;
-      width: 425px;
-      margin-bottom: 10px;
-      background-color: #f0f0f0;
-      .daTiKa-header{
-        height: 5%;
-        font-size: 14px;
-        border-bottom: 2px solid #ccc;
-        p{
-          margin: 0;
-          line-height: 30px;
-        }
-      }
-      .daTiKa-body{
-        height: 90%;
-        .daTiRegion{
-//          min-height: 270px;
-//          max-height: 540px;
-          height: 100%;
-          position: relative;
-          border-bottom: 2px solid #ccc;
-          &:first-child{
-            border-top: 0;
-          }
-          .slideDown{
-            width: 100%;
-            height: 2px;
-            position: absolute;
-            left: 0;
-            bottom: -1px;
-            cursor: s-resize;
-            background-color: #ccc;
-          }
-        }
-      }
-      .daTiKa-footer{
-        font-size: 12px;
-        height: 5%;
-        line-height: 30px;
-      }
-    }
-    .set-tiMu-num{
-      margin: 10px 0 20px 0;
-    }
-  }
   .paperConfirmTable{
     width: 96%;
     margin: 20px 0 20px 2%;
@@ -2588,6 +2599,39 @@ a.add-btn:hover span {
       }
     }
   }
+  .da-ti-ka-wrap{
+    padding: 0 80px;
+    background-color: #fff;
+    width: 600px;
+    left: 50%;
+    margin-left: -300px;
+    position: absolute;
+    height: 100%;
+    overflow-y: auto;
+    .back-home-box{
+      position: absolute;
+    }
+  }
+  .set-tiMu-num{
+    a{
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      display: inline-block;
+      border: 1px solid #cfcfcf;
+      background-color: #F5F5F5;
+      color: #585858;
+      text-decoration: none;
+      &:hover{
+        background-color: #428bca;
+        color: #fff;
+      }
+    }
+    .tiMuNumAon{
+      background-color: #428bca;
+      color: #fff;
+    }
+  }
 }
 /* -------------------------------------------------------------------
 // markItUp! Universal MarkUp Engine, JQuery plugin
@@ -2604,7 +2648,6 @@ a.add-btn:hover span {
   text-decoration:none;
 }
 .markItUp  {
-
 }
 .markItUpContainer  {
   border:1px solid #3C769D;

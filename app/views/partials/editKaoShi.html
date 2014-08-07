@@ -1,9 +1,13 @@
-<div class="row">
+<div class="row editKaoShi">
     <div class="form-horizontal">
         <div class="form-group explain">
             <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-10">
+            <div class="col-sm-8">
                 <em>带 <i>*</i>为必填项</em>
+                <p ng-show="paperDetail.SHIJUAN.DATIKA" class="clRed">
+                    本考场用到的试卷包含答题卡，请先下载大题卡再保存考试；
+                    下载答题卡时会用1分钟左右，请耐心等待，不要重复点击下载答题卡按钮。
+                </p>
             </div>
         </div>
         <div class="form-group">
@@ -54,8 +58,10 @@
                 <span class="ml10">共<b>{{kaoshiData.shuju.KAOCHANG.USERS.length}}</b>名考试</span>
             </div>
             <div class="col-sm-3 text-right" ng-show="paperDetail.SHIJUAN.DATIKA">
-                <button type="button" class="btn btn-primary" ng-click="">设置答题卡</button>
-                <button type="button" class="btn btn-primary" ng-click="">下载答题卡</button>
+                <button type="button" class="btn btn-primary" ng-click="kwSetDaTiKa()">设置答题卡</button>
+                <button type="button" class="btn btn-primary downloadDaTiKaBtn" ng-click="downloadDaTiKa(true)">
+                    下载答题卡
+                </button>
             </div>
         </div>
         <div class="form-group" ng-show="isAddNewKaoSheng">
@@ -378,6 +384,54 @@
             </div>
         </div>
     </div>
+    <div class="popup-all-height" ng-click="closeKwDaTiKaSet()">
+        <div class="da-ti-ka-wrap" ng-click="stopClosePopup($event)">
+            <div class="back-home-box">
+                <button type="button" class="btn btn-primary downloadDaTiKaBtn" ng-click="downloadDaTiKa()">
+                    下载答题卡
+                </button>
+                <button type="button" class="btn btn-danger" ng-click="closeKwDaTiKaSet()">关闭</button>
+            </div>
+            <div class="set-tiMu-num">
+                <span>每页显示道题数量：</span>
+                <a href="javascript:void(0)" ng-click='setTiMuNum(1)'>1</a>
+                <a href="javascript:void(0)" ng-click='setTiMuNum(2)'>2</a>
+                <a href="javascript:void(0)" ng-click='setTiMuNum(3)'>3</a>
+                <a href="javascript:void(0)" ng-click='setTiMuNum(4)'>4</a>
+                <a href="javascript:void(0)" ng-click='setTiMuNum(5)'>5</a>
+                <!--<label class="radio-inline">-->
+                    <!--<input type="radio" name="tiMuNum" value="1" ng-click='setTiMuNum(1)'> 1-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                    <!--<input type="radio" name="tiMuNum" value="2" ng-click='setTiMuNum(2)'> 2-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                    <!--<input type="radio" name="tiMuNum" value="3" ng-click='setTiMuNum(3)'> 3-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                    <!--<input type="radio" name="tiMuNum" value="4" ng-click='setTiMuNum(4)'> 4-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                    <!--<input type="radio" name="tiMuNum" value="5" ng-click='setTiMuNum(5)'> 5-->
+                <!--</label>-->
+            </div>
+            <div class="daTiKa" ng-repeat="(pIdx, ac) in answerCards">
+                <div class="daTiKa-header text-center">
+                    <p>{{ac.shuju.header.title}}第<span>{{pIdx + 1}}</span>页</p>
+                </div>
+                <div class="daTiKa-body">
+                    <div class="daTiRegion {{'daTiRegion' + pIdx + $index}}" ng-repeat="acb in ac.shuju.body"
+                         style="height: {{acb.percent * 600 + 'px'}}">
+                        <span>{{acb.text}}</span>
+                    </div>
+                </div>
+                <div class="daTiKa-footer text-center">
+                    <span>{{ac.shuju.footer.text}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/bower_components/intimidatetime/intimidatetime.js"></script>
     <script type="text/javascript">
         jQuery(function($) {
