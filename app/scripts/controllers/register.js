@@ -35,6 +35,23 @@ define([
         $scope.stepThree = false; //第三步的显示和隐藏
 
         /**
+         * 信息提示函数
+         */
+        var alertInfFun = function(megKind, cont){
+          $('.messageTd').css('display', 'none').html('');
+          if(megKind == 'err'){
+            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+          }
+          if(megKind == 'suc'){
+            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+          }
+          if(megKind == 'pmt'){
+            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+          }
+          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+        };
+
+        /**
          * 注册信息的第一步，个人详情信息
          */
         $scope.personalInfo = {
@@ -116,7 +133,7 @@ define([
             $scope.jigoulb_list = data;
           }
           else{
-            alert('没用相关机构！');
+            alertInfFun('err', '没用相关机构！');
           }
         });
 
@@ -135,7 +152,7 @@ define([
             else{
               $scope.jigou_list = '';
               $scope.lingyu_list = ''; //重置领域
-              alert('没有相关机构！');
+              alertInfFun('err', '没有相关机构！');
             }
           });
         };
@@ -159,7 +176,7 @@ define([
             }
             else{
               $scope.lingyu_list = '';
-              alert('没有相关领域！');
+              alertInfFun('err', '没有相关领域！');
             }
           });
         };
@@ -179,7 +196,7 @@ define([
               $scope.kemu_list = '';
               $scope.keMuSelectBox = false;
               $scope.keMuListLengthExist = false;
-              alert('没有对应的科目！');
+              alertInfFun('err', '没有对应的科目！');
             }
           });
         };
@@ -300,17 +317,14 @@ define([
 //          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
-              alert('提交成功！');
+              alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
-              alert(data.error);
+              alertInfFun('err', data.error);
             }
-          })
-          .error(function(err){
-            alert(err);
           });
         };
 

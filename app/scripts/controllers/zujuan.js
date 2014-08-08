@@ -185,6 +185,23 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.zj_tabActive = 'shiJuan'; //初始化组卷页面的tab的显示和隐藏
 
           /**
+           * 信息提示函数
+           */
+          var alertInfFun = function(megKind, cont){
+            $('.messageTd').css('display', 'none').html('');
+            if(megKind == 'err'){
+              $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+            }
+            if(megKind == 'suc'){
+              $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+            }
+            if(megKind == 'pmt'){
+              $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+            }
+            $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+          };
+
+          /**
            * 获得大纲数据
            */
           $http.get(qryDgUrl).success(function(data){
@@ -199,13 +216,16 @@ define(['jquery', 'underscore', 'angular', 'config'],
               //获取大纲知识点
               qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
               $http.get(qryKnowledge).success(function(data){
-                $scope.kowledgeList = data;
-              }).error(function(err){
-                alert(err);
+                if(data.length){
+                  $scope.kowledgeList = data;
+                }
+                else{
+                  alertInfFun('err', data.error);
+                }
               });
             }
             else{
-              alert('没用相对应的知识大纲！');
+              alertInfFun('err', '没用相对应的知识大纲!');
             }
           });
 
@@ -221,7 +241,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   TIXING_ID: '',
                   TIXINGMINGCHENG: '',
                   txTotalNum: 0,
-//                  ruleTxNum: 0,
                   zsdXuanTiArr: []
                 };
                 txBoj.TIXING_ID = txdata.TIXING_ID;
@@ -231,7 +250,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               kmtxListLength = kmtx.length; //科目题型的长度
             }
             else{
-              alert('获取查询科目题型失败！');
+              alertInfFun('err', '获取查询科目题型失败！');
             }
           });
 
@@ -260,10 +279,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
             angular.element(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
             qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
             $http.get(qryKnowledge).success(function(data){
-              $scope.kowledgeList = data;
-              $scope.dgListBox = true;
-            }).error(function(err){
-              alert(err);
+              if(data.error){
+                $scope.kowledgeList = data;
+                $scope.dgListBox = true;
+              }
+              else{
+                alertInfFun('err', data.error);
+              }
             });
           };
 
@@ -437,12 +459,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.getThisPageData();
               }
               else{
-                alert('没有相关试题信息！');
+                alertInfFun('err', '没有相关试题信息！');
                 $scope.loadingImgShow = false; //zj_testList.html
               }
-            })
-            .error(function(err){
-              console.log(err);
             });
           };
 
@@ -499,13 +518,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   }
                   else{
                     $scope.timudetails = null;
-                    alert('查询创建人名称失败！');
+                    alertInfFun('err', '查询创建人名称失败！');
                     $scope.loadingImgShow = false; //zj_testList.html
                   }
                 });
               }
               else{
-                alert('没有相关的题目！');
+                alertInfFun('err', '没有相关的题目！');
                 $scope.loadingImgShow = false; //zj_testList.html
               }
             }).error(function(err){
@@ -576,16 +595,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $http.post(xgmbUrl, mubanData).success(function(data){
               if(data.result){
                 $rootScope.session.lsmb_id.push(data.id); //新创建的临时模板id
-
                 shijuanData.shuju.SHIJUANMUBAN_ID = data.id; //将创建的临时试卷模板id赋值给试卷的试卷模板id
                 deferred.resolve();
               }
               else{
-                alert(data.error);
+                alertInfFun('err', data.error);
+                deferred.reject();
               }
-            }).error(function(err){
-              alert(err);
-              deferred.reject();
             });
 
             return deferred.promise;
@@ -721,26 +737,24 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.isTestPaperSummaryShow = true;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
-
                       //新增加
                       zuJuanRuleStr = JSON.stringify(directRuleMakePaperData);
                       $scope.showBackToPaperListBtn = true;
                       isComeFromRuleList = true;
                       comeFromRuleListData = dzjr;
-
                       //试卷预览
                       $scope.shijuanPreview();
                     }
                     else{
                       $scope.timudetails = null;
                       $scope.loadingImgShow = false;
-                      console.log(stdata.error);
+                      alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
                   $scope.loadingImgShow = false;
-                  alert(tmIdsData.error);
+                  alertInfFun('err', tmIdsData.error);
                 }
               });
             });
@@ -841,26 +855,21 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $('input[name=point]:checked').prop('checked', false);//重置知识点
                     selectZsd = [];
                     selectZsdName = [];
-//                    ruleMakePaperSelectTxid = '';
-//                    $scope.ruleMakePaperTx = { selectTx: null }; //重置题型选择
-//                    $('#sliderItemRule').width('109px'); //重置滑动块的长度
-//                    $('.coefftRule').html('0.50'); //重置难度系数
-
                   }
                   else{
-                    alert('请选择难度！');
+                    alertInfFun('pmt', '请选择难度！');
                   }
                 }
                 else{
-                  alert('请填写数量！');
+                  alertInfFun('pmt', '请填写数量！');
                 }
               }
               else{
-                alert('请选择题型！');
+                alertInfFun('pmt', '请选择题型！');
               }
             }
             else{
-              alert('请选择知识点！');
+              alertInfFun('pmt', '请选择知识点！');
             }
           };
 
@@ -907,7 +916,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                           comeFromRuleListData = '';
                         }
                         else{
-                          alert(subData.error);
+                          alertInfFun('err', subData.error);
                         }
                       });
                     }
@@ -916,7 +925,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                   }
                   else{
-                    alert(data.error);
+                    alertInfFun('pmt', data.error);
                   }
                 });
               };
@@ -990,7 +999,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               else{
                 $scope.loadingImgShow = false; //zj_ruleList.html
-                alert(data.error);
+                alertInfFun('err', data.error);
               }
             });
           };
@@ -1058,12 +1067,12 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                     else{
                       $scope.timudetails = null;
-                      console.log(stdata.error);
+                      alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
-                  alert(tmIdsData.error);
+                  alertInfFun('pmt', tmIdsData.error);
                 }
               });
             }
@@ -1094,14 +1103,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 if(autoMakePaperData.shuju.TIXING.length){
                   $http.post(zidongzujuan, autoMakePaperData).success(function(sjData){
                     if(sjData.error){
-                      alert(sjData.error);
+                      alertInfFun('err', sjData.error);
                     }
                     else{
                       console.log(sjData);
                       var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
                       //将自动组卷生成的数据，添加到试卷模板中 TIXING_TIMU  MUBANDATI_ID
                       //组卷成功后显示试题的代码
-
                       _.each(sjData.TIXING_TIMU, function(value, key, list){
                         for(var i = 0; i < mbdtdLength; i++){
                           if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == key){
@@ -1172,17 +1180,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
                 else{
                   $scope.loadingImgShow = false;
-                  alert('请您选择一个题型呗！');
+                  alertInfFun('pmt', '请您选择一个题型！');
                 }
               }
               else{
                 $scope.loadingImgShow = false;
-                alert('请高抬贵手选择一个知识点吧！');
+                alertInfFun('pmt', '请高抬贵手选择一个知识点！');
               }
             }
             else{
               $scope.loadingImgShow = false;
-              alert('请给难度一个数值吧！');
+              alertInfFun('pmt', '请给难度一个数值！');
             }
           };
 
@@ -1223,7 +1231,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   distAutoMakePaperDataArr.push(distAutoMakePaperData);
                 }
                 else{
-                  alert('请选择知识点！');
+                  alertInfFun('pmt', '请选择知识点！');
                   break;
                 }
               }
@@ -1236,7 +1244,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 if(times < tmIdsChoLen){
                   $http.post(zidongzujuan, distAutoMakePaperDataArr[times]).success(function(data){
                     if(data.error){
-                        alert(data.error);
+                      alertInfFun('err', data.error);
                     }
                     else{
                       tiXingTiMuArr.push(data);
@@ -1320,9 +1328,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
               getIdsFun();
             }
             else{
-              alert('请至少选择一种题型！');
+              alertInfFun('pmt', '至少选择一种题型！');
             }
-
           };
 
           /**
@@ -1622,9 +1629,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     zeroLen ++;
                   }
                 });
-//                if(zeroLen){
-//                  alert('你设置的分数不合理！请检查！');
-//                }
               }
             }
             else{
@@ -1830,15 +1834,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   $scope.isSavePaperConfirm = true;
                 }
                 else{ //33
-                  alert('请检查试卷的完整性！');
+                  alertInfFun('pmt', '请检查试卷的完整性！');
                 }
               }
               else{ // 22 检查每小题是否有分值 结束
-                alert('每小题的分数不能为空！请给每个小题一个分数！');
+                alertInfFun('pmt', '每小题的分数不能为空！请给每个小题一个分数！');
               }
             }
             else{ //11 检查试卷名称
-              alert('给我起个名字吧 ^ _ ^');
+              alertInfFun('pmt', '给我起个名字吧 ^ _ ^');
             }
           };
 
@@ -1888,10 +1892,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         deleteTempTemp(); //删除没用的其他目标
                         $scope.answerCards = '';
                         paperDetailData = '';
-                        console.log('答题卡生成规则保存成功！');
+                        alertInfFun('suc', '答题卡生成规则保存成功！');
                       }
                       else{
-                        alert('保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
+                        alertInfFun('err', '保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
                       }
                     });
                     $scope.showZuJuan();
@@ -1908,16 +1912,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     else{
                       $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
                     }
-                    alert('恭喜你！试卷保存成功！');
+                    alertInfFun('suc', '恭喜你！试卷保存成功！');
                   }
                   else{
-                    alert('更新试卷模板是错误！错误信息为：' + mbdata.error);
+                    alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
                   };
                 });
               }
-
-            }).error(function(err){
-              alert(err);
             });
           };
 
@@ -1940,8 +1941,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   deletelsmbData.muban_id = [];
                   mubanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
                 }
-              }).error(function(err){
-                alert(err);
+                else{
+                  alertInfFun('err', data.error);
+                }
               });
             }
             else{
@@ -2026,11 +2028,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
               else{
-                alert('没有相关试卷信息！');
+                alertInfFun('err', '没有相关试卷信息！');
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
-            }).error(function(err){
-              alert(err);
             });
           };
           qryShiJuanList();
@@ -2145,17 +2145,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                   }
                   else{
-                    alert('查询创建人名称失败！');
+                    alertInfFun('err', '查询创建人名称失败！');
                     $scope.loadingImgShow = false;  //zj_paperList.html loading
                   }
                 });
               }
               else{
-                alert('很遗憾！没有相关数据！');
+                alertInfFun('err', '很遗憾！没有相关数据！');
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
-            }).error(function(err){
-              console.log(err);
             });
           };
 
@@ -2253,8 +2251,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.baocunshijuanBtn = true; //保存试卷的按钮
                 paperDetailData = mubanData; //用于答题卡赋值
               }
-            }).error(function(err){
-              alert(err);
+              else{
+                alertInfFun('err', data.error);
+              }
             });
           };
 
@@ -2280,7 +2279,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   $scope.paperListData.splice(idx, 1);
                   isDeletePaper = true;
                   qryShiJuanList();
-                  alert('删除成功！');
+                  alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  alertInfFun('err', data.error);
                 }
               });
             }
@@ -2585,7 +2587,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
 //                    if(times == daTiKaLen - 1){
 //                      $scope.daTiKaUrlArr = daTiKaUrlArr;
 //                      $scope.loadingImg = false; //loading图片的显示和隐藏
-//                      alert('答题卡生产成功！');
+//                      alertInfFun('suc', '答题卡生产成功！');
 //                      $scope.txTpl = 'views/partials/daTiKaDownLoad.html';
 //                    }
 //                    times ++;
@@ -2611,8 +2613,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   clearInterval(myInterval);
                   urlRedirect.goTo('/zujuan', nextPath);
                 }
-              }).error(function(err){
-                alert(err);
+                else{
+                  alertInfFun('err', data.error);
+                }
               });
             }
             else{

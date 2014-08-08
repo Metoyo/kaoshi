@@ -25,15 +25,21 @@ define([
         $scope.login = login;
 
         /**
-         * getShiYanData
+         * 信息提示函数
          */
-//        $scope.getShiYanData = function(){
-//          $http.get('http://192.168.1.210:3020/bloglist').success(function(data){
-//            if(data){
-//              console.log(data);
-//            }
-//          });
-//        };
+        var alertInfFun = function(megKind, cont){
+          $('.messageTd').css('display', 'none').html('');
+          if(megKind == 'err'){
+            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+          }
+          if(megKind == 'suc'){
+            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+          }
+          if(megKind == 'pmt'){
+            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+          }
+          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+        };
 
         /**
          * 登录程序
@@ -50,7 +56,7 @@ define([
               mima : login.password
             };
 
-            //登录信息的验证 //
+            //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               session.info = result[0];
               session.userInfo = '';
@@ -116,19 +122,14 @@ define([
                       }
                     }
                     else{
-                      alert('您注册的信息正在审核中，新耐心等待……');
+                      alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                     }
                   }
                   else{
-                    alert('您注册的信息正在审核中，新耐心等待……');
+                    alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                   }
-                }).error(function(err){
-                  alert(err);
                 });
               }
-
-            }).error(function(err){
-                console.log(err);
             });
           }
         };

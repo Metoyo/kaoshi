@@ -37,7 +37,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
 
           qryKnowledge = '', //定义一个空的查询知识点的url
-          timuleixing_id = '', //用于根据题目类型查询题目的字符串
           tixing_id = '', //用于根据题型id查询题目的字符串
           nandu_id = '', //用于根据难度查询题目的字符串
           zhishidian_id = '', //用于根据知识点查询题目的字符串
@@ -122,6 +121,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
 
         /**
+         * 信息提示函数
+         */
+        var alertInfFun = function(megKind, cont){
+          $('.messageTd').css('display', 'none').html('');
+          if(megKind == 'err'){
+            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+          }
+          if(megKind == 'suc'){
+            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+          }
+          if(megKind == 'pmt'){
+            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+          }
+          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+        };
+
+        /**
          * 获得大纲数据
          */
         $http.get(qryDgUrl).success(function(data){
@@ -140,17 +156,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.kowledgeList = data;
               }
               else{
-                alert('查询大纲失败！错误信息为：' + data.error);
+                alertInfFun('err', '查询大纲失败！错误信息为：' + data.error); // '查询大纲失败！错误信息为：' + data.error
               }
             });
           }
           else{
-            alert('没用相对应的知识大纲！');
+            alertInfFun('err', '没用相对应的知识大纲!');
           }
         });
 
         /**
-         * 查询科目题型(chaxun_kemu_tixing?token=12345&caozuoyuan=1057&jigouid=2&lingyuid=2)
+         * 查询科目题型
          */
         $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
           if(data.length){
@@ -158,7 +174,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.keMuList = true; //选择的科目render完成后列表显示
           }
           else{
-            alert('查询科目题型失败！错误信息为：' + data.error);
+            alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error); //
           }
         });
         $scope.cxKmTx = function(lyt){
@@ -169,7 +185,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.keMuList = true; //选择的科目render完成后列表显示
             }
             else{
-              alert('查询科目题型失败！错误信息为：' + data.error);
+              alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error); //
             }
           });
         };
@@ -185,7 +201,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.kowledgeList = data;
             }
             else{
-              alert('查询知识点失败！错误信息：' + data.error)
+              alertInfFun('err', '查询知识点失败！错误信息：' + data.error); //
             }
           });
         };
@@ -309,28 +325,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.getThisPageData();
                 }
                 else{
-                  alert('没有相应的题目！');
+                  alertInfFun('err', '没有相应的题目！'); //
                   $scope.loadingImgShow = false; //testList.html loading
                 }
-              })
-                .error(function(err){
-                  console.log(err);
-                });
-
+              });
             }
             else{
-              alert('没有题库！');
+              alertInfFun('err', '没有题库！'); //
               $scope.loadingImgShow = false; //testList.html loading
             }
-          })
-            .error(function(err){
-              console.log(err);
-            });
+          });
         };
         qryTestFun(caozuoyuan);
 
         /**
-         * 分页的代码//
+         * 分页的代码
          */
         $scope.getThisPageData = function(pg){
           $scope.loadingImgShow = true; //testList.html loading
@@ -428,19 +437,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 }
                 else{
                   $scope.timudetails = null;
-                  alert('查询创建人名称失败！');
+                  alertInfFun('err', '查询创建人名称失败！'); //
                   $scope.loadingImgShow = false; //testList.html loading
                 }
               });
             }
             else{
-              alert('没有相关题目！');
+              alertInfFun('err', '没有相关题目！'); //
               $scope.loadingImgShow = false; //testList.html loading
             }
-          }).error(function(err){
-            console.log(err);
           });
-
         };
 
         /**
@@ -519,9 +525,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
-//          zhishidian_id = '';
-//          nandu_id = '';
-//          timuleixing_id ='';
           qryTestFun();
           $scope.txTpl = 'views/partials/testList.html';
         };
@@ -530,8 +533,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 单选题模板加载
          */
         $scope.addDanXuan = function(tpl){
-//          selectZsd = []; //new add
-//          $scope.selectZsdStr = '';
           $scope.selectZhiShiDian = ''; //知识大纲名称清空
           danxuan_data = timu_data;
           loopArr = [0,1,2,3];
@@ -544,7 +545,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           danxuan_data.shuju.TIZHISHULIANG = '';
           danxuan_data.shuju.SUIJIPAIXU = '';
           danxuan_data.shuju.TIGAN = '';
-//          danxuan_data.shuju.NANDU_ID = '';
           $scope.danXuanData = danxuan_data;
           $scope.loadingImgShow = false; //danxuan.html
           isDanXuanType = true; //判断是否出单选题
@@ -555,8 +555,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 多选题模板加载
          */
         $scope.addDuoXuan = function(tpl){
-//          selectZsd = []; //new add
-//          $scope.selectZsdStr = '';
           $scope.selectZhiShiDian = ''; //知识大纲名称清空
           duoxuan_data = timu_data;
           loopArr = [0,1,2,3];
@@ -571,7 +569,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           duoxuan_data.shuju.ZUISHAOXUANZE = '';
           duoxuan_data.shuju.ZUIDUOXUANZE = '';
           duoxuan_data.shuju.TIGAN = '';
-//          duoxuan_data.shuju.NANDU_ID = '';
           $scope.duoXuanData = duoxuan_data;
           $scope.loadingImgShow = false; //duoxuan.html
           isDanXuanType = false; //判断是否出单选题
@@ -629,7 +626,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 单选题和多选题添加函数//
+         * 单选题和多选题添加函数
          */
         var addDanDuoXuanFun = function(dataTpl) {
           var deferred = $q.defer();
@@ -666,44 +663,41 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     $http.post(xgtmUrl, dataTpl).success(function(data){
                       if(data.result){
                         $scope.loadingImgShow = false;
-                        $('.save-msg').show().fadeOut(3000);
+//                        $('.save-msg').show().fadeOut(3000);
+                        alertInfFun('suc', '提交成功！'); //
                         $scope.isSaveSuccessful = true;
                         $scope.loadingImgShow = false; //danxuan.html
-//                        isSaveSource = false;
                         deferred.resolve();
                       }
                       else{
-                        alert('提交失败！');
+                        alertInfFun('err', '提交失败！错误信息:' + data.error); //
                         $scope.loadingImgShow = false; //danxuan.html
-                      }
-                    })
-                      .error(function(err){
-                        alert(err);
                         deferred.reject();
-                      });
+                      }
+                    });
                   }
                   else{
-                    alert("请选择知识点！");
+                    alertInfFun('pmt', '请选择知识点！'); //
                     deferred.reject();
                   }
                 }
                 else{
-                  alert("请选择难度！");
+                  alertInfFun('pmt', '请选择难度！'); //
                   deferred.reject();
                 }
               }
               else{
-                alert("请选择答案！");
+                alertInfFun('pmt', '请选择答案！'); //
                 deferred.reject();
               }
             }
             else{
-              alert("请输入题支选项！");
+              alertInfFun('pmt', '请输入题支选项！'); //
               deferred.reject();
             }
           }
           else{
-            alert("请输入题干！");
+            alertInfFun('pmt', '请输入题干！'); //
             deferred.reject();
           }
 
@@ -736,40 +730,38 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $http.post(xgtmUrl, tx_data).success(function(data){
                     if(data.result){
                       if(tx_data.shuju.TIMU_ID){ //试题修改成功后！
-                        alert('修改成功！');
+                        alertInfFun('suc', '修改成功！'); //
                         $scope.patternListToggle = false;
                         $scope.alterTiXingBox = false;
                         $scope.cancelAddPattern();
                       }
                       else{ // 试题添加成功后！
-                        $('.save-msg').show().fadeOut(3000);
+//                        $('.save-msg').show().fadeOut(3000);
+                        alertInfFun('suc', '添加成功！'); //
                         resetFun(tx_data);
                       }
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                     else{
-                      alert(data.error);
+                      alertInfFun('err', data.error); //
                       $scope.loadingImgShow = false; //jisuan.html
                     }
-                  })
-                    .error(function(err){
-                      alert(err);
-                    });
+                  });
                 }
                 else{
-                  alert('请选择难度！');
+                  alertInfFun('pmt', '请选择难度！'); //
                 }
               }
               else{
-                alert('请选择知识点！');
+                alertInfFun('pmt', '请选择知识点！'); //
               }
             }
             else{
-              alert('请输入答案！');
+              alertInfFun('pmt', '请输入答案！'); //
             }
           }
           else{
-            alert('请输入题干！');
+            alertInfFun('pmt', '请输入题干！'); //
           }
         };
 
@@ -1050,43 +1042,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $http.post(xgtmUrl, tiankong_data).success(function(data){
                     if(data.result){
                       if(tiankong_data.shuju.TIMU_ID){ //试题修改成功后！
-                        alert('修改成功！');
+                        alertInfFun('suc', '修改成功！'); //
                         $scope.patternListToggle = false;
                         $scope.alterTiXingBox = false;
                         $scope.cancelAddPattern();
                       }
                       else{ // 试题添加成功后！
-                        $('.save-msg').show().fadeOut(3000);
+//                        $('.save-msg').show().fadeOut(3000);
+                        alertInfFun('suc', '保存成功！'); //
                         resetFun(tiankong_data);
                         $scope.loopArr = []; //重置填空题支
                       }
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                     else{
-                      alert(data.error);
+                      alertInfFun('err', data.error); //
                       $scope.loadingImgShow = false; //jisuan.html
                     }
-                  })
-                    .error(function(err){
-                      alert(err);
-                    });
+                  });
                 }
                 else{
-                  alert('请选择难度！');
+                  alertInfFun('pmt', '请选择难度！'); //
                 }
               }
               else{
-                alert('请选择知识点！');
+                alertInfFun('pmt', '请选择知识点！'); //
               }
             }
             else{
-              alert('请输入题干！');
+              alertInfFun('pmt', '请输入题干！'); //
             }
           }
           else{
-            alert('请输入填空题答案！');
+            alertInfFun('pmt', '请输入填空题答案！'); //
           }
-
         };
 
         /**
@@ -1127,10 +1116,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
               if(data.result){
                 $scope.timudetails.splice(idx, 1);
-                alert('删除成功！');
+                alertInfFun('suc', '删除成功！'); //
               }
               else{
-                alert(data.error);
+                alertInfFun('pmt', data.error); //
               }
             });
           }
@@ -1249,7 +1238,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.loopArr = loopArr;
               }
               else{
-                alert(data.error);
+                alertInfFun('err', data.error); //
               }
             });
             //赋值
@@ -1326,7 +1315,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var daAnArrOne = $scope.timudetail.DAAN.split(','),
             ifHasIn = _.contains(daAnArrOne, idx.toString());
           if(ifHasIn){
-            alert('此项为正确答案不能删除！');
+            alertInfFun('pmt', '此项为正确答案不能删除！'); //
           }
           else{
             $scope.timudetail.TIGAN.tiZhiNeiRong.splice(idx, 1);
@@ -1475,10 +1464,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
           else{
-            alert('文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
+            alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB'); //
           }
         };
-
       }
     ]
   );

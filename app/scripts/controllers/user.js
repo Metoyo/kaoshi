@@ -98,6 +98,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       }
 
       /**
+       * 信息提示函数
+       */
+      var alertInfFun = function(megKind, cont){
+        $('.messageTd').css('display', 'none').html('');
+        if(megKind == 'err'){
+          $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+        }
+        if(megKind == 'suc'){
+          $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+        }
+        if(megKind == 'pmt'){
+          $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+        }
+        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+      };
+
+      /**
        * 设置权限，审核权限
        */
       $scope.setPermissions = function() {
@@ -131,7 +148,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           }
           else{
-            alert(data.error);
+            alertInfFun('err', data.error);
             $scope.loadingImgShow = false; //user.html
           }
         });
@@ -185,15 +202,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           })
           .tap(function(){
             authParam.yonghujuese[0].juese = juese;
-
             $http.post(shyhjsUrl, authParam).success(function(data) {
               if(data.result) {
                 shenhe.AUTH_BTN_HIDE = true;
               }
-            }).error(function(data) {
-                alert(data.error);
-              });
-
+              else{
+                alertInfFun('err', data.error);
+              }
+            });
           }).value();
       };
 
@@ -213,7 +229,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.jigoulb_list = '';
             $scope.loadingImgShow = false; //rz_setJiGou.html
-            alert('没用相应的机构！');
+            alertInfFun('err', '没用相应的机构！');
           }
         });
       };
@@ -239,14 +255,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               else{
                 $scope.jigou_list = '';
                 $scope.loadingImgShow = false; //rz_setJiGou.html
-                alert('没有相关的机构！');
+                alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
               }
             });
           }
           else{
             $scope.jigou_list = '';
             $scope.loadingImgShow = false; //rz_setJiGou.html
-            alert('没有相关的机构！');
+            alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
           }
         });
       };
@@ -304,13 +320,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             else{
               $scope.loadingImgShow = false; //rz_setJiGou.html
-              alert(data.error);
+              alertInfFun('err', data.error);
             }
           });
         }
         else{
           $scope.loadingImgShow = false; //rz_setJiGou.html
-          alert('请输入机构名称！');
+          alertInfFun('err', '请输入机构名称！');
         }
       };
 
@@ -334,7 +350,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.getJgList(jgLeiBieId);
           }
           else{
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -377,18 +393,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 $scope.loadingImgShow = false; //rz_setJiGou.html
-                alert(data.error);
+                alertInfFun('err', data.error);
               }
             });
           }
           else{
             $scope.loadingImgShow = false; //rz_setJiGou.html
-            alert('请输入管理员密码！');
+            alertInfFun('pmt', '请输入管理员密码！');
           }
         }
         else{
           $scope.loadingImgShow = false; //rz_setJiGou.html
-          alert('请输入管理员账号！');
+          alertInfFun('pmt', '请输入管理员账号！');
         }
       };
 
@@ -408,7 +424,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           }
           else{
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -446,7 +462,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           }
           else{
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -467,7 +483,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alert('没用相关的领域！');
+            alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -508,7 +524,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -522,12 +538,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         lingYuData.shuju = $scope.lingyu_list;
         $http.post(modifyLingYuUrl, lingYuData).success(function(data){
           if(data.result){
-            $('.save-msg').show().fadeOut(3000);
+//            $('.save-msg').show().fadeOut(3000);
+            alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_setLingYu.html
           }
           else{
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -564,7 +581,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alert('没用相关的领域！');
+            alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -641,7 +658,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -662,13 +679,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
           if(data.result){
-            $('.save-msg').show().fadeOut(3000);
+            alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectLingYu.html
           }
           else{
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alert(data.error);
-            console.log(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
@@ -699,7 +715,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_setDaGang.html
             $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
-            alert('没用相关的领域！');
+            alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -736,13 +752,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             //没有公共知识大纲
             else{
-              alert('没有公共知识大纲，请新增一个！');
+              alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
             }
           }
           //没有知识大纲
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alert('没有公共知识大纲，请新增一个！');
+            alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
           }
         });
 
@@ -751,7 +767,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.loadingImgShow = true; //rz_setDaGang.html
           if(zsd.error){
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alert('此领域下没有公共知识点！');
+            alertInfFun('err', '此领域下没有公共知识点！');
             publicKnowledgeData = '';
           }
           else{
@@ -952,18 +968,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             console.log(data);
             if(data.result){
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              $('.save-msg').show().fadeOut(3000);
+              alertInfFun('suc', '保存成功！');
               $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
             }
             else{
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              alert(data.error);
+              alertInfFun('err', data.error);
             }
           });
         }
         else{
           $scope.loadingImgShow = false; //rz_setDaGang.html
-          alert('知识点名称不能为空！');
+          alertInfFun('pmt', '知识点名称不能为空！');
         }
       };
 
@@ -985,7 +1001,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 $scope.loadingImgShow = false; //rz_selectTiXing.html
-                alert(allTx.error);
+                alertInfFun('err', allTx.error);
               }
             });
           }
@@ -993,7 +1009,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.loadingImgShow = false; //rz_selectTiXing.html
             $scope.isShenHeBox = false; //判断是不是审核页面
             $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
-            alert(jgLy.error);
+            alertInfFun('err', jgLy.error);
           }
         });
       };
@@ -1007,7 +1023,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.activeLingYu = lyId;
         $http.get(qryKmTx + lyId).success(function(data){
           if(data.error){
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
           else{
             $scope.kmtxList = data;
@@ -1029,22 +1045,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         }
         else{
           if(hasIn){
-//            var txObj = {};
-//            txObj.TIXING_ID = tx.TIXING_ID;
-//            txObj.JIGOU_ID = jigouid;
-//            txObj.LINGYU_ID = $scope.activeLingYu;
-//            txObj.ZHUANGTAI = -1;
-//            tiXingData.shuju.push(txObj);
             var indexInOkt = _.indexOf(originKmtx, tx.TIXING_ID);
             $scope.kmtxList[indexInOkt].ZHUANGTAI = -1;
-//            $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
-//              if(data.result){
-//                $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
-//              }
-//              else{
-//                alert(data.error);
-//              }
-//            });
           }
           else{
             $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
@@ -1068,12 +1070,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
           if(data.result){
-            $('.save-msg').show().fadeOut(3000);
+            alertInfFun('err', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectTiXing.html
           }
           else{
             $scope.loadingImgShow = false; //rz_selectTiXing.html
-            alert(data.error);
+            alertInfFun('err', data.error);
           }
         });
       };
