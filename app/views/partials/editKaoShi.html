@@ -291,37 +291,17 @@
                     </ul>
                 </div>
             </div>
-            <!--div class="row" ng-hide="isShowPaperList">
-                <table class="table table-bordered kaowu-table">
-                    <tr class="active">
-                        <th>考场名称</th>
-                        <th width="90px">考位数量</th>
-                        <th width="120px">操作</th>
-                    </tr>
-                    <tr ng-repeat="kc in kaoChangList">
-                        <td>
-                            {{kc.KMINGCHENG}}
-                        </td>
-                        <td class="text-center">
-                            {{kc.KAOWEISHULIANG}}
-                        </td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-success" ng-click="addKaoChangToKaoShi(kc)">
-                                添加到考试
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </div-->
         </div>
     </div>
     <!-- 试卷详情的 -->
-    <div class="paper-content" ng-show="showPaperDetail">
+
+    <div class="paper-content" ng-show="showPaperDetail" id="kaoWuPaperDetail">
         <div class="paper-content-inner">
             <div>
                 <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closePaperDetail()">
                     关闭
                 </button>
+                <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
             </div>
             <div class="inner-box">
                 <h1 class="paper-title text-center hover-style">
@@ -340,7 +320,7 @@
                 </span>
                 </div>
                 <div class="shijuantimu-list">
-                    <div ng-repeat="mbdt in paperDetail.MUBANDATI">
+                    <div ng-repeat="mbdt in paperDetail.MUBANDATI" repeat-done>
                         <div class="mubandati">
                             <div class="dati-name-box">
                                 <span>{{cnNumArr[$index]}}、</span>
@@ -399,21 +379,6 @@
                 <a href="javascript:void(0)" ng-click='setTiMuNum(3)'>3</a>
                 <a href="javascript:void(0)" ng-click='setTiMuNum(4)'>4</a>
                 <a href="javascript:void(0)" ng-click='setTiMuNum(5)'>5</a>
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="tiMuNum" value="1" ng-click='setTiMuNum(1)'> 1-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="tiMuNum" value="2" ng-click='setTiMuNum(2)'> 2-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="tiMuNum" value="3" ng-click='setTiMuNum(3)'> 3-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="tiMuNum" value="4" ng-click='setTiMuNum(4)'> 4-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                    <!--<input type="radio" name="tiMuNum" value="5" ng-click='setTiMuNum(5)'> 5-->
-                <!--</label>-->
             </div>
             <div class="daTiKa" ng-repeat="(pIdx, ac) in answerCards">
                 <div class="daTiKa-header text-center">
@@ -436,6 +401,17 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.start-date').intimidatetime();
+        });
+    </script>
+    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript">
+        $('.reloadMath').on('click', function(){
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "kaoWuPaperDetail"]);
         });
     </script>
 </div>

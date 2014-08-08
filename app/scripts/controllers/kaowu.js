@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
     .controller('KaowuCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', '$timeout',
       function ($rootScope, $scope, $location, $http, $q, $timeout) { // 002 开始
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "考务"; //page title
         $rootScope.styles = ['styles/kaowu.css'];
@@ -139,7 +139,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.kaoShiPages = kaoShiPageArr.slice(currentKsPageVal - 5, currentKsPageVal + 5);
             }
           }
-          //查询数据的代码 //
+          //查询数据的代码
           kaoshi_id = kaoShiIdArrRev.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
           qrySelectKaoShisUrl = qryKaoShiDetailBaseUrl + '&kaoshiid=' + kaoshi_id;
           $http.get(qrySelectKaoShisUrl).success(function(ksdtl){
@@ -191,9 +191,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
         $scope.showKaoShiList();
 
         /**
+         * 重新加载 mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          $('.reloadMath').click();
+        });
+
+        /**
          * 显示试卷详情
          */
         $scope.showShiJuanInfo = function(sjId){
+          var newCont,
+            tgReg = new RegExp('<\%{.*?}\%>', 'g');
           var qryPaperDetail = qryPaperDetailBase + sjId;
           $http.get(qryPaperDetail).success(function(data){
             if(data){
@@ -204,6 +213,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               });
               //将各个题目添加到对应的模板大题中
               _.each(data.TIMU, function(tm, idx, lst){
+                //修改填空题的题干
+                newCont = tm.DETAIL.TIGAN.tiGan.replace(tgReg, function(arg) {
+                  var text = arg.slice(2, -2), //提起内容
+                    textJson = JSON.parse(text),
+                    _len = textJson.size,
+                    i, xhStr = '';
+                  for(i = 0; i < _len; i ++ ){
+                    xhStr += '_';
+                  }
+                  return xhStr;
+                });
+                tm.DETAIL.TIGAN.tiGan = newCont;
                 _.each(data.MUBANDATI, function(mbdt, subIdx, subLst){
                   if(mbdt.MUBANDATI_ID == tm.MUBANDATI_ID){
                     mbdt.TIMUARR.push(tm);
