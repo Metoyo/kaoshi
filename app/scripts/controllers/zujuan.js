@@ -569,9 +569,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
           var getShiJuanMuBanData = function(){
             var deferred = $q.defer();
             mbdt_data = []; // 得到模板大题的数组
-            // mbdtdLength = 0; //得到模板大题的长度
-
-            //mubanData.shuju.MUBANDATI = [];
             _.each($scope.kmtxList, function(kmtx, idx, lst){
               var mubandatiItem = {
                 MUBANDATI_ID: '',
@@ -589,7 +586,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
               mubandatiItem.XUHAO = kmtx.TIXING_ID;
               mubanData.shuju.MUBANDATI.push(mubandatiItem);
               mbdt_data.push(mubandatiItem);
-              // mbdtdLength ++; //得到科目题型的长度
             });
 
             $http.post(xgmbUrl, mubanData).success(function(data){
@@ -2039,9 +2035,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 返回组卷首页
            */
           $scope.showZuJuan = function(){
-            $scope.txTpl = 'views/partials/zj_home.html';
-            $scope.showPaperList();
-
             mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
             shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
             shijuanData.shuju.SHIJUANMINGCHENG = ''; //试卷名称重置
@@ -2064,6 +2057,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
             $scope.baocunshijuanBtn = false; //保存试卷的按钮
             $scope.sjPreview = false; //试卷预览
+            $scope.showBackToPaperListBtn = false;
+            $scope.txTpl = 'views/partials/zj_home.html';
+            $scope.showPaperList();
             deleteTempTemp();
             restoreKmtxDtscore();
           };

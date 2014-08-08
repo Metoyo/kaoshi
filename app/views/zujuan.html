@@ -3,10 +3,10 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
     <div class="testPaperSummary">
         <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""></h2>
         <div class="subjectBox clearfix">
-            <h2 class="pull-left" ng-bind="session.defaultLyName"></h2>
+            <h2 class="pull-left" ng-bind="session.defaultLyName">高中物理</h2>
         </div>
         <div class="plr10">
-            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
+            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">
                 <h3 class="clearfix">
                     <span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>
                     <a href="javascript:void(0)" class="pull-right">全部清空</a>
@@ -32,7 +32,7 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                     </tr>
                 </table>
             </div>
-            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID">
+            <div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">
                 <table class="table-bordered nanduTable">
                     <tr>
                         <th>难度</th>
@@ -56,7 +56,7 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                 <button type="button" class="btn btn-primary" ng-click="shijuanPreview()" ng-show="shijuanyulanBtn">
                     试卷预览
                 </button>
-                <button type="button" class="btn btn-primary" ng-hide="showBackToPaperListBtn || shijuanData.shuju.SHIJUAN_ID"
+                <button type="button" class="btn btn-primary" ng-hide="showBackToPaperListBtn"
                         ng-click="showZuJuanPage()">
                     添加新试卷
                 </button>
