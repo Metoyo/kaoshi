@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular'], function ($, _, angular) {
     .controller('NavCtrl', function ($rootScope, $scope, $location) {
 
       /**
-       * 定义变量//
+       * 定义变量
        */
       $scope.userInfoLayer = false;
 

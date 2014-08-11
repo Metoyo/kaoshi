@@ -984,16 +984,24 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 科目题型选择
+       * 科目题型选择//
        */
       $scope.renderTiXingSelectTpl = function(){
         $scope.loadingImgShow = true; //rz_selectTiXing.html
-        var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
+        var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID,
+          childLyArr = [];
         $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
           if(jgLy.length){
+            _.each(jgLy, function(ply, idx, lst){
+              if(ply.CHILDREN.length){
+                _.each(ply.CHILDREN, function(cly, cidx, clst){
+                  childLyArr.push(cly);
+                });
+              }
+            });
             $http.get(qryTiXingUrl).success(function(allTx){
               if(allTx.length){
-                $scope.selectTiXingLiYing = jgLy;
+                $scope.selectTiXingLiYing = childLyArr;
                 $scope.allTiXing = allTx;
                 $scope.loadingImgShow = false; //rz_selectTiXing.html
                 $scope.isShenHeBox = false; //判断是不是审核页面

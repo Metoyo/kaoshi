@@ -5284,6 +5284,9 @@ a.add-btn:hover span {
 .droTogYj .nav-icon {
   background-position: left -200px; }
 
+.droTogTj .nav-icon {
+  background-position: left -240px; }
+
 .dropdownToggle:hover {
   text-decoration: none; }
   .dropdownToggle:hover .nav-icon {
@@ -5817,6 +5820,48 @@ a.add-btn:hover span {
   font-size: 18px; }
 
 /*大纲  结束*/
+.testPaperSummary {
+  width: 221px;
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf; }
+  .testPaperSummary .subjectBox {
+    padding: 10px;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #cfcfcf; }
+    .testPaperSummary .subjectBox h2 {
+      font-size: 16px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold; }
+    .testPaperSummary .subjectBox a {
+      font-size: 12px;
+      text-decoration: none; }
+  .testPaperSummary .selectedItems h3 {
+    font-size: 12px;
+    margin: 15px 0 5px 0; }
+  .testPaperSummary .selectedItems table {
+    width: 100%;
+    margin-bottom: 10px; }
+    .testPaperSummary .selectedItems table td, .testPaperSummary .selectedItems table th {
+      font-size: 12px;
+      text-align: center;
+      padding: 3px; }
+      .testPaperSummary .selectedItems table td .glyphicon, .testPaperSummary .selectedItems table th .glyphicon {
+        top: 3px;
+        margin-right: 0; }
+    .testPaperSummary .selectedItems table .text-left {
+      text-align: left; }
+    .testPaperSummary .selectedItems table .deleteBtn {
+      width: 21px; }
+  .testPaperSummary .sj-preview-btns {
+    padding: 10px 0;
+    text-align: center; }
+
 /**
 *日期选择器的样式
 */
@@ -6452,47 +6497,6 @@ a.add-btn:hover span {
   .mingtiWrapper .starClick5 {
     background-position: 0 -250px; }
 
-.zujuanWrapper .testPaperSummary {
-  width: 221px;
-  height: 100%;
-  position: fixed;
-  z-index: 10;
-  background-color: #f5f5f5;
-  border-right: 1px solid #cfcfcf; }
-  .zujuanWrapper .testPaperSummary .subjectBox {
-    padding: 10px;
-    float: left;
-    width: 100%;
-    border-bottom: 1px solid #cfcfcf; }
-    .zujuanWrapper .testPaperSummary .subjectBox h2 {
-      font-size: 16px;
-      display: inline;
-      margin: 0;
-      color: #f60;
-      font-weight: bold; }
-    .zujuanWrapper .testPaperSummary .subjectBox a {
-      font-size: 12px;
-      text-decoration: none; }
-  .zujuanWrapper .testPaperSummary .selectedItems h3 {
-    font-size: 12px;
-    margin: 15px 0 5px 0; }
-  .zujuanWrapper .testPaperSummary .selectedItems table {
-    width: 100%;
-    margin-bottom: 10px; }
-    .zujuanWrapper .testPaperSummary .selectedItems table td, .zujuanWrapper .testPaperSummary .selectedItems table th {
-      font-size: 12px;
-      text-align: center;
-      padding: 3px; }
-      .zujuanWrapper .testPaperSummary .selectedItems table td .glyphicon, .zujuanWrapper .testPaperSummary .selectedItems table th .glyphicon {
-        top: 3px;
-        margin-right: 0; }
-    .zujuanWrapper .testPaperSummary .selectedItems table .text-left {
-      text-align: left; }
-    .zujuanWrapper .testPaperSummary .selectedItems table .deleteBtn {
-      width: 21px; }
-  .zujuanWrapper .testPaperSummary .sj-preview-btns {
-    padding: 10px 0;
-    text-align: center; }
 .zujuanWrapper .nandu-dist h4 {
   font-size: 14px; }
   .zujuanWrapper .nandu-dist h4 em {
@@ -7117,6 +7121,24 @@ a.add-btn:hover span {
 .kaowuWrapper .set-tiMu-num .tiMuNumAon {
   background-color: #428bca;
   color: #fff; }
+
+.tongjiWrapper .tj-btn-box {
+  width: 100%;
+  text-align: center;
+  display: block; }
+  .tongjiWrapper .tj-btn-box .btn {
+    margin-top: 10px; }
+.tongjiWrapper .contentWraps {
+  position: relative;
+  padding: 0; }
+.tongjiWrapper .tab-content {
+  padding: 10px; }
+.tongjiWrapper .tj-table {
+  width: 100%; }
+  .tongjiWrapper .tj-table th, .tongjiWrapper .tj-table td {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #cfcfcf; }
 
 .markItUp * {
   margin: 0px;

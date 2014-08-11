@@ -1,0 +1,55 @@
+<div class="sub-nav">
+    <ul class="nav nav-tabs">
+        <li ng-class="{active: tj_tabActive == 'kaoshiTj' }" class="active">
+            <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
+                按考试统计
+            </a>
+        </li>
+        <li ng-class="{active: tj_tabActive == 'shijuanTj'}">
+            <a href="javascript:void(0)" ng-click="showShiJuanTjList()">
+                按试卷统计
+            </a>
+        </li>
+    </ul>
+    <!-- 统计的容器 开始-->
+    <!--<div class="tab-content" ng-init="tjSubTpl = 'views/partials/tj-ks.html'" ng-include="tjSubTpl">-->
+    <div class="tab-content">
+        <table class="tj-table">
+            <tr>
+                <th>考试名称</th>
+                <th>试卷名称</th>
+                <th width="120px">考试人数</th>
+                <th width="120px">考试时间</th>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:void(0)">2014年期中考试物理</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)">物理试卷</a>
+                </td>
+                <td>56</td>
+                <td>2014-7-20</td>
+            </tr>
+        </table>
+        <table class="tj-table">
+            <tr>
+                <th>试卷名称</th>
+                <th>试卷使用次数</th>
+                <th width="120px">完成试卷人数</th>
+                <th width="120px">考试时间</th>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:void(0)">物理试卷</a>
+                </td>
+                <td>
+                    4
+                </td>
+                <td>346</td>
+                <td>2014-7-20</td>
+            </tr>
+        </table>
+    </div>
+    <!-- 统计的容器 结束-->
+</div>

@@ -316,6 +316,9 @@ a.add-btn:hover span {
 .droTogYj .nav-icon {
   background-position: left -200px;
 }
+.droTogTj .nav-icon {
+  background-position: left -240px;
+}
 .dropdownToggle:hover {
   text-decoration: none;
   .nav-icon {
@@ -966,7 +969,60 @@ a.add-btn:hover span {
   font-size: 18px;
 }
 /*大纲  结束*/
-
+.testPaperSummary{
+  width: 221px;
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf;
+  .subjectBox{
+    padding: 10px;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #cfcfcf;
+    h2{
+      font-size: 16px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold;
+    }
+    a{
+      font-size: 12px;
+      text-decoration: none;
+    }
+  }
+  .selectedItems{
+    h3{
+      font-size: 12px;
+      margin: 15px 0 5px 0;
+    }
+    table{
+      width: 100%;
+      margin-bottom: 10px;
+      td,th{
+        font-size: 12px;
+        text-align: center;
+        padding: 3px;
+        .glyphicon {
+          top: 3px;
+          margin-right: 0;
+        }
+      }
+      .text-left{
+        text-align: left;
+      }
+      .deleteBtn{
+        width: 21px;
+      }
+    }
+  }
+  .sj-preview-btns{
+    padding: 10px 0;
+    text-align: center;
+  }
+}
 /**
 *日期选择器的样式
 */
@@ -1800,60 +1856,6 @@ a.add-btn:hover span {
 }
 //组卷样式
 .zujuanWrapper{
-  .testPaperSummary{
-    width: 221px;
-    height: 100%;
-    position: fixed;
-    z-index: 10;
-    background-color: #f5f5f5;
-    border-right: 1px solid #cfcfcf;
-    .subjectBox{
-      padding: 10px;
-      float: left;
-      width: 100%;
-      border-bottom: 1px solid #cfcfcf;
-      h2{
-        font-size: 16px;
-        display: inline;
-        margin: 0;
-        color: #f60;
-        font-weight: bold;
-      }
-      a{
-        font-size: 12px;
-        text-decoration: none;
-      }
-    }
-    .selectedItems{
-      h3{
-        font-size: 12px;
-        margin: 15px 0 5px 0;
-      }
-      table{
-        width: 100%;
-        margin-bottom: 10px;
-        td,th{
-          font-size: 12px;
-          text-align: center;
-          padding: 3px;
-          .glyphicon {
-            top: 3px;
-            margin-right: 0;
-          }
-        }
-        .text-left{
-          text-align: left;
-        }
-        .deleteBtn{
-          width: 21px;
-        }
-      }
-    }
-    .sj-preview-btns{
-      padding: 10px 0;
-      text-align: center;
-    }
-  }
   .nandu-dist{
     h4{
       font-size: 14px;
@@ -2689,6 +2691,32 @@ a.add-btn:hover span {
     .tiMuNumAon{
       background-color: #428bca;
       color: #fff;
+    }
+  }
+}
+//统计样式
+.tongjiWrapper{
+  .tj-btn-box{
+    width: 100%;
+    text-align: center;
+    display: block;
+    .btn{
+      margin-top: 10px;
+    }
+  }
+  .contentWraps{
+    position: relative;
+    padding: 0;
+  }
+  .tab-content{
+    padding: 10px;
+  }
+  .tj-table{
+    width: 100%;
+    th,td{
+      padding: 5px;
+      text-align: center;
+      border-bottom: 1px solid #cfcfcf;
     }
   }
 }

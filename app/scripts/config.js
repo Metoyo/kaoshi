@@ -58,12 +58,12 @@ define( "config", [], function () {
         templateUrl: 'views/selectLingYu.html',
         controller: 'LingyuCtrl',
         requireLogin: true
+      },
+      '/tongji': {
+        templateUrl: 'views/tongji.html',
+        controller: 'TongjiCtrl',
+        requireLogin: true
       }
-//      '/yuejuan': {
-//        templateUrl: 'views/yuejuan.html',
-//        controller: 'YuejuanCtrl',
-//        requireLogin: true
-//      }
     },
     jueseObj: [ //得到角色是数组
       {juese_id: 1, juese_name:'系统管理员', juese_url: ''},
