@@ -4,12 +4,7 @@ define([
     'underscore',
     'angular',
     'services/urlredirect',
-    'directives/passwordverify',
-    'directives/bnslideshow',
-    'directives/hoverslide',
-    'directives/repeatdone',
-    'directives/fileupload',
-    'controllers/main',
+//    'controllers/main',
     'controllers/renzheng',
     'controllers/nav',
     'controllers/mingti',
@@ -20,7 +15,7 @@ define([
     'controllers/zujuan',
     'controllers/kaowu',
     'controllers/lingyu',
-    'controllers/yuejuan',
+    'controllers/tongji',
     'filters/mylocaldate',
     'filters/mylocaldatewithweek',
     'filters/examstatus',
@@ -28,59 +23,59 @@ define([
     'filters/outtigan',
     'services/myfileupload',
     'directives/nandustar',
-    'controllers/tongji',
+    'directives/passwordverify',
+    'directives/bnslideshow',
+    'directives/hoverslide',
+    'directives/repeatdone',
+    'directives/fileupload',
     'config'
-   ], function ($, _, angular, UrlredirectService, PasswordverifyDirective, BnslideshowDirective, HoverslideDirective,
-                FileuploadDirective, RepeatdoneDirective, MainCtrl, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,
-                UserCtrl, LogoutCtrl, RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, YuejuanCtrl, MylocaldateFilter,
-                MylocaldatewithweekFilter, ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService,
-                NandustarDirective, TongjiCtrl, config) {
+   ], function ($, _, angular, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,UserCtrl, LogoutCtrl,
+                RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl,MylocaldateFilter, MylocaldatewithweekFilter,
+                ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
+                PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
+                RepeatdoneDirective, config) {
   'use strict';
 
-  return angular.module('kaoshiApp', ['kaoshiApp.controllers.MainCtrl',
-'kaoshiApp.controllers.MingtiCtrl',
-'kaoshiApp.controllers.DagangCtrl',
-'kaoshiApp.controllers.NavCtrl',
-'kaoshiApp.controllers.RenzhengCtrl',
-'kaoshiApp.controllers.UserCtrl',
-'kaoshiApp.services.Urlredirect',
-'kaoshiApp.controllers.LogoutCtrl',
-'kaoshiApp.controllers.RegisterCtrl',
-'kaoshiApp.directives.Passwordverify',
-'kaoshiApp.controllers.ZujuanCtrl',
-'kaoshiApp.controllers.KaowuCtrl',
-'kaoshiApp.filters.Mylocaldate',
-'kaoshiApp.filters.Mylocaldatewithweek',
-'kaoshiApp.filters.Examstatus',
-'kaoshiApp.controllers.LingyuCtrl',
-'kaoshiApp.controllers.YuejuanCtrl',
-'kaoshiApp.directives.Bnslideshow',
-'kaoshiApp.filters.Outputdaan',
-'kaoshiApp.directives.Hoverslide',
-'kaoshiApp.directives.Repeatdone',
-'kaoshiApp.filters.Outtigan',
-'kaoshiApp.directives.Fileupload',
-'kaoshiApp.services.Myfileupload',
-'kaoshiApp.directives.Nandustar',
-'kaoshiApp.controllers.TongjiCtrl',
-/*angJSDeps*/
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngRoute'
-])
+  return angular.module('kaoshiApp', [
+    'kaoshiApp.services.Urlredirect',
+    'kaoshiApp.services.Myfileupload',
+    'kaoshiApp.controllers.RenzhengCtrl',
+    'kaoshiApp.controllers.NavCtrl',
+    'kaoshiApp.controllers.MingtiCtrl',
+    'kaoshiApp.controllers.DagangCtrl',
+    'kaoshiApp.controllers.UserCtrl',
+    'kaoshiApp.controllers.LogoutCtrl',
+    'kaoshiApp.controllers.RegisterCtrl',
+    'kaoshiApp.controllers.ZujuanCtrl',
+    'kaoshiApp.controllers.KaowuCtrl',
+    'kaoshiApp.controllers.LingyuCtrl',
+    'kaoshiApp.controllers.TongjiCtrl',
+    'kaoshiApp.filters.Mylocaldate',
+    'kaoshiApp.filters.Mylocaldatewithweek',
+    'kaoshiApp.filters.Examstatus',
+    'kaoshiApp.filters.Outputdaan',
+    'kaoshiApp.filters.Outtigan',
+    'kaoshiApp.directives.Hoverslide',
+    'kaoshiApp.directives.Repeatdone',
+    'kaoshiApp.directives.Fileupload',
+    'kaoshiApp.directives.Bnslideshow',
+    'kaoshiApp.directives.Nandustar',
+    'kaoshiApp.directives.Passwordverify',
+     /*angJSDeps*/
+    'ngCookies',
+    'ngResource',
+    'ngSanitize',
+    'ngRoute'
+   ])
     .config(['$routeProvider',  function ($routeProvider, $rootScope) {
       var routes = config.routes;
-
       /**
        * 根据config文件中的路由配置信息加载本应用中要使用到的路由规则
        */
       for(var path in routes) {
         $routeProvider.when(path, routes[path]);
       }
-
       $routeProvider.otherwise({redirectTo: '/renzheng'});
-
     }]).run(['$rootScope', '$location', '$route', 'urlRedirect', function($rootScope, $location,
                                                                                 $route, urlRedirect) {
 
@@ -119,8 +114,6 @@ define([
             return false;
           });
 
-
-
           if(findRoute) { // 如果在我们的路由表中已找到即将要访问的路由， 那么执行以下代码
             nextRoute = routes[nextUrlPattern]; // 找到即将要访问的路由的配置信息
             /**
@@ -129,7 +122,6 @@ define([
             if(nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
               event.preventDefault(); // 取消访问下一个路由地址
               currentPath = $location.$$path;
-
               urlRedirect.goTo(currentPath, '/renzheng');
             }
           }

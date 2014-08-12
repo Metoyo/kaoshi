@@ -10,7 +10,6 @@ require.config({
     text: '../../bower_components/requirejs-text/text',
     jquery: '../../bower_components/jquery/jquery',
     underscore: '../../bower_components/underscore/underscore'
-//    intimidatetime: '../../bower_components/intimidatetime/intimidatetime'
   },
   shim: {
     'angular' : {'exports' : 'angular'},
@@ -22,7 +21,6 @@ require.config({
       deps:['angular'],
       'exports':'angular.mock'
     }
-//    'datepicker': ['jquery']
   },
   priority: [
     'angular'
@@ -76,5 +74,6 @@ require([
 
   angular.element().ready(function() {
     angular.resumeBootstrap([app.name]);
+    console.log(app.name);
   });
 });
