@@ -65,17 +65,13 @@ define( "config", [], function () {
         requireLogin: true
       }
     },
-    jueseObj: [ //得到角色是数组
-      {juese_id: 1, juese_name:'系统管理员', juese_url: ''},
-      {juese_id: 2, juese_name:'机构管理员', juese_url: ''},
-      {juese_id: 3, juese_name:'审核人', juese_url: '/shenpi'},
-      {juese_id: 4, juese_name:'科目负责人', juese_url: '/dagang'},
-      {juese_id: 5, juese_name:'命题教师', juese_url: '/mingti'},
-      {juese_id: 6, juese_name:'组卷教师', juese_url: '/zujuan'},
-      {juese_id: 7, juese_name:'审题教师', juese_url: ''},
-      {juese_id: 8, juese_name:'考务人员', juese_url: '/kaowu'}
-//      {juese_id: 9, juese_name:'阅卷组长', juese_url: '/yuejuan'},
-//      {juese_id: 10, juese_name:'阅卷教师', juese_url: '/yuejuan'}
+    quanxianObj: [ //得到角色是数组
+      {qx_id: '', juese_name:'审核人', juese_url: '/shenpi'},
+      {qx_id: 2007, juese_name:'科目负责人', juese_url: '/dagang'},
+      {qx_id: 2010, juese_name:'命题教师', juese_url: '/mingti'},
+      {qx_id: 2017, juese_name:'组卷教师', juese_url: '/zujuan'},
+      {qx_id: 3011, juese_name:'考务人员', juese_url: '/kaowu'},
+      {qx_id: 4001, juese_name:'科目负责人', juese_url: '/tongji'}
     ],
     tiXingNameArr: [
       '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',

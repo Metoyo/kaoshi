@@ -25,7 +25,7 @@ define([
         $scope.login = login;
 
         /**
-         * 信息提示函数
+         * 信息提示函数//
          */
         var alertInfFun = function(megKind, cont){
           $('.messageTd').css('display', 'none').html('');
@@ -91,34 +91,47 @@ define([
                         /**
                          * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                          */
-                        $http.get(permissionApiUrl).success(function(permissions) {
-                          var find_QUANXIAN_ID_4, find_QUANXIAN_ID_5;
+                        var permissions = data.QUANXIAN,
+                          find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
+                          quanxianArr = [],
+                          jsUrl;
 
-                          find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
-                            return permission.QUANXIAN_ID == 2004;
-                          });
-
-                          find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
-                            return permission.QUANXIAN_ID == 2005;
-                          });
-
-                          if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
-                            urlRedirect.goTo(currentPath, profileUrl);
-                          }
-                          else {
-                            if(data.LINGYU.length == 1){
-                              session.defaultLyId = data.LINGYU[0].LINGYU_ID;
-                              session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
-                              //得到数组的第一位，-1的目的是为了转化为索引
-                              var jsUrl = config.jueseObj[parseInt(jsArr[0]) - 1].juese_url;
-                              session.jueseStr = _.map(jsArr, function(jsm){return 'juese' + jsm}).join();
-                              urlRedirect.goTo(currentPath, jsUrl);
-                            }
-                            else{
-                              urlRedirect.goTo(currentPath, '/lingyu');
-                            }
-                          }
+                        find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
+                          return permission.QUANXIAN_ID == 2004;
                         });
+
+                        find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
+                          return permission.QUANXIAN_ID == 2005;
+                        });
+
+                        if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
+                          urlRedirect.goTo(currentPath, profileUrl);
+                        }
+                        else {
+                          if(data.LINGYU.length == 1){
+                            session.defaultLyId = data.LINGYU[0].LINGYU_ID;
+                            session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
+                            _.each(permissions, function(pms, idx, lst){
+                              if(pms.QUANXIAN_ID == 2007 || pms.QUANXIAN_ID == 2010 || pms.QUANXIAN_ID == 2017
+                                || pms.QUANXIAN_ID == 3001 || pms.QUANXIAN_ID == 4001){
+                                quanxianArr.push(pms.QUANXIAN_ID);
+                              }
+                            });
+                            quanxianArr = _.uniq(quanxianArr);
+                            //得到数组的第一位，-1的目的是为了转化为索引
+                            _.each(config.quanxianObj, function(qx, idx, lst){
+                              if(qx.qx_id == quanxianArr[0]){
+                                jsUrl = qx.juese_url;
+                              }
+                            });
+
+                            session.quanxianStr = _.map(quanxianArr, function(qxm){return 'quanxian' + qxm}).join();
+                            urlRedirect.goTo(currentPath, jsUrl);
+                          }
+                          else{
+                            urlRedirect.goTo(currentPath, '/lingyu');
+                          }
+                        }
                       }
                     }
                     else{

@@ -26,7 +26,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               .sortBy(function(js){ return js.JUESE_ID; })
               .map(function(js){ return js.JUESE_ID; })
               .uniq().value(), //得到角色的数组
-            jsUrl = config.jueseObj[parseInt(needLyArr[0]) - 1].juese_url; //得到要跳转的url
+            jsUrl = config.quanxianObj[parseInt(needLyArr[0]) - 1].juese_url; //得到要跳转的url
           session.jueseStr = _.map(needLyArr, function(jsm){return 'juese' + jsm}).join();
           urlRedirect.goTo(currentPath, jsUrl);
         }

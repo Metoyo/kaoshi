@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http',
       function ($rootScope, $scope, $http) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "统计";
         $rootScope.dashboard_shown = true;
