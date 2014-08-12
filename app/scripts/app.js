@@ -4,7 +4,6 @@ define([
     'underscore',
     'angular',
     'services/urlredirect',
-//    'controllers/main',
     'controllers/renzheng',
     'controllers/nav',
     'controllers/mingti',

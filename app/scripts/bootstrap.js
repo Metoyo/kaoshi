@@ -34,12 +34,12 @@ require([
   'jquery',
   'underscore',
   'angular',
-  'app',
   'angularRoute',
   'angularCookies',
   'angularSanitize',
-  'angularResource'
-], function($, _, angular, app, ngRoutes, ngCookies, ngSanitize, ngResource) {
+  'angularResource',
+  'app'
+], function($, _, angular, ngRoutes, ngCookies, ngSanitize, ngResource, app) {
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);
