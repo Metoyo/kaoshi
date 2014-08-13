@@ -9,6 +9,7 @@ body {
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
   sans-serif;
+  margin: 0;
 }
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
@@ -519,6 +520,7 @@ a.add-btn:hover span {
 //考务和组卷的 sliding tab
 .sub-nav{
   height: 56px;
+  border-bottom: 1px solid #dddddd;
   li{
     margin-top: 14px;
   }
@@ -2708,6 +2710,14 @@ a.add-btn:hover span {
     position: relative;
     padding: 0;
   }
+  .tj-title{
+    font-size: 20px;
+    line-height: 56px;
+    padding: 0 20px;
+    .btn{
+      margin-top: 14px;
+    }
+  }
   .tab-content{
     padding: 10px;
   }
@@ -2717,6 +2727,14 @@ a.add-btn:hover span {
       padding: 5px;
       text-align: center;
       border-bottom: 1px solid #cfcfcf;
+    }
+  }
+  .tj-table-detail{
+    th,td{
+      border: 1px solid #cfcfcf;
+    }
+    th{
+      background-color: #f0f0f0;
     }
   }
 }

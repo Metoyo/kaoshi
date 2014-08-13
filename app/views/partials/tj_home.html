@@ -1,5 +1,5 @@
 <div class="sub-nav">
-    <ul class="nav nav-tabs" ng-init="tj_tabActive = 'kaoshiTj'">
+    <ul class="nav nav-tabs" ng-init="tj_tabActive = 'kaoshiTj'" ng-hide="isTjDetailShow">
         <li ng-class="{active: tj_tabActive == 'kaoshiTj' }">
             <a href="javascript:void(0)" ng-click="showKaoShiTjList();tj_tabActive='kaoshiTj'">
                 按考试统计
@@ -11,9 +11,13 @@
             </a>
         </li>
     </ul>
-    <!-- 统计的容器 开始-->
-    <div class="tab-content" ng-include="tjSubTpl">
-
-    </div>
-    <!-- 统计的容器 结束-->
+    <h2 class="tj-title" ng-show="isTjDetailShow">
+        <span ng-bind="tjItemName"></span>
+        <button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回</button>
+    </h2>
 </div>
+<!-- 统计的容器 开始-->
+<div class="tab-content" ng-include="tjSubTpl">
+
+</div>
+<!-- 统计的容器 结束-->

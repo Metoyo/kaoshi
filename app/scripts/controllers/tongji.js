@@ -25,7 +25,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
-//          $scope.tj_tabActive = 'kaoshiTj';
+          $scope.isTjDetailShow = false;
           $scope.tjSubTpl = 'views/partials/tj_ks.html';
         };
 
@@ -33,15 +33,44 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示试卷统计列表
          */
         $scope.showShiJuanTjList = function(){
-//          $scope.tj_tabActive = 'shijuanTj';
+          $scope.isTjDetailShow = false;
           $scope.tjSubTpl = 'views/partials/tj_sj.html';
         };
 
         /**
-         * 初始化运行的程序
+         * 初始化运行的程序//
          */
         $scope.showKaoShiTjList();
 
+        /**
+         * 考试统计详情
+         */
+        $scope.showKsTjDetail = function(){
+          $scope.tjItemName = '考试统计';
+          $scope.isTjDetailShow = true;
+          $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
+        };
+
+        /**
+         * 试卷统计详情
+         */
+        $scope.showSjTjDetail = function(){
+          $scope.tjItemName = '试卷统计';
+          $scope.isTjDetailShow = true;
+          $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
+        };
+
+        /**
+         * 由统计详情返回列表
+         */
+        $scope.tjDetailToList = function(){
+          if($scope.tjItemName == '考试统计'){
+            $scope.showKaoShiTjList();
+          }
+          else{
+            $scope.showShiJuanTjList();
+          }
+        }
 
     }]);
 });

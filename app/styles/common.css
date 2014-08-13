@@ -5003,7 +5003,8 @@ body {
   color: #67717e; }
 
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif; }
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
+  margin: 0; }
 
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
@@ -5456,7 +5457,8 @@ a.add-btn:hover span {
   color: red; }
 
 .sub-nav {
-  height: 56px; }
+  height: 56px;
+  border-bottom: 1px solid #dddddd; }
   .sub-nav li {
     margin-top: 14px; }
   .sub-nav .nav-tabs li:first-child {
@@ -7131,6 +7133,10 @@ a.add-btn:hover span {
 .tongjiWrapper .contentWraps {
   position: relative;
   padding: 0; }
+.tongjiWrapper .tj-title {
+  font-size: 20px;
+  line-height: 56px;
+  padding: 0 20px; }
 .tongjiWrapper .tab-content {
   padding: 10px; }
 .tongjiWrapper .tj-table {
@@ -7139,6 +7145,10 @@ a.add-btn:hover span {
     padding: 5px;
     text-align: center;
     border-bottom: 1px solid #cfcfcf; }
+.tongjiWrapper .tj-table-detail th, .tongjiWrapper .tj-table-detail td {
+  border: 1px solid #cfcfcf; }
+.tongjiWrapper .tj-table-detail th {
+  background-color: #f0f0f0; }
 
 .markItUp * {
   margin: 0px;
