@@ -1,11 +1,10 @@
 /*jshint unused: vars */
 define([
-    'jquery',
-    'underscore',
-    'angular',
-    'services/urlredirect',
     'controllers/renzheng',
     'controllers/nav',
+    'angular',
+    'config',
+    'services/urlredirect',
     'controllers/mingti',
     'controllers/dagang',
     'controllers/user',
@@ -25,14 +24,14 @@ define([
     'directives/passwordverify',
     'directives/bnslideshow',
     'directives/hoverslide',
-    'directives/repeatdone',
     'directives/fileupload',
-    'config'
-   ], function ($, _, angular, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl,UserCtrl, LogoutCtrl,
+    'directives/repeatdone'
+
+   ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl,UserCtrl, LogoutCtrl,
                 RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl,MylocaldateFilter, MylocaldatewithweekFilter,
                 ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
                 PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
-                RepeatdoneDirective, config) {
+                RepeatdoneDirective) {
   'use strict';
 
   return angular.module('kaoshiApp', [
@@ -75,8 +74,9 @@ define([
         $routeProvider.when(path, routes[path]);
       }
       $routeProvider.otherwise({redirectTo: '/renzheng'});
-    }]).run(['$rootScope', '$location', '$route', 'urlRedirect', function($rootScope, $location,
-                                                                                $route, urlRedirect) {
+
+    }])
+    .run(['$rootScope', '$location', '$route', 'urlRedirect', function($rootScope, $location, $route, urlRedirect) {
 
       /**
        * 确保所有需要登陆才可以访问的链接进行用户登陆信息验证，如果没有登陆的话，则导向登陆界面

@@ -19,10 +19,12 @@
     <!-- endbuild -->
   </head>
   <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
-    <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'"></div>
+    <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'">
+
+    </div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: !isRenZheng}" ng-view>
-        <div class="renzhengWrapper">
+        <!--<div class="renzhengWrapper">
             <div class="row">
                 <h4 class="logo text-center"><img src="/images/renzheng/icon/logo.png" alt="太安厅"></h4>
                 <div class="col-md-4 col-md-offset-2 loginBox">
@@ -58,13 +60,13 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <div class="popInfoWrap" ng-include="'views/partials/info.html'"></div>
+    <script src="/bower_components/requirejs/require.min.js" data-main="scripts/bootstrap.js"></script>
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <script src="bower_components/requirejs/require.js" data-main="scripts/bootstrap.js" defer async="true"></script>
   </body>
 </html>

@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http',
       function ($rootScope, $scope, $http) {
         /**
-         * 操作title//
+         * 操作title
          */
         $rootScope.pageName = "统计";
         $rootScope.dashboard_shown = true;
@@ -21,8 +21,27 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = $rootScope.session.defaultLyId;
 
+        /**
+         * 显示考试统计列表
+         */
         $scope.showKaoShiTjList = function(){
-          alert('hello！');
-        }
+//          $scope.tj_tabActive = 'kaoshiTj';
+          $scope.tjSubTpl = 'views/partials/tj_ks.html';
+        };
+
+        /**
+         * 显示试卷统计列表
+         */
+        $scope.showShiJuanTjList = function(){
+//          $scope.tj_tabActive = 'shijuanTj';
+          $scope.tjSubTpl = 'views/partials/tj_sj.html';
+        };
+
+        /**
+         * 初始化运行的程序
+         */
+        $scope.showKaoShiTjList();
+
+
     }]);
 });

@@ -7,9 +7,17 @@ require.config({
     angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize',
     angularResource: '../../bower_components/angular-resource/angular-resource',
     angularMocks: '../../bower_components/angular-mocks/angular-mocks',
-    text: '../../bower_components/requirejs-text/text',
     jquery: '../../bower_components/jquery/jquery',
     underscore: '../../bower_components/underscore/underscore'
+
+//    angular: '../../bower_components/angular/angular.min',
+//    angularRoute: '../../bower_components/angular-route/angular-route.min',
+//    angularCookies: '../../bower_components/angular-cookies/angular-cookies.min',
+//    angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize.min',
+//    angularResource: '../../bower_components/angular-resource/angular-resource.min',
+//    angularMocks: '../../bower_components/angular-mocks/angular-mocks',
+//    jquery: '../../bower_components/jquery/jquery.min',
+//    underscore: '../../bower_components/underscore/underscore.min'
   },
   shim: {
     'angular' : {'exports' : 'angular'},
@@ -31,15 +39,15 @@ require.config({
 window.name = 'NG_DEFER_BOOTSTRAP!';
 
 require([
-  'jquery',
-  'underscore',
+  'app',
   'angular',
   'angularRoute',
   'angularCookies',
   'angularSanitize',
   'angularResource',
-  'app'
-], function($, _, angular, ngRoutes, ngCookies, ngSanitize, ngResource, app) {
+  'jquery',
+  'underscore'
+], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);
