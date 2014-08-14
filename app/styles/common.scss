@@ -223,7 +223,7 @@ a.add-btn:hover span {
   text-align: center;
   width: 100%;
   height: 56px;
-  border-bottom: 1px solid #cfcfcf;
+//  border-bottom: 1px solid #cfcfcf;
   img {
     height: 32px;
     width: 200px;
@@ -396,62 +396,78 @@ a.add-btn:hover span {
 /* 信息提示样式*/
 .popInfoWrap{
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  vertical-align: middle;
-  z-index: 1000;
+  height: 50px;
+  z-index: 9999;
   display: none;
-  .popInfoWrapInner{
-    width: 400px;
-    height: 250px;
-    left: 50%;
-    top: 50%;
-    position: relative;
-    margin-left: -200px;
-    margin-top: -125px;
-    background-color: #fff;
-    border-radius: 3px;
-    border: 1px solid #599EDB;
-    .pop-title{
-      margin: 0;
-      padding: 0;
-      height: 32px;
-      border-radius: 3px 3px 0 0;
-      border-bottom: 1px solid #599EDB;
-      background : #f0f0f0;
-      .glyphicon-remove{
-        color: red;
-        font-size: 16px;
-        float: right;
-        margin-top: 7px;
-        cursor: pointer;
-      }
-    }
-    .pop-cont{
-      padding: 10px;
-      table{
-        width: 100%;
-        td{
-          height: 195px;
-          text-align: center;
-          vertical-align: middle;
-          font-size: 16px;
-          display: none;
-        }
-        .mesSuccess{
-          color: #009E00;
-        }
-        .mesPrompt{
-          color: #285e8e;
-        }
-        .mesError{
-          color: #c9302c;
-        }
-      }
-    }
+  background-color: #f0f0f0;
+  border-top: 1px solid #599EDB;
+  .messageTd{
+    width: 100%;
+    font-size: 16px;
+    line-height: 50px;
+    text-align: center;
   }
+  .mesSuccess{
+    color: #009E00;
+  }
+  .mesPrompt{
+    color: #285e8e;
+  }
+  .mesError{
+    color: #c9302c;
+  }
+//  .popInfoWrapInner{
+//    width: 400px;
+//    height: 250px;
+//    left: 50%;
+//    top: 50%;
+//    position: relative;
+//    margin-left: -200px;
+//    margin-top: -125px;
+//    background-color: #fff;
+//    border-radius: 3px;
+//    border: 1px solid #599EDB;
+//    .pop-title{
+//      margin: 0;
+//      padding: 0;
+//      height: 32px;
+//      border-radius: 3px 3px 0 0;
+//      border-bottom: 1px solid #599EDB;
+//      background : #f0f0f0;
+//      .glyphicon-remove{
+//        color: red;
+//        font-size: 16px;
+//        float: right;
+//        margin-top: 7px;
+//        cursor: pointer;
+//      }
+//    }
+//    .pop-cont{
+//      padding: 10px;
+//      table{
+//        width: 100%;
+//        td{
+//          height: 195px;
+//          text-align: center;
+//          vertical-align: middle;
+//          font-size: 16px;
+//          display: none;
+//        }
+//        .mesSuccess{
+//          color: #009E00;
+//        }
+//        .mesPrompt{
+//          color: #285e8e;
+//        }
+//        .mesError{
+//          color: #c9302c;
+//        }
+//      }
+//    }
+//  }
 }
 /* 答题卡样式开始*/
 .da-ti-ka-wrap{
@@ -588,7 +604,7 @@ a.add-btn:hover span {
   .pointTitleBox {
     @include width(100%);
     margin: -1px 0 0 0;
-    border-bottom: 1px solid #cfcfcf;
+//    border-bottom: 1px solid #cfcfcf;
     padding: 10px 0;
     position: relative;
   }
@@ -982,7 +998,7 @@ a.add-btn:hover span {
     padding: 10px;
     float: left;
     width: 100%;
-    border-bottom: 1px solid #cfcfcf;
+//    border-bottom: 1px solid #cfcfcf;
     h2{
       font-size: 16px;
       display: inline;
@@ -1633,7 +1649,7 @@ a.add-btn:hover span {
     width: 100%;
     float: left;
     padding: 0 10px;
-    border-bottom: 1px solid #cfcfcf;
+//    border-bottom: 1px solid #cfcfcf;
     h2{
       margin-top: 10px;
       margin-bottom: 0;
@@ -1651,7 +1667,7 @@ a.add-btn:hover span {
     width: 100%;
     float: left;
     padding: 0 10px;
-    border-bottom: 1px solid #cfcfcf;
+//    border-bottom: 1px solid #cfcfcf;
     h2{
       margin-top: 10px;
     }

@@ -19,9 +19,7 @@
     <!-- endbuild -->
   </head>
   <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
-    <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'">
-
-    </div>
+    <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: !isRenZheng}" ng-view>
         <!--<div class="renzhengWrapper">

@@ -56,7 +56,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           if(megKind == 'pmt'){
             $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
           }
-          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+          $('.popInfoWrap').css('display', 'block');
+          var fadeOutFun = function(){
+            $('.popInfoWrap').fadeOut(3000);
+          };
+          $timeout(fadeOutFun, 3000);
+//          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
         };
 
         /**

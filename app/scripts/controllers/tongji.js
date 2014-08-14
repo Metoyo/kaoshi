@@ -38,7 +38,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 初始化运行的程序//
+         * 初始化运行的程序
          */
         $scope.showKaoShiTjList();
 
