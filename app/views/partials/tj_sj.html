@@ -1,18 +1,16 @@
 <table class="tj-table">
     <tr>
         <th>试卷名称</th>
-        <th>试卷使用次数</th>
-        <th width="120px">完成试卷人数</th>
-        <th width="120px">考试时间</th>
+        <th  width="120px" class="text-center" >试卷使用次数</th>
+        <th width="120px" class="text-center">完成试卷人数</th>
+        <th width="120px" class="text-center">最后使用时间</th>
     </tr>
-    <tr>
+    <tr ng-repeat="sj in tjShiJuanData">
         <td>
-            <a href="javascript:void(0)" ng-click="showSjTjDetail()">物理试卷</a>
+            <a href="javascript:void(0)" ng-click="showSjTjDetail(sj.SHIJUAN_ID)" ng-bind="sj.SHIJUAN_MINGCHENG"></a>
         </td>
-        <td>
-            4
-        </td>
-        <td>346</td>
-        <td>2014-7-20</td>
+        <td class="text-center" ng-bind="sj.SYCS"></td>
+        <td class="text-center" ng-bind="sj.KSRS"></td>
+        <td class="text-center" ng-bind="sj.LAST_TIME | myLocalDate | date : 'yyyy-MM-dd'"></td>
     </tr>
 </table>

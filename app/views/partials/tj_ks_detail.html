@@ -5,15 +5,15 @@
         <th>班级</th>
         <th>成绩</th>
     </tr>
-    <tr>
-        <td>
-            200344073
+    <tr ng-repeat="ksd in tjKaoShengDetail">
+        <td ng-bind="ksd.YONGHUHAO">
         </td>
-        <td>
-            司马光
+        <td ng-bind="ksd.XINGMING">
         </td>
-        <td>信科0303</td>
-        <td>76</td>
+        <td ng-bind="ksd.BANJI">
+        </td>
+        <td ng-bind="ksd.ZUIHOU_PINGFEN">
+        </td>
     </tr>
 </table>
 

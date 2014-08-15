@@ -14,17 +14,48 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 声明变量
          */
         var userInfo = $rootScope.session.userInfo,
-          baseMtAPIUrl = config.apiurl_mt, //mingti的api
-          baseRzAPIUrl = config.apiurl_rz, //renzheng的api
+          baseTjAPIUrl = config.apiurl_tj, //统计的api
           token = config.token,
           caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
-          lingyuid = $rootScope.session.defaultLyId;
+          lingyuid = $rootScope.session.defaultLyId,
+          letterArr = config.letterArr,
+          queryKaoShi = baseTjAPIUrl + 'query_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试数据
+          queryShiJuan = baseTjAPIUrl + 'query_shijuan?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷数据
+          queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token, //查询考生数据
+          queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token; //查询题目数据
+
+        /**
+         * 信息提示函数
+         */
+        var alertInfFun = function(megKind, cont){
+          $('.messageTd').css('display', 'none').html('');
+          if(megKind == 'err'){
+            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
+          }
+          if(megKind == 'suc'){
+            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
+          }
+          if(megKind == 'pmt'){
+            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
+          }
+          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+        };
 
         /**
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
+          $http.get(queryKaoShi).success(function(data){
+            if(data.length){
+              $scope.tjKaoShiData = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
           $scope.isTjDetailShow = false;
           $scope.tjSubTpl = 'views/partials/tj_ks.html';
         };
@@ -33,6 +64,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示试卷统计列表
          */
         $scope.showShiJuanTjList = function(){
+          $http.get(queryShiJuan).success(function(data){
+            if(data.length){
+              $scope.tjShiJuanData = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
           $scope.isTjDetailShow = false;
           $scope.tjSubTpl = 'views/partials/tj_sj.html';
         };
@@ -43,18 +82,84 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.showKaoShiTjList();
 
         /**
-         * 考试统计详情
+         * 考试统计详情,查询考生
          */
-        $scope.showKsTjDetail = function(){
+        $scope.showKsTjDetail = function(ksId){
+          var queryKaoSheng = queryKaoShengBase + '&shijuanid=' + ksId;
+          $http.get(queryKaoSheng).success(function(data){
+            if(data.length){
+              $scope.tjKaoShengDetail = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
           $scope.tjItemName = '考试统计';
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
         };
 
         /**
-         * 试卷统计详情
+         * 试卷统计详情//
          */
-        $scope.showSjTjDetail = function(){
+        $scope.showSjTjDetail = function(sjId){
+          var queryTiMu = queryTiMuBase + '&shijuanid=' + 1040,
+            newCont;
+          $http.get(queryTiMu).success(function(data){
+            if(data.length){
+              _.each(data, function(tm, idx, lst){
+                tm.TIGAN = JSON.parse(tm.TIGAN);
+                if(tm.TIXING_ID <= 3){
+                  var daanArr = tm.DAAN.split(','),
+                    daanLen = daanArr.length,
+                    daan = [];
+                  for(var i = 0; i < daanLen; i++){
+                    daan.push(letterArr[daanArr[i]]);
+                  }
+                  tm.DAAN = daan.join(',');
+                }
+                else if(tm.TIXING_ID == 4){
+                  if(tm.DAAN == 1){
+                    tm.DAAN = '对';
+                  }
+                  else{
+                    tm.DAAN = '错';
+                  }
+                }
+                else if(tm.TIXING_ID == 6){ //填空题
+                  //修改填空题的答案
+                  var tkDaAnArr = [],
+                    tkDaAn = JSON.parse(tm.DAAN),
+                    tkDaAnStr;
+                  _.each(tkDaAn, function(da, idx, lst){
+                    tkDaAnArr.push(da.answer);
+                  });
+                  tkDaAnStr = tkDaAnArr.join(';');
+                  tm.DAAN = tkDaAnStr;
+                  //修改填空题的题干
+                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+                    var text = arg.slice(2, -2),
+                      textJson = JSON.parse(text),
+                      _len = textJson.size,
+                      i, xhStr = '';
+                    for(i = 0; i < _len; i ++ ){
+                      xhStr += '_';
+                    }
+                    return xhStr;
+                  });
+                  tm.TIGAN.tiGan = newCont;
+                }
+                else{
+
+                }
+              });
+              $scope.letterArr = config.letterArr; //题支的序号
+              $scope.tjTiMuDetail = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
           $scope.tjItemName = '试卷统计';
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
