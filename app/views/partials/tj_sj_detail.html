@@ -1,4 +1,4 @@
-<div class="tm-err-rate" ng-repeat="tm in tjTiMuDetail">
+<div class="tm-err-rate" ng-repeat="tm in tjTiMuDetail | limitTo:tjTmQuantity">
     <ul class="tm-err-rate-info">
         <li>作答人数 <span ng-bind="tm.DTRS"></span></li>
         <li>答对人数 <span ng-bind="tm.DDRS"></span></li>
@@ -17,4 +17,7 @@
         <span class="daAnLabel">答案：</span>
         <div class="daAnBox" ng-bind-html="tm.DAAN"></div>
     </div>
+</div>
+<div class="text-center" ng-hide="tjTiMuDetail.length == tjTmQuantity">
+    <button type="button" class="btn btn-primary" ng-click="showTjSjMoreDetail()">显示更多</button>
 </div>

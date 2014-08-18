@@ -10,8 +10,8 @@
             <a href="javascript:void(0)" ng-click="showKsTjDetail(ks.KAOSHI_ID)" ng-bind="ks.KAOSHI_MINGCHENG"></a>
         </td>
         <td>
-            <a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN"
-               ng-bind="kssj.SHIJUAN_MINGCHENG" ng-click="showSjTjDetail(kssj.SHIJUAN_ID)"></a>
+            <a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"
+               ng-click="showSjTjDetail(kssj.SHIJUAN_ID, 'ksList')"></a>
         </td>
         <td class="text-center" ng-bind="ks.KSRS"></td>
         <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>

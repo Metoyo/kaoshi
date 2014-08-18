@@ -7,7 +7,8 @@
     </tr>
     <tr ng-repeat="sj in tjShiJuanData">
         <td>
-            <a href="javascript:void(0)" ng-click="showSjTjDetail(sj.SHIJUAN_ID)" ng-bind="sj.SHIJUAN_MINGCHENG"></a>
+            <a href="javascript:void(0)" ng-click="showSjTjDetail(sj.SHIJUAN_ID, 'sjList')"
+               ng-bind="sj.SHIJUAN_MINGCHENG"></a>
         </td>
         <td class="text-center" ng-bind="sj.SYCS"></td>
         <td class="text-center" ng-bind="sj.KSRS"></td>

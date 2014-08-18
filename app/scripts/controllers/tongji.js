@@ -100,11 +100,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 试卷统计详情//
+         * 试卷统计详情
          */
-        $scope.showSjTjDetail = function(sjId){
+        var comeFormWhere; //从那个列表点进来的
+        $scope.showSjTjDetail = function(sjId, comeForm){
           var queryTiMu = queryTiMuBase + '&shijuanid=' + 1040,
             newCont;
+          comeFormWhere = comeForm;
           $http.get(queryTiMu).success(function(data){
             if(data.length){
               _.each(data, function(tm, idx, lst){
@@ -153,6 +155,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
                 }
               });
+
+              $scope.tjTmQuantity = 5; //加载是显示的题目数量
               $scope.letterArr = config.letterArr; //题支的序号
               $scope.tjTiMuDetail = data;
             }
@@ -166,14 +170,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 显示更多试卷统计详情
+         */
+        $scope.showTjSjMoreDetail = function(){
+          $scope.tjTmQuantity = $scope.tjTiMuDetail.length; //加载是显示的题目数量
+        };
+
+        /**
          * 由统计详情返回列表
          */
         $scope.tjDetailToList = function(){
-          if($scope.tjItemName == '考试统计'){
+          if($scope.tjItemName == '考试统计'){ //考试统计的返回按钮
             $scope.showKaoShiTjList();
           }
-          else{
-            $scope.showShiJuanTjList();
+          else{//试卷统计的返回按钮
+            if(comeFormWhere == 'ksList'){ //试卷详情如果是由考试统计
+              $scope.showKaoShiTjList();
+            }
+            else{
+              $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
+            }
           }
         }
 
