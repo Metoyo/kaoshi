@@ -30,8 +30,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           pagesArr = [], //定义考试页码数组
           tjNeedData, //存放查询出来的统计数数据
-          lastPage; //符合条件的考试一共有多少页
-
+          lastPage, //符合条件的考试一共有多少页
+          tjKaoShiData = '',
+          tjShiJuanData = '',
+          backToWhere = ''; //返回按钮返回到什么列表
 
         /**
          * 信息提示函数
@@ -54,11 +56,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
+          tjKaoShiData = '';
           pagesArr = [];
           tjNeedData = '';
+          $scope.tj_tabActive = 'kaoshiTj';
           $http.get(queryKaoShi).success(function(data){
             if(data.length){
               tjNeedData = data;
+              tjKaoShiData = data;
               lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
               $scope.lastPageNum = lastPage;
               for(var i = 1; i <= lastPage; i++){
@@ -78,11 +83,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示试卷统计列表
          */
         $scope.showShiJuanTjList = function(){
+          tjShiJuanData = '';
           pagesArr = [];
           tjNeedData = '';
+          $scope.tj_tabActive = 'shijuanTj';
           $http.get(queryShiJuan).success(function(data){
             if(data.length){
+              data = _.sortBy(data, function(sj){
+                return sj.LAST_TIME;
+              }).reverse();
               tjNeedData = data;
+              tjShiJuanData = data;
               lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
               $scope.lastPageNum = lastPage;
               for(var i = 1; i <= lastPage; i++){
@@ -106,8 +117,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 考试统计详情,查询考生
          */
-        $scope.showKsTjDetail = function(ksId){
-          var queryKaoSheng = queryKaoShengBase + '&shijuanid=' + ksId;
+        $scope.tjShowStudentInfo = function(id, idType, comeForm){
+          var queryKaoSheng;
+          if(idType == 'ksId'){
+            queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
+          }
+          if(idType == 'sjId'){
+            queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
+          }
           $http.get(queryKaoSheng).success(function(data){
             if(data.length){
               $scope.tjKaoShengDetail = data;
@@ -116,6 +133,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               alertInfFun('err', data.error);
             }
           });
+          backToWhere = comeForm;
           $scope.tjItemName = '考试统计';
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
@@ -125,9 +143,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 试卷统计详情
          */
         var comeFormWhere; //从那个列表点进来的
-        $scope.showSjTjDetail = function(sjId, comeForm){
-          var queryTiMu = queryTiMuBase + '&shijuanid=' + 1040,
-            newCont;
+        $scope.tjShowItemInfo = function(id, idType, comeForm){
+          var queryTiMu, newCont,
+            tgReg = new RegExp('<\%{.*?}\%>', 'g');
+          if(idType == 'ksId'){
+            queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
+          }
+          if(idType == 'sjId'){
+            queryTiMu = queryTiMuBase + '&shijuanid=' + id;
+          }
           comeFormWhere = comeForm;
           $http.get(queryTiMu).success(function(data){
             if(data.length){
@@ -177,7 +201,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
                 }
               });
-
+              backToWhere = comeForm;
               $scope.tjTmQuantity = 5; //加载是显示的题目数量
               $scope.letterArr = config.letterArr; //题支的序号
               $scope.tjTiMuDetail = data;
@@ -202,21 +226,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 由统计详情返回列表
          */
         $scope.tjDetailToList = function(){
-          if($scope.tjItemName == '考试统计'){ //考试统计的返回按钮
+          if(backToWhere == 'ksList'){ //考试统计的返回按钮
             $scope.showKaoShiTjList();
           }
-          else{//试卷统计的返回按钮
-            if(comeFormWhere == 'ksList'){ //试卷详情如果是由考试统计
-              $scope.showKaoShiTjList();
-            }
-            else{
-              $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
-            }
+          if(backToWhere == 'sjList'){ //试卷统计的返回按钮
+            $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
           }
         };
 
         /**
-         * 考试的分页数据//
+         * 考试的分页数据
          */
         $scope.tjPaging = function(pg){
           //得到分页数组的代码
@@ -237,6 +256,47 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //查询数据的代码
           $scope.tjData = tjNeedData.slice((currentPage-1)*10, currentPage*10);
+        };
+
+        /**
+         * 上次考试统计
+         */
+        $scope.lastKaoShiTongJi = function(){
+          if(tjKaoShiData.length){
+            $scope.tjShowStudentInfo(tjKaoShiData[0].KAOSHI_ID, 'ksId', 'ksList');
+          }
+          else{
+            $http.get(queryKaoShi).success(function(data){
+              if(data.length){
+                $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList');
+              }
+              else{
+                alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 上次试卷统计
+         */
+        $scope.lastShiJuanTongJi = function(){
+          if(tjShiJuanData.length){
+            $scope.tjShowItemInfo(tjShiJuanData[0].SHIJUAN_ID, 'sjId', 'sjList');
+          }
+          else{
+            $http.get(queryShiJuan).success(function(data){
+              if(data.length){
+                data = _.sortBy(data, function(sj){
+                  return sj.LAST_TIME;
+                }).reverse();
+                $scope.tjShowItemInfo(data[0].SHIJUAN_ID, 'sjId', 'sjList');
+              }
+              else{
+                alertInfFun('err', data.error);
+              }
+            });
+          }
         };
 
     }]);

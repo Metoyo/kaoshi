@@ -1,12 +1,12 @@
 <div class="sub-nav">
-    <ul class="nav nav-tabs" ng-init="tj_tabActive = 'kaoshiTj'" ng-hide="isTjDetailShow">
-        <li ng-class="{active: tj_tabActive == 'kaoshiTj' }">
-            <a href="javascript:void(0)" ng-click="showKaoShiTjList();tj_tabActive='kaoshiTj'">
+    <ul class="nav nav-tabs" ng-hide="isTjDetailShow">
+        <li ng-class="{active: tj_tabActive == 'kaoshiTj'}">
+            <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
                 按考试统计
             </a>
         </li>
         <li ng-class="{active: tj_tabActive == 'shijuanTj'}">
-            <a href="javascript:void(0)" ng-click="showShiJuanTjList();tj_tabActive='shijuanTj'">
+            <a href="javascript:void(0)" ng-click="showShiJuanTjList()">
                 按试卷统计
             </a>
         </li>
