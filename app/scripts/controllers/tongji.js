@@ -33,7 +33,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lastPage, //符合条件的考试一共有多少页
           tjKaoShiData = '',
           tjShiJuanData = '',
-          backToWhere = ''; //返回按钮返回到什么列表
+          backToWhere = '', //返回按钮返回到什么列表
+          tjDataPara = '', //存放目前统计的是什么数据
+          tjIdType = ''; //存放ID类型
 
         /**
          * 信息提示函数
@@ -61,7 +63,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjNeedData = '';
           $scope.tj_tabActive = 'kaoshiTj';
           $http.get(queryKaoShi).success(function(data){
-            if(data.length){
+            if(!data.error){
               tjNeedData = data;
               tjKaoShiData = data;
               lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
@@ -88,7 +90,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjNeedData = '';
           $scope.tj_tabActive = 'shijuanTj';
           $http.get(queryShiJuan).success(function(data){
-            if(data.length){
+            if(!data.error){
               data = _.sortBy(data, function(sj){
                 return sj.LAST_TIME;
               }).reverse();
@@ -119,6 +121,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.tjShowStudentInfo = function(id, idType, comeForm){
           var queryKaoSheng;
+          tjDataPara = '';
+          tjIdType = '';
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
           }
@@ -126,14 +130,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
           }
           $http.get(queryKaoSheng).success(function(data){
-            if(data.length){
+            if(!data.error){
               $scope.tjKaoShengDetail = data;
+              backToWhere = comeForm;
+              tjDataPara = id;
+              tjIdType = idType;
             }
             else{
               alertInfFun('err', data.error);
             }
           });
-          backToWhere = comeForm;
           $scope.tjItemName = '考试统计';
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
@@ -142,19 +148,119 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 试卷统计详情
          */
-        var comeFormWhere; //从那个列表点进来的
         $scope.tjShowItemInfo = function(id, idType, comeForm){
           var queryTiMu, newCont,
             tgReg = new RegExp('<\%{.*?}\%>', 'g');
+          tjDataPara = '';
+          tjIdType = '';
           if(idType == 'ksId'){
             queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
           }
           if(idType == 'sjId'){
             queryTiMu = queryTiMuBase + '&shijuanid=' + id;
           }
-          comeFormWhere = comeForm;
           $http.get(queryTiMu).success(function(data){
-            if(data.length){
+            if(!data.error){
+              _.each(data, function(tm, idx, lst){
+                tm.TIGAN = JSON.parse(tm.TIGAN);
+                if(tm.TIXING_ID <= 3){
+                  var daanArr = tm.DAAN.split(','),
+                    daanLen = daanArr.length,
+                    daan = [];
+                  for(var i = 0; i < daanLen; i++){
+                    daan.push(letterArr[daanArr[i]]);
+                  }
+                  tm.DAAN = daan.join(',');
+                }
+                else if(tm.TIXING_ID == 4){
+                  if(tm.DAAN == 1){
+                    tm.DAAN = '对';
+                  }
+                  else{
+                    tm.DAAN = '错';
+                  }
+                }
+                else if(tm.TIXING_ID == 6){ //填空题
+                  //修改填空题的答案
+                  var tkDaAnArr = [],
+                    tkDaAn = JSON.parse(tm.DAAN),
+                    tkDaAnStr;
+                  _.each(tkDaAn, function(da, idx, lst){
+                    tkDaAnArr.push(da.answer);
+                  });
+                  tkDaAnStr = tkDaAnArr.join(';');
+                  tm.DAAN = tkDaAnStr;
+                  //修改填空题的题干
+                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+                    var text = arg.slice(2, -2),
+                      textJson = JSON.parse(text),
+                      _len = textJson.size,
+                      i, xhStr = '';
+                    for(i = 0; i < _len; i ++ ){
+                      xhStr += '_';
+                    }
+                    return xhStr;
+                  });
+                  tm.TIGAN.tiGan = newCont;
+                }
+                else{
+
+                }
+                backToWhere = comeForm;
+                tjDataPara = id;
+                tjIdType = idType;
+              });
+              $scope.tjTmQuantity = 5; //加载是显示的题目数量
+              $scope.letterArr = config.letterArr; //题支的序号
+              $scope.tjTiMuDetail = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
+          $scope.tjItemName = '试卷统计';
+          $scope.isTjDetailShow = true;
+          $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
+        };
+
+        /**
+         * 二级导航上的分数统计
+         */
+        $scope.tjSubShowStudentInfo = function(){
+          var queryKaoSheng;
+          if(tjIdType == 'ksId'){
+            queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + tjDataPara;
+          }
+          if(tjIdType == 'sjId'){
+            queryKaoSheng = queryKaoShengBase + '&shijuanid=' + tjDataPara;
+          }
+          $http.get(queryKaoSheng).success(function(data){
+            if(!data.error){
+              $scope.tjKaoShengDetail = data;
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
+          $scope.tjItemName = '考试统计';
+          $scope.isTjDetailShow = true;
+          $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
+        };
+
+        /**
+         * 二级导航上的题目统计
+         */
+        $scope.tjSubShowItemInfo = function(){
+          var queryTiMu, newCont,
+            tgReg = new RegExp('<\%{.*?}\%>', 'g');
+          if(tjIdType == 'ksId'){ //考试统计
+            queryTiMu = queryTiMuBase + '&kaoshiid=' + tjDataPara;
+          }
+          if(tjIdType == 'sjId'){ //试卷统计
+            queryTiMu = queryTiMuBase + '&shijuanid=' + tjDataPara;
+          }
+          $http.get(queryTiMu).success(function(data){
+            if(!data.error){
               _.each(data, function(tm, idx, lst){
                 tm.TIGAN = JSON.parse(tm.TIGAN);
                 if(tm.TIXING_ID <= 3){
@@ -201,7 +307,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
                 }
               });
-              backToWhere = comeForm;
               $scope.tjTmQuantity = 5; //加载是显示的题目数量
               $scope.letterArr = config.letterArr; //题支的序号
               $scope.tjTiMuDetail = data;
@@ -267,7 +372,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $http.get(queryKaoShi).success(function(data){
-              if(data.length){
+              if(!data.error){
                 $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList');
               }
               else{
@@ -286,7 +391,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $http.get(queryShiJuan).success(function(data){
-              if(data.length){
+              if(!data.error){
                 data = _.sortBy(data, function(sj){
                   return sj.LAST_TIME;
                 }).reverse();
@@ -298,6 +403,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
         };
+
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          $('.reloadMath').click();
+        });
 
     }]);
 });

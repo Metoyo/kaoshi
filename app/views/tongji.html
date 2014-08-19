@@ -16,10 +16,12 @@
                 </button>
             </div>
             <div ng-show="isTjDetailShow">
-                <button type="button" class="btn btn-primary" ng-click="tjShowStudentInfo()">
+                <button type="button" class="btn btn-primary" ng-click="tjSubShowStudentInfo()"
+                        ng-disabled="tjItemName=='考试统计'">
                     分数详情
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="tjShowItemInfo()">
+                <button type="button" class="btn btn-primary" ng-click="tjSubShowItemInfo()"
+                        ng-disabled="tjItemName=='试卷统计'">
                     易错题目
                 </button>
             </div>
