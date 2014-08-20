@@ -7196,8 +7196,8 @@ a.add-btn:hover span {
     /* next rows of buttons */ }
     .markItUpHeader ul li a {
       display: block;
-      width: 25px;
-      height: 25px;
+      width: 35px;
+      height: 35px;
       margin: 0px 1px 1px 0px;
       border: solid 1px #ccc;
       text-indent: -10000px;
@@ -7216,10 +7216,10 @@ a.add-btn:hover span {
       border-top: 0;
       width: 103px; }
     .markItUpHeader ul li ul li {
-      width: 25px; }
+      width: 35px; }
     .markItUpHeader ul li ul li a {
-      width: 25px;
-      height: 25px;
+      width: 35px;
+      height: 35px;
       background-size: 18px 18px;
       border: 0; }
     .markItUpHeader ul li .markItUpSeparator {
@@ -7233,12 +7233,12 @@ a.add-btn:hover span {
       height: 1px;
       margin: 0px; }
   .markItUpHeader ul .width70 a {
-    width: 51px;
-    height: 25px;
+    width: 71px;
+    height: 35px;
     background-size: 35px 18px; }
   .markItUpHeader ul .width70 ul li a {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     background-size: 18px 18px;
     border: 0; }
   .markItUpHeader ul .width70:hover > a {

@@ -7,7 +7,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 操作title//
          */
-        $rootScope.pageName = "命题"; //page title//
+        $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
         $rootScope.isRenZheng = false; //判读页面是不是认证
 
@@ -50,8 +50,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
 
-          selectZsd = [], //定义一个选中知识点的变量（数组
-        //selectZstStr, //定义一个选中知识点的变量（字符串）
+          selectZsd = [], //定义一个选中知识点的变量（数组)
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
             caozuoyuan: userInfo.UID,
@@ -1464,7 +1463,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
           else{
-            alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB'); //
+            alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
           }
         };
       }
