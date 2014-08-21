@@ -167,7 +167,9 @@
     <script type="text/javascript" src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        tex2jax: {inlineMath: [["_LaTeX.",".LaTeX_"]]}
+        tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+        messageStyle: "none",
+        showMathMenu: false,processEscapes: true
       });
     </script>
     <script type="text/javascript">
