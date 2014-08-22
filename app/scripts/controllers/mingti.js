@@ -23,19 +23,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lingyuid = $rootScope.session.defaultLyId,
           letterArr = config.letterArr,
           chaxunzilingyu = true,
-
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
             jigouid + '&lingyuid=', //查询科目包含什么题型的url
-
           qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu
             + '&leixing=2',//查询大纲的url(自建)
-
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
             caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
-
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
-
           qryKnowledge = '', //定义一个空的查询知识点的url
           tixing_id = '', //用于根据题型id查询题目的字符串
           nandu_id = '', //用于根据难度查询题目的字符串
@@ -43,13 +38,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           checkSchoolTiKu = caozuoyuan, //查看学校题库需要传的参数
           qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题库
-
           qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-
           qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
-
           selectZsd = [], //定义一个选中知识点的变量（数组)
           timu_data = { //题目类型的数据格式公共部分
             token: config.token,
@@ -71,9 +63,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               YUEJUANBIAOZHUN: '',
               TIMUFENXI: '',
               ISFENDUANPINGFEN: '',
-              TIMUWENJIAN:[
-
-              ],
+              TIMUWENJIAN:[],
               ZHISHIDIAN: [],
               ZHUANGTAI: 1
             }
@@ -106,7 +96,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
-          modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu',//修改题型机构领域
           uploadFileUrl = baseMtAPIUrl + 'upload_file',//文件上传
           showFileUrl = baseMtAPIUrl + 'show_file/';//文件显示
 
@@ -548,6 +537,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.loadingImgShow = false; //danxuan.html
           isDanXuanType = true; //判断是否出单选题
           isDuoXuanType = false; //判断是否出多选题
+          var addActiveFun = function() {
+            $('li.danxuan').addClass('active');
+          };
+          $timeout(addActiveFun, 500);
         };
 
         /**
@@ -593,9 +586,84 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 添加新的试题
          */
         $scope.addNewShiTi = function(){
+          var newShiTiTiXingArr = [];
+          _.each($scope.kmtxList, function(tx, indx, lst){
+            switch (tx.TIXING_ID)
+            {
+              case '1':
+                tx.ntxClass = 'danxuan';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '2':
+                tx.ntxClass = 'duoxuan';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '3':
+                tx.ntxClass = 'shuangxuan';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '4':
+                tx.ntxClass = 'panduan';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '5':
+                tx.ntxClass = 'shifei';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '6':
+                tx.ntxClass = 'tiankong';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '7':
+                tx.ntxClass = 'dancifanyi';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '8':
+                tx.ntxClass = 'dancijieshi';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '9':
+                tx.ntxClass = 'jisuan';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '10':
+                tx.ntxClass = 'wenda';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '11':
+                tx.ntxClass = 'jianda';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '12':
+                tx.ntxClass = 'lunshu';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '13':
+                tx.ntxClass = 'fanyi';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '14':
+                tx.ntxClass = 'zuowen';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '15':
+                tx.ntxClass = 'zhengming';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '16':
+                tx.ntxClass = 'zuotu';
+                newShiTiTiXingArr.push(tx);
+                break;
+              case '17':
+                tx.ntxClass = 'jieda';
+                newShiTiTiXingArr.push(tx);
+                break;
+            }
+          });
           testListStepZst = selectZsd; //保存选题阶段的知识点
           isEditItemStep = true;
           $scope.patternListToggle = true;
+          $scope.newShiTiTiXing = newShiTiTiXingArr;
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/tixing/danxuan.html');
         };
@@ -1345,6 +1413,65 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.cancelAddPattern();
             qryTestFun();
           });
+        };
+
+        /**
+         * 添加新试题
+         */
+        $scope.addNewShiTiFun = function(txId){
+          switch (txId){
+            case '1':
+              $scope.addDanXuan('views/tixing/danxuan.html');
+              break;
+            case '2':
+              $scope.addDuoXuan('views/tixing/duoxuan.html');
+              break;
+            case '3':
+//              $scope.addShuangXuan('views/tixing/shuangxuan.html');
+              break;
+            case '4':
+              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '5':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '6':
+              $scope.addTianKong('views/tixing/tiankong.html');
+              break;
+            case '7':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '8':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '9':
+              $scope.addJiSuan('views/tixing/jisuan.html');
+              break;
+            case '10':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '11':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '12':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '13':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '14':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '15':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '16':
+//              $scope.addPanDuan('views/tixing/panduan.html');
+              break;
+            case '17':
+              $scope.addJieDa('views/tixing/jieda.html');
+              break;
+          }
         };
 
         /**
