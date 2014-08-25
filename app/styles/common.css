@@ -5003,8 +5003,7 @@ body {
   color: #67717e; }
 
 .h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
-  margin: 0; }
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif; }
 
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
@@ -7208,7 +7207,7 @@ a.add-btn:hover span {
     .markItUpHeader ul li ul {
       display: none;
       position: absolute;
-      top: 25px;
+      top: 35px;
       left: 0px;
       z-index: 2;
       background: #FFF;

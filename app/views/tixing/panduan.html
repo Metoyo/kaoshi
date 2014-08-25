@@ -144,5 +144,11 @@
             $('#prevDoc').html($('.formulaEditTiGan').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
         });
+        function matheq_preview() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        };
     </script>
 </div>

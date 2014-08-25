@@ -553,7 +553,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 学校科目选择 modifyJiGouLingYuUrl
        */
       $scope.renderLingYuSelectTpl = function(){
-        $scope.jgSelectLingYu = '';
+        $scope.jgSelectLingYu = [];
         lingYuData.shuju = [];
         $scope.loadingImgShow = true; //rz_selectLingYu.html
         var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
@@ -993,6 +993,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
           if(jgLy.length){
             _.each(jgLy, function(ply, idx, lst){
+              childLyArr.push(ply);
               if(ply.CHILDREN.length){
                 _.each(ply.CHILDREN, function(cly, cidx, clst){
                   childLyArr.push(cly);

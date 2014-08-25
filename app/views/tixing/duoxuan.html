@@ -175,17 +175,21 @@
     </script>
     <script type="text/javascript">
         //题干的编辑器预览
-
         $('.formulaEditTiGan').keyup(function() {
             $('#prevDoc').html($('.formulaEditTiGan').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
         });
 
         //题支的编辑器预览
-
         $('.formulaEditTiZhi').keyup(function() {
             $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         });
+        function matheq_preview() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        };
     </script>
 </div>

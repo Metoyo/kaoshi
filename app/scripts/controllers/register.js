@@ -129,8 +129,17 @@ define([
          * 查询机构类别
          */
         $http.get(apiUrlJglb).success(function(data) {
+          $scope.jigoulb_list = [];
           if(data){
-            $scope.jigoulb_list = data;
+            _.each(data, function(jg, idx, lst){
+              if(jg.LEIBIE_ID == 1){
+                $scope.jigoulb_list.push(jg);
+              }
+            });
+//            $scope.jigoulb_list = data;
+            console.log(data);
+            console.log($scope.jigoulb_list);
+
           }
           else{
             alertInfFun('err', '没用相关机构！');
@@ -156,6 +165,7 @@ define([
             }
           });
         };
+        $scope.getJglist(1);
 
         /**
          * 得到机构id

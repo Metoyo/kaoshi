@@ -97,10 +97,13 @@
                     <div class="tab-pane clearfix">
                         <div class="form-group col-md-6 pull-left">
                             <label><span>单位归属类别</span><span class="msgBox">此项不能为空！</span></label>
-                            <select ng-model="selected_jglb" class="form-control organization"
-                                    ng-change="getJglist(selected_jglb)"
-                                    ng-options="lb.LEIBIE_ID as lb.LEIBIEMINGCHENG for lb in jigoulb_list">
-                                <option value="">请选择</option>
+                            <!--<select ng-model="selected_jglb" class="form-control organization"-->
+                                    <!--ng-change="getJglist(selected_jglb)"-->
+                                    <!--ng-options="lb.LEIBIE_ID as lb.LEIBIEMINGCHENG for lb in jigoulb_list">-->
+                                <!--<option value="">请选择</option>-->
+                            <!--</select>-->
+                            <select class="form-control organization" disabled="disabled">
+                                <option value="1">大学</option>
                             </select>
                         </div>
                         <div class="form-group col-md-6 pull-right">

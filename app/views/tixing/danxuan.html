@@ -169,7 +169,8 @@
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
         messageStyle: "none",
-        showMathMenu: false,processEscapes: true
+        showMathMenu: false,
+        processEscapes: true
       });
     </script>
     <script type="text/javascript">
@@ -183,5 +184,11 @@
             $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         });
+        function matheq_preview() {
+            $('#prevDoc').html($('.formulaEditTiGan').val());
+            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        };
     </script>
 </div>
