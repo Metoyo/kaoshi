@@ -74,7 +74,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           shuju:{}
         },
         daGangJieDianData = [], //定义一个大纲节点的数据
-        modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang'; //保存知识大纲
+        modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang', //保存知识大纲
+        queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
+          + '&jigouid=' + jigouid + '&lingyuid=', //查询题目
+        xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku'; //修改题库的url
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -664,6 +667,66 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
+       * 保存题库 queryTiKuBaseUrl
+       */
+      var saveTiKuFun = function(){
+        var tiKuObj = {
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          lingyuid: '',
+          shuju:{
+            TIKUID: "",
+//            TIKUMULUID: "",
+            TIKUMINGCHENG: "",
+            TIKUXINGZHI: 1,
+            ZHUANGTAI: 1
+          }
+        },
+          queryTiKuUrl,
+          lyLength = $scope.jgSelectLingYu.length,
+          count = 0;
+        var chaXunTiKu = function(lyData){
+          queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
+          $http.get(queryTiKuUrl).success(function(data){
+            count ++;
+            if(count <= lyLength){
+              if(data.length){
+                chaXunTiKu($scope.jgSelectLingYu[count]);
+              }
+              else{
+                tiKuObj.lingyuid = lyData.LINGYU_ID;
+                tiKuObj.shuju.TIKUMINGCHENG = lyData.LINGYUMINGCHENG;
+                $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
+                  if(tiku.error){
+                    alertInfFun('err', tiku.error);
+                  }
+                  else{
+                    chaXunTiKu($scope.jgSelectLingYu[count]);
+                  }
+                });
+              }
+            }
+          });
+        };
+        chaXunTiKu($scope.jgSelectLingYu[0]);
+//        _.each($scope.jgSelectLingYu, function(slly, idx, lst){
+//          queryTiKuUrl = queryTiKuBaseUrl + slly.LINGYU_ID;
+//          $http.get(queryTiKuUrl).success(function(data){
+//            if(!data.length){
+//              tiKuObj.lingyuid = slly.LINGYU_ID;
+//              tiKuObj.shuju.TIKUMINGCHENG = slly.LINGYUMINGCHENG;
+//              $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
+//                if(tiku.error){
+//                  alertInfFun('err', tiku.error);
+//                }
+//              });
+//            }
+//          });
+//        });
+      };
+
+      /**
        * 保存已选的领域
        */
       $scope.saveChooseLingYu = function(){
@@ -679,6 +742,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
           if(data.result){
+            saveTiKuFun();
             alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectLingYu.html
           }
