@@ -22,9 +22,9 @@
                 {{ shijuanData.shuju.FUBIAOTI}}
             </span>
         </h1>
-        <div class="attention hover-style" title="点击设置">
+        <div class="attention hover-style" title="点击设置" ng-show="mubanData.shuju.ZONGDAOYU">
             <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dy_input')">
-                {{ mubanData.shuju.ZONGDAOYU || '导语'}}
+                {{ mubanData.shuju.ZONGDAOYU }}
             </span>
         </div>
         <div class="form-paper-type text-center" ng-hide="sjPreview">
@@ -130,7 +130,16 @@
                             <input type="text" ng-model="shijuanData.shuju.FUBIAOTI" placeholder="试卷副标题"
                                    class="form-control sj_fbt_input"/>
                         </div>
-                        <div class="row mt5">
+                        <div class="row showAddFuBiaoTi" ng-init="showAddDaoYu = false">
+                            <a href ng-click="showAddDaoYu = !showAddDaoYu" ng-hide="showAddDaoYu">
+                                <span class="glyphicon glyphicon-plus"></span>增加导语
+                            </a>
+                            <a href ng-click="showAddDaoYu = !showAddDaoYu; mubanData.shuju.ZONGDAOYU = ''"
+                               ng-show="showAddDaoYu">
+                                <span class="glyphicon glyphicon-plus"></span>取消导语
+                            </a>
+                        </div>
+                        <div class="row mt5" ng-show="showAddDaoYu">
                             <label>导语：</label>
                             <textarea ng-model="mubanData.shuju.ZONGDAOYU" rows="5"  placeholder="导语"
                                       class="form-control sj_dy_input">
@@ -154,7 +163,6 @@
                                        onkeyup="if(isNaN(value))execCommand('undo')"
                                        onafterpaste="if(isNaN(value))execCommand('undo')"/>
                             </div>
-
                         </div>
                     </div>
                 </div>

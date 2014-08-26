@@ -77,7 +77,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang', //保存知识大纲
         queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
           + '&jigouid=' + jigouid + '&lingyuid=', //查询题目
-        xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku'; //修改题库的url
+        xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku', //修改题库的url
+        alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu', //修改试卷目录
+        queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
+          + '&jigouid=' + jigouid + '&lingyuid='; //查询试卷目录
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -677,9 +680,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lingyuid: '',
           shuju:{
             TIKUID: "",
-//            TIKUMULUID: "",
+            TIKUMULUID: 1,
             TIKUMINGCHENG: "",
-            TIKUXINGZHI: 1,
+            TIKUXINGZHI: 5,
             ZHUANGTAI: 1
           }
         },
@@ -710,20 +713,51 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
         };
         chaXunTiKu($scope.jgSelectLingYu[0]);
-//        _.each($scope.jgSelectLingYu, function(slly, idx, lst){
-//          queryTiKuUrl = queryTiKuBaseUrl + slly.LINGYU_ID;
-//          $http.get(queryTiKuUrl).success(function(data){
-//            if(!data.length){
-//              tiKuObj.lingyuid = slly.LINGYU_ID;
-//              tiKuObj.shuju.TIKUMINGCHENG = slly.LINGYUMINGCHENG;
-//              $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
-//                if(tiku.error){
-//                  alertInfFun('err', tiku.error);
-//                }
-//              });
-//            }
-//          });
-//        });
+      };
+
+      /**
+       * 修改试卷目录 queryShiJuanMuLuUrl  alterShiJuanMuLuUrl
+       */
+      var alterShiJuanMuLu = function(){
+        var sjMuLuObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: jigouid,
+            lingyuid: '',
+            shuju:{
+              SHIJUANMULUID: "",
+              MULUMINGCHENG: "",
+//              FUMULUID: "",
+              ZHUANGTAI: 1
+            }
+          },
+          querySjMuLuUrl,
+          lyLength = $scope.jgSelectLingYu.length,
+          count = 0;
+        var chaXunSjMuLu = function(lyData){
+          querySjMuLuUrl = queryShiJuanMuLuUrl + lyData.LINGYU_ID;
+          $http.get(querySjMuLuUrl).success(function(data){
+            count ++;
+            if(count <= lyLength){
+              if(data.length){
+                chaXunSjMuLu($scope.jgSelectLingYu[count]);
+              }
+              else{
+                sjMuLuObj.lingyuid = lyData.LINGYU_ID;
+                sjMuLuObj.shuju.MULUMINGCHENG = lyData.LINGYUMINGCHENG;
+                $http.post(alterShiJuanMuLuUrl, sjMuLuObj).success(function(mulu){
+                  if(mulu.error){
+                    alertInfFun('err', mulu.error);
+                  }
+                  else{
+                    chaXunSjMuLu($scope.jgSelectLingYu[count]);
+                  }
+                });
+              }
+            }
+          });
+        };
+        chaXunSjMuLu($scope.jgSelectLingYu[0]);
       };
 
       /**
@@ -743,6 +777,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
           if(data.result){
             saveTiKuFun();
+            alterShiJuanMuLu();
             alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectLingYu.html
           }

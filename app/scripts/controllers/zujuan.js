@@ -1063,11 +1063,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                     else{
                       $scope.timudetails = null;
+                      $scope.loadingImgShow = false;
                       alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
+                  $scope.loadingImgShow = false;
                   alertInfFun('pmt', tmIdsData.error);
                 }
               });
@@ -1846,6 +1848,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 保存试卷
            */
           $scope.savePaper = function(){
+            //保存试卷
             $http.post(xgsjUrl, shijuanData).success(function(data){
               if(data.result){
                 //更新数据模板
