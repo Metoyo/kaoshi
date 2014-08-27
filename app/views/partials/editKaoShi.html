@@ -399,14 +399,15 @@
 
     <script src="/bower_components/intimidatetime/intimidatetime.js"></script>
     <script type="text/javascript">
-        jQuery(function($) {
+        $(function() {
             $('.start-date').intimidatetime();
+            $('.intimidatetime').css('left', '150px');
         });
     </script>
     <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+        tex2jax: {inlineMath: [["#$", "$#"],["\\[", "\\]"]], displayMath: [['#$$','$$#']]},
         messageStyle: "none",
         showMathMenu: false,processEscapes: true
       });

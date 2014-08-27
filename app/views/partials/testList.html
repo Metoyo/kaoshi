@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="item-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
-                <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGan">
+                <h3 class="item-tigan" ng-bind="tm.TIGAN.tiGan">
                 </h3>
                 <div class="item-tizhi-wrap">
                     <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
@@ -87,7 +87,7 @@
 <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
-    tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+    tex2jax: {inlineMath: [["#$", "$#"],["\\[", "\\]"]], displayMath: [['#$$','$$#']]},
     messageStyle: "none",
     showMathMenu: false,processEscapes: true
   });

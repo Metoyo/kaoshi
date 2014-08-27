@@ -62,7 +62,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             totalKaoShiPage, //符合条件的考试一共有多少页
             kaoChangPageArr = [], //定义考场页码数组
             kaoChangIdArrRev = [], //存放所有考场ID的数组
-            totalKaoChangPage;//符合条件的考场一共有多少页
+            totalKaoChangPage, //符合条件的考场一共有多少页
+            xiaFaKaoShiBase = baseKwAPIUrl + 'xiafa_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshiid='; //下发考试
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -114,6 +116,29 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
             return joinDate;
           };
+          var formatDateZh = function(dateStr){ //转换为中午
+            var mydateNew = new Date(dateStr),
+              year = mydateNew.getFullYear(), //根据世界时从 Date 对象返回四位数的年份
+              month = mydateNew.getMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
+              day = mydateNew.getDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
+              hour = mydateNew.getHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
+              minute = mydateNew.getMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
+              joinDate; //返回最终时间
+            if(month < 10){
+              month = '0' + month;
+            }
+            if(day < 10){
+              day = '0' + day;
+            }
+            if(hour < 10){
+              hour = '0' + hour;
+            }
+            if(minute < 10){
+              minute = '0' + minute;
+            }
+            joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+            return joinDate;
+          };
 
           /**
            * 考试的分页数据查询函数
@@ -146,6 +171,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               if(ksdtl.length){
                 $scope.loadingImgShow = false; //kaoShiList.html
                 $scope.kaoshiList = ksdtl;
+                console.log($scope.kaoshiList);
               }
               else{
                 alertInfFun('pmt', '没有相关的考试！');
@@ -969,58 +995,16 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            * 保存考试
            */
           $scope.saveKaoShi = function(){
-            if($scope.paperDetail.SHIJUAN.DATIKA){
+            if($scope.paperDetail.SHIJUAN.DATIKA.length){
               var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
               if(saveKaoConfirm){
                 $scope.downloadDaTiKa(true);
               }
-              else{
-                if($('.start-date').val()){
-                  $scope.startDateIsNull = false;
-                  var inputStartDate = $('.start-date').val(),
-                    startDate = new Date(inputStartDate), //开始时间
-                    endDate = new Date(startDate.valueOf() + kaoshi_data.shuju.SHICHANG * 60 * 1000), //结束时间
-                    shijuan_info = { //需要同步的试卷数据格式
-                      token: token,
-                      caozuoyuan: caozuoyuan,
-                      jigouid: jigouid,
-                      lingyuid: lingyuid,
-                      shijuanid: ''
-                    };
-                  kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                  kaoshi_data.shuju.JIESHUSHIJIAN = endDate.toUTCString();
-                  shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
-                  $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
-                    if(rst.result){
-                      $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-                        if(data.result){
-                          $scope.showKaoShiList();
-                          alertInfFun('suc', '考试添加成功！');
-                          $('.messageTd').css('display', 'none').html('');
-                          $('.mesSuccess').css('display', 'block').html(); // mesPrompt mesError
-                          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
-                        }
-                        else{
-                          alertInfFun('err', data.error);
-                        }
-                      });
-                    }
-                    else{
-                      alertInfFun('err', rst.error);
-                    }
-                  });
-                }
-                else{
-                  $scope.startDateIsNull = true;
-                }
-              }
-            }
-            else{
               if($('.start-date').val()){
                 $scope.startDateIsNull = false;
                 var inputStartDate = $('.start-date').val(),
-                  startDate = new Date(inputStartDate), //开始时间
-                  endDate = new Date(startDate.valueOf() + kaoshi_data.shuju.SHICHANG * 60 * 1000), //结束时间
+                  startDate = Date.parse(inputStartDate), //开始时间
+                  endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
                   shijuan_info = { //需要同步的试卷数据格式
                     token: token,
                     caozuoyuan: caozuoyuan,
@@ -1029,7 +1013,47 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                     shijuanid: ''
                   };
                 kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                kaoshi_data.shuju.JIESHUSHIJIAN = endDate.toUTCString();
+                kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+                shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
+                $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
+                  if(rst.result){
+                    $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+                      if(data.result){
+                        $scope.showKaoShiList();
+                        alertInfFun('suc', '考试添加成功！');
+                        $('.messageTd').css('display', 'none').html('');
+                        $('.mesSuccess').css('display', 'block').html(); // mesPrompt mesError
+                        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
+                      }
+                      else{
+                        alertInfFun('err', data.error);
+                      }
+                    });
+                  }
+                  else{
+                    alertInfFun('err', rst.error);
+                  }
+                });
+              }
+              else{
+                $scope.startDateIsNull = true;
+              }
+            }
+            else{
+              if($('.start-date').val()){
+                $scope.startDateIsNull = false;
+                var inputStartDate = $('.start-date').val(),
+                  startDate = Date.parse(inputStartDate), //开始时间
+                  endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
+                  shijuan_info = { //需要同步的试卷数据格式
+                    token: token,
+                    caozuoyuan: caozuoyuan,
+                    jigouid: jigouid,
+                    lingyuid: lingyuid,
+                    shijuanid: ''
+                  };
+                kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
+                kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
                 shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
                 $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
                   if(rst.result){
@@ -1051,6 +1075,40 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               else{
                 $scope.startDateIsNull = true;
               }
+            }
+          };
+
+          /**
+           * 结束考试 xiaFaKaoShiBase $scope.kaoshiList
+           */
+          $scope.endKaoShi = function(){
+            var xiaFaKaoShiUrl,
+              kaoShiIds = [],
+              count = 0,
+              kaoShiIdsLen;
+            _.each($scope.kaoshiList, function(ks, idx, lst){
+              if(ks.ZHUANGTAI == 3){
+                kaoShiIds.push(ks.KAOSHI_ID);
+              }
+            });
+            kaoShiIdsLen = kaoShiIds.length;
+            var xiaFaKaoShiFun = function(ksId){
+              xiaFaKaoShiUrl = xiaFaKaoShiBase + ksId;
+              if(count <= kaoShiIdsLen -1){
+                $http.get(xiaFaKaoShiUrl).success(function(data){
+                  if(data.result){
+                    count ++;
+                    xiaFaKaoShiFun(kaoShiIds[count]);
+                  }
+                  else{
+                    alertInfFun('err', data.error);
+                    count = kaoShiIdsLen + 1;
+                  }
+                });
+              }
+            };
+            if(kaoShiIds.length > 0){
+              xiaFaKaoShiFun(kaoShiIds[0]);
             }
           };
 
@@ -1092,7 +1150,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             var confirmInfo = confirm('确定要发布本次考试吗？');
             if(confirmInfo){
               $http.get(faBuKaoShiUrl).success(function(data){
-                console.log(data);
                 if(data.result){
                   $scope.showKaoShiList();
                   alertInfFun('suc', '本次考试发布成功！');

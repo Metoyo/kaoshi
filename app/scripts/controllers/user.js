@@ -683,6 +683,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             TIKUMULUID: 1,
             TIKUMINGCHENG: "",
             TIKUXINGZHI: 5,
+            QUANXIANBIANMA: '1,2,3,4,5',
             ZHUANGTAI: 1
           }
         },

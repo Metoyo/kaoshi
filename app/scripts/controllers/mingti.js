@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
       function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -1305,7 +1305,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.loopArr = loopArr;
               }
               else{
-                alertInfFun('err', data.error); //
+                alertInfFun('err', data.error);
               }
             });
             //赋值
