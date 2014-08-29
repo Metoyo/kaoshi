@@ -7,7 +7,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         //声明变量
         var userInfo = $rootScope.session.userInfo,
           info = $rootScope.session.info,
-          baseAPIUrl = config.apiurl_mt, //renzheng的api //
+          baseAPIUrl = config.apiurl_mt, //renzheng的api
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
           token = config.token,
           caozuoyuan = info.UID,

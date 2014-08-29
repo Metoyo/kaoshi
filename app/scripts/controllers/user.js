@@ -80,7 +80,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku', //修改题库的url
         alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu', //修改试卷目录
         queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
-          + '&jigouid=' + jigouid + '&lingyuid='; //查询试卷目录
+          + '&jigouid=' + jigouid + '&lingyuid=', //查询试卷目录
+        isDaGangSet, //是否是大纲设置
+        isLingYuSet; //是否是领域设置
 
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -164,6 +166,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 关闭审核页面
        */
       $scope.closeShenheBox = function() {
+        if(isDaGangSet){
+          $scope.saveDaGangData();
+        }
+        if(isLingYuSet){
+          $scope.saveLingYuChange();
+        }
         $scope.adminSubWebTpl = '';
         $scope.isShenHeBox = true; //判断是不是审核页面
       };
@@ -481,6 +489,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         // 查询机领域
         $http.get(qryLingYuUrl).success(function(data) {
           if(data.length){
+            isLingYuSet = true;
             $scope.lingyu_list = data;
             $scope.loadingImgShow = false; //rz_setLingYu.html
             $scope.isShenHeBox = false; //判断是不是审核页面
@@ -545,6 +554,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $http.post(modifyLingYuUrl, lingYuData).success(function(data){
           if(data.result){
 //            $('.save-msg').show().fadeOut(3000);
+            isLingYuSet = false;
             alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_setLingYu.html
           }
@@ -806,6 +816,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 lingYuChildArr.push(sub2);
               });
             });
+            isDaGangSet = true;
             $scope.lingYuChild = lingYuChildArr;
             $scope.loadingImgShow = false; //rz_setDaGang.html
             $scope.isShenHeBox = false; //判断是不是审核页面
@@ -958,6 +969,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 删除知识点
        */
       $scope.dgRemoveNd = function(parentNd, nd, idx) {
+        var cfmInfo = confirm("确定要删除知识点吗？");
         function getPubZsd(item) {
           if(item.ZHISHIDIAN_ID){
             var pubZsdObj = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
@@ -967,8 +979,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
         }
-        getPubZsd(nd);
-        parentNd.ZIJIEDIAN.splice(idx, 1);
+        if(cfmInfo){
+          getPubZsd(nd);
+          parentNd.ZIJIEDIAN.splice(idx, 1);
+        }
       };
 
       /**
@@ -1070,6 +1084,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.loadingImgShow = false; //rz_setDaGang.html
               alertInfFun('suc', '保存成功！');
               $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
+              isDaGangSet = false;
             }
             else{
               $scope.loadingImgShow = false; //rz_setDaGang.html

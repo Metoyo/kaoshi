@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http',
       function ($rootScope, $scope, $http) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "统计";
         $rootScope.dashboard_shown = true;
@@ -120,7 +120,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 考试统计详情,查询考生
          */
         $scope.tjShowStudentInfo = function(id, idType, comeForm){
-          var queryKaoSheng;
+          var queryKaoSheng, totalScore, avgScore;
           tjDataPara = '';
           tjIdType = '';
           if(idType == 'ksId'){
@@ -135,6 +135,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               backToWhere = comeForm;
               tjDataPara = id;
               tjIdType = idType;
+              //求平均分
+              totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
+              avgScore = totalScore/data.length;
+              $scope.myAvgScore = avgScore;
             }
             else{
               alertInfFun('err', data.error);
@@ -220,14 +224,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           $scope.tjItemName = '试卷统计';
           $scope.isTjDetailShow = true;
+          $scope.myAvgScore = '';
           $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
         };
 
         /**
-         * 二级导航上的分数统计
+         * 二级导航上的分数统计//
          */
         $scope.tjSubShowStudentInfo = function(){
-          var queryKaoSheng;
+          var queryKaoSheng, totalScore, avgScore;
           if(tjIdType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + tjDataPara;
           }
@@ -237,6 +242,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
               $scope.tjKaoShengDetail = data;
+              //求平均分
+              totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
+              avgScore = totalScore/data.length;
+              $scope.myAvgScore = avgScore;
             }
             else{
               alertInfFun('err', data.error);
@@ -317,6 +326,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           $scope.tjItemName = '试卷统计';
           $scope.isTjDetailShow = true;
+          $scope.myAvgScore = '';
           $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
         };
 
@@ -337,6 +347,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(backToWhere == 'sjList'){ //试卷统计的返回按钮
             $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
           }
+          $scope.myAvgScore = '';
         };
 
         /**

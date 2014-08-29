@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
       function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
-         * 操作title//
+         * 操作title
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -721,6 +721,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           dataTpl.shuju.TIZHINEIRONG = tizhineirong;
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
+          dataTpl.shuju.TIGAN = $('.formulaEditTiGan').val();
           if(dataTpl.shuju.TIGAN.length){
             if(tznrIsNull){
               if(dataTpl.shuju.DAAN.length){
