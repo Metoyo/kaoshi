@@ -70,7 +70,7 @@ module.exports = function (grunt) {
       proxies: [
         {
             context: '/',
-            host: 'www.taianting.com',
+            host: 'www.yunjiaoshou.com',
             port: 4000
         }
       ],
@@ -388,7 +388,7 @@ module.exports = function (grunt) {
           },
           include: ['angular'],
           name: 'bootstrap',
-          out: '<%= yeoman.dist %>/scripts/bootstrap-built.js'
+          out: '<%= yeoman.dist %>/scripts/bootstrap.js'
         }
       }
     }

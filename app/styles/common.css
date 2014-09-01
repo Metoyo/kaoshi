@@ -7246,8 +7246,6 @@ a.add-btn:hover span {
     border: 0; }
   .markItUpHeader ul .width70:hover > a {
     border-bottom: 0; }
-  .markItUpHeader ul .width70:hover > ul {
-    display: block; }
 
 .previewBox {
   float: left;

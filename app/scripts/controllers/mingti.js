@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
       function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -776,16 +776,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 保存问答题这部分题型的通用函数
          */
         $scope.addAskAnswerShiTi = function(tx){
-          var tx_data = '';
+          var tx_data = '',
+            formulaTiGan = $('.formulaEditTiGan'),
+            formulaTiZhi = $('.formulaEditTiZhi');
           switch (tx){
             case 'jisuan_data':
               tx_data = jisuan_data;
+              tx_data.shuju.TIGAN = formulaTiGan.val();
+              tx_data.shuju.DAAN = formulaTiZhi.val();
               break;
             case 'jieda_data':
               tx_data = jieda_data;
+              tx_data.shuju.TIGAN = formulaTiGan.val();
+              tx_data.shuju.DAAN = formulaTiZhi.val();
               break;
             case 'pandu_data':
               tx_data = pandu_data;
+              tx_data.shuju.TIGAN = formulaTiGan.val();
               break;
           }
           tx_data.shuju.ZHISHIDIAN = selectZsd;

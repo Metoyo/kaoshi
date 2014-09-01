@@ -41,6 +41,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $rootScope.isRenZheng = false; //判读页面是不是认证
         $rootScope.dashboard_shown = true;
         $scope.itemTitle = "大纲";
+        $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
 
         /**
          * 信息提示函数
@@ -133,6 +134,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.isPrivateDg = true;
             $scope.isPublicDg = false;
             $scope.knowledgePr = '';
+            $scope.prDgBtnDisabled = true;
           }
         };
 
@@ -186,12 +188,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   diffPubZsdArr.push(needPubZsd);
                 });
                 $scope.publicKnowledge = diffPubZsdArr;
+                $scope.prDgBtnDisabled = false;
               }
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = '';
                 $scope.publicKnowledge = publicKnowledgeData;
                 alertInfFun('err', data.error);
+                $scope.prDgBtnDisabled = true;
               }
             });
           }
@@ -200,6 +204,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
             $scope.knowledgePr = '';
             $scope.publicKnowledge = publicKnowledgeData;
+            $scope.prDgBtnDisabled = true;
           }
         };
 
@@ -279,6 +284,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           jieDianObj.ZIJIEDIAN = [];
           daGangJieDianData.push(jieDianObj);
           $scope.knowledgePr = daGangJieDianData;
+          $scope.prDgBtnDisabled = false;
           //用于新建大纲的名称聚焦
           var focusFun = function() {
             $('.dagangBox input').focus();
@@ -310,6 +316,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                     return zjdg.ZHISHIDAGANG_ID == deleteZjDgData.shuju.ZHISHIDAGANG_ID;
                   });
                   $scope.knowledgePr = '';
+                  $scope.selectZjDgId = '';
                 }
                 else{
                   alertInfFun('err', result.error);
@@ -320,6 +327,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           else{
             alertInfFun('pmt', '请选择要删除的大纲！');
           }
+          $scope.prDgBtnDisabled = true;
         };
 
         /**
@@ -423,11 +431,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 保存知识大纲
+         * 保存知识大纲//
          */
         $scope.saveZjDaGangData = function(isSetAsDefaultDg) {
           var countEmpty = true;
           $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
+          $scope.prDgBtnDisabled = true;
           //将LEIXING转化为ZHISHIDIAN_LEIXING
           function _do(item) {
             item.ZHISHIDIAN_LEIXING = item.LEIXING || 2;
@@ -440,29 +449,42 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               _.each(item.ZIJIEDIAN, _do);
             }
           }
-          dgdata.shuju.ZHISHIDAGANGMINGCHENG = $scope.knowledgePr[0].ZHISHIDIANMINGCHENG;
-          dgdata.shuju.JIEDIAN = $scope.knowledgePr;
-          _.each(dgdata.shuju.JIEDIAN, _do);
-          if(countEmpty){
-            $http.post(submitDataUrl, dgdata).success(function(result) {
-              if(result.result){
-                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                $('.save-msg').show().fadeOut(3000);
-                //判读是否设置为默认大纲
-                if(isSetAsDefaultDg){
-                  $scope.makeDaGangAsDefault(result.id);
+          if($scope.knowledgePr){
+            dgdata.shuju.ZHISHIDAGANGMINGCHENG = $scope.knowledgePr[0].ZHISHIDIANMINGCHENG;
+            dgdata.shuju.JIEDIAN = $scope.knowledgePr;
+            _.each(dgdata.shuju.JIEDIAN, _do);
+            if(countEmpty){
+              $http.post(submitDataUrl, dgdata).success(function(result) {
+                if(result.result){
+                  $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+                  $('.save-msg').show().fadeOut(3000);
+                  //判读是否设置为默认大纲
+                  if(isSetAsDefaultDg){
+                    $scope.makeDaGangAsDefault(result.id);
+                  }
+                  loadDaGang();
+                  $scope.knowledgePr = '';
+                  $scope.selectZjDgId = '';
+                  $scope.prDgBtnDisabled = true;
                 }
-                loadDaGang();
-              }
-              else{
-                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                alertInfFun('err', '修改大纲失败！');
-              }
-            });
+                else{
+                  $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+                  alertInfFun('err', '修改大纲失败！');
+                  $scope.prDgBtnDisabled = true;
+                  $scope.prDgBtnDisabled = false;
+                }
+              });
+            }
+            else{
+              $scope.loadingImgShow = false; //rz_setDaGang.html
+              alertInfFun('pmt', '知识点名称不能为空！');
+              $scope.prDgBtnDisabled = false;
+            }
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alertInfFun('pmt', '知识点名称不能为空！');
+            alertInfFun('err', '请选择或新建一个大纲！');
+            $scope.prDgBtnDisabled = false;
           }
         };
 
