@@ -30,7 +30,7 @@
                                     <div class="form-control" ng-bind="nd2.LINGYUMINGCHENG"></div>
                                     <span class="input-group-addon">
                                         <input type="checkbox" value="{{nd2.LINGYU_ID}}" class="{{'checkbox' + nd2.LINGYU_ID}}"
-                                               ng-click="addLingYuToSelect($event, nd2)"
+                                               ng-click="addLingYuToSelect($event, nd2, nd1)"
                                                ng-checked="selectedLyStr.indexOf('sly' + nd2.LINGYU_ID + ';') >= 0">
                                     </span>
                                 </div>

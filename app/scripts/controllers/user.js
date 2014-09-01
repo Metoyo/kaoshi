@@ -575,6 +575,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
         $http.get(qryLingYuUrl).success(function(data) { //查询全部的领域
           if(data.length){
+            console.log(data);
             $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
               if(jgLy.length){
                 $scope.jgSelectLingYu = jgLy;
@@ -605,8 +606,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 添加领域到已选 media-body
        */
-      $scope.addLingYuToSelect = function(event, nd){
+      $scope.addLingYuToSelect = function(event, nd, parentLy){
         var ifCheckOrNot = $(event.target).prop('checked');
+        if(parentLy){
+          var parentLyId = parentLy.LINGYU_ID;
+        }
+
         if(ifCheckOrNot){ //添加
           if(nd.PARENT_LINGYU_ID == 0){ // 父领域
             $scope.jgSelectLingYu.push(nd);
@@ -619,10 +624,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.jgSelectLingYu.push(ly);
                 }
               });
-              $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", true);
+              $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
             }
           }
           else{ //子领域
+            //当选择子领域的时候，同时选择父领域
+            if(parentLy){
+              var parentLyCss = '.checkbox' + parentLyId,
+                ifParentLyChecked = $(parentLyCss).prop('checked');
+              if(!ifParentLyChecked){
+                $(parentLyCss).prop('checked', true);
+              }
+            }
             $scope.jgSelectLingYu.push(nd);
           }
         }
@@ -644,6 +657,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           else{ //子领域
+            //子领域全部不选的时候，父领域也不选
+            if(parentLy){
+              var isAllLyUnChecked = true,
+                lyClass, ifLyChecked;
+              _.each(parentLy.CHILDREN, function(ly){
+                lyClass = '.checkbox' + ly.LINGYU_ID,
+                  ifLyChecked = $(lyClass).prop('checked');
+                if(ifLyChecked){
+                  isAllLyUnChecked = false;
+                }
+              });
+              if(isAllLyUnChecked){
+                var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
+                $(parentLyClass).prop('checked', false);
+              }
+            }
             _.each($scope.jgSelectLingYu, function(sly, idx, lst){
               if(sly.LINGYU_ID == nd.LINGYU_ID){
                 $scope.jgSelectLingYu.splice(idx, 1);
@@ -659,8 +688,43 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       $scope.deleteSelectedLingYu = function(sly, idx){
         $scope.loadingImgShow = true; //rz_selectLingYu.html
         var targetClass = '.checkbox' + sly.LINGYU_ID,
-          slyObj = {};
-        $('.media').find(targetClass).prop('checked', false);
+          slyObj = {},
+          isAllCheckBoxUnChecked = true,
+          findLyArr = '',
+          checkBoxParm,
+          parentCheckBoxElm,
+          checkBoxElm;
+        //选择要操作的领域数据
+        _.each($scope.lingyu_list[0].CHILDREN, function(ply){
+          if(ply.LINGYU_ID == sly.LINGYU_ID){
+            findLyArr = ply;
+          }
+          else{
+            _.each(ply.CHILDREN, function(ly){
+                if(ly.LINGYU_ID == sly.LINGYU_ID){
+                  findLyArr = ply;
+                }
+             });
+          }
+        });
+        //操作已选的领域数据
+        if(findLyArr.CHILDREN.length){
+          $('.media').find(targetClass).prop('checked', false);
+          _.each(findLyArr.CHILDREN, function(ly){
+            checkBoxParm = '.checkbox' + ly.LINGYU_ID;
+            checkBoxElm = $(checkBoxParm).prop('checked');
+            if(checkBoxElm){
+              isAllCheckBoxUnChecked = false;
+            }
+          });
+          if(isAllCheckBoxUnChecked){
+            parentCheckBoxElm = '.checkbox' + findLyArr.LINGYU_ID;
+            $(parentCheckBoxElm).prop('checked', false);
+          }
+        }
+        else{
+          $('.media').find(targetClass).prop('checked', false);
+        }
         lingYuData.shuju = [];
         slyObj.JIGOU_ID = jigouid;
         slyObj.LINGYU_ID = sly.LINGYU_ID;
