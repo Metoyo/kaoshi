@@ -84,8 +84,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         isDaGangSet, //是否是大纲设置
         isLingYuSet; //是否是领域设置
 
+      $scope.adminParams = {
+        selected_dg: '',
+        saveDGBtnDisabled: false
+      };
+
       /**
-       * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
+       * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9//
        */
       var jsArr = _.chain(userInfo.JUESE)
           .sortBy(function(js){ return js.JUESE_ID; })
@@ -1135,7 +1140,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.saveDaGangData = function() {
         var countEmpty = true;
-        $scope.loadingImgShow = true; //rz_setDaGang.html
+        $scope.adminParams.saveDGBtnDisabled = true;
         function _do(item) {
           item.ZHISHIDIAN_LEIXING = item.LEIXING || 1;
           item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
@@ -1147,28 +1152,39 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             _.each(item.ZIJIEDIAN, _do);
           }
         }
-        daGangData.shuju.JIEDIAN = $scope.dgZsdList;
-        daGangData.shuju.ZHISHIDAGANGMINGCHENG = $scope.dgZsdList[0].ZHISHIDIANMINGCHENG;
-        _.each(daGangData.shuju.JIEDIAN, _do);
-        //保存知识大纲
-        if(countEmpty){
-          $http.post(modifyZsdgUrl, daGangData).success(function(data) {
-            console.log(data);
-            if(data.result){
-              $scope.loadingImgShow = false; //rz_setDaGang.html
-              alertInfFun('suc', '保存成功！');
-              $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
-              isDaGangSet = false;
-            }
-            else{
-              $scope.loadingImgShow = false; //rz_setDaGang.html
-              alertInfFun('err', data.error);
-            }
-          });
+        if($scope.dgZsdList){
+          daGangData.shuju.JIEDIAN = $scope.dgZsdList;
+          daGangData.shuju.ZHISHIDAGANGMINGCHENG = $scope.dgZsdList[0].ZHISHIDIANMINGCHENG;
+          _.each(daGangData.shuju.JIEDIAN, _do);
+          $scope.loadingImgShow = true; //rz_setDaGang.html
+          //保存知识大纲
+          if(countEmpty){
+            $http.post(modifyZsdgUrl, daGangData).success(function(data) {
+              if(data.result){
+                $scope.loadingImgShow = false; //rz_setDaGang.html
+                alertInfFun('suc', '保存成功！');
+                $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
+                isDaGangSet = false;
+                $scope.adminParams.selected_dg = '';
+                $scope.adminParams.saveDGBtnDisabled = false;
+              }
+              else{
+                $scope.loadingImgShow = false; //rz_setDaGang.html
+                $scope.adminParams.saveDGBtnDisabled = false;
+                alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            $scope.loadingImgShow = false; //rz_setDaGang.html
+            $scope.adminParams.saveDGBtnDisabled = false;
+            alertInfFun('pmt', '知识点名称不能为空！');
+          }
         }
         else{
           $scope.loadingImgShow = false; //rz_setDaGang.html
-          alertInfFun('pmt', '知识点名称不能为空！');
+          $scope.adminParams.saveDGBtnDisabled = false;
+          alertInfFun('err', '请选择您要保存的大纲！');
         }
       };
 

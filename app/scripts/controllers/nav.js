@@ -1,13 +1,21 @@
-define(['jquery', 'underscore', 'angular'], function ($, _, angular) {
+define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
-    .controller('NavCtrl', function ($rootScope, $scope, $location) {
+    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http',
+      function ($rootScope, $scope, $location, $http) {
 
       /**
-       * 定义变量
+       * 定义变量//
        */
+      var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
+        token = config.token,
+        alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
+
       $scope.userInfoLayer = false;
+      $scope.navData = {
+        newPsd: ''
+      };
 
       /**
        * 控制导航的代码
@@ -89,5 +97,28 @@ define(['jquery', 'underscore', 'angular'], function ($, _, angular) {
         $scope.userInfoLayer = false;
       };
 
-    });
+      /**
+       * 修改密码
+       */
+      $scope.modifyPassWord = function(){
+        var newPsdData = {
+          token: token,
+          yonghuid: '',
+          mima: ''
+        },
+        userInfo = $rootScope.session.userInfo;
+        newPsdData.yonghuid = userInfo.UID;
+        newPsdData.mima = $scope.navData.newPsd;
+        $('.modifuMiMaInfo').html('');
+        $http.post(alterYongHu, newPsdData).success(function(data){
+          if(data.result){
+            $('.modifuMiMaInfo').html('密码修改成功!').fadeOut(5000);
+          }
+          else{
+            $('.modifuMiMaInfo').html(data.error).fadeOut(5000);
+          }
+        });
+      };
+
+    }]);
 });

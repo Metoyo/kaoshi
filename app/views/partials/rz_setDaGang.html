@@ -11,8 +11,8 @@
             </select>
         </div>
         <div class="col-md-6">
-            <select class="form-control daGangListSelect" ng-model="selected_dg"
-                    ng-change="getPubDgZsdData(selected_dg)"
+            <select class="form-control daGangListSelect" ng-model="adminParams.selected_dg"
+                    ng-change="getPubDgZsdData(adminParams.selected_dg)"
                     ng-options="dg.ZHISHIDAGANG_ID as dg.ZHISHIDAGANGMINGCHENG for dg in pubDaGangList">
                 <option value="">请选择大纲</option>
             </select>
@@ -106,6 +106,5 @@
     </div>
 </div>
 <div class="save-box">
-    <span class="save-msg">保存成功!</span>
-    <button class="btn btn-primary" ng-click="saveDaGangData()">保存</button>
+    <button class="btn btn-primary" ng-click="saveDaGangData()" ng-disabled="adminParams.saveDGBtnDisabled">保存</button>
 </div>

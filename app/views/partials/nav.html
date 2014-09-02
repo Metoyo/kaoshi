@@ -96,6 +96,29 @@
                     </tr>
                     <tr>
                         <th>
+                            修改密码
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 20px">
+                            新密码
+                        </td>
+                        <td>
+                            <input type="password" class="newPassWord" ng-model="navData.newPsd">
+                            <button type="button" class="btn btn-primary" ng-click="modifyPassWord()"
+                                    ng-disabled="!navData.newPsd">修改</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="modifuMiMaInfo clRed">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             科目
                         </th>
                         <th>
