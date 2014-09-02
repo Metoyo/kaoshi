@@ -44,11 +44,14 @@
     <!--已选科目-->
     <div class="selected-lingYu">
         <h4><strong>已选科目:</strong></h4>
-        <p ng-repeat="sLy in jgSelectLingYu">
-            <span ng-bind="sLy.LINGYUMINGCHENG"></span>
+        <div ng-repeat="sLy in jgSelectLingYu">
+            <p ng-repeat="cly in sLy.CHILDREN">
+                <span ng-bind="cly.LINGYUMINGCHENG"></span>
             <span class="glyphicon glyphicon-remove delete-select-ly pull-right" title="删除已选科目"
-                    ng-click="deleteSelectedLingYu(sLy, $index)"></span>
-        </p>
+                  ng-click="deleteSelectedLingYu(sLy, $index)"></span>
+            </p>
+        </div>
+
     </div>
 </div>
 <div class="save-box">

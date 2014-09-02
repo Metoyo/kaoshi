@@ -51,7 +51,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           shuju:[]
         },
         selectedLyStr = '', //已选择的领域ID
-        selectedLyArr = '', //已选择的领域ID
+        selectedLyArr = [], //已选择的领域ID
         qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token, //查询全部题型的url
         qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
           jigouid + '&lingyuid=', //查询科目包含什么题型的url
@@ -569,20 +569,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 学校科目选择 modifyJiGouLingYuUrl
        */
       $scope.renderLingYuSelectTpl = function(){
+        selectedLyArr = [];
         $scope.jgSelectLingYu = [];
         lingYuData.shuju = [];
         $scope.loadingImgShow = true; //rz_selectLingYu.html
-        var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID;
+        var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID,
+          lyStr; //拼接领域字符的变量
         $http.get(qryLingYuUrl).success(function(data) { //查询全部的领域
           if(data.length){
-            console.log(data);
             $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
               if(jgLy.length){
                 $scope.jgSelectLingYu = jgLy;
                 $scope.loadingImgShow = false; //rz_selectLingYu.html
                 $scope.lingyu_list = data;
                 $scope.isShenHeBox = false; //判断是不是审核页面
-                selectedLyArr = _.map(jgLy, function(ly){return 'sly' + ly.LINGYU_ID + ';'});
+                _.each(jgLy, function(ply){
+                  lyStr = 'sly' + ply.LINGYU_ID + ';';
+                  selectedLyArr.push(lyStr);
+                  if(ply.CHILDREN.length){
+                    _.each(ply.CHILDREN, function(ly){
+                      lyStr = 'sly' + ly.LINGYU_ID + ';';
+                      selectedLyArr.push(lyStr);
+                    })
+                  }
+                });
                 selectedLyStr = selectedLyArr.toString();
                 $scope.selectedLyStr = selectedLyStr;
                 $scope.adminSubWebTpl = 'views/partials/rz_selectLingYu.html';
@@ -1172,7 +1182,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
           if(jgLy.length){
             _.each(jgLy, function(ply, idx, lst){
-              childLyArr.push(ply);
+//              childLyArr.push(ply);
               if(ply.CHILDREN.length){
                 _.each(ply.CHILDREN, function(cly, cidx, clst){
                   childLyArr.push(cly);

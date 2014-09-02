@@ -1004,7 +1004,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
            * 保存规则组卷数据
            */
           $scope.addRuleMakePaperShiJuan = function(isQuChong){
-            $scope.loadingImgShow = true;
             var distAutoMakePaperData = {
                 token: token,
                 caozuoyuan: caozuoyuan,
@@ -1014,6 +1013,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   items: []
                 }
               };
+            $scope.ruleMakePaperSaveBtnDisabled = true;
             //得到题型数量和难度的数组
             _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
               if(txArr.zsdXuanTiArr.length){
@@ -1026,6 +1026,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               distAutoMakePaperData.shuju.exclude = {type: "month", value: "12"};
             }
             if(distAutoMakePaperData.shuju.items.length){
+              $scope.loadingImgShow = true;
               $http.post(guiZeZuJuanUrl, distAutoMakePaperData).success(function(tmIdsData){
                 if(tmIdsData.length){
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
@@ -1050,7 +1051,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         tixingStatistics(idx, kmtxListLength);
                       });
                       nanduPercent(); //难度统计
-
                       //判读是否执行完成
                       $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                       $scope.baocunshijuanBtn = true; //保存试卷的按钮
@@ -1060,19 +1060,27 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
                       //保存规则用到的转化
                       zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
+                      $scope.ruleMakePaperSaveBtnDisabled = false;
                     }
                     else{
                       $scope.timudetails = null;
                       $scope.loadingImgShow = false;
+                      $scope.ruleMakePaperSaveBtnDisabled = false;
                       alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
                   $scope.loadingImgShow = false;
+                  $scope.ruleMakePaperSaveBtnDisabled = false;
                   alertInfFun('pmt', tmIdsData.error);
                 }
               });
+            }
+            else{
+              $scope.loadingImgShow = false;
+              $scope.ruleMakePaperSaveBtnDisabled = false;
+              alertInfFun('err', '请选择题型！');
             }
           };
 

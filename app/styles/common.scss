@@ -398,14 +398,14 @@ a.add-btn:hover span {
 /* 信息提示样式*/
 .popInfoWrap{
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 50px;
   z-index: 9999;
   display: none;
   background-color: #f0f0f0;
-  border-top: 1px solid #599EDB;
+  border-bottom: 1px solid #599EDB;
   .messageTd{
     width: 100%;
     font-size: 16px;
@@ -421,55 +421,6 @@ a.add-btn:hover span {
   .mesError{
     color: #c9302c;
   }
-//  .popInfoWrapInner{
-//    width: 400px;
-//    height: 250px;
-//    left: 50%;
-//    top: 50%;
-//    position: relative;
-//    margin-left: -200px;
-//    margin-top: -125px;
-//    background-color: #fff;
-//    border-radius: 3px;
-//    border: 1px solid #599EDB;
-//    .pop-title{
-//      margin: 0;
-//      padding: 0;
-//      height: 32px;
-//      border-radius: 3px 3px 0 0;
-//      border-bottom: 1px solid #599EDB;
-//      background : #f0f0f0;
-//      .glyphicon-remove{
-//        color: red;
-//        font-size: 16px;
-//        float: right;
-//        margin-top: 7px;
-//        cursor: pointer;
-//      }
-//    }
-//    .pop-cont{
-//      padding: 10px;
-//      table{
-//        width: 100%;
-//        td{
-//          height: 195px;
-//          text-align: center;
-//          vertical-align: middle;
-//          font-size: 16px;
-//          display: none;
-//        }
-//        .mesSuccess{
-//          color: #009E00;
-//        }
-//        .mesPrompt{
-//          color: #285e8e;
-//        }
-//        .mesError{
-//          color: #c9302c;
-//        }
-//      }
-//    }
-//  }
 }
 /* 答题卡样式开始*/
 .da-ti-ka-wrap{
@@ -833,6 +784,22 @@ a.add-btn:hover span {
     color: red;
   }
 }
+.subjectBox{
+  padding: 10px;
+  float: left;
+  width: 100%;
+  h2{
+    font-size: 16px;
+    display: inline;
+    margin: 0;
+    color: #f60;
+    font-weight: bold;
+  }
+  a{
+    font-size: 12px;
+    text-decoration: none;
+  }
+}
 /**
 *弹出层，背景为浅灰色
 */
@@ -996,23 +963,6 @@ a.add-btn:hover span {
   z-index: 10;
   background-color: #f5f5f5;
   border-right: 1px solid #cfcfcf;
-  .subjectBox{
-    padding: 10px;
-    float: left;
-    width: 100%;
-//    border-bottom: 1px solid #cfcfcf;
-    h2{
-      font-size: 16px;
-      display: inline;
-      margin: 0;
-      color: #f60;
-      font-weight: bold;
-    }
-    a{
-      font-size: 12px;
-      text-decoration: none;
-    }
-  }
   .selectedItems{
     h3{
       font-size: 12px;
@@ -2418,6 +2368,7 @@ a.add-btn:hover span {
   .pointTitleBox {
     margin: 0;
     border: 0;
+    line-height: 40px;
     .pointTitle{
       font-size: 16px;
       width: 100%;
@@ -2467,6 +2418,7 @@ a.add-btn:hover span {
       .popupWrap{
         left: 120px;
         width: 300px;
+        margin-top: 10px;
         .chooseCondition{
           display: none;
         }
