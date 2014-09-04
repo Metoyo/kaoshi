@@ -7092,6 +7092,8 @@ a.add-btn:hover span {
 .kaowuWrapper .set-tiMu-num .tiMuNumAon {
   background-color: #428bca;
   color: #fff; }
+.kaowuWrapper .advanced-set a {
+  margin-right: 15; }
 
 .tongjiWrapper .tj-btn-box {
   width: 100%;

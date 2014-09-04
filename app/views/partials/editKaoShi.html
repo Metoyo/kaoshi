@@ -51,11 +51,37 @@
                 <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
             </div>
         </div>
+        <div class="form-group advanced-set" ng-init="showKaoShiXuZhi=false;showAdvancedSet=false">
+            <div class="col-sm-8 col-sm-offset-2">
+                <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-hide="showKaoShiXuZhi">
+                    <span class="glyphicon glyphicon-plus"></span>增加考试须知
+                </a>
+                <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-show="showKaoShiXuZhi">
+                    <span class="glyphicon glyphicon-plus"></span>取消考试须知
+                </a>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2">
+                <a href="javascript:void(0)" ng-click="showAdvancedSet=!showAdvancedSet">
+                    <span class="glyphicon glyphicon-plus"></span>高级设置
+                </a>
+            </div>
+            <div class="col-sm-8 col-sm-offset-2" ng-show="showKaoShiXuZhi">
+                <textarea class="form-control" cols="30" rows="6" placeholder="考试须知"
+                          ng-model="kaoshiData.shuju.XUZHI"></textarea>
+            </div>
+            <div class="kw-edit-box" ng-show="showAdvancedSet">
+                <div class="kw-edit-box-inner">
+                    <a href="javascript:void(0)" ng-click="showAdvancedSet=!showAdvancedSet">
+                        关闭
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-5">
                 <button type="button" class="btn btn-primary" ng-click="addNewKaoSheng()">增加考生</button>
                 <button type="button" class="btn btn-primary" ng-click="importKaoSheng()">导入考生</button>
-                <span class="ml10">共<b>{{kaoshiData.shuju.KAOCHANG.USERS.length}}</b>名考试</span>
+                <span class="ml10">共  <b ng-bind="kaoshiData.shuju.KAOCHANG.USERS.length"></b>  名考生</span>
             </div>
             <div class="col-sm-3 text-right" ng-show="paperDetail.SHIJUAN.DATIKA">
                 <button type="button" class="btn btn-primary" ng-click="kwSetDaTiKa()">设置答题卡</button>
@@ -109,7 +135,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-8 col-sm-offset-2 text-right">
-                            <button type="button" class="btn btn-primary" ng-click="saveNewStudent()">保存</button>
+                            <button type="button" class="btn btn-primary" ng-click="saveNewStudent()">增加考试</button>
                             <button type="button" class="btn btn-danger" ng-click="cancelAddStudent()">取消</button>
                         </div>
                     </div>
@@ -198,25 +224,15 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">考试须知</label>
-            <div class="col-sm-8">
-                <textarea class="form-control" cols="30" rows="6" placeholder="考试须知"
-                          ng-model="kaoshiData.shuju.XUZHI"></textarea>
-            </div>
-            <div class="col-sm-2">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
-                <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
-                <!--<button type="button" class="btn btn-primary" ng-click="showShiJuanInfo()">-->
-                    <!--详情-->
-                <!--</button>-->
-            </div>
+        <div class="save-box">
+            <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
+            <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
+            <!--<button type="button" class="btn btn-primary" ng-click="showShiJuanInfo()">-->
+                <!--详情-->
+            <!--</button>-->
         </div>
     </div>
+    <!-- 试卷选择 -->
     <div class="kw-edit-box" ng-show="showPopupBox">
         <div class="kw-edit-box-inner">
             <div class="closeBtn" ng-click="closePaperList()">

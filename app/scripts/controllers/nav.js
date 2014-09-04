@@ -78,6 +78,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $rootScope.showUserInfo = function(){
         var user = $rootScope.session.userInfo;
+        $('.modifuMiMaInfo').html('');
         _.each(user.LINGYU, function(ly, index, list){
           ly.jueseArr = [];
           _.each(user.JUESE, function(js, idx, lst){

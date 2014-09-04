@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
       .controller('KaowuCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', '$timeout',
         function ($rootScope, $scope, $location, $http, $q, $timeout) { // 002 开始
           /**
-           * 操作title//
+           * 操作title
            */
           $rootScope.pageName = "考务"; //page title
           $rootScope.styles = ['styles/kaowu.css'];

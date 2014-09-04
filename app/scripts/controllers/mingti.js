@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
       function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
-         * 操作title//
+         * 操作title
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -226,7 +226,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         $scope.toggleSelection = function(zsdId) {
-          $scope.selectZsdStr = '';
+//          $scope.selectZsdStr = '';
           var onSelect = '.select' + zsdId,
             gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
             getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;

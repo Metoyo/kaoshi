@@ -138,7 +138,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               //求平均分
               totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
               avgScore = totalScore/data.length;
-              $scope.myAvgScore = avgScore;
+              $scope.myAvgScore = avgScore.toFixed(2);
             }
             else{
               alertInfFun('err', data.error);
