@@ -4,9 +4,12 @@
 </div>
 <div class="row">
     <button type="button" class="btn btn-primary" ng-click="addNewKaoShi()">新增考试</button>
-    <a href="javascript:void(0)">全部</a>
-    <a href="javascript:void(0)">已完成</a>
-    <a href="javascript:void(0)">未完成</a>
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'all' }"
+       ng-click="showKaoShiList('all')">全部考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'done' }"
+       ng-click="showKaoShiList('done')">已完成考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'ing' }"
+       ng-click="showKaoShiList('ing')">未完成考试</a>
     <button type="button" class="btn btn-primary pull-right" ng-click="endKaoShi()">结束考试</button>
     <a href="http://test.taianting.com:7000/sync?name=a" class="btn btn-primary pull-right">公布成绩</a>
 </div>

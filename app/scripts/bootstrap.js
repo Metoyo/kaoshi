@@ -8,7 +8,8 @@ require.config({
     angularResource: '../../bower_components/angular-resource/angular-resource',
     angularMocks: '../../bower_components/angular-mocks/angular-mocks',
     jquery: '../../bower_components/jquery/jquery',
-    underscore: '../../bower_components/underscore/underscore'
+    underscore: '../../bower_components/underscore/underscore',
+    charts: 'http://echarts.baidu.com/build/echarts-plain'
 
 //    angular: '../../bower_components/angular/angular.min',
 //    angularRoute: '../../bower_components/angular-route/angular-route.min',
@@ -46,8 +47,9 @@ require([
   'angularSanitize',
   'angularResource',
   'jquery',
-  'underscore'
-], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
+  'underscore',
+  'charts'
+], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _, charts) {
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);

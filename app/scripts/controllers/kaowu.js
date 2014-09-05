@@ -69,6 +69,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
+          $scope.kwParams = { //考务用到的变量
+            ksListZt: '' //考试列表的状态
+          };
 
           /**
            * 信息提示函数
@@ -181,14 +184,30 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
-           * 显示考试列表,可分页的方法
+           * 显示考试列表,可分页的方法, zt表示状态 1，2，3，4为完成；5，6已完成
            */
-          $scope.showKaoShiList = function(){
+          $scope.showKaoShiList = function(zt){
+            var ztArr = [],
+              qryKaoShiList;
+            zt = zt || 'all';
             $scope.loadingImgShow = true; //kaoShiList.html
             kaoShiPageArr = []; //定义考试页码数组
             kaoShiIdArrRev = []; //存放所有考试ID的数组
             //先查询所有考试的Id
-            $http.get(qryKaoShiListUrl).success(function(kslst){
+            switch (zt) {
+              case 'all':
+                ztArr = [];
+                break;
+              case 'ing':
+                ztArr = [1, 2, 3, 4];
+                break;
+              case 'done':
+                ztArr = [5, 6];
+                break;
+            }
+            $scope.kwParams.ksListZt = zt;
+            qryKaoShiList = qryKaoShiListUrl + '&zhuangtai=' + ztArr;
+            $http.get(qryKaoShiList).success(function(kslst){
               if(kslst.length){
                 $scope.kaoShiListIds = kslst; //得到所有的考试ids
                 totalKaoShiPage = Math.ceil(kslst.length/itemNumPerPage); //得到所有考试的页码
