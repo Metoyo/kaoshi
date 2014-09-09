@@ -1,8 +1,8 @@
 define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout',
-      function ($rootScope, $scope, $http, $timeout) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', '$window',
+      function ($rootScope, $scope, $http, $timeout, $window) {
         /**
          * 操作title//
          */
@@ -35,7 +35,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjShiJuanData = '',
           backToWhere = '', //返回按钮返回到什么列表
           tjDataPara = '', //存放目前统计的是什么数据
-          tjIdType = ''; //存放ID类型
+          tjIdType = '', //存放ID类型
+          tjNamePara = '', //存放统计名称
+          studentPieData = [], //饼状图学生信息
+          studentBarData = []; //柱状图学生信息
+
 
         /**
          * 信息提示函数
@@ -119,10 +123,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 考试统计详情,查询考生
          */
-        $scope.tjShowStudentInfo = function(id, idType, comeForm){
+        $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName){
           var queryKaoSheng, totalScore, avgScore;
           tjDataPara = '';
           tjIdType = '';
+          tjNamePara = '';
+          studentPieData = [ //饼状图学生信息
+            {
+              name : '不及格',
+              value : 0
+            },
+            {
+              name : '及格',
+              value : 0
+            },
+            {
+              name : '良',
+              value : 0
+            },
+            {
+              name : '优',
+              value : 0
+            }
+          ];
+          studentBarData = [0, 0, 0, 0];
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
           }
@@ -135,16 +159,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               backToWhere = comeForm;
               tjDataPara = id;
               tjIdType = idType;
+              tjNamePara = tjName;
               //求平均分
               totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
               avgScore = totalScore/data.length;
-              $scope.myAvgScore = avgScore.toFixed(2);
+              $scope.myAvgScore = avgScore.toFixed(1);
+              //分数详细统计用到的数据
+              _.each(data, function(stuScore, idx, lst){
+                if(stuScore.ZUIHOU_PINGFEN < 60){
+                  studentPieData[0].value ++;
+                  studentBarData[0] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 60 && stuScore.ZUIHOU_PINGFEN < 80){
+                  studentPieData[1].value ++;
+                  studentBarData[1] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 80 && stuScore.ZUIHOU_PINGFEN < 90){
+                  studentPieData[2].value ++;
+                  studentBarData[2] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 90){
+                  studentPieData[3].value ++;
+                  studentBarData[3] ++;
+                }
+              });
             }
             else{
               alertInfFun('err', data.error);
             }
           });
-          $scope.tjItemName = '考试统计';
+          $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
         };
@@ -152,11 +196,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 试卷统计详情
          */
-        $scope.tjShowItemInfo = function(id, idType, comeForm){
+        $scope.tjShowItemInfo = function(id, idType, comeForm, tjName){
           var queryTiMu, newCont,
             tgReg = new RegExp('<\%{.*?}\%>', 'g');
           tjDataPara = '';
           tjIdType = '';
+          tjNamePara = '';
           if(idType == 'ksId'){
             queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
           }
@@ -213,6 +258,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 backToWhere = comeForm;
                 tjDataPara = id;
                 tjIdType = idType;
+                tjNamePara = tjName;
               });
               $scope.tjTmQuantity = 5; //加载是显示的题目数量
               $scope.letterArr = config.letterArr; //题支的序号
@@ -222,7 +268,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               alertInfFun('err', data.error);
             }
           });
-          $scope.tjItemName = '试卷统计';
+          $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
           $scope.myAvgScore = '';
           $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
@@ -251,7 +297,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               alertInfFun('err', data.error);
             }
           });
-          $scope.tjItemName = '考试统计';
+          $scope.tjItemName = tjNamePara;
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
         };
@@ -324,9 +370,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               alertInfFun('err', data.error);
             }
           });
-          $scope.tjItemName = '试卷统计';
+          $scope.tjItemName = tjNamePara;
           $scope.isTjDetailShow = true;
-          $scope.myAvgScore = '';
+//          $scope.myAvgScore = '';
           $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
         };
 
@@ -348,6 +394,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
           }
           $scope.myAvgScore = '';
+          $scope.tjItemName = ''; //为了详细统计按钮的隐藏和展示
         };
 
         /**
@@ -379,12 +426,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.lastKaoShiTongJi = function(){
           if(tjKaoShiData.length){
-            $scope.tjShowStudentInfo(tjKaoShiData[0].KAOSHI_ID, 'ksId', 'ksList');
+            $scope.tjShowStudentInfo(tjKaoShiData[0].KAOSHI_ID, 'ksId', 'ksList', tjKaoShiData[0].KAOSHI_MINGCHENG);
           }
           else{
             $http.get(queryKaoShi).success(function(data){
               if(!data.error){
-                $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList');
+                $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList', data[0].KAOSHI_MINGCHENG);
               }
               else{
                 alertInfFun('err', data.error);
@@ -398,7 +445,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.lastShiJuanTongJi = function(){
           if(tjShiJuanData.length){
-            $scope.tjShowItemInfo(tjShiJuanData[0].SHIJUAN_ID, 'sjId', 'sjList');
+            $scope.tjShowStudentInfo(tjShiJuanData[0].SHIJUAN_ID, 'sjId', 'sjList', tjShiJuanData[0].SHIJUAN_MINGCHENG);
           }
           else{
             $http.get(queryShiJuan).success(function(data){
@@ -406,7 +453,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 data = _.sortBy(data, function(sj){
                   return sj.LAST_TIME;
                 }).reverse();
-                $scope.tjShowItemInfo(data[0].SHIJUAN_ID, 'sjId', 'sjList');
+                $scope.tjShowStudentInfo(data[0].SHIJUAN_ID, 'sjId', 'sjList', data[0].SHIJUAN_MINGCHENG);
               }
               else{
                 alertInfFun('err', data.error);
@@ -420,131 +467,98 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showScoreChart = function(){
           $scope.tjSubTpl = 'views/partials/tj_chart_score.html';
-          var addActiveFun = function() {
-            var myChart = echarts.init(document.getElementById('score1')),
-              myChart2 = echarts.init(document.getElementById('score2')),
-              option = {
-                title : {
-                  text : '某站点用户访问来源',
-                  subtext : '纯属虚构',
-                  x : 'center'
-                },
-                tooltip : {
-                  trigger : 'item',
-                  formatter : "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend : {
-                  orient : 'vertical',
-                  x : 'left',
-                  data : ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-                },
-                calculable : true,
-                series : [{
-                  name : '访问来源',
-                  type : 'pie',
-                  radius : ['50%', '70%'],
-                  center : ['50%', 225],
-                  data : [{
-                    value : 335,
-                    name : '直接访问'
-                  }, {
-                    value : 310,
-                    name : '邮件营销'
-                  }, {
-                    value : 234,
-                    name : '联盟广告'
-                  }, {
-                    value : 135,
-                    name : '视频广告'
-                  }, {
-                    value : 1548,
-                    name : '搜索引擎'
+          var myChart, myChart2,
+            addActiveFun = function() {
+              myChart = echarts.init(document.getElementById('score1'));
+              myChart2 = echarts.init(document.getElementById('score2'));
+              var option = {
+                  title : {
+                    text : '分数详情统计',
+                    subtext : '',
+                    x : 'center'
+                  },
+                  tooltip : {
+                    trigger : 'item',
+                    formatter : "{a} <br/>{b} : {c} ({d}%)"
+                  },
+                  legend : {
+                    orient : 'vertical',
+                    x : 'left',
+                    data : ['不及格', '及格', '良', '优']
+                  },
+                  calculable : true,
+                  series : [{
+                    name : '成绩等级',
+                    type : 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+//                    radius : ['50%', '70%'],
+//                    center : ['50%', 225],
+                    data : studentPieData
                   }]
-                }]
-              },
-              option2 = {
-                tooltip : {
-                  trigger : 'axis',
-                  axisPointer : {
-                    type : 'shadow'
-                  }
                 },
-                legend : {
-                  data : ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-                },
-                toolbox : {
-                  show : true,
-                  orient : 'vertical',
-                  y : 'center',
-                  feature : {
-                    mark : {
-                      show : true
-                    },
-                    magicType : {
-                      show : true,
-                      type : ['line', 'bar', 'stack', 'tiled']
-                    },
-                    restore : {
-                      show : true
-                    },
-                    saveAsImage : {
+                option2 = {
+                  tooltip : {
+                    trigger : 'axis',
+                    axisPointer : {
+                      type : 'shadow'
+                    }
+                  },
+                  legend : {
+                    data : ['此分数区间的人数']
+                  },
+                  toolbox : {
+                    show : true,
+                    orient : 'vertical',
+                    y : 'center',
+                    feature : {
+                      mark : {
+                        show : true
+                      },
+                      magicType : {
+                        show : true,
+                        type : ['line', 'bar', 'stack', 'tiled']
+                      },
+                      restore : {
+                        show : true
+                      },
+                      saveAsImage : {
+                        show : true
+                      }
+                    }
+                  },
+                  calculable : true,
+                  xAxis : [{
+                    type : 'category',
+                    data : ['60', '60-79', '80-89', '90-100']
+                  }],
+                  yAxis : [{
+                    type : 'value',
+                    splitArea : {
                       show : true
                     }
-                  }
-                },
-                calculable : true,
-                xAxis : [{
-                  type : 'category',
-                  data : ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                }],
-                yAxis : [{
-                  type : 'value',
-                  splitArea : {
-                    show : true
-                  }
-                }],
-                grid : {
-                  x2 : 40
-                },
-                series : [{
-                  name : '直接访问',
-                  type : 'bar',
-                  stack : '总量',
-                  data : [320, 332, 301, 334, 390, 330, 320]
-                }, {
-                  name : '邮件营销',
-                  type : 'bar',
-                  stack : '总量',
-                  data : [120, 132, 101, 134, 90, 230, 210]
-                }, {
-                  name : '联盟广告',
-                  type : 'bar',
-                  stack : '总量',
-                  data : [220, 182, 191, 234, 290, 330, 310]
-                }, {
-                  name : '视频广告',
-                  type : 'bar',
-                  stack : '总量',
-                  data : [150, 232, 201, 154, 190, 330, 410]
-                }, {
-                  name : '搜索引擎',
-                  type : 'bar',
-                  stack : '总量',
-                  data : [820, 932, 901, 934, 1290, 1330, 1320]
-                }]
-              };
-            myChart.setOption(option);
-            myChart2.setOption(option2);
-            myChart.connect(myChart2);
-            myChart2.connect(myChart);
-          };
+                  }],
+                  grid : {
+                    x2 : 40
+                  },
+                  series : [{
+                    name : '此分数区间的人数',
+                    type : 'bar',
+                    stack : '总量',
+                    data : studentBarData
+                  }]
+                };
+              myChart.setOption(option);
+              myChart2.setOption(option2);
+              myChart.connect(myChart2);
+              myChart2.connect(myChart);
+
+              $window.onresize = function() {
+                myChart.resize();
+                myChart2.resize();
+              }
+            };
           $timeout(addActiveFun, 500);
-          $timeout(function() {
-            window.onresize = function() {
-              myChart.resize();
-              myChart2.resize();
-            }
-          }, 200);
         };
 
         /**

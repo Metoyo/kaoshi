@@ -32,7 +32,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             qryKnowledge = '', //定义一个空的查询知识点的url
             selectZsd = [],//定义一个选中知识点的变量（数组)
             selectZsdName = [],//定义一个选中知识点的变量的名称（数组)
-            timuleixing_id = '', //用于根据题目类型查询题目的字符串
+            tixing_id = '', //用于根据题型id查询题目的字符串
             nandu_id = '', //用于根据难度查询题目的字符串
             zhishidian_id = '', //用于根据知识点查询题目的字符串
 
@@ -438,7 +438,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var qryTestFun = function(){
             $scope.loadingImgShow = true; //zj_testList.html
-            var qrytimuliebiao = qrytimuliebiaoBase + '&timuleixing_id=' + timuleixing_id +
+            var qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id +
               '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
             pageArr = [];
@@ -538,11 +538,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $scope.getTiXingId = function(qrytxId){
             if(qrytxId >= 1){
-              timuleixing_id = qrytxId;
+              tixing_id = qrytxId;
               $scope.txSelectenIdx = qrytxId;
             }
             else{
-              timuleixing_id = '';
+              tixing_id = '';
               $scope.txSelectenIdx = 0;
             }
             qryTestFun();

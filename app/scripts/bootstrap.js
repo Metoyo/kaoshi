@@ -11,6 +11,7 @@ require.config({
     underscore: '../../bower_components/underscore/underscore',
     charts: 'http://echarts.baidu.com/build/echarts-plain'
 
+
 //    angular: '../../bower_components/angular/angular.min',
 //    angularRoute: '../../bower_components/angular-route/angular-route.min',
 //    angularCookies: '../../bower_components/angular-cookies/angular-cookies.min',
@@ -18,7 +19,8 @@ require.config({
 //    angularResource: '../../bower_components/angular-resource/angular-resource.min',
 //    angularMocks: '../../bower_components/angular-mocks/angular-mocks',
 //    jquery: '../../bower_components/jquery/jquery.min',
-//    underscore: '../../bower_components/underscore/underscore.min'
+//    underscore: '../../bower_components/underscore/underscore.min',
+//    charts: 'http://echarts.baidu.com/build/echarts-plain'
   },
   shim: {
     'angular' : {'exports' : 'angular'},
@@ -29,6 +31,10 @@ require.config({
     'angularMocks': {
       deps:['angular'],
       'exports':'angular.mock'
+    },
+    zrender: {
+      deps:['underscore'],
+      'exports':'zrender'
     }
   },
   priority: [

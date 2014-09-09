@@ -5061,6 +5061,9 @@ body {
 .wp100 {
   width: 100%; }
 
+.wp110 {
+  width: 110px; }
+
 .mt5 {
   margin-top: 5px; }
 
@@ -7093,7 +7096,7 @@ a.add-btn:hover span {
   background-color: #428bca;
   color: #fff; }
 .kaowuWrapper .advanced-set a {
-  margin-right: 15; }
+  margin-right: 15px; }
 
 .tongjiWrapper .tj-btn-box {
   width: 100%;
@@ -7147,6 +7150,23 @@ a.add-btn:hover span {
     position: absolute; }
   .tongjiWrapper .answer-cont .daAnBox {
     margin-left: 45px; }
+.tongjiWrapper .chart-wrap {
+  position: relative;
+  width: 100%; }
+  .tongjiWrapper .chart-wrap .chart-box {
+    width: 48%;
+    height: 400px;
+    float: left; }
+  .tongjiWrapper .chart-wrap .chart-box-right {
+    float: right; }
+  .tongjiWrapper .chart-wrap .avg-score {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    left: 50%;
+    margin-left: -50px; }
+    .tongjiWrapper .chart-wrap .avg-score p {
+      font-size: 42px; }
 
 .markItUp * {
   margin: 0px;

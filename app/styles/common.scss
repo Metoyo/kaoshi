@@ -67,6 +67,9 @@ body {
 .wp100 {
   @include width(100%);
 }
+.wp110 {
+ width: 110px;
+}
 .mt5 {
   margin-top: 5px;
 }
@@ -2744,6 +2747,28 @@ a.add-btn:hover span {
     }
     .daAnBox {
       margin-left: 45px;
+    }
+  }
+  .chart-wrap{
+    position: relative;
+    width: 100%;
+    .chart-box{
+      width: 48%;
+      height: 400px;
+      float: left;
+    }
+    .chart-box-right{
+      float: right;
+    }
+    .avg-score{
+      position: absolute;
+      text-align: center;
+      width: 100px;
+      left: 50%;
+      margin-left: -50px;
+      p{
+        font-size: 42px;
+      }
     }
   }
 }
