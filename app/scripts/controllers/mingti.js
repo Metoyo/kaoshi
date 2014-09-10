@@ -36,6 +36,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           nandu_id = '', //用于根据难度查询题目的字符串
           zhishidian_id = '', //用于根据知识点查询题目的字符串
           checkSchoolTiKu = caozuoyuan, //查看学校题库需要传的参数
+          zsdgZsdArr = [], //存放所有知识大纲知识点的数组
           qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题库
           qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
@@ -130,6 +131,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $http.get(qryDgUrl).success(function(data){
           var newDgList = [];
+            zsdgZsdArr = [];
+          //得到知识大纲知识点的递归函数
+          function _do(item) {
+            zsdgZsdArr.push(item.ZHISHIDIAN_ID);
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              _.each(item.ZIJIEDIAN, _do);
+            }
+          }
           if(data.length){
             _.each(data, function(dg, idx, lst){
               if(dg.ZHUANGTAI2 == 2){
@@ -142,6 +151,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.get(qryKnowledge).success(function(data){
               if(data.length){
                 $scope.kowledgeList = data;
+                //得到知识大纲知识点id的函数
+                _.each(data, _do);
+                //查询题目
+                qryTestFun();
               }
               else{
                 alertInfFun('err', '查询大纲失败！错误信息为：' + data.error); // '查询大纲失败！错误信息为：' + data.error
@@ -289,10 +302,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         var qryTestFun = function(){
           $scope.loadingImgShow = true; //testList.html loading
-          var qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-            + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
+          var qrytimuliebiao; //查询题目列表的url
           tiMuIdArr = [];
           pageArr = [];
+          if(zhishidian_id){
+            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
+              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
+          }
+          else{
+            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
+              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
+          }
           //查询题库
           $http.get(qryTiKuUrl).success(function(tiku){
             if(tiku.length){
@@ -314,6 +334,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.getThisPageData();
                 }
                 else{
+                  $scope.timudetails = '';
                   alertInfFun('err', '没有相应的题目！'); //
                   $scope.loadingImgShow = false; //testList.html loading
                 }
@@ -325,7 +346,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
         };
-        qryTestFun(caozuoyuan);
 
         /**
          * 分页的代码

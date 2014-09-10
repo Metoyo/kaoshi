@@ -174,7 +174,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               if(ksdtl.length){
                 $scope.loadingImgShow = false; //kaoShiList.html
                 $scope.kaoshiList = ksdtl;
-                console.log($scope.kaoshiList);
               }
               else{
                 alertInfFun('pmt', '没有相关的考试！');
@@ -224,6 +223,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 isDeleteKaoShi = false;//是否为删除考试
               }
               else{
+                $scope.kaoshiList = '';
                 $scope.txTpl = 'views/partials/kaoShiList.html';
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
