@@ -157,7 +157,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
             qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan, //更新选题规则使用次数
             zuJuanRuleStr = '', //存放组卷规则的字符串，有json数据格式转化而来
             isComeFromRuleList = false, //是否由规则列表点进去的
-            comeFromRuleListData = ''; //存放已选组卷规则的变量
+            comeFromRuleListData = '', //存放已选组卷规则的变量
+            zsdgZsdArr = []; //存放所有知识大纲知识点的数组
 
 
           /**
@@ -206,6 +207,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $http.get(qryDgUrl).success(function(data){
             var newDgList = [];
+            //得到知识大纲知识点的递归函数
+            function _do(item) {
+              zsdgZsdArr.push(item.ZHISHIDIAN_ID);
+              if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+                _.each(item.ZIJIEDIAN, _do);
+              }
+            }
             if(data.length){
               _.each(data, function(dg, idx, lst){
                 if(dg.ZHUANGTAI2 == 2){
@@ -218,6 +226,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $http.get(qryKnowledge).success(function(data){
                 if(data.length){
                   $scope.kowledgeList = data;
+                  //得到知识大纲知识点id的函数
+                  _.each(data, _do);
                 }
                 else{
                   alertInfFun('err', data.error);
@@ -442,7 +452,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
               '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
             tiMuIdArr = [];
             pageArr = [];
-
+            if(zhishidian_id){
+              qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id +
+                '&nandu_id=' + nandu_id + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
+            }
+            else{
+              qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id +
+              '&nandu_id=' + nandu_id + '&zhishidian_id=' + zsdgZsdArr.join(); //查询题目列表的url
+            }
             $http.get(qrytimuliebiao).success(function(data){
               if(data.length){
                 $scope.testListId = data;
@@ -459,6 +476,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.getThisPageData();
               }
               else{
+                $scope.timudetails = '';
                 alertInfFun('err', '没有相关试题信息！');
                 $scope.loadingImgShow = false; //zj_testList.html
               }

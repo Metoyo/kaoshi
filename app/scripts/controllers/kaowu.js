@@ -1015,10 +1015,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            */
           $scope.saveKaoShi = function(){
             if($scope.paperDetail.SHIJUAN.DATIKA.length){
-              var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
-              if(saveKaoConfirm){
-                $scope.downloadDaTiKa(true);
-              }
+//              var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
+//              if(saveKaoConfirm){
+//                $scope.downloadDaTiKa(true);
+//              }
               if($('.start-date').val()){
                 $scope.startDateIsNull = false;
                 var inputStartDate = $('.start-date').val(),
