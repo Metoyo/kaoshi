@@ -106,6 +106,9 @@ body {
 .cInfo{
   color: #46b8da;
 }
+.tagnCent{
+  text-align: center;
+}
 .btn {
   padding: 3px 12px;
 }
@@ -2696,6 +2699,9 @@ a.add-btn:hover span {
     .btn{
       margin-top: 14px;
     }
+    .tjt-avg-score{
+      font-size: 14px;
+    }
   }
   .myAvgScore{
     text-align: center;
@@ -2750,21 +2756,12 @@ a.add-btn:hover span {
     }
   }
   .chart-wrap{
-    position: relative;
-    width: 100%;
-    .chart-box{
-      width: 48%;
-      height: 400px;
-      float: left;
-    }
-    .chart-box-right{
-      float: right;
-    }
+
     .avg-score{
       position: absolute;
       text-align: center;
       width: 100px;
-      left: 50%;
+      left: 46%;
       margin-left: -50px;
       p{
         font-size: 42px;

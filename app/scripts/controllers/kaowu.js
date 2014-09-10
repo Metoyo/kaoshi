@@ -1106,7 +1106,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               count = 0,
               kaoShiIdsLen;
             _.each($scope.kaoshiList, function(ks, idx, lst){
-              if(ks.ZHUANGTAI == 3){
+              if(ks.ZHUANGTAI == 4){
                 kaoShiIds.push(ks.KAOSHI_ID);
               }
             });

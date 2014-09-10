@@ -5100,6 +5100,9 @@ body {
 .cInfo {
   color: #46b8da; }
 
+.tagnCent {
+  text-align: center; }
+
 .btn {
   padding: 3px 12px; }
 
@@ -7114,6 +7117,8 @@ a.add-btn:hover span {
   margin: 0; }
   .tongjiWrapper .tj-title .btn {
     margin-top: 14px; }
+  .tongjiWrapper .tj-title .tjt-avg-score {
+    font-size: 14px; }
 .tongjiWrapper .myAvgScore {
   text-align: center;
   font-size: 20px; }
@@ -7150,23 +7155,14 @@ a.add-btn:hover span {
     position: absolute; }
   .tongjiWrapper .answer-cont .daAnBox {
     margin-left: 45px; }
-.tongjiWrapper .chart-wrap {
-  position: relative;
-  width: 100%; }
-  .tongjiWrapper .chart-wrap .chart-box {
-    width: 48%;
-    height: 400px;
-    float: left; }
-  .tongjiWrapper .chart-wrap .chart-box-right {
-    float: right; }
-  .tongjiWrapper .chart-wrap .avg-score {
-    position: absolute;
-    text-align: center;
-    width: 100px;
-    left: 50%;
-    margin-left: -50px; }
-    .tongjiWrapper .chart-wrap .avg-score p {
-      font-size: 42px; }
+.tongjiWrapper .chart-wrap .avg-score {
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  left: 46%;
+  margin-left: -50px; }
+  .tongjiWrapper .chart-wrap .avg-score p {
+    font-size: 42px; }
 
 .markItUp * {
   margin: 0px;

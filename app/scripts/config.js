@@ -80,5 +80,6 @@ define( "config", [], function () {
       '作文题','证明题','作图题','解答题'
     ],
     uploadFileSizeLimit: 2097152 //上传文件的大小限制2MB
+//    uploadCommand: git push edu master && git push bt master
   };
 });

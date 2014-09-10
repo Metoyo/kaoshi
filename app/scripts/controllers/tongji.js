@@ -463,100 +463,108 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
+         * 统计函数，饼图加柱状图
+         */
+        var chartFunPieAndBar = function(cont1, cont2){
+          var myChart = cont1,
+            myChart2 = cont2;
+          var option = {
+              title : {
+                text : '分数详情统计',
+                subtext : '',
+                x : 'center'
+              },
+              tooltip : {
+                trigger : 'item',
+                formatter : "{a} <br/>{b} : {c} ({d}%)"
+              },
+              legend : {
+                orient : 'vertical',
+                x : 'left',
+                data : ['不及格', '及格', '良', '优']
+              },
+              calculable : true,
+              series : [{
+                name : '成绩等级',
+                type : 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data : studentPieData
+              }]
+            },
+            option2 = {
+              tooltip : {
+                trigger : 'axis',
+                axisPointer : {
+                  type : 'shadow'
+                }
+              },
+              legend : {
+                data : ['此分数区间的人数']
+              },
+              toolbox : {
+                show : true,
+                orient : 'vertical',
+                y : 'center',
+                feature : {
+                  mark : {
+                    show : true
+                  },
+                  magicType : {
+                    show : true,
+                    type : ['line', 'bar', 'stack', 'tiled']
+                  },
+                  restore : {
+                    show : true
+                  },
+                  saveAsImage : {
+                    show : true
+                  }
+                }
+              },
+              calculable : true,
+              xAxis : [{
+                type : 'category',
+                data : ['60', '60-79', '80-89', '90-100']
+              }],
+              yAxis : [{
+                type : 'value',
+                splitArea : {
+                  show : true
+                }
+              }],
+              grid : {
+                x2 : 40
+              },
+              series : [{
+                name : '此分数区间的人数',
+                type : 'bar',
+                stack : '总量',
+                data : studentBarData
+              }]
+            };
+          myChart.setOption(option);
+          myChart2.setOption(option2);
+          myChart.connect(myChart2);
+          myChart2.connect(myChart);
+          $timeout(function (){
+            window.onresize = function () {
+              myChart.resize();
+              myChart2.resize();
+            }
+          },200);
+        };
+
+        /**
          * 分数统计，chart形状
          */
         $scope.showScoreChart = function(){
           $scope.tjSubTpl = 'views/partials/tj_chart_score.html';
-          var myChart, myChart2,
+          var cont1, cont2,
             addActiveFun = function() {
-              myChart = echarts.init(document.getElementById('score1'));
-              myChart2 = echarts.init(document.getElementById('score2'));
-              var option = {
-                  title : {
-                    text : '分数详情统计',
-                    subtext : '',
-                    x : 'center'
-                  },
-                  tooltip : {
-                    trigger : 'item',
-                    formatter : "{a} <br/>{b} : {c} ({d}%)"
-                  },
-                  legend : {
-                    orient : 'vertical',
-                    x : 'left',
-                    data : ['不及格', '及格', '良', '优']
-                  },
-                  calculable : true,
-                  series : [{
-                    name : '成绩等级',
-                    type : 'pie',
-                    radius : '55%',
-                    center: ['50%', '60%'],
-//                    radius : ['50%', '70%'],
-//                    center : ['50%', 225],
-                    data : studentPieData
-                  }]
-                },
-                option2 = {
-                  tooltip : {
-                    trigger : 'axis',
-                    axisPointer : {
-                      type : 'shadow'
-                    }
-                  },
-                  legend : {
-                    data : ['此分数区间的人数']
-                  },
-                  toolbox : {
-                    show : true,
-                    orient : 'vertical',
-                    y : 'center',
-                    feature : {
-                      mark : {
-                        show : true
-                      },
-                      magicType : {
-                        show : true,
-                        type : ['line', 'bar', 'stack', 'tiled']
-                      },
-                      restore : {
-                        show : true
-                      },
-                      saveAsImage : {
-                        show : true
-                      }
-                    }
-                  },
-                  calculable : true,
-                  xAxis : [{
-                    type : 'category',
-                    data : ['60', '60-79', '80-89', '90-100']
-                  }],
-                  yAxis : [{
-                    type : 'value',
-                    splitArea : {
-                      show : true
-                    }
-                  }],
-                  grid : {
-                    x2 : 40
-                  },
-                  series : [{
-                    name : '此分数区间的人数',
-                    type : 'bar',
-                    stack : '总量',
-                    data : studentBarData
-                  }]
-                };
-              myChart.setOption(option);
-              myChart2.setOption(option2);
-              myChart.connect(myChart2);
-              myChart2.connect(myChart);
-
-              $window.onresize = function() {
-                myChart.resize();
-                myChart2.resize();
-              }
+              cont1 = echarts.init(document.getElementById('score1'));
+              cont2 = echarts.init(document.getElementById('score2'));
+              chartFunPieAndBar(cont1, cont2);
             };
           $timeout(addActiveFun, 500);
         };
