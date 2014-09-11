@@ -10,20 +10,15 @@
         <p ng-bind="myAvgScore"></p>
     </div>
 </div>
-<ul class="list-inline tagnCent wp100 pull-left mt15">
-    <li>
-        <a href="javascript:void(0)">考试1</a>
+<ul class="list-inline tagnCent wp100 pull-left mt15" ng-show="tjChartNav[0].KAOSHI_ID">
+    <li ng-repeat="tjdata in tjChartNav">
+        <a href="javascript:void(0)" ng-bind="tjdata.KAOSHI_MINGCHENG" ng-class="{active: activeIdx == $index}"
+           ng-click="showDiffScoreChart(tjdata.KAOSHI_ID, 'ksId')"></a>
     </li>
-    <li>
-        <a href="javascript:void(0)">考试2</a>
-    </li>
-    <li>
-        <a href="javascript:void(0)">考试3</a>
-    </li>
-    <li>
-        <a href="javascript:void(0)">考试4</a>
-    </li>
-    <li>
-        <a href="javascript:void(0)">考试5</a>
+</ul>
+<ul class="list-inline tagnCent wp100 pull-left mt15" ng-show="tjChartNav[0].SHIJUAN_ID">
+    <li ng-repeat="tjdata in tjChartNav">
+        <a href="javascript:void(0)" ng-bind="tjdata.SHIJUAN_MINGCHENG" ng-class="{active: activeIdx == $index}"
+           ng-click="showDiffScoreChart(tjdata.SHIJUAN_ID, 'sjId')"></a>
     </li>
 </ul>

@@ -328,7 +328,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   for(var i = 1; i <= totalPage; i++){
                     pageArr.push(i);
                   }
-                  console.log(pageArr);
                   $scope.lastPageNum = totalPage; //最后一页的数值
                   //查询数据开始
                   $scope.getThisPageData();

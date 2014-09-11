@@ -1040,9 +1040,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                       if(data.result){
                         $scope.showKaoShiList();
                         alertInfFun('suc', '考试添加成功！');
-                        $('.messageTd').css('display', 'none').html('');
-                        $('.mesSuccess').css('display', 'block').html(); // mesPrompt mesError
-                        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
                       }
                       else{
                         alertInfFun('err', data.error);

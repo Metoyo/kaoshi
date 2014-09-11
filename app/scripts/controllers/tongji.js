@@ -39,7 +39,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjNamePara = '', //存放统计名称
           studentPieData = [], //饼状图学生信息
           studentBarData = []; //柱状图学生信息
-
+        $scope.tjData = [];
 
         /**
          * 信息提示函数
@@ -124,7 +124,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 考试统计详情,查询考生
          */
         $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName){
-          var queryKaoSheng, totalScore, avgScore;
+          var queryKaoSheng, totalScore, avgScore,
+            targetIdx, tjDataLen;
           tjDataPara = '';
           tjIdType = '';
           tjNamePara = '';
@@ -149,9 +150,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           studentBarData = [0, 0, 0, 0];
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
+
           }
           if(idType == 'sjId'){
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
+
           }
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
@@ -188,6 +191,79 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               alertInfFun('err', data.error);
             }
           });
+          //统计下面的5条数据
+          $scope.tjChartNav = [];
+          tjDataLen = $scope.tjData.length;
+          if(tjDataLen){
+            if(comeForm == 'ksList'){
+              if(idType == 'ksId'){
+                _.each($scope.tjData, function(tjd, idx, lst){
+                  if(tjd.KAOSHI_ID == id){
+                    targetIdx = idx;
+                  }
+                });
+              }
+              else{
+                _.each($scope.tjData, function(tjd, idx, lst){
+                  _.each(tjd.SHIJUAN, function(sj){
+                    if(sj.SHIJUAN_ID == id){
+                      targetIdx = idx;
+                    }
+                  });
+                });
+              }
+            }
+            if(comeForm == 'sjList'){
+              _.each($scope.tjData, function(tjd, idx, lst){
+                if(tjd.SHIJUAN_ID == id){
+                  targetIdx = idx;
+                }
+              });
+            }
+            if(tjDataLen <= 5){
+              $scope.tjChartNav = $scope.tjData.slice(0);
+            }
+            if(tjDataLen > 5){
+              if(targetIdx <= 2){
+                $scope.tjChartNav = $scope.tjData.slice(0, 5);
+              }
+              else if(targetIdx >= tjDataLen - 3){
+                $scope.tjChartNav = $scope.tjData.slice(tjDataLen - 5);
+              }
+              else{
+                $scope.tjChartNav = $scope.tjData.slice(targetIdx - 2, targetIdx + 3);
+              }
+            }
+            //为了class active
+            if(comeForm == 'ksList'){
+              if(idType == 'ksId'){
+                _.each($scope.tjChartNav, function(tjd, idx, lst){
+                  if(tjd.KAOSHI_ID == id){
+                    $scope.activeIdx = idx;
+                  }
+                });
+              }
+              else{
+                _.each($scope.tjChartNav, function(tjd, idx, lst){
+                  _.each(tjd.SHIJUAN, function(sj){
+                    if(sj.SHIJUAN_ID == id){
+                      $scope.activeIdx = idx;
+                    }
+                  });
+                });
+              }
+            }
+            if(comeForm == 'sjList'){
+              _.each($scope.tjChartNav, function(tjd, idx, lst){
+                if(tjd.SHIJUAN_ID == id){
+                  $scope.activeIdx = idx;
+                }
+              });
+            }
+          }
+          else{
+            alertInfFun('err', '没有考试数据！');
+          }
           $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
           $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
@@ -426,11 +502,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.lastKaoShiTongJi = function(){
           if(tjKaoShiData.length){
+            $scope.tjData = tjKaoShiData.slice(0, 10);
             $scope.tjShowStudentInfo(tjKaoShiData[0].KAOSHI_ID, 'ksId', 'ksList', tjKaoShiData[0].KAOSHI_MINGCHENG);
           }
           else{
             $http.get(queryKaoShi).success(function(data){
               if(!data.error){
+                $scope.tjData = data.slice(0, 10);
                 $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList', data[0].KAOSHI_MINGCHENG);
               }
               else{
@@ -445,6 +523,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.lastShiJuanTongJi = function(){
           if(tjShiJuanData.length){
+            $scope.tjData = tjShiJuanData.slice(0, 10);
             $scope.tjShowStudentInfo(tjShiJuanData[0].SHIJUAN_ID, 'sjId', 'sjList', tjShiJuanData[0].SHIJUAN_MINGCHENG);
           }
           else{
@@ -453,6 +532,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 data = _.sortBy(data, function(sj){
                   return sj.LAST_TIME;
                 }).reverse();
+                $scope.tjData = data.slice(0, 10);
                 $scope.tjShowStudentInfo(data[0].SHIJUAN_ID, 'sjId', 'sjList', data[0].SHIJUAN_MINGCHENG);
               }
               else{
@@ -525,7 +605,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               calculable : true,
               xAxis : [{
                 type : 'category',
-                data : ['60', '60-79', '80-89', '90-100']
+                data : ['0-59', '60-79', '80-89', '90-100']
               }],
               yAxis : [{
                 type : 'value',
@@ -567,6 +647,81 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               chartFunPieAndBar(cont1, cont2);
             };
           $timeout(addActiveFun, 500);
+        };
+
+        /**
+         * 点击图形下面的考试或试卷名称，显示相应的统计信息
+         */
+        $scope.showDiffScoreChart = function(id, idType){
+          var queryKaoSheng, totalScore, avgScore, cont1, cont2;
+          studentPieData = [ //饼状图学生信息
+            {
+              name : '不及格',
+              value : 0
+            },
+            {
+              name : '及格',
+              value : 0
+            },
+            {
+              name : '良',
+              value : 0
+            },
+            {
+              name : '优',
+              value : 0
+            }
+          ];
+          studentBarData = [0, 0, 0, 0];
+          if(idType == 'ksId'){
+            queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
+            _.each($scope.tjChartNav, function(tjd, idx, lst){
+              if(tjd.KAOSHI_ID == id){
+                $scope.activeIdx = idx;
+              }
+            });
+          }
+          if(idType == 'sjId'){
+            queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
+            _.each($scope.tjChartNav, function(tjd, idx, lst){
+              if(tjd.SHIJUAN_ID == id){
+                $scope.activeIdx = idx;
+              }
+            });
+          }
+          $http.get(queryKaoSheng).success(function(data){
+            if(!data.error){
+              //求平均分
+              totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
+              avgScore = totalScore/data.length;
+              $scope.myAvgScore = avgScore.toFixed(1);
+              //分数详细统计用到的数据
+              _.each(data, function(stuScore, idx, lst){
+                if(stuScore.ZUIHOU_PINGFEN < 60){
+                  studentPieData[0].value ++;
+                  studentBarData[0] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 60 && stuScore.ZUIHOU_PINGFEN < 80){
+                  studentPieData[1].value ++;
+                  studentBarData[1] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 80 && stuScore.ZUIHOU_PINGFEN < 90){
+                  studentPieData[2].value ++;
+                  studentBarData[2] ++;
+                }
+                if(stuScore.ZUIHOU_PINGFEN >= 90){
+                  studentPieData[3].value ++;
+                  studentBarData[3] ++;
+                }
+              });
+              cont1 = echarts.init(document.getElementById('score1'));
+              cont2 = echarts.init(document.getElementById('score2'));
+              chartFunPieAndBar(cont1, cont2);
+            }
+            else{
+              alertInfFun('err', data.error);
+            }
+          });
         };
 
         /**
