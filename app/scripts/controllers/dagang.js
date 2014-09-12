@@ -234,7 +234,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 修改默认大纲//
+         * 修改默认大纲
          */
         $scope.makeDaGangAsDefault = function(dgId){
           var defaultDg = {

@@ -151,6 +151,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               kaoshi_id,
               currentPage = pgNum ? pgNum : 0,
               qrySelectKaoShisUrl;
+            $scope.kaoShiPages = [];
             //得到分页数组的代码
             var currentKsPageVal = $scope.currentKsPageVal = pg ? pg : 1;
             if(totalKaoShiPage <= paginationLength){
@@ -188,7 +189,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.showKaoShiList = function(zt){
             var ztArr = [],
               qryKaoShiList;
-            zt = zt || 'all';
+            zt = zt || 'ing';
             $scope.loadingImgShow = true; //kaoShiList.html
             kaoShiPageArr = []; //定义考试页码数组
             kaoShiIdArrRev = []; //存放所有考试ID的数组
@@ -198,7 +199,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 ztArr = [];
                 break;
               case 'ing':
-                ztArr = [1, 2, 3, 4];
+                ztArr = [0, 1, 2, 3, 4];
                 break;
               case 'done':
                 ztArr = [5, 6];
@@ -224,6 +225,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               }
               else{
                 $scope.kaoshiList = '';
+                kaoShiPageArr = [];
+                $scope.kaoShiPages = [];
+                $scope.kaoShiListIds = [];
+                $scope.kwParams.ksListZt = '';
                 $scope.txTpl = 'views/partials/kaoShiList.html';
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
@@ -1148,7 +1153,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             if(confirmInfo){
               $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                 if(data.result){
-                  $scope.showKaoShiList();
+                  $scope.showKaoShiList($scope.kwParams.ksListZt);
                   alertInfFun('suc', '考试删除成功！');
                 }
                 else{
