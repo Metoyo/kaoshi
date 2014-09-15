@@ -7132,7 +7132,8 @@ a.add-btn:hover span {
 .tongjiWrapper .tj-table-detail th, .tongjiWrapper .tj-table-detail td {
   border: 1px solid #cfcfcf; }
 .tongjiWrapper .tj-table-detail th {
-  background-color: #f0f0f0; }
+  background-color: #f0f0f0;
+  cursor: pointer; }
 .tongjiWrapper .tm-err-rate {
   background-color: #f5f5f5;
   padding: 10px;

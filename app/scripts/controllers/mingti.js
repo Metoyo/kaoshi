@@ -1574,6 +1574,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.$apply(function () {
             $scope.uploadFiles.push(args.file);
           });
+          console.log($scope.uploadFiles);
         });
 
         //添加文件

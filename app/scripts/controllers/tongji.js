@@ -38,8 +38,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjIdType = '', //存放ID类型
           tjNamePara = '', //存放统计名称
           studentPieData = [], //饼状图学生信息
-          studentBarData = []; //柱状图学生信息
+          studentBarData = [], //柱状图学生信息
+          exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel',
+          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
+
         $scope.tjData = [];
+        $scope.tjParas = { //统计用到的参数
+          stuIdCount: true,
+          nameCount: true,
+          classCount: true,
+          scoreCount: true
+        };
 
         /**
          * 信息提示函数
@@ -126,6 +135,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName){
           var queryKaoSheng, totalScore, avgScore,
             targetIdx, tjDataLen;
+          $scope.tjParas = { //统计用到的参数
+            stuIdCount: true,
+            nameCount: true,
+            classCount: true,
+            scoreCount: true
+          };
           tjDataPara = '';
           tjIdType = '';
           tjNamePara = '';
@@ -150,11 +165,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           studentBarData = [0, 0, 0, 0];
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
-
           }
           if(idType == 'sjId'){
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
-
           }
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
@@ -163,6 +176,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tjDataPara = id;
               tjIdType = idType;
               tjNamePara = tjName;
+              console.log(data);
               //求平均分
               totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
               avgScore = totalScore/data.length;
@@ -731,5 +745,98 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $('.reloadMath').click();
         });
 
+        /**
+         * 数据排序
+         */
+        $scope.ksSortDataFun = function(sortItem){
+          switch (sortItem){
+            case 'stuId' : //学号排序
+              if($scope.tjParas.stuIdCount){
+                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                  return stu.YONGHUHAO;
+                });
+                $scope.tjParas.stuIdCount = false;
+              }
+              else{
+                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                  return stu.YONGHUHAO;
+                }).reverse();
+                $scope.tjParas.stuIdCount = true;
+              }
+              break;
+            case 'name' : //姓名排序，中文
+              if($scope.tjParas.nameCount){
+                $scope.tjKaoShengDetail.sort(function(a,b){
+                  return a.XINGMING.localeCompare(b.XINGMING);
+                });
+                $scope.tjParas.nameCount = false;
+              }
+              else{
+                $scope.tjKaoShengDetail.sort(function(a,b){
+                  return a.XINGMING.localeCompare(b.XINGMING);
+                }).reverse();
+                $scope.tjParas.nameCount = true;
+              }
+              break;
+            case 'class' : //班级排序，中文
+              if($scope.tjParas.classCount){
+                $scope.tjKaoShengDetail.sort(function(a,b){
+                  return a.BANJI.localeCompare(b.BANJI);
+                });
+                $scope.tjParas.classCount = false;
+              }
+              else{
+                $scope.tjKaoShengDetail.sort(function(a,b){
+                  return a.BANJI.localeCompare(b.BANJI);
+                }).reverse();
+                $scope.tjParas.classCount = true;
+              }
+              break;
+            case 'score' : //分数排序
+              if($scope.tjParas.scoreCount){
+                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                  return stu.ZUIHOU_PINGFEN;
+                });
+                $scope.tjParas.scoreCount = false;
+              }
+              else{
+                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                  return stu.ZUIHOU_PINGFEN;
+                }).reverse();
+                $scope.tjParas.scoreCount = true;
+              }
+              break;
+          }
+        };
+
+        /**
+         * 导出学生
+         */
+        $scope.exportKsInfo = function(){
+          var ksData = {
+              token: token,
+              sheetName: $scope.tjItemName + '考生信息',
+              data: ''
+            },
+            ksArr = [];
+          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '成绩'});
+          _.each($scope.tjKaoShengDetail, function(ks){
+            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUIHOU_PINGFEN: ''};
+            ksObj.YONGHUHAO = ks.YONGHUHAO;
+            ksObj.XINGMING = ks.XINGMING;
+            ksObj.BANJI = ks.BANJI;
+            ksObj.ZUIHOU_PINGFEN = ks.ZUIHOU_PINGFEN;
+            ksArr.push(ksObj);
+          });
+          ksData.data = JSON.stringify(ksArr);
+          $http.post(exportStuInfoUrl, ksData).success(function(data){
+            var downloadTempFile = downloadTempFileBase + data.filename,
+              aLink = document.createElement('a'),
+              evt = document.createEvent("HTMLEvents");
+            evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+            aLink.href = downloadTempFile; //url
+            aLink.dispatchEvent(evt);
+          });
+        };
     }]);
 });

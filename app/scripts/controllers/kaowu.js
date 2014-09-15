@@ -3,8 +3,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
-      .controller('KaowuCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', '$timeout',
-        function ($rootScope, $scope, $location, $http, $q, $timeout) { // 002 开始
+      .controller('KaowuCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', '$timeout', 'Myfileupload',
+        function ($rootScope, $scope, $location, $http, $q, $timeout, Myfileupload) { // 002 开始
           /**
            * 操作title
            */
@@ -64,7 +64,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             kaoChangIdArrRev = [], //存放所有考场ID的数组
             totalKaoChangPage, //符合条件的考场一共有多少页
             xiaFaKaoShiBase = baseKwAPIUrl + 'xiafa_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshiid='; //下发考试
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshiid=', //下发考试
+            uploadKsUrl = baseMtAPIUrl + 'excel_to_json'; //上传考生信息
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -793,55 +794,65 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           /**
            * 文件上传
            */
-          var fileUpload = function(form, action_url, div_id) {
-            var eventHandler, iframe, iframeId;
-            iframe = document.createElement("iframe");
-            iframe.setAttribute("id", "upload_iframe");
-            iframe.setAttribute("name", "upload_iframe");
-            iframe.setAttribute("width", "0");
-            iframe.setAttribute("height", "0");
-            iframe.setAttribute("border", "0");
-            iframe.setAttribute("style", "width: 0; height: 0; border: none;");
-            form.parentNode.appendChild(iframe);
-            window.frames["upload_iframe"].name = "upload_iframe";
-            iframeId = document.getElementById("upload_iframe");
+          //存放上传文件的数组
+          $scope.uploadFiles = [];
 
-            eventHandler = function() {
-              var content;
-              if (iframeId.detachEvent) {
-                iframeId.detachEvent("onload", eventHandler);
-              }
-              else {
-                iframeId.removeEventListener("load", eventHandler, false);
-              }
-              if (iframeId.contentDocument) {
-                content = iframeId.contentDocument.body.innerHTML;
-              }
-              else if (iframeId.contentWindow) {
-                content = iframeId.contentWindow.document.body.innerHTML;
-              }
-              else {
-                if (iframeId.document) {
-                  content = iframeId.document.body.innerHTML;
+          //将选择的文件加入到数组
+          $scope.$on("fileSelected", function (event, args) {
+            $scope.$apply(function () {
+              $scope.uploadFiles.push(args.file);
+            });
+          });
+
+          //添加文件
+          $scope.addMyFile = function(){
+            $('input.addFileBtn').click();
+          };
+
+          //删除选择的文件
+          $scope.deleteSelectFile = function(idx){
+            $scope.uploadFiles.splice(idx, 1);
+          };
+
+          //关闭上传文件弹出层
+          $scope.closeMediaPlugin = function(){
+            $('#mediaPlugin').hide();
+          };
+
+          //保存上传文件
+          $scope.uploadXlsFile = function() {
+            var file = $scope.uploadFiles,
+              fields = [{"name": "token", "data": token}],
+              kaoShengOldArr = [],
+              kaoShengNewArr = [];
+            Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
+              $scope.uploadFileUrl = result.data;
+              $scope.uploadFiles = [];
+              if(result.data.json){
+                console.log(result.data.json);
+                for(var item in result.data.json){
+                  kaoShengOldArr = result.data.json[item];
+                  break;
                 }
+                _.each(kaoShengOldArr, function(ks, idx, list){
+                  var ksObj = {XINGMING: '', YONGHUHAO:'', BANJI: ''};
+                  _.each(ks, function(value, key, list){
+                    switch (key){
+                      case '姓名' :
+                        ksObj.XINGMING = value;
+                        break;
+                      case '学号':
+                        ksObj.YONGHUHAO = value;
+                        break;
+                      case '班级':
+                        ksObj.BANJI = value;
+                    }
+                  });
+                  kaoShengNewArr.push(ksObj);
+                });
+                kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
               }
-              document.getElementById(div_id).innerHTML = content;
-              setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
-              alertInfFun('suc', '导入成功！');
-            };
-
-            if (iframeId.addEventListener) {
-              iframeId.addEventListener("load", eventHandler, true);
-            }
-            if (iframeId.attachEvent) {
-              iframeId.attachEvent("onload", eventHandler);
-            }
-            form.setAttribute("target", "upload_iframe");
-            form.setAttribute("action", action_url);
-            form.setAttribute("method", "post");
-            form.setAttribute("enctype", "multipart/form-data");
-            form.setAttribute("encoding", "multipart/form-data");
-            form.submit();
+            });
           };
 
           /**
@@ -853,81 +864,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             $scope.isUploadDone = false;
             $scope.showImportStuds = false;
             $scope.showListBtn = false;
-          };
-
-          /**
-           * 导入考生
-           */
-          $scope.uploadXlsFile = function(kcId){
-            var uploadDone = false,
-              form = $('#importStudentForm')[0],
-              action_url = '/student_import',
-              div_id = 'upload-indicator';
-            if(kcId){
-              if($('.findFileBtn').val()){
-                var eventHandler, iframe, iframeId;
-                iframe = document.createElement("iframe");
-                iframe.setAttribute("id", "upload_iframe");
-                iframe.setAttribute("name", "upload_iframe");
-                iframe.setAttribute("width", "0");
-                iframe.setAttribute("height", "0");
-                iframe.setAttribute("border", "0");
-                iframe.setAttribute("style", "width: 0; height: 0; border: none;");
-                form.parentNode.appendChild(iframe);
-                window.frames["upload_iframe"].name = "upload_iframe";
-                iframeId = document.getElementById("upload_iframe");
-
-                eventHandler = function() {
-                  var content;
-                  if (iframeId.detachEvent) {
-                    iframeId.detachEvent("onload", eventHandler);
-                  }
-                  else {
-                    iframeId.removeEventListener("load", eventHandler, false);
-                  }
-                  if (iframeId.contentDocument) {
-                    content = iframeId.contentDocument.body.innerHTML;
-                    uploadDone = true;
-                  }
-                  else if (iframeId.contentWindow) {
-                    content = iframeId.contentWindow.document.body.innerHTML;
-                    uploadDone = true;
-                  }
-                  else {
-                    if (iframeId.document) {
-                      content = iframeId.document.body.innerHTML;
-                      uploadDone = true;
-                    }
-                  }
-                  document.getElementById(div_id).innerHTML = content;
-                  if(uploadDone){
-                    kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = JSON.parse($('#upload-indicator pre').html());
-                    setTimeout("iframeId.parentNode.removeChild(document.getElementById('upload_iframe'))", 1000);
-                    $scope.showListBtn = true;
-                    alertInfFun('suc', '导入成功！');
-                  }
-                };
-
-                if (iframeId.addEventListener) {
-                  iframeId.addEventListener("load", eventHandler, true);
-                }
-                if (iframeId.attachEvent) {
-                  iframeId.attachEvent("onload", eventHandler);
-                }
-                form.setAttribute("target", "upload_iframe");
-                form.setAttribute("action", action_url);
-                form.setAttribute("method", "post");
-                form.setAttribute("enctype", "multipart/form-data");
-                form.setAttribute("encoding", "multipart/form-data");
-                form.submit();
-              }
-              else{
-                alertInfFun('pmt', '请选择上传文件！');
-              }
-            }
-            else{
-              alertInfFun('pmt', '请选择考场！');
-            }
           };
 
           /**
@@ -985,7 +921,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             if(studentName.val() && studentID.val()){
               usr.XINGMING = studentName.val();
-              usr.XUEHAO = studentID.val();
+              usr.YONGHUHAO = studentID.val();
               usr.BANJI = studentClass.val();
               kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.push(usr);
               studentName.val('');
@@ -1349,6 +1285,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               }
             });
           };
+
         } // 002 结束
       ]); //controller 结束
   } // 001 结束
