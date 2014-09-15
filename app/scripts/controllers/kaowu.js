@@ -829,7 +829,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.uploadFileUrl = result.data;
               $scope.uploadFiles = [];
               if(result.data.json){
-                console.log(result.data.json);
                 for(var item in result.data.json){
                   kaoShengOldArr = result.data.json[item];
                   break;
@@ -851,6 +850,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                   kaoShengNewArr.push(ksObj);
                 });
                 kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
+                alertInfFun('suc', '上传成功！');
+              }
+              else{
+                alertInfFun('err', result.error);
               }
             });
           };
@@ -961,36 +964,47 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
 //                $scope.downloadDaTiKa(true);
 //              }
               if($('.start-date').val()){
-                $scope.startDateIsNull = false;
-                var inputStartDate = $('.start-date').val(),
-                  startDate = Date.parse(inputStartDate), //开始时间
-                  endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
-                  shijuan_info = { //需要同步的试卷数据格式
-                    token: token,
-                    caozuoyuan: caozuoyuan,
-                    jigouid: jigouid,
-                    lingyuid: lingyuid,
-                    shijuanid: ''
-                  };
-                kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
-                shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
-                $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
-                  if(rst.result){
-                    $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-                      if(data.result){
-                        $scope.showKaoShiList();
-                        alertInfFun('suc', '考试添加成功！');
+                if(kaoshi_data.shuju.KAOCHANG.length){
+                  if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
+                    kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
+                    $scope.startDateIsNull = false;
+                    var inputStartDate = $('.start-date').val(),
+                      startDate = Date.parse(inputStartDate), //开始时间
+                      endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
+                      shijuan_info = { //需要同步的试卷数据格式
+                        token: token,
+                        caozuoyuan: caozuoyuan,
+                        jigouid: jigouid,
+                        lingyuid: lingyuid,
+                        shijuanid: ''
+                      };
+                    kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
+                    kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+                    shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
+                    $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
+                      if(rst.result){
+                        $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+                          if(data.result){
+                            $scope.showKaoShiList();
+                            alertInfFun('suc', '考试添加成功！');
+                          }
+                          else{
+                            alertInfFun('err', data.error);
+                          }
+                        });
                       }
                       else{
-                        alertInfFun('err', data.error);
+                        alertInfFun('err', rst.error);
                       }
                     });
                   }
                   else{
-                    alertInfFun('err', rst.error);
+                    alertInfFun('err', '请添加考生！')
                   }
-                });
+                }
+                else{
+                  alertInfFun('err', '请选择考场！');
+                }
               }
               else{
                 $scope.startDateIsNull = true;
@@ -998,36 +1012,47 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             else{
               if($('.start-date').val()){
-                $scope.startDateIsNull = false;
-                var inputStartDate = $('.start-date').val(),
-                  startDate = Date.parse(inputStartDate), //开始时间
-                  endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
-                  shijuan_info = { //需要同步的试卷数据格式
-                    token: token,
-                    caozuoyuan: caozuoyuan,
-                    jigouid: jigouid,
-                    lingyuid: lingyuid,
-                    shijuanid: ''
-                  };
-                kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
-                shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
-                $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
-                  if(rst.result){
-                    $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-                      if(data.result){
-                        $scope.showKaoShiList();
-                        alertInfFun('suc', '考试添加成功！');
+                if(kaoshi_data.shuju.KAOCHANG.length){
+                  if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
+                    kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
+                    $scope.startDateIsNull = false;
+                    var inputStartDate = $('.start-date').val(),
+                      startDate = Date.parse(inputStartDate), //开始时间
+                      endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
+                      shijuan_info = { //需要同步的试卷数据格式
+                        token: token,
+                        caozuoyuan: caozuoyuan,
+                        jigouid: jigouid,
+                        lingyuid: lingyuid,
+                        shijuanid: ''
+                      };
+                    kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
+                    kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+                    shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
+                    $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
+                      if(rst.result){
+                        $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+                          if(data.result){
+                            $scope.showKaoShiList();
+                            alertInfFun('suc', '考试添加成功！');
+                          }
+                          else{
+                            alertInfFun('err', data.error);
+                          }
+                        });
                       }
                       else{
-                        alertInfFun('err', data.error);
+                        alertInfFun('err', rst.error);
                       }
                     });
                   }
                   else{
-                    alertInfFun('err', rst.error);
+                    alertInfFun('err', '请添加考生！')
                   }
-                });
+                }
+                else{
+                  alertInfFun('err', '请选择考场！');
+                }
               }
               else{
                 $scope.startDateIsNull = true;
