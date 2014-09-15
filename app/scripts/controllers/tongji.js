@@ -583,6 +583,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 type : 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
+                itemStyle : {
+                  normal : {
+                    label : {
+                      position : 'outter',
+                      formatter : function (a,b,c,d) {
+//                        return b + ':' +(d - 0).toFixed(1) + '%';
+                        return b + ':' + d + '%';
+                      }
+                    },
+                    labelLine : {
+                      show : true
+                    }
+                  }
+                },
                 data : studentPieData
               }]
             },
@@ -634,6 +648,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 name : '此分数区间的人数',
                 type : 'bar',
                 stack : '总量',
+                itemStyle : { normal: {label : {show: true, position: 'inside'}}},
                 data : studentBarData
               }]
             };
