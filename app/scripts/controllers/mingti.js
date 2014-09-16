@@ -98,7 +98,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
           uploadFileUrl = baseMtAPIUrl + 'upload_file',//文件上传
-          showFileUrl = baseMtAPIUrl + 'show_file/';//文件显示
+          showFileUrl = baseMtAPIUrl + 'show_file/',//文件显示
+          regRN = /\r\n/g,
+          regN = /\n/g,
+          replaceStr = '<br/>';
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -742,6 +745,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           dataTpl.shuju.TIZHISHULIANG = tiZhiArr.length;
           dataTpl.shuju.ZHISHIDIAN = selectZsd;
           dataTpl.shuju.TIGAN = $('.formulaEditTiGan').val();
+          //将题干中的\r\n和\n替换成<br/>
+          dataTpl.shuju.TIGAN = dataTpl.shuju.TIGAN.replace(regN, replaceStr);
+          dataTpl.shuju.TIGAN = dataTpl.shuju.TIGAN.replace(regRN, replaceStr);
           if(dataTpl.shuju.TIGAN.length){
             if(tznrIsNull){
               if(dataTpl.shuju.DAAN.length){
@@ -817,6 +823,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           tx_data.shuju.ZHISHIDIAN = selectZsd;
           tx_data.shuju.NANDU_ID = $('input.nandu-input').val(); //改造成星星选择难度后的代码
+          //替换换行符为<br/>
+          tx_data.shuju.TIGAN = tx_data.shuju.TIGAN.replace(regN, replaceStr);
+          tx_data.shuju.TIGAN = tx_data.shuju.TIGAN.replace(regRN, replaceStr);
+          tx_data.shuju.DAAN = tx_data.shuju.DAAN.replace(regN, replaceStr);
+          tx_data.shuju.DAAN = tx_data.shuju.DAAN.replace(regRN, replaceStr);
           if(tx_data.shuju.TIGAN.length){
             if(tx_data.shuju.DAAN.length){
               if(selectZsd.length){
@@ -1130,6 +1141,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tiankong_data.shuju.ZHISHIDIAN = selectZsd;
             tiankong_data.shuju.NANDU_ID = $('input.nandu-input').val(); //改造成星星选择难度后的代码
             tiankong_data.shuju.DAAN = tizhineirong.join(';');
+            //将题干重的换行转换为<br/>
+            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(regN, replaceStr);
+            tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(regRN, replaceStr);
             if(tiankong_data.shuju.TIGAN.length){
               if(selectZsd.length){
                 if(tiankong_data.shuju.NANDU_ID.length){
@@ -1592,7 +1606,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $('#mediaPlugin').hide();
         };
 
-        //保存上传文件
+        //保存上传文件//
         $scope.uploadMyFiles = function() {
           var file = $scope.uploadFiles,
             fields = [{"name": "token", "data": token}],
@@ -1622,6 +1636,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
           }
         };
+
       }
     ]
   );
