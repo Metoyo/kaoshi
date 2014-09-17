@@ -757,36 +757,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     $http.post(xgtmUrl, dataTpl).success(function(data){
                       if(data.result){
                         $scope.loadingImgShow = false;
-//                        $('.save-msg').show().fadeOut(3000);
-                        alertInfFun('suc', '提交成功！'); //
+                        alertInfFun('suc', '提交成功！');
                         $scope.isSaveSuccessful = true;
                         $scope.loadingImgShow = false; //danxuan.html
                         deferred.resolve();
                       }
                       else{
-                        alertInfFun('err', '提交失败！错误信息:' + data.error); //
+                        alertInfFun('err', '提交失败！错误信息:' + data.error);
                         $scope.loadingImgShow = false; //danxuan.html
                         deferred.reject();
                       }
                     });
                   }
                   else{
-                    alertInfFun('pmt', '请选择知识点！'); //
+                    alertInfFun('pmt', '请选择知识点！');
                     deferred.reject();
                   }
                 }
                 else{
-                  alertInfFun('pmt', '请选择难度！'); //
+                  alertInfFun('pmt', '请选择难度！');
                   deferred.reject();
                 }
               }
               else{
-                alertInfFun('pmt', '请选择答案！'); //
+                alertInfFun('pmt', '请选择答案！');
                 deferred.reject();
               }
             }
             else{
-              alertInfFun('pmt', '请输入题支选项！'); //
+              alertInfFun('pmt', '请输入题支选项！');
               deferred.reject();
             }
           }
