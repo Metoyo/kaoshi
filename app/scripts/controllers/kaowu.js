@@ -1276,6 +1276,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
                 if(data.result){
                   $scope.showKaoChangList();
+                  qryAllKaoChang();
                   alertInfFun('suc', '考场删除成功！');
                 }
                 else{

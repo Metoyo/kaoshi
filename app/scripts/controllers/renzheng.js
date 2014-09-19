@@ -142,6 +142,7 @@ define([
                     alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                   }
                 });
+                console.log($rootScope.session);
               }
             });
           }

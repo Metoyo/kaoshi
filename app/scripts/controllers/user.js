@@ -85,11 +85,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         isLingYuSet = false, //是否是领域设置
         qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
           '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-        alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian'; //修改知识点的url
+        alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian', //修改知识点的url
+        alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
 
       $scope.adminParams = {
         selected_dg: '',
-        saveDGBtnDisabled: false
+        saveDGBtnDisabled: false,
+        newPsd: ''
       };
 
       /**
@@ -790,7 +792,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
           $http.get(queryTiKuUrl).success(function(data){
             count ++;
-            if(count <= lyLength){
+            if(count < lyLength){
               if(data.length){
                 chaXunTiKu($scope.jgSelectLingYu[count]);
               }
@@ -835,7 +837,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           querySjMuLuUrl = queryShiJuanMuLuUrl + lyData.LINGYU_ID;
           $http.get(querySjMuLuUrl).success(function(data){
             count ++;
-            if(count <= lyLength){
+            if(count < lyLength){
               if(data.length){
                 chaXunSjMuLu($scope.jgSelectLingYu[count]);
               }
@@ -1343,6 +1345,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.loadingImgShow = false; //rz_selectTiXing.html
             alertInfFun('err', data.error);
+          }
+        });
+      };
+
+      /**
+       * 修改密码
+       */
+      $scope.modifyAdminPassWord = function(){
+        var newPsdData = {
+            token: token,
+            yonghuid: '',
+            mima: ''
+          },
+          userInfo = $rootScope.session.userInfo;
+        newPsdData.yonghuid = userInfo.UID;
+        newPsdData.mima = $scope.adminParams.newPsd;
+        $http.post(alterYongHu, newPsdData).success(function(data){
+          if(data.result){
+            $('.adminMiMaInfo').html('密码修改成功!').fadeOut(5000);
+          }
+          else{
+            $('.adminMiMaInfo').html(data.error).fadeOut(5000);
           }
         });
       };

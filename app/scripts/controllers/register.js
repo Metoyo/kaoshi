@@ -131,14 +131,13 @@ define([
         $http.get(apiUrlJglb).success(function(data) {
           $scope.jigoulb_list = [];
           if(data){
-            _.each(data, function(jg, idx, lst){
-              if(jg.LEIBIE_ID == 1){
-                $scope.jigoulb_list.push(jg);
-              }
-            });
-//            $scope.jigoulb_list = data;
-            console.log(data);
-            console.log($scope.jigoulb_list);
+            //锁定大学
+//            _.each(data, function(jg, idx, lst){
+//              if(jg.LEIBIE_ID == 1){
+//                $scope.jigoulb_list.push(jg);
+//              }
+//            });
+            $scope.jigoulb_list = data;
 
           }
           else{
@@ -147,7 +146,7 @@ define([
         });
 
         /**
-         * 由机构类别查询机构 getJgId
+         * 由机构类别查询机构 getJgId//
          */
         $scope.getJglist = function(jglbId){
           $scope.keMuListLengthExist = false;
