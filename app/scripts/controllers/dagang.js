@@ -69,24 +69,38 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          * 加载知识大纲
          */
         var loadDaGang = function(lx){
-          var dgLeiXing = lx || 2,
+          var dgLeiXing = lx,
+            newQryDgUrl;
+          if(dgLeiXing){
             newQryDgUrl = qryDgUrl + '&leixing=' + dgLeiXing;
+          }
+          else{
+            newQryDgUrl = qryDgUrl;
+          }
           $http.get(newQryDgUrl).success(function(data) {
             if(data.length){
-              if(dgLeiXing == 1){ //公共大纲
-                publicZsdgArr = data;
-                $scope.publicZsdgList = publicZsdgArr;
+              if(dgLeiXing){ //当大纲类型存在时
+                if(dgLeiXing == 1){ //公共大纲
+                  publicZsdgArr = data;
+                  $scope.publicZsdgList = publicZsdgArr;
+                }
+                if(dgLeiXing == 2){ //自建大纲
+                  privateZsdgArr = data;
+                  $scope.privateZsdgList = privateZsdgArr;
+                }
               }
-              if(dgLeiXing == 2){ //自建大纲
-                privateZsdgArr = data;
+              else{ //当大纲类型不存在时
+                _.each(data, function(dg, idx, lst){
+                  //为大纲分类
+                  dg.LEIXING == 1 ? publicZsdgArr.push(dg) : privateZsdgArr.push(dg);
+                  //判断默认知识大纲
+                  if(dg.ZHUANGTAI2 == 2){
+                    $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+                  }
+                });
+                $scope.publicZsdgList = publicZsdgArr;
                 $scope.privateZsdgList = privateZsdgArr;
               }
-              //判断默认知识大纲
-              _.each(data, function(dg, idx, lst){
-                if(dg.ZHUANGTAI2 == 2){
-                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
-                }
-              });
             }
             else {
               alertInfFun('pmt', '没有知识大纲，请新增一个！');
@@ -109,7 +123,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.isPublicDg = true;
           }
           if(lx == 2){
-            if(!$scope.privateZsdgList){
+            if(!$scope.privateZsdgList.length){
               alertInfFun('pmt', '没有大纲，请新建一个！');
             }
             $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html

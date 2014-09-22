@@ -56,7 +56,7 @@
     </tr>
 </table>
 <div class="paging text-right">
-    <ul class="pagination pagination-sm" ng-hide="kaoShiListIds.length">
+    <ul class="pagination pagination-sm" ng-show="kaoShiListIds.length">
         <li ng-class="{disabled: currentKsPageVal == 1}">
             <a href ng-click="getThisKaoShiPageData(1)">首页</a>
         </li>

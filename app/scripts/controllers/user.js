@@ -1350,7 +1350,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       };
 
       /**
-       * 修改密码
+       * 修改密码//
        */
       $scope.modifyAdminPassWord = function(){
         var newPsdData = {
