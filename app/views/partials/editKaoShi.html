@@ -226,6 +226,25 @@
                 </div>
             </div>
         </div>
+        <!-- 考生错误信息展示开始 -->
+        <div class="student-list col-sm-8 col-sm-offset-2" ng-show="kaoShengErrorInfo.msg">
+            <h4 ng-bind="kaoShengErrorInfo.msg"></h4>
+            <table class="table table-bordered kaowu-table">
+                <tr class="active">
+                    <th>学号</th>
+                    <th>原姓名</th>
+                    <th>新姓名</th>
+                    <th>班级</th>
+                </tr>
+                <tr ng-repeat="errInfo in kaoShengErrorInfo.detail">
+                    <td ng-bind="errInfo.YONGHUHAO"></td>
+                    <td ng-bind="errInfo.XINGMING.old"></td>
+                    <td ng-bind="errInfo.XINGMING.new"></td>
+                    <td ng-bind="errInfo.BANJI"></td>
+                </tr>
+            </table>
+        </div>
+        <!-- 考生错误信息展示结束 -->
         <div class="save-box">
             <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
             <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>

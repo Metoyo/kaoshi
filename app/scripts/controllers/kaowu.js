@@ -958,6 +958,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            * 保存考试
            */
           $scope.saveKaoShi = function(){
+            $scope.kaoShengErrorInfo = '';
             if($scope.paperDetail.SHIJUAN.DATIKA.length){
 //              var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
 //              if(saveKaoConfirm){
@@ -990,6 +991,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                           }
                           else{
                             alertInfFun('err', data.error);
+                            $scope.kaoShengErrorInfo = JSON.parse(data.error);
                           }
                         });
                       }
@@ -1038,6 +1040,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                           }
                           else{
                             alertInfFun('err', data.error);
+                            $scope.kaoShengErrorInfo = JSON.parse(data.error);
                           }
                         });
                       }
