@@ -7,8 +7,8 @@ define([
   'use strict';
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
-    .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect',
-      function ($rootScope, $scope, $location, $http, urlRedirect) {
+    .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$cookieStore',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore) {
 
         var loginApiUrl = config.apiurl_rz + 'denglu',
             login = {
@@ -133,6 +133,17 @@ define([
                           }
                         }
                       }
+                      //cookies代码
+                      var userCookie = {
+                        UID: $rootScope.session.info.UID,
+                        YONGHUMING: $rootScope.session.info.YONGHUMING,
+//                        MIMA: $rootScope.session.info.MIMA
+                        defaultLyId: session.defaultLyId,
+                        defaultLyName: session.defaultLyName,
+                        quanxianStr: session.quanxianStr,
+                        JIGOU: session.userInfo.JIGOU
+                      };
+                      $cookieStore.put('logged', userCookie);
                     }
                     else{
                       alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
@@ -142,7 +153,6 @@ define([
                     alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                   }
                 });
-                console.log($rootScope.session);
               }
             });
           }

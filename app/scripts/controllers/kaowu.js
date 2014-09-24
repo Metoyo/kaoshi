@@ -70,6 +70,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
+          $rootScope.dashboard_shown = true;
           $scope.kwParams = { //考务用到的变量
             ksListZt: '' //考试列表的状态
           };
