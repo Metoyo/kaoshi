@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
       function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.pageName = "命题"; //page title
         $rootScope.dashboard_shown = true;
@@ -308,12 +308,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tiMuIdArr = [];
           pageArr = [];
           if(zhishidian_id){
+//            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
+//              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
+              + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
           }
           else{
+//            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
+//              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
+              + '&zhishidian_id=' + zsdgZsdArr.join(); //查询题目列表的url
           }
           //查询题库
           $http.get(qryTiKuUrl).success(function(tiku){

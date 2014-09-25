@@ -1,25 +1,25 @@
 /*jshint unused: vars */
 require.config({
   paths: {
-    angular: '../../bower_components/angular/angular',
-    angularRoute: '../../bower_components/angular-route/angular-route',
-    angularCookies: '../../bower_components/angular-cookies/angular-cookies',
-    angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize',
-    angularResource: '../../bower_components/angular-resource/angular-resource',
-    angularMocks: '../../bower_components/angular-mocks/angular-mocks',
-    jquery: '../../bower_components/jquery/jquery',
-    underscore: '../../bower_components/underscore/underscore',
-    charts: 'http://echarts.baidu.com/build/echarts-plain'
-
-//    angular: '../../bower_components/angular/angular.min',
-//    angularRoute: '../../bower_components/angular-route/angular-route.min',
-//    angularCookies: '../../bower_components/angular-cookies/angular-cookies.min',
-//    angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize.min',
-//    angularResource: '../../bower_components/angular-resource/angular-resource.min',
-//    angularMocks: '../../bower_components/angular-mocks/angular-mocks.min',
-//    jquery: '../../bower_components/jquery/jquery.min',
-//    underscore: '../../bower_components/underscore/underscore.min',
+//    angular: '../../bower_components/angular/angular',
+//    angularRoute: '../../bower_components/angular-route/angular-route',
+//    angularCookies: '../../bower_components/angular-cookies/angular-cookies',
+//    angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize',
+//    angularResource: '../../bower_components/angular-resource/angular-resource',
+//    angularMocks: '../../bower_components/angular-mocks/angular-mocks',
+//    jquery: '../../bower_components/jquery/jquery',
+//    underscore: '../../bower_components/underscore/underscore',
 //    charts: 'http://echarts.baidu.com/build/echarts-plain'
+
+    angular: '../../bower_components/angular/angular.min',
+    angularRoute: '../../bower_components/angular-route/angular-route.min',
+    angularCookies: '../../bower_components/angular-cookies/angular-cookies.min',
+    angularSanitize: '../../bower_components/angular-sanitize/angular-sanitize.min',
+    angularResource: '../../bower_components/angular-resource/angular-resource.min',
+    angularMocks: '../../bower_components/angular-mocks/angular-mocks.min',
+    jquery: '../../bower_components/jquery/jquery.min',
+    underscore: '../../bower_components/underscore/underscore.min',
+    charts: 'http://echarts.baidu.com/build/echarts-plain'
   },
   shim: {
     'angular' : {'exports' : 'angular'},

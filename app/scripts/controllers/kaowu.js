@@ -875,7 +875,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            */
           $scope.showImportList = function(){
             if(kaoChangId){
-              if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
+              if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
+                kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length > 0){
                 $scope.showImportStuds = true; //显示考生列表table
               }
               else{
@@ -960,13 +961,13 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            */
           $scope.saveKaoShi = function(){
             $scope.kaoShengErrorInfo = '';
-            if($scope.paperDetail.SHIJUAN.DATIKA.length){
+            if($scope.paperDetail.SHIJUAN.DATIKA && $scope.paperDetail.SHIJUAN.DATIKA.length > 0){
 //              var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
 //              if(saveKaoConfirm){
 //                $scope.downloadDaTiKa(true);
 //              }
               if($('.start-date').val()){
-                if(kaoshi_data.shuju.KAOCHANG.length){
+                if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){
                   if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
                     kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
                     $scope.startDateIsNull = false;
@@ -1015,7 +1016,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             else{
               if($('.start-date').val()){
-                if(kaoshi_data.shuju.KAOCHANG.length){
+                if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){
                   if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
                     kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
                     $scope.startDateIsNull = false;
