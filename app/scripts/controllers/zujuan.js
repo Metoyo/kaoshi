@@ -2330,6 +2330,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               dati.TIMUARR.splice(index, 1);
               dati.TIMUARR.splice(toIndex, 0, item);
             }
+            $('button.reloadMath').click();
           };
 
           /**
@@ -2631,7 +2632,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var nextPath = $location.$$path,
                 myInterval = setInterval(1000);
             deletelsmbData.muban_id = $rootScope.session.lsmb_id;
-            if(deletelsmbData.muban_id.length){
+            if(deletelsmbData.muban_id && deletelsmbData.muban_id.length > 0){
               $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
                 if(data.result){
                   $rootScope.session.lsmb_id = [];

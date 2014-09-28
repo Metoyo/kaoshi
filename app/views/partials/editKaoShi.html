@@ -81,7 +81,7 @@
             <div class="col-sm-offset-2 col-sm-5">
                 <button type="button" class="btn btn-primary" ng-click="addNewKaoSheng()">增加考生</button>
                 <button type="button" class="btn btn-primary" ng-click="importKaoSheng()">导入考生</button>
-                <span class="ml10">共  <b ng-bind="kaoshiData.shuju.KAOCHANG.USERS.length"></b>  名考生</span>
+                <span class="ml10">共  <b ng-bind="kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS.length"></b>  名考生</span>
             </div>
             <div class="col-sm-3 text-right" ng-show="paperDetail.SHIJUAN.DATIKA">
                 <button type="button" class="btn btn-primary" ng-click="kwSetDaTiKa()">设置答题卡</button>

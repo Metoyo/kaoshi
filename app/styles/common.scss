@@ -1,15 +1,11 @@
 $icon-font-path: "../bower_components/sass-bootstrap/fonts/";
 @import "../bower_components/sass-bootstrap/lib/bootstrap";
-@import "variable";
+//@import "variable";
 body {
   font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
   sans-serif;
   color: #000;
-//  color: #67717e;
-}
-.h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
-  sans-serif;
+  font-size: 15px;
 }
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
@@ -32,41 +28,44 @@ body {
 .footer {
   display: none;
 }
+.form-control{
+  font-size: 15px;
+}
 .wp10 {
-  @include width(10%);
+  width: 10%;
 }
 .wp15 {
-  @include width(15%);
+  width: 15%;
 }
 .wp20 {
-  @include width(20%);
+  width: 20%;
 }
 .wp30 {
-  @include width(30%);
+  width: 30%;
 }
 .wp40 {
-  @include width(40%);
+  width: 40%;
 }
 .wp50 {
-  @include width(50%);
+  width: 50%;
 }
 .wp60 {
-  @include width(60%);
+  width: 60%;
 }
 .wp70 {
-  @include width(70%);
+  width: 70%;
 }
 .wp75 {
-  @include width(75%);
+  width: 75%;
 }
 .wp80 {
-  @include width(80%);
+  width: 80%;
 }
 .wp90 {
-  @include width(90%);
+  width: 90%;
 }
 .wp100 {
-  @include width(100%);
+  width: 100%;
 }
 .wp110 {
  width: 110px;
@@ -121,7 +120,7 @@ body {
   margin-right: 0;
 }
 .font-cut{
-  width:100%;
+  width: 100%;
   border:0;
   text-overflow: ellipsis;
 }
@@ -255,11 +254,8 @@ a.add-btn:hover span {
   z-index: 1;
   overflow: hidden;
   .mbc-inner{
-    width: 170px;
+    width: 172px;
   }
-}
-.bottom-nav{
-
 }
 /*base css end*/
 /* dashboard styles begin*/
@@ -415,7 +411,7 @@ a.add-btn:hover span {
   border-bottom: 1px solid #599EDB;
   .messageTd{
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 50px;
     text-align: center;
   }
@@ -532,7 +528,7 @@ a.add-btn:hover span {
       position: absolute;
       top: 34px;
       left: 3%;
-      @include width(94%);
+      width: 94%;
       padding: 10px;
       display: block;
       z-index: 10;
@@ -561,20 +557,19 @@ a.add-btn:hover span {
     width: 100%;
   }
   .pointTitleBox {
-    @include width(100%);
+    width: 100%;
     margin: -1px 0 0 0;
-//    border-bottom: 1px solid #cfcfcf;
     padding: 10px 0;
     position: relative;
   }
   .pointTitle {
     color: #1ba1e2;
-    font-size: 13px;
+    font-size: 15px;
     margin-left: 10px;
     width: 85%;
   }
   .selectLyName{
-    font-size: 16px;
+    font-size: 15px;
     color: #f60;
     font-weight: bold;
   }
@@ -593,7 +588,7 @@ a.add-btn:hover span {
           a{
             padding: 0 5px;
             color: #444;
-            font-size: 12px;
+            font-size: 14px;
           }
         }
         li{
@@ -654,7 +649,7 @@ a.add-btn:hover span {
     padding: 10px 0;
     .errorMsg{
       margin-left: 10px;
-      font-size: 16px;
+      font-size: 15px;
       color: red;
     }
   }
@@ -689,7 +684,7 @@ a.add-btn:hover span {
     line-height: 24px;
   }
   .item-sub-title{
-    font-size: 12px;
+    font-size: 14px;
     width: 100%;
     p{
       display: inline;
@@ -795,7 +790,7 @@ a.add-btn:hover span {
   float: left;
   width: 100%;
   h2{
-    font-size: 16px;
+    font-size: 15px;
     display: inline;
     margin: 0;
     color: #f60;
@@ -1257,7 +1252,7 @@ a.add-btn:hover span {
     position: absolute;
     top: -8px;
     right: -15px;
-    font-size: 16px;
+    font-size: 15px;
   }
   .btn-can .btn {
     padding: 2px 15px;
@@ -1460,7 +1455,7 @@ a.add-btn:hover span {
   }
   .closeShenBox {
     color: #d80000;
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 5px;
   }
   .alterBtn, .shYonghuId, .shJigouId, .shLingyuId, .originZT {
@@ -1613,7 +1608,7 @@ a.add-btn:hover span {
       margin-bottom: 0;
     }
     .keMuNameDetail{
-      font-size: 16px;
+      font-size: 15px;
       display: inline;
       margin: 0;
       color: #f60;
@@ -1679,82 +1674,19 @@ a.add-btn:hover span {
     }
   }
   .testList{
-    padding: 0 10px;
     li{
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #d8d8d8;
-      position: relative;
       float: left;
       width: 100%;
     }
-    h3{
-      font-size: 14px;
-      margin: 0;
-    }
-    .item-title{
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
     .item-tigan{
-      margin-bottom: 10px;
       font-size: 14px;
-      line-height: 24px;
-    }
-    .item-sub-title{
-      font-size: 12px;
-      width: 100%;
-      p{
-        display: inline;
-        margin-right: 10px;
-        float: left;
-      }
-      .use-times{
-        color: #f60;
-      }
-      .add-to-paper{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-      }
-      .knowledge-point{
-        span{
-          margin-right: 10px;
-        }
-      }
-      .level-num{
-        span{
-          width: 42px;
-          height: 10px;
-          margin-top: 2px;
-          background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0;
-        }
-        .level-star-2{
-          background-position: 0 -10px;
-        }
-        .level-star-3{
-          background-position: 0 -20px;
-        }
-        .level-star-4{
-          background-position: 0 -30px;
-        }
-        .level-star-5{
-          background-position: 0 -40px;
-        }
-      }
+      font-weight: normal;
     }
     .item-cont {
       margin-top: 10px;
       width: 100%;
       float: left;
       cursor: pointer;
-      .item-tizhi-wrap{
-        margin-bottom: 5px;
-        .item-tizhi{
-          margin-bottom: 5px;
-        }
-      }
     }
     .answer-cont{
       float: left;
@@ -1775,7 +1707,7 @@ a.add-btn:hover span {
   .nandu-select{
     .radio-inline{
       margin-left: 20px;
-      font-size: 16px;
+      font-size: 15px;
     }
   }
   .panDuanFb{
@@ -2129,7 +2061,7 @@ a.add-btn:hover span {
           margin: 15px 3%;
         }
         .sj-setting-title{
-          font-size: 16px;
+          font-size: 15px;
           margin: 0;
           font-weight: bold;
           height: 40px;
@@ -2376,7 +2308,7 @@ a.add-btn:hover span {
     border: 0;
     line-height: 40px;
     .pointTitle{
-      font-size: 16px;
+      font-size: 15px;
       width: 100%;
       padding: 0 10px;
       margin: 0;
@@ -2473,8 +2405,12 @@ a.add-btn:hover span {
   }
   .kaoChangList{
     .moreBtnCont{
-      width: 270px;
+      width: 300px;
       right: 75px;
+      .mbc-inner {
+        width: 280px;
+        text-align: center;
+      }
     }
   }
   .paper-cont{
@@ -2613,7 +2549,7 @@ a.add-btn:hover span {
         font-size: 20px;
       }
       .paper-sub-title{
-        font-size: 16px;
+        font-size: 15px;
       }
       .shijuantimu-list{
         margin-top: 15px;
@@ -2702,6 +2638,7 @@ a.add-btn:hover span {
     line-height: 56px;
     padding: 0 20px;
     margin: 0;
+    border-bottom: 1px solid #ddd;
     .btn{
       margin-top: 14px;
     }
@@ -2798,7 +2735,7 @@ a.add-btn:hover span {
   font:11px Verdana, Arial, Helvetica, sans-serif;
 }
 .markItUpEditor {
-  font: 12px 'Courier New', Courier, monospace;
+  font: 15px 'Courier New', Courier, monospace;
   padding:10px;
   border: 2px solid #3C769D;
   height:320px;
