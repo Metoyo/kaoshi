@@ -97,10 +97,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isDanXuanType = false, //判断是否出单选题
           isDuoXuanType = false, //判断是否出多选题
           uploadFileUrl = baseMtAPIUrl + 'upload_file',//文件上传
-          showFileUrl = baseMtAPIUrl + 'show_file/',//文件显示
-          regRN = /\r\n/g,
-          regN = /\n/g,
-          replaceStr = '<br/>';
+          showFileUrl =  '/show_file/',//文件显示
+          regRN = /\r\n/g, //匹配enter换行
+          regN = /\n/g, //匹配换行
+          replaceStr = '<br/>', //匹配<br/>
+          fileTypeReg = /\.\b\w+$\b/; // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
+
 
         /**
          * 初始化是DOM元素的隐藏和显示
