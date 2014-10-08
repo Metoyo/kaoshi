@@ -13,6 +13,22 @@
         <div class="pull-left allTestNums">
             共<strong ng-bind="testListId.length"></strong>题
         </div>
+        <div class="pull-right">
+           <div class="pull-left">
+               <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h28"
+                      onkeyup="if(isNaN(value))execCommand('undo')"
+                      onafterpaste="if(isNaN(value))execCommand('undo')"/>
+               <button type="button" class="btn btn-primary" ng-click="qryTestByTiMuId()">查询</button>
+           </div>
+            <div class="pull-left ml10">
+                <!--<button type="button" class="btn btn-primary pull-right">查询</button>-->
+                <select ng-model="mingTiParam.tiMuAuthorId" class="form-control pull-right w200 h28 mr5"
+                        ng-change="qryTiMuByChuTiRenId()"
+                        ng-options="ctr.uid as ctr.name for ctr in chuTiRens">
+                    <option value="">请选择出题人</option>
+                </select>
+            </div>
+        </div>
         <!--<div class="pull-left checkbox">-->
             <!--<label>-->
                 <!--<input type="checkbox" ng-model="isCheckSchoolTiKu" ng-change="checkSchoolTiMu(isCheckSchoolTiKu)">-->
@@ -39,6 +55,9 @@
                 <p class="knowledge-point">
                     ID：<span class="pull-right" ng-bind="tm.TIMU_ID"></span>
                 </p>
+                <p>
+                    创建时间：{{tm.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}
+                </p>
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan">
                     <button type="button" class="btn btn-default" ng-click="deleteItem(tm.TIMU_ID, $index)">删除</button>
                     <button type="button" class="btn btn-default"
@@ -62,7 +81,7 @@
         </li>
     </ul>
     <div class="paging text-right">
-        <ul class="pagination pagination-sm" ng-hide="!testListId">
+        <ul class="pagination pagination-sm" ng-hide="!testListId.length">
             <li ng-class="{disabled: currentPageNum == 1}">
                 <a href ng-click="getThisPageData(1)">首页</a>
             </li>
@@ -85,6 +104,15 @@
                 <a href  ng-click="getThisPageData(lastPageNum)">尾页</a>
             </li>
         </ul>
+        <div>
+            <span>共 <strong ng-bind="lastPageNum"></strong> 页，</span>
+            <span>跳转到</span>
+            <input type="text" ng-model="mingTiParam.goToPageNum" class="w110"
+                   onkeyup="if(isNaN(value))execCommand('undo')"
+                   onafterpaste="if(isNaN(value))execCommand('undo')"/>
+            <span>页</span>
+            <button ng-click="getFixedPageData()">GO</button>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>

@@ -105,13 +105,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
 
         /**
-         * 初始化是DOM元素的隐藏和显示
+         * 初始化是DOM元素的隐藏和显示//
          */
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
         $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+        $scope.mingTiParam = { //命题用到的参数
+          tiMuId: '',
+          tiMuAuthorId: '',
+          goToPageNum: ''
+        };
+        $scope.chuTiRens = [
+          {uid: 1122, name: '邓继'},
+          {uid: 1123, name: '苏德'},
+          {uid: 1124, name: '张君'},
+          {uid: 1125, name: '李鑫'},
+          {uid: 1160, name: '王荟茹'},
+          {uid: 1161, name: '陈佳琪'}
+        ];
 
         /**
          * 信息提示函数
@@ -158,7 +171,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 //得到知识大纲知识点id的函数
                 _.each(data, _do);
                 //查询题目
-                qryTestFun();
+                $scope.qryTestFun();
               }
               else{
                 alertInfFun('err', '查询大纲失败！错误信息为：' + data.error); // '查询大纲失败！错误信息为：' + data.error
@@ -259,7 +272,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           selectZsdFun();
           if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
-            qryTestFun();
+            $scope.qryTestFun();
           }
         };
 
@@ -275,7 +288,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tixing_id = '';
             $scope.txSelectenIdx = 0;
           }
-          qryTestFun();
+          $scope.qryTestFun();
         };
 
         /**
@@ -290,7 +303,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             nandu_id = '';
             $scope.ndSelectenIdx = 0;
           }
-          qryTestFun();
+          $scope.qryTestFun();
         };
 
         /**
@@ -304,7 +317,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 查询试题的函数
          */
-        var qryTestFun = function(){
+        $scope.qryTestFun = function(){
           $scope.loadingImgShow = true; //testList.html loading
           var qrytimuliebiao; //查询题目列表的url
           tiMuIdArr = [];
@@ -313,13 +326,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
 //              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-              + '&zhishidian_id=' + zhishidian_id; //查询题目列表的url
+              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + $scope.mingTiParam.tiMuAuthorId; //查询题目列表的url
           }
           else{
 //            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
 //              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-              + '&zhishidian_id=' + zsdgZsdArr.join(); //查询题目列表的url
+              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + $scope.mingTiParam.tiMuAuthorId; //查询题目列表的url
           }
           //查询题库
           $http.get(qryTiKuUrl).success(function(tiku){
@@ -341,7 +354,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.getThisPageData();
                 }
                 else{
+                  tiMuIdArr = [];
+                  pageArr = [];
+                  totalPage = 0;
+                  $scope.lastPageNum = 0;
+                  $scope.pages = [];
                   $scope.timudetails = '';
+                  $scope.testListId = [];
                   alertInfFun('err', '没有相应的题目！'); //
                   $scope.loadingImgShow = false; //testList.html loading
                 }
@@ -450,6 +469,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.timudetails = data;
                   $scope.caozuoyuan = caozuoyuan;
                   timudetails = data;
+                  $scope.mingTiParam.tiMuId = '';
+                  $scope.mingTiParam.tiMuAuthorId = '';
                 }
                 else{
                   $scope.timudetails = null;
@@ -473,16 +494,61 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
 
         /**
+         * 得到特定页面的数据
+         */
+        $scope.getFixedPageData = function(){
+          var goToPage = parseInt($scope.mingTiParam.goToPageNum);
+          if(goToPage && goToPage > 0 && goToPage <= $scope.lastPageNum){
+            $scope.getThisPageData(goToPage);
+          }
+          else{
+            alertInfFun('pmt', '请输入正确的跳转的页码！');
+          }
+        };
+
+        /**
+         * 通过题目ID查询试题
+         */
+        $scope.qryTestByTiMuId = function(){
+          tiMuIdArr = [];
+          pageArr = [];
+          if($scope.mingTiParam.tiMuId){
+            $scope.testListId = [];
+            $scope.testListId.push($scope.mingTiParam.tiMuId);
+            tiMuIdArr.push($scope.mingTiParam.tiMuId);
+            totalPage = 1;
+            pageArr = [1];
+            $scope.lastPageNum = totalPage; //最后一页的数值
+            $scope.getThisPageData();
+          }
+          else{
+            alertInfFun('pmt', '请输入要查询的题目ID！');
+          }
+        };
+
+        /**
+         * 通过出题人的UID查询试题
+         */
+        $scope.qryTiMuByChuTiRenId = function(){
+          if($scope.mingTiParam.tiMuAuthorId){
+            $scope.qryTestFun();
+          }
+          else{
+            alertInfFun('pmt', '请选择出题人！');
+          }
+        };
+
+        /**
          * 查询学校题库，val是true的话表示查询学校题库，否则查询个人题库
          */
         $scope.checkSchoolTiMu = function(val){
           if(val){
             checkSchoolTiKu = '';
-            qryTestFun();
+            $scope.qryTestFun();
           }
           else{
             checkSchoolTiKu = caozuoyuan;
-            qryTestFun();
+            $scope.qryTestFun();
           }
         };
 
@@ -541,7 +607,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
-          qryTestFun();
+          $scope.qryTestFun();
           $scope.txTpl = 'views/partials/testList.html';
         };
 
@@ -1444,7 +1510,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.patternListToggle = false;
             $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
-//            qryTestFun();
+//            $scope.qryTestFun();
           });
         };
 
@@ -1457,7 +1523,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.patternListToggle = false;
             $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
-//            qryTestFun();
+//            $scope.qryTestFun();
           });
         };
 
@@ -1623,13 +1689,34 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           if(isFileSizeRight){
             Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadFileUrl).then(function(result){
+              console.log(result);
+              var i, mediaLength;
               $scope.uploadFileUrl = result.data;
               $scope.uploadFiles = [];
-              if(result.data.length){
-                var src = showFileUrl + result.data[0];
-                $.markItUp(
-                  { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
-                );
+              if(result.data && result.data.length > 0){
+                mediaLength = result.data.length;
+                for(i = 0; i < mediaLength; i++){
+                  var findFileType = result.data[i].match(fileTypeReg)[0], //得到文件格式
+                    isImg = _.contains(config.imgType, findFileType),
+                    isVideo = _.contains(config.videoType, findFileType),
+                    isAudio = _.contains(config.audioType, findFileType),
+                    src = showFileUrl + result.data[i]; //媒体文件路径
+                  if(isImg){
+                    $.markItUp(
+                      { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
+                    );
+                  }
+                  if(isAudio){
+                    $.markItUp(
+                      { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
+                    );
+                  }
+                  if(isVideo){
+                    $.markItUp(
+                      { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
+                    );
+                  }
+                }
                 $('#mediaPlugin').hide();
                 $('.formulaEditTiGan').keyup();
                 return false;

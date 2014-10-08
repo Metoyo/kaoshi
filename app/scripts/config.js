@@ -5,11 +5,11 @@ define( "config", [], function () {
 //    apiurl_mt: "http://192.168.1.111:4000/api/",//命题的url
 //    apiurl_kw: "http://192.168.1.111:4100/api/",//考务的url
 //    apiurl_tj: "http://192.168.1.111:4300/api/",//统计的url
-    apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
-    apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
-    apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
-    apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
-    apiurl_tj_ori: "http://test.taianting.com:4300/",//统计的原始url
+    apiurl_rz: "http://www.yunjiaoshou.com:3000/api/",//认证的url
+    apiurl_mt: "http://www.yunjiaoshou.com:4000/api/",//命题的url
+    apiurl_kw: "http://www.yunjiaoshou.com:4100/api/",//考务的url
+    apiurl_tj: "http://www.yunjiaoshou.com:4300/api/",//统计的url
+    apiurl_tj_ori: "http://www.yunjiaoshou.com:4300/",//统计的原始url
     secret: '076ee61d63aa10a125ea872411e433b9',
     hostname: 'localhost:3000',
     letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -80,6 +80,9 @@ define( "config", [], function () {
       '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',
       '作文题','证明题','作图题','解答题'
     ],
+    imgType: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
+    videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
+    audioType: ['.ogg', '.mp3', '.wav'],
     uploadFileSizeLimit: 2097152 //上传文件的大小限制2MB
 //    uploadCommand: git push edu master && git push bt master
   };
