@@ -177,10 +177,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        */
       $scope.closeShenheBox = function() {
         if(isDaGangSet){
-          $scope.saveDaGangData();
+          if(confirm('您将要退出大纲设置，是否保存当前大纲？')){
+            $scope.saveDaGangData();
+          }
         }
         if(isLingYuSet){
-          $scope.saveLingYuChange();
+          if(confirm('您将要退出领域设置，是否保存当前领域？')){
+            $scope.saveLingYuChange();
+          }
         }
         isDaGangSet = false; //是否是大纲设置
         isLingYuSet = false; //是否是领域设置
