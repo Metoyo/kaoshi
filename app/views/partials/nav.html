@@ -6,6 +6,12 @@
         <a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>
     </div>
     <ul class="list-group nav-list">
+        <li class="list-group-item" ng-class="navClass('dagang')"
+            ng-show="session.quanxianStr.indexOf('quanxian2007')>=0">
+            <a href="/dagang" class="dropdownToggle droTogDg">
+                <span class="nav-icon"></span> <span class="nav-name">大纲</span>
+            </a>
+        </li>
         <li class="list-group-item" ng-class="navClass('mingti')"
             ng-show="session.quanxianStr.indexOf('quanxian2010')>=0">
             <a href="/mingti" class="dropdownToggle droTogMt">
@@ -16,12 +22,6 @@
             ng-show="session.quanxianStr.indexOf('quanxian2017')>=0">
             <a href="/zujuan" class="dropdownToggle droTogZj">
                 <span class="nav-icon"></span> <span class="nav-name">组卷</span>
-            </a>
-        </li>
-        <li class="list-group-item" ng-class="navClass('dagang')"
-            ng-show="session.quanxianStr.indexOf('quanxian2007')>=0">
-            <a href="/dagang" class="dropdownToggle droTogDg">
-                <span class="nav-icon"></span> <span class="nav-name">大纲</span>
             </a>
         </li>
         <li class="list-group-item" ng-class="navClass('kaowu')"

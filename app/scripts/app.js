@@ -113,6 +113,7 @@ define([
             $rootScope.session.userInfo.UID = loggedInfo.UID;
             $rootScope.session.userInfo.YONGHUMING = loggedInfo.YONGHUMING;
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
+            $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
           }
 
           currentUrlParser.href = current; // current为当前的url地址

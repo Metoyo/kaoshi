@@ -58,6 +58,7 @@ define([
 
             //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
+              var jsArr, jsNewArr;
               session.info = result[0];
               session.userInfo = '';
               if(result.error){
@@ -78,7 +79,7 @@ define([
                   if(data.JIGOU.length){
                     if(data.JUESE){
                       session.userInfo = data;
-                      var jsArr = _.chain(data.JUESE)
+                      jsArr = _.chain(data.JUESE)
                           .sortBy(function(js){ return js.JUESE_ID; })
                           .map(function(js){ return js.JUESE_ID; })
                           .uniq()
@@ -134,14 +135,15 @@ define([
                         }
                       }
                       //cookies代码
+                      jsNewArr = _.reject(data.JUESE, function(js){ return js.JUESE_ID == 2007 || js.JUESE_ID == 2017; });
                       var userCookie = {
                         UID: $rootScope.session.info.UID,
                         YONGHUMING: $rootScope.session.info.YONGHUMING,
-//                        MIMA: $rootScope.session.info.MIMA
                         defaultLyId: session.defaultLyId,
                         defaultLyName: session.defaultLyName,
                         quanxianStr: session.quanxianStr,
-                        JIGOU: session.userInfo.JIGOU
+                        JIGOU: session.userInfo.JIGOU,
+                        JUESE: jsNewArr
                       };
                       $cookieStore.put('logged', userCookie);
                     }
