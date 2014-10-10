@@ -105,7 +105,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
 
         /**
-         * 初始化是DOM元素的隐藏和显示//
+         * 初始化是DOM元素的隐藏和显示
          */
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
@@ -317,7 +317,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 查询试题的函数
          */
-        $scope.qryTestFun = function(){
+        $scope.qryTestFun = function(pg){
           $scope.loadingImgShow = true; //testList.html loading
           var qrytimuliebiao; //查询题目列表的url
           tiMuIdArr = [];
@@ -351,7 +351,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   }
                   $scope.lastPageNum = totalPage; //最后一页的数值
                   //查询数据开始
-                  $scope.getThisPageData();
+                  $scope.getThisPageData(pg);
                 }
                 else{
                   tiMuIdArr = [];
@@ -607,7 +607,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
-          $scope.qryTestFun();
+          $scope.qryTestFun($scope.currentPageNum);
           $scope.txTpl = 'views/partials/testList.html';
         };
 

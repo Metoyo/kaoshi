@@ -23,6 +23,7 @@ define([
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
         $scope.login = login;
+        $rootScope.isPromiseAlterOthersTimu = false;
 
         /**
          * 信息提示函数//
@@ -61,6 +62,7 @@ define([
               var jsArr, jsNewArr;
               session.info = result[0];
               session.userInfo = '';
+              session.quanxian2032 = false;
               if(result.error){
                 $scope.dengluInfo = result;
               }
@@ -95,7 +97,7 @@ define([
                         var permissions = data.QUANXIAN,
                           find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
                           quanxianArr = [],
-                          jsUrl;
+                          jsUrl, find_QUANXIAN_ID_2032;
 
                         find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2004;
@@ -103,6 +105,10 @@ define([
 
                         find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2005;
+                        });
+                        //科目负责人修改他人的题目
+                        find_QUANXIAN_ID_2032 = _.find(permissions, function(permission) {
+                          return permission.QUANXIAN_ID == 2032;
                         });
 
                         if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
@@ -132,6 +138,13 @@ define([
                           else{
                             urlRedirect.goTo(currentPath, '/lingyu');
                           }
+                        }
+
+                        if(find_QUANXIAN_ID_2032){
+                          $rootScope.isPromiseAlterOthersTimu = true;
+                        }
+                        else{
+                          $rootScope.isPromiseAlterOthersTimu = false;
                         }
                       }
                       //cookies代码
