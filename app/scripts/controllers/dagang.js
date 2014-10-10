@@ -2,8 +2,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
-    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout',
-      function ($rootScope, $scope, $http, $q, $timeout) {
+    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'messageService',
+      function ($rootScope, $scope, $http, $q, $timeout, messageService) {
         //声明变量
         var userInfo = $rootScope.session.userInfo,
           info = $rootScope.session.info,
@@ -43,27 +43,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.itemTitle = "大纲";
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
 
-        /**
-         * 信息提示函数
-         */
-        var alertInfFun = function(megKind, cont){
-          $('.messageTd').css('display', 'none').html('');
-          if(megKind == 'err'){
-            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
-          }
-          if(megKind == 'suc'){
-            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
-          }
-          if(megKind == 'pmt'){
-            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
-          }
-          $('.popInfoWrap').css('display', 'block');
-          var fadeOutFun = function(){
-            $('.popInfoWrap').fadeOut(3000);
-          };
-          $timeout(fadeOutFun, 3000);
-//          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
-        };
 
         /**
          * 加载知识大纲
@@ -103,7 +82,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               }
             }
             else {
-              alertInfFun('pmt', '没有知识大纲，请新增一个！');
+              messageService.alertInfFun('pmt', '没有知识大纲，请新增一个！');
             }
           });
         };
@@ -124,14 +103,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
           if(lx == 2){
             if(!$scope.privateZsdgList.length){
-              alertInfFun('pmt', '没有大纲，请新建一个！');
+              messageService.alertInfFun('pmt', '没有大纲，请新建一个！');
             }
             $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
             //查询该领域的在公共知识点
             $http.get(qryPubZsdUrl).success(function(ggzsd){
               if(ggzsd.error){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                alertInfFun('pmt', '此领域下没有公共知识点！');
+                messageService.alertInfFun('pmt', '此领域下没有公共知识点！');
                 publicKnowledgeData = '';
               }
               else{
@@ -208,7 +187,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = '';
                 $scope.publicKnowledge = publicKnowledgeData;
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
                 $scope.prDgBtnDisabled = true;
               }
             });
@@ -238,7 +217,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePb = '';
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }
@@ -261,10 +240,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
               loadDaGang();
-              alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
+              messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
             }
             else{
-              alertInfFun('suc', '将此大纲设置为默认大纲的操作失败！');
+              messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作失败！');
             }
           });
         };
@@ -333,13 +312,13 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   $scope.selectZjDgId = '';
                 }
                 else{
-                  alertInfFun('err', result.error);
+                  messageService.alertInfFun('err', result.error);
                 }
               });
             }
           }
           else{
-            alertInfFun('pmt', '请选择要删除的大纲！');
+            messageService.alertInfFun('pmt', '请选择要删除的大纲！');
           }
           $scope.prDgBtnDisabled = true;
         };
@@ -415,7 +394,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             console.log(publicKnowledgeData);
           }
           else{
-            alertInfFun('pmt', '请选择要输入的目标！');
+            messageService.alertInfFun('pmt', '请选择要输入的目标！');
           }
         };
 
@@ -483,7 +462,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 }
                 else{
                   $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                  alertInfFun('err', '修改大纲失败！');
+                  messageService.alertInfFun('err', '修改大纲失败！');
                   $scope.prDgBtnDisabled = true;
                   $scope.prDgBtnDisabled = false;
                 }
@@ -491,13 +470,13 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
             else{
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              alertInfFun('pmt', '知识点名称不能为空！');
+              messageService.alertInfFun('pmt', '知识点名称不能为空！');
               $scope.prDgBtnDisabled = false;
             }
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            alertInfFun('err', '请选择或新建一个大纲！');
+            messageService.alertInfFun('err', '请选择或新建一个大纲！');
             $scope.prDgBtnDisabled = false;
           }
         };

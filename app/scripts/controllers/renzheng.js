@@ -8,7 +8,8 @@ define([
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
     .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$cookieStore',
-      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore) {
+      'messageService',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService) {
 
         var loginApiUrl = config.apiurl_rz + 'denglu',
             login = {
@@ -24,23 +25,6 @@ define([
         $rootScope.dashboard_shown = false;
         $scope.login = login;
         $rootScope.isPromiseAlterOthersTimu = false;
-
-        /**
-         * 信息提示函数//
-         */
-        var alertInfFun = function(megKind, cont){
-          $('.messageTd').css('display', 'none').html('');
-          if(megKind == 'err'){
-            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
-          }
-          if(megKind == 'suc'){
-            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
-          }
-          if(megKind == 'pmt'){
-            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
-          }
-          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
-        };
 
         /**
          * 登录程序
@@ -161,11 +145,11 @@ define([
                       $cookieStore.put('logged', userCookie);
                     }
                     else{
-                      alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                      messageService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                     }
                   }
                   else{
-                    alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                    messageService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                   }
                 });
               }

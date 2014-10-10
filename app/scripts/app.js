@@ -25,13 +25,13 @@ define([
     'directives/bnslideshow',
     'directives/hoverslide',
     'directives/fileupload',
-    'directives/repeatdone'
-
+    'directives/repeatdone',
+    'services/messageservice'
    ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl,UserCtrl, LogoutCtrl,
                 RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl,MylocaldateFilter, MylocaldatewithweekFilter,
                 ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
                 PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
-                RepeatdoneDirective) {
+                RepeatdoneDirective, MessageserviceService) {
   'use strict';
 
   return angular.module('kaoshiApp', [
@@ -59,7 +59,8 @@ define([
     'kaoshiApp.directives.Bnslideshow',
     'kaoshiApp.directives.Nandustar',
     'kaoshiApp.directives.Passwordverify',
-     /*angJSDeps*/
+    'kaoshiApp.services.Messageservice',
+    /*angJSDeps*/
     'ngCookies',
     'ngResource',
     'ngSanitize',

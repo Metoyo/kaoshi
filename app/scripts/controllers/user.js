@@ -2,7 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', 'messageService',
+      function ($rootScope, $scope, $http, messageService) {
 
       $rootScope.pageName = "认证";//页面名称
       $rootScope.isRenZheng = true; //判读页面是不是认证
@@ -116,23 +117,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       }
 
       /**
-       * 信息提示函数
-       */
-      var alertInfFun = function(megKind, cont){
-        $('.messageTd').css('display', 'none').html('');
-        if(megKind == 'err'){
-          $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
-        }
-        if(megKind == 'suc'){
-          $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
-        }
-        if(megKind == 'pmt'){
-          $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
-        }
-        $('.popInfoWrap').css('display', 'block').fadeOut(3000);
-      };
-
-      /**
        * 设置权限，审核权限
        */
       $scope.setPermissions = function() {
@@ -166,7 +150,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
           }
           else{
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
             $scope.loadingImgShow = false; //user.html
           }
         });
@@ -237,7 +221,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 shenhe.AUTH_BTN_HIDE = true;
               }
               else{
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }).value();
@@ -259,7 +243,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.jigoulb_list = '';
             $scope.loadingImgShow = false; //rz_setJiGou.html
-            alertInfFun('err', '没用相应的机构！');
+            messageService.alertInfFun('err', '没用相应的机构！');
           }
         });
       };
@@ -286,14 +270,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 else{
                   $scope.jigou_list = '';
                   $scope.loadingImgShow = false; //rz_setJiGou.html
-                  alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
+                  messageService.alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
                 }
               });
             }
             else{
               $scope.jigou_list = '';
               $scope.loadingImgShow = false; //rz_setJiGou.html
-              alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
+              messageService.alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
             }
           });
         }
@@ -352,13 +336,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             else{
               $scope.loadingImgShow = false; //rz_setJiGou.html
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
         }
         else{
           $scope.loadingImgShow = false; //rz_setJiGou.html
-          alertInfFun('err', '请输入机构名称！');
+          messageService.alertInfFun('err', '请输入机构名称！');
         }
       };
 
@@ -382,7 +366,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.getJgList(jgLeiBieId);
           }
           else{
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -425,18 +409,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 $scope.loadingImgShow = false; //rz_setJiGou.html
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }
           else{
             $scope.loadingImgShow = false; //rz_setJiGou.html
-            alertInfFun('pmt', '请输入管理员密码！');
+            messageService.alertInfFun('pmt', '请输入管理员密码！');
           }
         }
         else{
           $scope.loadingImgShow = false; //rz_setJiGou.html
-          alertInfFun('pmt', '请输入管理员账号！');
+          messageService.alertInfFun('pmt', '请输入管理员账号！');
         }
       };
 
@@ -456,7 +440,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           }
           else{
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -494,7 +478,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           }
           else{
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -516,7 +500,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alertInfFun('err', '没用相关的领域！');
+            messageService.alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -557,7 +541,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -573,12 +557,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(data.result){
 //            $('.save-msg').show().fadeOut(3000);
             isLingYuSet = false;
-            alertInfFun('suc', '保存成功！');
+            messageService.alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_setLingYu.html
           }
           else{
             $scope.loadingImgShow = false; //rz_setLingYu.html
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -626,7 +610,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alertInfFun('err', '没用相关的领域！');
+            messageService.alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -766,7 +750,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           else{
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -805,7 +789,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 tiKuObj.shuju.TIKUMINGCHENG = lyData.LINGYUMINGCHENG;
                 $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
                   if(tiku.error){
-                    alertInfFun('err', tiku.error);
+                    messageService.alertInfFun('err', tiku.error);
                   }
                   else{
                     chaXunTiKu($scope.jgSelectLingYu[count]);
@@ -850,7 +834,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 sjMuLuObj.shuju.MULUMINGCHENG = lyData.LINGYUMINGCHENG;
                 $http.post(alterShiJuanMuLuUrl, sjMuLuObj).success(function(mulu){
                   if(mulu.error){
-                    alertInfFun('err', mulu.error);
+                    messageService.alertInfFun('err', mulu.error);
                   }
                   else{
                     chaXunSjMuLu($scope.jgSelectLingYu[count]);
@@ -881,12 +865,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(data.result){
             saveTiKuFun();
             alterShiJuanMuLu();
-            alertInfFun('suc', '保存成功！');
+            messageService.alertInfFun('suc', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectLingYu.html
           }
           else{
             $scope.loadingImgShow = false; //rz_selectLingYu.html
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };
@@ -917,7 +901,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.lingyu_list = '';
             $scope.loadingImgShow = false; //rz_setDaGang.html
             $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
-            alertInfFun('err', '没用相关的领域！');
+            messageService.alertInfFun('err', '没用相关的领域！');
           }
         });
       };
@@ -955,13 +939,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               //没有公共知识大纲
               else{
-                alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
+                messageService.alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
               }
             }
             //没有知识大纲
             else{
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
+              messageService.alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
             }
           });
 
@@ -970,7 +954,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.loadingImgShow = true; //rz_setDaGang.html
             if(zsd.error){
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              alertInfFun('err', '此领域下没有公共知识点！');
+              messageService.alertInfFun('err', '此领域下没有公共知识点！');
               publicKnowledgeData = '';
             }
             else{
@@ -1122,23 +1106,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             //先查询此知识点下面有没有
             $http.get(qrytimuliebiao).success(function(tmIds){
               if(tmIds.length){
-                alertInfFun('pmt', '此知识点下有试题，禁止删除！');
+                messageService.alertInfFun('pmt', '此知识点下有试题，禁止删除！');
               }
               else{
                 $http.post(alterZsdUrl, zsdObj).success(function(data){
                   if(data.result){
-                    alertInfFun('suc', '删除成功！');
+                    messageService.alertInfFun('suc', '删除成功！');
                     $scope.publicKnowledge.splice(idx, 1);
                   }
                   else{
-                    alertInfFun('err', data.error);
+                    messageService.alertInfFun('err', data.error);
                   }
                 });
               }
             });
           }
           else{
-            alertInfFun('err', '请选择要删除知识点！');
+            messageService.alertInfFun('err', '请选择要删除知识点！');
           }
         }
       };
@@ -1221,7 +1205,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(modifyZsdgUrl, daGangData).success(function(data) {
               if(data.result){
                 $scope.loadingImgShow = false; //rz_setDaGang.html
-                alertInfFun('suc', '保存成功！');
+                messageService.alertInfFun('suc', '保存成功！');
                 $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
                 isDaGangSet = false;
                 $scope.adminParams.selected_dg = '';
@@ -1230,20 +1214,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               else{
                 $scope.loadingImgShow = false; //rz_setDaGang.html
                 $scope.adminParams.saveDGBtnDisabled = false;
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
             $scope.adminParams.saveDGBtnDisabled = false;
-            alertInfFun('pmt', '知识点名称不能为空！');
+            messageService.alertInfFun('pmt', '知识点名称不能为空！');
           }
         }
         else{
           $scope.loadingImgShow = false; //rz_setDaGang.html
           $scope.adminParams.saveDGBtnDisabled = false;
-          alertInfFun('err', '请选择您要保存的大纲！');
+          messageService.alertInfFun('err', '请选择您要保存的大纲！');
         }
       };
 
@@ -1274,7 +1258,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 $scope.loadingImgShow = false; //rz_selectTiXing.html
-                alertInfFun('err', allTx.error);
+                messageService.alertInfFun('err', allTx.error);
               }
             });
           }
@@ -1282,7 +1266,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.loadingImgShow = false; //rz_selectTiXing.html
             $scope.isShenHeBox = false; //判断是不是审核页面
             $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
-            alertInfFun('err', jgLy.error);
+            messageService.alertInfFun('err', jgLy.error);
           }
         });
       };
@@ -1296,7 +1280,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.activeLingYu = lyId;
         $http.get(qryKmTx + lyId).success(function(data){
           if(data.error){
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
           else{
             $scope.kmtxList = data;
@@ -1343,12 +1327,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
         $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
           if(data.result){
-            alertInfFun('err', '保存成功！');
+            messageService.alertInfFun('err', '保存成功！');
             $scope.loadingImgShow = false; //rz_selectTiXing.html
           }
           else{
             $scope.loadingImgShow = false; //rz_selectTiXing.html
-            alertInfFun('err', data.error);
+            messageService.alertInfFun('err', data.error);
           }
         });
       };

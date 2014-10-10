@@ -1,14 +1,10 @@
-define([
-  'jquery',
-  'underscore',
-  'angular',
-  'config'
+define(['jquery', 'underscore', 'angular', 'config'
 ], function ($, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
-    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', 'urlRedirect',
-      function ($rootScope, $scope,$location, $http, $q, urlRedirect) {
+    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', 'urlRedirect', 'messageService',
+      function ($rootScope, $scope,$location, $http, $q, urlRedirect, messageService) {
         var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
             apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token, //jiGouLeiBie 机构类别的api
@@ -33,23 +29,6 @@ define([
         $scope.objectWrap = false;
         $scope.stepTwo = false; //第二步的显示和隐藏
         $scope.stepThree = false; //第三步的显示和隐藏
-
-        /**
-         * 信息提示函数
-         */
-        var alertInfFun = function(megKind, cont){
-          $('.messageTd').css('display', 'none').html('');
-          if(megKind == 'err'){
-            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
-          }
-          if(megKind == 'suc'){
-            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
-          }
-          if(megKind == 'pmt'){
-            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
-          }
-          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
-        };
 
         /**
          * 注册信息的第一步，个人详情信息
@@ -141,7 +120,7 @@ define([
 
           }
           else{
-            alertInfFun('err', '没用相关机构！');
+            messageService.alertInfFun('err', '没用相关机构！');
           }
         });
 
@@ -160,7 +139,7 @@ define([
             else{
               $scope.jigou_list = '';
               $scope.lingyu_list = ''; //重置领域
-              alertInfFun('err', '没有相关机构！');
+              messageService.alertInfFun('err', '没有相关机构！');
             }
           });
         };
@@ -185,7 +164,7 @@ define([
             }
             else{
               $scope.lingyu_list = '';
-              alertInfFun('err', '没有相关领域！');
+              messageService.alertInfFun('err', '没有相关领域！');
             }
           });
         };
@@ -205,7 +184,7 @@ define([
               $scope.kemu_list = '';
               $scope.keMuSelectBox = false;
               $scope.keMuListLengthExist = false;
-              alertInfFun('err', '没有对应的科目！');
+              messageService.alertInfFun('err', '没有对应的科目！');
             }
           });
         };
@@ -326,13 +305,13 @@ define([
 //          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
-              alertInfFun('suc', '提交成功！');
+              messageService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
         };

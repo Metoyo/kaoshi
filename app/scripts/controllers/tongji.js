@@ -1,8 +1,8 @@
 define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', '$window',
-      function ($rootScope, $scope, $http, $timeout, $window) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
+      function ($rootScope, $scope, $http, $timeout, messageService) {
         /**
          * 操作title//
          */
@@ -48,23 +48,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           nameCount: true,
           classCount: true,
           scoreCount: true
-        };
-
-        /**
-         * 信息提示函数
-         */
-        var alertInfFun = function(megKind, cont){
-          $('.messageTd').css('display', 'none').html('');
-          if(megKind == 'err'){
-            $('.mesError').css('display', 'block').html(cont); //mesSuccess mesPrompt
-          }
-          if(megKind == 'suc'){
-            $('.mesSuccess').css('display', 'block').html(cont); // mesPrompt
-          }
-          if(megKind == 'pmt'){
-            $('.mesPrompt').css('display', 'block').html(cont); //mesSuccess
-          }
-          $('.popInfoWrap').css('display', 'block').fadeOut(3000);
         };
 
         /**
