@@ -1,5 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'
-], function ($, _, angular, config) {
+define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])

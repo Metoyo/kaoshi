@@ -103,7 +103,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           replaceStr = '<br/>', //匹配<br/>
           fileTypeReg = /\.\b\w+$\b/; // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
 
-
         /**
          * 初始化是DOM元素的隐藏和显示
          */
@@ -113,17 +112,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
         $scope.mingTiParam = { //命题用到的参数
-          tiMuId: '',
-          tiMuAuthorId: '',
-          goToPageNum: ''
+          tiMuId: '', //题目ID
+          tiMuAuthorId: '', //出题人ID
+          goToPageNum: '', //分页的页码跳转
+          isConvertTiXing: false, //是否是题型转换
+          tiXingId: ''
         };
-        $scope.chuTiRens = [
+        $scope.chuTiRens = [ //创建人数组，临时性的
           {uid: 1122, name: '邓继'},
           {uid: 1123, name: '苏德'},
           {uid: 1124, name: '张君'},
           {uid: 1125, name: '李鑫'},
           {uid: 1160, name: '王荟茹'},
           {uid: 1161, name: '陈佳琪'}
+        ];
+        $scope.tiXingIdArr = [ //题型转换数组
+          {txId: 9, txName: '计算题'},
+          {txId: 17, txName: '解答题'}
         ];
 
         /**
@@ -175,7 +180,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.keMuList = true; //选择的科目render完成后列表显示
           }
           else{
-            messageService.alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error); //
+            messageService.alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error);
           }
         });
         $scope.cxKmTx = function(lyt){
@@ -186,7 +191,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.keMuList = true; //选择的科目render完成后列表显示
             }
             else{
-              messageService.alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error); //
+              messageService.alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error);
             }
           });
         };
@@ -202,7 +207,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.kowledgeList = data;
             }
             else{
-              messageService.alertInfFun('err', '查询知识点失败！错误信息：' + data.error); //
+              messageService.alertInfFun('err', '查询知识点失败！错误信息：' + data.error);
             }
           });
         };
@@ -741,6 +746,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           isEditItemStep = true;
           $scope.patternListToggle = true;
           $scope.newShiTiTiXing = newShiTiTiXingArr;
+          $scope.mingTiParam.isConvertTiXing = false;
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/tixing/danxuan.html');
         };
@@ -885,42 +891,45 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(tx_data.shuju.DAAN.length){
               if(selectZsd.length){
                 if(tx_data.shuju.NANDU_ID.length){
+                  if($scope.mingTiParam.tiXingId && (tx_data.shuju.TIXING_ID != $scope.mingTiParam.tiXingId)){
+                    tx_data.shuju.TIXING_ID = $scope.mingTiParam.tiXingId;
+                  }
                   $scope.loadingImgShow = true; //jisuan.html
                   $http.post(xgtmUrl, tx_data).success(function(data){
                     if(data.result){
                       if(tx_data.shuju.TIMU_ID){ //试题修改成功后！
-                        messageService.alertInfFun('suc', '修改成功！'); //
+                        messageService.alertInfFun('suc', '修改成功！');
                         $scope.patternListToggle = false;
                         $scope.alterTiXingBox = false;
                         $scope.cancelAddPattern();
                       }
                       else{ // 试题添加成功后！
 //                        $('.save-msg').show().fadeOut(3000);
-                        messageService.alertInfFun('suc', '添加成功！'); //
+                        messageService.alertInfFun('suc', '添加成功！');
                         resetFun(tx_data);
                       }
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                     else{
-                      messageService.alertInfFun('err', data.error); //
+                      messageService.alertInfFun('err', data.error);
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                   });
                 }
                 else{
-                  messageService.alertInfFun('pmt', '请选择难度！'); //
+                  messageService.alertInfFun('pmt', '请选择难度！');
                 }
               }
               else{
-                messageService.alertInfFun('pmt', '请选择知识点！'); //
+                messageService.alertInfFun('pmt', '请选择知识点！');
               }
             }
             else{
-              messageService.alertInfFun('pmt', '请输入答案！'); //
+              messageService.alertInfFun('pmt', '请输入答案！');
             }
           }
           else{
-            messageService.alertInfFun('pmt', '请输入题干！'); //
+            messageService.alertInfFun('pmt', '请输入题干！');
           }
         };
 
@@ -929,6 +938,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.addTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
+          messageService.tiMuContPreview();
         };
 
         /**
@@ -936,6 +946,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.addTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
+          messageService.tiZhiContPreview();
         };
 
         /**
@@ -964,6 +975,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showDanXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
+          messageService.tiMuContPreview();
         };
 
         /**
@@ -996,6 +1008,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showDuoXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
+          messageService.tiMuContPreview();
         };
 
         /**
@@ -1021,6 +1034,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showJiSuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
+          messageService.tiMuContPreview();
         };
 
         /**
@@ -1028,6 +1042,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.showJiSuanDaAnEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
+          messageService.tiZhiContPreview();
         };
 
         /**
@@ -1210,7 +1225,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         $scope.cancelAddPattern();
                       }
                       else{ // 试题添加成功后！
-//                        $('.save-msg').show().fadeOut(3000);
                         messageService.alertInfFun('suc', '保存成功！'); //
                         resetFun(tiankong_data);
                         $scope.loopArr = []; //重置填空题支
@@ -1288,7 +1302,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 加载修改单多选题模板
+         * 加载修改单多选题模板//
          */
         var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
           var selectZsdStr = '';
@@ -1410,6 +1424,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.alterTiMuTiXing = '填空题';
             renderTpl(tpl); //render 修改过模板
+            $timeout(messageService.tiMuContPreview, 500);
           }
           //计算题
           if(tmxq.TIXING_ID == 9){
@@ -1423,6 +1438,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.alterTiMuTiXing = '计算题';
+            $scope.mingTiParam.isConvertTiXing = true;
             renderTpl(tpl); //render 修改过模板
           }
           //解答题
@@ -1437,6 +1453,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jieda_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             jieda_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.alterTiMuTiXing = '解答题';
+            $scope.mingTiParam.isConvertTiXing = true;
             renderTpl(tpl); //render 修改过模板
           }
           //反选知识点

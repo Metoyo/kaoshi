@@ -70,7 +70,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.tjPaging();
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           $scope.isTjDetailShow = false;
@@ -100,7 +100,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.tjPaging();
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           $scope.isTjDetailShow = false;
@@ -185,7 +185,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               });
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           //统计下面的5条数据
@@ -259,7 +259,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           else{
-            alertInfFun('err', '没有考试数据！');
+            messageService.alertInfFun('err', '没有考试数据！');
           }
           $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
@@ -338,7 +338,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.tjTiMuDetail = data;
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           $scope.tjItemName = tjName;
@@ -367,7 +367,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.myAvgScore = avgScore.toFixed(1);
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           $scope.tjItemName = tjNamePara;
@@ -440,7 +440,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.tjTiMuDetail = data;
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
           $scope.tjItemName = tjNamePara;
@@ -509,7 +509,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.tjShowStudentInfo(data[0].KAOSHI_ID, 'ksId', 'ksList', data[0].KAOSHI_MINGCHENG);
               }
               else{
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }
@@ -533,7 +533,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.tjShowStudentInfo(data[0].SHIJUAN_ID, 'sjId', 'sjList', data[0].SHIJUAN_MINGCHENG);
               }
               else{
-                alertInfFun('err', data.error);
+                messageService.alertInfFun('err', data.error);
               }
             });
           }
@@ -731,7 +731,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               chartFunPieAndBar(cont1, cont2);
             }
             else{
-              alertInfFun('err', data.error);
+              messageService.alertInfFun('err', data.error);
             }
           });
         };
