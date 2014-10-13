@@ -119,6 +119,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tiXingId: ''
         };
         $scope.chuTiRens = [ //创建人数组，临时性的
+          {uid: 'allUsr', name: '全部'},
           {uid: 1122, name: '邓继'},
           {uid: 1123, name: '苏德'},
           {uid: 1124, name: '张君'},
@@ -391,7 +392,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           //查询数据的代码
-          timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+          if($scope.mingTiParam.tiMuId){
+            timu_id = $scope.mingTiParam.tiMuId;
+            $scope.pages = [1];
+          }
+          else{
+            timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
+          }
           qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
           $http.get(qrytimuxiangqing).success(function(data){
             if(data.length){
@@ -457,8 +464,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.timudetails = data;
                   $scope.caozuoyuan = caozuoyuan;
                   timudetails = data;
-                  $scope.mingTiParam.tiMuId = '';
-                  $scope.mingTiParam.tiMuAuthorId = '';
+//                  $scope.mingTiParam.tiMuId = '';
+//                  $scope.mingTiParam.tiMuAuthorId = '';
                 }
                 else{
                   $scope.timudetails = null;
@@ -507,6 +514,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             totalPage = 1;
             pageArr = [1];
             $scope.lastPageNum = totalPage; //最后一页的数值
+            $scope.mingTiParam.tiMuAuthorId = ''; //互斥
             $scope.getThisPageData();
           }
           else{
@@ -515,14 +523,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 通过出题人的UID查询试题
+         * 通过出题人的UID查询试题//
          */
         $scope.qryTiMuByChuTiRenId = function(){
           if($scope.mingTiParam.tiMuAuthorId){
+            if($scope.mingTiParam.tiMuAuthorId == 'allUsr'){
+              $scope.mingTiParam.tiMuAuthorId = '';
+            }
+            $scope.mingTiParam.tiMuId = ''; //互斥
             $scope.qryTestFun();
-          }
-          else{
-            messageService.alertInfFun('pmt', '请选择出题人！');
           }
         };
 
