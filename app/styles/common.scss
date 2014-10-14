@@ -750,6 +750,9 @@ a.add-btn:hover span {
         }
       }
     }
+    img{
+      max-width: 100%;
+    }
   }
 }
 /* test list styls end*/
@@ -898,7 +901,7 @@ a.add-btn:hover span {
   }
   .media {
     border: 0;
-    margin: 0;
+    margin: 1px 0 0 0;
     padding-top: 20px;
     background: url('../images/mingti/icon/sline.jpg') repeat-y 15px 0;
   }

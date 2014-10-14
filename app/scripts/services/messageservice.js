@@ -23,16 +23,20 @@ define(['angular'], function (angular) {
       //修改试题，点击编辑器，内容立刻预览 题干
       this.tiMuContPreview = function(tgCont){
         var tgCont = $('.formulaEditTiGan').val() || tgCont;
-        tgCont = tgCont.replace(/\n/g, '<br/>');
-        $('#prevDoc').html(tgCont);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        if(tgCont){
+          tgCont = tgCont.replace(/\n/g, '<br/>');
+          $('#prevDoc').html(tgCont);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        }
       };
       //修改试题，点击编辑器，内容立刻预览 题支
       this.tiZhiContPreview = function(){
         var tzCont = $('.formulaEditTiZhi').val();
-        tzCont = tzCont.replace(/\n/g, '<br/>');
-        $('#prevTiZhiDoc').html(tzCont);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        if(tzCont){
+          tzCont = tzCont.replace(/\n/g, '<br/>');
+          $('#prevTiZhiDoc').html(tzCont);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        }
       };
 
 	}]);
