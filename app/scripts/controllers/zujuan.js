@@ -185,6 +185,18 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.addMoreTiMuBtn = false; //添加更多试题的按钮
           $scope.isTestPaperSummaryShow = true; //div.testPaperSummary显示
           $scope.zj_tabActive = 'shiJuan'; //初始化组卷页面的tab的显示和隐藏
+          $scope.zuJuanParam = { //组卷参数
+            quChong: [
+              {qcTime: 1, qcName: '1 年'},
+              {qcTime: 2, qcName: '2 年'},
+              {qcTime: 3, qcName: '3 年'},
+              {qcTime: 4, qcName: '4 年'},
+              {qcTime: 5, qcName: '5 年'}
+            ],
+            quChongNum: '',
+            selectQuChongNum: '',
+            inputQuChongNum: ''
+          };
 
           /**
            * 获得大纲数据
@@ -1003,9 +1015,34 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           * 检查下拉框的去重数据
+           */
+          $scope.checkSelectQuChongNum = function(){
+            if($scope.zuJuanParam.selectQuChongNum) {
+              $scope.zuJuanParam.inputQuChongNum = '';
+              $scope.zuJuanParam.quChongNum = $scope.zuJuanParam.selectQuChongNum;
+            }
+            console.log($scope.zuJuanParam.quChongNum);
+          };
+
+          /**
+           * 检查下拉框的去重数据
+           */
+          $scope.checkInPutQuChongNum = function(){
+            if(isNaN($scope.zuJuanParam.inputQuChongNum)){
+              $scope.zuJuanParam.inputQuChongNum = '';
+            }
+            if($scope.zuJuanParam.inputQuChongNum) {
+              $scope.zuJuanParam.selectQuChongNum = '';
+              $scope.zuJuanParam.quChongNum = parseInt($scope.zuJuanParam.inputQuChongNum);
+            }
+            console.log($scope.zuJuanParam.quChongNum);
+          };
+
+          /**
            * 保存规则组卷数据
            */
-          $scope.addRuleMakePaperShiJuan = function(isQuChong){
+          $scope.addRuleMakePaperShiJuan = function(){
             var distAutoMakePaperData = {
                 token: token,
                 caozuoyuan: caozuoyuan,
@@ -1024,8 +1061,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 });
               }
             });
-            if(isQuChong){
-              distAutoMakePaperData.shuju.exclude = {type: "month", value: "12"};
+            if($scope.zuJuanParam.inputQuChongNum || $scope.zuJuanParam.selectQuChongNum){
+              if($scope.zuJuanParam.quChongNum){
+                distAutoMakePaperData.shuju.exclude = { type: "year", value: $scope.zuJuanParam.quChongNum };
+              }
+            }
+            else{
+              $scope.zuJuanParam.quChongNum = '';
             }
             if(distAutoMakePaperData.shuju.items.length){
               $scope.loadingImgShow = true;

@@ -119,7 +119,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tiXingId: ''
         };
         $scope.chuTiRens = [ //创建人数组，临时性的
-          {uid: 'allUsr', name: '全部'},
+          {uid: 'allUsr', name: '全部出题人'},
           {uid: 1122, name: '邓继'},
           {uid: 1123, name: '苏德'},
           {uid: 1124, name: '张君'},
@@ -240,7 +240,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           zhishidian_id = selectZsd.toString();
-          zsdNameStr = zsdName.join('；');
+//          zsdNameStr = zsdName.join('；');
+          zsdNameStr = zsdName.join('】【');
           $scope.selectZhiShiDian = zsdNameStr;
         };
 
@@ -1421,6 +1422,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   return '<span>_____</span>';
                 });
                 $scope.loopArr = loopArr;
+                messageService.tiMuContPreview(tiankong_data.shuju.TIGAN);
               }
               else{
                 messageService.alertInfFun('err', data.error);
@@ -1433,7 +1435,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             $scope.alterTiMuTiXing = '填空题';
             renderTpl(tpl); //render 修改过模板
-            $timeout(messageService.tiMuContPreview, 500);
+//            $timeout(messageService.tiMuContPreview, 1000);
           }
           //计算题
           if(tmxq.TIXING_ID == 9){
@@ -1519,7 +1521,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.patternListToggle = false;
             $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
-//            $scope.qryTestFun();
           });
         };
 

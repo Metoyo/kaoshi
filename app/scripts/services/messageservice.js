@@ -21,8 +21,8 @@ define(['angular'], function (angular) {
         $timeout(fadeOutFun, 3000);
       };
       //修改试题，点击编辑器，内容立刻预览 题干
-      this.tiMuContPreview = function(){
-        var tgCont = $('.formulaEditTiGan').val();
+      this.tiMuContPreview = function(tgCont){
+        var tgCont = $('.formulaEditTiGan').val() || tgCont;
         tgCont = tgCont.replace(/\n/g, '<br/>');
         $('#prevDoc').html(tgCont);
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);

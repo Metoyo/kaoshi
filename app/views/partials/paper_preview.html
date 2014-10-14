@@ -71,7 +71,7 @@
                         <div class="item-cont">
                             <h3 class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
                                 <div class="item-score" ng-click="sj_item_score = false">
-                                    <span ng-bind="($index + 1) + '、' + tmd.TIGAN.tiGan | outTiGan:tm.TIXING_ID"></span>
+                                    <span ng-bind-html="($index + 1) + '、' + tmd.TIGAN.tiGan | outTiGan:tm.TIXING_ID"></span>
                                     <span ng-hide="tmd.xiaotiScore">
                                        （<a href="javascript:void(0)">点击设置本小题分数</a>）
                                     </span>
@@ -94,7 +94,7 @@
                             </h3>
                             <div class="item-tizhi-wrap">
                                 <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index"
-                                   ng-bind="letterArr[$index] + '.' + tz">
+                                   ng-bind-html="letterArr[$index] + '.' + tz">
                                 </p>
                             </div>
                         </div>

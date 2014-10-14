@@ -21,7 +21,6 @@
                <button type="button" class="btn btn-primary" ng-click="qryTestByTiMuId()">查询</button>
            </div>
             <div class="pull-left ml10">
-                <!--<button type="button" class="btn btn-primary pull-right">查询</button>-->
                 <select ng-model="mingTiParam.tiMuAuthorId" class="form-control pull-right w200 h28 mr5"
                         ng-change="qryTiMuByChuTiRenId()"
                         ng-options="ctr.uid as ctr.name for ctr in chuTiRens">
@@ -56,7 +55,7 @@
                     ID：<span class="pull-right" ng-bind="tm.TIMU_ID"></span>
                 </p>
                 <p>
-                    创建时间：{{tm.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}
+                    创建时间：{{tm.CREATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}
                 </p>
                 <div class="editWrap" ng-show="tm.CHUANGJIANREN_UID == caozuoyuan || isPromiseAlterOthersTimu">
                     <button type="button" class="btn btn-default" ng-click="deleteItem(tm.TIMU_ID, $index)">删除</button>
@@ -70,7 +69,7 @@
                 <div class="item-tizhi-wrap">
                     <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
                         <span ng-bind="letterArr[$index] + '. '"></span>
-                        <span class="tiZhiSpan" ng-bind="tz"></span>
+                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
                     </p>
                 </div>
             </div>
