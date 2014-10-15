@@ -69,12 +69,37 @@ define( "config", [], function () {
       }
     },
     quanxianObj: [ //得到角色是数组
-      {qx_id: '', juese_name:'审核人', juese_url: '/shenpi'},
-      {qx_id: 2007, juese_name:'科目负责人', juese_url: '/dagang'},
-      {qx_id: 2010, juese_name:'命题教师', juese_url: '/mingti'},
-      {qx_id: 2017, juese_name:'组卷教师', juese_url: '/zujuan'},
-      {qx_id: 3011, juese_name:'考务人员', juese_url: '/kaowu'},
-      {qx_id: 4001, juese_name:'科目负责人', juese_url: '/tongji'}
+      {
+        qxArr: ['2006', '2007'],
+        targetUrl: '/dagang',
+        navName : 'dagang'
+      },
+      {
+        qxArr: ['2010', '2011', '2012', '2013', '2031', '2032'],
+        targetUrl: '/mingti',
+        navName : 'mingti'
+      },
+      {
+        qxArr: ['2017', '2020', '2021', '2022', '2023', '2030', '2033', '2034'],
+        targetUrl: '/zujuan',
+        navName : 'zujuan'
+      },
+      {
+        qxArr: ['3001'],
+        targetUrl: '/kaowu',
+        navName : 'kaowu'
+      },
+      {
+        qxArr: ['4001', '4002'],
+        targetUrl: '/tongji',
+        navName : 'tongji'
+      }
+//      {qx_id: '', juese_name:'审核人', juese_url: '/shenpi'},
+//      {qx_id: 2007, juese_name:'科目负责人', juese_url: '/dagang'},
+//      {qx_id: 2010, juese_name:'命题教师', juese_url: '/mingti'},
+//      {qx_id: 2017, juese_name:'组卷教师', juese_url: '/zujuan'},
+//      {qx_id: 3011, juese_name:'考务人员', juese_url: '/kaowu'},
+//      {qx_id: 4001, juese_name:'科目负责人', juese_url: '/tongji'}
     ],
     tiXingNameArr: [
       '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',

@@ -2,32 +2,47 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.LingyuCtrl', [])
-    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect',  //11
-      function ($rootScope, $scope, $location, $http, urlRedirect) {
+    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', 'urlRedirect', '$cookieStore', //11
+      function ($rootScope, $scope, $location, urlRedirect, $cookieStore) {
         /**
          * 定义变量和初始化
          */
         var currentPath = $location.$$path,
-          session = $rootScope.session;
+          session = $rootScope.session,
+          lingyu = $cookieStore.get('lingyuCk');
         $rootScope.pageName = "选择默认科目";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
-        $scope.linyuInfo = session.userInfo.LINGYU;
+        $scope.linyuInfo = lingyu.lingyu;
 
         /**
          * 设置默认的领域
          */
         $scope.goToTargetWeb = function(ly){
+          var jsUrl = '', urlShowAndHideArr = [];
           //在session中记录作为默认的领域id和领域名称
           session.defaultLyId = ly.LINGYU_ID;
           session.defaultLyName = ly.LINGYUMINGCHENG;
-          var needLyArr = _.chain(session.userInfo.JUESE)
-              .filter(function(js){if(js.LINGYU_ID == ly.LINGYU_ID){ return js;}})
-              .sortBy(function(js){ return js.JUESE_ID; })
-              .map(function(js){ return js.JUESE_ID; })
-              .uniq().value(), //得到角色的数组
-            jsUrl = config.quanxianObj[parseInt(needLyArr[0]) - 1].juese_url; //得到要跳转的url
-          session.jueseStr = _.map(needLyArr, function(jsm){return 'juese' + jsm}).join();
+          //根据权限判断导向
+          _.each(config.quanxianObj, function(qx, idx, lst){
+            //默认导向的url
+            var inQx = _.contains(qx.qxArr, ly.quanxian[0]),
+              navName = _.intersection(qx.qxArr, ly.quanxian).length;
+            if(inQx){
+              jsUrl = qx.targetUrl;
+            }
+            //显示和隐藏url
+            if(navName > 0){
+              urlShowAndHideArr.push(qx.navName);
+            }
+          });
+          //cookies代码
+          var userCookie = $cookieStore.get('logged');
+          userCookie.defaultLyId = ly.LINGYU_ID;
+          userCookie.defaultLyName = ly.LINGYUMINGCHENG;
+          userCookie.quanxianStr = urlShowAndHideArr.join();
+          $cookieStore.put('logged', userCookie);
+
           urlRedirect.goTo(currentPath, jsUrl);
         }
 

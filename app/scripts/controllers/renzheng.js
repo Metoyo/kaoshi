@@ -7,12 +7,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService) {
 
         var loginApiUrl = config.apiurl_rz + 'denglu',
-            login = {
-              userName: '',
-              password: ''
-            },
-            loginPostParams,
-            session = {},
+          login = {
+            userName: '',
+            password: ''
+          },
+          loginPostParams,
+          session = {},
           currentPath = $location.$$path;
         $rootScope.session = session;
         $rootScope.pageName = "太安厅";//页面名称
@@ -20,6 +20,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $rootScope.dashboard_shown = false;
         $scope.login = login;
         $rootScope.isPromiseAlterOthersTimu = false;
+        $rootScope.globalParams = { //全局参数
+          lingyu: '',
+          quanxian: ''
+        };
 
         /**
          * 登录程序
@@ -38,7 +42,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
             //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
-              var jsArr, jsNewArr;
+              var jsArr, quanxianDist;
               session.info = result[0];
               session.userInfo = '';
               session.quanxian2032 = false;
@@ -66,7 +70,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                           .uniq()
                           .without("9", "10")
                           .value(); //得到角色的数组
-                      if(jsArr[0] == 1){
+                      //把权限加入到对应的领域中
+                      quanxianDist = _.groupBy(data.QUANXIAN, function(qx){ return qx.LINGYU_ID; });
+                      _.each(data.LINGYU, function(ly){
+                        var qxIds = _.map(quanxianDist[parseInt(ly.LINGYU_ID)], function(qx){ return qx.QUANXIAN_ID; });
+                        ly.quanxian = qxIds;
+                      });
+
+                      if(_.contains(jsArr, "1")){
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else{
@@ -76,7 +87,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         var permissions = data.QUANXIAN,
                           find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
                           quanxianArr = [],
-                          jsUrl, find_QUANXIAN_ID_2032;
+                          urlShowAndHideArr = [],
+                          jsUrl = '', find_QUANXIAN_ID_2032;
 
                         find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2004;
@@ -97,28 +109,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                           if(data.LINGYU.length == 1){
                             session.defaultLyId = data.LINGYU[0].LINGYU_ID;
                             session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
-                            _.each(permissions, function(pms, idx, lst){
-                              if(pms.QUANXIAN_ID == 2007 || pms.QUANXIAN_ID == 2010 || pms.QUANXIAN_ID == 2017
-                                || pms.QUANXIAN_ID == 3001 || pms.QUANXIAN_ID == 4001){
-                                quanxianArr.push(pms.QUANXIAN_ID);
-                              }
+                            quanxianArr = _.map(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)], function(qx){
+                              return qx.QUANXIAN_ID;
                             });
                             quanxianArr = _.uniq(quanxianArr);
-                            //得到数组的第一位，-1的目的是为了转化为索引
+                            //根据权限判断导向
                             _.each(config.quanxianObj, function(qx, idx, lst){
-                              if(qx.qx_id == quanxianArr[0]){
-                                jsUrl = qx.juese_url;
+                              //默认导向的url
+                              var inQx = _.contains(qx.qxArr, quanxianArr[0]),
+                                navName = _.intersection(qx.qxArr, quanxianArr).length;
+                              if(inQx){
+                                jsUrl = qx.targetUrl;
+                              }
+                              //显示和隐藏url
+                              if(navName > 0){
+                                urlShowAndHideArr.push(qx.navName);
                               }
                             });
-
-                            session.quanxianStr = _.map(quanxianArr, function(qxm){return 'quanxian' + qxm}).join();
+                            session.quanxianStr = urlShowAndHideArr.join();
                             urlRedirect.goTo(currentPath, jsUrl);
                           }
                           else{
                             urlRedirect.goTo(currentPath, '/lingyu');
                           }
                         }
-
+                        //判断科目负责人
                         if(find_QUANXIAN_ID_2032){
                           $rootScope.isPromiseAlterOthersTimu = true;
                         }
@@ -127,17 +142,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         }
                       }
                       //cookies代码
-                      jsNewArr = _.reject(data.JUESE, function(js){ return js.JUESE_ID == 2007 || js.JUESE_ID == 2017; });
                       var userCookie = {
-                        UID: $rootScope.session.info.UID,
-                        YONGHUMING: $rootScope.session.info.YONGHUMING,
-                        defaultLyId: session.defaultLyId,
-                        defaultLyName: session.defaultLyName,
-                        quanxianStr: session.quanxianStr,
-                        JIGOU: session.userInfo.JIGOU,
-                        JUESE: jsNewArr
-                      };
+                          UID: $rootScope.session.info.UID,
+                          YONGHUMING: $rootScope.session.info.YONGHUMING,
+                          defaultLyId: session.defaultLyId,
+                          defaultLyName: session.defaultLyName,
+                          quanxianStr: session.quanxianStr,
+                          JIGOU: session.userInfo.JIGOU,
+                          JUESE: jsArr
+                        },
+                        lingyuCookie = {
+                          lingyu: data.LINGYU
+                        };
                       $cookieStore.put('logged', userCookie);
+                      $cookieStore.put('lingyuCk', lingyuCookie);
                     }
                     else{
                       messageService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');

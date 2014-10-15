@@ -85,7 +85,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             lingyuid: lingyuid,
             timu_id: ''
           },
-          timudetails,//获得的题目数组
+//          timudetails,//获得的题目数组
           tiMuIdArr = [], //获得查询题目ID的数组
           pageArr = [], //根据得到的数据定义一个分页数组
           totalPage, //符合条件的数据一共有多少页
@@ -116,17 +116,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tiMuAuthorId: '', //出题人ID
           goToPageNum: '', //分页的页码跳转
           isConvertTiXing: false, //是否是题型转换
-          tiXingId: ''
+          tiXingId: '',
+          isFirstEnterMingTi: true
         };
-        $scope.chuTiRens = [ //创建人数组，临时性的
-          {uid: 'allUsr', name: '全部出题人'},
-          {uid: 1122, name: '邓继'},
-          {uid: 1123, name: '苏德'},
-          {uid: 1124, name: '张君'},
-          {uid: 1125, name: '李鑫'},
-          {uid: 1160, name: '王荟茹'},
-          {uid: 1161, name: '陈佳琪'}
-        ];
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 9, txName: '计算题'},
           {txId: 17, txName: '解答题'}
@@ -309,7 +301,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.qryTestFun = function(pg){
           $scope.loadingImgShow = true; //testList.html loading
-          var qrytimuliebiao; //查询题目列表的url
+          var qrytimuliebiao, //查询题目列表的url
+            chuangJianRenUidArr = []; //创建人UID数组
           tiMuIdArr = [];
           pageArr = [];
           if(zhishidian_id){
@@ -333,6 +326,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.testListId = tmlb;
                   _.each(tmlb, function(tm, idx, lst){
                     tiMuIdArr.push(tm.TIMU_ID);
+                    chuangJianRenUidArr.push(tm.CHUANGJIANREN_UID);
                   });
                   //获得一共多少页的代码开始
                   totalPage = Math.ceil(tmlb.length/itemNumPerPage);
@@ -340,8 +334,30 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     pageArr.push(i);
                   }
                   $scope.lastPageNum = totalPage; //最后一页的数值
-                  //查询数据开始
-                  $scope.getThisPageData(pg);
+                  //得到创建人uid和姓名的数组
+                  chuangJianRenUidArr = _.chain(chuangJianRenUidArr).uniq().sortBy().value().toString();
+                  var getUserNameUrl = getUserNameBase + chuangJianRenUidArr;
+                  if($scope.mingTiParam.isFirstEnterMingTi){
+                    $http.get(getUserNameUrl).success(function(users){
+                      if(users && users.length > 0){
+                        $scope.chuTiRens = users;//创建人数组，临时性的 {uid: 1122, name: '邓继'}, {UID: 1122, XINGMING: '邓继'}
+                        $scope.chuTiRens.unshift({UID: 'allUsr', XINGMING: '全部出题人'});
+                        $scope.mingTiParam.isFirstEnterMingTi = false;
+                        //查询数据开始
+                        $scope.getThisPageData(pg);
+                      }
+                      else{
+                        $scope.chuTiRens = [];
+                        $scope.timudetails = null;
+                        messageService.alertInfFun('err', '查询创建人名称失败！'); //
+                        $scope.loadingImgShow = false; //testList.html loading
+                      }
+                    });
+                  }
+                  else{
+                    //查询数据开始
+                    $scope.getThisPageData(pg);
+                  }
                 }
                 else{
                   tiMuIdArr = [];
@@ -405,7 +421,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(data.length){
               //在此将答案和题干转换
               _.each(data, function(tm, idx, lst){
-                userIdArr.push(tm.CHUANGJIANREN_UID);
+//                userIdArr.push(tm.CHUANGJIANREN_UID);
                 if(tm.TIXING_ID <= 3){
                   var daanArr = tm.DAAN.split(','),
                     daanLen = daanArr.length,
@@ -449,31 +465,41 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 else{
 
                 }
+                //件创建人的姓名加入到题目里面
+                _.each($scope.chuTiRens, function(usr, subidx, sublst){
+                  if(usr.UID == tm.CHUANGJIANREN_UID){
+                    tm.chuangjianren = usr.XINGMING;
+                  }
+                });
               });
-              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
-              var getUserNameUrl = getUserNameBase + userIdStr;
-              $http.get(getUserNameUrl).success(function(users){
-                if(users.length){
-                  _.each(data, function(tm, idx, lst){
-                    _.each(users, function(usr, subidx, sublst){
-                      if(usr.UID == tm.CHUANGJIANREN_UID){
-                        tm.chuangjianren = usr.XINGMING;
-                      }
-                    });
-                  });
-                  $scope.loadingImgShow = false; //testList.html loading
-                  $scope.timudetails = data;
-                  $scope.caozuoyuan = caozuoyuan;
-                  timudetails = data;
-//                  $scope.mingTiParam.tiMuId = '';
-//                  $scope.mingTiParam.tiMuAuthorId = '';
-                }
-                else{
-                  $scope.timudetails = null;
-                  messageService.alertInfFun('err', '查询创建人名称失败！'); //
-                  $scope.loadingImgShow = false; //testList.html loading
-                }
-              });
+              $scope.loadingImgShow = false; //testList.html loading
+              $scope.timudetails = data;
+              $scope.caozuoyuan = caozuoyuan;
+//              timudetails = data;
+//              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+//              var getUserNameUrl = getUserNameBase + userIdStr;
+//              $http.get(getUserNameUrl).success(function(users){
+//                if(users.length){
+//                  _.each(data, function(tm, idx, lst){
+//                    _.each(users, function(usr, subidx, sublst){
+//                      if(usr.UID == tm.CHUANGJIANREN_UID){
+//                        tm.chuangjianren = usr.XINGMING;
+//                      }
+//                    });
+//                  });
+//                  $scope.loadingImgShow = false; //testList.html loading
+//                  $scope.timudetails = data;
+//                  $scope.caozuoyuan = caozuoyuan;
+//                  timudetails = data;
+////                  $scope.mingTiParam.tiMuId = '';
+////                  $scope.mingTiParam.tiMuAuthorId = '';
+//                }
+//                else{
+//                  $scope.timudetails = null;
+//                  messageService.alertInfFun('err', '查询创建人名称失败！');
+//                  $scope.loadingImgShow = false; //testList.html loading
+//                }
+//              });
             }
             else{
               messageService.alertInfFun('err', '没有相关题目！'); //

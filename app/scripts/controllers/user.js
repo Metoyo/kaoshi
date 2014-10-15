@@ -98,13 +98,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       /**
        * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9//
        */
-      var jsArr = _.chain(userInfo.JUESE)
-          .sortBy(function(js){ return js.JUESE_ID; })
-          .map(function(js){ return js.JUESE_ID; })
-          .uniq()
-          .value(); //得到角色的数组
-
-      switch (jsArr[0]){
+      switch (userInfo.JUESE[0]){
         case "1":
           $scope.shenHeTpl = 'views/partials/rz_admin.html';
           break;
