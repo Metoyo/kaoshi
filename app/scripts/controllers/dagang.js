@@ -2,8 +2,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
-    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'messageService',
-      function ($rootScope, $scope, $http, $q, $timeout, messageService) {
+    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
+      function ($rootScope, $scope, $http, $timeout, messageService) {
         //声明变量
         var userInfo = $rootScope.session.userInfo,
           info = $rootScope.session.info,

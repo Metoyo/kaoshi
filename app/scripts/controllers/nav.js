@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
       function ($rootScope, $scope, $location, $http) {
 
       /**
-       * 定义变量//
+       * 定义变量
        */
       var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
         token = config.token,

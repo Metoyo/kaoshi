@@ -1,9 +1,9 @@
 define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
   'use strict';
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
-    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$window', '$timeout', 'Myfileupload',
+    .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'Myfileupload',
       'messageService',
-      function ($rootScope, $scope, $http, $q, $window, $timeout, Myfileupload, messageService) {
+      function ($rootScope, $scope, $http, $q, $timeout, Myfileupload, messageService) {
         /**
          * 操作title
          */

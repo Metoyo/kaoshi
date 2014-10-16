@@ -3,9 +3,9 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
-      .controller('KaowuCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', '$timeout', 'Myfileupload',
+      .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'Myfileupload',
         'messageService',
-        function ($rootScope, $scope, $location, $http, $q, $timeout, Myfileupload, messageService) { // 002 开始
+        function ($rootScope, $scope, $http, $timeout, Myfileupload, messageService) { // 002 开始
           /**
            * 操作title
            */
@@ -81,9 +81,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            */
           var formatDate = function(dateStr){
             var mydateNew = new Date(dateStr),
-//            difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
-//            difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
-//            mydateNew = new Date(difMilliseconds),
               year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
               month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
               day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
@@ -105,7 +102,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
             return joinDate;
           };
-          var formatDateZh = function(dateStr){ //转换为中午
+          var formatDateZh = function(dateStr){ //转换为中国
             var mydateNew = new Date(dateStr),
               year = mydateNew.getFullYear(), //根据世界时从 Date 对象返回四位数的年份
               month = mydateNew.getMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)

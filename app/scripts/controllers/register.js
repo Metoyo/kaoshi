@@ -2,8 +2,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
-    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', '$q', 'urlRedirect', 'messageService',
-      function ($rootScope, $scope,$location, $http, $q, urlRedirect, messageService) {
+    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'messageService',
+      function ($rootScope, $scope, $location, $http, urlRedirect, messageService) {
+
         var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
             apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token, //jiGouLeiBie 机构类别的api
