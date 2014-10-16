@@ -77,18 +77,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
        * 显示个人详情
        */
       $rootScope.showUserInfo = function(){
-        var user = $rootScope.session.userInfo;
-        $('.modifuMiMaInfo').html('');
-        _.each(user.LINGYU, function(ly, index, list){
-          ly.jueseArr = [];
-          _.each(user.JUESE, function(js, idx, lst){
-            if(js.LINGYU_ID == ly.LINGYU_ID){
-              ly.jueseArr.push(js.JUESEMINGCHENG);
-            }
-          });
+        var user = {},
+          jueseDist,
+          yhxxxxApiUrl = baseRzAPIUrl + 'yonghu_xiangxi_xinxi?token=' + token + '&yonghuid=' +
+            $rootScope.session.info.UID; //通过UID查询用户详细的url
+
+        $http.get(yhxxxxApiUrl).success(function(data){
+          if(data.JIGOU.length){
+            user.LINGYU = [];
+            jueseDist = _.groupBy(data.JUESE, function(js){ return js.LINGYUMINGCHENG; });
+            _.each(data.LINGYU, function(ly){
+              var jsName = _.map(jueseDist[ly.LINGYUMINGCHENG], function(js){ return js.JUESEMINGCHENG; }),
+                lyObj = {
+                  LINGYUMINGCHENG: '',
+                  jueseStr: ''
+                };
+              lyObj.LINGYUMINGCHENG = ly.LINGYUMINGCHENG;
+              lyObj.jueseStr = jsName.join();
+              user.LINGYU.push(lyObj);
+            });
+            user.YONGHUMING = data.YONGHUMING;
+            user.XINGMING = data.YONGHUXINXI[0].XINGMING;
+            user.YOUXIANG = data.YOUXIANG;
+            user.SHOUJI = data.SHOUJI;
+            user.JIGOUMINGCHENG = data.JIGOU[0].JIGOUMINGCHENG;
+            user.SHOUJI = data.SHOUJI;
+            $('.modifuMiMaInfo').html('');
+            $scope.usr = user;
+            $scope.userInfoLayer = true;
+          }
         });
-        $scope.usr = user;
-        $scope.userInfoLayer = true;
       };
 
       /**

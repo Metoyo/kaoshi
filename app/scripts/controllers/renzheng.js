@@ -51,9 +51,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 var profileUrl = '/user/' + login.userName,
-                  permissionApiUrl = config.apiurl_rz + 'yonghu_quanxian?token=' + config.token + '&yonghuid=' +
-                    session.info.UID,//查询用户权限的url
-
                   yhxxxxApiUrl = config.apiurl_rz + 'yonghu_xiangxi_xinxi?token=' + config.token + '&yonghuid=' +
                     session.info.UID; //通过UID查询用户详细的url
 

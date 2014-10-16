@@ -388,7 +388,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             pgNum = pg - 1,
             timu_id,
             currentPage = pgNum ? pgNum : 0,
-            userIdArr = [],//存放user id的数组
             newCont,
             tgReg = new RegExp('<\%{.*?}\%>', 'g');
 
@@ -421,7 +420,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(data.length){
               //在此将答案和题干转换
               _.each(data, function(tm, idx, lst){
-//                userIdArr.push(tm.CHUANGJIANREN_UID);
                 if(tm.TIXING_ID <= 3){
                   var daanArr = tm.DAAN.split(','),
                     daanLen = daanArr.length,
@@ -475,31 +473,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.loadingImgShow = false; //testList.html loading
               $scope.timudetails = data;
               $scope.caozuoyuan = caozuoyuan;
-//              timudetails = data;
-//              var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
-//              var getUserNameUrl = getUserNameBase + userIdStr;
-//              $http.get(getUserNameUrl).success(function(users){
-//                if(users.length){
-//                  _.each(data, function(tm, idx, lst){
-//                    _.each(users, function(usr, subidx, sublst){
-//                      if(usr.UID == tm.CHUANGJIANREN_UID){
-//                        tm.chuangjianren = usr.XINGMING;
-//                      }
-//                    });
-//                  });
-//                  $scope.loadingImgShow = false; //testList.html loading
-//                  $scope.timudetails = data;
-//                  $scope.caozuoyuan = caozuoyuan;
-//                  timudetails = data;
-////                  $scope.mingTiParam.tiMuId = '';
-////                  $scope.mingTiParam.tiMuAuthorId = '';
-//                }
-//                else{
-//                  $scope.timudetails = null;
-//                  messageService.alertInfFun('err', '查询创建人名称失败！');
-//                  $scope.loadingImgShow = false; //testList.html loading
-//                }
-//              });
             }
             else{
               messageService.alertInfFun('err', '没有相关题目！'); //
