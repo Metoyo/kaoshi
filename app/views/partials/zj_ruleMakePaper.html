@@ -7,12 +7,8 @@
         <tr>
             <th>题型</th>
             <th width="80px">数量</th>
-            <th width="300px">难度：
-                <span class="coefftRule">0.50</span>
-                <em>(建议0.20-0.80之间)</em>
-            </th>
-            <th>
-            </th>
+            <th width="300px">难度</th>
+            <th></th>
         </tr>
         <tr>
             <td>
@@ -27,17 +23,24 @@
                        onkeyup="this.value=this.value.replace(/\D/g,'')"
                        onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
             </td>
-            <td class="nandu-dist" ng-mouseover="resize('Rule')">
-                <div class="distBox">
-                    <span class="maskLabel pull-left">容易</span>
-                    <div class="sliderBox pull-left">
-                        <div id="sliderItemRule" class="sliderItem">
-                            <div class="sliderItemInner sliderItemInnerRule"></div>
-                            <div id="sliderBtnRule" class="sliderBtn"></div>
-                        </div>
-                    </div>
-                    <span class="maskLabel pull-left">困难</span>
-                </div>
+            <td class="nandu-dist">
+                <ul class="list-unstyled zj-style-star">
+                    <li><a href="javascript:void(0)" ng-click="zjNanDuSelect(1)"></a></li>
+                    <li><a href="javascript:void(0)" ng-click="zjNanDuSelect(2)"></a></li>
+                    <li><a href="javascript:void(0)" ng-click="zjNanDuSelect(3)"></a></li>
+                    <li><a href="javascript:void(0)" ng-click="zjNanDuSelect(4)"></a></li>
+                    <li><a href="javascript:void(0)" ng-click="zjNanDuSelect(5)"></a></li>
+                </ul>
+                <!--<div class="distBox">-->
+                    <!--<span class="maskLabel pull-left">容易</span>-->
+                    <!--<div class="sliderBox pull-left">-->
+                        <!--<div id="sliderItemRule" class="sliderItem">-->
+                            <!--<div class="sliderItemInner sliderItemInnerRule"></div>-->
+                            <!--<div id="sliderBtnRule" class="sliderBtn"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<span class="maskLabel pull-left">困难</span>-->
+                <!--</div>-->
             </td>
             <td class="text-right">
                 <button type="button" class="btn btn-primary" ng-click="addRuleCondition()">

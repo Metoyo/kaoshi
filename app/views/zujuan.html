@@ -69,6 +69,18 @@ rule_make_paper: ruleMakePaperClass,auto_make_paper: autoMakePaperClass}">
                     添加试题
                 </button>
             </div>
+            <div class="right-pop-fixed" ng-show="zuJuanParam.xuanTiError.length">
+                <h2 class="title">
+                    <span class="glyphicon glyphicon-remove" ng-click="closeRuleZuJuanTiMuNumErr()"></span>
+                </h2>
+                <div class="p10">
+                    <p ng-repeat="xtErr in zuJuanParam.xuanTiError">
+                        难度为 <span ng-bind="xtErr.errNanDu" class="clRed"></span>
+                        的<span ng-bind="xtErr.errTxName" class="clRed"></span>有
+                        <span ng-bind="xtErr.lessenVal" class="clRed"></span> 道题未选出。
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="content">

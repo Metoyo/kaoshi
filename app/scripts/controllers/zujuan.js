@@ -195,7 +195,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
             ],
             quChongNum: '',
             selectQuChongNum: '',
-            inputQuChongNum: ''
+            inputQuChongNum: '',
+            zjLastNd: '',
+            xuanTiError: []
           };
 
           /**
@@ -337,6 +339,27 @@ define(['jquery', 'underscore', 'angular', 'config'],
             zhishidian_id = selectZsd.toString();
             if($scope.txTpl == 'views/partials/zj_testList.html'){
               qryTestFun();
+            }
+          };
+
+          /**
+           * 组卷规则的难度选择
+           */
+          $scope.zjNanDuSelect = function(nd){
+            var zjStarLi = $('.zj-style-star li');
+            if($scope.zuJuanParam.zjLastNd){ // 判断星星有没有被点击，已被点击
+              if($scope.zuJuanParam.zjLastNd == nd){ //判断被点击的对象是不是已经被选中，被选中
+                zjStarLi.eq(nd-1).toggleClass('active');
+              }
+              else{ //判断被点击的对象是不是已经被选中，未被选中
+                zjStarLi.removeClass('active');
+                zjStarLi.eq(nd-1).addClass('active');
+                $scope.zuJuanParam.zjLastNd = nd;
+              }
+            }
+            else{ // 判断星星有没有被点击，未被点击
+              zjStarLi.eq(nd-1).addClass('active');
+              $scope.zuJuanParam.zjLastNd = nd;
             }
           };
 
@@ -686,6 +709,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.ruleMakePaper = function(zjr){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             isComeFromRuleList = false;
+            $scope.zuJuanParam.zjLastNd = '';
             promise.then(function(){
               $scope.isTestPaperSummaryShow = false; //div.testPaperSummary隐藏
               if(zjr){
@@ -708,6 +732,49 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
+           * 如果选出的题目没有达到规则规定的数量，运行的函数
+           */
+          var findWhichRuleHasNoItem = function(ruleData, tiMuTjData, itemData){
+            var txArrs = [], groupObj;
+            $scope.zuJuanParam.xuanTiError = [];
+            _.each(ruleData, function(rl, idx, lst){
+              if(rl.txTotalNum > 0 && (rl.txTotalNum != tiMuTjData[idx].itemsNum)){
+                txArrs = _.filter(itemData, function(item){ return item.TIXING_ID == rl.TIXING_ID; });
+                groupObj = _.groupBy(txArrs, function(tm){ return tm.NANDU_ID; });
+                _.each(rl.zsdXuanTiArr, function(xt, subIdx, subLst){
+                  var errorTx = {
+                    errTxName: '',
+                    errNanDu: '',
+                    lessenVal: ''
+                  };
+                  if(groupObj[xt.NANDU * 5] && groupObj[xt.NANDU * 5].length > 0){
+                    if(xt.TIXING[0].COUNT != groupObj[xt.NANDU * 5].length){
+                      errorTx.errTxName = rl.TIXINGMINGCHENG;
+                      errorTx.errNanDu = xt.NANDU * 5;
+                      errorTx.lessenVal = parseInt(xt.TIXING[0].COUNT) - parseInt(groupObj[xt.NANDU * 5].length);
+                      console.log(errorTx);
+                      $scope.zuJuanParam.xuanTiError.push(errorTx);
+                    }
+                  }
+                  else{
+                    errorTx.errTxName = rl.TIXINGMINGCHENG;
+                    errorTx.errNanDu = xt.NANDU * 5;
+                    errorTx.lessenVal = parseInt(xt.TIXING[0].COUNT);
+                    $scope.zuJuanParam.xuanTiError.push(errorTx);
+                  }
+                });
+              }
+            });
+          };
+
+          /**
+           * 关闭规则组卷题目数量不匹配的信息窗口
+           */
+          $scope.closeRuleZuJuanTiMuNumErr = function(){
+            $scope.zuJuanParam.xuanTiError = [];
+          }
+
+          /**
            * 由规则列表页直接组卷
            */
           $scope.directRuleMakePaper = function(dzjr){
@@ -715,7 +782,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             promise.then(function(){
               //去选题
-              var directRuleMakePaperData = JSON.parse(dzjr.GUIZEBIANMA);
+              var directRuleMakePaperData = JSON.parse(dzjr.GUIZEBIANMA),
+                totalTiMuNums;
+              _.each(dzjr.txTongJi, function(txArr, idx, lst){
+                if(txArr.zsdXuanTiArr.length){
+                  totalTiMuNums += txArr.txTotalNum;
+                }
+              });
               $http.post(guiZeZuJuanUrl, directRuleMakePaperData).success(function(tmIdsData){
                 if(tmIdsData.length){
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
@@ -740,7 +813,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         tixingStatistics(idx, kmtxListLength);
                       });
                       nanduPercent(); //难度统计
-
+                      console.log($scope.kmtxList);
                       //判读是否执行完成
                       $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                       $scope.baocunshijuanBtn = true; //保存试卷的按钮
@@ -754,6 +827,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       comeFromRuleListData = dzjr;
                       //试卷预览
                       $scope.shijuanPreview();
+                      //规则题目数量与已选出的题目的对比
+                      if(stdata.length != totalTiMuNums){
+                        findWhichRuleHasNoItem(dzjr.txTongJi, $scope.kmtxList, stdata);
+                      }
                     }
                     else{
                       $scope.timudetails = null;
@@ -837,6 +914,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 NANDU: '', // 难度系数
                 ZHISHIDIAN: [], //知识点ID, 数组
                 zsdNameArr: [], //知识点名称, 数组
+                PIPEIDU: 1, //匹配度
                 TIXING: [{
                   TIXING_ID: '',
                   COUNT: ''
@@ -844,7 +922,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
               },
               txNumClass = $('.ruleMakePaper-header input.txNum'),
               txNum = parseInt(txNumClass.val()),
-              coefftRule = $('.coefftRule').html();
+//              coefftRule = $('.coefftRule').html();
+              coefftRule = $scope.zuJuanParam.zjLastNd/5;
 
             if(selectZsd.length){
               if(ruleMakePaperSelectTxid){
@@ -865,6 +944,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $('input[name=point]:checked').prop('checked', false);//重置知识点
                     selectZsd = [];
                     selectZsdName = [];
+                    $('.zj-style-star li').removeClass('active');
+                    $scope.zuJuanParam.zjLastNd = '';
                   }
                   else{
                     messageService.alertInfFun('pmt', '请选择难度！');
@@ -909,8 +990,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
               },
               date = new Date(),
-              currentDate = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))
-                + date.getDate(), //当前的日期
+              monthStr = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1)),
+              dayStr = date.getDate() > 9 ? date.getDate() : ('0' + date.getDate()),
+              currentDate = monthStr.toString() + dayStr.toString(), //当前的日期
               saveZjRuleFun = function(){
                 $http.post(updateXuanTiRule, ruleData).success(function(data){
                   if(data.id){
@@ -1051,11 +1133,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 shuju:{
                   items: []
                 }
-              };
+              },
+              totalTiMuNums = 0; //规则组卷出题的总数量
             $scope.ruleMakePaperSaveBtnDisabled = true;
             //得到题型数量和难度的数组
             _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
               if(txArr.zsdXuanTiArr.length){
+                totalTiMuNums += txArr.txTotalNum;
                 _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
                   distAutoMakePaperData.shuju.items.push(ntx);
                 });
@@ -1102,6 +1186,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.isTestPaperSummaryShow = true;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+                      //规则题目数量与已选出的题目的对比
+                      if(stdata.length != totalTiMuNums){
+                        findWhichRuleHasNoItem($scope.ampKmtxWeb, $scope.kmtxList, stdata);
+                      }
                       //保存规则用到的转化
                       zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
                       $scope.ruleMakePaperSaveBtnDisabled = false;
@@ -1955,6 +2043,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $scope.baocunshijuanBtn = false; //保存试卷的按钮
                     $scope.isSavePaperConfirm = false;
                     $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+                    $scope.zuJuanParam.xuanTiError = []; //
                     //保存组卷规则
                     if(isComeFromRuleList){
                       comeFromRuleListData.GUIZEBIANMA = zuJuanRuleStr;
@@ -2037,6 +2126,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
             $scope.autoMakePaperClass = false; //加载自动组卷的样式
+            $scope.zuJuanParam.xuanTiError = [];
             deleteTempTemp();
             clearData();
             restoreKmtxDtscore();
