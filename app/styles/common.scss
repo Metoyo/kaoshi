@@ -2196,6 +2196,11 @@ a.add-btn:hover span {
       right: 10px;
       bottom: 10px;
       z-index: 100;
+      background-color: #fff;
+      padding-left: 10px;
+      label{
+        font-weight: normal;
+      }
     }
     .back-to-paper-list{
       top: 10px;

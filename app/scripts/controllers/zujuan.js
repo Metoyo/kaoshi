@@ -87,7 +87,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 ZONGDAOYU: '',
                 HASFUBIAOTI: 1,
                 LEIXING: 2,
-                MUBANDATI: []
+                MUBANDATI: [],
+                TIMU_SUIJI: false,
+                XUANXIANG_SUIJI: false
               }
             },
             xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
@@ -197,7 +199,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
             selectQuChongNum: '',
             inputQuChongNum: '',
             zjLastNd: '',
-            xuanTiError: []
+            xuanTiError: [],
+            tiMuSuiJi: false,
+            xuanXiangSuiJi: false
           };
 
           /**
@@ -772,7 +776,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $scope.closeRuleZuJuanTiMuNumErr = function(){
             $scope.zuJuanParam.xuanTiError = [];
-          }
+          };
 
           /**
            * 由规则列表页直接组卷
@@ -1441,9 +1445,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                   console.log(err);
                                 });
                               })(k, value);
-
                               addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
-
                               //二级控制面板上的分数统计
                               restoreKmtxDtscore();
                               _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
@@ -1569,13 +1571,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
               for(var i = 0; i < mbdtdLength; i++){
                 //将题加入到mubanData数据中
                 if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ //将TIMULEIXING_ID换成TIXING_ID
-
                   tm.xiaotiScore = '';
                   mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
-
                   //统计每种题型的数量和百分比
                   tixingStatistics(i, kmtxListLength);
-
                   //均分大题分数
                   $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
                 }
@@ -1652,20 +1651,16 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }
             //查找要删除的元素的位置
             for(var i = 0; i < mbdtdLength; i++){
-
               //从mubanData中删除数据
               if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == tm.TIXING_ID){ // 判断那个题目类型id; 将TIMULEIXING_ID换成TIXING_ID
                 var tmarrLength = mubanData.shuju.MUBANDATI[i].TIMUARR.length; // 得到这个题目类型下面的题目数组
                 for(var j = 0; j < tmarrLength; j ++){
                   if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
                     mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
-
                     //统计每种题型的数量
                     tixingStatistics(i, kmtxListLength);
-
                     //均分大题分数
                     $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
-
                     break;
                   }
                 }
@@ -1994,6 +1989,18 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 //更新数据模板
                 var lsmbIdLenght = $rootScope.session.lsmb_id.length;
                 mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
+                if($scope.zuJuanParam.tiMuSuiJi){
+                  mubanData.shuju.TIMU_SUIJI = true;
+                }
+                else{
+                  mubanData.shuju.TIMU_SUIJI = false;
+                }
+                if($scope.zuJuanParam.xuanXiangSuiJi){
+                  mubanData.shuju.XUANXIANG_SUIJI = true;
+                }
+                else{
+                  mubanData.shuju.XUANXIANG_SUIJI = false;
+                }
                 $http.post(xgmbUrl, mubanData).success(function(mbdata){
                   if(mbdata.result){
 //                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
@@ -2741,6 +2748,12 @@ define(['jquery', 'underscore', 'angular', 'config'],
 //            saveFun();
 //          };
 
+          $scope.getOne = function(){
+            console.log($scope.zuJuanParam.tiMuSuiJi);
+          };
+          $scope.getTwo = function(){
+            console.log($scope.zuJuanParam.xuanXiangSuiJi);
+          };
           /**
            * 当离开本页的时候触发事件，删除无用的临时模板
            */

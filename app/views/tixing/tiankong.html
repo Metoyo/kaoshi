@@ -140,28 +140,9 @@
             </fieldset>
         </form>
     </div>
-    <script type="text/javascript" src="bower_components/markitup/jquery.markitup-1.1.14.min.js"></script>
-    <!-- markItUp! toolbar settings -->
-    <script type="text/javascript" src="bower_components/markitup/set.js"></script>
-    <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
-        messageStyle: "none",
-        showMathMenu: false,
-        processEscapes: true
-      });
-    </script>
     <script type="text/javascript">
         var tiGanClass = $('.formulaEditTiGan');
         tiGanClass.markItUp(mySettings);
-//        $('#prevDoc').html($('.formulaEditTiGan').val());
-//        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-        //题干的编辑器预览
-//        tiGanClass.keyup(function() {
-//            $('#prevDoc').html($('.formulaEditTiGan').val());
-//            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-//        });
         //题支的编辑器预览
         $('.formulaEditTiZhi').keyup(function() {
             $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
@@ -172,6 +153,6 @@
             $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        };
+        }
     </script>
 </div>

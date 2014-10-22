@@ -112,17 +112,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                             quanxianArr = _.uniq(quanxianArr);
                             //根据权限判断导向
                             _.each(config.quanxianObj, function(qx, idx, lst){
-                              //默认导向的url
-                              var inQx = _.contains(qx.qxArr, quanxianArr[0]),
-                                navName = _.intersection(qx.qxArr, quanxianArr).length;
-                              if(inQx){
-                                jsUrl = qx.targetUrl;
-                              }
+                              var navName = _.intersection(qx.qxArr, quanxianArr).length;
+//                              if(inQx){
+//                                jsUrl = qx.targetUrl;
+//                              }
                               //显示和隐藏url
                               if(navName > 0){
                                 urlShowAndHideArr.push(qx.navName);
                               }
                             });
+                            //默认url
+                            if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
+                              jsUrl = '/' + urlShowAndHideArr[0];
+                            }
                             session.quanxianStr = urlShowAndHideArr.join();
                             urlRedirect.goTo(currentPath, jsUrl);
                           }
