@@ -2748,12 +2748,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
 //            saveFun();
 //          };
 
-          $scope.getOne = function(){
-            console.log($scope.zuJuanParam.tiMuSuiJi);
-          };
-          $scope.getTwo = function(){
-            console.log($scope.zuJuanParam.xuanXiangSuiJi);
-          };
           /**
            * 当离开本页的时候触发事件，删除无用的临时模板
            */

@@ -1,10 +1,10 @@
 <div class="dg-list-box">
-    <select class="form-control daGangListSelect" ng-model="selected_dg"
-            ng-change="getPrivateDgZsd(selected_dg)"
+    <select class="form-control daGangListSelect" ng-model="daGangParam.selected_dg"
+            ng-change="getPrivateDgZsd(daGangParam.selected_dg)"
             ng-options="dg.ZHISHIDAGANG_ID as dg.ZHISHIDAGANGMINGCHENG for dg in privateZsdgList">
         <option value="">请选择大纲</option>
     </select>
-    <button type="button" class="btn btn-default pull-right" ng-click="addNewZjDg();selected_dg=''">
+    <button type="button" class="btn btn-default pull-right" ng-click="addNewZjDg()">
         新建
     </button>
 </div>
@@ -97,9 +97,15 @@
     </div>
     <div class="publicKnowledgeWrap">
         <h4><strong>已有知识点:</strong></h4>
-        <div class="innerBox">
+        <button type="button" class="reloadMath hide">点我</button>
+        <div class="innerBox" id="daGangList">
             <p ng-repeat="pzsd in publicKnowledge" title="点击加入到知识大纲" ng-bind="pzsd.ZHISHIDIANMINGCHENG"
-               ng-click="addToZjDaGang(pzsd, $index)"></p>
+               ng-click="addToZjDaGang(pzsd, $index)" repeat-done></p>
         </div>
+        <script type="text/javascript">
+            $('.reloadMath').on('click', function(){
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
+            });
+        </script>
     </div>
 </div>

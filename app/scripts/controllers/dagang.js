@@ -14,10 +14,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = $rootScope.session.defaultLyId,
           chaxunzilingyu = true,
-
           qryDgUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,
-
           qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
           xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
@@ -42,14 +40,18 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $rootScope.dashboard_shown = true;
         $scope.itemTitle = "大纲";
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
-
+        $scope.daGangParam = { //大纲参数
+          selected_dg: ''
+        };
 
         /**
-         * 加载知识大纲
+         * 加载知识大纲//
          */
         var loadDaGang = function(lx){
           var dgLeiXing = lx,
             newQryDgUrl;
+          publicZsdgArr = []; //存放公共知识大纲的数组
+          privateZsdgArr = []; //存放自建知识大纲的数组
           if(dgLeiXing){
             newQryDgUrl = qryDgUrl + '&leixing=' + dgLeiXing;
           }
@@ -253,6 +255,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          */
         $scope.addNewZjDg = function(){
           var jieDianObj = {};
+          $scope.daGangParam.selected_dg = '';
           //保存大纲时的数据
           dgdata.shuju = {};
           dgdata.shuju.ZHISHIDAGANG_ID = '';
@@ -424,7 +427,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 保存知识大纲//
+         * 保存知识大纲
          */
         $scope.saveZjDaGangData = function(isSetAsDefaultDg) {
           var countEmpty = true;
@@ -450,7 +453,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $http.post(submitDataUrl, dgdata).success(function(result) {
                 if(result.result){
                   $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                  $('.save-msg').show().fadeOut(3000);
                   //判读是否设置为默认大纲
                   if(isSetAsDefaultDg){
                     $scope.makeDaGangAsDefault(result.id);
@@ -459,6 +461,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   $scope.knowledgePr = '';
                   $scope.selectZjDgId = '';
                   $scope.prDgBtnDisabled = true;
+                  $scope.daGangParam.selected_dg = '';
                 }
                 else{
                   $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
@@ -489,6 +492,13 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.isPublicDg = false;
           $scope.dgTpl = 'views/partials/daGangHome.html';
         };
+
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          $('.reloadMath').click();
+        });
 
     }]);
 });

@@ -13,8 +13,9 @@
             </h2>
         </div>
         <div class="pointTree">
-            <ul class="list-unstyled levelOne">
-                <li ng-repeat="zsd in kowledgeList">
+            <button type="button" class="reloadMath hide">点我</button>
+            <ul class="list-unstyled levelOne" id="daGangList">
+                <li ng-repeat="zsd in kowledgeList" repeat-done>
                     <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}"
                          ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
                     <div class="checkbox">
@@ -160,5 +161,10 @@
         showMathMenu: false,
         processEscapes: true
       });
+    </script>
+    <script type="text/javascript">
+        $('.reloadMath').on('click', function(){
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
+        });
     </script>
 </div>

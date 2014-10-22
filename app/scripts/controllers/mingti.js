@@ -1532,7 +1532,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.patternListToggle = false;
             $scope.alterTiXingBox = false;
             $scope.cancelAddPattern();
-//            $scope.qryTestFun();
           });
         };
 
