@@ -552,8 +552,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             var qrytimuxiangqing,
               pgNum = pg - 1,
               timu_id,
-              currentPage = pgNum ? pgNum : 0,
-              userIdArr = []; //存放user id的数组
+              currentPage = pgNum ? pgNum : 0 ; //存放user id的数组
 
             //得到分页数组的代码
             var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
@@ -629,6 +628,11 @@ define(['jquery', 'underscore', 'angular', 'config'],
               pageArr = [1];
               $scope.lastPageNum = totalPage; //最后一页的数值
               $scope.zuJuanParam.tiMuAuthorId = ''; //互斥
+              //题型和难度选题重置
+              tixing_id = '';
+              $scope.txSelectenIdx = 0;
+              nandu_id = '';
+              $scope.ndSelectenIdx = 0;
               $scope.getThisPageData();
             }
             else{
@@ -661,6 +665,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               tixing_id = '';
               $scope.txSelectenIdx = 0;
             }
+            $scope.zuJuanParam.tiMuId = '';
             $scope.qryTestFun();
           };
 
@@ -676,6 +681,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               nandu_id = '';
               $scope.ndSelectenIdx = 0;
             }
+            $scope.zuJuanParam.tiMuId = '';
             $scope.qryTestFun();
           };
 
@@ -2402,25 +2408,20 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
                 mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
     //            mubanData.shuju.MUBANDATI = data.MUBANDATI; //模板大题数组
-
                 //给试卷赋值
                 shijuanData.shuju.SHIJUAN_ID = data.SHIJUAN.SHIJUAN_ID; //试卷id
                 shijuanData.shuju.SHIJUANMINGCHENG = data.SHIJUAN.SHIJUANMINGCHENG; //试卷名称
                 shijuanData.shuju.FUBIAOTI = data.SHIJUAN.FUBIAOTI; //副标题
                 shijuanData.shuju.SHIJUANMUBAN_ID = data.SHIJUAN.SHIJUANMUBAN_ID; //试卷模板id
-
                 //给答题卡用到的数据赋值
 //                daTiKaData.shiJuanId = data.SHIJUAN.SHIJUAN_ID;
-
                 //将模板大题赋值到模板里面
                 _.each(data.MUBANDATI, function(mbdt, indx, lst){
                   mbdt.TIMUARR = []; //自己添加的数组
                   mbdt.datiScore = 0; //自己定义此大题的分数
                   mubanData.shuju.MUBANDATI.push(mbdt);
                 });
-
                 var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
-
                 //将试卷详情放入临时模板的数组中
                 _.each(data.TIMU, function(tm, indx, lst){
                   // SHIJUAN_TIMU里的元素
@@ -2430,14 +2431,12 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     WEIZHIXUHAO: '',
                     FENZHI: ''
                   };
-
                   //将本题加入试卷
                   sjtm.TIMU_ID = tm.TIMU_ID;
                   sjtm.MUBANDATI_ID = tm.MUBANDATI_ID;
                   sjtm.WEIZHIXUHAO = tm.WEIZHIXUHAO;
                   sjtm.FENZHI = tm.FENZHI;
                   shijuanData.shuju.SHIJUAN_TIMU.push(sjtm);
-
                   //将此题加入模板
                   for(var i = 0; i < mbdtdLength; i++){
                     //将题加入到临时模板
@@ -2449,7 +2448,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     //统计每种题型的数量和百分比
                     tixingStatistics(i, kmtxListLength);
                   }
-
                   //难度统计  nanduTempData NANDU_ID
                   for(var j = 0; j < nanduLength; j++){
                     if(nanduTempData[j].nanduId == tm.DETAIL.NANDU_ID){
@@ -2459,7 +2457,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 });
                 nanduPercent(); //难度统计
                 addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
-
                 //二级控制面板上的分数统计
                 restoreKmtxDtscore();
                 _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值

@@ -270,6 +270,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             tixing_id = '';
             $scope.txSelectenIdx = 0;
           }
+          $scope.mingTiParam.tiMuId = '';
           $scope.qryTestFun();
         };
 
@@ -285,6 +286,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             nandu_id = '';
             $scope.ndSelectenIdx = 0;
           }
+          $scope.mingTiParam.tiMuId = '';
           $scope.qryTestFun();
         };
 
@@ -515,6 +517,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             pageArr = [1];
             $scope.lastPageNum = totalPage; //最后一页的数值
             $scope.mingTiParam.tiMuAuthorId = ''; //互斥
+            //题型和难度选题重置
+            tixing_id = '';
+            $scope.txSelectenIdx = 0;
+            nandu_id = '';
+            $scope.ndSelectenIdx = 0;
             $scope.getThisPageData();
           }
           else{
