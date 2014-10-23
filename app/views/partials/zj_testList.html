@@ -50,9 +50,26 @@
         <img src="/images/loading.gif" alt="" width="64" height="64"/>
         <p>数据加载中，请耐心等待……</p>
     </div>
-    <h2 class="total-test">
-        共<strong>{{testListId.length}}</strong>题
-    </h2>
+    <div class="total-test clearfix mt15">
+        <div class="pull-left mt5">
+            共<strong>{{testListId.length}}</strong>题
+        </div>
+        <div class="pull-right">
+            <div class="pull-left">
+                <input type="text" ng-model="zuJuanParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h28"
+                       onkeyup="if(isNaN(value))execCommand('undo')"
+                       onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                <button type="button" class="btn btn-primary" ng-click="qryTestByTiMuId()">查询</button>
+            </div>
+            <div class="pull-left ml10">
+                <select ng-model="zuJuanParam.tiMuAuthorId" class="form-control pull-right w200 h28 mr5"
+                        ng-change="qryTiMuByChuTiRenId()"
+                        ng-options="ctr.UID as ctr.XINGMING for ctr in chuTiRens">
+                    <option value="">请选择出题人</option>
+                </select>
+            </div>
+        </div>
+    </div>
     <!--<div class="errorMsg" ng-hide="timudetails.length">没有找到符合的题目！</div>-->
     <button type="button" class="reloadMath hide">点我</button> <!--用于刷新函数-->
     <ul class="list-unstyled testList" id="testList">
@@ -118,6 +135,11 @@
                 <a href  ng-click="getThisPageData(lastPageNum)">尾页</a>
             </li>
         </ul>
+        <div>
+            <span>共 <strong ng-bind="lastPageNum"></strong> 页，</span><span>跳转到</span>
+            <input type="text" ng-model="zuJuanParam.goToPageNum" class="w110"
+                   onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+            <span>页</span> <button ng-click="getFixedPageData()">GO</button></div>
     </div>
 </div>
 <script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
