@@ -208,6 +208,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $http.get(qryDgUrl).success(function(data){
             var newDgList = [];
+            zsdgZsdArr = [];
             //得到知识大纲知识点的递归函数
             function _do(item) {
               zsdgZsdArr.push(item.ZHISHIDIAN_ID);
@@ -789,7 +790,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 规则组卷
+           * 规则组卷//
            */
           $scope.ruleMakePaper = function(zjr){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后

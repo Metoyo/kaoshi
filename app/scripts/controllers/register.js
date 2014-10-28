@@ -14,7 +14,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             registerDate = {}, // 注册时用到的数据
             jigouId, //所选的机构ID
             registerUrl = config.apiurl_rz + 'zhuce', //提交注册信息的url
-            objAndRightList, //已经选择的科目和单位
+            objAndRightList = [], //已经选择的科目和单位
             checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
 
         $rootScope.pageName = "新用户注册";//页面名称
@@ -110,14 +110,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $http.get(apiUrlJglb).success(function(data) {
           $scope.jigoulb_list = [];
           if(data){
+            $scope.jigoulb_list = _.reject(data, function(jglb){
+              return jglb.LEIBIE_ID == 0;
+            });
             //锁定大学
 //            _.each(data, function(jg, idx, lst){
 //              if(jg.LEIBIE_ID == 1){
 //                $scope.jigoulb_list.push(jg);
 //              }
 //            });
-            $scope.jigoulb_list = data;
-
           }
           else{
             messageService.alertInfFun('err', '没用相关机构！');
@@ -149,6 +150,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 得到机构id
          */
         $scope.getJgId = function(jgId){
+          $scope.keMuListLengthExist = false;
+          $scope.lingyu_list = ''; //重置领域
+          $scope.selected_ly = '';
           jigouId = jgId;
           registerDate.jiGouName = $(".subOrganization  option:selected").text();
           qryParentLingYu(jgId);
@@ -173,27 +177,39 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 有父领域查询子领域领域（即科目）
          */
         $scope.getKemuList = function(lyId){
-          $http.get(apiLyKm + lyId).success(function(data) {
-            if(data.length){
-              $scope.kemu_list = data;
-              $scope.keMuSelectBox = true;
-              $scope.keMuListLengthExist = true;
-              deleteAllSelectedKmAndJs();
-            }
-            else{
-              $scope.kemu_list = '';
-              $scope.keMuSelectBox = false;
-              $scope.keMuListLengthExist = false;
-              messageService.alertInfFun('err', '没有对应的科目！');
-            }
-          });
+          if(lyId){
+            $http.get(apiLyKm + lyId).success(function(data) {
+              if(data.length){
+                $scope.kemu_list = data;
+                $scope.keMuSelectBox = true;
+                $scope.keMuListLengthExist = true;
+                deleteAllSelectedKmAndJs();
+              }
+              else{
+                $scope.kemu_list = '';
+                $scope.keMuSelectBox = false;
+                $scope.keMuListLengthExist = false;
+                messageService.alertInfFun('err', '没有对应的科目！');
+              }
+            });
+          }
+          else{
+            $scope.kemu_list = '';
+            $scope.keMuSelectBox = false;
+            $scope.keMuListLengthExist = false;
+          }
         };
 
         /**
          *  查询角色的代码
          */
         $http.get(apiUrlJueSe).success(function(data) {
-          $scope.juese_list = data;
+          if(data && data.length > 0){
+            $scope.juese_list = data;
+          }
+          else{
+            messageService.alertInfFun('err', '没有对应的角色！');
+          }
         });
 
         /**
@@ -207,7 +223,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               jueseName: ''
             }
           };
-          objAndRightObj.lingyu = $scope.kemu_list.splice(selectedLingYuIndex,1);
+          objAndRightObj.lingyu = $scope.kemu_list.splice(selectedLingYuIndex, 1);
           objAndRightObj.juese.jueseId = selectJueseIdArr;
           objAndRightObj.juese.jueseName = selectJueseNameArr;
           objAndRightList.push(objAndRightObj);
