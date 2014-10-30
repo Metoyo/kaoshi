@@ -55,9 +55,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id=', //发布考试的url
             qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
               '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷详情的url
-            saveDaTiKaUrl = baseMtAPIUrl + 'set_datika', //保存答题卡的url
-            downloadDaTiKaUrl = baseMtAPIUrl + 'make_datika?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //下载答题卡的url
             kaoShiPageArr = [], //定义考试页码数组
             kaoShiIdArrRev = [], //存放所有考试ID的数组
             totalKaoShiPage, //符合条件的考试一共有多少页
@@ -496,8 +493,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                     }
                   });
                 });
-                //将答题卡内容有字符串转换为数字
-                data.SHIJUAN.DATIKA = JSON.parse(data.SHIJUAN.DATIKA);
                 //赋值
                 $scope.paperDetail = data;
                 console.log($scope.paperDetail);
@@ -507,231 +502,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               }
               else{
                 messageService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
-              }
-            });
-          };
-
-          /**
-           *设置答题卡
-           */
-          var allTiMuForCard; //存放所有需要放到答题卡中的试题
-          $scope.kwSetDaTiKa = function(bl){
-            var idxCount = 0;
-            allTiMuForCard = [];
-            //将所有需要答题卡的试题全部添加到allTiMuForCard中
-            _.each($scope.paperDetail.MUBANDATI, function(mbdt, idx, lst){
-              if(mbdt.MUBANDATI_ID > 8){
-                _.each(mbdt.TIMUARR, function(tma, subIdx, lst){
-                  var textCont = mbdt.DATIMINGCHENG + '第' + (subIdx + 1) + '题',
-                    tiMuInfo = {
-                      timu_id: '',
-                      percent: 0.9,
-                      text: textCont,
-                      idxNum: idxCount
-                    };
-                  tiMuInfo.timu_id = tma.TIMU_ID;
-                  allTiMuForCard.push(tiMuInfo);
-                  idxCount ++;
-                });
-              }
-            });
-            $scope.setTiMuNum(1, bl);
-          };
-
-          /**
-           * 设置每页答题卡的题目数量//
-           */
-          $scope.setTiMuNum = function(tmNum, bl){
-            $('.set-tiMu-num a').removeClass('tiMuNumAon').eq(tmNum - 1).addClass('tiMuNumAon');
-            var answerCards = [], //存放答题卡的数组
-              tmn = tmNum || 1, //每页题目的数量
-              tiMuPercent = Math.floor(90/tmNum)/100, //每题在答题卡中的百分数
-              percentYuShu = 90 % tmNum, //余数百分比
-              lastTiMuPercent = tiMuPercent + percentYuShu/100, //最后一题的百分比
-              allTiMuLength = allTiMuForCard.length, //所有题目的长度
-              yushu = allTiMuForCard.length % tmn, //余数
-              intAnswerCardLen = Math.floor(allTiMuLength/tmn), //allTiMuForCard除以参数得到的整数
-              answerCardLen = yushu > 0 ? intAnswerCardLen + 1 : intAnswerCardLen; //答题卡长度, 用allTiMuForCard除以参数得到的数据
-
-            //为每道题的percent赋值
-            _.each(allTiMuForCard, function(tm, idx, lst){
-              //余数百分比弄够除尽
-              if(percentYuShu == 0){
-                //每页答题卡题目数量相同
-                if(yushu == 0){
-                  tm.percent = tiMuPercent;
-                }
-                //最后一页的题目数量少于其他答题卡
-                else{
-                  var surplus = 90 % yushu; //余数百分比
-                  //如果百分比除以最后一页题目的数量能够被整除
-                  if(surplus == 0){
-                    if(idx < allTiMuLength - yushu){
-                      tm.percent = tiMuPercent;
-                    }
-                    else{
-                      tm.percent = (90/yushu)/100;
-                    }
-                  }
-                  //如果百分比除以最后一页题目的数量不能够被整除
-                  else{
-                    var spTiMuPercent = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
-                      spLastTiMuPercent = spTiMuPercent + surplus/100; //最后一题的百分比
-                    if(idx < allTiMuLength - yushu){
-                      tm.percent = tiMuPercent;
-                    }
-                    else{
-                      if(idx < allTiMuLength){
-                        tm.percent = spTiMuPercent;
-                      }
-                      else{
-                        tm.percent = spLastTiMuPercent;
-                      }
-                    }
-                  }
-                }
-              }
-              //余数百分比弄不够除尽
-              else{
-                //每页答题卡题目数量相同
-                if(yushu == 0){
-                  if((idx + 1) % tmNum == 0){
-                    tm.percent = lastTiMuPercent;
-                  }
-                  else{
-                    tm.percent = tiMuPercent;
-                  }
-                }
-                //最后一页的题目数量少于其他答题卡
-                else{
-                  var rmSurplus = 90 % yushu; //余数百分比
-                  //如果百分比除以最后一页题目的数量能够被整除
-                  if(rmSurplus == 0){
-                    if(idx < allTiMuLength - yushu){
-                      if((idx + 1) % tmNum == 0){
-                        tm.percent = lastTiMuPercent;
-                      }
-                      else{
-                        tm.percent = tiMuPercent;
-                      }
-                    }
-                    else{
-                      tm.percent = (90/yushu)/100;
-                    }
-                  }
-                  //如果百分比除以最后一页题目的数量不能够被整除
-                  else{
-                    var spTiMuPer = Math.floor(90/yushu)/100, //每题在答题卡中的百分数
-                      spLastTiMuPer = spTiMuPer + rmSurplus/100; //最后一题的百分比
-                    if(idx < allTiMuLength - yushu){
-                      tm.percent = tiMuPercent;
-                    }
-                    else{
-                      if(idx < allTiMuLength){
-                        tm.percent = spTiMuPer;
-                      }
-                      else{
-                        tm.percent = spLastTiMuPer;
-                      }
-                    }
-                  }
-                }
-              }
-            });
-            //为每张答题分配题目
-            for(var i = 0; i < answerCardLen; i++){
-              var daTiKa = { //答题卡数据格式
-                token: token,
-                caozuoyuan: caozuoyuan,
-                jigouid: jigouid,
-                lingyuid: lingyuid,
-                shiJuanId: $scope.paperDetail.SHIJUAN.SHIJUAN_ID,
-                shuju: {
-                  pageNo: i,
-                  header: {
-                    percent: 0.05,
-                    title: $scope.paperDetail.SHIJUAN.SHIJUANMINGCHENG + '答题卡',
-                    subTitle: ''
-                  },
-                  footer: {
-                    percent: 0.05,
-                    text: '书写过程中不要超出书写范围，否则可能会导致答题无效。'
-                  },
-                  body:[]
-                }
-              };
-              if(i <= intAnswerCardLen){
-                daTiKa.shuju.body = allTiMuForCard.slice(i*tmn, (i+1)*tmn);
-              }
-              else{
-                daTiKa.shuju.body = allTiMuForCard.slice(i*tmn);
-              }
-              answerCards.push(daTiKa);
-            }
-            $scope.answerCards = answerCards;
-            if(!bl){
-              $('.popup-all-height').show();
-            }
-          };
-
-          /**
-           * 关闭答题卡设置页面
-           */
-          $scope.closeKwDaTiKaSet = function(){
-            $('.popup-all-height').hide();
-          };
-
-          /**
-           * 阻止点击冒泡
-           */
-          $scope.stopClosePopup = function(event){
-            event.preventDefault();
-            event.stopPropagation();
-          };
-
-          /**
-           * 下载答题卡
-           */
-          $scope.downloadDaTiKa = function(bl){
-            $scope.closeKwDaTiKaSet();
-            //保存大题卡
-            var daTiKaDataRule = {
-                token: token,
-                caozuoyuan: caozuoyuan,
-                jigouid: jigouid,
-                lingyuid: lingyuid,
-                shuju:{
-                  shiJuanId: '',
-                  pages: []
-                }
-              },
-              downloadDaTiKa = downloadDaTiKaUrl + $scope.paperDetail.SHIJUAN.SHIJUAN_ID;
-
-            if($scope.answerCards){
-              daTiKaDataRule.shuju.shiJuanId = $scope.paperDetail.SHIJUAN.SHIJUAN_ID;
-            }
-            else{
-              $scope.kwSetDaTiKa(bl);
-              daTiKaDataRule.shuju.shiJuanId = $scope.paperDetail.SHIJUAN.SHIJUAN_ID;
-            }
-            _.each($scope.answerCards, function(dtk, idx, lst){
-              daTiKaDataRule.shuju.pages.push(dtk.shuju);
-            });
-            $http.post(saveDaTiKaUrl, daTiKaDataRule).success(function(dtkdata){
-              if(dtkdata.result){
-                var aLink = document.createElement('a');
-                var evt = document.createEvent("HTMLEvents");
-                evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-                aLink.href = downloadDaTiKa;
-                aLink.dispatchEvent(evt);
-                $('.downloadDaTiKaBtn').prop('disabled', true);
-                var cancelDisabled = function(){
-                  $('.downloadDaTiKaBtn').prop('disabled', false);
-                };
-                $timeout(cancelDisabled, 25000);
-              }
-              else{
-                messageService.alertInfFun('err', '保存答题卡生成规则时错误！错误信息为：' + dtkdata.error);
               }
             });
           };
@@ -942,107 +712,52 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            */
           $scope.saveKaoShi = function(){
             $scope.kaoShengErrorInfo = '';
-            if($scope.paperDetail.SHIJUAN.DATIKA && $scope.paperDetail.SHIJUAN.DATIKA.length > 0){
-//              var saveKaoConfirm = confirm('本试卷含有答题卡，请先下载答题卡，否则将影响考试！是否去下载答题卡？');
-//              if(saveKaoConfirm){
-//                $scope.downloadDaTiKa(true);
-//              }
-              if($('.start-date').val()){
-                if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){
-                  if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
-                    kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
-                    $scope.startDateIsNull = false;
-                    var inputStartDate = $('.start-date').val(),
-                      startDate = Date.parse(inputStartDate), //开始时间
-                      endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
-                      shijuan_info = { //需要同步的试卷数据格式
-                        token: token,
-                        caozuoyuan: caozuoyuan,
-                        jigouid: jigouid,
-                        lingyuid: lingyuid,
-                        shijuanid: ''
-                      };
-                    kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                    kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
-                    shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
-                    $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
-                      if(rst.result){
-                        $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-                          if(data.result){
-                            $scope.showKaoShiList();
-                            messageService.alertInfFun('suc', '考试添加成功！');
-                          }
-                          else{
-                            messageService.alertInfFun('err', data.error);
-                            $scope.kaoShengErrorInfo = JSON.parse(data.error);
-                          }
-                        });
-                      }
-                      else{
-                        messageService.alertInfFun('err', rst.error);
-                      }
-                    });
-                  }
-                  else{
-                    messageService.alertInfFun('err', '请添加考生！')
-                  }
+            if($('.start-date').val()){
+              if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){
+                if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
+                  kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
+                  $scope.startDateIsNull = false;
+                  var inputStartDate = $('.start-date').val(),
+                    startDate = Date.parse(inputStartDate), //开始时间
+                    endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
+                    shijuan_info = { //需要同步的试卷数据格式
+                      token: token,
+                      caozuoyuan: caozuoyuan,
+                      jigouid: jigouid,
+                      lingyuid: lingyuid,
+                      shijuanid: ''
+                    };
+                  kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
+                  kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+                  shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
+                  $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
+                    if(rst.result){
+                      $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
+                        if(data.result){
+                          $scope.showKaoShiList();
+                          messageService.alertInfFun('suc', '考试添加成功！');
+                        }
+                        else{
+                          messageService.alertInfFun('err', data.error);
+                          $scope.kaoShengErrorInfo = JSON.parse(data.error);
+                        }
+                      });
+                    }
+                    else{
+                      messageService.alertInfFun('err', rst.error);
+                    }
+                  });
                 }
                 else{
-                  messageService.alertInfFun('err', '请选择考场！');
+                  messageService.alertInfFun('err', '请添加考生！')
                 }
               }
               else{
-                $scope.startDateIsNull = true;
+                messageService.alertInfFun('err', '请选择考场！');
               }
             }
             else{
-              if($('.start-date').val()){
-                if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){
-                  if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
-                    kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
-                    $scope.startDateIsNull = false;
-                    var inputStartDate = $('.start-date').val(),
-                      startDate = Date.parse(inputStartDate), //开始时间
-                      endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
-                      shijuan_info = { //需要同步的试卷数据格式
-                        token: token,
-                        caozuoyuan: caozuoyuan,
-                        jigouid: jigouid,
-                        lingyuid: lingyuid,
-                        shijuanid: ''
-                      };
-                    kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                    kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
-                    shijuan_info.shijuanid = kaoshi_data.shuju.SHIJUAN_ID;
-                    $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
-                      if(rst.result){
-                        $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
-                          if(data.result){
-                            $scope.showKaoShiList();
-                            messageService.alertInfFun('suc', '考试添加成功！');
-                          }
-                          else{
-                            messageService.alertInfFun('err', data.error);
-                            $scope.kaoShengErrorInfo = JSON.parse(data.error);
-                          }
-                        });
-                      }
-                      else{
-                        messageService.alertInfFun('err', rst.error);
-                      }
-                    });
-                  }
-                  else{
-                    messageService.alertInfFun('err', '请添加考生！')
-                  }
-                }
-                else{
-                  messageService.alertInfFun('err', '请选择考场！');
-                }
-              }
-              else{
-                $scope.startDateIsNull = true;
-              }
+              $scope.startDateIsNull = true;
             }
           };
 

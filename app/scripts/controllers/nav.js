@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + config.token, //jueSe 查询科目权限的数据的api
           xgyhUrl = baseRzAPIUrl + 'xiugai_yonghu', //修改用户的url
           objAndRightList = [], //已经选择的科目和单位
-          userInfo = $rootScope.session.userInfo;
+          userInfo;
 
         $scope.userInfoLayer = false;
         $scope.navData = {
@@ -88,6 +88,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             jueseDist,
             yhxxxxApiUrl = baseRzAPIUrl + 'yonghu_xiangxi_xinxi?token=' + token + '&yonghuid=' +
               $rootScope.session.info.UID; //通过UID查询用户详细的url
+          userInfo = $rootScope.session.userInfo;
           $http.get(yhxxxxApiUrl).success(function(data){
             if(data.JIGOU.length){
               $scope.navData.jiGouId = data.JIGOU[0].JIGOU_ID;

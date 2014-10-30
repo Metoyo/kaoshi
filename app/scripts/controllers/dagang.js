@@ -41,11 +41,14 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.itemTitle = "大纲";
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
         $scope.daGangParam = { //大纲参数
-          selected_dg: ''
+          selected_dg: '',
+          dgSaveAsLeiXing: '',
+          dgSaveAsName: '',
+          showDaGangAsNew: false
         };
 
         /**
-         * 加载知识大纲//
+         * 加载知识大纲
          */
         var loadDaGang = function(lx){
           var dgLeiXing = lx,
@@ -116,6 +119,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 publicKnowledgeData = '';
               }
               else{
+                _.each($scope.publicZsdgList, function(pubDg, idx, lst){
+                  ggzsd = _.reject(ggzsd, function(dg){ return dg.ZHISHIDIANMINGCHENG == pubDg.ZHISHIDAGANGMINGCHENG; });
+                });
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 publicKnowledgeData = ggzsd;
                 $scope.publicKnowledge = ggzsd;
@@ -313,6 +319,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   });
                   $scope.knowledgePr = '';
                   $scope.selectZjDgId = '';
+                  $scope.daGangParam.selected_dg = '';
                 }
                 else{
                   messageService.alertInfFun('err', result.error);
@@ -490,6 +497,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.backToDaGangHome = function(){
           $scope.isPrivateDg = false;
           $scope.isPublicDg = false;
+          $scope.daGangParam.selected_dg = '';
+          $scope.selectZjDgId = '';
           $scope.dgTpl = 'views/partials/daGangHome.html';
         };
 
@@ -499,6 +508,81 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           $('.reloadMath').click();
         });
+
+        /**
+         * 大纲另存为
+         */
+        $scope.saveDaGangAsNew = function(){
+          var saveAdDgData = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: jigouid,
+            lingyuid: lingyuid,
+            shuju: {
+              ZHISHIDAGANG_ID: '',
+              GENJIEDIAN_ID: '',
+              DAGANGSHUOMING: '',
+              ZHUANGTAI: 1,
+              ZHISHIDAGANGMINGCHENG: '',
+              LEIXING: '',
+              JIEDIAN: [
+                {
+                  JIEDIAN_ID: '',
+                  ZHISHIDIAN_ID: '',
+                  ZHISHIDIANMINGCHENG: '',
+                  ZHISHIDIAN_LEIXING: 2,
+                  LEIXING: 2,
+                  JIEDIANLEIXING:  '',
+                  JIEDIANXUHAO: 1,
+                  ZHUANGTAI: 1,
+                  ZIJIEDIAN: []
+                }
+              ]
+            }
+          };
+          //将节点ID置空的递归函数
+          function _do(item) {
+            item.JIEDIAN_ID = '';
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              _.each(item.ZIJIEDIAN, _do);
+            }
+          }
+          //节点数据赋值
+          if($scope.knowledgePb && $scope.knowledgePb.length > 0){
+            saveAdDgData.shuju.JIEDIAN[0].ZIJIEDIAN = $scope.knowledgePb[0].ZIJIEDIAN;
+          }
+          if($scope.knowledgePr && $scope.knowledgePr.length > 0){
+            saveAdDgData.shuju.JIEDIAN[0].ZIJIEDIAN = $scope.knowledgePr[0].ZIJIEDIAN;
+          }
+          _.each(saveAdDgData.shuju.JIEDIAN, _do);//将节点ID去掉
+          if($scope.daGangParam.dgSaveAsName){
+            saveAdDgData.shuju.ZHISHIDAGANGMINGCHENG = $scope.daGangParam.dgSaveAsName;
+            saveAdDgData.shuju.JIEDIAN[0].ZHISHIDIANMINGCHENG = $scope.daGangParam.dgSaveAsName;
+          }
+          else{
+            messageService.alertInfFun('pmt', '亲给新大纲起一个名字！');
+          }
+          if($scope.daGangParam.dgSaveAsLeiXing){
+            saveAdDgData.shuju.LEIXING = $scope.daGangParam.dgSaveAsLeiXing;
+
+          }
+          else{
+            messageService.alertInfFun('pmt', '请选择大纲类型！');
+          }
+          if(saveAdDgData.shuju.ZHISHIDAGANGMINGCHENG && saveAdDgData.shuju.LEIXING){
+            $http.post(submitDataUrl, saveAdDgData).success(function(result) {
+              if(result.result){
+                $scope.daGangParam.showDaGangAsNew = false;
+                messageService.alertInfFun('suc', '大纲另存为成功！');
+                $scope.daGangParam.dgSaveAsName = '';
+                loadDaGang();
+              }
+              else{
+                messageService.alertInfFun('err', result.error);
+              }
+            });
+          }
+        };
 
     }]);
 });

@@ -1,6 +1,6 @@
 <div class="dg-list-box">
-    <select class="form-control daGangListSelect" ng-model="selected_dg"
-            ng-change="getPublicDgZsd(selected_dg)"
+    <select class="form-control daGangListSelect" ng-model="daGangParam.selected_dg"
+            ng-change="getPublicDgZsd(daGangParam.selected_dg)"
             ng-options="dg.ZHISHIDAGANG_ID as dg.ZHISHIDAGANGMINGCHENG for dg in publicZsdgList">
         <option value="">请选择大纲</option>
     </select>
