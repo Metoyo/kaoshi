@@ -23,24 +23,19 @@
     </tr>
     <tr ng-repeat="ks in kaoshiList">
         <td>
-            {{ks.KAOSHI_MINGCHENG}}
+            <a href="javascript:void(0)" ng-bind="ks.KAOSHI_MINGCHENG" ng-click="seeKaoShiDetail(ks)"></a>
         </td>
         <td>
-            <p ng-repeat="sjmc in ks.SHIJUAN">
-                {{sjmc.SHIJUAN_MINGCHENG}}
+            <p ng-repeat="sjmc in ks.SHIJUAN" ng-bind="sjmc.SHIJUAN_MINGCHENG">
             </p>
         </td>
-        <td class="text-center">
-            {{ks.KAISHISHIJIAN | myLocalDateWithWeek}}
+        <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDateWithWeek">
         </td>
-        <td class="text-center">
-            {{ks.SHICHANG}}分钟
+        <td class="text-center" ng-bind="ks.SHICHANG + '分钟'">
         </td>
-        <td class="text-center">
-            {{ks.KAODIANKAOCHANG[0].KMINGCHENG}}
+        <td class="text-center" ng-bind="ks.KAODIANKAOCHANG[0].KMINGCHENG">
         </td>
-        <td class="text-center">
-            {{ks.ZHUANGTAI | examStatus}}
+        <td class="text-center" ng-bind="ks.ZHUANGTAI | examStatus">
         </td>
         <td class="text-center">
             <img src="/images/moreBtn.png" class="moreBtn" alt="更多炒作" bn-slide-show slide-show-target="moreBtnCont"
@@ -79,4 +74,48 @@
             <a href  ng-click="getThisKaoShiPageData(lastKaoShiPageNum)">尾页</a>
         </li>
     </ul>
+</div>
+<div class="popup-gray-box" ng-show="kwParams.showKaoShiDetail">
+    <div class="popup-gray-box-inner">
+        <div class="innerBox">
+            <button class="btn btn-danger pin-right-top" ng-click="kwParams.showKaoShiDetail = false">关闭</button>
+            <ul class="list-unstyled">
+                <li>
+                    <p class="col-md-3">考试名称：</p>
+                    <p class="col-md-9" ng-bind="kaoShiDetailData.KAOSHI_MINGCHENG"></p>
+                </li>
+                <li>
+                    <p class="col-md-3">试卷：</p>
+                    <p class="col-md-9">
+                        <span ng-repeat="sjmc in kaoShiDetailData.SHIJUAN" ng-bind="sjmc.SHIJUAN_MINGCHENG"></span>
+                    </p>
+                </li>
+                <li>
+                    <p class="col-md-3">开考时间：</p>
+                    <p class="col-md-9" ng-bind="kaoShiDetailData.KAISHISHIJIAN | myLocalDateWithWeek"></p>
+                </li>
+                <li>
+                    <p class="col-md-3">考试时长：</p>
+                    <p class="col-md-9" ng-bind="kaoShiDetailData.SHICHANG + '分钟'"></p>
+                </li>
+                <li>
+                    <p class="col-md-3">考场：</p>
+                    <p class="col-md-9" ng-bind="kaoShiDetailData.KAODIANKAOCHANG[0].KMINGCHENG"></p>
+                </li>
+            </ul>
+            <h4>考生信息</h4>
+            <table class="table table-bordered kaowu-table">
+                <tr class="active">
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>班级</th>
+                </tr>
+                <tr ng-repeat="stu in kaoShiDetailData.KAODIANKAOCHANG[0].USERS">
+                    <td>{{stu.YONGHUHAO}}</td>
+                    <td>{{stu.XINGMING}}</td>
+                    <td>{{stu.BANJI}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>

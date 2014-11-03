@@ -1013,6 +1013,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 singleZsdData = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: zsdId });
                 pubZsdList.push(singleZsdData);
               });
+              _.each($scope.pubDaGangList, function(pdg, idx, lst){
+                pubZsdList = _.reject(pubZsdList, function(pzsd){
+                  return pzsd.ZHISHIDIANMINGCHENG == pdg.ZHISHIDAGANGMINGCHENG ;
+                });
+              });
               $scope.publicKnowledge = pubZsdList;
               isDaGangSet = true;
             }
@@ -1021,6 +1026,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.dgZsdList = '';
             }
           });
+        }
+        else{
+          $scope.dgZsdList = '';
         }
       };
 

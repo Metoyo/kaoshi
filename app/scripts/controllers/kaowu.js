@@ -61,8 +61,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             kaoChangPageArr = [], //定义考场页码数组
             kaoChangIdArrRev = [], //存放所有考场ID的数组
             totalKaoChangPage, //符合条件的考场一共有多少页
-            xiaFaKaoShiBase = baseKwAPIUrl + 'xiafa_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshiid=', //下发考试
             uploadKsUrl = baseMtAPIUrl + 'excel_to_json'; //上传考生信息
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
@@ -70,7 +68,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
           $rootScope.dashboard_shown = true;
           $scope.kwParams = { //考务用到的变量
-            ksListZt: '' //考试列表的状态
+            ksListZt: '', //考试列表的状态
+            showKaoShiDetail: false //考试详细信息
           };
 
           /**
@@ -124,7 +123,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
-           * 考试的分页数据查询函数
+           * 考试的分页数据查询函数//
            */
           $scope.getThisKaoShiPageData = function(pg){
             var pgNum = pg - 1,
@@ -340,14 +339,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
               kaoshi_data.shuju.KAOCHANG = ks.KAODIANKAOCHANG;
               kaoshi_data.shuju.ZHUANGTAI = ks.ZHUANGTAI;
-//            //将考生转化为自己所需要的样式
-//            _.each(ks.KAOSHENG, function(stu){
-//              var usr = {};
-//              usr.XINGMING = stu.XINGMING;
-//              usr.XUEHAO = stu.YONGHUHAO;
-//              kaoshi_data.shuju.USERS.push(usr);
-//            });
-
               $scope.kaoshiData = kaoshi_data;
               $scope.txTpl = 'views/partials/editKaoShi.html';
             }
@@ -762,40 +753,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
-           * 结束考试 xiaFaKaoShiBase $scope.kaoshiList
-           */
-          $scope.endKaoShi = function(){
-            var xiaFaKaoShiUrl,
-              kaoShiIds = [],
-              count = 0,
-              kaoShiIdsLen;
-            _.each($scope.kaoshiList, function(ks, idx, lst){
-              if(ks.ZHUANGTAI == 4){
-                kaoShiIds.push(ks.KAOSHI_ID);
-              }
-            });
-            kaoShiIdsLen = kaoShiIds.length;
-            var xiaFaKaoShiFun = function(ksId){
-              xiaFaKaoShiUrl = xiaFaKaoShiBase + ksId;
-              if(count <= kaoShiIdsLen -1){
-                $http.get(xiaFaKaoShiUrl).success(function(data){
-                  if(data.result){
-                    count ++;
-                    xiaFaKaoShiFun(kaoShiIds[count]);
-                  }
-                  else{
-                    messageService.alertInfFun('err', data.error);
-                    count = kaoShiIdsLen + 1;
-                  }
-                });
-              }
-            };
-            if(kaoShiIds.length > 0){
-              xiaFaKaoShiFun(kaoShiIds[0]);
-            }
-          };
-
-          /**
            * 修改考试
            */
           $scope.editKaoShi = function(ks){
@@ -842,6 +799,14 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 }
               });
             }
+          };
+
+          /**
+           * 查看考试详情
+           */
+          $scope.seeKaoShiDetail = function(ks){
+            $scope.kaoShiDetailData = ks;
+            $scope.kwParams.showKaoShiDetail = true;
           };
 
           /**
