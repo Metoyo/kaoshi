@@ -42,7 +42,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
         $scope.daGangParam = { //大纲参数
           selected_dg: '',
-          dgSaveAsLeiXing: '',
           dgSaveAsName: '',
           showDaGangAsNew: false
         };
@@ -524,7 +523,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               DAGANGSHUOMING: '',
               ZHUANGTAI: 1,
               ZHISHIDAGANGMINGCHENG: '',
-              LEIXING: '',
+              LEIXING: 2,
               JIEDIAN: [
                 {
                   JIEDIAN_ID: '',
@@ -561,13 +560,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
           else{
             messageService.alertInfFun('pmt', '亲给新大纲起一个名字！');
-          }
-          if($scope.daGangParam.dgSaveAsLeiXing){
-            saveAdDgData.shuju.LEIXING = $scope.daGangParam.dgSaveAsLeiXing;
-
-          }
-          else{
-            messageService.alertInfFun('pmt', '请选择大纲类型！');
           }
           if(saveAdDgData.shuju.ZHISHIDAGANGMINGCHENG && saveAdDgData.shuju.LEIXING){
             $http.post(submitDataUrl, saveAdDgData).success(function(result) {

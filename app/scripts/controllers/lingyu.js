@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.LingyuCtrl', [])
-    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', 'urlRedirect', '$cookieStore', //11
-      function ($rootScope, $scope, $location, urlRedirect, $cookieStore) {
+    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', 'urlRedirect', '$cookieStore', 'messageService', //11
+      function ($rootScope, $scope, $location, urlRedirect, $cookieStore, messageService) {
         /**
          * 定义变量和初始化
          */
@@ -23,27 +23,32 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           //在session中记录作为默认的领域id和领域名称
           session.defaultLyId = ly.LINGYU_ID;
           session.defaultLyName = ly.LINGYUMINGCHENG;
-          //根据权限判断导向
-          _.each(config.quanxianObj, function(qx, idx, lst){
-            //默认导向的url
-            var inQx = _.contains(qx.qxArr, ly.quanxian[0]),
-              navName = _.intersection(qx.qxArr, ly.quanxian).length;
-            if(inQx){
-              jsUrl = qx.targetUrl;
+          if(ly.quanxian && ly.quanxian.length > 0){
+            //根据权限判断导向
+            _.each(config.quanxianObj, function(qx, idx, lst){
+              var navName = _.intersection(qx.qxArr, ly.quanxian).length;
+              //显示和隐藏url
+              if(navName > 0){
+                urlShowAndHideArr.push(qx.navName);
+              }
+            });
+            //默认url
+            if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
+              jsUrl = '/' + urlShowAndHideArr[0];
             }
-            //显示和隐藏url
-            if(navName > 0){
-              urlShowAndHideArr.push(qx.navName);
-            }
-          });
-          //cookies代码
-          var userCookie = $cookieStore.get('logged');
-          userCookie.defaultLyId = ly.LINGYU_ID;
-          userCookie.defaultLyName = ly.LINGYUMINGCHENG;
-          userCookie.quanxianStr = urlShowAndHideArr.join();
-          $cookieStore.put('logged', userCookie);
+            session.quanxianStr = urlShowAndHideArr.join();
+            //cookies代码
+            var userCookie = $cookieStore.get('logged');
+            userCookie.defaultLyId = ly.LINGYU_ID;
+            userCookie.defaultLyName = ly.LINGYUMINGCHENG;
+            userCookie.quanxianStr = urlShowAndHideArr.join();
+            $cookieStore.put('logged', userCookie);
 
-          urlRedirect.goTo(currentPath, jsUrl);
+            urlRedirect.goTo(currentPath, jsUrl);
+          }
+          else{
+            messageService.alertInfFun('err', ly.LINGYUMINGCHENG + '科目下没有权限，或者您的权限在审批中！');
+          }
         }
 
     }]); //11
