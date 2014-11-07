@@ -14,8 +14,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = $rootScope.session.defaultLyId,
           chaxunzilingyu = true,
-          qryDgUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,
+          qryPriDgBaseUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=2',
+          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&lingyuid=' + lingyuid, //查询公共知识大纲的url
           qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
           xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
@@ -28,12 +30,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             shuju:{}
           },//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
           daGangJieDianData = [], //定义一个大纲节点的数据
-//          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-//            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
-          publicZsdgArr = [], //存放公共知识大纲的数组
-          privateZsdgArr = [], //存放自建知识大纲的数组
+            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
+//          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+//            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           publicKnowledgeData, //存放领域下的公共知识点
           publicZsdArr; //存放公共知识点的
 
@@ -42,6 +42,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $rootScope.dashboard_shown = true;
         $scope.itemTitle = "大纲";
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
+        $scope.publicZsdgList = []; //存放公共知识大纲的数组
+        $scope.privateZsdgList = []; //存放自建知识大纲的数组
         $scope.daGangParam = { //大纲参数
           selected_dg: '',
           dgSaveAsName: '',
@@ -49,50 +51,48 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 加载知识大纲
+         * 加载公共知识大纲
          */
-        var loadDaGang = function(lx){
-          var dgLeiXing = lx,
-            newQryDgUrl;
-          publicZsdgArr = []; //存放公共知识大纲的数组
-          privateZsdgArr = []; //存放自建知识大纲的数组
-          if(dgLeiXing){
-            newQryDgUrl = qryDgUrl + '&leixing=' + dgLeiXing;
-          }
-          else{
-            newQryDgUrl = qryDgUrl;
-          }
-          $http.get(newQryDgUrl).success(function(data) {
-            if(data.length){
-              if(dgLeiXing){ //当大纲类型存在时
-                if(dgLeiXing == 1){ //公共大纲
-                  publicZsdgArr = data;
-                  $scope.publicZsdgList = publicZsdgArr;
+        var getPubDaGangListFun = function(){
+          $scope.publicZsdgList = []; //存放公共知识大纲的数组
+          $http.get(qryPubDgBaseUrl).success(function(data){
+            if(data && data.length > 0){
+              $scope.publicZsdgList = data;
+              _.each(data, function(dg, idx, lst){
+                if(dg.ZHUANGTAI2 == 2){
+                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
                 }
-                if(dgLeiXing == 2){ //自建大纲
-                  privateZsdgArr = data;
-                  $scope.privateZsdgList = privateZsdgArr;
-                }
-              }
-              else{ //当大纲类型不存在时
-                _.each(data, function(dg, idx, lst){
-                  //为大纲分类
-                  dg.LEIXING == 1 ? publicZsdgArr.push(dg) : privateZsdgArr.push(dg);
-                  //判断默认知识大纲
-                  if(dg.ZHUANGTAI2 == 2){
-                    $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
-                  }
-                });
-                $scope.publicZsdgList = publicZsdgArr;
-                $scope.privateZsdgList = privateZsdgArr;
-              }
+              });
             }
-            else {
-              messageService.alertInfFun('pmt', '没有知识大纲，请新增一个！');
+            else{
+              messageService.alertInfFun('err', data.err);
+              $scope.publicZsdgList = [];
             }
           });
         };
-        loadDaGang();
+        getPubDaGangListFun();
+
+        /**
+         * 加载自建知识大纲
+         */
+        var getPriDaGangListFun = function(){
+          $scope.privateZsdgList = []; //存放自建知识大纲的数组
+          $http.get(qryPriDgBaseUrl).success(function(data){
+            if(data && data.length > 0){
+              $scope.privateZsdgList = data;
+              _.each(data, function(dg, idx, lst){
+                if(dg.ZHUANGTAI2 == 2){
+                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+                }
+              });
+            }
+            else{
+              messageService.alertInfFun('err', data.err);
+              $scope.privateZsdgList = [];
+            }
+          });
+        };
+        getPriDaGangListFun();
 
         /**
          *加载对应的大纲页面
@@ -102,7 +102,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           publicKnowledgeData = '';
           publicZsdArr = [];
           if(lx == 1){
-            loadDaGang('1');
+            if(!($scope.publicZsdgList && $scope.publicZsdgList.length > 0)){
+              getPubDaGangListFun();
+            }
             $scope.dgTpl = 'views/partials/daGangPublic.html';
             $scope.isPrivateDg = false;
             $scope.isPublicDg = true;
@@ -245,7 +247,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           };
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
-              loadDaGang();
+//              loadDaGang();
+              getPubDaGangListFun();
+              getPriDaGangListFun();
               messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
             }
             else{
@@ -282,6 +286,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           jieDianObj.JIEDIANXUHAO = 1;
           jieDianObj.ZHUANGTAI = 1;
           jieDianObj.ZIJIEDIAN = [];
+          jieDianObj.GEN = 1;
           daGangJieDianData.push(jieDianObj);
           $scope.knowledgePr = daGangJieDianData;
           $scope.prDgBtnDisabled = false;
@@ -440,7 +445,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.prDgBtnDisabled = true;
           //将LEIXING转化为ZHISHIDIAN_LEIXING
           function _do(item) {
-            item.ZHISHIDIAN_LEIXING = item.LEIXING || 2;
+            if(!item.LEIXING){
+              item.ZHISHIDIAN_LEIXING = 2;
+            }
             item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
             if(!item.ZHISHIDIANMINGCHENG){
               countEmpty = false;
@@ -462,7 +469,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   if(isSetAsDefaultDg){
                     $scope.makeDaGangAsDefault(result.id);
                   }
-                  loadDaGang();
+//                  loadDaGang();
+                  getPubDaGangListFun();
+                  getPriDaGangListFun();
                   $scope.knowledgePr = '';
                   $scope.selectZjDgId = '';
                   $scope.prDgBtnDisabled = true;
@@ -533,6 +542,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   JIEDIANLEIXING:  '',
                   JIEDIANXUHAO: 1,
                   ZHUANGTAI: 1,
+                  GEN: 1,
                   ZIJIEDIAN: []
                 }
               ]
@@ -566,7 +576,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.daGangParam.showDaGangAsNew = false;
                 messageService.alertInfFun('suc', '大纲另存为成功！');
                 $scope.daGangParam.dgSaveAsName = '';
-                loadDaGang();
+//                loadDaGang();
+                getPubDaGangListFun();
+                getPriDaGangListFun();
               }
               else{
                 messageService.alertInfFun('err', result.error);
