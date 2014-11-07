@@ -24,6 +24,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           session.defaultLyId = ly.LINGYU_ID;
           session.defaultLyName = ly.LINGYUMINGCHENG;
           if(ly.quanxian && ly.quanxian.length > 0){
+            //存放权限id的cookies
+            var quanXianCookie = {
+              quanXianId: ly.quanxian
+            };
+            $cookieStore.put('quanXianCk', quanXianCookie);
             //根据权限判断导向
             _.each(config.quanxianObj, function(qx, idx, lst){
               var navName = _.intersection(qx.qxArr, ly.quanxian).length;

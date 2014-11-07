@@ -63,7 +63,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             shuju:[]
           },
           qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&leixing=1' + '&lingyuid=', //查询公共知识点的url
+            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=', //查询公共知识点的url
           qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&lingyuid=', //查询知识大纲的url
           deletePublicDaGangBaseUrl = baseMtAPIUrl + 'shanchu_gonggong_zhishidagang', //删除公共知识大纲的url
@@ -1052,6 +1052,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
           newNd.ZHUANGTAI = 1;
           newNd.ZIJIEDIAN = [];
+          newNd.JIGOU_ID = 0; //公共知识大纲的机构id都为0
           nd.ZIJIEDIAN.push(newNd);
         };
 
@@ -1170,6 +1171,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jieDianObj.JIEDIANXUHAO = 1;
           jieDianObj.ZHUANGTAI = 1;
           jieDianObj.ZIJIEDIAN = [];
+          jieDianObj.gen = 1; //表示为跟知识点
+          jieDianObj.JIGOU_ID = 0; //为知识点添加机构ID，admin的机构id为0
           daGangJieDianData.push(jieDianObj);
           isAddNewPubDg = true;
           $scope.dgZsdList = daGangJieDianData;

@@ -28,8 +28,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             shuju:{}
           },//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
           daGangJieDianData = [], //定义一个大纲节点的数据
+//          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+//            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&leixing=1' + '&lingyuid=' + lingyuid, //查询公共知识点的url
+            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           publicZsdgArr = [], //存放公共知识大纲的数组
           privateZsdgArr = [], //存放自建知识大纲的数组
           publicKnowledgeData, //存放领域下的公共知识点
@@ -118,9 +120,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 publicKnowledgeData = '';
               }
               else{
-                _.each($scope.publicZsdgList, function(pubDg, idx, lst){
-                  ggzsd = _.reject(ggzsd, function(dg){ return dg.ZHISHIDIANMINGCHENG == pubDg.ZHISHIDAGANGMINGCHENG; });
-                });
+//                _.each($scope.publicZsdgList, function(pubDg, idx, lst){
+//                  ggzsd = _.reject(ggzsd, function(dg){ return dg.ZHISHIDIANMINGCHENG == pubDg.ZHISHIDAGANGMINGCHENG; });
+//                });
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 publicKnowledgeData = ggzsd;
                 $scope.publicKnowledge = ggzsd;
@@ -175,13 +177,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               if(data.length){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = data;
-
                 //得到知识大纲知识点id的函数
                 _.each(data, _do);
-
                 //从已有的公共知识点中减去知识大纲知识点
                 differentArr = _.difference(publicZsdArr, zsdgZsdArr);
-
                 //得到相对应的公共知识大纲知识点
                 _.each(differentArr, function(sgzsd, idx, lst){
                   needPubZsd = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: sgzsd });
@@ -446,7 +445,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             if(!item.ZHISHIDIANMINGCHENG){
               countEmpty = false;
             }
-            delete item.LEIXING;
+//            delete item.LEIXING;
             if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
               _.each(item.ZIJIEDIAN, _do);
             }

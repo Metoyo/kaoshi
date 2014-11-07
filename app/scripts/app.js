@@ -66,8 +66,8 @@ define([
     'ngSanitize',
     'ngRoute'
    ])
-    .config(['$routeProvider', '$locationProvider',
-      function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider',
+      function ($routeProvider) {
         var routes = config.routes;
         /**
          * 根据config文件中的路由配置信息加载本应用中要使用到的路由规则
@@ -76,8 +76,6 @@ define([
           $routeProvider.when(path, routes[path]);
         }
         $routeProvider.otherwise({redirectTo: '/renzheng'});
-        // use the HTML5 History API
-  //      $locationProvider.html5Mode(true);
     }])
     .run(['$rootScope', '$location', '$route', 'urlRedirect', '$cookieStore',
       function($rootScope, $location, $route, urlRedirect, $cookieStore) {
@@ -92,7 +90,6 @@ define([
               nextUrlParser = document.createElement('a'),
               nextPath,
               currentPath,
-              checkUrlAppliedPromise,
               session = {
                 defaultLyId: '',
                 defaultLyName: '',
@@ -100,10 +97,18 @@ define([
                 info: {},
                 userInfo: {}
               };
+
           //cookies 代码
           $cookieStore.put('lastUrl', current);
           var loggedInfo = $cookieStore.get('logged'),
-            lastUrl = $cookieStore.get('lastUrl');
+            lastUrl = $cookieStore.get('lastUrl'),
+            quanXianIds = $cookieStore.get('quanXianCk'),
+            isKeMuManage;
+          if(quanXianIds){
+            if(quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0){
+              isKeMuManage = _.contains(quanXianIds.quanXianId, '2032');
+            }
+          }
           if(loggedInfo && loggedInfo.UID){
             $rootScope.session = session;
             $rootScope.session.defaultLyId = loggedInfo.defaultLyId;
@@ -116,9 +121,14 @@ define([
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
             $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
           }
+          if(isKeMuManage){ //判断科目负责人
+            $rootScope.isPromiseAlterOthersTimu = true;
+          }
+          else{
+            $rootScope.isPromiseAlterOthersTimu = false;
+          }
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
-
           if(currentUrlParser.protocol === nextUrlParser.protocol
               && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
             nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
