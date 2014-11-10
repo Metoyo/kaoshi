@@ -16,8 +16,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           chaxunzilingyu = true,
           qryPriDgBaseUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=2',
-          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&lingyuid=' + lingyuid, //查询公共知识大纲的url
+//          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+//            + '&lingyuid=' + lingyuid, //查询公共知识大纲的url
+          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&lingyuid=' + lingyuid + '&leixing=1', //查询公共知识大纲的url
           qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
           xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
@@ -47,7 +49,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.daGangParam = { //大纲参数
           selected_dg: '',
           dgSaveAsName: '',
-          showDaGangAsNew: false
+          showDaGangAsNew: false,
+          defaultDaGangId: '' //获得默认知识大纲的ID
         };
 
         /**
@@ -61,6 +64,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               _.each(data, function(dg, idx, lst){
                 if(dg.ZHUANGTAI2 == 2){
                   $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
                 }
               });
             }
@@ -83,6 +87,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               _.each(data, function(dg, idx, lst){
                 if(dg.ZHUANGTAI2 == 2){
                   $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
                 }
               });
             }
@@ -102,7 +107,11 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           publicKnowledgeData = '';
           publicZsdArr = [];
           if(lx == 1){
-            if(!($scope.publicZsdgList && $scope.publicZsdgList.length > 0)){
+            if($scope.publicZsdgList && $scope.publicZsdgList.length > 0){
+              $scope.daGangParam.selected_dg = '';
+              $scope.knowledgePb = '';
+            }
+            else{
               getPubDaGangListFun();
             }
             $scope.dgTpl = 'views/partials/daGangPublic.html';
@@ -160,7 +169,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               _.each(item.ZIJIEDIAN, _do);
             }
           }
-
           if(dgId){
             $scope.currentDgId = dgId;
             //为保存大纲用到的数据赋值
@@ -247,7 +255,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           };
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
-//              loadDaGang();
               getPubDaGangListFun();
               getPriDaGangListFun();
               messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
@@ -404,7 +411,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
   //        targetInput.focus();
             targetNd = '';
             $scope.publicKnowledge.splice(idx, 1);
-            console.log(publicKnowledgeData);
           }
           else{
             messageService.alertInfFun('pmt', '请选择要输入的目标！');
@@ -457,6 +463,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               _.each(item.ZIJIEDIAN, _do);
             }
           }
+          if($scope.daGangParam.defaultDaGangId == $scope.currentDgId){
+            isSetAsDefaultDg = true;
+          }
           if($scope.knowledgePr){
             dgdata.shuju.ZHISHIDAGANGMINGCHENG = $scope.knowledgePr[0].ZHISHIDIANMINGCHENG;
             dgdata.shuju.JIEDIAN = $scope.knowledgePr;
@@ -469,7 +478,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   if(isSetAsDefaultDg){
                     $scope.makeDaGangAsDefault(result.id);
                   }
-//                  loadDaGang();
                   getPubDaGangListFun();
                   getPriDaGangListFun();
                   $scope.knowledgePr = '';

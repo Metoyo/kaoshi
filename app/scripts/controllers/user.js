@@ -1184,6 +1184,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           daGangData.shuju.GENJIEDIAN_ID = '';
           daGangData.shuju.LEIXING = 1;
           daGangData.shuju.ZHUANGTAI = 1;
+          daGangData.shuju.ZHUANGTAI2 = 1; //添加了是否是默认大纲的状态的参数
           daGangData.shuju.JIEDIAN = [];
 
           //重新加载公共知识点
@@ -1212,6 +1213,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if($scope.dgZsdList){
             daGangData.shuju.JIEDIAN = $scope.dgZsdList;
             daGangData.shuju.ZHISHIDAGANGMINGCHENG = $scope.dgZsdList[0].ZHISHIDIANMINGCHENG;
+            if(!daGangData.shuju.ZHUANGTAI2){
+              daGangData.shuju.ZHUANGTAI2 = 1;
+            }
             _.each(daGangData.shuju.JIEDIAN, _do);
             $scope.loadingImgShow = true; //rz_setDaGang.html
             //保存知识大纲
