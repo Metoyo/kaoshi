@@ -1,9 +1,9 @@
 <div  id="testList1">
-    <div class="tm-err-rate" ng-repeat="tm in tjTiMuDetail | limitTo:tjTmQuantity" repeat-done>
+    <div class="tm-err-rate" ng-repeat="tm in tjTiMuDetail track by $index | limitTo:tjTmQuantity" repeat-done>
         <ul class="tm-err-rate-info">
             <li>作答人数 <span ng-bind="tm.DTRS"></span></li>
             <li>答对人数 <span ng-bind="tm.DDRS"></span></li>
-            <li>答错率 <span ng-bind="tm.DCLV*100 + '%'"></span></li>
+            <li>答错率 <span ng-bind="tm.DCLV"></span></li>
         </ul>
         <div class="tm-err-rate-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
             <div ng-bind-html="tm.TIGAN.tiGan"></div>

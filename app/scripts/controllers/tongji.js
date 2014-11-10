@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
       function ($rootScope, $scope, $http, $timeout, messageService) {
         /**
-         * 操作title//
+         * 操作title
          */
         $rootScope.pageName = "统计";
         $rootScope.dashboard_shown = true;
@@ -159,7 +159,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tjDataPara = id;
               tjIdType = idType;
               tjNamePara = tjName;
-              console.log(data);
               //求平均分
               totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
               avgScore = totalScore/data.length;
@@ -390,6 +389,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.get(queryTiMu).success(function(data){
             if(!data.error){
               _.each(data, function(tm, idx, lst){
+                var cclv = new Number(tm.DCLV) * 100;
+                tm.DCLV = cclv.toFixed(2) + '%';
                 tm.TIGAN = JSON.parse(tm.TIGAN);
                 if(tm.TIXING_ID <= 3){
                   var daanArr = tm.DAAN.split(','),
@@ -453,7 +454,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示更多试卷统计详情
          */
         $scope.showTjSjMoreDetail = function(){
-          $scope.tjTmQuantity = $scope.tjTiMuDetail.length; //加载是显示的题目数量
+          if($scope.tjTiMuDetail){
+            $scope.tjTmQuantity = $scope.tjTiMuDetail.length; //加载是显示的题目数量
+          }
         };
 
         /**

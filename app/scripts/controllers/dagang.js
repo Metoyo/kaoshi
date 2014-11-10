@@ -19,7 +19,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
 //          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
 //            + '&lingyuid=' + lingyuid, //查询公共知识大纲的url
           qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&lingyuid=' + lingyuid + '&leixing=1', //查询公共知识大纲的url
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=1', //查询公共知识大纲的url
           qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
           xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
@@ -289,7 +289,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           jieDianObj.ZHISHIDIANMINGCHENG = '新建' + $rootScope.session.defaultLyName + '自建知识大纲';
           jieDianObj.ZHISHIDIAN_LEIXING = 2;
           jieDianObj.LEIXING = 2;
-          jieDianObj.JIEDIANLEIXING = '';
+          jieDianObj.JIEDIANLEIXING = 0;
           jieDianObj.JIEDIANXUHAO = 1;
           jieDianObj.ZHUANGTAI = 1;
           jieDianObj.ZIJIEDIAN = [];
@@ -350,7 +350,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           var newNd = {};
           newNd.JIEDIAN_ID = '';
           newNd.ZHISHIDIAN_ID = '';
-          newNd.JIEDIANLEIXING = '';
+          newNd.JIEDIANLEIXING = 1;
           newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
           newNd.ZHUANGTAI = 1;
           newNd.ZHISHIDIANMINGCHENG = '';
@@ -458,7 +458,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             if(!item.ZHISHIDIANMINGCHENG){
               countEmpty = false;
             }
-//            delete item.LEIXING;
             if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
               _.each(item.ZIJIEDIAN, _do);
             }
@@ -547,7 +546,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   ZHISHIDIANMINGCHENG: '',
                   ZHISHIDIAN_LEIXING: 2,
                   LEIXING: 2,
-                  JIEDIANLEIXING:  '',
+                  JIEDIANLEIXING:  0,
                   JIEDIANXUHAO: 1,
                   ZHUANGTAI: 1,
                   GEN: 1,
@@ -584,7 +583,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.daGangParam.showDaGangAsNew = false;
                 messageService.alertInfFun('suc', '大纲另存为成功！');
                 $scope.daGangParam.dgSaveAsName = '';
-//                loadDaGang();
                 getPubDaGangListFun();
                 getPriDaGangListFun();
               }

@@ -846,7 +846,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 保存已选的领域
          */
         $scope.saveChooseLingYu = function(){
-          $scope.loadingImgShow = true; //rz_selectLingYu.html
+//          $scope.loadingImgShow = true; //rz_selectLingYu.html
           lingYuData.shuju = [];
           _.each($scope.jgSelectLingYu, function(sly){
             var slyObj = {};
@@ -1048,7 +1048,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           newNd.ZHISHIDIAN_ID = '';
           newNd.ZHISHIDIANMINGCHENG = '';
           newNd.ZHISHIDIAN_LEIXING = 1;
-          newNd.JIEDIANLEIXING = '';
+          newNd.JIEDIANLEIXING = 1;
           newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
           newNd.ZHUANGTAI = 1;
           newNd.ZIJIEDIAN = [];
@@ -1086,7 +1086,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 将公共知识点添加到知识大纲//
+         * 将公共知识点添加到知识大纲
          */
         $scope.addToDaGang = function(zsd, idx){
           targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
@@ -1167,7 +1167,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jieDianObj.ZHISHIDIAN_ID = '';
           jieDianObj.ZHISHIDIANMINGCHENG = selectLyText + '新建公共知识大纲';
           jieDianObj.ZHISHIDIAN_LEIXING = 1;
-          jieDianObj.JIEDIANLEIXING = '';
+          jieDianObj.JIEDIANLEIXING = 0;
           jieDianObj.JIEDIANXUHAO = 1;
           jieDianObj.ZHUANGTAI = 1;
           jieDianObj.ZIJIEDIAN = [];
@@ -1205,7 +1205,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(!item.ZHISHIDIANMINGCHENG){
               countEmpty = false;
             }
-//            delete item.LEIXING;
             if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
               _.each(item.ZIJIEDIAN, _do);
             }
