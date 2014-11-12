@@ -38,11 +38,6 @@ define( "config", [], function () {
         controller: 'UserCtrl',
         requireLogin: true
       },
-      '/logout': {
-        templateUrl: 'views/logout.html',
-        controller: 'LogoutCtrl',
-        requireLogin: true
-      },
       '/register': {
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl',

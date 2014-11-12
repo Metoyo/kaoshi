@@ -285,5 +285,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
         };
 
+        /**
+         * 退出程序
+         */
+        $scope.signOut = function(){
+          messageService.logout();
+        };
     }]);
 });

@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', 'messageService',
-      function ($rootScope, $scope, $http, messageService) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'messageService',
+      function ($rootScope, $scope, $http, $location, messageService) {
 
         $rootScope.pageName = "认证";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
@@ -78,7 +78,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           daGangJieDianData = [], //定义一个大纲节点的数据
           modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang', //保存知识大纲
           queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=', //查询题目
+            + '&jigouid=' + jigouid + '&chaxunzilingyu=false' + '&lingyuid=', //查询题目
           xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku', //修改题库的url
           alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu', //修改试卷目录
           queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
@@ -93,8 +93,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.adminParams = {
           selected_dg: '',
           saveDGBtnDisabled: false,
-          newPsd: ''
+          newPsd: '',
+          fakeSelectShow: false,
+          selectKeMuIds: [],
+          selectLinYuId: '',
+          zsdKeMuIds: []
         };
+        $scope.selectedKeMu = '';
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -110,6 +115,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.shenHeTpl = 'views/partials/rz_shenHeRen.html';
             break;
         }
+
+        /**
+         * 退出程序
+         */
+        $scope.signOut = function(){
+          messageService.logout();
+        };
 
         /**
          * 设置权限，审核权限
@@ -522,7 +534,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 删除领域//
+         * 删除领域
          */
         $scope.removeNd = function(parentNd, thisNd, idx) {
           lingYuData.shuju = [];
@@ -550,7 +562,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lingYuData.shuju = $scope.lingyu_list;
           $http.post(modifyLingYuUrl, lingYuData).success(function(data){
             if(data.result){
-  //            $('.save-msg').show().fadeOut(3000);
               isLingYuSet = false;
               messageService.alertInfFun('suc', '保存成功！');
               $scope.loadingImgShow = false; //rz_setLingYu.html
@@ -774,6 +785,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var chaXunTiKu = function(lyData){
             queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
             $http.get(queryTiKuUrl).success(function(data){
+              console.log(data);
               count ++;
               if(count < lyLength){
                 if(data.length){
@@ -846,7 +858,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 保存已选的领域
          */
         $scope.saveChooseLingYu = function(){
-//          $scope.loadingImgShow = true; //rz_selectLingYu.html
+          $scope.loadingImgShow = true; //rz_selectLingYu.html
           lingYuData.shuju = [];
           _.each($scope.jgSelectLingYu, function(sly){
             var slyObj = {};
@@ -1402,6 +1414,98 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $('.adminMiMaInfo').html(data.error).fadeOut(5000);
             }
           });
+        };
+
+        /**
+         * 修改知识点--查询领域
+         */
+        $scope.renderZhiShiDianSetTpl = function(){
+          $scope.setZsdLingYu = '';
+          $scope.loadingImgShow = true;
+          $http.get(qryLingYuUrl).success(function(data){
+            if(data){
+              $scope.isShenHeBox = false; //判断是不是审核页面
+              $scope.adminSubWebTpl = 'views/partials/rz_setPubZsd.html';
+              $scope.setZsdLingYu = data[0].CHILDREN;
+            }
+            else{
+              messageService.alertInfFun('err', data.error);
+            }
+            $scope.loadingImgShow = false;
+          });
+        };
+
+        /**
+         * 得到本所选领域下面的科目
+         */
+        $scope.getKeMuOfSelectLy = function(lyId){
+          $scope.selectedKeMu = '';
+          $scope.adminParams.selectLinYuId = '';
+          $scope.adminParams.selectKeMuIds = [];
+          $scope.adminParams.zsdKeMuIds = [];
+          if(lyId){
+            $scope.adminParams.selectLinYuId = lyId;
+            $scope.selectedKeMu = _.find($scope.setZsdLingYu, function(ly){
+              return ly.LINGYU_ID == lyId;
+            }).CHILDREN;
+          }
+          else{
+            $scope.selectedKeMu = '';
+          }
+        };
+
+        /**
+         * 添加或删除科目IDs
+         */
+        $scope.getKeMuId = function(event, kmId, isKeMuSelect){
+          var ifCheckOrNot = $(event.target).prop('checked');
+          if(ifCheckOrNot){
+            if(isKeMuSelect){
+              $scope.adminParams.selectKeMuIds.push(kmId);
+            }
+            else{
+              $scope.adminParams.zsdKeMuIds.push(kmId);
+            }
+          }
+          else{
+            if(isKeMuSelect){
+              $scope.adminParams.selectKeMuIds =  _.reject($scope.adminParams.selectKeMuIds, function(id){
+                return id  == kmId;
+              });
+            }
+            else{
+              $scope.adminParams.zsdKeMuIds =  _.reject($scope.adminParams.zsdKeMuIds, function(id){
+                return id  == kmId;
+              });
+            }
+          }
+        };
+
+        /**
+         * 由所选科目查询所对应的知识点
+         */
+        $scope.getKeMuPubZsdData = function(){
+          $scope.adminParams.fakeSelectShow = false;
+          if($scope.adminParams.selectKeMuIds && $scope.adminParams.selectKeMuIds.length > 0){
+            var qryPubZsd = qryZsdBaseUrl + $scope.adminParams.selectLinYuId + '&kemuid='
+              + $scope.adminParams.selectKeMuIds.join();
+            $http.get(qryPubZsd).success(function(data){
+              if(data){
+                $scope.zsdSetZsdData = data;
+              }
+              else{
+                messageService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 显示知识点的修改页面
+         */
+        $scope.showModifyZsdBox = function(zsdId){
+          $scope.adminParams.zsdKeMuIds = [];
+
         };
 
     }]);

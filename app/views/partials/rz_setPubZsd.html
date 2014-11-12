@@ -1,0 +1,39 @@
+<h4 class="admin-title">公共知识点设置</h4>
+<div class="dagangInput setDaGangBox">
+    <div class="row">
+        <div class="col-md-6">
+            <select class="form-control" ng-model="ly_id" ng-change="getKeMuOfSelectLy(ly_id)"
+                    ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in setZsdLingYu">
+                <option value="">请选择领域</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <div class="form-control fakeMutiSelect">
+                <div ng-click="adminParams.fakeSelectShow = true">请选择科目</div>
+                <div class="fakeOptionList" ng-show="adminParams.fakeSelectShow">
+                    <div class="options">
+                        <label class="checkbox" ng-repeat="km in selectedKeMu">
+                            <input type="checkbox" ng-click="getKeMuId($event, km.LINGYU_ID, true)"> {{km.LINGYUMINGCHENG}}
+                        </label>
+                    </div>
+                    <div class="btns">
+                        <a href="javascript:void(0)" ng-click="getKeMuPubZsdData()">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row zsdWrap mt15">
+        <ul class="col-md-8 list-unstyled plr10">
+            <li ng-repeat="zsd in zsdSetZsdData">
+                <a href="javascript:void(0)" ng-click="showModifyZsdBox(zsd.ZHISHIDIAN_ID)"
+                   ng-bind="zsd.ZHISHIDIANMINGCHENG"></a>
+            </li>
+        </ul>
+        <div class="col-md-4">
+            <label class="checkbox" ng-repeat="km in selectedKeMu">
+                <input type="checkbox" ng-click="getKeMuId($event, km.LINGYU_ID, false)"> {{km.LINGYUMINGCHENG}}
+            </label>
+        </div>
+    </div>
+</div>

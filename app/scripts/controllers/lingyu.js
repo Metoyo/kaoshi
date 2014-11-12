@@ -48,7 +48,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             userCookie.defaultLyName = ly.LINGYUMINGCHENG;
             userCookie.quanxianStr = urlShowAndHideArr.join();
             $cookieStore.put('logged', userCookie);
-
             urlRedirect.goTo(currentPath, jsUrl);
           }
           else{

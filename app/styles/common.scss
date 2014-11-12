@@ -857,7 +857,7 @@ a.add-btn:hover span {
       float: left;
       width: 28px;
       height: 28px;
-      background: url(../images/zujuan/zjStar.png) no-repeat 0 0;
+      background: url('../images/zujuan/zjStar.png') no-repeat 0 0;
     }
   }
   .active{
@@ -865,6 +865,35 @@ a.add-btn:hover span {
       background-position: 0 -30px;
     }
   }
+}
+/*伪装的select复选框*/
+.fakeMutiSelect{
+  background: url('../images/renzheng/icon/selectBg.png') no-repeat right center;
+  .fakeOptionList{
+    background-color: #F2F2F2;
+    padding: 10px 10px  0 10px;
+    position: relative;
+    top: -28px;
+    border-radius: 4px;
+    border: 1px solid #A9A9A9;
+    box-shadow: 0px 1px 4px #888888;
+    z-index: 100;
+    .options{
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .btns{
+      border-top: 1px solid #ccc;
+      text-align: center;
+      a{
+        text-decoration: none;
+      }
+    }
+  }
+}
+label.checkbox{
+  font-weight: normal;
+  color: #000;
 }
 /*大纲  开始*/
 .dagangInput {
@@ -1091,7 +1120,7 @@ a.add-btn:hover span {
     padding: 0 10px;
   }
   label {
-    color: rgba(100, 100, 100, 0.8);
+    color: #000;
   }
   h4.logo {
     margin-top: 100px;
@@ -1104,7 +1133,7 @@ a.add-btn:hover span {
   }
   .loginBox {
     padding-right: 30px;
-    color: #fff;
+    color: #000;
     border-right: 1px solid #969696;
   }
   .loginWithXh {

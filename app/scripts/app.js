@@ -8,7 +8,6 @@ define([
     'controllers/mingti',
     'controllers/dagang',
     'controllers/user',
-    'controllers/logout',
     'controllers/register',
     'controllers/zujuan',
     'controllers/kaowu',
@@ -27,8 +26,8 @@ define([
     'directives/fileupload',
     'directives/repeatdone',
     'services/messageservice'
-   ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl,UserCtrl, LogoutCtrl,
-                RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl,MylocaldateFilter, MylocaldatewithweekFilter,
+   ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl, UserCtrl,
+                RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
                 ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
                 PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
                 RepeatdoneDirective, MessageserviceService) {
@@ -42,7 +41,6 @@ define([
     'kaoshiApp.controllers.MingtiCtrl',
     'kaoshiApp.controllers.DagangCtrl',
     'kaoshiApp.controllers.UserCtrl',
-    'kaoshiApp.controllers.LogoutCtrl',
     'kaoshiApp.controllers.RegisterCtrl',
     'kaoshiApp.controllers.ZujuanCtrl',
     'kaoshiApp.controllers.KaowuCtrl',

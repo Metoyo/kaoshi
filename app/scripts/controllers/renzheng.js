@@ -87,7 +87,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                           quanxianArr = [],
                           urlShowAndHideArr = [],
                           jsUrl = '';
-//                          find_QUANXIAN_ID_2032;
 
                         find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2004;
@@ -96,11 +95,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2005;
                         });
-                        //科目负责人修改他人的题目
-//                        find_QUANXIAN_ID_2032 = _.find(permissions, function(permission) {
-//                          return permission.QUANXIAN_ID == 2032;
-//                        });
-
                         if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
                           urlRedirect.goTo(currentPath, profileUrl);
                         }
@@ -136,13 +130,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                             urlRedirect.goTo(currentPath, '/lingyu');
                           }
                         }
-//                        //判断科目负责人
-//                        if(find_QUANXIAN_ID_2032){
-//                          $rootScope.isPromiseAlterOthersTimu = true;
-//                        }
-//                        else{
-//                          $rootScope.isPromiseAlterOthersTimu = false;
-//                        }
                       }
                       //cookies代码
                       var userCookie = {
