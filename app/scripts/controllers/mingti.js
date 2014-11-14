@@ -21,6 +21,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
           lingyuid = $rootScope.session.defaultLyId,
+          tiKuLingYuId = $rootScope.session.defaultTiKuLyId,
           letterArr = config.letterArr,
           chaxunzilingyu = true,
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
@@ -37,7 +38,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           checkSchoolTiKu = caozuoyuan, //查看学校题库需要传的参数
           zsdgZsdArr = [], //存放所有知识大纲知识点的数组
           qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题库
+            '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId, //查询题库
           qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
           qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
@@ -232,13 +233,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           zhishidian_id = selectZsd.toString();
-//          zsdNameStr = zsdName.join('；');
           zsdNameStr = zsdName.join('】【');
           $scope.selectZhiShiDian = zsdNameStr;
         };
 
         $scope.toggleSelection = function(zsdId) {
-//          $scope.selectZsdStr = '';
           var onSelect = '.select' + zsdId,
             gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
             getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;

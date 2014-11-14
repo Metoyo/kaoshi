@@ -101,6 +101,7 @@ define([
           var loggedInfo = $cookieStore.get('logged'),
             lastUrl = $cookieStore.get('lastUrl'),
             quanXianIds = $cookieStore.get('quanXianCk'),
+            tiKuInfo = $cookieStore.get('tiKuCk'),
             isKeMuManage;
           if(quanXianIds){
             if(quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0){
@@ -118,6 +119,9 @@ define([
             $rootScope.session.userInfo.YONGHUMING = loggedInfo.YONGHUMING;
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
             $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
+          }
+          if(tiKuInfo){
+            $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;
           }
           if(isKeMuManage){ //判断科目负责人
             $rootScope.isPromiseAlterOthersTimu = true;

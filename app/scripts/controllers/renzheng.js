@@ -76,6 +76,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                       });
 
                       if(_.contains(jsArr, "1")){
+
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else{
@@ -102,6 +103,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                           if(data.LINGYU.length == 1){
                             session.defaultLyId = data.LINGYU[0].LINGYU_ID;
                             session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
+                            session.defaultTiKuLyId = data.LINGYU[0].PARENT_LINGYU_ID;
                             quanxianArr = _.map(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)], function(qx){
                               return qx.QUANXIAN_ID;
                             });
@@ -109,8 +111,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                             //存放权限id的cookies
                             var quanXianCookie = {
                               quanXianId: quanxianArr
-                            };
+                              },
+                              tiKuCookie = {
+                                tkLingYuId: data.LINGYU[0].PARENT_LINGYU_ID
+                              };
                             $cookieStore.put('quanXianCk', quanXianCookie);
+                            $cookieStore.put('tiKuCk', tiKuCookie);
                             //根据权限判断导向
                             _.each(config.quanxianObj, function(qx, idx, lst){
                               var navName = _.intersection(qx.qxArr, quanxianArr).length;

@@ -23,6 +23,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             caozuoyuan = userInfo.UID,//登录的用户的UID
             jigouid = userInfo.JIGOU[0].JIGOU_ID,
             lingyuid = $rootScope.session.defaultLyId,
+            tiKuLingYuId = $rootScope.session.defaultTiKuLyId,
             chaxunzilingyu = true,
             qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
               + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
@@ -156,7 +157,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             comeFromRuleListData = '', //存放已选组卷规则的变量
             zsdgZsdArr = [], //存放所有知识大纲知识点的数组
             qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题库
+              '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId; //查询题库
 
           /**
            * 初始化是DOM元素的隐藏和显示//

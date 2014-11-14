@@ -23,12 +23,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           //在session中记录作为默认的领域id和领域名称
           session.defaultLyId = ly.LINGYU_ID;
           session.defaultLyName = ly.LINGYUMINGCHENG;
+          session.defaultTiKuLyId = ly.PARENT_LINGYU_ID;
           if(ly.quanxian && ly.quanxian.length > 0){
             //存放权限id的cookies
             var quanXianCookie = {
               quanXianId: ly.quanxian
-            };
+              },
+              tiKuCookie = {
+                tkLingYuId: ly.PARENT_LINGYU_ID
+              };
             $cookieStore.put('quanXianCk', quanXianCookie);
+            $cookieStore.put('tiKuCk', tiKuCookie);
             //根据权限判断导向
             _.each(config.quanxianObj, function(qx, idx, lst){
               var navName = _.intersection(qx.qxArr, ly.quanxian).length;
@@ -48,6 +53,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             userCookie.defaultLyName = ly.LINGYUMINGCHENG;
             userCookie.quanxianStr = urlShowAndHideArr.join();
             $cookieStore.put('logged', userCookie);
+            $cookieStore.put('tiKuCk', tiKuCookie);
             urlRedirect.goTo(currentPath, jsUrl);
           }
           else{

@@ -120,6 +120,9 @@ body {
 .bdb{
   border-bottom: 1px solid #cfcfcf;
 }
+.bd0{
+  border: 0;
+}
 .clRed{
   color: red;
 }
@@ -895,6 +898,22 @@ label.checkbox{
   font-weight: normal;
   color: #000;
 }
+.zsdWrap{
+  .zsd{
+    cursor: pointer;
+    margin-bottom: 5px;
+
+  }
+  .keMuWrap{
+     max-height: 360px;
+     overflow-y: auto;
+  }
+  .btns{
+    .btn{
+      padding: 3px 10px;
+    }
+  }
+}
 /*大纲  开始*/
 .dagangInput {
   position: relative;
@@ -1511,6 +1530,14 @@ label.checkbox{
     padding: 5px 0 10px 0;
     .btn{
       padding: 6px 12px;
+    }
+    .btns{
+      .btn{
+        padding: 3px 10px;
+      }
+      .ml10{
+        margin-left: 10px;
+      }
     }
     .selectLingYu{
       margin-left: 10px;
