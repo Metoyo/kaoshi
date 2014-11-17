@@ -26,7 +26,8 @@
             <a href="javascript:void(0)" ng-bind="ks.KAOSHI_MINGCHENG" ng-click="seeKaoShiDetail(ks)"></a>
         </td>
         <td>
-            <p ng-repeat="sjmc in ks.SHIJUAN" ng-bind="sjmc.SHIJUAN_MINGCHENG">
+            <p ng-repeat="sjmc in ks.SHIJUAN">
+                {{'[' + letterArr[$index]+ ']' + sjmc.SHIJUAN_MINGCHENG}}
             </p>
         </td>
         <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDateWithWeek">
@@ -109,11 +110,13 @@
                     <th>学号</th>
                     <th>姓名</th>
                     <th>班级</th>
+                    <th>试卷</th>
                 </tr>
                 <tr ng-repeat="stu in kaoShiDetailData.KAODIANKAOCHANG[0].USERS">
                     <td>{{stu.YONGHUHAO}}</td>
                     <td>{{stu.XINGMING}}</td>
                     <td>{{stu.BANJI}}</td>
+                    <td>{{stu.SHIJUAN_MINGCHENG}}</td>
                 </tr>
             </table>
         </div>
