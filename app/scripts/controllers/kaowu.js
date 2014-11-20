@@ -70,7 +70,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.kwParams = { //考务用到的变量
             ksListZt: '', //考试列表的状态
             showKaoShiDetail: false, //考试详细信息
-            selectShiJuan: [] //存放已选择试卷的数组
+            selectShiJuan: [], //存放已选择试卷的数组
+            saveKaoShiBtnStat: false
           };
 
           /**
@@ -124,7 +125,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
-           * 考试的分页数据查询函数//
+           * 考试的分页数据查询函数
            */
           $scope.getThisKaoShiPageData = function(pg){
             var pgNum = pg - 1,
@@ -202,6 +203,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
                 isDeleteKaoShi = false;//是否为删除考试
+                $scope.kwParams.saveKaoShiBtnStat = false; //考试保存成功后，保存考试的按钮激活
               }
               else{
                 $scope.kaoshiList = '';
@@ -731,6 +733,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 if(kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS &&
                   kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS.length){
                   $scope.startDateIsNull = false;
+                  $scope.kwParams.saveKaoShiBtnStat = true;
                   var startDate = Date.parse(inputStartDate), //开始时间
                     endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000, //结束时间
                     shijuan_info = { //需要同步的试卷数据格式
@@ -740,7 +743,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                       lingyuid: lingyuid,
                       shijuanid: []
                     };
-                  //将已选择的试卷进行数据处理分别添加的同步试卷和考试信息中、、
+                  //将已选择的试卷进行数据处理分别添加的同步试卷和考试信息中
                   if($scope.kwParams.selectShiJuan.length > 0){
                     _.each($scope.kwParams.selectShiJuan, function(sj){
                       shijuan_info.shijuanid.push(sj.SHIJUAN_ID);
@@ -760,11 +763,13 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                         else{
                           messageService.alertInfFun('err', data.error);
                           $scope.kaoShengErrorInfo = JSON.parse(data.error);
+                          $scope.kwParams.saveKaoShiBtnStat = false;
                         }
                       });
                     }
                     else{
                       messageService.alertInfFun('err', rst.error);
+                      $scope.kwParams.saveKaoShiBtnStat = false;
                     }
                   });
                 }

@@ -1185,16 +1185,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             cnum;
           cnum = countInstances(tgVal, '<span>');
           for(var i = 1; i <= cnum; i++){
-            loopArr.push(i);
+            var loopArrObj = {
+              tiZhiNum: '',
+              subTiZhiNum: [1]
+            };
+            loopArrObj.tiZhiNum = i;
+            loopArr.push(loopArrObj);
           }
           $scope.loopArr = loopArr;
+        };
+
+        /**
+         * 添加更多变形答案
+         */
+        $scope.addSubTiZhi = function(tzCont){
+          tzCont.subTiZhiNum.push(1);
+        };
+
+        /**
+         * 删除一条变形答案
+         */
+        $scope.removeSubTiZhi = function(tzCont, idx){
+          tzCont.subTiZhiNum.splice(idx, 1);
         };
 
         /**
          * 保存填空试题
          */
         $scope.addTianKongShiTi = function(){
-          var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
+          var tiZhiArr = angular.element('.tizhiWrap').find('ul.tiZhi'),
             reg = new RegExp('<span>.*?</span>', 'g'),
             count = 0,
             tizhineirong = [], //存放题支内容;
@@ -1202,22 +1221,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tznrIsNull = true;
 
           //整理题支//
-          _.each(tiZhiArr, function(tizhi, idx, lst){
-            if(tizhi.value){
-              tizhineirong.push(tizhi.value);
-            }
-            else{
-              tznrIsNull = false;
-            }
-          });
+//          _.each(tiZhiArr, function(tizhi, idx, lst){
+//            if(tizhi.value){
+//              tizhineirong.push(tizhi.value);
+//            }
+//            else{
+//              tznrIsNull = false;
+//            }
+//          });
           if(tznrIsNull){
             tiankong_data.shuju.TIGAN = tgVal.replace(reg, function(arg) {
               var innerCount = count,
-                tzCont = tiZhiArr[innerCount].value,
+                tzCont = [],
+                tarCss,
                 tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
+              tarCss = '.tiZhi' + count;
+              _.each($(tarCss).find('input.subTiZhi'), function(subTz){
+                if(subTz.value){
+                  tzCont.push(subTz.value);
+                }
+              });
               tzJson.size = tzCont.length + 10;
               tzJson.answer = tzCont;
-
               count ++;
               return '<%' + JSON.stringify(tzJson) + '%>';
             });
@@ -1307,17 +1332,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
               if(data.result){
                 $scope.timudetails.splice(idx, 1);
-                messageService.alertInfFun('suc', '删除成功！'); //
+                messageService.alertInfFun('suc', '删除成功！');
               }
               else{
-                messageService.alertInfFun('pmt', data.error); //
+                messageService.alertInfFun('pmt', data.error);
               }
             });
           }
         };
 
         /**
-         * 加载修改单多选题模板//
+         * 加载修改单多选题模板
          */
         var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
           var selectZsdStr = '';
@@ -1328,7 +1353,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             selectZsd.push(zsd.ZHISHIDIAN_ID);
             selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
           });
-          $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
+          $scope.selectZsdStr = selectZsdStr; //用于控制大纲结束
         };
 
         var onceMakeWord = true;

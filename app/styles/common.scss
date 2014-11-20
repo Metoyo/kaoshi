@@ -1825,6 +1825,24 @@ label.checkbox{
     background-position: 0 -250px;
   }
 }
+.tiKong{
+  .tizhiWrap{
+    .addMoreBtn{
+      display: block;
+    }
+    li{
+      position: relative;
+      padding-right: 30px;
+      margin-top: 10px;
+    }
+    .glyphicon-remove{
+      position: absolute;
+      right: 0;
+      top: 10px;
+      color: red;
+    }
+  }
+}
 //组卷样式
 .zujuanWrapper{
   .nandu-dist{

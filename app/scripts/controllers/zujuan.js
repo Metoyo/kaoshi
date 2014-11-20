@@ -790,7 +790,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 规则组卷//
+           * 规则组卷
            */
           $scope.ruleMakePaper = function(zjr){
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
@@ -838,7 +838,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       errorTx.errTxName = rl.TIXINGMINGCHENG;
                       errorTx.errNanDu = xt.NANDU * 5;
                       errorTx.lessenVal = parseInt(xt.TIXING[0].COUNT) - parseInt(groupObj[xt.NANDU * 5].length);
-                      console.log(errorTx);
                       $scope.zuJuanParam.xuanTiError.push(errorTx);
                     }
                   }
@@ -1190,7 +1189,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.zuJuanParam.inputQuChongNum = '';
               $scope.zuJuanParam.quChongNum = $scope.zuJuanParam.selectQuChongNum;
             }
-            console.log($scope.zuJuanParam.quChongNum);
           };
 
           /**
@@ -1204,7 +1202,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.zuJuanParam.selectQuChongNum = '';
               $scope.zuJuanParam.quChongNum = parseInt($scope.zuJuanParam.inputQuChongNum);
             }
-            console.log($scope.zuJuanParam.quChongNum);
           };
 
           /**
@@ -1227,7 +1224,36 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(txArr.zsdXuanTiArr.length){
                 totalTiMuNums += txArr.txTotalNum;
                 _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
-                  distAutoMakePaperData.shuju.items.push(ntx);
+                  var tiMuNum = ntx.TIXING[0].COUNT, //题目数量
+                    zsdLength = ntx.ZHISHIDIAN.length, //知识点数量
+                    divideResult = parseInt(tiMuNum)/parseInt(zsdLength), //题目数量除以知识点数量所得得到的值
+                    floorVal = Math.floor(divideResult); //得到向下的整数值，用做题目数量
+                  if(divideResult >= 1){
+                    _.each(ntx.ZHISHIDIAN, function(zsd, thdIdx, thdLst){
+                      var gzObj = { //组卷规则所需要的数据格式
+                        NANDU: ntx.NANDU,
+                        PIPEIDU: ntx.PIPEIDU,
+                        TIXING: [{
+                          COUNT: '',
+                          TIXING_ID: ntx.TIXING[0].TIXING_ID
+                        }],
+                        ZHISHIDIAN: [],
+                        zsdNameArr: []
+                      };
+                      if(thdIdx < zsdLength - 1){ //当索引值小于知识点的长度减1时，题目数量就是floorVal的值
+                        gzObj.TIXING[0].COUNT = floorVal;
+                      }
+                      else{ //当索引值等于知识点的长度减1时，题目数量就是剩余的题目数量
+                        gzObj.TIXING[0].COUNT = parseInt(tiMuNum) - parseInt(thdIdx) * floorVal;
+                      }
+                      gzObj.ZHISHIDIAN.push(zsd);
+                      gzObj.zsdNameArr.push(ntx.zsdNameArr[thdIdx]);
+                      distAutoMakePaperData.shuju.items.push(gzObj);
+                    })
+                  }
+                  else{
+                    distAutoMakePaperData.shuju.items.push(ntx);
+                  }
                 });
               }
             });
@@ -1242,7 +1268,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             if(distAutoMakePaperData.shuju.items.length){
               $scope.loadingImgShow = true;
               $http.post(guiZeZuJuanUrl, distAutoMakePaperData).success(function(tmIdsData){
-                if(tmIdsData.length){
+                if(tmIdsData && tmIdsData.length > 0){
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
                   $http.get(qrytimuxiangqing).success(function(stdata){
                     if(stdata.length){
@@ -1291,7 +1317,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 else{
                   $scope.loadingImgShow = false;
                   $scope.ruleMakePaperSaveBtnDisabled = false;
-                  messageService.alertInfFun('pmt', tmIdsData.error);
+                  messageService.alertInfFun('pmt', '没有查出相应的题目！');
                 }
               });
             }

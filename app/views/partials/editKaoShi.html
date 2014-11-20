@@ -249,7 +249,8 @@
         </div>
         <!-- 考生错误信息展示结束 -->
         <div class="save-box">
-            <button type="button" class="btn btn-primary" ng-click="saveKaoShi()">保存考试</button>
+            <button type="button" class="btn btn-primary" ng-click="saveKaoShi()"
+                    ng-disabled="kwParams.saveKaoShiBtnStat">保存考试</button>
             <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
         </div>
     </div>
