@@ -256,9 +256,8 @@ a.add-btn:hover span {
   width: 100%;
   height: 56px;
   img {
-    height: 32px;
-    width: 200px;
-    margin-top: 12px;
+    width: 130px;
+    margin-top: 0px;
   }
 }
 .moreBtn{
@@ -1146,12 +1145,13 @@ label.checkbox{
     color: #000;
   }
   h4.logo {
-    margin-top: 100px;
-    margin-bottom: 50px;
+    margin-top: 56px;
+    margin-bottom: 10px;
     border: 0;
+    height: auto;
   }
   h4.logo img {
-    width: 400px;
+    width: 300px;
     height: auto;
   }
   .loginBox {
@@ -1208,8 +1208,8 @@ label.checkbox{
   }
   .registerBox{
     h4.logo {
-      margin-top: 50px;
-      margin-bottom: 30px;
+      margin-top: 20px;
+      margin-bottom: 0;
     }
     .infoBox{
       .table{

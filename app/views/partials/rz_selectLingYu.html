@@ -48,7 +48,7 @@
             <p ng-repeat="cly in sLy.CHILDREN">
                 <span ng-bind="cly.LINGYUMINGCHENG"></span>
             <span class="glyphicon glyphicon-remove delete-select-ly pull-right" title="删除已选科目"
-                  ng-click="deleteSelectedLingYu(sLy, $index)"></span>
+                  ng-click="deleteSelectedLingYu(cly, $index, $parent.$index)"></span>
             </p>
         </div>
 

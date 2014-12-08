@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           session = {},
           currentPath = $location.$$path;
         $rootScope.session = session;
-        $rootScope.pageName = "太安厅";//页面名称
+        $rootScope.pageName = "云教授";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
         $scope.login = login;

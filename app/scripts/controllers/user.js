@@ -92,7 +92,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           cxLyOfZsdBase = baseMtAPIUrl + 'chaxun_lingyu_of_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&zhishidianid=', //根据知识点查科目
           modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu', //修改知识点领域
-          qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
+          qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid=', //查询此题目
+          originSelectLingYuArr = [], //存放本机构所选领域的原始数据
+          selectLingYuChangedArr = []; //存放本机构变动的领域数据
 
         $scope.adminParams = {
           selected_dg: '',
@@ -587,6 +589,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.renderLingYuSelectTpl = function(){
           selectedLyArr = [];
+          originSelectLingYuArr = [];
+          selectLingYuChangedArr = [];
           $scope.jgSelectLingYu = [];
           lingYuData.shuju = [];
           $scope.loadingImgShow = true; //rz_selectLingYu.html
@@ -603,10 +607,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   _.each(jgLy, function(ply){
                     lyStr = 'sly' + ply.LINGYU_ID + ';';
                     selectedLyArr.push(lyStr);
-                    if(ply.CHILDREN.length){
+                    //保存原始的已选领域数据的id
+                    originSelectLingYuArr.push(ply.LINGYU_ID);
+                    if(ply.CHILDREN.length && ply.CHILDREN.length > 0){
                       _.each(ply.CHILDREN, function(ly){
                         lyStr = 'sly' + ly.LINGYU_ID + ';';
                         selectedLyArr.push(lyStr);
+                        //保存原始的已选领域数据的id
+                        originSelectLingYuArr.push(ly.LINGYU_ID);
                       })
                     }
                   });
@@ -631,15 +639,54 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 添加领域到已选 media-body
+         * 添加领域到已选 media-body selectLingYuChangedArr
          */
         $scope.addLingYuToSelect = function(event, nd, parentLy){
-          var ifCheckOrNot = $(event.target).prop('checked');
+          console.log(selectLingYuChangedArr);
+          var ifCheckOrNot = $(event.target).prop('checked'),
+            ifInOriginSelectLingYu, //是否存在于原始的领域里面
+            targetId = nd.LINGYU_ID, //选中的领域
+            ifInChangLingYuArr; //是否存在变动的领域数组里
+          ifInOriginSelectLingYu = _.find(originSelectLingYuArr, function(lyId){
+            return lyId == targetId;
+          });
+          if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
+            ifInChangLingYuArr = _.find(selectLingYuChangedArr, function(cgLy){
+              return cgLy.LINGYU_ID == targetId;
+            });
+          }
           if(parentLy){
             var parentLyId = parentLy.LINGYU_ID;
           }
-
           if(ifCheckOrNot){ //添加
+//            //当选择子领域的时候，同时选择父领域
+//            if(parentLy){
+//              var parentLyCss = '.checkbox' + parentLyId,
+//                ifParentLyChecked = $(parentLyCss).prop('checked');
+//              if(!ifParentLyChecked){
+//                $(parentLyCss).prop('checked', true);
+//              }
+//            }
+//            _.each($scope.jgSelectLingYu, function(ly, idx, lst){
+//              if(ly.LINGYU_ID == parentLyId){
+//                ly.CHILDREN.push(nd);
+//              }
+//            });
+////            $scope.jgSelectLingYu.push(nd);
+//            //所选领域存在原始数据里
+//            if(ifInOriginSelectLingYu){
+//              if(ifInChangLingYuArr){ //存在于变动数组里面
+//                selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+//                  return ly.LINGYU_ID == targetId;
+//                });
+//              }
+//            }
+//            //所选领域不存在原始数据里
+//            else{
+//              nd.itemStat = 'add';
+//              selectLingYuChangedArr.push(nd);
+//            }
+
             if(nd.PARENT_LINGYU_ID == 0){ // 父领域
               $scope.jgSelectLingYu.push(nd);
               if(nd.CHILDREN.length){
@@ -663,12 +710,83 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $(parentLyCss).prop('checked', true);
                 }
               }
-              $scope.jgSelectLingYu.push(nd);
+              _.each($scope.jgSelectLingYu, function(ly, idx, lst){
+                if(ly.LINGYU_ID == parentLyId){
+                  ly.CHILDREN.push(nd);
+                }
+              });
+//            $scope.jgSelectLingYu.push(nd);
+              //所选领域存在原始数据里
+              if(ifInOriginSelectLingYu){
+                if(ifInChangLingYuArr){ //存在于变动数组里面
+                  selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+                    return ly.LINGYU_ID == targetId;
+                  });
+                }
+              }
+              //所选领域不存在原始数据里
+              else{
+                nd.itemStat = 'add';
+                selectLingYuChangedArr.push(nd);
+              }
+//              //当选择子领域的时候，同时选择父领域
+//              if(parentLy){
+//                var parentLyCss = '.checkbox' + parentLyId,
+//                  ifParentLyChecked = $(parentLyCss).prop('checked');
+//                if(!ifParentLyChecked){
+//                  $(parentLyCss).prop('checked', true);
+//                }
+//              }
+//              $scope.jgSelectLingYu.push(nd);
             }
           }
           else{ //删除
+//            //子领域全部不选的时候，父领域也不选
+//            console.log(originSelectLingYuArr);
+//            if(parentLy){
+//              var isAllLyUnChecked = true,
+//                lyClass, ifLyChecked;
+//              _.each(parentLy.CHILDREN, function(ly){
+//                lyClass = '.checkbox' + ly.LINGYU_ID,
+//                ifLyChecked = $(lyClass).prop('checked');
+//                if(ifLyChecked){
+//                  isAllLyUnChecked = false;
+//                }
+//              });
+//              if(isAllLyUnChecked){
+//                var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
+//                $(parentLyClass).prop('checked', false);
+//              }
+//            }
+//            _.each($scope.jgSelectLingYu, function(sly, idx, lst){
+//              if(sly.LINGYU_ID == targetId){
+//                $scope.jgSelectLingYu.splice(idx, 1);
+//              }
+//              else{
+//                if(sly.CHILDREN && sly.CHILDREN.length >0){
+//                  _.each(sly.CHILDREN, function(secSly, secIdx, secLst){
+//                    if(secSly.LINGYU_ID == targetId){
+//                      $scope.jgSelectLingYu[idx].CHILDREN.splice(secIdx, 1);
+//                    }
+//                  });
+//                }
+//              }
+//            });
+//            console.log(originSelectLingYuArr);
+//            //所选领域存在原始数据里
+//            if(ifInOriginSelectLingYu){
+//              nd.itemStat = 'del';
+//              selectLingYuChangedArr.push(nd);
+//            }
+//            //所选领域不存在原始数据里
+//            else{
+//              if(ifInChangLingYuArr){ //存在于变动数组里面
+//                selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+//                  return ly.LINGYU_ID == targetId;
+//                });
+//              }
+//            }
             if(nd.PARENT_LINGYU_ID == 0){ // 父领域
-
               if(nd.CHILDREN.length){
                 _.each(nd.CHILDREN, function(ly,idx,lst){
                   _.each($scope.jgSelectLingYu, function(sly, sIdx, sLst){
@@ -685,6 +803,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             else{ //子领域
               //子领域全部不选的时候，父领域也不选
+              console.log(originSelectLingYuArr);
               if(parentLy){
                 var isAllLyUnChecked = true,
                   lyClass, ifLyChecked;
@@ -701,26 +820,82 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 }
               }
               _.each($scope.jgSelectLingYu, function(sly, idx, lst){
-                if(sly.LINGYU_ID == nd.LINGYU_ID){
+                if(sly.LINGYU_ID == targetId){
                   $scope.jgSelectLingYu.splice(idx, 1);
                 }
+                else{
+                  if(sly.CHILDREN && sly.CHILDREN.length >0){
+                    _.each(sly.CHILDREN, function(secSly, secIdx, secLst){
+                      if(secSly.LINGYU_ID == targetId){
+                        $scope.jgSelectLingYu[idx].CHILDREN.splice(secIdx, 1);
+                      }
+                    });
+                  }
+                }
               });
+              console.log(originSelectLingYuArr);
+              //所选领域存在原始数据里
+              if(ifInOriginSelectLingYu){
+                nd.itemStat = 'del';
+                selectLingYuChangedArr.push(nd);
+              }
+              //所选领域不存在原始数据里
+              else{
+                if(ifInChangLingYuArr){ //存在于变动数组里面
+                  selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+                    return ly.LINGYU_ID == targetId;
+                  });
+                }
+              }
+//              //子领域全部不选的时候，父领域也不选
+//              if(parentLy){
+//                var isAllLyUnChecked = true,
+//                  lyClass, ifLyChecked;
+//                _.each(parentLy.CHILDREN, function(ly){
+//                  lyClass = '.checkbox' + ly.LINGYU_ID,
+//                    ifLyChecked = $(lyClass).prop('checked');
+//                  if(ifLyChecked){
+//                    isAllLyUnChecked = false;
+//                  }
+//                });
+//                if(isAllLyUnChecked){
+//                  var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
+//                  $(parentLyClass).prop('checked', false);
+//                }
+//              }
+//              _.each($scope.jgSelectLingYu, function(sly, idx, lst){
+//                if(sly.LINGYU_ID == nd.LINGYU_ID){
+//                  $scope.jgSelectLingYu.splice(idx, 1);
+//                }
+//              });
             }
           }
+          console.log(selectLingYuChangedArr);
         };
 
         /**
          * 从已选科目删除领域
          */
-        $scope.deleteSelectedLingYu = function(sly, idx){
-          $scope.loadingImgShow = true; //rz_selectLingYu.html
+        $scope.deleteSelectedLingYu = function(sly, idx, pIdx){
+//          $scope.loadingImgShow = true; //rz_selectLingYu.html
           var targetClass = '.checkbox' + sly.LINGYU_ID,
-            slyObj = {},
+//            slyObj = {},
             isAllCheckBoxUnChecked = true,
             findLyArr = '',
             checkBoxParm,
             parentCheckBoxElm,
-            checkBoxElm;
+            checkBoxElm,
+            targetId = sly.LINGYU_ID,
+            ifInOriginSelectLy,
+            ifInChangSelectLy;
+          ifInOriginSelectLy = _.find(originSelectLingYuArr, function(lyId){
+            return lyId == targetId;
+          });
+          if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
+            ifInChangSelectLy = _.find(selectLingYuChangedArr, function(cgLy){
+              return cgLy.LINGYU_ID == targetId;
+            });
+          }
           //选择要操作的领域数据
           _.each($scope.lingyu_list[0].CHILDREN, function(ply){
             if(ply.LINGYU_ID == sly.LINGYU_ID){
@@ -752,22 +927,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             $('.media').find(targetClass).prop('checked', false);
           }
-          lingYuData.shuju = [];
-          slyObj.JIGOU_ID = jigouid;
-          slyObj.LINGYU_ID = sly.LINGYU_ID;
-          slyObj.ZHUANGTAI = -1;
-          slyObj.LEIBIE = sly.LEIBIE;
-          lingYuData.shuju.push(slyObj);
-          $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
-            if(data.result){
-              $scope.jgSelectLingYu.splice(idx, 1);
-              $scope.loadingImgShow = false; //rz_selectLingYu.html
+          //新代码
+          if(ifInOriginSelectLy){
+            sly.itemStat = 'del';
+            selectLingYuChangedArr.push(sly);
+          }
+          else{
+            if(ifInChangSelectLy){
+              selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+                return ly.LINGYU_ID == targetId;
+              });
             }
-            else{
-              $scope.loadingImgShow = false; //rz_selectLingYu.html
-              messageService.alertInfFun('err', data.error);
-            }
-          });
+          }
+          $scope.jgSelectLingYu[pIdx].CHILDREN.splice(idx, 1);
+//          lingYuData.shuju = [];
+//          slyObj.JIGOU_ID = jigouid;
+//          slyObj.LINGYU_ID = sly.LINGYU_ID;
+//          slyObj.ZHUANGTAI = -1;
+//          slyObj.LEIBIE = sly.LEIBIE;
+//          lingYuData.shuju.push(slyObj);
+//          $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
+//            if(data.result){
+//              $scope.jgSelectLingYu[pIdx].CHILDREN.splice(idx, 1);
+//              $scope.loadingImgShow = false; //rz_selectLingYu.html
+//              console.log(originSelectLingYuArr);
+//            }
+//            else{
+//              $scope.loadingImgShow = false; //rz_selectLingYu.html
+//              messageService.alertInfFun('err', data.error);
+//            }
+//          });
         };
 
         /**
@@ -868,11 +1057,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.saveChooseLingYu = function(){
           $scope.loadingImgShow = true; //rz_selectLingYu.html
           lingYuData.shuju = [];
-          _.each($scope.jgSelectLingYu, function(sly){
+          _.each(selectLingYuChangedArr, function(sly){
             var slyObj = {};
             slyObj.JIGOU_ID = jigouid;
             slyObj.LINGYU_ID = sly.LINGYU_ID;
-            slyObj.ZHUANGTAI = sly.ZHUANGTAI;
+            if(sly.itemStat && sly.itemStat == 'add'){
+              slyObj.ZHUANGTAI = 1;
+            }
+            if(sly.itemStat && sly.itemStat == 'del'){
+              slyObj.ZHUANGTAI = -1;
+            }
             slyObj.LEIBIE = sly.LEIBIE;
             lingYuData.shuju.push(slyObj);
           });
@@ -880,6 +1074,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(data.result){
               saveTiKuFun();
               alterShiJuanMuLu();
+              _.each(selectLingYuChangedArr, function(sly){
+                var hasInOriginSelectLy = _.find(originSelectLingYuArr, function(lyId){
+                  return lyId == sly.LINGYU_ID;
+                });
+                if(hasInOriginSelectLy){
+                  if(sly.itemStat && sly.itemStat == 'del'){
+                    originSelectLingYuArr = _.reject(originSelectLingYuArr, function(lyId){
+                      return lyId == sly.LINGYU_ID;
+                    });
+                  }
+                }
+                else{
+                  if(sly.itemStat && sly.itemStat == 'add'){
+                    originSelectLingYuArr.push(sly.LINGYU_ID);
+                  }
+                }
+              });
               messageService.alertInfFun('suc', '保存成功！');
               $scope.loadingImgShow = false; //rz_selectLingYu.html
             }

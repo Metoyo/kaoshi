@@ -157,7 +157,9 @@ define(['jquery', 'underscore', 'angular', 'config'],
             comeFromRuleListData = '', //存放已选组卷规则的变量
             zsdgZsdArr = [], //存放所有知识大纲知识点的数组
             qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId; //查询题库
+              '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId, //查询题库
+            qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+              + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
 
           /**
            * 初始化是DOM元素的隐藏和显示//
@@ -217,22 +219,30 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
             }
             if(data.length){
-              _.each(data, function(dg, idx, lst){
-                if(dg.ZHUANGTAI2 == 2){
-                  newDgList.push(dg);
-                }
-              });
-              $scope.dgList = newDgList;
-              //获取大纲知识点
-              qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
-              $http.get(qryKnowledge).success(function(data){
-                if(data.length){
-                  $scope.kowledgeList = data;
-                  //得到知识大纲知识点id的函数
-                  _.each(data, _do);
+//              _.each(data, function(dg, idx, lst){
+//                if(dg.ZHUANGTAI2 == 2){
+//                  newDgList.push(dg);
+//                }
+//              });
+              $http.get(qryMoRenDgUrl).success(function(mrDg){
+                if(mrDg && mrDg.length > 0){
+                  newDgList = mrDg;
+                  $scope.dgList = newDgList;
+                  //获取大纲知识点
+                  qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
+                  $http.get(qryKnowledge).success(function(zsddata){
+                    if(zsddata.length){
+                      $scope.kowledgeList = zsddata;
+                      //得到知识大纲知识点id的函数
+                      _.each(zsddata, _do);
+                    }
+                    else{
+                      messageService.alertInfFun('err', zsddata.error);
+                    }
+                  });
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  messageService.alertInfFun('err', mrDg.err);
                 }
               });
             }

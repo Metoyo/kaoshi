@@ -77,6 +77,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tiankong_data, //填空题数据模板
           yuedu_data, //阅读题数据模板
           loopArr = [0,1,2,3], //用于题支循环的数组
+          tkLoopArr = [], //用于填空题支循环的数组
           tznrIsNull,//用了判断题支内容是否为空
           deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu', //删除题目的url
           deleteTiMuData = { //删除题目的数据格式
@@ -102,7 +103,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           regRN = /\r\n/g, //匹配enter换行
           regN = /\n/g, //匹配换行
           replaceStr = '<br/>', //匹配<br/>
-          fileTypeReg = /\.\b\w+$\b/; // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
+          fileTypeReg = /\.\b\w+$\b/, // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
+          qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -139,24 +142,27 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           if(data.length){
-            _.each(data, function(dg, idx, lst){
-              if(dg.ZHUANGTAI2 == 2){
-                newDgList.push(dg);
-              }
-            });
-            $scope.dgList = newDgList;
-            //获取大纲知识点
-            qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
-            $http.get(qryKnowledge).success(function(data){
-              if(data.length){
-                $scope.kowledgeList = data;
-                //得到知识大纲知识点id的函数
-                _.each(data, _do);
-                //查询题目
-                $scope.qryTestFun();
+            $http.get(qryMoRenDgUrl).success(function(mrDg){
+              if(mrDg && mrDg.length > 0){
+                newDgList = mrDg;
+                $scope.dgList = newDgList;
+                //获取大纲知识点
+                qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
+                $http.get(qryKnowledge).success(function(zsddata){
+                  if(zsddata.length){
+                    $scope.kowledgeList = zsddata;
+                    //得到知识大纲知识点id的函数
+                    _.each(zsddata, _do);
+                    //查询题目
+                    $scope.qryTestFun();
+                  }
+                  else{
+                    messageService.alertInfFun('err', '查询大纲失败！错误信息为：' + zsddata.error); // '查询大纲失败！错误信息为：' + data.error
+                  }
+                });
               }
               else{
-                messageService.alertInfFun('err', '查询大纲失败！错误信息为：' + data.error); // '查询大纲失败！错误信息为：' + data.error
+                messageService.alertInfFun('err', mrDg.err);
               }
             });
           }
@@ -762,6 +768,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.patternListToggle = true;
           $scope.newShiTiTiXing = newShiTiTiXingArr;
           $scope.mingTiParam.isConvertTiXing = false;
+          tkLoopArr = [];
+          $scope.tkLoopArr = [];
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/tixing/danxuan.html');
         };
@@ -1140,9 +1148,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addTianKong = function(tpl){
           $scope.selectZhiShiDian = ''; //知识大纲名称清空
           tiankong_data = timu_data;
-          loopArr = [];
+//          loopArr = [];
+          tkLoopArr = [];
           renderTpl(tpl);
-          $scope.loopArr = loopArr;
+//          $scope.loopArr = loopArr;
           $('.patternList li').removeClass('active');
           $('li.tiankong').addClass('active');
           tiankong_data.shuju.TIXING_ID = 6;
@@ -1180,26 +1189,45 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * loopArr
          */
         $scope.addTkDaanInput = function(){
-          loopArr = [];
+//          loopArr = [];
           var tgVal = $('.formulaEditTiGan').val(),
-            cnum;
+            cnum, i = '', loopArrObj,
+//            chaVal = '',
+            asLength = '';
           cnum = countInstances(tgVal, '<span>');
-          for(var i = 1; i <= cnum; i++){
-            var loopArrObj = {
-              tiZhiNum: '',
-              subTiZhiNum: [1]
-            };
-            loopArrObj.tiZhiNum = i;
-            loopArr.push(loopArrObj);
+          if(tkLoopArr && tkLoopArr.length > 0){
+            asLength = tkLoopArr.length;
+            if(cnum > tkLoopArr.length){
+              for(i = asLength; i < cnum; i++){
+                loopArrObj = {
+                  tiZhiNum: '',
+                  subTiZhiNum: ['请输入答案']
+                };
+                loopArrObj.tiZhiNum = i;
+                tkLoopArr.push(loopArrObj);
+              }
+            }
           }
-          $scope.loopArr = loopArr;
+          else{
+            tkLoopArr = [];
+            for(i = 1; i <= cnum; i++){
+                loopArrObj = {
+                tiZhiNum: '',
+                subTiZhiNum: ['请输入答案']
+              };
+              loopArrObj.tiZhiNum = i;
+              tkLoopArr.push(loopArrObj);
+            }
+          }
+          $scope.tkLoopArr = tkLoopArr;
+
         };
 
         /**
          * 添加更多变形答案
          */
         $scope.addSubTiZhi = function(tzCont){
-          tzCont.subTiZhiNum.push(1);
+          tzCont.subTiZhiNum.push('请输入答案');
         };
 
         /**
@@ -1210,7 +1238,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 保存填空试题
+         * 保存填空试题//
          */
         $scope.addTianKongShiTi = function(){
           var tiZhiArr = angular.element('.tizhiWrap').find('ul.tiZhi'),
@@ -1259,26 +1287,26 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $http.post(xgtmUrl, tiankong_data).success(function(data){
                     if(data.result){
                       if(tiankong_data.shuju.TIMU_ID){ //试题修改成功后！
-                        messageService.alertInfFun('suc', '修改成功！'); //
+                        messageService.alertInfFun('suc', '修改成功！');
                         $scope.patternListToggle = false;
                         $scope.alterTiXingBox = false;
                         $scope.cancelAddPattern();
                       }
                       else{ // 试题添加成功后！
-                        messageService.alertInfFun('suc', '保存成功！'); //
+                        messageService.alertInfFun('suc', '保存成功！');
                         resetFun(tiankong_data);
-                        $scope.loopArr = []; //重置填空题支
                       }
+                      $scope.tkLoopArr = []; //重置填空题支
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                     else{
-                      messageService.alertInfFun('err', data.error); //
+                      messageService.alertInfFun('err', data.error);
                       $scope.loadingImgShow = false; //jisuan.html
                     }
                   });
                 }
                 else{
-                  messageService.alertInfFun('pmt', '请选择难度！'); //
+                  messageService.alertInfFun('pmt', '请选择难度！');
                 }
               }
               else{
@@ -1367,7 +1395,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(onceMakeWord){
             $('.pointTree').find('input[name=point]').prop('checked', false); //add new
           }
-          //生成题支编辑器的素组
+          //生成题支编辑器的数组
           if(tmxq.TIXING_ID <= 3){
             var daAnArray = tmxq.DAAN.split(",");
             //处理答案的代码将字母转换为数字
@@ -1435,7 +1463,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(tmxq.TIXING_ID == 6){
             var tkEdReg = new RegExp('<%{.*?}%>', 'g'),
               dataFirst,
-              tkCount = 0,
               tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
             loopArr = [];
             tpl = 'views/tixing/tiankong.html';
@@ -1447,11 +1474,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 dataFirst = data[0];
                 //题干转换
                 tiankong_data.shuju.TIGAN = dataFirst.TIGAN.tiGan.replace(tkEdReg, function(arg) {
-                  loopArr.push(tkCount);
-                  tkCount ++;
                   return '<span>_____</span>';
                 });
-                $scope.loopArr = loopArr;
+                //答案转换
+                tkLoopArr = [];
+                _.each(JSON.parse(dataFirst.DAAN), function(da, idx, lst){
+                  var loopArrObj = {
+                    tiZhiNum: '',
+                    subTiZhiNum: ''
+                  };
+                  loopArrObj.tiZhiNum = parseInt(idx) + 1;
+                  loopArrObj.subTiZhiNum = da.answer;
+                  tkLoopArr.push(loopArrObj);
+                });
+                $scope.tkLoopArr = tkLoopArr;
                 messageService.tiMuContPreview(tiankong_data.shuju.TIGAN);
               }
               else{
@@ -1509,7 +1545,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               var tkTiZhiArr = $('.tizhiWrap').find('input.tiZhi'),
                 tkcnum,
                 tkEditDaAnArr = tmxq.DAAN.split(';');
-              tkcnum = $scope.loopArr.length;
+              tkcnum = $scope.tkLoopArr.length;
               for(var i = 0; i < tkcnum; i++){
                 tkTiZhiArr.eq(i).val(tkEditDaAnArr[i]);
               }

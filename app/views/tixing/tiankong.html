@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-sm-8 col-sm-offset-1 assignment-box">
                         <span>将题支编辑器的内容赋值给选项：</span>
-                        <label class="radio-inline" ng-repeat="num in loopArr track by $index">
+                        <label class="radio-inline" ng-repeat="num in tkLoopArr track by $index">
                             <input type="radio" name="fuzhi" value="$index"
                                    ng-click='fuZhiFun($index)'> {{'答案' + ($index + 1)}}
                         </label>
@@ -91,7 +91,7 @@
                            ng-show="showTiZhiEdt">关闭答案编辑器</a>
                     </div>
                 </div>
-                <div class="form-group tizhiWrap" ng-repeat="num in loopArr">
+                <div class="form-group tizhiWrap" ng-repeat="num in tkLoopArr">
                     <label class="col-sm-1 control-label">{{'答案' + ($index + 1)}}.</label>
                     <div class="col-sm-8">
                         <a href="javascript:void(0)" ng-click="addSubTiZhi(num)" class="addMoreBtn">
@@ -99,13 +99,14 @@
                         </a>
                         <ul class="list-unstyled tiZhi {{'tiZhi' + $index}}">
                             <li ng-repeat="subNum in num.subTiZhiNum track by $index">
-                                <input type="text" class="form-control subTiZhi" placeholder="请输入此空的答案">
+                                <input type="text" class="form-control subTiZhi" placeholder="请输入此空的答案"
+                                       value="{{subNum}}">
                                 <span class="glyphicon glyphicon-remove" ng-click="removeSubTiZhi(num, $index)"></span>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <!--<div class="form-group tizhiWrap" ng-repeat="num in loopArr track by $index">-->
+                <!--<div class="form-group tizhiWrap" ng-repeat="num in tkLoopArr track by $index">-->
                     <!--<label class="col-sm-1 control-label">{{'答案' + ($index + 1)}}.</label>-->
                     <!--<div class="col-sm-8">-->
                         <!--<a href="javascript:void(0)" ng-click="addMore">-->

@@ -20,6 +20,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
 //            + '&lingyuid=' + lingyuid, //查询公共知识大纲的url
           qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
             + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=1', //查询公共知识大纲的url
+          qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1', //查询默认知识大纲的url
           qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
           xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
@@ -32,10 +34,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             shuju:{}
           },//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
           daGangJieDianData = [], //定义一个大纲节点的数据
-          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
 //          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-//            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
+//            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
+          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           publicKnowledgeData, //存放领域下的公共知识点
           publicZsdArr; //存放公共知识点的
 
@@ -54,6 +56,22 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
+         * 查询默认知识大纲
+         */
+        var getMoRenDaGangFun = function(){
+          $http.get(qryMoRenDgUrl).success(function(data){
+            if(data && data.length > 0){
+              $scope.defaultDaGang = data[0].ZHISHIDAGANGMINGCHENG;
+              $scope.daGangParam.defaultDaGangId = data[0].ZHISHIDAGANG_ID;
+            }
+            else{
+              messageService.alertInfFun('err', data.err);
+            }
+          });
+        };
+        getMoRenDaGangFun();
+
+        /**
          * 加载公共知识大纲
          */
         var getPubDaGangListFun = function(){
@@ -61,12 +79,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $http.get(qryPubDgBaseUrl).success(function(data){
             if(data && data.length > 0){
               $scope.publicZsdgList = data;
-              _.each(data, function(dg, idx, lst){
-                if(dg.ZHUANGTAI2 == 2){
-                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
-                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
-                }
-              });
+//              _.each(data, function(dg, idx, lst){
+//                if(dg.ZHUANGTAI2 == 2){
+//                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+//                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
+//                }
+//              });
             }
             else{
               messageService.alertInfFun('err', data.err);
@@ -84,12 +102,12 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $http.get(qryPriDgBaseUrl).success(function(data){
             if(data && data.length > 0){
               $scope.privateZsdgList = data;
-              _.each(data, function(dg, idx, lst){
-                if(dg.ZHUANGTAI2 == 2){
-                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
-                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
-                }
-              });
+//              _.each(data, function(dg, idx, lst){
+//                if(dg.ZHUANGTAI2 == 2){
+//                  $scope.defaultDaGang = dg.ZHISHIDAGANGMINGCHENG;
+//                  $scope.daGangParam.defaultDaGangId = dg.ZHISHIDAGANG_ID;
+//                }
+//              });
             }
             else{
               messageService.alertInfFun('err', data.err);
@@ -255,6 +273,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           };
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
+              getMoRenDaGangFun();
               getPubDaGangListFun();
               getPriDaGangListFun();
               messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
@@ -477,6 +496,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   if(isSetAsDefaultDg){
                     $scope.makeDaGangAsDefault(result.id);
                   }
+                  getMoRenDaGangFun();
                   getPubDaGangListFun();
                   getPriDaGangListFun();
                   $scope.knowledgePr = '';
@@ -583,6 +603,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.daGangParam.showDaGangAsNew = false;
                 messageService.alertInfFun('suc', '大纲另存为成功！');
                 $scope.daGangParam.dgSaveAsName = '';
+                getMoRenDaGangFun();
                 getPubDaGangListFun();
                 getPriDaGangListFun();
               }
