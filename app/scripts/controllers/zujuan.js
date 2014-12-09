@@ -1234,36 +1234,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               if(txArr.zsdXuanTiArr.length){
                 totalTiMuNums += txArr.txTotalNum;
                 _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
-                  var tiMuNum = ntx.TIXING[0].COUNT, //题目数量
-                    zsdLength = ntx.ZHISHIDIAN.length, //知识点数量
-                    divideResult = parseInt(tiMuNum)/parseInt(zsdLength), //题目数量除以知识点数量所得得到的值
-                    floorVal = Math.floor(divideResult); //得到向下的整数值，用做题目数量
-                  if(divideResult >= 1){
-                    _.each(ntx.ZHISHIDIAN, function(zsd, thdIdx, thdLst){
-                      var gzObj = { //组卷规则所需要的数据格式
-                        NANDU: ntx.NANDU,
-                        PIPEIDU: ntx.PIPEIDU,
-                        TIXING: [{
-                          COUNT: '',
-                          TIXING_ID: ntx.TIXING[0].TIXING_ID
-                        }],
-                        ZHISHIDIAN: [],
-                        zsdNameArr: []
-                      };
-                      if(thdIdx < zsdLength - 1){ //当索引值小于知识点的长度减1时，题目数量就是floorVal的值
-                        gzObj.TIXING[0].COUNT = floorVal;
-                      }
-                      else{ //当索引值等于知识点的长度减1时，题目数量就是剩余的题目数量
-                        gzObj.TIXING[0].COUNT = parseInt(tiMuNum) - parseInt(thdIdx) * floorVal;
-                      }
-                      gzObj.ZHISHIDIAN.push(zsd);
-                      gzObj.zsdNameArr.push(ntx.zsdNameArr[thdIdx]);
-                      distAutoMakePaperData.shuju.items.push(gzObj);
-                    })
-                  }
-                  else{
-                    distAutoMakePaperData.shuju.items.push(ntx);
-                  }
+                  distAutoMakePaperData.shuju.items.push(ntx);
                 });
               }
             });
@@ -1278,7 +1249,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             if(distAutoMakePaperData.shuju.items.length){
               $scope.loadingImgShow = true;
               $http.post(guiZeZuJuanUrl, distAutoMakePaperData).success(function(tmIdsData){
-                if(tmIdsData && tmIdsData.length > 0){
+                if(tmIdsData.length){
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
                   $http.get(qrytimuxiangqing).success(function(stdata){
                     if(stdata.length){
@@ -1327,7 +1298,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 else{
                   $scope.loadingImgShow = false;
                   $scope.ruleMakePaperSaveBtnDisabled = false;
-                  messageService.alertInfFun('pmt', '没有查出相应的题目！');
+                  messageService.alertInfFun('pmt', tmIdsData.error);
                 }
               });
             }
@@ -1337,6 +1308,126 @@ define(['jquery', 'underscore', 'angular', 'config'],
               messageService.alertInfFun('err', '请选择题型！');
             }
           };
+//          $scope.addRuleMakePaperShiJuan = function(){
+//            var distAutoMakePaperData = {
+//                token: token,
+//                caozuoyuan: caozuoyuan,
+//                jigouid: jigouid,
+//                lingyuid: lingyuid,
+//                shuju:{
+//                  items: []
+//                }
+//              },
+//              totalTiMuNums = 0; //规则组卷出题的总数量
+//            $scope.ruleMakePaperSaveBtnDisabled = true;
+//            //得到题型数量和难度的数组
+//            _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
+//              if(txArr.zsdXuanTiArr.length){
+//                totalTiMuNums += txArr.txTotalNum;
+//                _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
+//                  var tiMuNum = ntx.TIXING[0].COUNT, //题目数量
+//                    zsdLength = ntx.ZHISHIDIAN.length, //知识点数量
+//                    divideResult = parseInt(tiMuNum)/parseInt(zsdLength), //题目数量除以知识点数量所得得到的值
+//                    floorVal = Math.floor(divideResult); //得到向下的整数值，用做题目数量
+//                  if(divideResult >= 1){
+//                    _.each(ntx.ZHISHIDIAN, function(zsd, thdIdx, thdLst){
+//                      var gzObj = { //组卷规则所需要的数据格式
+//                        NANDU: ntx.NANDU,
+//                        PIPEIDU: ntx.PIPEIDU,
+//                        TIXING: [{
+//                          COUNT: '',
+//                          TIXING_ID: ntx.TIXING[0].TIXING_ID
+//                        }],
+//                        ZHISHIDIAN: [],
+//                        zsdNameArr: []
+//                      };
+//                      if(thdIdx < zsdLength - 1){ //当索引值小于知识点的长度减1时，题目数量就是floorVal的值
+//                        gzObj.TIXING[0].COUNT = floorVal;
+//                      }
+//                      else{ //当索引值等于知识点的长度减1时，题目数量就是剩余的题目数量
+//                        gzObj.TIXING[0].COUNT = parseInt(tiMuNum) - parseInt(thdIdx) * floorVal;
+//                      }
+//                      gzObj.ZHISHIDIAN.push(zsd);
+//                      gzObj.zsdNameArr.push(ntx.zsdNameArr[thdIdx]);
+//                      distAutoMakePaperData.shuju.items.push(gzObj);
+//                    })
+//                  }
+//                  else{
+//                    distAutoMakePaperData.shuju.items.push(ntx);
+//                  }
+//                });
+//              }
+//            });
+//            if($scope.zuJuanParam.inputQuChongNum || $scope.zuJuanParam.selectQuChongNum){
+//              if($scope.zuJuanParam.quChongNum){
+//                distAutoMakePaperData.shuju.exclude = { type: "year", value: $scope.zuJuanParam.quChongNum };
+//              }
+//            }
+//            else{
+//              $scope.zuJuanParam.quChongNum = '';
+//            }
+//            if(distAutoMakePaperData.shuju.items.length){
+//              $scope.loadingImgShow = true;
+//              $http.post(guiZeZuJuanUrl, distAutoMakePaperData).success(function(tmIdsData){
+//                if(tmIdsData && tmIdsData.length > 0){
+//                  var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
+//                  $http.get(qrytimuxiangqing).success(function(stdata){
+//                    if(stdata.length){
+//                      _.each(stdata, function(tm, idx, lst){
+//                        //将试题详情添加到mabandData
+//                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+//                          if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
+//                            mbdt.TIMUARR.push(tm);
+//                          }
+//                        });
+//                        //难度统计  nanduTempData NANDU_ID
+//                        for(var j = 0; j < nanduLength; j++){
+//                          if(nanduTempData[j].nanduId == tm.NANDU_ID){
+//                            nanduTempData[j].nanduCount.push(tm.TIMU_ID);
+//                          }
+//                        }
+//                      });
+//                      //统计每种题型的数量和百分比
+//                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+//                        tixingStatistics(idx, kmtxListLength);
+//                      });
+//                      nanduPercent(); //难度统计
+//                      //判读是否执行完成
+//                      $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
+//                      $scope.baocunshijuanBtn = true; //保存试卷的按钮
+//                      $scope.shijuanPreview();
+//                      $scope.isTestPaperSummaryShow = true;
+//                      $scope.loadingImgShow = false;
+//                      $scope.ruleMakePaperClass = false; //控制加载规则组卷的css
+//                      //规则题目数量与已选出的题目的对比
+//                      if(stdata.length != totalTiMuNums){
+//                        findWhichRuleHasNoItem($scope.ampKmtxWeb, $scope.kmtxList, stdata);
+//                      }
+//                      //保存规则用到的转化
+//                      zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
+//                      $scope.ruleMakePaperSaveBtnDisabled = false;
+//                    }
+//                    else{
+//                      $scope.timudetails = null;
+//                      $scope.loadingImgShow = false;
+//                      $scope.ruleMakePaperSaveBtnDisabled = false;
+//                      messageService.alertInfFun('err', stdata.error);
+//                    }
+//                  });
+//                }
+//                else{
+//                  $scope.loadingImgShow = false;
+//                  $scope.ruleMakePaperSaveBtnDisabled = false;
+//                  messageService.alertInfFun('pmt', '没有查出相应的题目！');
+//                }
+//              });
+//            }
+//            else{
+//              $scope.loadingImgShow = false;
+//              $scope.ruleMakePaperSaveBtnDisabled = false;
+//              messageService.alertInfFun('err', '请选择题型！');
+//            }
+//          };
 
           /**
            * 提交自动数据的参数,难度为整张试卷难度
