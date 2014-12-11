@@ -41,6 +41,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           shouji: ''
         };
         registerDate = $scope.personalInfo;
+        $scope.registerParam = {
+          selectJiGouId: ''
+        };
 
         /**
          * 检查输入的邮箱或者是用户名，在数据库中是否存在
@@ -147,7 +150,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.getJglist(1);
 
         /**
-         * 得到机构id
+         * 得到机构id//
          */
         $scope.getJgId = function(jgId){
           $scope.keMuListLengthExist = false;
@@ -177,26 +180,33 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 有父领域查询子领域领域（即科目）
          */
         $scope.getKemuList = function(lyId){
-          if(lyId){
-            $http.get(apiLyKm + lyId).success(function(data) {
-              if(data.length){
-                $scope.kemu_list = data;
-                $scope.keMuSelectBox = true;
-                $scope.keMuListLengthExist = true;
-                deleteAllSelectedKmAndJs();
-              }
-              else{
-                $scope.kemu_list = '';
-                $scope.keMuSelectBox = false;
-                $scope.keMuListLengthExist = false;
-                messageService.alertInfFun('err', '没有对应的科目！');
-              }
-            });
+          var qryLyKmUrl;
+          if($scope.selected_jg){
+            if(lyId){
+              qryLyKmUrl = apiLyKm + lyId + '&jigouid=' + $scope.selected_jg;
+              $http.get(qryLyKmUrl).success(function(data) {
+                if(data.length){
+                  $scope.kemu_list = data;
+                  $scope.keMuSelectBox = true;
+                  $scope.keMuListLengthExist = true;
+                  deleteAllSelectedKmAndJs();
+                }
+                else{
+                  $scope.kemu_list = '';
+                  $scope.keMuSelectBox = false;
+                  $scope.keMuListLengthExist = false;
+                  messageService.alertInfFun('err', '没有对应的科目！');
+                }
+              });
+            }
+            else{
+              $scope.kemu_list = '';
+              $scope.keMuSelectBox = false;
+              $scope.keMuListLengthExist = false;
+            }
           }
           else{
-            $scope.kemu_list = '';
-            $scope.keMuSelectBox = false;
-            $scope.keMuListLengthExist = false;
+            messageService.alertInfFun('pmt', '机构ID不能为空！');
           }
         };
 
