@@ -862,14 +862,17 @@ a.add-btn:hover span {
 }
 /* 组卷规则难度选择图片 */
 .zj-style-star{
+  width: 200px;
+  height: 28px;
+  float: left;
+  background: url('../images/zujuan/zjStar.png') no-repeat 0 0;
   li{
     float: left;
-    margin-right: 10px;
+    margin-right: 12px;
     a{
       float: left;
       width: 28px;
       height: 28px;
-      background: url('../images/zujuan/zjStar.png') no-repeat 0 0;
     }
   }
   .active{
@@ -877,6 +880,21 @@ a.add-btn:hover span {
       background-position: 0 -30px;
     }
   }
+}
+.zj-style-star-1{
+  background-position: 0 -30px;
+}
+.zj-style-star-2{
+  background-position: 0 -60px;
+}
+.zj-style-star-3{
+  background-position: 0 -90px;
+}
+.zj-style-star-4{
+  background-position: 0 -120px;
+}
+.zj-style-star-5{
+  background-position: 0 -150px;
 }
 /*伪装的select复选框*/
 .fakeMutiSelect{
