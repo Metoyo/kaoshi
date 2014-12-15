@@ -367,7 +367,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
-           * 查询试卷概要的分页代码//
+           * 查询试卷概要的分页代码
            */
           $scope.getThisSjgyPageData = function(pg){
             var qryShiJuanGaiYao,
@@ -718,6 +718,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             if(studentID){
               $scope.studentIDIsNull = false;
+            }
+          };
+
+          /**
+           * 计算结束时间
+           */
+          $scope.calculateEndDate = function(){
+            var inputStartDate = $('.start-date').val();
+            if(inputStartDate && kaoshi_data.shuju.SHICHANG){
+              var startDate = Date.parse(inputStartDate), //开始时间
+                endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000; //结束时间
+              kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
             }
           };
 
