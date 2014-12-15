@@ -58,6 +58,19 @@
                 <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">结束时间<i>*</i></label>
+            <div class="col-sm-8">
+                <!--<input type="text" name="ksTime" class="form-control" placeholder="考试时长" required maxlength="3"-->
+                       <!--onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"-->
+                       <!--onafterpaste="this.value=this.value.replace(/\D/g,'')"/>-->
+                <input type="text" placeholder="结束时间"/>
+
+            </div>
+            <!--<div class="col-sm-2">-->
+                <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>-->
+            <!--</div>-->
+        </div>
         <div class="form-group advanced-set" ng-init="showKaoShiXuZhi=false;showAdvancedSet=false">
             <div class="col-sm-8 col-sm-offset-2">
                 <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-hide="showKaoShiXuZhi">

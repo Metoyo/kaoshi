@@ -7,7 +7,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
         var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
-            apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token, //jiGouLeiBie 机构类别的api
+            apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token + '&leibieid=1,2', //jiGouLeiBie 机构类别的api
             apiUrlJueSe = config.apiurl_rz + 'jueSe?token=' + config.token, //jueSe 查询科目权限的数据的api
             jiGou_LeiBieUrl = config.apiurl_rz + 'jiGou?token=' + config.token + '&leibieid=', //由机构类别查询机构的url
             select_juese = [], //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
@@ -112,10 +112,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $http.get(apiUrlJglb).success(function(data) {
           $scope.jigoulb_list = [];
-          if(data){
-            $scope.jigoulb_list = _.reject(data, function(jglb){
-              return jglb.LEIBIE_ID == 0;
-            });
+          if(data && data.length > 0){
+            $scope.jigoulb_list = data;
+//            $scope.jigoulb_list = _.reject(data, function(jglb){
+//              return jglb.LEIBIE_ID == 0;
+//            });
             //锁定大学
 //            _.each(data, function(jg, idx, lst){
 //              if(jg.LEIBIE_ID == 1){
