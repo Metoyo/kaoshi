@@ -357,29 +357,14 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 组卷规则的难度选择//
+           * 组卷规则的难度选择
            */
           $scope.zjNanDuSelect = function(nd){
-//            var zjStarLi = $('.zj-style-star');
             $scope.zjNaDuStar = '';
             if(nd){
               $scope.zjNaDuStar = 'zj-style-star-' + nd;
               $scope.zuJuanParam.zjLastNd = nd;
             }
-//            if($scope.zuJuanParam.zjLastNd){ // 判断星星有没有被点击，已被点击
-//              if($scope.zuJuanParam.zjLastNd == nd){ //判断被点击的对象是不是已经被选中，被选中
-//                zjStarLi.eq(nd-1).toggleClass('active');
-//              }
-//              else{ //判断被点击的对象是不是已经被选中，未被选中
-//                zjStarLi.removeClass('active');
-//                zjStarLi.eq(nd-1).addClass('active');
-//                $scope.zuJuanParam.zjLastNd = nd;
-//              }
-//            }
-//            else{ // 判断星星有没有被点击，未被点击
-//              zjStarLi.eq(nd-1).addClass('active');
-//              $scope.zuJuanParam.zjLastNd = nd;
-//            }
           };
 
           /**

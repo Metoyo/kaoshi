@@ -389,8 +389,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.get(queryTiMu).success(function(data){
             if(!data.error){
               _.each(data, function(tm, idx, lst){
-                var cclv = new Number(tm.DCLV) * 100;
-                tm.DCLV = cclv.toFixed(2) + '%';
+                var cclv = new Number(tm.SHIFENLV) * 100;
+                tm.SHIFENLV = cclv.toFixed(2) + '%';
                 tm.TIGAN = JSON.parse(tm.TIGAN);
                 if(tm.TIXING_ID <= 3){
                   var daanArr = tm.DAAN.split(','),

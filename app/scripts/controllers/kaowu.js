@@ -590,7 +590,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             var file = $scope.uploadFiles,
               fields = [{"name": "token", "data": token}],
               kaoShengOldArr = [],
-              kaoShengNewArr = [];
+              kaoShengNewArr = [],
+              trimBlankReg = /\s/g,
+              delBlank = '';
+
             Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
               $scope.uploadFileUrl = result.data;
               $scope.uploadFiles = [];
@@ -602,7 +605,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 _.each(kaoShengOldArr, function(ks, idx, list){
                   var ksObj = {XINGMING: '', YONGHUHAO:'', BANJI: ''};
                   _.each(ks, function(value, key, list){
-                    switch (key){
+                    delBlank = key.replace(trimBlankReg, "");
+                    switch (delBlank){
                       case '姓名' :
                         ksObj.XINGMING = value;
                         break;
