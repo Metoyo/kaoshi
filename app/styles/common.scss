@@ -1676,6 +1676,21 @@ label.checkbox{
         cursor: pointer;
       }
     }
+    .title{
+      padding: 10px 0;
+      .pull-left{
+        width: 90px;
+      }
+      .pull-right{
+        width: 155px;
+        span{
+          margin-right: 10px;
+        }
+        input{
+          margin-right: 5px;
+        }
+      }
+    }
   }
   .dg-list-box{
     width: 50%;

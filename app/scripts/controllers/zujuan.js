@@ -727,7 +727,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 显示试题列表
+           * 显示试题列表//
            */
           $scope.showTestList = function(txid){
             var dashboardWith = $('.dashboard').width();

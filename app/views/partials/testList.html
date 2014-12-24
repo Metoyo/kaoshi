@@ -70,7 +70,7 @@
                 </h3>
                 <div class="item-tizhi-wrap">
                     <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
-                        <span ng-bind="letterArr[$index] + '. '"></span>
+                        <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
                         <span class="tiZhiSpan" ng-bind-html="tz"></span>
                     </p>
                 </div>
