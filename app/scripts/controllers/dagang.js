@@ -35,7 +35,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
             + jigouid + '&gen=0' + '&lingyuid=' + lingyuid + '&leixing=', //查询公共知识点的url
           publicKnowledgeData = '', //存放领域下的公共知识点
-          publicZsdArr = []; //存放公共知识点的
+          publicZsdArr = [], //存放公共知识点id的数组
+          zsdgZsdArr = []; //大纲管理页面，选择自建知识大纲，存放选中的知识大纲知识点id
 
         $rootScope.pageName = "大纲";//页面名称
         $rootScope.isRenZheng = false; //判读页面是不是认证
@@ -103,7 +104,24 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         getPriDaGangListFun();
 
         /**
-         * 查询该领域的在公共知识点
+         * 删除共有知识点
+         */
+        var deleteTheSameZsd = function(){
+          var differentArr, //从已有的公共知识点ID中减去知识大纲知识点ID
+            needPubZsd, //从已有的公共知识点中找到对应知识点详情
+            diffPubZsdArr = []; //存放删除已使用的知识大纲后公共知识大纲
+          //从已有的公共知识点中减去知识大纲知识点
+          differentArr = _.difference(publicZsdArr, zsdgZsdArr);
+          //得到相对应的公共知识大纲知识点
+          _.each(differentArr, function(sgzsd, idx, lst){
+            needPubZsd = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: sgzsd });
+            diffPubZsdArr.push(needPubZsd);
+          });
+          return diffPubZsdArr;
+        };
+
+        /**
+         * 查询该领域的在公共知识点或者私有知识点
          */
         $scope.getThisOrgPublicZsd = function(){
           publicKnowledgeData = '';
@@ -115,11 +133,16 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               if(ggzsd && ggzsd.length > 0){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 publicKnowledgeData = ggzsd;
-                $scope.publicKnowledge = ggzsd;
                 //得到公共知识点id的数组
                 publicZsdArr = _.map(ggzsd, function(szsd){
                   return szsd.ZHISHIDIAN_ID;
                 });
+                if(zsdgZsdArr && zsdgZsdArr.length > 0){
+                  $scope.publicKnowledge = deleteTheSameZsd();
+                }
+                else{
+                  $scope.publicKnowledge = ggzsd;
+                }
               }
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
@@ -165,10 +188,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         $scope.getPrivateDgZsd = function(dgId){
           $scope.selectZjDgId = dgId;
           $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
-          var differentArr, //从已有的公共知识点中减去知识大纲知识点
-            needPubZsd, //从已有的公共知识点中找到对应知识点详情
-            diffPubZsdArr = [], //存放删除已使用的知识大纲后公共知识大纲
-            zsdgZsdArr = []; //存放知识大纲知识点
+          zsdgZsdArr = []; //存放知识大纲知识点
 
           //得到知识大纲知识点的递归函数
           function _do(item) {
@@ -197,14 +217,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.knowledgePr = data;
                 //得到知识大纲知识点id的函数
                 _.each(data, _do);
-                //从已有的公共知识点中减去知识大纲知识点
-                differentArr = _.difference(publicZsdArr, zsdgZsdArr);
-                //得到相对应的公共知识大纲知识点
-                _.each(differentArr, function(sgzsd, idx, lst){
-                  needPubZsd = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: sgzsd });
-                  diffPubZsdArr.push(needPubZsd);
-                });
-                $scope.publicKnowledge = diffPubZsdArr;
+                $scope.publicKnowledge = deleteTheSameZsd();
                 $scope.prDgBtnDisabled = false;
               }
               else{
@@ -523,6 +536,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.isPublicDg = false;
           $scope.daGangParam.selected_dg = '';
           $scope.selectZjDgId = '';
+          $scope.publicKnowledge = '';
+          $scope.daGangParam.zsdKind = '';
           $scope.dgTpl = 'views/partials/daGangHome.html';
         };
 
