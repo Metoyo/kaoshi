@@ -1007,8 +1007,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               },
               txNumClass = $('.ruleMakePaper-header input.txNum'),
               txNum = parseInt(txNumClass.val()),
-//              coefftRule = $('.coefftRule').html();
-              coefftRule = $scope.zuJuanParam.zjLastNd/5;
+              coefftRule = (parseInt($scope.zuJuanParam.zjLastNd) - 1) * 0.25;
             if(selectZsd.length){
               if(ruleMakePaperSelectTxid){
                 if(txNum){

@@ -32,8 +32,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             shuju:{}
           },//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
           daGangJieDianData = [], //定义一个大纲节点的数据
-//          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-//            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=' + lingyuid, //查询公共知识点的url
           qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
             + jigouid + '&gen=0' + '&lingyuid=' + lingyuid + '&leixing=', //查询公共知识点的url
           publicKnowledgeData = '', //存放领域下的公共知识点
@@ -137,8 +135,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          */
         $scope.renderDgPage = function(lx){
           $scope.selectZjDgId = ''; //已经选择的自建知识大纲的值
-//          publicKnowledgeData = '';
-//          publicZsdArr = [];
           if(lx == 1){
             if($scope.publicZsdgList && $scope.publicZsdgList.length > 0){
               $scope.daGangParam.selected_dg = '';
@@ -155,28 +151,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             if(!$scope.privateZsdgList.length){
               messageService.alertInfFun('pmt', '没有大纲，请新建一个！');
             }
-            $scope.loadingImgShow = true; //daGangPublic.html & daGangPrivate.html
-            //查询该领域的在公共知识点
-//            $http.get(qryPubZsdUrl).success(function(ggzsd){
-//              if(ggzsd.error){
-//                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-//                messageService.alertInfFun('pmt', '此领域下没有公共知识点！');
-//                publicKnowledgeData = '';
-//              }
-//              else{
-////                _.each($scope.publicZsdgList, function(pubDg, idx, lst){
-////                  ggzsd = _.reject(ggzsd, function(dg){ return dg.ZHISHIDIANMINGCHENG == pubDg.ZHISHIDAGANGMINGCHENG; });
-////                });
-//                $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-//                publicKnowledgeData = ggzsd;
-//                $scope.publicKnowledge = ggzsd;
-//                //得到公共知识点id的数组
-//                publicZsdArr = _.map(ggzsd, function(szsd){
-//                  return szsd.ZHISHIDIAN_ID;
-//                });
-//              }
-//            });
-            $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
             $scope.dgTpl = 'views/partials/daGangPrivate.html';
             $scope.isPrivateDg = true;
             $scope.isPublicDg = false;
@@ -405,7 +379,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
          */
         $scope.removeNd = function(parentNd, nd, idx) {
           function getPubZsd(item) {
-            if(item.LEIXING == 1){
+            if(item.LEIXING){
               var pubZsdObj = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
               $scope.publicKnowledge.push(pubZsdObj);
               if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
