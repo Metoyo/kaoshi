@@ -104,7 +104,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         getPriDaGangListFun();
 
         /**
-         * 删除共有知识点
+         * 删除共有知识点//
          */
         var deleteTheSameZsd = function(){
           var differentArr, //从已有的公共知识点ID中减去知识大纲知识点ID
