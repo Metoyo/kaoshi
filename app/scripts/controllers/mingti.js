@@ -131,9 +131,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 获得大纲数据
          */
-        $http.get(qryDgUrl).success(function(data){
-          var newDgList = [];
-            zsdgZsdArr = [];
+        var getDaGangData = function(){
+          zsdgZsdArr = [];
           //得到知识大纲知识点的递归函数
           function _do(item) {
             zsdgZsdArr.push(item.ZHISHIDIAN_ID);
@@ -141,51 +140,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               _.each(item.ZIJIEDIAN, _do);
             }
           }
-          if(data.length){
-            $http.get(qryMoRenDgUrl).success(function(mrDg){
-              if(mrDg && mrDg.length > 0){
-                newDgList = mrDg;
-                $scope.dgList = newDgList;
-                //获取大纲知识点
-                qryKnowledge = qryKnowledgeBaseUrl + newDgList[0].ZHISHIDAGANG_ID;
-                $http.get(qryKnowledge).success(function(zsddata){
-                  if(zsddata.length){
-                    $scope.kowledgeList = zsddata;
-                    //得到知识大纲知识点id的函数
-                    _.each(zsddata, _do);
-                    //查询题目
-                    $scope.qryTestFun();
-                  }
-                  else{
-                    messageService.alertInfFun('err', '查询大纲失败！错误信息为：' + zsddata.error); // '查询大纲失败！错误信息为：' + data.error
-                  }
-                });
-              }
-              else{
-                messageService.alertInfFun('err', mrDg.err);
-              }
-            });
-          }
-          else{
-            messageService.alertInfFun('err', '没用相对应的知识大纲!');
-          }
-        });
+          $http.get(qryMoRenDgUrl).success(function(mrDg){
+            if(mrDg && mrDg.length > 0){
+              $scope.dgList = mrDg;
+              //获取大纲知识点
+              qryKnowledge = qryKnowledgeBaseUrl + mrDg[0].ZHISHIDAGANG_ID;
+              $http.get(qryKnowledge).success(function(zsddata){
+                if(zsddata.length){
+                  $scope.kowledgeList = zsddata;
+                  //得到知识大纲知识点id的函数
+                  _.each(zsddata, _do);
+                  //查询题目
+                  $scope.qryTestFun();
+                }
+                else{
+                  messageService.alertInfFun('err', '查询大纲失败！错误信息为：' + zsddata.error); // '查询大纲失败！错误信息为：' + data.error
+                }
+              });
+            }
+            else{
+              messageService.alertInfFun('err', mrDg.err);
+            }
+          });
+        };
+        getDaGangData();
 
         /**
          * 查询科目题型
          */
-        $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
-          if(data.length){
-            $scope.kmtxList = data;
-            $scope.keMuList = true; //选择的科目render完成后列表显示
-          }
-          else{
-            messageService.alertInfFun('err', '查询科目题型失败！错误信息为：' + data.error);
-          }
-        });
-        $scope.cxKmTx = function(lyt){
-          angular.element(".selectLyName").html(lyt.LINGYUMINGCHENG); //切换科目的名称
-          $http.get(qryKmTx + lyt.LINGYU_ID).success(function(data){ //查询科目题型的数据
+        var cxKmTx = function(){
+          $http.get(qryKmTx + lingyuid).success(function(data){ //页面加载的时候调用科目题型
             if(data.length){
               $scope.kmtxList = data;
               $scope.keMuList = true; //选择的科目render完成后列表显示
@@ -195,6 +179,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
         };
+        cxKmTx();
 
         /**
          * 加载大纲知识点,用于切换大纲，目前没有用到
@@ -1220,7 +1205,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           $scope.tkLoopArr = tkLoopArr;
-
         };
 
         /**

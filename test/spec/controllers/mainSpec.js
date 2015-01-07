@@ -1,5 +1,5 @@
 /*jshint unused: vars */
-define(['angular', 'angularMocks', 'app'], function(angular, mocks, app) {
+define(['angular', 'angular-mocks', 'app'], function(angular, mocks, app) {
   'use strict';
 
   describe('Controller: MainCtrl', function () {

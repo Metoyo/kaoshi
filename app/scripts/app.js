@@ -1,36 +1,37 @@
 /*jshint unused: vars */
 define([
-    'controllers/renzheng',
-    'controllers/nav',
-    'angular',
-    'config',
-    'services/urlredirect',
-    'controllers/mingti',
-    'controllers/dagang',
-    'controllers/user',
-    'controllers/register',
-    'controllers/zujuan',
-    'controllers/kaowu',
-    'controllers/lingyu',
-    'controllers/tongji',
-    'filters/mylocaldate',
-    'filters/mylocaldatewithweek',
-    'filters/examstatus',
-    'filters/outputdaan',
-    'filters/outtigan',
-    'services/myfileupload',
-    'directives/nandustar',
-    'directives/passwordverify',
-    'directives/bnslideshow',
-    'directives/hoverslide',
-    'directives/fileupload',
-    'directives/repeatdone',
-    'services/messageservice'
-   ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl, UserCtrl,
-                RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
-                ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
-                PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
-                RepeatdoneDirective, MessageserviceService) {
+  'controllers/renzheng',
+  'controllers/nav',
+  'angular',
+  'config',
+  'services/urlredirect',
+  'controllers/mingti',
+  'controllers/dagang',
+  'controllers/user',
+  'controllers/register',
+  'controllers/zujuan',
+  'controllers/kaowu',
+  'controllers/lingyu',
+  'controllers/tongji',
+  'filters/mylocaldate',
+  'filters/mylocaldatewithweek',
+  'filters/examstatus',
+  'filters/outputdaan',
+  'filters/outtigan',
+  'services/myfileupload',
+  'directives/nandustar',
+  'directives/passwordverify',
+  'directives/bnslideshow',
+  'directives/hoverslide',
+  'directives/fileupload',
+  'directives/repeatdone',
+  'services/messageservice',
+  'services/dataservice'
+], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl, UserCtrl,
+             RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
+             ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
+             PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
+             RepeatdoneDirective, MessageserviceService, DataServiceService) {
   'use strict';
 
   return angular.module('kaoshiApp', [
@@ -58,12 +59,13 @@ define([
     'kaoshiApp.directives.Nandustar',
     'kaoshiApp.directives.Passwordverify',
     'kaoshiApp.services.Messageservice',
+    'kaoshiApp.services.DataService',
     /*angJSDeps*/
     'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute'
-   ])
+  ])
     .config(['$routeProvider',
       function ($routeProvider) {
         var routes = config.routes;
@@ -74,7 +76,7 @@ define([
           $routeProvider.when(path, routes[path]);
         }
         $routeProvider.otherwise({redirectTo: '/renzheng'});
-    }])
+      }])
     .run(['$rootScope', '$location', '$route', 'urlRedirect', '$cookieStore',
       function($rootScope, $location, $route, urlRedirect, $cookieStore) {
         /**
@@ -82,19 +84,19 @@ define([
          */
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
           var routes = config.routes,
-              nextUrlPattern,
-              nextRoute,
-              currentUrlParser = document.createElement('a'), // 使用浏览器内置的a标签进行url的解析判断
-              nextUrlParser = document.createElement('a'),
-              nextPath,
-              currentPath,
-              session = {
-                defaultLyId: '',
-                defaultLyName: '',
-                quanxianStr: '',
-                info: {},
-                userInfo: {}
-              };
+            nextUrlPattern,
+            nextRoute,
+            currentUrlParser = document.createElement('a'), // 使用浏览器内置的a标签进行url的解析判断
+            nextUrlParser = document.createElement('a'),
+            nextPath,
+            currentPath,
+            session = {
+              defaultLyId: '',
+              defaultLyName: '',
+              quanxianStr: '',
+              info: {},
+              userInfo: {}
+            };
 
           //cookies 代码
           $cookieStore.put('lastUrl', current);
@@ -132,7 +134,7 @@ define([
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
           if(currentUrlParser.protocol === nextUrlParser.protocol
-              && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
+            && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
             nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
             /**
              * 测试即将要访问的路由是否已经在我们的angular.js程序中定义
@@ -161,5 +163,5 @@ define([
             }
           }
         });
-    }]);
+      }]);
 });
