@@ -1475,7 +1475,7 @@ var mySettings = {
       return gsReplaceFun('f\'(x)');
     }},
     {name:'', className:'', replaceWith: function(){
-      return gsReplaceFun('\\dfrac{dy}{dx}');
+      return gsReplaceFun('\\dfrac{\\text{d}y}{\\text{d}x}');
     }},
     {name:'', className:'', replaceWith: function(){
       return gsReplaceFun('\\dfrac{\\Delta y}{\\Delta x}');

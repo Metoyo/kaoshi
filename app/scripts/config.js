@@ -19,47 +19,47 @@ define( "config", [], function () {
       '二十'], //中文数字序号数组
     routes: {
       '/mingti': {
-        templateUrl: 'views/mingti.html',
+        templateUrl: '../../views/mingti.html',
         controller: 'MingtiCtrl',
         requireLogin: true
       },
       '/dagang': {
-        templateUrl: 'views/dagang.html',
+        templateUrl: '../../views/dagang.html',
         controller: 'DagangCtrl',
         requireLogin: true
       },
       '/renzheng': {
-        templateUrl: 'views/renzheng.html',
+        templateUrl: '../../views/renzheng.html',
         controller: 'RenzhengCtrl',
         requireLogin: false
       },
       '/user/:name': {
-        templateUrl: 'views/user.html',
+        templateUrl: '../../views/user.html',
         controller: 'UserCtrl',
         requireLogin: true
       },
       '/register': {
-        templateUrl: 'views/register.html',
+        templateUrl: '../../views/register.html',
         controller: 'RegisterCtrl',
         requireLogin: false
       },
       '/zujuan': {
-        templateUrl: 'views/zujuan.html',
+        templateUrl: '../../views/zujuan.html',
         controller: 'ZujuanCtrl',
         requireLogin: true
       },
       '/kaowu': {
-        templateUrl: 'views/kaowu.html',
+        templateUrl: '../../views/kaowu.html',
         controller: 'KaowuCtrl',
         requireLogin: true
       },
       '/lingyu': {
-        templateUrl: 'views/selectLingYu.html',
+        templateUrl: '../../views/selectLingYu.html',
         controller: 'LingyuCtrl',
         requireLogin: true
       },
       '/tongji': {
-        templateUrl: 'views/tongji.html',
+        templateUrl: '../../views/tongji.html',
         controller: 'TongjiCtrl',
         requireLogin: true
       }

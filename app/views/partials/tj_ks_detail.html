@@ -9,7 +9,10 @@
     <tr ng-repeat="ksd in tjKaoShengDetail">
         <td ng-bind="ksd.YONGHUHAO">
         </td>
-        <td ng-bind="ksd.XINGMING">
+        <td>
+          <a href="javascript:void(0)" ng-if="tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"
+             ng-click="zuoDaReappear(ksd.YONGHUHAO)"></a>
+          <span ng-if="!tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"></span>
         </td>
         <td ng-bind="ksd.BANJI">
         </td>

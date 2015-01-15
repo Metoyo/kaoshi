@@ -38,6 +38,15 @@ require.config({
     'angular-touch': [
       'angular'
     ],
+    jquery: {
+      exports: 'jquery'
+    },
+    underscore: {
+      deps: [
+        'jquery'
+      ],
+      exports: 'underscore'
+    },
     'angular-mocks': {
       deps: [
         'angular'

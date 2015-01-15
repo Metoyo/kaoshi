@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <input type="text" onkeyup="KeyUp(event)" id="aa47"/>
+    <script>
+      function KeyUp(event) {
+        var currKey = 0, e = event || e, obj = document.getElementById('aa47'),
+          str = ' ';
+        currKey = e.keyCode || e.which || e.charCode;
+        if(e.shiftKey && currKey == 188){
+          if (document.selection) {
+            var sel = document.selection.createRange();
+            sel.text = str;
+          }
+          else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+            var startPos = obj.selectionStart,
+              endPos = obj.selectionEnd,
+              cursorPos = startPos,
+              tmpStr = obj.value;
+            obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+            cursorPos += str.length;
+            obj.selectionStart = obj.selectionEnd = cursorPos;
+          }
+          else {
+            obj.value += str;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

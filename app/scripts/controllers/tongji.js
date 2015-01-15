@@ -47,7 +47,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           stuIdCount: true,
           nameCount: true,
           classCount: true,
-          scoreCount: true
+          scoreCount: true,
+          zdcxKaoShiId: '' //作答重现用到的考试id
         };
 
         /**
@@ -113,17 +114,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.showKaoShiTjList();
 
         /**
-         * 考试统计详情,查询考生
+         * 考试统计详情,查询考生//
          */
-        $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName){
+        $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName, sjArr){
           var queryKaoSheng, totalScore, avgScore,
             targetIdx, tjDataLen;
-          $scope.tjParas = { //统计用到的参数
-            stuIdCount: true,
-            nameCount: true,
-            classCount: true,
-            scoreCount: true
-          };
+          $scope.tjParas.zdcxKaoShiId = '';
+          //$scope.tjParas = { //统计用到的参数
+          //  stuIdCount: true,
+          //  nameCount: true,
+          //  classCount: true,
+          //  scoreCount: true
+          //};
           tjDataPara = '';
           tjIdType = '';
           tjNamePara = '';
@@ -148,6 +150,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           studentBarData = [0, 0, 0, 0];
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
+            $scope.tjParas.zdcxKaoShiId = id; //作答重现用到的考试ID
           }
           if(idType == 'sjId'){
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
@@ -839,5 +842,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             aLink.dispatchEvent(evt);
           });
         };
+
+        /**
+         * 作答重现
+         */
+        $scope.zuoDaReappear = function(){
+
+        };
+
     }]);
 });

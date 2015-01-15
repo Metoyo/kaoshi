@@ -16,7 +16,6 @@ define([
   'filters/mylocaldate',
   'filters/mylocaldatewithweek',
   'filters/examstatus',
-  'filters/outputdaan',
   'filters/outtigan',
   'services/myfileupload',
   'directives/nandustar',
@@ -29,7 +28,7 @@ define([
   'services/dataservice'
 ], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl, UserCtrl,
              RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
-             ExamstatusFilter, OutputdaanFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
+             ExamstatusFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
              PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
              RepeatdoneDirective, MessageserviceService, DataServiceService) {
   'use strict';
@@ -50,7 +49,6 @@ define([
     'kaoshiApp.filters.Mylocaldate',
     'kaoshiApp.filters.Mylocaldatewithweek',
     'kaoshiApp.filters.Examstatus',
-    'kaoshiApp.filters.Outputdaan',
     'kaoshiApp.filters.Outtigan',
     'kaoshiApp.directives.Hoverslide',
     'kaoshiApp.directives.Repeatdone',

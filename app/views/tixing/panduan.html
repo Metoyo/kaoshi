@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题干</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control formulaEditTiGan" rows="6" ng-model="panDuanData.shuju.TIGAN"
+                        <textarea id="aa47" class="form-control formulaEditTiGan" rows="6" ng-model="panDuanData.shuju.TIGAN"
                                   placeholder="请输入判断题题干"></textarea>
                         <div class="previewBox" ng-show="hidePanDuanTiGanEdt">
                             <h4 class="title">
@@ -38,7 +38,7 @@
                                     关闭题干编辑器
                                 </span>
                             </h4>
-                            <div id="prevDoc">
+                            <div id="prevDoc" contentEditable='true'>
                             </div>
                         </div>
                     </div>
@@ -67,27 +67,29 @@
                 </div>
             </div>
             <div class="form-body panDuanFb">
-                <label class="col-sm-1 control-label">答案</label>
-                <div class="col-sm-8">
-                    <div class="radio-inline">
-                        <span class="pull-left">对</span>
-                        <div class="radio answer1" ng-click="choosePanDuanDaan(1)">
-                            <input class="hide" type="radio" name="rightAnswer" value="1"/>
-                            <span class="glyphicon glyphicon-ok"></span>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">答案</label>
+                    <div class="col-sm-8">
+                        <div class="radio-inline">
+                            <span class="pull-left">对</span>
+                            <div class="radio answer1" ng-click="choosePanDuanDaan(1)">
+                                <input class="hide" type="radio" name="rightAnswer" value="1"/>
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="radio-inline">
-                        <span class="pull-left">错</span>
-                        <div class="radio answer0" ng-click="choosePanDuanDaan(0)">
-                            <input class="hide" type="radio" name="rightAnswer" value="0"/>
-                            <span class="glyphicon glyphicon-ok"></span>
+                        <div class="radio-inline">
+                            <span class="pull-left">错</span>
+                            <div class="radio answer0" ng-click="choosePanDuanDaan(0)">
+                                <input class="hide" type="radio" name="rightAnswer" value="0"/>
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-footer">
                 <div class="form-group nandu-select">
-                    <label class="col-sm-1 control-label">难度：</label>
+                    <label class="col-sm-1 control-label">难度</label>
                     <div class="col-sm-8">
                         <div class="nandu-star-box" nandu-star>
                             <a href="javascript:void(0)"></a>
@@ -129,17 +131,38 @@
     </div>
     <script type="text/javascript">
         //题干的编辑器预览
-        $('.formulaEditTiGan').keyup(function() {
-            var tgCont = $('.formulaEditTiGan').val();
-            tgCont = tgCont.replace(/\n/g, '<br/>');
-            $('#prevDoc').html(tgCont);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        $('.formulaEditTiGan').keyup(function(event) {
+          var currKey = 0, e = event || e, obj = document.getElementById('aa47'),
+            str = ' ';
+          currKey = e.keyCode || e.which || e.charCode;
+          if(e.shiftKey && currKey == 188){
+            if (document.selection) {
+              var sel = document.selection.createRange();
+              sel.text = str;
+            }
+            else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+              var startPos = obj.selectionStart,
+                endPos = obj.selectionEnd,
+                cursorPos = startPos,
+                tmpStr = obj.value;
+              obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+              cursorPos += str.length;
+              obj.selectionStart = obj.selectionEnd = cursorPos;
+            }
+            else {
+              obj.value += str;
+            }
+          }
+          var tgCont = $('.formulaEditTiGan').val();
+          tgCont = tgCont.replace(/\n/g, '<br/>');
+          $('#prevDoc').html(tgCont);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
         });
         function matheq_preview() {
-            $('#prevDoc').html($('.formulaEditTiGan').val());
-            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        };
+          $('#prevDoc').html($('.formulaEditTiGan').val());
+          $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+        }
     </script>
 </div>
