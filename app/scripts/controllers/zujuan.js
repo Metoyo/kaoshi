@@ -351,7 +351,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
             }
             zhishidian_id = selectZsd.toString();
-            if($scope.txTpl == 'views/partials/zj_testList.html'){
+            if($scope.txTpl == 'views/zujuan/zj_testList.html'){
               $scope.qryTestFun();
             }
           };
@@ -745,7 +745,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             //查询试题的函数
             $scope.getTiXingId(txid);
             $scope.txSelectenIdx = txid ? txid : 0;
-            $scope.txTpl = 'views/partials/zj_testList.html';
+            $scope.txTpl = 'views/zujuan/zj_testList.html';
             $scope.sjPreview = false;
           };
 
@@ -754,7 +754,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           $scope.showZuJuanPage = function(){
             $scope.showBackToPaperListBtn = true;
-            $scope.txTpl = 'views/partials/paper_preview.html';
+            $scope.txTpl = 'views/zujuan/paper_preview.html';
           };
 
           /**
@@ -813,7 +813,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.ruleMakePaperClass = true; //控制加载规则组卷的css
-              $scope.txTpl = 'views/partials/zj_ruleMakePaper.html'; //加载规则组卷模板
+              $scope.txTpl = 'views/zujuan/zj_ruleMakePaper.html'; //加载规则组卷模板
             });
           };
 
@@ -972,13 +972,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.paper_hand_form = false; //手动组卷时添加的样式
             $scope.sjPreview = false;
             if(isComeFromRuleList){
-              $scope.txTpl = 'views/partials/zj_home.html'; //返回组卷首页
+              $scope.txTpl = 'views/zujuan/zj_home.html'; //返回组卷首页
               $scope.zj_tabActive = 'zjRule';
               isComeFromRuleList = false;
               comeFromRuleListData = '';
             }
             else{
-              $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+              $scope.txTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
             }
           };
 
@@ -1689,7 +1689,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-            $scope.txTpl = 'views/partials/paper_preview.html'; //加载试卷预览模板
+            $scope.txTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
@@ -2375,7 +2375,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             $scope.paper_hand_form = false;
             $scope.sjPreview = false; //试卷预览
             $scope.showBackToPaperListBtn = false;
-            $scope.txTpl = 'views/partials/zj_home.html';
+            $scope.txTpl = 'views/zujuan/zj_home.html';
             $scope.showPaperList();
             deleteTempTemp();
             restoreKmtxDtscore();
@@ -2387,7 +2387,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.showPaperList = function(isBackToPaperList){
             $scope.zj_tabActive = 'shiJuan';
             qryShiJuanList(isBackToPaperList);
-            $scope.zjTpl = 'views/partials/zj_paperList.html';
+            $scope.zjTpl = 'views/zujuan/zj_paperList.html';
           };
 
           /**
@@ -2396,7 +2396,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.showZuJuanRuleList = function(){
             $scope.zj_tabActive = 'zjRule';
             qryZjRule();
-            $scope.zjTpl = 'views/partials/zj_ruleList.html'; //加载试卷列表模板
+            $scope.zjTpl = 'views/zujuan/zj_ruleList.html'; //加载试卷列表模板
             $timeout(widthChangeFun, 100);
           };
 
@@ -2452,7 +2452,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.totalSelectedItmes = 0; //已选试题的总数量
                       $scope.showBackToMakePaperBtn = true;
                       $scope.showBackToPaperListBtn = false; //返回试卷列表
-                      $scope.zjTpl = 'views/partials/zj_paperList.html'; //加载试卷列表模板
+                      $scope.zjTpl = 'views/zujuan/zj_paperList.html'; //加载试卷列表模板
                       isFirstQryPaperList = false;
                       $timeout(widthChangeFun, 100);
                     }

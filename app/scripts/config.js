@@ -6,11 +6,18 @@ define( "config", [], function () {
     apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
     apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
     apiurl_tj_ori: "http://test.taianting.com:4300/",//统计的原始url
+
 //    apiurl_rz: "http://www.yunjiaoshou.com:3000/api/",//认证的url
 //    apiurl_mt: "http://www.yunjiaoshou.com:4000/api/",//命题的url
 //    apiurl_kw: "http://www.yunjiaoshou.com:4100/api/",//考务的url
 //    apiurl_tj: "http://www.yunjiaoshou.com:4300/api/",//统计的url
 //    apiurl_tj_ori: "http://www.yunjiaoshou.com:4300/",//统计的原始url
+
+    //apiurl_rz: "/rengzheng/",//认证的url
+    //apiurl_mt: "/mingti/",//命题的url
+    //apiurl_kw: "/kaowu/",//考务的url
+    //apiurl_tj: "/tongji/",//统计的url
+    //apiurl_tj_ori: "/tongji/",//统计的原始url
     secret: '076ee61d63aa10a125ea872411e433b9',
     hostname: 'localhost:3000',
     letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -19,47 +26,47 @@ define( "config", [], function () {
       '二十'], //中文数字序号数组
     routes: {
       '/mingti': {
-        templateUrl: '../../views/mingti.html',
+        templateUrl: '../views/mingti/mingti.html',
         controller: 'MingtiCtrl',
         requireLogin: true
       },
       '/dagang': {
-        templateUrl: '../../views/dagang.html',
+        templateUrl: '../views/dagang/dagang.html',
         controller: 'DagangCtrl',
         requireLogin: true
       },
       '/renzheng': {
-        templateUrl: '../../views/renzheng.html',
+        templateUrl: '../views/renzheng/renzheng.html',
         controller: 'RenzhengCtrl',
         requireLogin: false
       },
       '/user/:name': {
-        templateUrl: '../../views/user.html',
+        templateUrl: '../views/renzheng/user.html',
         controller: 'UserCtrl',
         requireLogin: true
       },
       '/register': {
-        templateUrl: '../../views/register.html',
+        templateUrl: '../views/partials/register.html',
         controller: 'RegisterCtrl',
         requireLogin: false
       },
       '/zujuan': {
-        templateUrl: '../../views/zujuan.html',
+        templateUrl: '../views/zujuan/zujuan.html',
         controller: 'ZujuanCtrl',
         requireLogin: true
       },
       '/kaowu': {
-        templateUrl: '../../views/kaowu.html',
+        templateUrl: '../views/kaowu/kaowu.html',
         controller: 'KaowuCtrl',
         requireLogin: true
       },
       '/lingyu': {
-        templateUrl: '../../views/selectLingYu.html',
+        templateUrl: '../views/renzheng/selectLingYu.html',
         controller: 'LingyuCtrl',
         requireLogin: true
       },
       '/tongji': {
-        templateUrl: '../../views/tongji.html',
+        templateUrl: '../views/tongji/tongji.html',
         controller: 'TongjiCtrl',
         requireLogin: true
       }

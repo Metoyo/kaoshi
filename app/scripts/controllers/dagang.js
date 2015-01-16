@@ -166,7 +166,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             else{
               getPubDaGangListFun();
             }
-            $scope.dgTpl = 'views/partials/daGangPublic.html';
+            $scope.dgTpl = 'views/dagang/daGangPublic.html';
             $scope.isPrivateDg = false;
             $scope.isPublicDg = true;
           }
@@ -174,7 +174,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             if(!$scope.privateZsdgList.length){
               messageService.alertInfFun('pmt', '没有大纲，请新建一个！');
             }
-            $scope.dgTpl = 'views/partials/daGangPrivate.html';
+            $scope.dgTpl = 'views/dagang/daGangPrivate.html';
             $scope.isPrivateDg = true;
             $scope.isPublicDg = false;
             $scope.knowledgePr = '';
@@ -538,7 +538,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.selectZjDgId = '';
           $scope.publicKnowledge = '';
           $scope.daGangParam.zsdKind = '';
-          $scope.dgTpl = 'views/partials/daGangHome.html';
+          $scope.dgTpl = 'views/dagang/daGangHome.html';
         };
 
         /**

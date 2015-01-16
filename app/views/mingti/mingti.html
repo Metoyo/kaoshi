@@ -117,22 +117,22 @@
                     <a href="javascript:void(0)" ng-click="addNewShiTiFun(ntx.TIXING_ID)">{{ntx.TIXINGMINGCHENG}}</a>
                 </li>
                 <!--li class="danxuan">
-                    <a href="javascript:void(0)" ng-click="addDanXuan('views/tixing/danxuan.html')">单选题</a>
+                    <a href="javascript:void(0)" ng-click="addDanXuan('views/mingti/danxuan.html')">单选题</a>
                 </li>
                 <li class="duoxuan">
-                    <a href="javascript:void(0)" ng-click="addDuoXuan('views/tixing/duoxuan.html')">多选题</a>
+                    <a href="javascript:void(0)" ng-click="addDuoXuan('views/mingti/duoxuan.html')">多选题</a>
                 </li>
                 <li class="panduan">
-                    <a href="javascript:void(0)" ng-click="addPanDuan('views/tixing/panduan.html')">判断题</a>
+                    <a href="javascript:void(0)" ng-click="addPanDuan('views/mingti/panduan.html')">判断题</a>
                 </li>
                 <li class="jisuan">
-                    <a href="javascript:void(0)" ng-click="addJiSuan('views/tixing/jisuan.html')">计算题</a>
+                    <a href="javascript:void(0)" ng-click="addJiSuan('views/mingti/jisuan.html')">计算题</a>
                 </li>
                 <li class="tiankong">
-                    <a href="javascript:void(0)" ng-click="addTianKong('views/tixing/tiankong.html')">填空题</a>
+                    <a href="javascript:void(0)" ng-click="addTianKong('views/mingti/tiankong.html')">填空题</a>
                 </li>
                 <li class="jieda">
-                    <a href="javascript:void(0)" ng-click="addJieDa('views/tixing/jieda.html')">解答题</a>
+                    <a href="javascript:void(0)" ng-click="addJieDa('views/mingti/jieda.html')">解答题</a>
                 </li-->
             </ul>
             <div class="alterTiXingBox" ng-show="alterTiXingBox">
@@ -146,7 +146,7 @@
             </div>
         </div>
         <!--题型和难度DOM元素， 结束-->
-        <div class="contentWraps" ng-init="txTpl = 'views/partials/testList.html'" ng-include="txTpl">
+        <div class="contentWraps" ng-init="txTpl = 'views/mingti/testList.html'" ng-include="txTpl">
 
         </div>
     </div>

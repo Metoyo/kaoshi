@@ -117,13 +117,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         switch (userInfo.JUESE[0]){
           case "1":
-            $scope.shenHeTpl = 'views/partials/rz_admin.html';
+            $scope.shenHeTpl = 'views/renzheng/rz_admin.html';
             break;
           case "2":
-            $scope.shenHeTpl = 'views/partials/rz_xxgly.html';
+            $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
             break;
           case "3":
-            $scope.shenHeTpl = 'views/partials/rz_shenHeRen.html';
+            $scope.shenHeTpl = 'views/renzheng/rz_shenHeRen.html';
             break;
         }
 
@@ -164,7 +164,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.hasShenHeList = hasShenHe;
               $scope.notShenHeList = notShenHe;
               $scope.isShenHeBox = true; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/partials/rz_shenHe.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_shenHe.html';
 
             }
             else{
@@ -256,7 +256,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.jigoulb_list = data;
               $scope.isShenHeBox = false; //判断是不是审核页面
               $scope.loadingImgShow = false; //rz_setJiGou.html
-              $scope.adminSubWebTpl = 'views/partials/rz_setJiGou.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
             }
             else{
               $scope.jigoulb_list = '';
@@ -513,7 +513,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.lingyu_list = data;
               $scope.loadingImgShow = false; //rz_setLingYu.html
               $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/partials/rz_setLingYu.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setLingYu.html';
             }
             else{
               $scope.lingyu_list = '';
@@ -621,13 +621,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   });
                   selectedLyStr = selectedLyArr.toString();
                   $scope.selectedLyStr = selectedLyStr;
-                  $scope.adminSubWebTpl = 'views/partials/rz_selectLingYu.html';
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
                 }
                 else{
                   $scope.loadingImgShow = false; //rz_selectLingYu.html
                   $scope.lingyu_list = data;
                   $scope.isShenHeBox = false; //判断是不是审核页面
-                  $scope.adminSubWebTpl = 'views/partials/rz_selectLingYu.html';
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
                 }
               });
             }
@@ -1161,12 +1161,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $scope.lingYuChild = lingYuChildArr;
               $scope.loadingImgShow = false; //rz_setDaGang.html
               $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setDaGang.html';
             }
             else{
               $scope.lingyu_list = '';
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              $scope.adminSubWebTpl = 'views/partials/rz_setDaGang.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setDaGang.html';
               messageService.alertInfFun('err', '没用相关的领域！');
             }
           });
@@ -1570,7 +1570,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.allTiXing = allTx;
                   $scope.loadingImgShow = false; //rz_selectTiXing.html
                   $scope.isShenHeBox = false; //判断是不是审核页面
-                  $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
                 }
                 else{
                   $scope.loadingImgShow = false; //rz_selectTiXing.html
@@ -1581,7 +1581,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             else{
               $scope.loadingImgShow = false; //rz_selectTiXing.html
               $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/partials/rz_selectTiXing.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
               messageService.alertInfFun('err', jgLy.error);
             }
           });
@@ -1688,7 +1688,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $http.get(qryLingYuUrl).success(function(data){
             if(data){
               $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/partials/rz_setPubZsd.html';
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setPubZsd.html';
               $scope.setZsdLingYu = data[0].CHILDREN;
             }
             else{

@@ -531,7 +531,7 @@ define(['../../jquery/jquery', 'underscore', 'angular', 'config'], function ($, 
           isEditItemStep = true;
           $scope.patternListToggle = true;
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
-          $scope.addDanXuan('views/tixing/danxuan.html');
+          $scope.addDanXuan('views/mingti/danxuan.html');
         };
 
         /**
@@ -1031,7 +1031,7 @@ define(['../../jquery/jquery', 'underscore', 'angular', 'config'], function ($, 
           }
           //单选题
           if(tmxq.TIMULEIXING_ID == 1){
-            tpl = 'views/tixing/danxuanedit.html';
+            tpl = 'views/mingti/danxuanedit.html';
             danxuan_data = timu_data;
             $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
             makeZsdSelect(tmxq);
@@ -1045,7 +1045,7 @@ define(['../../jquery/jquery', 'underscore', 'angular', 'config'], function ($, 
           }
           //多选题
           if(tmxq.TIMULEIXING_ID == 2 && tmxq.TIXING_ID == 2){
-            tpl = 'views/tixing/duoxuanedit.html';
+            tpl = 'views/mingti/duoxuanedit.html';
             duoxuan_data = timu_data;
             $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
             makeZsdSelect(tmxq);
@@ -1059,7 +1059,7 @@ define(['../../jquery/jquery', 'underscore', 'angular', 'config'], function ($, 
           }
           //计算题
           if(tmxq.TIMULEIXING_ID == 9 && tmxq.TIXING_ID == 9){
-            tpl = 'views/tixing/jisuan.html';
+            tpl = 'views/mingti/jisuan.html';
             jisuan_data = timu_data;
             $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
             makeZsdSelect(tmxq);

@@ -199,7 +199,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.lastKaoShiPageNum = totalKaoShiPage; //最后一页的数值
                 //查询数据开始
                 $scope.getThisKaoShiPageData();
-                $scope.txTpl = 'views/partials/kaoShiList.html';
+                $scope.txTpl = 'views/kaowu/kaoShiList.html';
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
                 isDeleteKaoShi = false;//是否为删除考试
@@ -211,7 +211,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.kaoShiPages = [];
                 $scope.kaoShiListIds = [];
                 $scope.kwParams.ksListZt = '';
-                $scope.txTpl = 'views/partials/kaoShiList.html';
+                $scope.txTpl = 'views/kaowu/kaoShiList.html';
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
                 isDeleteKaoShi = false;//是否为删除考试
@@ -345,7 +345,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               kaoshi_data.shuju.KAOCHANG = ks.KAODIANKAOCHANG;
               kaoshi_data.shuju.ZHUANGTAI = ks.ZHUANGTAI;
               $scope.kaoshiData = kaoshi_data;
-              $scope.txTpl = 'views/partials/editKaoShi.html';
+              $scope.txTpl = 'views/kaowu/editKaoShi.html';
             }
             else if(isDeleteKaoShi){
               kaoshi_data.shuju.KAOSHI_ID = ks.KAOSHI_ID;
@@ -362,7 +362,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             else{
               qryAllKaoChang();
               $scope.kaoshiData = kaoshi_data;
-              $scope.txTpl = 'views/partials/editKaoShi.html';
+              $scope.txTpl = 'views/kaowu/editKaoShi.html';
             }
           };
 
@@ -465,7 +465,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            * 返回到试卷添加页面
            */
           $scope.backToAddKaoShi = function(){
-            $scope.txTpl = 'views/partials/editKaoShi.html';
+            $scope.txTpl = 'views/kaowu/editKaoShi.html';
           };
 
           /**
@@ -917,12 +917,12 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.lastKaoChangPageNum = totalKaoChangPage; //最后一页的数值
                 //查询数据开始
                 $scope.getThisKaoChangPageData();
-                $scope.txTpl = 'views/partials/kaoChangList.html';
+                $scope.txTpl = 'views/kaowu/kaoChangList.html';
                 isEditKaoChang = false; //是否为编辑考场
                 isDeleteKaoChang = false; //是否为删除考场
               }
               else{
-                $scope.txTpl = 'views/partials/kaoChangList.html';
+                $scope.txTpl = 'views/kaowu/kaoChangList.html';
                 isEditKaoChang = false; //是否为编辑考场
                 isDeleteKaoChang = false; //是否为删除考场
                 messageService.alertInfFun('err', '没有相关的考场信息！');
@@ -968,7 +968,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               kaochang_data.shuju.ZHUANGTAI = kc.ZHUANGTAI;
 
               $scope.kaochangData = kaochang_data;
-              $scope.txTpl = 'views/partials/editKaoChang.html';
+              $scope.txTpl = 'views/kaowu/editKaoChang.html';
             }
             else if(isDeleteKaoChang){
               kaochang_data.shuju = kc;
@@ -976,7 +976,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             }
             else{
               $scope.kaochangData = kaochang_data;
-              $scope.txTpl = 'views/partials/editKaoChang.html';
+              $scope.txTpl = 'views/kaowu/editKaoChang.html';
             }
           };
 

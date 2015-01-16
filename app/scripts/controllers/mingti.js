@@ -603,7 +603,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           $scope.selectZsdStr = selectZsdStr; //用于控制大纲 结束
           $scope.qryTestFun($scope.currentPageNum);
-          $scope.txTpl = 'views/partials/testList.html';
+          $scope.txTpl = 'views/mingti/testList.html';
         };
 
         /**
@@ -757,7 +757,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tkLoopArr = [];
           $scope.tkLoopArr = [];
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
-          $scope.addDanXuan('views/tixing/danxuan.html');
+          $scope.addDanXuan('views/mingti/danxuan.html');
         };
 
         /**
@@ -1392,7 +1392,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //单选题
           if(tmxq.TIXING_ID == 1){
-            tpl = 'views/tixing/danxuanedit.html';
+            tpl = 'views/mingti/danxuanedit.html';
             danxuan_data = timu_data;
             $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
             danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
@@ -1405,7 +1405,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //多选题
           if(tmxq.TIXING_ID == 2){
-            tpl = 'views/tixing/duoxuanedit.html';
+            tpl = 'views/mingti/duoxuanedit.html';
             duoxuan_data = timu_data;
             $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
             duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
@@ -1418,7 +1418,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //判断题
           if(tmxq.TIXING_ID == 4){
-            tpl = 'views/tixing/panduan.html';
+            tpl = 'views/mingti/panduan.html';
             pandu_data = timu_data;
             $scope.panDuanData = pandu_data; //数据赋值和模板展示的顺序
             if(tmxq.DAAN == '对'){
@@ -1450,7 +1450,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               dataFirst,
               tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
             loopArr = [];
-            tpl = 'views/tixing/tiankong.html';
+            tpl = 'views/mingti/tiankong.html';
             tiankong_data = timu_data;
             $scope.tianKongData = tiankong_data; //数据赋值和模板展示的顺序
             //查询填空题详情
@@ -1490,7 +1490,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //计算题
           if(tmxq.TIXING_ID == 9){
-            tpl = 'views/tixing/jisuan.html';
+            tpl = 'views/mingti/jisuan.html';
             jisuan_data = timu_data;
             $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
             jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
@@ -1505,7 +1505,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           //解答题
           if(tmxq.TIXING_ID == 17){
-            tpl = 'views/tixing/jieda.html';
+            tpl = 'views/mingti/jieda.html';
             jieda_data = timu_data;
             $scope.jieDaData = jieda_data; //数据赋值和模板展示的顺序
             jieda_data.shuju.TIXING_ID = tmxq.TIXING_ID;
@@ -1593,55 +1593,55 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addNewShiTiFun = function(txId){
           switch (txId){
             case '1':
-              $scope.addDanXuan('views/tixing/danxuan.html');
+              $scope.addDanXuan('views/mingti/danxuan.html');
               break;
             case '2':
-              $scope.addDuoXuan('views/tixing/duoxuan.html');
+              $scope.addDuoXuan('views/mingti/duoxuan.html');
               break;
             case '3':
-//              $scope.addShuangXuan('views/tixing/shuangxuan.html');
+//              $scope.addShuangXuan('views/mingti/shuangxuan.html');
               break;
             case '4':
-              $scope.addPanDuan('views/tixing/panduan.html');
+              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '5':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '6':
-              $scope.addTianKong('views/tixing/tiankong.html');
+              $scope.addTianKong('views/mingti/tiankong.html');
               break;
             case '7':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '8':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '9':
-              $scope.addJiSuan('views/tixing/jisuan.html');
+              $scope.addJiSuan('views/mingti/jisuan.html');
               break;
             case '10':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '11':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '12':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '13':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '14':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '15':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '16':
-//              $scope.addPanDuan('views/tixing/panduan.html');
+//              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '17':
-              $scope.addJieDa('views/tixing/jieda.html');
+              $scope.addJieDa('views/mingti/jieda.html');
               break;
           }
         };

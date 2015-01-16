@@ -40,7 +40,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           studentPieData = [], //饼状图学生信息
           studentBarData = [], //柱状图学生信息
           exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel',
-          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
+          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/',
+          answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
 
         $scope.tjData = [];
         $scope.tjParas = { //统计用到的参数
@@ -75,7 +76,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
           $scope.isTjDetailShow = false;
-          $scope.tjSubTpl = 'views/partials/tj_ks.html';
+          $scope.tjSubTpl = 'views/tongji/tj_ks.html';
         };
 
         /**
@@ -105,7 +106,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           });
           $scope.isTjDetailShow = false;
-          $scope.tjSubTpl = 'views/partials/tj_sj.html';
+          $scope.tjSubTpl = 'views/tongji/tj_sj.html';
         };
 
         /**
@@ -265,7 +266,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
           $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
-          $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
+          $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
         };
 
         /**
@@ -346,7 +347,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.tjItemName = tjName;
           $scope.isTjDetailShow = true;
           $scope.myAvgScore = '';
-          $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
+          $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
         };
 
         /**
@@ -374,7 +375,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           $scope.tjItemName = tjNamePara;
           $scope.isTjDetailShow = true;
-          $scope.tjSubTpl = 'views/partials/tj_ks_detail.html';
+          $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
         };
 
         /**
@@ -450,7 +451,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           $scope.tjItemName = tjNamePara;
           $scope.isTjDetailShow = true;
 //          $scope.myAvgScore = '';
-          $scope.tjSubTpl = 'views/partials/tj_sj_detail.html';
+          $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
         };
 
         /**
@@ -657,7 +658,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 分数统计，chart形状
          */
         $scope.showScoreChart = function(){
-          $scope.tjSubTpl = 'views/partials/tj_chart_score.html';
+          $scope.tjSubTpl = 'views/tongji/tj_chart_score.html';
           var cont1, cont2,
             addActiveFun = function() {
               cont1 = echarts.init(document.getElementById('score1'));
@@ -846,8 +847,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 作答重现
          */
-        $scope.zuoDaReappear = function(){
-
+        $scope.zuoDaReappear = function(ksId){
+          var answerReappearUrl;
+          if(ksId){
+            answerReappearUrl = answerReappearBaseUrl + '&kaoshengid=' + ksId;
+            if($scope.tjParas.zdcxKaoShiId){
+              answerReappearUrl += '&kaoshiid=' + $scope.tjParas.zdcxKaoShiId;
+              $http.get(answerReappearUrl).success(function(data){
+                if(data && data.length > 0){
+                  //console.log(data);
+                }
+                else{
+                  messageService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          }
+          else{
+            messageService.alertInfFun('pmt', '缺少考生ID');
+          }
         };
 
     }]);
