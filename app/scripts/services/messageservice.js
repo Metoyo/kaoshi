@@ -61,6 +61,16 @@ define(['angular', 'config'], function (angular, config) {
               daan.push(letterArr[daanArr[i]]);
             }
             tm.DAAN = daan.join(',');
+            //考生答案
+            if(tm.KAOSHENGDAAN){
+              var ksDaanArr = tm.KAOSHENGDAAN.split(','),
+                ksDaanLen = ksDaanArr.length,
+                ksDaan = [];
+              for(var j = 0; j < ksDaanLen; j++){
+                ksDaan.push(letterArr[ksDaanArr[j]]);
+              }
+              tm.KAOSHENGDAAN = ksDaan.join(',');
+            }
           }
           else if(tm.TIXING_ID == 4){
             if(tm.DAAN == 1){
@@ -69,6 +79,15 @@ define(['angular', 'config'], function (angular, config) {
             else{
               tm.DAAN = '错';
             }
+            //考生答案
+            if(tm.KAOSHENGDAAN){
+              if(tm.KAOSHENGDAAN == 1){
+                tm.KAOSHENGDAAN = '对';
+              }
+              else{
+                tm.KAOSHENGDAAN = '错';
+              }
+            }
           }
           else if(tm.TIXING_ID == 6){ //填空题
             //修改填空题的答案
@@ -76,7 +95,7 @@ define(['angular', 'config'], function (angular, config) {
               tkDaAn = JSON.parse(tm.DAAN),
               tkDaAnStr;
             _.each(tkDaAn, function(da, idx, lst){
-              tkDaAnArr.push(da.answer);
+              tkDaAnArr.push('第' + (idx + 1) + '个空：' + da.answer);
             });
             tkDaAnStr = tkDaAnArr.join(';');
             tm.DAAN = tkDaAnStr;
@@ -92,11 +111,40 @@ define(['angular', 'config'], function (angular, config) {
               return xhStr;
             });
             tm.TIGAN.tiGan = newCont;
+            //考生答案
+            if(tm.KAOSHENGDAAN){
+              var tkKsDa = tm.KAOSHENGDAAN, cont = 1,
+                finalDaAn = [];
+              if(typeof(tkKsDa) == 'string'){
+                tkKsDa = JSON.parse(tkKsDa);
+              }
+              for(var key in tkKsDa){
+                finalDaAn.push('第' + cont + '个空：' + tkKsDa[key]);
+                cont ++;
+              }
+              tm.KAOSHENGDAAN = finalDaAn.join(';');
+            }
+          }
+          else if(tm.TIXING_ID == 9){
+            if(tm.KAOSHENGDAAN){
+              var jstKsDa = tm.KAOSHENGDAAN,
+                jstKsFinalDaAn = [];
+              if(typeof(jstKsDa) == 'string'){
+                jstKsDa = JSON.parse(jstKsDa);
+              }
+              for(var key in jstKsDa){
+                jstKsFinalDaAn.push('<img src="' + jstKsDa[key] + '"/>');
+              }
+              tm.KAOSHENGDAAN = jstKsFinalDaAn.join(' ');
+            }
           }
           else{
 
           }
         };
+
+
+
 	    }
   ]);
 });

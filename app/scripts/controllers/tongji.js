@@ -49,7 +49,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           nameCount: true,
           classCount: true,
           scoreCount: true,
-          zdcxKaoShiId: '' //作答重现用到的考试id
+          zdcxKaoShiId: '', //作答重现用到的考试id
+          letterArr: config.letterArr, //题支的序号
+          cnNumArr: config.cnNumArr //汉语的大学数字
         };
 
         /**
@@ -121,6 +123,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var queryKaoSheng, totalScore, avgScore,
             targetIdx, tjDataLen;
           $scope.tjParas.zdcxKaoShiId = '';
+          $scope.kaoShengShiJuan = '';
           //$scope.tjParas = { //统计用到的参数
           //  stuIdCount: true,
           //  nameCount: true,
@@ -744,7 +747,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 重新加载mathjax
+         * 重新加载mathjax//
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           $('.reloadMath').click();
@@ -848,17 +851,38 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 作答重现
          */
         $scope.zuoDaReappear = function(ksId){
-          var answerReappearUrl;
+          var answerReappearUrl, dataDis, tmVal,
+            finaData = {
+              sj_name: '',
+              sj_tm: []
+            };
           if(ksId){
             answerReappearUrl = answerReappearBaseUrl + '&kaoshengid=' + ksId;
             if($scope.tjParas.zdcxKaoShiId){
               answerReappearUrl += '&kaoshiid=' + $scope.tjParas.zdcxKaoShiId;
               $http.get(answerReappearUrl).success(function(data){
                 if(data && data.length > 0){
-                  //console.log(data);
+                  finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
+                  dataDis = _.groupBy(data, 'TIXING_ID');
+                  _.each(dataDis, function(val, key, list){
+                    var dObj = {
+                      tx_id: key,
+                      tx_name: val[0].DATIMINGCHENG,
+                      tm: ''
+                    };
+                    tmVal = _.each(val, function(tm, idx, lst){
+                      if(typeof(tm.TIGAN) == 'string'){
+                        tm.TIGAN = JSON.parse(tm.TIGAN);
+                      }
+                      messageService.formatDaAn(tm);
+                    });
+                    dObj.tm = tmVal;
+                    finaData.sj_tm.push(dObj);
+                  });
+                  $scope.kaoShengShiJuan = finaData;
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  messageService.alertInfFun('err', data.error || '没有数据！');
                 }
               });
             }
@@ -866,7 +890,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             messageService.alertInfFun('pmt', '缺少考生ID');
           }
-        };
+        };//
+
 
     }]);
 });

@@ -413,49 +413,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               //在此将答案和题干转换
               _.each(data, function(tm, idx, lst){
                 messageService.formatDaAn(tm);
-                //if(tm.TIXING_ID <= 3){
-                //  var daanArr = tm.DAAN.split(','),
-                //    daanLen = daanArr.length,
-                //    daan = [];
-                //  for(var i = 0; i < daanLen; i++){
-                //    daan.push(letterArr[daanArr[i]]);
-                //  }
-                //  tm.DAAN = daan.join(',');
-                //}
-                //else if(tm.TIXING_ID == 4){
-                //  if(tm.DAAN == 1){
-                //    tm.DAAN = '对';
-                //  }
-                //  else{
-                //    tm.DAAN = '错';
-                //  }
-                //}
-                //else if(tm.TIXING_ID == 6){ //填空题
-                //  //修改填空题的答案
-                //  var tkDaAnArr = [],
-                //    tkDaAn = JSON.parse(tm.DAAN),
-                //    tkDaAnStr;
-                //  _.each(tkDaAn, function(da, idx, lst){
-                //    tkDaAnArr.push(da.answer);
-                //  });
-                //  tkDaAnStr = tkDaAnArr.join(';');
-                //  tm.DAAN = tkDaAnStr;
-                //  //修改填空题的题干
-                //  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
-                //    var text = arg.slice(2, -2),
-                //      textJson = JSON.parse(text),
-                //      _len = textJson.size,
-                //      i, xhStr = '';
-                //    for(i = 0; i < _len; i ++ ){
-                //      xhStr += '_';
-                //    }
-                //    return xhStr;
-                //  });
-                //  tm.TIGAN.tiGan = newCont;
-                //}
-                //else{
-                //
-                //}
                 //件创建人的姓名加入到题目里面
                 _.each($scope.chuTiRens, function(usr, subidx, sublst){
                   if(usr.UID == tm.CHUANGJIANREN_UID){
