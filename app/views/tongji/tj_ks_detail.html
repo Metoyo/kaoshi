@@ -21,8 +21,9 @@
     </tr>
 </table>
 <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
-<div>
+<div class="answerReappearWrap">
   <h2 class="text-center" ng-bind="kaoShengShiJuan.sj_name"></h2>
+  <form>
   <div id="answerReappearShiJuan">
     <div ng-repeat="dati in kaoShengShiJuan.sj_tm" repeat-done>
       <h3>
@@ -32,10 +33,17 @@
       <ul class="list-unstyled">
         <li ng-repeat="xtm in dati.tm">
           <h4 ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></h4>
-          <div>
-            <p ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index"
-               ng-bind-html="'(' + tjParas.letterArr[$index] + ') ' + tznr"></p>
+          <div class="ar-tzs" ng-if="xtm.TIXING_ID<=3">
+            <p ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
+              <input type="radio" name="{{'radio' + $parent.$index}}" value="{{tjParas.letterArr[$index]}}"
+                     ng-model="xtm.KAOSHENGDAAN"/>
+              <span ng-bind-html="'(' + tjParas.letterArr[$index] + ') ' + tznr"></span>
+            </p>
           </div>
+          <!--<div class="ar-tzs" ng-if="">-->
+            <!--<p ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index"-->
+               <!--ng-bind-html="'(' + tjParas.letterArr[$index] + ') ' + tznr"></p>-->
+          <!--</div>-->
           <h5>考生答案：<span ng-bind-html="xtm.KAOSHENGDAAN"></span>
           </h5>
           <h5>标准答案：<span ng-bind-html="xtm.DAAN"></span></h5>
@@ -43,6 +51,7 @@
       </ul>
     </div>
   </div>
+  </form>
 </div>
 <script type="text/javascript">
   $('.reloadMath').on('click', function(){

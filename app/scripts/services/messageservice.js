@@ -61,16 +61,6 @@ define(['angular', 'config'], function (angular, config) {
               daan.push(letterArr[daanArr[i]]);
             }
             tm.DAAN = daan.join(',');
-            //考生答案
-            if(tm.KAOSHENGDAAN){
-              var ksDaanArr = tm.KAOSHENGDAAN.split(','),
-                ksDaanLen = ksDaanArr.length,
-                ksDaan = [];
-              for(var j = 0; j < ksDaanLen; j++){
-                ksDaan.push(letterArr[ksDaanArr[j]]);
-              }
-              tm.KAOSHENGDAAN = ksDaan.join(',');
-            }
           }
           else if(tm.TIXING_ID == 4){
             if(tm.DAAN == 1){
@@ -78,15 +68,6 @@ define(['angular', 'config'], function (angular, config) {
             }
             else{
               tm.DAAN = '错';
-            }
-            //考生答案
-            if(tm.KAOSHENGDAAN){
-              if(tm.KAOSHENGDAAN == 1){
-                tm.KAOSHENGDAAN = '对';
-              }
-              else{
-                tm.KAOSHENGDAAN = '错';
-              }
             }
           }
           else if(tm.TIXING_ID == 6){ //填空题
@@ -111,8 +92,30 @@ define(['angular', 'config'], function (angular, config) {
               return xhStr;
             });
             tm.TIGAN.tiGan = newCont;
-            //考生答案
-            if(tm.KAOSHENGDAAN){
+          }
+          else{
+
+          }
+          //作答重现的答案处理
+          if(tm.KAOSHENGDAAN){
+            if(tm.TIXING_ID <= 3){
+              var ksDaanArr = tm.KAOSHENGDAAN.split(','),
+                ksDaanLen = ksDaanArr.length,
+                ksDaan = [];
+              for(var j = 0; j < ksDaanLen; j++){
+                ksDaan.push(letterArr[ksDaanArr[j]]);
+              }
+              tm.KAOSHENGDAAN = ksDaan.join(',');
+            }
+            else if(tm.TIXING_ID == 4){
+              if(tm.KAOSHENGDAAN == 1){
+                tm.KAOSHENGDAAN = '对';
+              }
+              else{
+                tm.KAOSHENGDAAN = '错';
+              }
+            }
+            else if(tm.TIXING_ID == 6) { //填空题
               var tkKsDa = tm.KAOSHENGDAAN, cont = 1,
                 finalDaAn = [];
               if(typeof(tkKsDa) == 'string'){
@@ -124,9 +127,7 @@ define(['angular', 'config'], function (angular, config) {
               }
               tm.KAOSHENGDAAN = finalDaAn.join(';');
             }
-          }
-          else if(tm.TIXING_ID == 9){
-            if(tm.KAOSHENGDAAN){
+            else if(tm.TIXING_ID == 9) {
               var jstKsDa = tm.KAOSHENGDAAN,
                 jstKsFinalDaAn = [];
               if(typeof(jstKsDa) == 'string'){
@@ -137,10 +138,11 @@ define(['angular', 'config'], function (angular, config) {
               }
               tm.KAOSHENGDAAN = jstKsFinalDaAn.join(' ');
             }
-          }
-          else{
+            else{
 
+            }
           }
+
         };
 
 

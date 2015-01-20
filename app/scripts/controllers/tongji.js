@@ -117,7 +117,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.showKaoShiTjList();
 
         /**
-         * 考试统计详情,查询考生//
+         * 考试统计详情,查询考生
          */
         $scope.tjShowStudentInfo = function(id, idType, comeForm, tjName, sjArr){
           var queryKaoSheng, totalScore, avgScore,
