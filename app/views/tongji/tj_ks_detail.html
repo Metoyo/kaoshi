@@ -1,29 +1,33 @@
-<button class="btn btn-primary" ng-click="exportKsInfo()">导出考生信息</button>
-<table class="tj-table tj-table-detail">
+<div class="kaoShengScoreList animate-show" ng-show="showKaoShengShiJuan">
+  <button class="btn btn-primary" ng-click="exportKsInfo()">导出考生信息</button>
+  <table class="tj-table tj-table-detail">
     <tr>
-        <th ng-click="ksSortDataFun('stuId')">学号</th>
-        <th ng-click="ksSortDataFun('name')">姓名</th>
-        <th ng-click="ksSortDataFun('class')">班级</th>
-        <th ng-click="ksSortDataFun('score')">成绩</th>
+      <th ng-click="ksSortDataFun('stuId')">学号</th>
+      <th ng-click="ksSortDataFun('name')">姓名</th>
+      <th ng-click="ksSortDataFun('class')">班级</th>
+      <th ng-click="ksSortDataFun('score')">成绩</th>
     </tr>
     <tr ng-repeat="ksd in tjKaoShengDetail">
-        <td ng-bind="ksd.YONGHUHAO">
-        </td>
-        <td>
-          <a href="javascript:void(0)" ng-if="tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"
-             ng-click="zuoDaReappear(ksd.KAOSHENG_UID)"></a>
-          <span ng-if="!tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"></span>
-        </td>
-        <td ng-bind="ksd.BANJI">
-        </td>
-        <td ng-bind="ksd.ZUIHOU_PINGFEN">
-        </td>
+      <td ng-bind="ksd.YONGHUHAO">
+      </td>
+      <td>
+        <a href="javascript:void(0)" ng-if="tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"
+           ng-click="zuoDaReappear(ksd.KAOSHENG_UID)"></a>
+        <span ng-if="!tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"></span>
+      </td>
+      <td ng-bind="ksd.BANJI">
+      </td>
+      <td ng-bind="ksd.ZUIHOU_PINGFEN">
+      </td>
     </tr>
-</table>
-<button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
-<div class="answerReappearWrap">
-  <h2 class="text-center" ng-bind="kaoShengShiJuan.sj_name"></h2>
-  <form>
+  </table>
+</div>
+<div class="answerReappearWrap animate-show" ng-hide="showKaoShengShiJuan">
+  <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
+  <h2 class="text-center">
+    <span ng-bind="kaoShengShiJuan.sj_name"></span>
+    <button type="button" class="btn btn-danger pull-right" ng-click="closeZuoDaReappear()">考生列表</button>
+  </h2>
   <div id="answerReappearShiJuan">
     <div ng-repeat="dati in kaoShengShiJuan.sj_tm" repeat-done>
       <h4>
@@ -69,7 +73,6 @@
       </ul>
     </div>
   </div>
-  </form>
 </div>
 <script type="text/javascript">
   $('.reloadMath').on('click', function(){

@@ -155,6 +155,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
             $scope.tjParas.zdcxKaoShiId = id; //作答重现用到的考试ID
+            $scope.showKaoShengShiJuan = true;
           }
           if(idType == 'sjId'){
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
@@ -880,6 +881,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     finaData.sj_tm.push(dObj);
                   });
                   $scope.kaoShengShiJuan = finaData;
+                  $scope.showKaoShengShiJuan = false;
                 }
                 else{
                   messageService.alertInfFun('err', data.error || '没有数据！');
@@ -890,7 +892,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             messageService.alertInfFun('pmt', '缺少考生ID');
           }
-        };//
+        };
+
+        //关闭作答重现试卷层
+        $scope.closeZuoDaReappear = function(){
+          $scope.showKaoShengShiJuan = true;
+        }
 
 
     }]);
