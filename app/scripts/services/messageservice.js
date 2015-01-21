@@ -81,16 +81,37 @@ define(['angular', 'config'], function (angular, config) {
             tkDaAnStr = tkDaAnArr.join(';');
             tm.DAAN = tkDaAnStr;
             //修改填空题的题干
-            newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
-              var text = arg.slice(2, -2),
-                textJson = JSON.parse(text),
-                _len = textJson.size,
-                i, xhStr = '';
-              for(i = 0; i < _len; i ++ ){
-                xhStr += '_';
+            if(tm.KAOSHENGDAAN){
+              var tkKsDa = tm.KAOSHENGDAAN,
+                finalDaAn = [],
+                _len = '',
+                count = 0;
+              if(typeof(tkKsDa) == 'string'){
+                tkKsDa = JSON.parse(tkKsDa);
               }
-              return xhStr;
-            });
+              for(var key in tkKsDa){
+                finalDaAn.push(tkKsDa[key]);
+              }
+              _len = finalDaAn.length;
+              newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
+                var xhStr = '';
+                xhStr = '<span class="ar-tk-da">' + finalDaAn[count] + '</span>';
+                count ++;
+                return xhStr;
+              });
+            }
+            else{
+              newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
+                var text = arg.slice(2, -2),
+                  textJson = JSON.parse(text),
+                  _len = textJson.size,
+                  i, xhStr = '';
+                for(i = 0; i < _len; i ++ ){
+                  xhStr += '_';
+                }
+                return xhStr;
+              });
+            }
             tm.TIGAN.tiGan = newCont;
           }
           else{
@@ -104,6 +125,7 @@ define(['angular', 'config'], function (angular, config) {
                 ksDaan = [];
               for(var j = 0; j < ksDaanLen; j++){
                 ksDaan.push(letterArr[ksDaanArr[j]]);
+                //ksDaan.push('D');
               }
               tm.KAOSHENGDAAN = ksDaan.join(',');
             }
@@ -115,18 +137,18 @@ define(['angular', 'config'], function (angular, config) {
                 tm.KAOSHENGDAAN = '错';
               }
             }
-            else if(tm.TIXING_ID == 6) { //填空题
-              var tkKsDa = tm.KAOSHENGDAAN, cont = 1,
-                finalDaAn = [];
-              if(typeof(tkKsDa) == 'string'){
-                tkKsDa = JSON.parse(tkKsDa);
-              }
-              for(var key in tkKsDa){
-                finalDaAn.push('第' + cont + '个空：' + tkKsDa[key]);
-                cont ++;
-              }
-              tm.KAOSHENGDAAN = finalDaAn.join(';');
-            }
+            //else if(tm.TIXING_ID == 6) { //填空题
+            //  var tkKsDa = tm.KAOSHENGDAAN, cont = 1,
+            //    finalDaAn = [];
+            //  if(typeof(tkKsDa) == 'string'){
+            //    tkKsDa = JSON.parse(tkKsDa);
+            //  }
+            //  for(var key in tkKsDa){
+            //    finalDaAn.push('第' + cont + '个空：' + tkKsDa[key]);
+            //    cont ++;
+            //  }
+            //  tm.KAOSHENGDAAN = finalDaAn.join(';');
+            //}
             else if(tm.TIXING_ID == 9) {
               var jstKsDa = tm.KAOSHENGDAAN,
                 jstKsFinalDaAn = [];

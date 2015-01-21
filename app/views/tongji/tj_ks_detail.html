@@ -26,26 +26,44 @@
   <form>
   <div id="answerReappearShiJuan">
     <div ng-repeat="dati in kaoShengShiJuan.sj_tm" repeat-done>
-      <h3>
+      <h4>
         <span>{{tjParas.cnNumArr[$index]}}、</span>
         <span  ng-bind="dati.tx_name"></span>
-      </h3>
+      </h4>
       <ul class="list-unstyled">
-        <li ng-repeat="xtm in dati.tm">
-          <h4 ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></h4>
-          <div class="ar-tzs" ng-if="xtm.TIXING_ID<=3">
-            <p ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
-              <input type="radio" name="{{'radio' + $parent.$index}}" value="{{tjParas.letterArr[$index]}}"
-                     ng-model="xtm.KAOSHENGDAAN"/>
-              <span ng-bind-html="'(' + tjParas.letterArr[$index] + ') ' + tznr"></span>
-            </p>
+        <li class="ptb5" ng-repeat="xtm in dati.tm">
+          <h4 ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan" class="ar-tiGan itemHasImg"></h4>
+          <!-- 单选题 -->
+          <div class="ar-tzs" ng-if="xtm.TIXING_ID == 1">
+            <div class="ar-tz" ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
+              <p class="positionAb">
+                <input type="radio" name="{{'radio' + $parent.$index}}" value="{{tjParas.letterArr[$index]}}"
+                       ng-model="xtm.KAOSHENGDAAN"/>    {{'(' + tjParas.letterArr[$index] + ')'}}
+              </p>
+              <p class="pl40" ng-bind-html="tznr"></p>
+            </div>
           </div>
-          <!--<div class="ar-tzs" ng-if="">-->
-            <!--<p ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index"-->
-               <!--ng-bind-html="'(' + tjParas.letterArr[$index] + ') ' + tznr"></p>-->
-          <!--</div>-->
-          <h5>考生答案：<span ng-bind-html="xtm.KAOSHENGDAAN"></span>
-          </h5>
+          <!-- 双选选题和多选 -->
+          <div class="ar-tzs" ng-if="xtm.TIXING_ID == 2 || xtm.TIXING_ID == 3">
+            <div class="ar-tz" ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
+              <p class="positionAb">
+                <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
+                       ng-checked="xtm.KAOSHENGDAAN.indexOf(tjParas.letterArr[$index]) > -1"/>
+                {{'(' + tjParas.letterArr[$index] + ')'}}
+              </p>
+              <p class="pl40" ng-bind-html="tznr"></p>
+            </div>
+          </div>
+          <!-- 判读题 -->
+          <div class="ar-tzs" ng-if="xtm.TIXING_ID == 4">
+            <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="对"
+                   ng-model="xtm.KAOSHENGDAAN"/>  对
+            <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="错" style="margin: 0 0 0 20px"
+                   ng-model="xtm.KAOSHENGDAAN"/>  错
+          </div>
+          <!-- 题型ID大于等于9的 -->
+          <div class="ar-tzs itemHasImg" ng-if="xtm.TIXING_ID >= 9" ng-bind-html="xtm.KAOSHENGDAAN">
+          </div>
           <h5>标准答案：<span ng-bind-html="xtm.DAAN"></span></h5>
         </li>
       </ul>

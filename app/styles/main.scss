@@ -99,6 +99,9 @@ body {
 .pl10 {
   padding-left: 10px;
 }
+.pl40 {
+  padding-left: 40px;
+}
 .pt10 {
   padding-top: 10px;
 }
@@ -113,6 +116,9 @@ body {
 }
 .plr10{
   padding: 0 10px;
+}
+.ptb5{
+  padding: 5px 0;
 }
 .fz16{
   font-size: 16px;
@@ -150,6 +156,14 @@ body {
   width: 100%;
   border:0;
   text-overflow: ellipsis;
+}
+.itemHasImg{
+  img{
+    width: 80%;
+  }
+}
+.positionAb{
+  position: absolute;
 }
 a.add-btn:hover span {
   color: #00CC33;
@@ -2767,6 +2781,26 @@ label.checkbox{
       margin-left: -50px;
       p{
         font-size: 42px;
+      }
+    }
+  }
+  .ar-tiGan{
+    font-size: 16px;
+    .ar-tk-da{
+      border-bottom: 1px solid #000000;
+      padding: 0 10px;
+    }
+  }
+  .ar-tzs{
+    .ar-tz{
+      margin-bottom: 10px;
+      position: relative;
+      p{
+        margin-bottom: 0;
+      }
+      .positionAb{
+        top: 50%;
+        margin-top: -11px;
       }
     }
   }
