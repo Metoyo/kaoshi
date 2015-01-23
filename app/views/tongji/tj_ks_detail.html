@@ -42,7 +42,7 @@
             <div class="ar-tz" ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
               <p class="positionAb">
                 <input type="radio" name="{{'radio' + $parent.$index}}" value="{{tjParas.letterArr[$index]}}"
-                       ng-model="xtm.KAOSHENGDAAN"/>    {{'(' + tjParas.letterArr[$index] + ')'}}
+                       ng-model="xtm.KAOSHENGDAAN" disabled/>    {{'(' + tjParas.letterArr[$index] + ')'}}
               </p>
               <p class="pl40" ng-bind-html="tznr"></p>
             </div>
@@ -52,7 +52,7 @@
             <div class="ar-tz" ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
               <p class="positionAb">
                 <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
-                       ng-checked="xtm.KAOSHENGDAAN.indexOf(tjParas.letterArr[$index]) > -1"/>
+                       ng-checked="xtm.KAOSHENGDAAN.indexOf(tjParas.letterArr[$index]) > -1" disabled/>
                 {{'(' + tjParas.letterArr[$index] + ')'}}
               </p>
               <p class="pl40" ng-bind-html="tznr"></p>
@@ -60,10 +60,9 @@
           </div>
           <!-- 判读题 -->
           <div class="ar-tzs" ng-if="xtm.TIXING_ID == 4">
-            <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="对"
-                   ng-model="xtm.KAOSHENGDAAN"/>  对
+            <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="对" ng-model="xtm.KAOSHENGDAAN" disabled/>  对
             <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="错" style="margin: 0 0 0 20px"
-                   ng-model="xtm.KAOSHENGDAAN"/>  错
+                   ng-model="xtm.KAOSHENGDAAN" disabled/>  错
           </div>
           <!-- 题型ID大于等于9的 -->
           <div class="ar-tzs itemHasImg" ng-if="xtm.TIXING_ID >= 9" ng-bind-html="xtm.KAOSHENGDAAN">

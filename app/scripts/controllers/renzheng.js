@@ -3,26 +3,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
     .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$cookieStore',
-      'messageService',
-      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService) {
+      'messageService', '$routeParams',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService, $routeParams) {
 
-        var loginApiUrl = config.apiurl_rz + 'denglu',
+        var baseRzAPIUrl = config.apiurl_rz,
+          token = config.token,
+          loginApiUrl =  baseRzAPIUrl + 'denglu',
           login = {
             userName: '',
             password: ''
           },
           loginPostParams,
           session = {},
-          currentPath = $location.$$path;
+          currentPath = $location.$$path,
+          findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
+          resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         $rootScope.session = session;
         $rootScope.pageName = "云教授";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
         $scope.login = login;
         $rootScope.isPromiseAlterOthersTimu = false;
-        $rootScope.globalParams = { //全局参数
-          lingyu: '',
-          quanxian: ''
+        $rootScope.rzParams = { //全局参数
+          registerEmail: '',
+          showFindPwWrap: false,
+          passwordRegexp:' /^.{6,20}$/'
         };
         $scope.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
 
@@ -165,6 +170,42 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
           }
         };
+
+        /**
+         * 忘记密码
+         */
+        $scope.sendFindPwEmail = function() {
+          if($scope.registerEmail){
+            var findPwUrl = findPwUrlBase + $scope.registerEmail;
+            $http.get(findPwUrl).success(function(data){
+              if(data.result){
+                $rootScope.rzParams.showFindPwWrap = false;
+              }
+              else{
+                messageService.alertInfFun('err', data.error)
+              }
+            });
+          }
+        };
+
+        /**
+         * 重置密码//
+         */
+        $scope.newPasswordObj = {
+          token: token,
+          email: $routeParams.email,
+          newPw: '',
+          confirmNewPw: ''
+        };
+        $scope.restPassword = function(){
+          console.log($scope.newPasswordObj);
+          if($scope.newPasswordObj.newPw == $scope.newPasswordObj.confirmNewPw){
+            delete $scope.newPasswordObj.confirmNewPw;
+            $http.post(resetPwUrl, $scope.newPasswordObj).success(function(data){
+              console.log(data);
+            });
+          }
+        }
 
     }]);
 });

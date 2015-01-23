@@ -69,6 +69,11 @@ define( "config", [], function () {
         templateUrl: '../views/tongji/tongji.html',
         controller: 'TongjiCtrl',
         requireLogin: true
+      },
+      '/resetPassword/:email': {
+        templateUrl: '../views/renzheng/rz_resetPw.html',
+        controller: 'RenzhengCtrl',
+        requireLogin: false
       }
     },
     quanxianObj: [ //得到角色是数组
