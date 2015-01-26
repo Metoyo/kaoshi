@@ -120,12 +120,13 @@ body {
 .ptb5{
   padding: 5px 0;
 }
+.fz14{
+  font-size: 14px;
+  font-weight: normal;
+}
 .fz16{
   font-size: 16px;
   font-weight: normal;
-}
-.co676767 {
-  color: #676767;
 }
 .bdb{
   border-bottom: 1px solid #cfcfcf;
@@ -133,8 +134,14 @@ body {
 .bd0{
   border: 0;
 }
+.co676767 {
+  color: #676767;
+}
 .clRed{
   color: red;
+}
+.clGreen{
+  color: #049400;
 }
 .cInfo{
   color: #46b8da;

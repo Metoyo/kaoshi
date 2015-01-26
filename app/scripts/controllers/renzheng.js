@@ -3,8 +3,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
     .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$cookieStore',
-      'messageService', '$routeParams',
-      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService, $routeParams) {
+      'messageService', '$routeParams', '$timeout',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService, $routeParams,
+                $timeout) {
 
         var baseRzAPIUrl = config.apiurl_rz,
           token = config.token,
@@ -19,17 +20,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
           resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         $rootScope.session = session;
-        $rootScope.pageName = "云教授";//页面名称
+        $scope.pageName = "云教授";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $rootScope.dashboard_shown = false;
         $scope.login = login;
         $rootScope.isPromiseAlterOthersTimu = false;
-        $rootScope.rzParams = { //全局参数
+        $scope.rzParams = { //全局参数
           registerEmail: '',
           showFindPwWrap: false,
-          passwordRegexp:' /^.{6,20}$/'
+          passwordRegexp:' /^.{6,20}$/',
+          emailLink: '',
+          sendEmailSuccess: false,
+          zhuCeUrl: '',
+          homeUrl: '',
+          resetPwSuccess: false
         };
-        $scope.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
+        $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
+        $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
 
         /**
          * 登录程序
@@ -176,10 +183,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.sendFindPwEmail = function() {
           if($scope.registerEmail){
-            var findPwUrl = findPwUrlBase + $scope.registerEmail;
+            var findPwUrl = findPwUrlBase + $scope.registerEmail,
+              mailLink = 'http://mail.' + $scope.registerEmail.split('@').pop();
             $http.get(findPwUrl).success(function(data){
               if(data.result){
-                $rootScope.rzParams.showFindPwWrap = false;
+                $scope.rzParams.emailLink = mailLink;
+                $scope.rzParams.sendEmailSuccess = true;
               }
               else{
                 messageService.alertInfFun('err', data.error)
@@ -189,7 +198,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 重置密码//
+         * 重置密码
          */
         $scope.newPasswordObj = {
           token: token,
@@ -200,9 +209,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.restPassword = function(){
           console.log($scope.newPasswordObj);
           if($scope.newPasswordObj.newPw == $scope.newPasswordObj.confirmNewPw){
-            delete $scope.newPasswordObj.confirmNewPw;
             $http.post(resetPwUrl, $scope.newPasswordObj).success(function(data){
-              console.log(data);
+              if(data.result){
+                $scope.rzParams.resetPwSuccess = true;
+                var jumpToHome = function() {
+                  urlRedirect.goTo(currentPath, '/renzheng');
+                };
+                $timeout(jumpToHome, 5000);
+              }
             });
           }
         }
