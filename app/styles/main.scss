@@ -2701,6 +2701,9 @@ label.checkbox{
 }
 //统计样式
 .tongjiWrapper{
+  .content{
+    padding-left: 0;
+  }
   .tj-btn-box{
     width: 100%;
     text-align: center;
@@ -2731,7 +2734,7 @@ label.checkbox{
     font-size: 20px;
   }
   .tab-content{
-    padding: 10px;
+    padding: 15px;
   }
   .tj-table{
     width: 100%;
@@ -2810,6 +2813,11 @@ label.checkbox{
         top: 50%;
         margin-top: -11px;
       }
+    }
+  }
+  .tj-stu{
+    .btn{
+      padding: 6px 12px;
     }
   }
 }

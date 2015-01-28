@@ -82,33 +82,41 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 显示试卷统计列表
+         * 显示试卷统计列表  可以删除
          */
-        $scope.showShiJuanTjList = function(){
-          tjShiJuanData = '';
-          pagesArr = [];
-          tjNeedData = '';
-          $scope.tj_tabActive = 'shijuanTj';
-          $http.get(queryShiJuan).success(function(data){
-            if(!data.error){
-              data = _.sortBy(data, function(sj){
-                return sj.LAST_TIME;
-              }).reverse();
-              tjNeedData = data;
-              tjShiJuanData = data;
-              lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
-              $scope.lastPageNum = lastPage;
-              for(var i = 1; i <= lastPage; i++){
-                pagesArr.push(i);
-              }
-              $scope.tjPaging();
-            }
-            else{
-              messageService.alertInfFun('err', data.error);
-            }
-          });
-          $scope.isTjDetailShow = false;
-          $scope.tjSubTpl = 'views/tongji/tj_sj.html';
+        //$scope.showShiJuanTjList = function(){
+        //  tjShiJuanData = '';
+        //  pagesArr = [];
+        //  tjNeedData = '';
+        //  $scope.tj_tabActive = 'shijuanTj';
+        //  $http.get(queryShiJuan).success(function(data){
+        //    if(!data.error){
+        //      data = _.sortBy(data, function(sj){
+        //        return sj.LAST_TIME;
+        //      }).reverse();
+        //      tjNeedData = data;
+        //      tjShiJuanData = data;
+        //      lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
+        //      $scope.lastPageNum = lastPage;
+        //      for(var i = 1; i <= lastPage; i++){
+        //        pagesArr.push(i);
+        //      }
+        //      $scope.tjPaging();
+        //    }
+        //    else{
+        //      messageService.alertInfFun('err', data.error);
+        //    }
+        //  });
+        //  $scope.isTjDetailShow = false;
+        //  $scope.tjSubTpl = 'views/tongji/tj_sj.html';
+        //};
+
+        /**
+         * 显示考生首页
+         */
+        $scope.showKaoShengTjList = function(){
+          $scope.tj_tabActive = 'kaoshengTj';
+          $scope.tjSubTpl = 'views/tongji/tj_student.html';
         };
 
         /**
@@ -124,6 +132,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             targetIdx, tjDataLen;
           $scope.tjParas.zdcxKaoShiId = '';
           $scope.kaoShengShiJuan = '';
+
           //$scope.tjParas = { //统计用到的参数
           //  stuIdCount: true,
           //  nameCount: true,
@@ -155,11 +164,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(idType == 'ksId'){
             queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + id;
             $scope.tjParas.zdcxKaoShiId = id; //作答重现用到的考试ID
-            $scope.showKaoShengShiJuan = true;
           }
           if(idType == 'sjId'){
             queryKaoSheng = queryKaoShengBase + '&shijuanid=' + id;
           }
+          $scope.showKaoShengShiJuan = true;
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
               $scope.tjKaoShengDetail = data;
@@ -357,106 +366,107 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         /**
          * 二级导航上的分数统计
          */
-        $scope.tjSubShowStudentInfo = function(){
-          var queryKaoSheng, totalScore, avgScore;
-          if(tjIdType == 'ksId'){
-            queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + tjDataPara;
-          }
-          if(tjIdType == 'sjId'){
-            queryKaoSheng = queryKaoShengBase + '&shijuanid=' + tjDataPara;
-          }
-          $http.get(queryKaoSheng).success(function(data){
-            if(!data.error){
-              $scope.tjKaoShengDetail = data;
-              //求平均分
-              totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
-              avgScore = totalScore/data.length;
-              $scope.myAvgScore = avgScore.toFixed(1);
-            }
-            else{
-              messageService.alertInfFun('err', data.error);
-            }
-          });
-          $scope.tjItemName = tjNamePara;
-          $scope.isTjDetailShow = true;
-          $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
-        };
+        //$scope.tjSubShowStudentInfo = function(){
+        //  var queryKaoSheng, totalScore, avgScore;
+        //  if(tjIdType == 'ksId'){
+        //    queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + tjDataPara;
+        //  }
+        //  if(tjIdType == 'sjId'){
+        //    queryKaoSheng = queryKaoShengBase + '&shijuanid=' + tjDataPara;
+        //  }
+        //  $scope.showKaoShengShiJuan = true;
+        //  $http.get(queryKaoSheng).success(function(data){
+        //    if(!data.error){
+        //      $scope.tjKaoShengDetail = data;
+        //      //求平均分
+        //      totalScore = _.reduce(data, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0);
+        //      avgScore = totalScore/data.length;
+        //      $scope.myAvgScore = avgScore.toFixed(1);
+        //    }
+        //    else{
+        //      messageService.alertInfFun('err', data.error);
+        //    }
+        //  });
+        //  $scope.tjItemName = tjNamePara;
+        //  $scope.isTjDetailShow = true;
+        //  $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
+        //};
 
         /**
          * 二级导航上的题目统计
          */
-        $scope.tjSubShowItemInfo = function(){
-          var queryTiMu, newCont,
-            tgReg = new RegExp('<\%{.*?}\%>', 'g');
-          if(tjIdType == 'ksId'){ //考试统计
-            queryTiMu = queryTiMuBase + '&kaoshiid=' + tjDataPara;
-          }
-          if(tjIdType == 'sjId'){ //试卷统计
-            queryTiMu = queryTiMuBase + '&shijuanid=' + tjDataPara;
-          }
-          $http.get(queryTiMu).success(function(data){
-            if(!data.error){
-              _.each(data, function(tm, idx, lst){
-                var cclv = new Number(tm.SHIFENLV) * 100;
-                tm.SHIFENLV = cclv.toFixed(2) + '%';
-                tm.TIGAN = JSON.parse(tm.TIGAN);
-                if(tm.TIXING_ID <= 3){
-                  var daanArr = tm.DAAN.split(','),
-                    daanLen = daanArr.length,
-                    daan = [];
-                  for(var i = 0; i < daanLen; i++){
-                    daan.push(letterArr[daanArr[i]]);
-                  }
-                  tm.DAAN = daan.join(',');
-                }
-                else if(tm.TIXING_ID == 4){
-                  if(tm.DAAN == 1){
-                    tm.DAAN = '对';
-                  }
-                  else{
-                    tm.DAAN = '错';
-                  }
-                }
-                else if(tm.TIXING_ID == 6){ //填空题
-                  //修改填空题的答案
-                  var tkDaAnArr = [],
-                    tkDaAn = JSON.parse(tm.DAAN),
-                    tkDaAnStr;
-                  _.each(tkDaAn, function(da, idx, lst){
-                    tkDaAnArr.push(da.answer);
-                  });
-                  tkDaAnStr = tkDaAnArr.join(';');
-                  tm.DAAN = tkDaAnStr;
-                  //修改填空题的题干
-                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
-                    var text = arg.slice(2, -2),
-                      textJson = JSON.parse(text),
-                      _len = textJson.size,
-                      i, xhStr = '';
-                    for(i = 0; i < _len; i ++ ){
-                      xhStr += '_';
-                    }
-                    return xhStr;
-                  });
-                  tm.TIGAN.tiGan = newCont;
-                }
-                else{
-
-                }
-              });
-              $scope.tjTmQuantity = 5; //加载是显示的题目数量
-              $scope.letterArr = config.letterArr; //题支的序号
-              $scope.tjTiMuDetail = data;
-            }
-            else{
-              messageService.alertInfFun('err', data.error);
-            }
-          });
-          $scope.tjItemName = tjNamePara;
-          $scope.isTjDetailShow = true;
-//          $scope.myAvgScore = '';
-          $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
-        };
+//        $scope.tjSubShowItemInfo = function(){
+//          var queryTiMu, newCont,
+//            tgReg = new RegExp('<\%{.*?}\%>', 'g');
+//          if(tjIdType == 'ksId'){ //考试统计
+//            queryTiMu = queryTiMuBase + '&kaoshiid=' + tjDataPara;
+//          }
+//          if(tjIdType == 'sjId'){ //试卷统计
+//            queryTiMu = queryTiMuBase + '&shijuanid=' + tjDataPara;
+//          }
+//          $http.get(queryTiMu).success(function(data){
+//            if(!data.error){
+//              _.each(data, function(tm, idx, lst){
+//                var cclv = new Number(tm.SHIFENLV) * 100;
+//                tm.SHIFENLV = cclv.toFixed(2) + '%';
+//                tm.TIGAN = JSON.parse(tm.TIGAN);
+//                if(tm.TIXING_ID <= 3){
+//                  var daanArr = tm.DAAN.split(','),
+//                    daanLen = daanArr.length,
+//                    daan = [];
+//                  for(var i = 0; i < daanLen; i++){
+//                    daan.push(letterArr[daanArr[i]]);
+//                  }
+//                  tm.DAAN = daan.join(',');
+//                }
+//                else if(tm.TIXING_ID == 4){
+//                  if(tm.DAAN == 1){
+//                    tm.DAAN = '对';
+//                  }
+//                  else{
+//                    tm.DAAN = '错';
+//                  }
+//                }
+//                else if(tm.TIXING_ID == 6){ //填空题
+//                  //修改填空题的答案
+//                  var tkDaAnArr = [],
+//                    tkDaAn = JSON.parse(tm.DAAN),
+//                    tkDaAnStr;
+//                  _.each(tkDaAn, function(da, idx, lst){
+//                    tkDaAnArr.push(da.answer);
+//                  });
+//                  tkDaAnStr = tkDaAnArr.join(';');
+//                  tm.DAAN = tkDaAnStr;
+//                  //修改填空题的题干
+//                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+//                    var text = arg.slice(2, -2),
+//                      textJson = JSON.parse(text),
+//                      _len = textJson.size,
+//                      i, xhStr = '';
+//                    for(i = 0; i < _len; i ++ ){
+//                      xhStr += '_';
+//                    }
+//                    return xhStr;
+//                  });
+//                  tm.TIGAN.tiGan = newCont;
+//                }
+//                else{
+//
+//                }
+//              });
+//              $scope.tjTmQuantity = 5; //加载是显示的题目数量
+//              $scope.letterArr = config.letterArr; //题支的序号
+//              $scope.tjTiMuDetail = data;
+//            }
+//            else{
+//              messageService.alertInfFun('err', data.error);
+//            }
+//          });
+//          $scope.tjItemName = tjNamePara;
+//          $scope.isTjDetailShow = true;
+////          $scope.myAvgScore = '';
+//          $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
+//        };
 
         /**
          * 显示更多试卷统计详情
@@ -471,14 +481,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 由统计详情返回列表
          */
         $scope.tjDetailToList = function(){
-          if(backToWhere == 'ksList'){ //考试统计的返回按钮
+          if($scope.tj_tabActive == 'kaoshiTj'){ //考试统计的返回按钮
             $scope.showKaoShiTjList();
           }
-          if(backToWhere == 'sjList'){ //试卷统计的返回按钮
-            $scope.showShiJuanTjList(); //试卷详情如果是由试卷统计
+          if($scope.tj_tabActive == 'kaoshengTj'){ //考生统计的返回按钮
+            $scope.showKaoShengTjList();
           }
-          $scope.myAvgScore = '';
-          $scope.tjItemName = ''; //为了详细统计按钮的隐藏和展示
         };
 
         /**
@@ -894,9 +902,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
         };
 
-        //关闭作答重现试卷层
+        /**
+         *关闭作答重现试卷层
+         */
         $scope.closeZuoDaReappear = function(){
           $scope.showKaoShengShiJuan = true;
+        };
+
+        /**
+         * 显示考试统计的首页
+         */
+        $scope.tjShowKaoShiChart = function(ksId, ksName){
+          $scope.tj_tabActive = 'kaoshiTj';
+          //$scope.isTjDetailShow = true;
+          $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
         }
 
 

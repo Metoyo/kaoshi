@@ -207,7 +207,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           confirmNewPw: ''
         };
         $scope.restPassword = function(){
-          console.log($scope.newPasswordObj);
           if($scope.newPasswordObj.newPw == $scope.newPasswordObj.confirmNewPw){
             $http.post(resetPwUrl, $scope.newPasswordObj).success(function(data){
               if(data.result){

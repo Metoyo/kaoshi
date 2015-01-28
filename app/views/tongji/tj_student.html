@@ -1,0 +1,57 @@
+<div class="sub-nav">
+  <ul class="nav nav-tabs" ng-hide="isTjDetailShow">
+    <li ng-class="{active: tj_tabActive == 'kaoshiTj'}">
+      <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
+        考试统计
+      </a>
+    </li>
+    <!--<li ng-class="{active: tj_tabActive == 'shijuanTj'}">-->
+    <!--<a href="javascript:void(0)" ng-click="showShiJuanTjList()">-->
+    <!--试卷统计-->
+    <!--</a>-->
+    <!--</li>-->
+    <li ng-class="{active: tj_tabActive == 'kaoshengTj'}">
+      <a href="javascript:void(0)" ng-click="showKaoShengTjList()">
+        考生统计
+      </a>
+    </li>
+  </ul>
+  <!--<h2 class="tj-title" ng-show="isTjDetailShow">-->
+  <!--<span ng-bind="tjItemName"></span>-->
+  <!--<span class="ml10 tjt-avg-score">平均分：<strong ng-bind="myAvgScore"></strong></span>-->
+  <!--<button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回</button>-->
+  <!--</h2>-->
+</div>
+<div class="tab-content">
+  <div class="form-inline tj-stu">
+    <div class="form-group">
+      <p class="form-control-static">学号：</p>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="学号">
+    </div>
+    <button type="button" class="btn btn-success">查询</button>
+  </div>
+</div>
+
+<!--<table class="tj-table">-->
+    <!--<tr>-->
+        <!--<th>考试名称</th>-->
+        <!--<th>试卷名称</th>-->
+        <!--<th width="120px" class="text-center">考试人数</th>-->
+        <!--<th width="120px" class="text-center">考试时间</th>-->
+    <!--</tr>-->
+    <!--<tr ng-repeat="ks in tjData">-->
+        <!--<td>-->
+            <!--<a href="javascript:void(0)"-->
+               <!--ng-click="tjShowStudentInfo(ks.KAOSHI_ID, 'ksId', 'ksList', ks.KAOSHI_MINGCHENG, ks.SHIJUAN)"-->
+               <!--ng-bind="ks.KAOSHI_MINGCHENG"></a>-->
+        <!--</td>-->
+        <!--<td>-->
+            <!--<a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"-->
+               <!--ng-click="tjShowStudentInfo(kssj.SHIJUAN_ID, 'sjId', 'ksList', kssj.SHIJUAN_MINGCHENG)"></a>-->
+        <!--</td>-->
+        <!--<td class="text-center" ng-bind="ks.KSRS"></td>-->
+        <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>-->
+    <!--</tr>-->
+<!--</table>-->
