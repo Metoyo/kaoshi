@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>云教授考试系统</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
+  <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng, haveBgBody: isHaveBg}">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please
         <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="dashboard" ng-show="dashboard_shown" ng-include="'views/partials/nav.html'"></div>
+    <div class="dashboard" ng-class="{dashboard_shown_show: !isRenZheng}" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: !isRenZheng}" ng-view>
     </div>

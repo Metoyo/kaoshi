@@ -5,9 +5,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'messageService',
       function ($rootScope, $scope, $http, $location, messageService) {
 
-        $rootScope.pageName = "认证";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-        $rootScope.dashboard_shown = false;
         $scope.addedContainerClass = 'userBox';
         $scope.shenheList = [];
         $scope.showShenhe = false;

@@ -8,8 +8,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
           /**
            * 操作title
            */
-          $rootScope.pageName = "组卷";
-          $rootScope.dashboard_shown = true;
           $rootScope.session.lsmb_id = []; //存放临时模板id的数组
           $rootScope.isRenZheng = false; //判读页面是不是认证
 

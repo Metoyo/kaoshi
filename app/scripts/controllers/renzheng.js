@@ -20,9 +20,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
           resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         $rootScope.session = session;
-        $scope.pageName = "云教授";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-        $rootScope.dashboard_shown = false;
         $scope.login = login;
         $rootScope.isPromiseAlterOthersTimu = false;
         $scope.rzParams = { //全局参数

@@ -10,9 +10,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var currentPath = $location.$$path,
           session = $rootScope.session,
           lingyu = $cookieStore.get('lingyuCk');
-        $rootScope.pageName = "选择默认科目";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-        $rootScope.dashboard_shown = false;
         $scope.linyuInfo = lingyu.lingyu;
 
         /**

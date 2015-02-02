@@ -6,6 +6,9 @@ body {
   color: #000;
   font-size: 15px;
 }
+.haveBgBody{
+  background-color: #f2f2f2;
+}
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
 .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6,
@@ -44,6 +47,9 @@ body {
 }
 .wp40 {
   width: 40%;
+}
+.wp48 {
+  width: 48%;
 }
 .wp50 {
   width: 50%;
@@ -96,6 +102,9 @@ body {
 .ml10{
   margin-left: 10px;
 }
+.ml15{
+  margin-left: 15px;
+}
 .pl10 {
   padding-left: 10px;
 }
@@ -146,6 +155,9 @@ body {
 .cInfo{
   color: #46b8da;
 }
+.bgcFFF{
+  background-color: #fff;
+}
 .tagnCent{
   text-align: center;
 }
@@ -172,6 +184,9 @@ body {
 }
 .positionAb{
   position: absolute;
+}
+.positionRe{
+  position: relative;
 }
 a.add-btn:hover span {
   color: #00CC33;
@@ -314,6 +329,7 @@ a.add-btn:hover span {
   left: 0;
   background-color: #33363b;
   z-index: 15;
+  display: none;
   .container {
     padding: 0;
   }
@@ -327,6 +343,9 @@ a.add-btn:hover span {
     padding: 10px 0;
     border: 0;
   }
+}
+.dashboard_shown_show{
+  display: block;
 }
 .dropdownToggle {
   margin-bottom: 0;
@@ -2701,9 +2720,6 @@ label.checkbox{
 }
 //统计样式
 .tongjiWrapper{
-  .content{
-    padding-left: 0;
-  }
   .tj-btn-box{
     width: 100%;
     text-align: center;
@@ -2711,10 +2727,6 @@ label.checkbox{
     .btn{
       margin-top: 10px;
     }
-  }
-  .contentWraps{
-    position: relative;
-    padding: 0;
   }
   .tj-title{
     font-size: 20px;
@@ -2728,10 +2740,6 @@ label.checkbox{
     .tjt-avg-score{
       font-size: 14px;
     }
-  }
-  .myAvgScore{
-    text-align: center;
-    font-size: 20px;
   }
   .tab-content{
     padding: 15px;
@@ -2818,6 +2826,44 @@ label.checkbox{
   .tj-stu{
     .btn{
       padding: 6px 12px;
+    }
+  }
+  .ks-chart-page{
+    .summary{
+      padding-right: 70px;
+    }
+    .back-btn{
+      position: absolute;
+      right: 0;
+      bottom: 15px;
+    }
+  }
+  .tj-ks-title{
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    span{
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+  .tj-ks-box{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    float: left;
+    .title{
+      background-color: #d9edf7;
+      margin: 0;
+      padding-left: 10px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+    .chart{
+      height: 320px;
+      padding: 10px;
     }
   }
 }

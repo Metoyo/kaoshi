@@ -9,8 +9,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           /**
            * 操作title
            */
-          $rootScope.pageName = "考务"; //page title
-          $rootScope.styles = ['styles/kaowu.css'];
           $rootScope.isRenZheng = false; //判读页面是不是认证
 
           /**

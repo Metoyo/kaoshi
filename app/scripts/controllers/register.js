@@ -17,9 +17,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             objAndRightList = [], //已经选择的科目和单位
             checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
 
-        $rootScope.pageName = "新用户注册";//页面名称
         $rootScope.isRenZheng = true; //判读页面是不是认证
-        $rootScope.dashboard_shown = false;
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
 //        $scope.userNameRegexp = /^.{4,30}$/;//用户名的正则表达式
