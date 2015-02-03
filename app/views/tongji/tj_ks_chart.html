@@ -3,50 +3,61 @@
   <button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回</button>
 </div>
 <div class="tab-content ks-chart-page">
-  <table class="table table-bordered bgcFFF wp48">
-    <tr>
-      <th colspan="2" class="info">
-        考试概要信息
-      </th>
-    </tr>
-    <tr>
-      <td>考试名称</td>
-      <td ng-bind="singleKaoShi.KAOSHI_MINGCHENG"></td>
-    </tr>
-    <tr class="success">
-      <td>平均分数</td>
-      <td ng-bind="singleKaoShi.ksAvgScore"></td>
-    </tr>
-    <tr>
-      <td>考试人数</td>
-      <td ng-bind="singleKaoShi.KSRS"></td>
-    <tr>
-    <tr class="warning">
-      <td>考试时间</td>
-      <td ng-bind="singleKaoShi.KAISHISHIJIAN | myLocalDateWithWeek"></td>
-    </tr>
-    <tr>
-      <td>使用试卷</td>
-      <td>
-        <span ng-if="singleKaoShi.LEIXING == 1">此处考试为随机试卷</span>
-        <label class="checkbox-inline" ng-if="singleKaoShi.LEIXING == 0" ng-repeat="sj in singleKaoShi.SHIJUAN">
-          <input type="checkbox" value="sj.SHIJUAN_ID" ng-if="singleKaoShi.sjNum > 1"> {{sj.SHIJUAN_MINGCHENG}}
-        </label>
-      </td>
-    </tr>
-  </table>
+  <div class="row">
+    <table class="table table-bordered bgcFFF wp48 pull-left">
+      <tr>
+        <th colspan="2" class="info">
+          考试概要信息
+        </th>
+      </tr>
+      <tr>
+        <td>考试名称</td>
+        <td ng-bind="singleKaoShi.KAOSHI_MINGCHENG"></td>
+      </tr>
+      <tr class="success">
+        <td>平均分数</td>
+        <td ng-bind="singleKaoShi.ksAvgScore"></td>
+      </tr>
+      <tr>
+        <td>考试人数</td>
+        <td ng-bind="singleKaoShi.KSRS"></td>
+      <tr>
+      <tr class="warning">
+        <td>考试时间</td>
+        <td ng-bind="singleKaoShi.KAISHISHIJIAN | myLocalDateWithWeek"></td>
+      </tr>
+      <tr>
+        <td>使用试卷</td>
+        <td>
+          <span ng-if="singleKaoShi.LEIXING == 1">此处考试为随机试卷</span>
+          <label class="checkbox-inline" ng-if="singleKaoShi.LEIXING == 0" ng-repeat="sj in singleKaoShi.SHIJUAN">
+            <input type="checkbox" value="sj.SHIJUAN_ID" ng-if="singleKaoShi.sjNum > 1"> {{sj.SHIJUAN_MINGCHENG}}
+          </label>
+        </td>
+      </tr>
+    </table>
+  </div>
   <div class="row">
     <div class="tj-ks-box wp48">
-      <h4 class="title">班级平均分</h4>
+      <h4 class="title">班级平均分布</h4>
       <div class="chart">
-        <div id="score2" style="height:100%;width: 100%">
+        <div id="chartBar" style="height:100%;width: 100%">
         </div>
       </div>
     </div>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">考生成绩分布</h4>
       <div class="chart">
-        <div id="score1" style="height:100%;width: 100%">
+        <div id="chartPie" style="height:100%;width: 100%">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="tj-ks-box wp48">
+      <h4 class="title">分数与人数分布</h4>
+      <div class="chart">
+        <div id="chartLine" style="height:100%;width: 100%">
         </div>
       </div>
     </div>
