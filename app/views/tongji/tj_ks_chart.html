@@ -36,6 +36,32 @@
         </td>
       </tr>
     </table>
+    <div class="tj-ks-box wp48 ml15">
+      <h4 class="title">所选班级</h4>
+      <div class="selectBanJi">
+        <div class="banJiList">
+          <ul class="list-unstyled banJiUl">
+            <li class="active" ng-click="tjByBanJi('all', $event, 0)">
+              <a href="javascript:void(0)">所有班级</a>
+            </li>
+            <li ng-repeat="bj in tjBanJi"  ng-click="tjByBanJi(bj, $event, $index + 1)">
+              <a href="javascript:void(0)" ng-bind="bj.bjName"></a>
+            </li>
+          </ul>
+          <div class="page">
+            <p class="wp50 text-center up" ng-click="banJiPage('up')">
+              <span class="glyphicon glyphicon-chevron-up"></span>
+            </p>
+            <p class="wp50 text-center down" ng-click="banJiPage('down')">
+              <span class="glyphicon glyphicon-chevron-down"></span>
+            </p>
+          </div>
+        </div>
+        <div class="banJiName text-center">
+          <span ng-bind="tjParas.selectBanJi"></span>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="tj-ks-box wp48">

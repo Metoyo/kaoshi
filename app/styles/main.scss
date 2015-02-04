@@ -2309,9 +2309,6 @@ label.checkbox{
         margin-top: -1px;
       }
     }
-    .zj_paperList{
-
-    }
     table{
       margin-bottom: 0;
       th{
@@ -2871,6 +2868,63 @@ label.checkbox{
       height: 320px;
       padding: 10px;
     }
+    .selectBanJi{
+      height: 190px;
+      float: left;
+      width: 100%;
+    }
+  }
+  .banJiList{
+    width: 120px;
+    border-right: 1px solid #ddd;
+    height: 190px;
+    float: left;
+    ul{
+      height: 170px;
+      margin-bottom: 0;
+      a{
+        padding: 4px 10px;
+        font-size: 14px;
+        display: block;
+        &:hover{
+          text-decoration: none;
+          color: #f60;
+        }
+      }
+      li.active{
+        background: #FFF;
+        margin-right: -1px;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        a{
+          color: #f60;
+          text-decoration: none;
+        }
+      }
+    }
+    .page{
+      .wp50{
+        margin: 0;
+        height: 20px;
+        float: left;
+        cursor: pointer;
+        .glyphicon{
+          font-size: 12px;
+          margin: 0;
+          color: #666;
+        }
+      }
+      .up{
+        background-color: #dff0d8;
+      }
+      .down{
+        background-color: #EAE2B9;
+      }
+    }
+  }
+  .banJiName{
+    font-size: 32px;
+    line-height: 190px;
   }
 }
 /* -------------------------------------------------------------------
