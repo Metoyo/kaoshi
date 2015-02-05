@@ -2873,6 +2873,13 @@ label.checkbox{
       float: left;
       width: 100%;
     }
+    .tj-table{
+      margin-top: 0;
+    }
+    .student-list{
+      height: 300px;
+      overflow-y: auto;
+    }
   }
   .banJiList{
     width: 120px;

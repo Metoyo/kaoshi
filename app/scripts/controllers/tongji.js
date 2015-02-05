@@ -60,7 +60,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lastSelectBj: {
             pageNum: 0,
             banJiIdx: 0
-          } //最后选中的班级
+          }, //最后选中的班级
+          allStudents: ''
         };
 
         /**
@@ -641,7 +642,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ks.KAOSHI_ID;
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
-              $scope.tjKaoShengDetail = data;
+              $scope.studentData = data;
+              $scope.tjParas.allStudents = data;
               /* 饼图用到的数据，全部班级 */
               tjParaObj.pieDataAll = pieDataDealFun(data); //饼图统计数据，全部班级考生
               /* 按班级分组统计数据，用在按班级统计柱状图中 */
@@ -689,6 +691,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tjParaObj.lineDataAll = lineDataDealFun(data);
             }
             else{
+              $scope.studentData = '';
+              $scope.tjParas.allStudents = '';
               messageService.alertInfFun('err', data.error);
             }
           });
@@ -733,10 +737,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 通过班级统计
          */
         $scope.tjByBanJi = function(bj){
-          var addActiveFun = function(kd){
-            tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-            chartShowFun(kd);
-          };
+          var addActiveFun;
           tjParaObj.lineDataBanJi = '';
           $scope.tjParas.lastSelectBj = {
             pageNum: $scope.tjParas.tjBjPgOn,
@@ -745,18 +746,28 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           if(bj == 'all'){
             $scope.tjParas.selectBanJi = '所有班级';
             $scope.tjParas.lastSelectBj.banJiIdx = 0;
+            $scope.studentData = $scope.tjParas.allStudents;
             //饼图数据，单个班级
-            $timeout(addActiveFun('all'), 100);
+            addActiveFun = function(){
+              tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+              chartShowFun('all');
+            };
+            $timeout(addActiveFun, 100);
           }
           else{
             $scope.tjParas.selectBanJi = bj.bjName;
             $scope.tjParas.lastSelectBj.banJiIdx = bj.bjIdx;
+            $scope.studentData = bj.bjStu;
             //饼状图数据，单个班级
             tjParaObj.pieDataBanJi = pieDataDealFun(bj.bjStu);
             //折线图，班级数据
             tjParaObj.lineDataBanJi = lineDataDealFun(bj.bjStu);
             //饼图数据
-            $timeout(addActiveFun(), 100);
+            addActiveFun = function(){
+              tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+              chartShowFun();
+            };
+            $timeout(addActiveFun, 100);
           }
         };
 
