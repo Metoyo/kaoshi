@@ -31,13 +31,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           lastPage, //符合条件的考试一共有多少页
           tjKaoShiData = '',
           backToWhere = '', //返回按钮返回到什么列表
-          //tjDataPara = '', //存放目前统计的是什么数据
-          //tjIdType = '', //存放ID类型
-          //tjNamePara = '', //存放统计名称
-          tjParaObj = {}, //存放统计参数的Object
-          //tjPieDataBanJi = [], //饼状图数据，单个班级
+          tjParaObj = {
+            pieBox: '',
+            barBox: '',
+            lineBox: '',
+            pieDataAll: '',
+            pieDataBanJi: '',
+            lineDataAll: '',
+            lineDataBanJi: ''
+          }, //存放统计参数的Object
           tjBarData = [], //柱状图数据
-          //tjLineData = [], //折线图数据
           exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel',
           downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/',
           answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
@@ -51,8 +54,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           zdcxKaoShiId: '', //作答重现用到的考试id
           letterArr: config.letterArr, //题支的序号
           cnNumArr: config.cnNumArr, //汉语的大写数字
-          tjBjNum: 0, //统计用到的班级列表分页
-          tjBjLen: 0, //统计用到的班级列表分页长度
+          tjBjPgOn: 0, //统计用到的当前班级页码
+          tjBjPgLen: 0, //统计用到的班级总分页数
           selectBanJi: '', //当前选中的班级
           lastSelectBj: {
             pageNum: 0,
@@ -382,9 +385,70 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 统计函数，饼图加柱状图
+         * 饼状图数据处理函数
          */
-        var chartFunPieAndBar = function(kind){
+        var pieDataDealFun = function(data){
+          var pieDataArr = [
+            {
+              name : '不及格',
+              value : 0
+            },
+            {
+              name : '差',
+              value : 0
+            },
+            {
+              name : '中',
+              value : 0
+            },
+            {
+              name : '良',
+              value : 0
+            },
+            {
+              name : '优',
+              value : 0
+            }
+          ];
+          _.each(data, function(item, idx, lst){
+            if(item.ZUIHOU_PINGFEN < 60){
+              pieDataArr[0].value ++;
+            }
+            if(item.ZUIHOU_PINGFEN >= 60 && item.ZUIHOU_PINGFEN < 70){
+              pieDataArr[1].value ++;
+            }
+            if(item.ZUIHOU_PINGFEN >= 70 && item.ZUIHOU_PINGFEN < 80){
+              pieDataArr[2].value ++;
+            }
+            if(item.ZUIHOU_PINGFEN >= 80 && item.ZUIHOU_PINGFEN < 90){
+              pieDataArr[3].value ++;
+            }
+            if(item.ZUIHOU_PINGFEN >= 90){
+              pieDataArr[4].value ++;
+            }
+          });
+          return pieDataArr;
+        };
+
+        /**
+         * 折线图数据处理函数
+         */
+        var lineDataDealFun = function(data){
+          var disByScore, lineDataArr = [];
+          disByScore = _.groupBy(data, function(item){return item.ZUIHOU_PINGFEN});
+          _.each(disByScore, function(v, k, l){
+            var ary = [];
+            ary[0] = parseInt(k);
+            ary[1] = v.length;
+            lineDataArr.push(ary);
+          });
+          return lineDataArr;
+        };
+
+        /**
+         * 统计函数
+         */
+        var chartShowFun = function(kind){
           var optPie = { // 饼状图图
               tooltip : {
                 trigger : 'item',
@@ -414,8 +478,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   }
                 },
                 data : ''
-                //data : kind = 'all' ? tjParaObj.pieDataAll : tjParaObj.pieDataBanJi
-                //data : tjPieData
               }]
             },
             optBar = {
@@ -520,16 +582,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 {
                   name: '本班考生',
                   type: 'line',
-                  data: tjParaObj.lineDataBanJi || ''
+                  data: ''
                 }
               ]
             };
           //饼状图数据
           if(kind == 'all'){
             optPie.series[0].data = tjParaObj.pieDataAll;
+            optLine.series[1].data = '';
           }
           else{
             optPie.series[0].data = tjParaObj.pieDataBanJi;
+            optLine.series[1].data = tjParaObj.lineDataBanJi;
           }
           //柱状图数据
           tjBarData = _.sortBy(tjBarData, function(bj){return -bj.bjAvgScore;});
@@ -546,8 +610,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           tjParaObj.pieBox.setOption(optPie);
           tjParaObj.barBox.setOption(optBar);
           tjParaObj.lineBox.setOption(optLine);
-          //chartPie.connect(chartBar);
-          //chartBar.connect(chartPie);
           $timeout(function (){
             window.onresize = function () {
               tjParaObj.pieBox.resize();
@@ -556,7 +618,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }, 200);
           function eConsole(param) {
-            console.log(param);
+            var banJi = _.find($scope.singleKaoShi.BANJIs, function(bj){ return bj.bjName == param.name; });
+            $scope.tjParas.tjBjPgOn = Math.ceil(banJi.bjIdx / 5) - 1;
+            $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
+            $scope.tjByBanJi(banJi);
           }
           tjParaObj.barBox.on(echarts.config.EVENT.CLICK, eConsole);
         };
@@ -569,36 +634,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             totalScore = 0, //考试总分
             avgScore, //本次考试的平均分
             disByBanJi, //按班级分组obj
-            banJiArray = [], //最终班级数组
-            disByScore, //按分数分组
-            tjPieDataAll = [ //饼状图学生信息，全部学生
-              {
-                name : '不及格',
-                value : 0
-              },
-              {
-                name : '差',
-                value : 0
-              },
-              {
-                name : '中',
-                value : 0
-              },
-              {
-                name : '良',
-                value : 0
-              },
-              {
-                name : '优',
-                value : 0
-              }
-            ];
-          //tjLineData = [];
+            idxCount = 1, //给班级加所有值
+            banJiArray = []; //最终班级数组
+          tjBarData = [];
           $scope.tjParas.selectBanJi = '所有班级';
           queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ks.KAOSHI_ID;
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
               $scope.tjKaoShengDetail = data;
+              /* 饼图用到的数据，全部班级 */
+              tjParaObj.pieDataAll = pieDataDealFun(data); //饼图统计数据，全部班级考生
               /* 按班级分组统计数据，用在按班级统计柱状图中 */
               disByBanJi = _.groupBy(data, function(stu){
                 if(!stu.BANJI){
@@ -611,32 +656,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 var banJiObj = {
                   bjName: '',
                   bjStu: '',
-                  bjAvgScore: ''
+                  bjAvgScore: '',
+                  bjIdx: ''
                 };
                 banJiObj.bjName = k;
                 banJiObj.bjStu = v;
+                banJiObj.bjIdx = idxCount;
                 banJiObj.bjAvgScore = (_.reduce(v, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0) / v.length).toFixed(1);
                 totalScore += parseInt(banJiObj.bjAvgScore);
                 banJiArray.push(banJiObj);
-                //饼图用到的数据，全部班级
-                _.each(v, function(stuScore, idx, lst){
-                  if(stuScore.ZUIHOU_PINGFEN < 60){
-                    tjPieDataAll[0].value ++;
-                  }
-                  if(stuScore.ZUIHOU_PINGFEN >= 60 && stuScore.ZUIHOU_PINGFEN < 70){
-                    tjPieDataAll[1].value ++;
-                  }
-                  if(stuScore.ZUIHOU_PINGFEN >= 70 && stuScore.ZUIHOU_PINGFEN < 80){
-                    tjPieDataAll[2].value ++;
-                  }
-                  if(stuScore.ZUIHOU_PINGFEN >= 80 && stuScore.ZUIHOU_PINGFEN < 90){
-                    tjPieDataAll[3].value ++;
-                  }
-                  if(stuScore.ZUIHOU_PINGFEN >= 90){
-                    tjPieDataAll[4].value ++;
-                  }
-                });
-                tjParaObj.pieDataAll = tjPieDataAll; //饼图统计数据，全部班级考生
+                idxCount ++;
               });
               avgScore = totalScore / banJiArray.length;
               if(avgScore == 0){
@@ -650,21 +679,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               ks.BANJIs = banJiArray;
               $scope.singleKaoShi = ks;
               $scope.tjBanJi = banJiArray.slice(0, 5);
-              $scope.tjPages.tjBjNum = 0;
-              $scope.tjParas.tjBjLen = Math.ceil(banJiArray.length / 5);
+              $scope.tjParas.tjBjPgOn = 0;
+              $scope.tjParas.tjBjPgLen = Math.ceil(banJiArray.length / 5);
               $scope.tjParas.lastSelectBj = {
                 pageNum: 0,
                 banJiIdx: 0
               };
               /* 按分数分组统计数据，用在按分数和人数统计的折线图中 */
-              tjParaObj.lineDataAll = [];
-              disByScore = _.groupBy(data, function(stu){return stu.ZUIHOU_PINGFEN});
-              _.each(disByScore, function(v, k, l){
-                var ary = [];
-                ary[0] = parseInt(k);
-                ary[1] = v.length;
-                tjParaObj.lineDataAll.push(ary);
-              });
+              tjParaObj.lineDataAll = lineDataDealFun(data);
             }
             else{
               messageService.alertInfFun('err', data.error);
@@ -678,9 +700,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
               tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
               tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-              chartFunPieAndBar('all');
+              chartShowFun('all');
             };
-          $timeout(addActiveFun, 500);
+          $timeout(addActiveFun, 100);
         };
 
         /**
@@ -688,108 +710,53 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.banJiPage = function(direction){
           if(direction == 'down'){
-            $scope.tjPages.tjBjNum ++;
-            if($scope.tjPages.tjBjNum < $scope.tjParas.tjBjLen){
-              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjPages.tjBjNum * 5, ($scope.tjPages.tjBjNum + 1) * 5);
+            $scope.tjParas.tjBjPgOn ++;
+            if($scope.tjParas.tjBjPgOn < $scope.tjParas.tjBjPgLen){
+              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
             }
             else{
-              $scope.tjPages.tjBjNum = $scope.tjParas.tjBjLen - 1;
+              $scope.tjParas.tjBjPgOn = $scope.tjParas.tjBjPgLen - 1;
             }
           }
           else{
-            $scope.tjPages.tjBjNum --;
-            if($scope.tjPages.tjBjNum >= 0){
-              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjPages.tjBjNum * 5, ($scope.tjPages.tjBjNum + 1) * 5);
+            $scope.tjParas.tjBjPgOn --;
+            if($scope.tjParas.tjBjPgOn >= 0){
+              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
             }
             else{
-              $scope.tjPages.tjBjNum = 0;
+              $scope.tjParas.tjBjPgOn = 0;
             }
-          }
-          if($scope.tjParas.lastSelectBj.pageNum == $scope.tjPages.tjBjNum){
-            var timeCount = function() {
-              $('.banJiUl li').eq($scope.tjParas.lastSelectBj.banJiIdx).addClass('active');
-            };
-            $timeout(timeCount, 20);
           }
         };
 
         /**
          * 通过班级统计
          */
-        $scope.tjByBanJi = function(bj, event, idx){
-          var tjPieDataBanJi = [ //饼状图学生信息，单个班级
-            {
-              name : '不及格',
-              value : 0
-            },
-            {
-              name : '差',
-              value : 0
-            },
-            {
-              name : '中',
-              value : 0
-            },
-            {
-              name : '良',
-              value : 0
-            },
-            {
-              name : '优',
-              value : 0
-            }
-            ],
-            disByScore;
-          $('.banJiUl li').removeClass('active');
-          $(event.target).closest('li').addClass('active');
+        $scope.tjByBanJi = function(bj){
+          var addActiveFun = function(kd){
+            tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+            chartShowFun(kd);
+          };
+          tjParaObj.lineDataBanJi = '';
           $scope.tjParas.lastSelectBj = {
-            pageNum: $scope.tjPages.tjBjNum,
-            banJiIdx: idx
+            pageNum: $scope.tjParas.tjBjPgOn,
+            banJiIdx: ''
           };
           if(bj == 'all'){
             $scope.tjParas.selectBanJi = '所有班级';
-            tjParaObj.lineDataBanJi = [];
+            $scope.tjParas.lastSelectBj.banJiIdx = 0;
             //饼图数据，单个班级
-            var addActiveFunAll = function() {
-              chartFunPieAndBar('all');
-            };
-            $timeout(addActiveFunAll, 500);
+            $timeout(addActiveFun('all'), 100);
           }
           else{
             $scope.tjParas.selectBanJi = bj.bjName;
+            $scope.tjParas.lastSelectBj.banJiIdx = bj.bjIdx;
             //饼状图数据，单个班级
-            _.each(bj.bjStu, function(stuScore, idx, lst){
-              if(stuScore.ZUIHOU_PINGFEN < 60){
-                tjPieDataBanJi[0].value ++;
-              }
-              if(stuScore.ZUIHOU_PINGFEN >= 60 && stuScore.ZUIHOU_PINGFEN < 70){
-                tjPieDataBanJi[1].value ++;
-              }
-              if(stuScore.ZUIHOU_PINGFEN >= 70 && stuScore.ZUIHOU_PINGFEN < 80){
-                tjPieDataBanJi[2].value ++;
-              }
-              if(stuScore.ZUIHOU_PINGFEN >= 80 && stuScore.ZUIHOU_PINGFEN < 90){
-                tjPieDataBanJi[3].value ++;
-              }
-              if(stuScore.ZUIHOU_PINGFEN >= 90){
-                tjPieDataBanJi[4].value ++;
-              }
-            });
-            tjParaObj.pieDataBanJi = tjPieDataBanJi;
+            tjParaObj.pieDataBanJi = pieDataDealFun(bj.bjStu);
             //折线图，班级数据
-            tjParaObj.lineDataBanJi = [];
-            disByScore = _.groupBy(bj.bjStu, function(stu){return stu.ZUIHOU_PINGFEN});
-            _.each(disByScore, function(v, k, l){
-              var ary = [];
-              ary[0] = parseInt(k);
-              ary[1] = v.length;
-              tjParaObj.lineDataBanJi.push(ary);
-            });
+            tjParaObj.lineDataBanJi = lineDataDealFun(bj.bjStu);
             //饼图数据
-            var addActiveFunBanJi = function() {
-              chartFunPieAndBar();
-            };
-            $timeout(addActiveFunBanJi, 500);
+            $timeout(addActiveFun(), 100);
           }
         };
 

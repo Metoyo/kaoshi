@@ -41,10 +41,11 @@
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
-            <li class="active" ng-click="tjByBanJi('all', $event, 0)">
+            <li ng-class="{active: tjParas.lastSelectBj.banJiIdx == 0}" ng-click="tjByBanJi('all')">
               <a href="javascript:void(0)">所有班级</a>
             </li>
-            <li ng-repeat="bj in tjBanJi"  ng-click="tjByBanJi(bj, $event, $index + 1)">
+            <li ng-repeat="bj in tjBanJi" ng-class="{active: bj.bjIdx == tjParas.lastSelectBj.banJiIdx}"
+                ng-click="tjByBanJi(bj)">
               <a href="javascript:void(0)" ng-bind="bj.bjName"></a>
             </li>
           </ul>
