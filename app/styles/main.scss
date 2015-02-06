@@ -6,9 +6,6 @@ body {
   color: #000;
   font-size: 15px;
 }
-.haveBgBody{
-  background-color: #f2f2f2;
-}
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
 .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6,
@@ -2826,6 +2823,15 @@ label.checkbox{
     }
   }
   .ks-chart-page{
+    .bg{
+      position: fixed;
+      background-color: #f2f2f2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
     .summary{
       padding-right: 70px;
     }
@@ -2863,10 +2869,21 @@ label.checkbox{
       font-size: 16px;
       font-weight: bold;
       border-bottom: 1px solid #ddd;
+      .explain{
+        font-size: 12px;
+        font-weight: normal;
+      }
+      .all{
+        background-color: #95C880;
+      }
+      .bj{
+        background-color: #DFCC6D;
+      }
     }
     .chart{
       height: 320px;
       padding: 10px;
+      overflow-y: auto;
     }
     .selectBanJi{
       height: 190px;
@@ -2932,6 +2949,26 @@ label.checkbox{
   .banJiName{
     font-size: 32px;
     line-height: 190px;
+  }
+  .zsd-list{
+    li{
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      p{
+        margin-bottom: 0;
+        width: 100%;
+        span{
+          float: left;
+          text-align: center;
+        }
+        .zsd-all{
+          background-color: #95C880;
+        }
+        .zsd-bj{
+          background-color: #DFCC6D;
+        }
+      }
+    }
   }
 }
 /* -------------------------------------------------------------------

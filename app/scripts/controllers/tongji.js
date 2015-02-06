@@ -23,6 +23,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           queryShiJuan = baseTjAPIUrl + 'query_shijuan?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷数据
           queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token, //查询考生数据
+          queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token, //查询带分数的知识点
           queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token, //查询题目数据
           dataNumOfPerPage = 10, //每页显示多少条数据
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
@@ -61,7 +62,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             pageNum: 0,
             banJiIdx: 0
           }, //最后选中的班级
-          allStudents: ''
+          allStudents: '',
+          zsdOriginData: '', //统计——存放知识点原始数据的变量
+          zsdIdArr: ''
         };
 
         /**
@@ -198,7 +201,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 由统计详情返回列表
          */
         $scope.tjDetailToList = function(){
-          $rootScope.isHaveBg = false;
           if($scope.tj_tabActive == 'kaoshiTj'){ //考试统计的返回按钮
             $scope.showKaoShiTjList();
           }
@@ -245,13 +247,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           switch (sortItem){
             case 'stuId' : //学号排序
               if($scope.tjParas.stuIdCount){
-                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                $scope.studentData = _.sortBy($scope.studentData, function(stu){
                   return stu.YONGHUHAO;
                 });
                 $scope.tjParas.stuIdCount = false;
               }
               else{
-                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                $scope.studentData = _.sortBy($scope.studentData, function(stu){
                   return stu.YONGHUHAO;
                 }).reverse();
                 $scope.tjParas.stuIdCount = true;
@@ -259,13 +261,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               break;
             case 'name' : //姓名排序，中文
               if($scope.tjParas.nameCount){
-                $scope.tjKaoShengDetail.sort(function(a,b){
+                $scope.studentData.sort(function(a,b){
                   return a.XINGMING.localeCompare(b.XINGMING);
                 });
                 $scope.tjParas.nameCount = false;
               }
               else{
-                $scope.tjKaoShengDetail.sort(function(a,b){
+                $scope.studentData.sort(function(a,b){
                   return a.XINGMING.localeCompare(b.XINGMING);
                 }).reverse();
                 $scope.tjParas.nameCount = true;
@@ -273,13 +275,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               break;
             case 'class' : //班级排序，中文
               if($scope.tjParas.classCount){
-                $scope.tjKaoShengDetail.sort(function(a,b){
+                $scope.studentData.sort(function(a,b){
                   return a.BANJI.localeCompare(b.BANJI);
                 });
                 $scope.tjParas.classCount = false;
               }
               else{
-                $scope.tjKaoShengDetail.sort(function(a,b){
+                $scope.studentData.sort(function(a,b){
                   return a.BANJI.localeCompare(b.BANJI);
                 }).reverse();
                 $scope.tjParas.classCount = true;
@@ -287,13 +289,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               break;
             case 'score' : //分数排序
               if($scope.tjParas.scoreCount){
-                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                $scope.studentData = _.sortBy($scope.studentData, function(stu){
                   return stu.ZUIHOU_PINGFEN;
                 });
                 $scope.tjParas.scoreCount = false;
               }
               else{
-                $scope.tjKaoShengDetail = _.sortBy($scope.tjKaoShengDetail, function(stu){
+                $scope.studentData = _.sortBy($scope.studentData, function(stu){
                   return stu.ZUIHOU_PINGFEN;
                 }).reverse();
                 $scope.tjParas.scoreCount = true;
@@ -303,9 +305,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 导出学生
+         * 导出学生,需要的数据为考生列表
          */
-        $scope.exportKsInfo = function(){
+        $scope.exportKsInfo = function(stuData){
           var ksData = {
               token: token,
               sheetName: $scope.tjItemName + '考生信息',
@@ -313,7 +315,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             },
             ksArr = [];
           ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '成绩'});
-          _.each($scope.tjKaoShengDetail, function(ks){
+          _.each(stuData, function(ks){
             var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUIHOU_PINGFEN: ''};
             ksObj.YONGHUHAO = ks.YONGHUHAO;
             ksObj.XINGMING = ks.XINGMING;
@@ -516,7 +518,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               series : [{
                 name : '班级平均分',
                 type : 'bar',
-                //barWidth: 30, //柱子的宽度
+                barWidth: 30, //柱子的宽度
                 itemStyle : {
                   normal: {
                     label : {show: true, position: 'top'},
@@ -631,15 +633,19 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 显示考试统计的首页
          */
         $scope.tjShowKaoShiChart = function(ks){
-          var queryKaoSheng,
+          var queryKaoSheng, queryZsd,
             totalScore = 0, //考试总分
             avgScore, //本次考试的平均分
             disByBanJi, //按班级分组obj
             idxCount = 1, //给班级加所有值
-            banJiArray = []; //最终班级数组
+            banJiArray = [], //最终班级数组
+            zsdAllArr = []; //存放所有知识点数组
           tjBarData = [];
+          $scope.tjZsdData = '';
           $scope.tjParas.selectBanJi = '所有班级';
           queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ks.KAOSHI_ID;
+          queryZsd = queryZsdBase + '&kaoshiid=' + ks.KAOSHI_ID;
+          //查询考生
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
               $scope.studentData = data;
@@ -696,7 +702,40 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               messageService.alertInfFun('err', data.error);
             }
           });
-          $rootScope.isHaveBg = true;
+          //查询知识点
+          $http.get(queryZsd).success(function(zsdData){
+            var disByZsd, sumAll, sumSgl;
+            if(zsdData && zsdData.length > 0){
+              $scope.tjParas.zsdOriginData = zsdData;
+              disByZsd = _.groupBy(zsdData, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; });
+              _.each(disByZsd, function(v, k, l){
+                var zsdObj = {
+                  zsd_id: v[0].ZHISHIDIAN_ID,
+                  zsd_name: k,
+                  zsd_dfl_all: '', //总得分率
+                  zsd_cont_all: v.length, //使用次数
+                  zsd_dfl_bj: '', //班级得分率
+                  zsd_cont_bj: '' //使用次数
+                };
+                sumAll = _.reduce(v, function(memo, z){ return memo + z.XIAOTI_FENZHI; }, 0);
+                sumSgl = _.reduce(v, function(memo, z){
+                  if(!z.ZUIHOUDEFEN){
+                    z.ZUIHOUDEFEN = 0;
+                  }
+                  return memo + z.ZUIHOUDEFEN;
+                }, 0);
+                zsdObj.zsd_dfl_all = ((sumSgl/sumAll) * 100).toFixed(1);
+                zsdAllArr.push(zsdObj);
+              });
+              $scope.tjZsdData = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all}).reverse();
+              $scope.tjParas.zsdIdArr = _.map($scope.tjZsdData, function(item){ return item.zsd_id});
+            }
+            else{
+              $scope.tjZsdData = '';
+              $scope.tjParas.zsdIdArr = '';
+              messageService.alertInfFun('err', data.error);
+            }
+          });
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
           //考生统计图表
@@ -743,6 +782,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             pageNum: $scope.tjParas.tjBjPgOn,
             banJiIdx: ''
           };
+          //知识点数据,初始化班级数据
+          _.each($scope.tjZsdData, function(zsd, idx, lst){
+            zsd.zsd_dfl_bj = '';
+            zsd.zsd_cont_bj = '';
+          });
           if(bj == 'all'){
             $scope.tjParas.selectBanJi = '所有班级';
             $scope.tjParas.lastSelectBj.banJiIdx = 0;
@@ -755,6 +799,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $timeout(addActiveFun, 100);
           }
           else{
+            var disByBj, banJiZsd, disByZsd, sumAll, sumSgl, posIdx;
             $scope.tjParas.selectBanJi = bj.bjName;
             $scope.tjParas.lastSelectBj.banJiIdx = bj.bjIdx;
             $scope.studentData = bj.bjStu;
@@ -768,6 +813,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               chartShowFun();
             };
             $timeout(addActiveFun, 100);
+            //知识点数据
+            disByBj = _.groupBy($scope.tjParas.zsdOriginData, function(zsd){
+              if(!zsd.BANJI){
+                zsd.BANJI = '其他';
+              }
+              return zsd.BANJI;
+            });
+            banJiZsd = disByBj[bj.bjName];
+            if(banJiZsd){
+              disByZsd = _.groupBy(banJiZsd, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }); //用知识点把数据分组
+              _.each(disByZsd, function(v, k, l) {
+                posIdx = _.indexOf($scope.tjParas.zsdIdArr, v[0].ZHISHIDIAN_ID);
+                sumAll = _.reduce(v, function (memo, z) {
+                  return memo + z.XIAOTI_FENZHI;
+                }, 0);
+                sumSgl = _.reduce(v, function (memo, z) {
+                  if (!z.ZUIHOUDEFEN) {
+                    z.ZUIHOUDEFEN = 0;
+                  }
+                  return memo + z.ZUIHOUDEFEN;
+                }, 0);
+                $scope.tjZsdData[posIdx].zsd_cont_bj = v.length;
+                $scope.tjZsdData[posIdx].zsd_dfl_bj = ((sumSgl / sumAll) * 100).toFixed(1);
+              });
+            }
           }
         };
 
