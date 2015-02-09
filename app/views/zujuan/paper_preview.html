@@ -11,7 +11,7 @@
             放弃本次组卷
         </button>
     </div>
-    <form name="shijuan">
+    <div id="myPaper" style="background: #FFFFFF">
         <h1 class="paper-title text-center hover-style" title="点击设置">
             <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
                 {{ shijuanData.shuju.SHIJUANMINGCHENG || '点击设置试卷名称'}}
@@ -174,7 +174,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
     <div class="sj-edit-box" ng-show="isSavePaperConfirm">
         <div class="sj-edit-box-inner">
             <table class="table-bordered paperConfirmTable">
@@ -209,10 +209,11 @@
         <label>
             <input type="checkbox" ng-model="zuJuanParam.xuanXiangSuiJi"> 选项随机排序
         </label>
+        <button type="button" class="btn btn-primary savePaperToPdf">保存试卷为PDF</button>
         <button type="button" class="btn btn-primary" ng-click="savePaperConfirm()">保存试卷</button>
     </div>
 </div>
-<script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script type="text/javascript" src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
@@ -223,5 +224,33 @@
 <script type="text/javascript">
     $('.reloadMath').on('click', function(){
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+    });
+    $('.savePaperToPdf').on('click', function(){
+        var source = $('#myPaper')[0];
+        var pdfCode = new jsPDF('p', 'px', 'a4');
+        var specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+            }
+          },
+          margins = {
+            top: 20,
+            bottom: 20,
+            left: 10,
+            width: 1000
+          };
+        pdfCode.addHTML(
+
+          source // HTML string or DOM elem ref.
+          , margins.left // x coord
+          , margins.top // y coord
+          , {
+            'width': margins.width // max width of content on PDF
+            , 'elementHandlers': specialElementHandlers
+          },
+          function (dispose) {
+            pdfCode.save('Test.pdf');
+          },
+          margins
+        );
     });
 </script>

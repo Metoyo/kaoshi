@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
         'messageService',
-        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout, messageService) { // 002
+        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout, messageService) {
           /**
            * 操作title
            */
@@ -2237,6 +2237,38 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.cancelSavePaper = function(){
             $scope.isSavePaperConfirm = false;
           };
+
+          /**
+           * 将试卷保存为PDF//
+           */
+          //$scope.exportShiJuanToPdf = function(id){
+          //  var idSl = '#' + id;
+          //  var source = $('body')[0];
+          //  var pdfCode = new jsPDF('p', 'pt', 'letter');
+          //  var specialElementHandlers = {
+          //      '#bypassme': function (element, renderer) {
+          //      }
+          //    },
+          //    margins = {
+          //      top: 80,
+          //      bottom: 60,
+          //      left: 40,
+          //      width: 522
+          //    };
+          //  pdfCode.fromHTML(
+          //    source // HTML string or DOM elem ref.
+          //    , margins.left // x coord
+          //    , margins.top // y coord
+          //    , {
+          //      'width': margins.width // max width of content on PDF
+          //      , 'elementHandlers': specialElementHandlers
+          //    },
+          //    function (dispose) {
+          //      pdfCode.save('Test.pdf');
+          //    },
+          //    margins
+          //  );
+          //};
 
           /**
            * 删除临时模板

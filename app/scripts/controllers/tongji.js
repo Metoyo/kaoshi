@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
+define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, angular, config, charts) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
@@ -620,13 +620,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               tjParaObj.lineBox.resize();
             }
           }, 200);
-          function eConsole(param) {
-            var banJi = _.find($scope.singleKaoShi.BANJIs, function(bj){ return bj.bjName == param.name; });
-            $scope.tjParas.tjBjPgOn = Math.ceil(banJi.bjIdx / 5) - 1;
-            $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
-            $scope.tjByBanJi(banJi);
-          }
-          tjParaObj.barBox.on(echarts.config.EVENT.CLICK, eConsole);
+          //function eConsole(param) {
+          //  var banJi = _.find($scope.singleKaoShi.BANJIs, function(bj){ return bj.bjName == param.name; });
+          //  $scope.tjParas.tjBjPgOn = Math.ceil(banJi.bjIdx / 5) - 1;
+          //  $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
+          //  $scope.tjByBanJi(banJi);
+          //}
+          //tjParaObj.barBox.on(echarts.config.EVENT.CLICK, eConsole);
         };
 
         /**

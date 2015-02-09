@@ -2548,6 +2548,8 @@ label.checkbox{
     padding: 0;
     margin: 0 0 5px 0;
     list-style: none;
+    float: left;
+    width: 100%;
     li{
       border-bottom: 1px solid #ddd;
       padding: 10px 10px 5px 10px;

@@ -13,7 +13,6 @@ require.config({
     jquery: '../../bower_components/jquery/dist/jquery.min',
     underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
-    //charts: 'http://echarts.baidu.com/build/dist/echarts-all',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     sizzle: '../../bower_components/sizzle/dist/sizzle'
   },
@@ -80,9 +79,8 @@ require([
   'angular-sanitize',
   'angular-resource',
   'jquery',
-  'underscore',
-  'charts'
-], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _, charts) {
+  'underscore'
+], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);

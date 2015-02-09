@@ -14,6 +14,9 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <!--<script src="jspdf.min.js"></script>-->
+    <!--<script src="/bower_components/topdf/html2can.js"></script>-->
+    <!--<script src="/bower_components/topdf/jspdf.plugin.addhtml.js"></script>-->
     <!-- endbuild -->
   </head>
   <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
@@ -39,14 +42,12 @@
        <!--ga('create', 'UA-XXXXX-X');-->
        <!--ga('send', 'pageview');-->
     <!--</script>-->
-
+    <script src="/bower_components/requirejs/require.min.js" data-main="scripts/main.js"></script>
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
     <![endif]-->
     <!-- endbuild -->
-
-    <script src="bower_components/requirejs/require.min.js" data-main="scripts/main.js"></script>
   </body>
 </html>

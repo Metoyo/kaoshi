@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-  <meta charset="UTF-8">
+<head>
+  <meta charset="utf-8">
   <title></title>
   <script src="../bower_components/jquery/jquery.min.js"></script>
   <script src="jspdf.min.js"></script>
+  <script src="html2canvas.min.js"></script>
+  <script src="jspdf.plugin.addhtml.js"></script>
 </head>
 <body>
+<p>I'am p target!</p>
+<p>我是中文，能正常显示吗？</p>
 <table id="content">
   <tr>
     <td>列1</td>
@@ -33,8 +37,8 @@
 <input type="button" value="下载" onclick="demoTwoPageDocument()"/>
 <script>
   function demoTwoPageDocument() {
-    var pdf = new jsPDF('p', 'pt', 'letter'),
-      source = $('body')[0],
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    var source = $('body')[0],
       specialElementHandlers = {
         // element with id of "bypass" - jQuery style selector
         '#bypassme': function (element, renderer) {
@@ -50,7 +54,7 @@
       };
     // all coords and widths are in jsPDF instance's declared units
     // 'inches' in this case
-    pdf.fromHTML(
+    pdf.addHTML(
       source // HTML string or DOM elem ref.
       , margins.left // x coord
       , margins.top // y coord
@@ -67,47 +71,6 @@
     )
   }
 
-</script>
-<script>
-  var toCode = function (str) {
-    var key = "0123456789abcdefghijklmnopqresuvwxyx";
-    var l = key.length;
-    var a = key.split("");
-    var s = "", b, b1, b2, b3;
-    for (var i = 0; i < str.length; i++) {
-      b1 = b % l;
-      b = (b - b1) / l;
-      b2 = b % l;
-      b = (b - b2) % l;
-      b2 = b % l;
-      s += a[b3] + a[b2] + a[b1];
-    }
-    return s;
-  };
-  var aaa = toCode("ganludeyun@163.com");
-  console.log(aaa);
-
-  var fromCode = function (str) {
-    var key = "0123456789abcdefghijklmnopqresuvwxyx";
-    //定义密钥 36个字母与数字
-    var l = key.length,
-      s = new Array(Math.floor(str.length / 3)),
-      b = s.length, b1, b2, b3;
-    for (var i = 0; i < b; i++) {
-      b1 = key.indexof(str.charat(d));
-      d++;
-      b2 = key.indexof(str.charat(d));
-      d++;
-
-      b3 = key.indexof(str.charat(d));
-      d++;
-      s[i] = b1 * l * l + b2 * l + b3
-    }
-    b = eval("string.fromcharCode(" + s.join(',') + ")");
-    return b;
-  };
-  var bbb = fromCode(aaa);
-  console.log(bbb);
 </script>
 </body>
 </html>
