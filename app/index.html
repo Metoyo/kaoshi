@@ -19,29 +19,56 @@
     <!--<script src="/bower_components/topdf/jspdf.plugin.addhtml.js"></script>-->
     <!-- endbuild -->
   </head>
-  <body ng-app="kaoshiApp" ng-class="{renZhengPart: isRenZheng}">
+  <body ng-app="kaoshiApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please
         <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
     <!-- Add your site or application content here -->
     <div class="dashboard" ng-class="{dashboard_shown_show: !isRenZheng}" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: !isRenZheng}" ng-view>
+      <!-- 数据加载完全后将会被替换的部分 -->
+      <div ng-show="isRenZheng" class="renzhengWrapper">
+        <div class="bg">
+        </div>
+        <div class="row">
+          <h4 class="logo text-center">
+            <img src="/images/renzheng/icon/logo.png" alt="云教授">
+          </h4>
+          <div class="col-md-4 col-md-offset-2 loginBox">
+            <form class="animate-show">
+              <div>
+                <div class="form-group">
+                  <label>用户名/邮箱</label>
+                  <input type="text" class="form-control" placeholder="用户名/邮箱" autofocus="true">
+                  <span class="help-block" ng-hide="login.userName">登录信息不能为空！</span>
+                </div>
+                <div class="form-group">
+                  <label>密码</label>
+                  <input type="password" class="form-control" placeholder="密码">
+                  <span class="help-block" ng-hide="login.password">密码不能为空!</span>
+                </div>
+                <div class="form-group text-right">
+                  <a ng-href="{{rzParams.zhuCeUrl}}" class="pull-left mt" target="_blank">注册</a>
+                  <a href="javascript:void(0)" class="pull-left mt ml10">忘记密码？</a>
+                  <button type="submit" class="btn btn-success">
+                    登录
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-4 loginWithXh">
+            <button type="button" class="btn btn-primary">
+              使用帮助
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 数据加载完全后将会被替换的部分 -->
     </div>
     <div class="popInfoWrap" ng-include="'views/partials/info.html'"></div>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <!--<script>-->
-        <!--!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){-->
-        <!--(A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),-->
-        <!--r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)-->
-        <!--}(window,document,'script','//www.google-analytics.com/analytics.js','ga');-->
-
-       <!--ga('create', 'UA-XXXXX-X');-->
-       <!--ga('send', 'pageview');-->
-    <!--</script>-->
     <script src="/bower_components/requirejs/require.min.js" data-main="scripts/main.js"></script>
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>

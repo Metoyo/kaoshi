@@ -123,7 +123,7 @@
   <div class="row">
     <div class="tj-ks-box wp48">
       <h4 class="title">
-        <span>知识点统计</span>
+        <span>知识点统计<em>(得分率顺序)</em></span>
         <span class="explain pl40">
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
@@ -141,7 +141,7 @@
               得分率
             </div>
           </li>
-          <li class="row" ng-repeat="zsd in tjZsdData">
+          <li class="row" ng-repeat="zsd in tjZsdDataUd">
             <div class="col-sm-3" ng-bind="zsd.zsd_name">
             </div>
             <div class="col-sm-3">
@@ -160,12 +160,45 @@
         </ul>
       </div>
     </div>
-    <!--<div class="tj-ks-box wp48 ml15">-->
-      <!--<h4 class="title">知识点统计<em>(得分率倒序排列)</em></h4>-->
-      <!--<div class="chart">-->
-        <!--知识点-->
-      <!--</div>-->
-    <!--</div>-->
+    <div class="tj-ks-box wp48 ml15">
+      <h4 class="title">
+        <span>知识点统计<em>(得分率倒序)</em></span>
+        <span class="explain pl40">
+          <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
+        </span>
+      </h4>
+      <div class="chart">
+        <ul class="list-unstyled zsd-list">
+          <li class="row">
+            <div class="col-sm-3">
+              知识点名称
+            </div>
+            <div class="col-sm-3">
+              使用次数
+            </div>
+            <div class="col-sm-6">
+              得分率
+            </div>
+          </li>
+          <li class="row" ng-repeat="zsd in tjZsdDataDu">
+            <div class="col-sm-3" ng-bind="zsd.zsd_name">
+            </div>
+            <div class="col-sm-3">
+              <p ng-bind="zsd.zsd_cont_all + '次'"></p>
+              <p ng-bind="zsd.zsd_cont_bj  + '次'" ng-show="zsd.zsd_cont_bj"></p>
+            </div>
+            <div class="col-sm-6">
+              <p class="pull-left">
+                <span class="zsd-all" ng-bind="zsd.zsd_dfl_all + '%'" style="width: {{zsd.zsd_dfl_all + '%'}}"></span>
+              </p>
+              <p class="pull-left" ng-show="zsd.zsd_dfl_bj">
+                <span class="zsd-bj" ng-bind="zsd.zsd_dfl_bj + '%'" style="width: {{zsd.zsd_dfl_bj + '%'}}"></span>
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 

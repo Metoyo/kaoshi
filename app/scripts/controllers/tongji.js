@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         /**
          * 操作title
          */
-        $rootScope.isRenZheng = false; //判读页面是不是认证
+        $rootScope.isRenZheng = false; //判读页面是不是认证//
 
         /**
          * 声明变量
@@ -641,7 +641,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             banJiArray = [], //最终班级数组
             zsdAllArr = []; //存放所有知识点数组
           tjBarData = [];
-          $scope.tjZsdData = '';
+          $scope.tjZsdDataUd = '';
+          $scope.tjZsdDataDu = '';
           $scope.tjParas.selectBanJi = '所有班级';
           queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ks.KAOSHI_ID;
           queryZsd = queryZsdBase + '&kaoshiid=' + ks.KAOSHI_ID;
@@ -727,11 +728,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                 zsdObj.zsd_dfl_all = ((sumSgl/sumAll) * 100).toFixed(1);
                 zsdAllArr.push(zsdObj);
               });
-              $scope.tjZsdData = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all}).reverse();
-              $scope.tjParas.zsdIdArr = _.map($scope.tjZsdData, function(item){ return item.zsd_id});
+              $scope.tjZsdDataDu = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all});
+              $scope.tjZsdDataUd = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all}).reverse();
+              $scope.tjParas.zsdIdArr = _.map($scope.tjZsdDataUd, function(item){ return item.zsd_id});
             }
             else{
-              $scope.tjZsdData = '';
+              $scope.tjZsdDataUd = '';
               $scope.tjParas.zsdIdArr = '';
               messageService.alertInfFun('err', data.error);
             }
@@ -749,7 +751,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 班级列表分页
+         * 班级列表分页//
          */
         $scope.banJiPage = function(direction){
           if(direction == 'down'){
@@ -783,7 +785,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             banJiIdx: ''
           };
           //知识点数据,初始化班级数据
-          _.each($scope.tjZsdData, function(zsd, idx, lst){
+          _.each($scope.tjZsdDataUd, function(zsd, idx, lst){
             zsd.zsd_dfl_bj = '';
             zsd.zsd_cont_bj = '';
           });
@@ -834,8 +836,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                   }
                   return memo + z.ZUIHOUDEFEN;
                 }, 0);
-                $scope.tjZsdData[posIdx].zsd_cont_bj = v.length;
-                $scope.tjZsdData[posIdx].zsd_dfl_bj = ((sumSgl / sumAll) * 100).toFixed(1);
+                $scope.tjZsdDataUd[posIdx].zsd_cont_bj = v.length;
+                $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = ((sumSgl / sumAll) * 100).toFixed(1);
               });
             }
           }

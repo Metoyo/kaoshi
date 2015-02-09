@@ -13,8 +13,8 @@ require.config({
     jquery: '../../bower_components/jquery/dist/jquery.min',
     underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
-    sizzle: '../../bower_components/sizzle/dist/sizzle'
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
+    //sizzle: '../../bower_components/sizzle/dist/sizzle'
   },
   shim: {
     angular: {
@@ -52,13 +52,13 @@ require.config({
         'angular'
       ],
       exports: 'angular.mock'
-    },
-    zrender: {
-      deps: [
-        'underscore'
-      ],
-      exports: 'zrender'
     }
+    //zrender: {
+    //  deps: [
+    //    'underscore'
+    //  ],
+    //  exports: 'zrender'
+    //}
   },
   priority: [
     'angular'
@@ -67,20 +67,19 @@ require.config({
 
   ]
 });
-
 //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
 window.name = 'NG_DEFER_BOOTSTRAP!';
-
 require([
-  'app',
   'angular',
+  'app',
   'angular-route',
   'angular-cookies',
   'angular-sanitize',
   'angular-resource',
   'jquery',
   'underscore'
-], function(app, angular, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
+], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
+  //angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, $, _
   'use strict';
   /* jshint ignore:start */
   var $html = angular.element(document.getElementsByTagName('html')[0]);

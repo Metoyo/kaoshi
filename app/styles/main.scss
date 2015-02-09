@@ -5,6 +5,16 @@ body {
   sans-serif;
   color: #000;
   font-size: 15px;
+  overflow-x: hidden;
+}
+.bg{
+  position: fixed;
+  background-color: #f0f0f0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
 }
 /*base css begin*/
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
@@ -1161,6 +1171,9 @@ label.checkbox{
 //认证样式
 .renzhengWrapper{
   position: relative;
+  width: 960px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
   em {
     font-weight: normal;
     font-size: 12px;
@@ -2825,15 +2838,6 @@ label.checkbox{
     }
   }
   .ks-chart-page{
-    .bg{
-      position: fixed;
-      background-color: #f2f2f2;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
     .summary{
       padding-right: 70px;
     }
@@ -2880,6 +2884,10 @@ label.checkbox{
       }
       .bj{
         background-color: #DFCC6D;
+      }
+      em{
+        font-size: 12px;
+        font-weight: normal;
       }
     }
     .chart{

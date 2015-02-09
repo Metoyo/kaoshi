@@ -29,7 +29,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.stepThree = false; //第三步的显示和隐藏
 
         /**
-         * 注册信息的第一步，个人详情信息
+         * 注册信息的第一步，个人详情信息//
          */
         $scope.personalInfo = {
           yonghuming: '',
