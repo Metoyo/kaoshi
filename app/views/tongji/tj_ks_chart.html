@@ -14,7 +14,12 @@
       </tr>
       <tr>
         <td>考试名称</td>
-        <td ng-bind="singleKaoShi.KAOSHI_MINGCHENG"></td>
+        <td>
+          <span ng-bind="singleKaoShi.KAOSHI_MINGCHENG"></span>
+          <a href="javascript:void(0)" class="pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </a>
+        </td>
       </tr>
       <tr class="success">
         <td>平均分数</td>
@@ -40,6 +45,7 @@
     </table>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">所选班级</h4>
+
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
@@ -55,6 +61,7 @@
             <p class="wp50 text-center up" ng-click="banJiPage('up')">
               <span class="glyphicon glyphicon-chevron-up"></span>
             </p>
+
             <p class="wp50 text-center down" ng-click="banJiPage('down')">
               <span class="glyphicon glyphicon-chevron-down"></span>
             </p>
@@ -69,6 +76,7 @@
   <div class="row">
     <div class="tj-ks-box wp48">
       <h4 class="title">班级平均分布</h4>
+
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>
@@ -76,6 +84,7 @@
     </div>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">考生成绩分布</h4>
+
       <div class="chart">
         <div id="chartPie" style="height:100%;width: 100%">
         </div>
@@ -85,6 +94,7 @@
   <div class="row">
     <div class="tj-ks-box wp48">
       <h4 class="title">分数与人数分布</h4>
+
       <div class="chart">
         <div id="chartLine" style="height:100%;width: 100%">
         </div>
@@ -94,7 +104,8 @@
       <h4 class="title">
         <span>考生名单</span>
         <button class="btn btn-primary pull-right mt5 mr5" ng-show="studentData.length"
-                ng-click="exportKsInfo(studentData)">导出考生信息</button>
+                ng-click="exportKsInfo(studentData)">导出考生信息
+        </button>
       </h4>
       <div class="chart">
         <div class="student-list">
@@ -128,6 +139,7 @@
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
       </h4>
+
       <div class="chart">
         <ul class="list-unstyled zsd-list">
           <li class="row">
@@ -146,12 +158,14 @@
             </div>
             <div class="col-sm-3">
               <p ng-bind="zsd.zsd_cont_all + '次'"></p>
+
               <p ng-bind="zsd.zsd_cont_bj  + '次'" ng-show="zsd.zsd_cont_bj"></p>
             </div>
             <div class="col-sm-6">
               <p class="pull-left">
                 <span class="zsd-all" ng-bind="zsd.zsd_dfl_all + '%'" style="width: {{zsd.zsd_dfl_all + '%'}}"></span>
               </p>
+
               <p class="pull-left" ng-show="zsd.zsd_dfl_bj">
                 <span class="zsd-bj" ng-bind="zsd.zsd_dfl_bj + '%'" style="width: {{zsd.zsd_dfl_bj + '%'}}"></span>
               </p>
@@ -167,6 +181,7 @@
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
       </h4>
+
       <div class="chart">
         <ul class="list-unstyled zsd-list">
           <li class="row">
@@ -185,12 +200,14 @@
             </div>
             <div class="col-sm-3">
               <p ng-bind="zsd.zsd_cont_all + '次'"></p>
+
               <p ng-bind="zsd.zsd_cont_bj  + '次'" ng-show="zsd.zsd_cont_bj"></p>
             </div>
             <div class="col-sm-6">
               <p class="pull-left">
                 <span class="zsd-all" ng-bind="zsd.zsd_dfl_all + '%'" style="width: {{zsd.zsd_dfl_all + '%'}}"></span>
               </p>
+
               <p class="pull-left" ng-show="zsd.zsd_dfl_bj">
                 <span class="zsd-bj" ng-bind="zsd.zsd_dfl_bj + '%'" style="width: {{zsd.zsd_dfl_bj + '%'}}"></span>
               </p>
@@ -202,3 +219,59 @@
   </div>
 </div>
 
+<!--考试选择-->
+<div class="popup-wrap">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10">
+      <button type="button" class="btn btn-danger pull-right mt5">关闭</button>
+    </div>
+    <div class="pwi-body plr10">
+      <table class="tj-table">
+        <tr>
+          <th>考试名称</th>
+          <th>试卷名称</th>
+          <th width="120px" class="text-center">考试人数</th>
+          <th width="120px" class="text-center">考试时间</th>
+        </tr>
+        <tr ng-repeat="ks in tjData">
+          <td>
+            <a href="javascript:void(0)"
+               ng-click="tjShowKaoShiChart(ks)"
+               ng-bind="ks.KAOSHI_MINGCHENG"></a>
+          </td>
+          <td>
+            <a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"
+               ng-click="tjShowStudentInfo(kssj.SHIJUAN_ID, 'sjId', 'ksList', kssj.SHIJUAN_MINGCHENG)"></a>
+          </td>
+          <td class="text-center" ng-bind="ks.KSRS"></td>
+          <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <ul class="pagination pagination-sm pull-right" ng-hide="!tjData">
+        <li ng-class="{disabled: currentPage == 1}">
+          <a href ng-click="tjPaging(1)">首页</a>
+        </li>
+        <li ng-class="{disabled: currentPage == 1}">
+          <a href
+             ng-click="tjPaging(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+            上一页
+          </a>
+        </li>
+        <li ng-repeat="pg in tjPages" ng-class="{active: currentPage == pg}">
+          <a href ng-click="tjPaging(pg)">{{pg}}</a>
+        </li>
+        <li ng-class="{disabled: currentPage == lastPageNum}">
+          <a href
+             ng-click="tjPaging(nextPg = currentPage < lastPageNum ? currentPage + 1 : lastPageNum)">
+            下一页
+          </a>
+        </li>
+        <li ng-class="{disabled: currentPage == lastPageNum}">
+          <a href ng-click="tjPaging(lastPageNum)">尾页</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

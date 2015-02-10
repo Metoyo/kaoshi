@@ -861,7 +861,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
            * 查询考场数据
            */
           $scope.getThisKaoChangPageData = function(pg){
-            $scope.loadingImgShow = true; //kaoChangList.html
+            $scope.loadingImgShow = true;
             var pgNum = pg - 1,
               kaochang_id,
               currentPage = pgNum ? pgNum : 0,

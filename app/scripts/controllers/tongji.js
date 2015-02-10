@@ -95,7 +95,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 显示考生首页
+         * 显示考生首页//
          */
         $scope.showKaoShengTjList = function(){
           $scope.tj_tabActive = 'kaoshengTj';
@@ -751,7 +751,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 班级列表分页//
+         * 班级列表分页
          */
         $scope.banJiPage = function(direction){
           if(direction == 'down'){
