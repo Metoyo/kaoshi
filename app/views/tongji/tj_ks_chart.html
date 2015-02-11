@@ -14,38 +14,37 @@
       </tr>
       <tr>
         <td>考试名称</td>
-        <td>
-          <span ng-bind="singleKaoShi.KAOSHI_MINGCHENG"></span>
-          <a href="javascript:void(0)" class="pull-right">
+        <td ng-init="showMoreKaoShi=false">
+          <span ng-bind="tjKaoShiInfo.ksname"></span>
+          <a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">
             <span class="glyphicon glyphicon-plus-sign"></span>
           </a>
         </td>
       </tr>
       <tr class="success">
         <td>平均分数</td>
-        <td ng-bind="singleKaoShi.ksAvgScore"></td>
+        <td ng-bind="tjKaoShiInfo.ksAvgScore"></td>
       </tr>
       <tr>
         <td>考试人数</td>
-        <td ng-bind="singleKaoShi.KSRS"></td>
+        <td ng-bind="tjKaoShiInfo.ksRenShu"></td>
       <tr>
       <tr class="warning">
         <td>考试时间</td>
-        <td ng-bind="singleKaoShi.KAISHISHIJIAN | myLocalDateWithWeek"></td>
+        <td ng-show="tjKaoShiInfo.kaikaodate" ng-bind="tjKaoShiInfo.kaikaodate | myLocalDateWithWeek"></td>
       </tr>
       <tr>
         <td>使用试卷</td>
         <td>
-          <span ng-if="singleKaoShi.LEIXING == 1">此处考试为随机试卷</span>
-          <label class="checkbox-inline" ng-if="singleKaoShi.LEIXING == 0" ng-repeat="sj in singleKaoShi.SHIJUAN">
-            <input type="checkbox" value="sj.SHIJUAN_ID" ng-if="singleKaoShi.sjNum > 1"> {{sj.SHIJUAN_MINGCHENG}}
+          <span ng-if="tjKaoShiInfo.leixing == 1">此处考试为随机试卷</span>
+          <label class="checkbox-inline" ng-if="tjKaoShiInfo.leixing == 0" ng-repeat="sj in tjKaoShiInfo.shijuan">
+            <input type="checkbox" value="sj.SHIJUAN_ID" ng-if="tjKaoShiInfo.sjNum > 1"> {{sj.SHIJUAN_MINGCHENG}}
           </label>
         </td>
       </tr>
     </table>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">所选班级</h4>
-
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
@@ -139,7 +138,6 @@
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
       </h4>
-
       <div class="chart">
         <ul class="list-unstyled zsd-list">
           <li class="row">
@@ -181,7 +179,6 @@
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
       </h4>
-
       <div class="chart">
         <ul class="list-unstyled zsd-list">
           <li class="row">
@@ -218,12 +215,12 @@
     </div>
   </div>
 </div>
-
 <!--考试选择-->
-<div class="popup-wrap">
+<div class="popup-wrap" ng-show="showMoreKaoShi">
   <div class="popup-wrap-inner">
-    <div class="pwi-header plr10">
-      <button type="button" class="btn btn-danger pull-right mt5">关闭</button>
+    <div class="pwi-header plr10 text-right">
+      <button type="button" class="btn btn-success mt5" ng-click="tjShowKaoShiChart(tjParas.selectedKaoShi);showMoreKaoShi=false">确定</button>
+      <button type="button" class="btn btn-danger mt5 ml10" ng-click="showMoreKaoShi=false">关闭</button>
     </div>
     <div class="pwi-body plr10">
       <table class="tj-table">
@@ -235,13 +232,10 @@
         </tr>
         <tr ng-repeat="ks in tjData">
           <td>
-            <a href="javascript:void(0)"
-               ng-click="tjShowKaoShiChart(ks)"
-               ng-bind="ks.KAOSHI_MINGCHENG"></a>
+            <input type="checkbox" ng-click="addKaoShiToTj($event, ks)"/> {{ks.KAOSHI_MINGCHENG}}
           </td>
           <td>
-            <a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"
-               ng-click="tjShowStudentInfo(kssj.SHIJUAN_ID, 'sjId', 'ksList', kssj.SHIJUAN_MINGCHENG)"></a>
+            <p class="m0" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></p>
           </td>
           <td class="text-center" ng-bind="ks.KSRS"></td>
           <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>

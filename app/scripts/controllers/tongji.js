@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         /**
          * 操作title
          */
-        $rootScope.isRenZheng = false; //判读页面是不是认证//
+        $rootScope.isRenZheng = false; //判读页面是不是认证
 
         /**
          * 声明变量
@@ -64,11 +64,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           }, //最后选中的班级
           allStudents: '',
           zsdOriginData: '', //统计——存放知识点原始数据的变量
-          zsdIdArr: ''
+          zsdIdArr: '',
+          selectedKaoShi: []//统计时存放已选择的考试
         };
 
         /**
-         * 显示考试统计列表
+         * 显示考试统计列表//
          */
         $scope.showKaoShiTjList = function(){
           tjKaoShiData = '';
@@ -95,7 +96,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 显示考生首页//
+         * 显示考生首页
          */
         $scope.showKaoShengTjList = function(){
           $scope.tj_tabActive = 'kaoshengTj';
@@ -534,8 +535,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                   },
                   data : [
                     [
-                      {name: '平均值起点', xAxis: -1, yAxis: $scope.singleKaoShi.ksAvgScore, value: $scope.singleKaoShi.ksAvgScore},
-                      {name: '平均值终点', xAxis: 1000, yAxis: $scope.singleKaoShi.ksAvgScore}
+                      {name: '平均值起点', xAxis: -1, yAxis: $scope.tjKaoShiInfo.ksAvgScore, value: $scope.tjKaoShiInfo.ksAvgScore},
+                      {name: '平均值终点', xAxis: 1000, yAxis: $scope.tjKaoShiInfo.ksAvgScore}
                     ]
                   ]
                 }
@@ -620,20 +621,25 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
               tjParaObj.lineBox.resize();
             }
           }, 200);
-          //function eConsole(param) {
-          //  var banJi = _.find($scope.singleKaoShi.BANJIs, function(bj){ return bj.bjName == param.name; });
-          //  $scope.tjParas.tjBjPgOn = Math.ceil(banJi.bjIdx / 5) - 1;
-          //  $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
-          //  $scope.tjByBanJi(banJi);
-          //}
-          //tjParaObj.barBox.on(echarts.config.EVENT.CLICK, eConsole);
         };
 
         /**
          * 显示考试统计的首页
          */
         $scope.tjShowKaoShiChart = function(ks){
+          $scope.tjKaoShiInfo = {
+            ksname: '',
+            ksAvgScore: 0,
+            ksRenShu: 0,
+            leixing: 0,
+            sjNum: 0,
+            kaikaodate: '',
+            shijuan: [],
+            banjis: []
+          };
           var queryKaoSheng, queryZsd,
+            isArr = _.isArray(ks), //判读传入的参数是否为数组
+            queryIds = [], //查询数据用到的ID
             totalScore = 0, //考试总分
             avgScore, //本次考试的平均分
             disByBanJi, //按班级分组obj
@@ -644,8 +650,29 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           $scope.tjZsdDataUd = '';
           $scope.tjZsdDataDu = '';
           $scope.tjParas.selectBanJi = '所有班级';
-          queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ks.KAOSHI_ID;
-          queryZsd = queryZsdBase + '&kaoshiid=' + ks.KAOSHI_ID;
+          if(isArr){
+            _.each(ks, function(item, idx, lst){
+              queryIds.push(item.KAOSHI_ID); //考试id
+              $scope.tjKaoShiInfo.ksname += item.KAOSHI_MINGCHENG + '；';
+              $scope.tjKaoShiInfo.ksRenShu += item.KSRS;
+              $scope.tjKaoShiInfo.banjis.push(item.BANJI);
+              $scope.tjKaoShiInfo.shijuan = _.union($scope.tjKaoShiInfo.shijuan, item.SHIJUAN);
+              if(item.LEIXING == 1){
+                $scope.tjKaoShiInfo.leixing = 1;
+              }
+            });
+          }
+          else{
+            queryIds.push(ks.KAOSHI_ID);
+            $scope.tjKaoShiInfo.ksname = ks.KAOSHI_MINGCHENG;
+            $scope.tjKaoShiInfo.ksRenShu = ks.KSRS;
+            $scope.tjKaoShiInfo.banjis = ks.BANJI;
+            $scope.tjKaoShiInfo.shijuan = ks.SHIJUAN;
+            $scope.tjKaoShiInfo.leixing = ks.LEIXING;
+            $scope.tjKaoShiInfo.kaikaodate = ks.KAISHISHIJIAN;
+          }
+          queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + queryIds.toString();
+          queryZsd = queryZsdBase + '&kaoshiid=' + queryIds.toString();
           //查询考生
           $http.get(queryKaoSheng).success(function(data){
             if(!data.error){
@@ -678,15 +705,14 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
               });
               avgScore = totalScore / banJiArray.length;
               if(avgScore == 0){
-                ks.ksAvgScore = 0;
+                $scope.tjKaoShiInfo.ksAvgScore = 0;
               }
               else{
-                ks.ksAvgScore = avgScore.toFixed(1);
+                $scope.tjKaoShiInfo.ksAvgScore = avgScore.toFixed(1);
               }
-              ks.sjNum = ks.SHIJUAN.length;
+              $scope.tjKaoShiInfo.sjNum = $scope.tjKaoShiInfo.shijuan.length;
               tjBarData = banJiArray;
-              ks.BANJIs = banJiArray;
-              $scope.singleKaoShi = ks;
+              $scope.tjKaoShiInfo.banjis = banJiArray;
               $scope.tjBanJi = banJiArray.slice(0, 5);
               $scope.tjParas.tjBjPgOn = 0;
               $scope.tjParas.tjBjPgLen = Math.ceil(banJiArray.length / 5);
@@ -735,7 +761,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             else{
               $scope.tjZsdDataUd = '';
               $scope.tjParas.zsdIdArr = '';
-              messageService.alertInfFun('err', data.error);
+              messageService.alertInfFun('err', zsdData.error);
             }
           });
           $scope.tj_tabActive = 'kaoshiTj';
@@ -751,13 +777,30 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
+         * 统计页面试卷多选，将试卷加入到数组
+         */
+        $scope.addKaoShiToTj = function(event, ks){
+          var isChecked = $(event.target).prop('checked');
+          if(isChecked){
+            $scope.tjParas.selectedKaoShi.push(ks);
+          }
+          else{
+            if($scope.tjParas.selectedKaoShi.length){
+              $scope.tjParas.selectedKaoShi = _.reject($scope.tjParas.selectedKaoShi, function(item){
+                return item.KAOSHI_ID == ks.KAOSHI_ID;
+              });
+            }
+          }
+        };
+
+        /**
          * 班级列表分页
          */
         $scope.banJiPage = function(direction){
           if(direction == 'down'){
             $scope.tjParas.tjBjPgOn ++;
             if($scope.tjParas.tjBjPgOn < $scope.tjParas.tjBjPgLen){
-              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
+              $scope.tjBanJi = $scope.tjKaoShiInfo.banjis.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
             }
             else{
               $scope.tjParas.tjBjPgOn = $scope.tjParas.tjBjPgLen - 1;
@@ -766,7 +809,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           else{
             $scope.tjParas.tjBjPgOn --;
             if($scope.tjParas.tjBjPgOn >= 0){
-              $scope.tjBanJi = $scope.singleKaoShi.BANJIs.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
+              $scope.tjBanJi = $scope.tjKaoShiInfo.banjis.slice($scope.tjParas.tjBjPgOn * 5, ($scope.tjParas.tjBjPgOn + 1) * 5);
             }
             else{
               $scope.tjParas.tjBjPgOn = 0;
@@ -775,7 +818,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 通过班级统计
+         * 通过班级统计//
          */
         $scope.tjByBanJi = function(bj){
           var addActiveFun;
