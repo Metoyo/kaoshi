@@ -25,6 +25,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token, //查询考生数据
           queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token, //查询带分数的知识点
           queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token, //查询题目数据
+          qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&xuehao=', //查询考试通过考生学号
           dataNumOfPerPage = 10, //每页显示多少条数据
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           pagesArr = [], //定义考试页码数组
@@ -65,7 +66,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           allStudents: '',
           zsdOriginData: '', //统计——存放知识点原始数据的变量
           zsdIdArr: '',
-          selectedKaoShi: []//统计时存放已选择的考试
+          selectedKaoShi: [], //统计时存放已选择的考试
+          studentUid: '' //存放考生UID的字段，用于考生统计
         };
 
         /**
@@ -818,7 +820,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 通过班级统计//
+         * 通过班级统计
          */
         $scope.tjByBanJi = function(bj){
           var addActiveFun;
@@ -883,6 +885,30 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                 $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = ((sumSgl / sumAll) * 100).toFixed(1);
               });
             }
+          }
+        };
+
+        /**
+         * 通过试卷统计
+         */
+        $scope.tjByShiJuan = function(){
+
+        };
+
+        /**
+         * 查询考试通过考生UID
+         */
+        $scope.qryKaoShiByXueHao = function(){
+          if($scope.tjParas.studentUid){
+            var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + $scope.tjParas.studentUid;
+            $http.get(qryKaoShiByXueHaoUrl).success(function(data){
+              if(data && data.length > 0){
+                $scope.kaoshiData = data;
+              }
+              else{
+                messageService.alertInfFun('err', data.error || '没有符合的数据！');
+              }
+            });
           }
         };
 

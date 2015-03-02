@@ -13,8 +13,8 @@ require.config({
     jquery: '../../bower_components/jquery/dist/jquery.min',
     underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
-    //sizzle: '../../bower_components/sizzle/dist/sizzle'
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
+    sizzle: '../../bower_components/sizzle/dist/sizzle'
   },
   shim: {
     angular: {
@@ -53,12 +53,6 @@ require.config({
       ],
       exports: 'angular.mock'
     }
-    //zrender: {
-    //  deps: [
-    //    'underscore'
-    //  ],
-    //  exports: 'zrender'
-    //}
   },
   priority: [
     'angular'

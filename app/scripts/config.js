@@ -7,11 +7,11 @@ define( "config", [], function () {
     apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
     apiurl_tj_ori: "http://test.taianting.com:4300/",//统计的原始url
 
-//    apiurl_rz: "http://www.yunjiaoshou.com:3000/api/",//认证的url
-//    apiurl_mt: "http://www.yunjiaoshou.com:4000/api/",//命题的url
-//    apiurl_kw: "http://www.yunjiaoshou.com:4100/api/",//考务的url
-//    apiurl_tj: "http://www.yunjiaoshou.com:4300/api/",//统计的url
-//    apiurl_tj_ori: "http://www.yunjiaoshou.com:4300/",//统计的原始url
+    //apiurl_rz: "http://www.yunjiaoshou.com:3000/api/",//认证的url
+    //apiurl_mt: "http://www.yunjiaoshou.com:4000/api/",//命题的url
+    //apiurl_kw: "http://www.yunjiaoshou.com:4100/api/",//考务的url
+    //apiurl_tj: "http://www.yunjiaoshou.com:4300/api/",//统计的url
+    //apiurl_tj_ori: "http://www.yunjiaoshou.com:4300/",//统计的原始url
 
     //apiurl_rz: "/renzheng/",//认证的url
     //apiurl_mt: "/mingti/",//命题的url

@@ -13,9 +13,10 @@
         </th>
       </tr>
       <tr>
-        <td>考试名称</td>
+        <td width="20%">考试名称</td>
         <td ng-init="showMoreKaoShi=false">
-          <span ng-bind="tjKaoShiInfo.ksname"></span>
+          <div ng-bind="tjKaoShiInfo.ksname">
+          </div>
           <a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">
             <span class="glyphicon glyphicon-plus-sign"></span>
           </a>
@@ -35,11 +36,17 @@
       </tr>
       <tr>
         <td>使用试卷</td>
-        <td>
+        <td ng-init="showMoreShiJuan=false">
           <span ng-if="tjKaoShiInfo.leixing == 1">此处考试为随机试卷</span>
-          <label class="checkbox-inline" ng-if="tjKaoShiInfo.leixing == 0" ng-repeat="sj in tjKaoShiInfo.shijuan">
-            <input type="checkbox" value="sj.SHIJUAN_ID" ng-if="tjKaoShiInfo.sjNum > 1"> {{sj.SHIJUAN_MINGCHENG}}
-          </label>
+          <span ng-if="tjKaoShiInfo.leixing == 0" ng-bind="tjKaoShiInfo.shijuan[0].SHIJUAN_MINGCHENG"></span>
+          <!--<label class="checkbox-inline" ng-if="">-->
+            <!--<input type="checkbox" value="sj.SHIJUAN_ID" ng-if="tjKaoShiInfo.sjNum > 1">-->
+            <!--{{tjKaoShiInfo.shijuan[0].SHIJUAN_MINGCHENG}}-->
+          <!--</label>-->
+          <a href="javascript:void(0)" class="pull-right" ng-show="tjKaoShiInfo.sjNum > 1"
+             ng-click="showMoreShiJuan=true">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </a>
         </td>
       </tr>
     </table>
@@ -60,7 +67,6 @@
             <p class="wp50 text-center up" ng-click="banJiPage('up')">
               <span class="glyphicon glyphicon-chevron-up"></span>
             </p>
-
             <p class="wp50 text-center down" ng-click="banJiPage('down')">
               <span class="glyphicon glyphicon-chevron-down"></span>
             </p>
@@ -75,7 +81,6 @@
   <div class="row">
     <div class="tj-ks-box wp48">
       <h4 class="title">班级平均分布</h4>
-
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>
@@ -93,7 +98,6 @@
   <div class="row">
     <div class="tj-ks-box wp48">
       <h4 class="title">分数与人数分布</h4>
-
       <div class="chart">
         <div id="chartLine" style="height:100%;width: 100%">
         </div>
@@ -266,6 +270,21 @@
           <a href ng-click="tjPaging(lastPageNum)">尾页</a>
         </li>
       </ul>
+    </div>
+  </div>
+</div>
+<!--试卷选择-->
+<div class="popup-wrap" ng-show="showMoreShiJuan">
+  <div class="popup-wrap-inner no-header">
+    <div class="pwi-body plr10">
+      <label class="checkbox-inline" ng-repeat="sj in tjKaoShiInfo.shijuan">
+        <input type="checkbox" value="sj.SHIJUAN_ID" checked>
+        {{sj.SHIJUAN_MINGCHENG}}
+      </label>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-danger mt5" ng-click="showMoreShiJuan=false">关闭</button>
+      <button type="button" class="btn btn-success mt5 ml10" ng-click="tjByShiJuan();showMoreKaoShi=false">确定</button>
     </div>
   </div>
 </div>
