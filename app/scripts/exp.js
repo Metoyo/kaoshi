@@ -278,7 +278,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         //  }
         //  $scope.tjItemName = tjName;
         //  $scope.isTjDetailShow = true;
-        //  $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
+        //  $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
         //};
 
         /**
@@ -388,7 +388,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         //  });
         //  $scope.tjItemName = tjNamePara;
         //  $scope.isTjDetailShow = true;
-        //  $scope.tjSubTpl = 'views/tongji/tj_ks_detail.html';
+        //  $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
         //};
 
         /**

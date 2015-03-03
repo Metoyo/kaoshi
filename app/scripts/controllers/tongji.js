@@ -1,8 +1,8 @@
 define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, angular, config, charts) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
-      function ($rootScope, $scope, $http, $timeout, messageService) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService', 'DataService', '$q',
+      function ($rootScope, $scope, $http, $timeout, messageService, DataService, $q) {
         /**
          * 操作title
          */
@@ -71,7 +71,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         };
 
         /**
-         * 显示考试统计列表//
+         * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
           tjKaoShiData = '';
@@ -94,6 +94,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             }
           });
           $scope.isTjDetailShow = false;
+          $scope.studentData = '';
           $scope.tjSubTpl = 'views/tongji/tj_ks.html';
         };
 
@@ -102,7 +103,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
          */
         $scope.showKaoShengTjList = function(){
           $scope.tj_tabActive = 'kaoshengTj';
+          $scope.studentData = '';
+          $scope.tjKaoShiData = '';
           $scope.tjSubTpl = 'views/tongji/tj_student.html';
+          $scope.tjThirdTpl = 'views/tongji/tj_stud_sub.html';
         };
 
         /**
@@ -340,54 +344,57 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         /**
          * 作答重现
          */
-        $scope.zuoDaReappear = function(ksId){
-          var answerReappearUrl, dataDis, tmVal,
+        $scope.zuoDaReappear = function(studId, examId){
+          var answerReappearUrl = answerReappearBaseUrl,
+            dataDis, tmVal,
             finaData = {
               sj_name: '',
               sj_tm: []
             };
-          if(ksId){
-            answerReappearUrl = answerReappearBaseUrl + '&kaoshengid=' + ksId;
-            if($scope.tjParas.zdcxKaoShiId){
-              answerReappearUrl += '&kaoshiid=' + $scope.tjParas.zdcxKaoShiId;
-              $http.get(answerReappearUrl).success(function(data){
-                if(data && data.length > 0){
-                  finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-                  dataDis = _.groupBy(data, 'TIXING_ID');
-                  _.each(dataDis, function(val, key, list){
-                    var dObj = {
-                      tx_id: key,
-                      tx_name: val[0].DATIMINGCHENG,
-                      tm: ''
-                    };
-                    tmVal = _.each(val, function(tm, idx, lst){
-                      if(typeof(tm.TIGAN) == 'string'){
-                        tm.TIGAN = JSON.parse(tm.TIGAN);
-                      }
-                      messageService.formatDaAn(tm);
-                    });
-                    dObj.tm = tmVal;
-                    finaData.sj_tm.push(dObj);
-                  });
-                  $scope.kaoShengShiJuan = finaData;
-                  $scope.showKaoShengShiJuan = false;
-                }
-                else{
-                  messageService.alertInfFun('err', data.error || '没有数据！');
-                }
-              });
-            }
+          if(studId){
+            answerReappearUrl += '&kaoshengid=' + studId;
           }
           else{
-            messageService.alertInfFun('pmt', '缺少考生ID');
+            messageService.alertInfFun('pmt', '缺少考生UID');
+            return;
           }
+          if(examId){
+            answerReappearUrl += '&kaoshiid=' + examId;
+          }
+          else{
+            messageService.alertInfFun('pmt', '缺少考试ID');
+            return;
+          }
+          DataService.getData(answerReappearUrl).then(function(data) {
+            if(data && data.length > 0){
+              finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
+              dataDis = _.groupBy(data, 'TIXING_ID');
+              _.each(dataDis, function(val, key, list){
+                var dObj = {
+                  tx_id: key,
+                  tx_name: val[0].DATIMINGCHENG,
+                  tm: ''
+                };
+                tmVal = _.each(val, function(tm, idx, lst){
+                  if(typeof(tm.TIGAN) == 'string'){
+                    tm.TIGAN = JSON.parse(tm.TIGAN);
+                  }
+                  messageService.formatDaAn(tm);
+                });
+                dObj.tm = tmVal;
+                finaData.sj_tm.push(dObj);
+              });
+              $scope.showKaoShengList = false;
+              $scope.kaoShengShiJuan = finaData;
+            }
+          });
         };
 
         /**
-         *关闭作答重现试卷层
+         * 关闭作答重新内容
          */
         $scope.closeZuoDaReappear = function(){
-          $scope.showKaoShengShiJuan = true;
+          $scope.showKaoShengList = true;
         };
 
         /**
@@ -676,8 +683,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + queryIds.toString();
           queryZsd = queryZsdBase + '&kaoshiid=' + queryIds.toString();
           //查询考生
-          $http.get(queryKaoSheng).success(function(data){
-            if(!data.error){
+          DataService.getData(queryKaoSheng).then(function(data) {
+            if(data && data.length > 0){
               $scope.studentData = data;
               $scope.tjParas.allStudents = data;
               /* 饼图用到的数据，全部班级 */
@@ -728,11 +735,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             else{
               $scope.studentData = '';
               $scope.tjParas.allStudents = '';
-              messageService.alertInfFun('err', data.error);
+              //messageService.alertInfFun('err', data.error);
             }
           });
           //查询知识点
-          $http.get(queryZsd).success(function(zsdData){
+          DataService.getData(queryZsd).then(function(zsdData) {
             var disByZsd, sumAll, sumSgl;
             if(zsdData && zsdData.length > 0){
               $scope.tjParas.zsdOriginData = zsdData;
@@ -763,7 +770,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             else{
               $scope.tjZsdDataUd = '';
               $scope.tjParas.zsdIdArr = '';
-              messageService.alertInfFun('err', zsdData.error);
             }
           });
           $scope.tj_tabActive = 'kaoshiTj';
@@ -901,14 +907,35 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
         $scope.qryKaoShiByXueHao = function(){
           if($scope.tjParas.studentUid){
             var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + $scope.tjParas.studentUid;
-            $http.get(qryKaoShiByXueHaoUrl).success(function(data){
+            DataService.getData(qryKaoShiByXueHaoUrl).then(function(data) {
               if(data && data.length > 0){
-                $scope.kaoshiData = data;
-              }
-              else{
-                messageService.alertInfFun('err', data.error || '没有符合的数据！');
+                $scope.tjKaoShiData = data;
+                $scope.studentData = '';
+                $scope.showKaoShengList = true;
+                $scope.tjThirdTpl = 'views/tongji/tj_stud_detail.html';
               }
             });
+          }
+        };
+
+        /**
+         * 由考试查询考生
+         */
+        $scope.qryKaoSheng = function(id){
+          if(id){
+            var qryKaoShengUrl = queryKaoShengBase + '&kaoshiid=' + id;
+            $scope.tjParas.zdcxKaoShiId = id;
+            DataService.getData(qryKaoShengUrl).then(function(data) {
+              if(data && data.length > 0) {
+                $scope.studentData = data;
+                $scope.tjKaoShiData = '';
+                $scope.showKaoShengList = true;
+                $scope.tjThirdTpl = 'views/tongji/tj_stud_detail.html';
+              }
+            });
+          }
+          else{
+            messageService.alertInfFun('pmt', '缺少考试ID');
           }
         };
 

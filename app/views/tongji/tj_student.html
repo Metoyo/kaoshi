@@ -7,43 +7,11 @@
     </li>
     <li ng-class="{active: tj_tabActive == 'kaoshengTj'}">
       <a href="javascript:void(0)" ng-click="showKaoShengTjList()">
-        考生统计
+        作答重现
       </a>
     </li>
   </ul>
 </div>
-<div class="tab-content">
-  <div class="form-inline tj-stu">
-    <div class="form-group">
-      <p class="form-control-static">学号：</p>
-    </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="学号" ng-model="tjParas.studentUid">
-    </div>
-    <button type="button" class="btn btn-success" ng-disabled="!tjParas.studentUid" ng-click="qryKaoShiByXueHao()">
-      查询
-    </button>
-  </div>
-</div>
+<div class="tab-content" ng-include="tjThirdTpl">
 
-<!--<table class="tj-table">-->
-    <!--<tr>-->
-        <!--<th>考试名称</th>-->
-        <!--<th>试卷名称</th>-->
-        <!--<th width="120px" class="text-center">考试人数</th>-->
-        <!--<th width="120px" class="text-center">考试时间</th>-->
-    <!--</tr>-->
-    <!--<tr ng-repeat="ks in tjData">-->
-        <!--<td>-->
-            <!--<a href="javascript:void(0)"-->
-               <!--ng-click="tjShowStudentInfo(ks.KAOSHI_ID, 'ksId', 'ksList', ks.KAOSHI_MINGCHENG, ks.SHIJUAN)"-->
-               <!--ng-bind="ks.KAOSHI_MINGCHENG"></a>-->
-        <!--</td>-->
-        <!--<td>-->
-            <!--<a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"-->
-               <!--ng-click="tjShowStudentInfo(kssj.SHIJUAN_ID, 'sjId', 'ksList', kssj.SHIJUAN_MINGCHENG)"></a>-->
-        <!--</td>-->
-        <!--<td class="text-center" ng-bind="ks.KSRS"></td>-->
-        <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>-->
-    <!--</tr>-->
-<!--</table>-->
+</div>
