@@ -74,25 +74,24 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
-          tjKaoShiData = '';
-          pagesArr = [];
-          tjNeedData = '';
-          $scope.tj_tabActive = 'kaoshiTj';
-          $http.get(queryKaoShi).success(function(data){
-            if(!data.error){
-              tjNeedData = data;
-              tjKaoShiData = data;
-              lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
-              $scope.lastPageNum = lastPage;
-              for(var i = 1; i <= lastPage; i++){
-                pagesArr.push(i);
+          if(!($scope.tjData && $scope.tjData.length > 0)){
+            tjKaoShiData = '';
+            pagesArr = [];
+            tjNeedData = '';
+            DataService.getData(queryKaoShi).then(function(data) {
+              if(data && data.length > 0){
+                tjNeedData = data;
+                tjKaoShiData = data;
+                lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
+                $scope.lastPageNum = lastPage;
+                for(var i = 1; i <= lastPage; i++){
+                  pagesArr.push(i);
+                }
+                $scope.tjPaging();
               }
-              $scope.tjPaging();
-            }
-            else{
-              messageService.alertInfFun('err', data.error);
-            }
-          });
+            });
+          }
+          $scope.tj_tabActive = 'kaoshiTj';
           $scope.isTjDetailShow = false;
           $scope.studentData = '';
           $scope.tjSubTpl = 'views/tongji/tj_ks.html';
@@ -106,7 +105,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           $scope.studentData = '';
           $scope.tjKaoShiData = '';
           $scope.tjSubTpl = 'views/tongji/tj_student.html';
-          $scope.tjThirdTpl = 'views/tongji/tj_stud_sub.html';
         };
 
         /**
@@ -912,7 +910,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                 $scope.tjKaoShiData = data;
                 $scope.studentData = '';
                 $scope.showKaoShengList = true;
-                $scope.tjThirdTpl = 'views/tongji/tj_stud_detail.html';
+                $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
               }
             });
           }
@@ -930,7 +928,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                 $scope.studentData = data;
                 $scope.tjKaoShiData = '';
                 $scope.showKaoShengList = true;
-                $scope.tjThirdTpl = 'views/tongji/tj_stud_detail.html';
+                $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
               }
             });
           }
