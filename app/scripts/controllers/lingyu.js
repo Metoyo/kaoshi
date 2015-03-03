@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.LingyuCtrl', [])
-    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', 'urlRedirect', '$cookieStore', 'messageService', //11
-      function ($rootScope, $scope, $location, urlRedirect, $cookieStore, messageService) {
+    .controller('LingyuCtrl', ['$rootScope', '$scope', '$location', 'urlRedirect', '$cookieStore', 'DataService', //11
+      function ($rootScope, $scope, $location, urlRedirect, $cookieStore, DataService) {
         /**
          * 定义变量和初始化
          */
@@ -55,7 +55,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             urlRedirect.goTo(currentPath, jsUrl);
           }
           else{
-            messageService.alertInfFun('err', ly.LINGYUMINGCHENG + '科目下没有权限，或者您的权限在审批中！');
+            DataService.alertInfFun('err', ly.LINGYUMINGCHENG + '科目下没有权限，或者您的权限在审批中！');
           }
         }
 

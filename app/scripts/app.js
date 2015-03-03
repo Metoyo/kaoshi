@@ -1,10 +1,10 @@
 /*jshint unused: vars */
 define([
-  'controllers/renzheng',
-  'controllers/nav',
   'angular',
   'config',
   'services/urlredirect',
+  'controllers/renzheng',
+  'controllers/nav',
   'controllers/mingti',
   'controllers/dagang',
   'controllers/user',
@@ -17,27 +17,23 @@ define([
   'filters/mylocaldatewithweek',
   'filters/examstatus',
   'filters/outtigan',
-  'services/myfileupload',
   'directives/nandustar',
   'directives/passwordverify',
   'directives/bnslideshow',
   'directives/hoverslide',
   'directives/fileupload',
   'directives/repeatdone',
-  'services/messageservice',
   'services/dataservice'
-], function (RenzhengCtrl, NavCtrl, angular, config, UrlredirectService, MingtiCtrl, DagangCtrl, UserCtrl,
+], function (angular, config, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl,
              RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
-             ExamstatusFilter, OuttiganFilter, MyfileuploadService, NandustarDirective,
-             PasswordverifyDirective, BnslideshowDirective, HoverslideDirective, FileuploadDirective,
-             RepeatdoneDirective, MessageserviceService, DataServiceService) {
+             ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
+             HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
 
   return angular.module('kaoshiApp', [
-    'kaoshiApp.services.Urlredirect',
-    'kaoshiApp.services.Myfileupload',
     'kaoshiApp.controllers.RenzhengCtrl',
     'kaoshiApp.controllers.NavCtrl',
+    'kaoshiApp.services.Urlredirect',
     'kaoshiApp.controllers.MingtiCtrl',
     'kaoshiApp.controllers.DagangCtrl',
     'kaoshiApp.controllers.UserCtrl',
@@ -56,7 +52,6 @@ define([
     'kaoshiApp.directives.Bnslideshow',
     'kaoshiApp.directives.Nandustar',
     'kaoshiApp.directives.Passwordverify',
-    'kaoshiApp.services.Messageservice',
     'kaoshiApp.services.DataService',
     /*angJSDeps*/
     'ngCookies',

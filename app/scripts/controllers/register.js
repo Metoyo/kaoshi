@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
-    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'messageService',
-      function ($rootScope, $scope, $location, $http, urlRedirect, messageService) {
+    .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'DataService',
+      function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
 
         var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
             apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
@@ -123,7 +123,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //            });
           }
           else{
-            messageService.alertInfFun('err', '没用相关机构！');
+            DataService.alertInfFun('err', '没用相关机构！');
           }
         });
 
@@ -142,7 +142,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             else{
               $scope.jigou_list = '';
               $scope.lingyu_list = ''; //重置领域
-              messageService.alertInfFun('err', '没有相关机构！');
+              DataService.alertInfFun('err', '没有相关机构！');
             }
           });
         };
@@ -170,7 +170,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
             else{
               $scope.lingyu_list = '';
-              messageService.alertInfFun('err', '没有相关领域！');
+              DataService.alertInfFun('err', '没有相关领域！');
             }
           });
         };
@@ -194,7 +194,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $scope.kemu_list = '';
                   $scope.keMuSelectBox = false;
                   $scope.keMuListLengthExist = false;
-                  messageService.alertInfFun('err', '没有对应的科目！');
+                  DataService.alertInfFun('err', '没有对应的科目！');
                 }
               });
             }
@@ -205,7 +205,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             }
           }
           else{
-            messageService.alertInfFun('pmt', '机构ID不能为空！');
+            DataService.alertInfFun('pmt', '机构ID不能为空！');
           }
         };
 
@@ -217,7 +217,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.juese_list = data;
           }
           else{
-            messageService.alertInfFun('err', '没有对应的角色！');
+            DataService.alertInfFun('err', '没有对应的角色！');
           }
         });
 
@@ -330,13 +330,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 //          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
-              messageService.alertInfFun('suc', '提交成功！');
+              DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
-              messageService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', data.error);
             }
           });
         };

@@ -2,8 +2,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
-    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService',
-      function ($rootScope, $scope, $http, $timeout, messageService) {
+    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
+      function ($rootScope, $scope, $http, $timeout, DataService) {
         //声明变量
         var userInfo = $rootScope.session.userInfo,
           info = $rootScope.session.info,
@@ -60,7 +60,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.daGangParam.defaultDaGangId = data[0].ZHISHIDAGANG_ID;
             }
             else{
-              messageService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.err);
             }
           });
         };
@@ -76,7 +76,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.publicZsdgList = data;
             }
             else{
-              messageService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.err);
               $scope.publicZsdgList = [];
             }
           });
@@ -93,7 +93,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.privateZsdgList = data;
             }
             else{
-              messageService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.err);
               $scope.privateZsdgList = [];
             }
           });
@@ -143,7 +143,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               }
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                messageService.alertInfFun('pmt', '此领域下没有此类型的知识点！');
+                DataService.alertInfFun('pmt', '此领域下没有此类型的知识点！');
                 publicKnowledgeData = '';
               }
             });
@@ -169,7 +169,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           }
           if(lx == 2){
             if(!$scope.privateZsdgList.length){
-              messageService.alertInfFun('pmt', '没有大纲，请新建一个！');
+              DataService.alertInfFun('pmt', '没有大纲，请新建一个！');
             }
             $scope.dgTpl = 'views/dagang/daGangPrivate.html';
             $scope.isPrivateDg = true;
@@ -221,7 +221,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = '';
                 $scope.publicKnowledge = publicKnowledgeData;
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
                 $scope.prDgBtnDisabled = true;
               }
             });
@@ -251,7 +251,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               else{
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePb = '';
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
               }
             });
           }
@@ -276,10 +276,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               getMoRenDaGangFun();
               getPubDaGangListFun();
               getPriDaGangListFun();
-              messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
+              DataService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
             }
             else{
-              messageService.alertInfFun('suc', '将此大纲设置为默认大纲的操作失败！');
+              DataService.alertInfFun('suc', '将此大纲设置为默认大纲的操作失败！');
             }
           });
         };
@@ -351,13 +351,13 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                   $scope.daGangParam.selected_dg = '';
                 }
                 else{
-                  messageService.alertInfFun('err', result.error);
+                  DataService.alertInfFun('err', result.error);
                 }
               });
             }
           }
           else{
-            messageService.alertInfFun('pmt', '请选择要删除的大纲！');
+            DataService.alertInfFun('pmt', '请选择要删除的大纲！');
           }
           $scope.prDgBtnDisabled = true;
         };
@@ -432,7 +432,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.publicKnowledge.splice(idx, 1);
           }
           else{
-            messageService.alertInfFun('pmt', '请选择要输入的目标！');
+            DataService.alertInfFun('pmt', '请选择要输入的目标！');
           }
         };
 
@@ -506,7 +506,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 }
                 else{
                   $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
-                  messageService.alertInfFun('err', '修改大纲失败！');
+                  DataService.alertInfFun('err', '修改大纲失败！');
                   $scope.prDgBtnDisabled = true;
                   $scope.prDgBtnDisabled = false;
                 }
@@ -514,13 +514,13 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
             else{
               $scope.loadingImgShow = false; //rz_setDaGang.html
-              messageService.alertInfFun('pmt', '知识点名称不能为空！');
+              DataService.alertInfFun('pmt', '知识点名称不能为空！');
               $scope.prDgBtnDisabled = false;
             }
           }
           else{
             $scope.loadingImgShow = false; //rz_setDaGang.html
-            messageService.alertInfFun('err', '请选择或新建一个大纲！');
+            DataService.alertInfFun('err', '请选择或新建一个大纲！');
             $scope.prDgBtnDisabled = false;
           }
         };
@@ -597,20 +597,20 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             saveAdDgData.shuju.JIEDIAN[0].ZHISHIDIANMINGCHENG = $scope.daGangParam.dgSaveAsName;
           }
           else{
-            messageService.alertInfFun('pmt', '亲给新大纲起一个名字！');
+            DataService.alertInfFun('pmt', '亲给新大纲起一个名字！');
           }
           if(saveAdDgData.shuju.ZHISHIDAGANGMINGCHENG && saveAdDgData.shuju.LEIXING){
             $http.post(submitDataUrl, saveAdDgData).success(function(result) {
               if(result.result){
                 $scope.daGangParam.showDaGangAsNew = false;
-                messageService.alertInfFun('suc', '大纲另存为成功！');
+                DataService.alertInfFun('suc', '大纲另存为成功！');
                 $scope.daGangParam.dgSaveAsName = '';
                 getMoRenDaGangFun();
                 getPubDaGangListFun();
                 getPriDaGangListFun();
               }
               else{
-                messageService.alertInfFun('err', result.error);
+                DataService.alertInfFun('err', result.error);
               }
             });
           }

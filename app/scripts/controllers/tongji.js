@@ -1,8 +1,8 @@
 define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, angular, config, charts) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'messageService', 'DataService', '$q',
-      function ($rootScope, $scope, $http, $timeout, messageService, DataService, $q) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
+      function ($rootScope, $scope, $http, $timeout, DataService) {
         /**
          * 操作title
          */
@@ -184,7 +184,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
               $scope.tjTiMuDetail = data;
             }
             else{
-              messageService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', data.error);
             }
           });
           $scope.tjItemName = tjName;
@@ -353,14 +353,14 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             answerReappearUrl += '&kaoshengid=' + studId;
           }
           else{
-            messageService.alertInfFun('pmt', '缺少考生UID');
+            DataService.alertInfFun('pmt', '缺少考生UID');
             return;
           }
           if(examId){
             answerReappearUrl += '&kaoshiid=' + examId;
           }
           else{
-            messageService.alertInfFun('pmt', '缺少考试ID');
+            DataService.alertInfFun('pmt', '缺少考试ID');
             return;
           }
           DataService.getData(answerReappearUrl).then(function(data) {
@@ -377,7 +377,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                   if(typeof(tm.TIGAN) == 'string'){
                     tm.TIGAN = JSON.parse(tm.TIGAN);
                   }
-                  messageService.formatDaAn(tm);
+                  DataService.formatDaAn(tm);
                 });
                 dObj.tm = tmVal;
                 finaData.sj_tm.push(dObj);
@@ -733,7 +733,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             else{
               $scope.studentData = '';
               $scope.tjParas.allStudents = '';
-              //messageService.alertInfFun('err', data.error);
+              //DataService.alertInfFun('err', data.error);
             }
           });
           //查询知识点
@@ -933,7 +933,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             });
           }
           else{
-            messageService.alertInfFun('pmt', '缺少考试ID');
+            DataService.alertInfFun('pmt', '缺少考试ID');
           }
         };
 

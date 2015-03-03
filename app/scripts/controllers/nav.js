@@ -2,8 +2,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
-    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http', 'messageService',
-      function ($rootScope, $scope, $location, $http, messageService) {
+    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService',
+      function ($rootScope, $scope, $location, $http, DataService) {
         /**
          * 定义变量
          */
@@ -121,7 +121,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 }
                 else{
                   $scope.lingYuList = '';
-                  messageService.alertInfFun('err', '没有相关领域！');
+                  DataService.alertInfFun('err', '没有相关领域！');
                 }
               });
               //查询角色的代码
@@ -159,7 +159,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
               else{
                 $scope.kemu_list = '';
-                messageService.alertInfFun('err', '没有对应的科目！');
+                DataService.alertInfFun('err', '没有对应的科目！');
               }
             });
           }
@@ -248,10 +248,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           newLingYuDate.JUESE = select_juese;
           $http.post(alterYongHu, newLingYuDate).success(function(data){
             if(data.result){
-              messageService.alertInfFun('suc', '成功添加新领域添加！');
+              DataService.alertInfFun('suc', '成功添加新领域添加！');
             }
             else{
-              messageService.alertInfFun('err', '修改失败！错误信息为：' + data.error);
+              DataService.alertInfFun('err', '修改失败！错误信息为：' + data.error);
             }
           });
         };
@@ -289,7 +289,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 退出程序
          */
         $scope.signOut = function(){
-          messageService.logout();
+          DataService.logout();
         };
     }]);
 });

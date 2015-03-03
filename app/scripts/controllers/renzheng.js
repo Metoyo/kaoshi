@@ -3,8 +3,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
     .controller('RenzhengCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$cookieStore',
-      'messageService', '$routeParams', '$timeout',
-      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, messageService, $routeParams,
+      'DataService', '$routeParams', '$timeout',
+      function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, DataService, $routeParams,
                 $timeout) {
 
         var baseRzAPIUrl = config.apiurl_rz,
@@ -164,11 +164,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                       $cookieStore.put('lingyuCk', lingyuCookie);
                     }
                     else{
-                      messageService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                      DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                     }
                   }
                   else{
-                    messageService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                    DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                   }
                 });
               }
@@ -189,7 +189,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 $scope.rzParams.sendEmailSuccess = true;
               }
               else{
-                messageService.alertInfFun('err', data.error)
+                DataService.alertInfFun('err', data.error)
               }
             });
           }

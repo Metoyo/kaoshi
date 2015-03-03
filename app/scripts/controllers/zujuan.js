@@ -3,8 +3,8 @@ define(['jquery', 'underscore', 'angular', 'config'],
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
-        'messageService',
-        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout, messageService) {
+        'DataService',
+        function ($rootScope, $scope, $location, $http, urlRedirect, $q, $timeout, DataService) {
           /**
            * 操作title
            */
@@ -235,17 +235,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       _.each(zsddata, _do);
                     }
                     else{
-                      messageService.alertInfFun('err', zsddata.error);
+                      DataService.alertInfFun('err', zsddata.error);
                     }
                   });
                 }
                 else{
-                  messageService.alertInfFun('err', mrDg.err);
+                  DataService.alertInfFun('err', mrDg.err);
                 }
               });
             }
             else{
-              messageService.alertInfFun('err', '没用相对应的知识大纲!');
+              DataService.alertInfFun('err', '没用相对应的知识大纲!');
             }
           });
 
@@ -270,7 +270,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               kmtxListLength = kmtx.length; //科目题型的长度
             }
             else{
-              messageService.alertInfFun('err', '获取查询科目题型失败！');
+              DataService.alertInfFun('err', '获取查询科目题型失败！');
             }
           });
 
@@ -304,7 +304,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.dgListBox = true;
               }
               else{
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
               }
             });
           };
@@ -512,7 +512,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                         else{
                           $scope.chuTiRens = [];
                           $scope.timudetails = null;
-                          messageService.alertInfFun('err', '查询创建人名称失败！'); //
+                          DataService.alertInfFun('err', '查询创建人名称失败！'); //
                           $scope.loadingImgShow = false; //testList.html loading
                         }
                       });
@@ -530,13 +530,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $scope.pages = [];
                     $scope.timudetails = '';
                     $scope.testListId = [];
-                    messageService.alertInfFun('err', '没有相应的题目！'); //
+                    DataService.alertInfFun('err', '没有相应的题目！'); //
                     $scope.loadingImgShow = false; //testList.html loading
                   }
                 });
               }
               else{
-                messageService.alertInfFun('err', '没有题库！'); //
+                DataService.alertInfFun('err', '没有题库！'); //
                 $scope.loadingImgShow = false; //testList.html loading
               }
             });
@@ -594,7 +594,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 timudetails = data;
               }
               else{
-                messageService.alertInfFun('err', '没有相关的题目！');
+                DataService.alertInfFun('err', '没有相关的题目！');
                 $scope.loadingImgShow = false; //zj_testList.html
               }
             })
@@ -609,7 +609,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.getThisPageData(goToPage);
             }
             else{
-              messageService.alertInfFun('pmt', '请输入正确的跳转的页码！');
+              DataService.alertInfFun('pmt', '请输入正确的跳转的页码！');
             }
           };
 
@@ -635,7 +635,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.getThisPageData();
             }
             else{
-              messageService.alertInfFun('pmt', '请输入要查询的题目ID！');
+              DataService.alertInfFun('pmt', '请输入要查询的题目ID！');
             }
           };
 
@@ -716,7 +716,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 deferred.resolve();
               }
               else{
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
                 deferred.reject();
               }
             });
@@ -918,13 +918,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     else{
                       $scope.timudetails = null;
                       $scope.loadingImgShow = false;
-                      messageService.alertInfFun('err', stdata.error);
+                      DataService.alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
                   $scope.loadingImgShow = false;
-                  messageService.alertInfFun('err', tmIdsData.error);
+                  DataService.alertInfFun('err', tmIdsData.error);
                 }
               });
             });
@@ -1030,19 +1030,19 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     $scope.zjNaDuStar = '';
                   }
                   else{
-                    messageService.alertInfFun('pmt', '请选择难度！');
+                    DataService.alertInfFun('pmt', '请选择难度！');
                   }
                 }
                 else{
-                  messageService.alertInfFun('pmt', '请填写数量！');
+                  DataService.alertInfFun('pmt', '请填写数量！');
                 }
               }
               else{
-                messageService.alertInfFun('pmt', '请选择题型！');
+                DataService.alertInfFun('pmt', '请选择题型！');
               }
             }
             else{
-              messageService.alertInfFun('pmt', '请选择知识点！');
+              DataService.alertInfFun('pmt', '请选择知识点！');
             }
           };
 
@@ -1090,7 +1090,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                           comeFromRuleListData = '';
                         }
                         else{
-                          messageService.alertInfFun('err', subData.error);
+                          DataService.alertInfFun('err', subData.error);
                         }
                       });
                     }
@@ -1099,7 +1099,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                   }
                   else{
-                    messageService.alertInfFun('pmt', data.error);
+                    DataService.alertInfFun('pmt', data.error);
                   }
                 });
               };
@@ -1173,7 +1173,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               }
               else{
                 $scope.loadingImgShow = false; //zj_ruleList.html
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
               }
             });
           };
@@ -1278,21 +1278,21 @@ define(['jquery', 'underscore', 'angular', 'config'],
                       $scope.timudetails = null;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperSaveBtnDisabled = false;
-                      messageService.alertInfFun('err', stdata.error);
+                      DataService.alertInfFun('err', stdata.error);
                     }
                   });
                 }
                 else{
                   $scope.loadingImgShow = false;
                   $scope.ruleMakePaperSaveBtnDisabled = false;
-                  messageService.alertInfFun('pmt', tmIdsData.error);
+                  DataService.alertInfFun('pmt', tmIdsData.error);
                 }
               });
             }
             else{
               $scope.loadingImgShow = false;
               $scope.ruleMakePaperSaveBtnDisabled = false;
-              messageService.alertInfFun('err', '请选择题型！');
+              DataService.alertInfFun('err', '请选择题型！');
             }
           };
 //          $scope.addRuleMakePaperShiJuan = function(){
@@ -1398,21 +1398,21 @@ define(['jquery', 'underscore', 'angular', 'config'],
 //                      $scope.timudetails = null;
 //                      $scope.loadingImgShow = false;
 //                      $scope.ruleMakePaperSaveBtnDisabled = false;
-//                      messageService.alertInfFun('err', stdata.error);
+//                      DataService.alertInfFun('err', stdata.error);
 //                    }
 //                  });
 //                }
 //                else{
 //                  $scope.loadingImgShow = false;
 //                  $scope.ruleMakePaperSaveBtnDisabled = false;
-//                  messageService.alertInfFun('pmt', '没有查出相应的题目！');
+//                  DataService.alertInfFun('pmt', '没有查出相应的题目！');
 //                }
 //              });
 //            }
 //            else{
 //              $scope.loadingImgShow = false;
 //              $scope.ruleMakePaperSaveBtnDisabled = false;
-//              messageService.alertInfFun('err', '请选择题型！');
+//              DataService.alertInfFun('err', '请选择题型！');
 //            }
 //          };
 
@@ -1441,7 +1441,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 if(autoMakePaperData.shuju.TIXING.length){
                   $http.post(zidongzujuan, autoMakePaperData).success(function(sjData){
                     if(sjData.error){
-                      messageService.alertInfFun('err', sjData.error);
+                      DataService.alertInfFun('err', sjData.error);
                     }
                     else{
                       console.log(sjData);
@@ -1518,17 +1518,17 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 }
                 else{
                   $scope.loadingImgShow = false;
-                  messageService.alertInfFun('pmt', '请您选择一个题型！');
+                  DataService.alertInfFun('pmt', '请您选择一个题型！');
                 }
               }
               else{
                 $scope.loadingImgShow = false;
-                messageService.alertInfFun('pmt', '请高抬贵手选择一个知识点！');
+                DataService.alertInfFun('pmt', '请高抬贵手选择一个知识点！');
               }
             }
             else{
               $scope.loadingImgShow = false;
-              messageService.alertInfFun('pmt', '请给难度一个数值！');
+              DataService.alertInfFun('pmt', '请给难度一个数值！');
             }
           };
 
@@ -1569,7 +1569,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   distAutoMakePaperDataArr.push(distAutoMakePaperData);
                 }
                 else{
-                  messageService.alertInfFun('pmt', '请选择知识点！');
+                  DataService.alertInfFun('pmt', '请选择知识点！');
                   break;
                 }
               }
@@ -1582,7 +1582,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 if(times < tmIdsChoLen){
                   $http.post(zidongzujuan, distAutoMakePaperDataArr[times]).success(function(data){
                     if(data.error){
-                      messageService.alertInfFun('err', data.error);
+                      DataService.alertInfFun('err', data.error);
                     }
                     else{
                       tiXingTiMuArr.push(data);
@@ -1664,7 +1664,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               getIdsFun();
             }
             else{
-              messageService.alertInfFun('pmt', '至少选择一种题型！');
+              DataService.alertInfFun('pmt', '至少选择一种题型！');
             }
           };
 
@@ -2163,15 +2163,15 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   $scope.isSavePaperConfirm = true;
                 }
                 else{ //33
-                  messageService.alertInfFun('pmt', '请检查试卷的完整性！');
+                  DataService.alertInfFun('pmt', '请检查试卷的完整性！');
                 }
               }
               else{ // 22 检查每小题是否有分值 结束
-                messageService.alertInfFun('pmt', '每小题的分数不能为空！请给每个小题一个分数！');
+                DataService.alertInfFun('pmt', '每小题的分数不能为空！请给每个小题一个分数！');
               }
             }
             else{ //11 检查试卷名称
-              messageService.alertInfFun('pmt', '给我起个名字吧 ^ _ ^');
+              DataService.alertInfFun('pmt', '给我起个名字吧 ^ _ ^');
             }
           };
 
@@ -2221,10 +2221,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     else{
                       $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
                     }
-                    messageService.alertInfFun('suc', '恭喜你！试卷保存成功！');
+                    DataService.alertInfFun('suc', '恭喜你！试卷保存成功！');
                   }
                   else{
-                    messageService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
+                    DataService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
                   };
                 });
               }
@@ -2283,7 +2283,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   mubanData.shuju.SHIJUANMUBAN_ID = ''; //清空试卷模板id
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
@@ -2370,7 +2370,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
               else{
-                messageService.alertInfFun('err', '没有相关试卷信息！');
+                DataService.alertInfFun('err', '没有相关试卷信息！');
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
             });
@@ -2488,13 +2488,13 @@ define(['jquery', 'underscore', 'angular', 'config'],
                     }
                   }
                   else{
-                    messageService.alertInfFun('err', '查询创建人名称失败！');
+                    DataService.alertInfFun('err', '查询创建人名称失败！');
                     $scope.loadingImgShow = false;  //zj_paperList.html loading
                   }
                 });
               }
               else{
-                messageService.alertInfFun('err', '很遗憾！没有相关数据！');
+                DataService.alertInfFun('err', '很遗憾！没有相关数据！');
                 $scope.loadingImgShow = false;  //zj_paperList.html loading
               }
             });
@@ -2583,7 +2583,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 paperDetailData = mubanData; //用于答题卡赋值
               }
               else{
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
               }
             });
           };
@@ -2610,10 +2610,10 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   $scope.paperListData.splice(idx, 1);
                   isDeletePaper = true;
                   qryShiJuanList();
-                  messageService.alertInfFun('suc', '删除成功！');
+                  DataService.alertInfFun('suc', '删除成功！');
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
@@ -2654,7 +2654,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                   urlRedirect.goTo('/zujuan', nextPath);
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }

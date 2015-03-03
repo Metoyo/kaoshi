@@ -3,9 +3,8 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
-      .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'Myfileupload',
-        'messageService',
-        function ($rootScope, $scope, $http, $timeout, Myfileupload, messageService) { // 002 开始
+      .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
+        function ($rootScope, $scope, $http, $timeout, DataService) { // 002 开始
           /**
            * 操作title
            */
@@ -156,7 +155,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.kaoshiList = ksdtl;
               }
               else{
-                messageService.alertInfFun('pmt', '没有相关的考试！');
+                DataService.alertInfFun('pmt', '没有相关的考试！');
                 $scope.loadingImgShow = false; //kaoShiList.html
               }
             });
@@ -213,7 +212,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
                 isEditKaoShi = false;//是否为编辑考试
                 isDeleteKaoShi = false;//是否为删除考试
-                messageService.alertInfFun('pmt', '没有相关的考试！');
+                DataService.alertInfFun('pmt', '没有相关的考试！');
                 $scope.loadingImgShow = false; //kaoShiList.html
               }
             });
@@ -271,7 +270,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.showPaperDetail = true;
               }
               else{
-                messageService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
+                DataService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
               }
             });
           };
@@ -295,7 +294,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               }
               else{
                 $scope.loadingImgShow = false; //kaoChangList.html
-                messageService.alertInfFun('pmt', '没有相关的考场数据!');
+                DataService.alertInfFun('pmt', '没有相关的考场数据!');
               }
             });
           };
@@ -414,12 +413,12 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                     $scope.showPopupBox = true; //试卷列表弹出层显示
                   }
                   else{
-                    messageService.alertInfFun('err', '查询创建人名称失败！');
+                    DataService.alertInfFun('err', '查询创建人名称失败！');
                   }
                 });
               }
               else{
-                messageService.alertInfFun('err', '没有相关数据！');
+                DataService.alertInfFun('err', '没有相关数据！');
               }
             });
           };
@@ -447,7 +446,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.getThisSjgyPageData();
               }
               else{
-                messageService.alertInfFun('err', sjlb.error);
+                DataService.alertInfFun('err', sjlb.error);
               }
             });
           };
@@ -474,7 +473,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               return sjData.SHIJUAN_ID == sj.SHIJUAN_ID;
             });
             if(ifHasIn){
-              messageService.alertInfFun('pmt', '此试卷已经在添加的考试，请选择其他试卷！');
+              DataService.alertInfFun('pmt', '此试卷已经在添加的考试，请选择其他试卷！');
             }
             else{
               $scope.kwParams.selectShiJuan.push(sj);
@@ -504,7 +503,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
 //                $scope.showPopupBox = false;
 //              }
 //              else{
-//                messageService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
+//                DataService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
 //              }
 //            });
           };
@@ -592,7 +591,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               trimBlankReg = /\s/g,
               delBlank = '';
 
-            Myfileupload.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
+            DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
               $scope.uploadFileUrl = result.data;
               $scope.uploadFiles = [];
               if(result.data.json){
@@ -618,10 +617,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                   kaoShengNewArr.push(ksObj);
                 });
                 kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
-                messageService.alertInfFun('suc', '上传成功！');
+                DataService.alertInfFun('suc', '上传成功！');
               }
               else{
-                messageService.alertInfFun('err', result.error);
+                DataService.alertInfFun('err', result.error);
               }
             });
           };
@@ -647,11 +646,11 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.showImportStuds = true; //显示考生列表table
               }
               else{
-                messageService.alertInfFun('err', '您还没有上传任何考生信息！');
+                DataService.alertInfFun('err', '您还没有上传任何考生信息！');
               }
             }
             else{
-              messageService.alertInfFun('pmt', '请选择考场！');
+              DataService.alertInfFun('pmt', '请选择考场！');
             }
           };
 
@@ -771,28 +770,28 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                       $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                         if(data.result){
                           $scope.showKaoShiList();
-                          messageService.alertInfFun('suc', '考试添加成功！');
+                          DataService.alertInfFun('suc', '考试添加成功！');
                           $scope.kwParams.selectShiJuan = []; //重置已选择的时间数组
                         }
                         else{
-                          messageService.alertInfFun('err', data.error);
+                          DataService.alertInfFun('err', data.error);
                           $scope.kaoShengErrorInfo = JSON.parse(data.error);
                           $scope.kwParams.saveKaoShiBtnStat = false;
                         }
                       });
                     }
                     else{
-                      messageService.alertInfFun('err', rst.error);
+                      DataService.alertInfFun('err', rst.error);
                       $scope.kwParams.saveKaoShiBtnStat = false;
                     }
                   });
                 }
                 else{
-                  messageService.alertInfFun('err', '请添加考生！')
+                  DataService.alertInfFun('err', '请添加考生！')
                 }
               }
               else{
-                messageService.alertInfFun('err', '请选择考场！');
+                DataService.alertInfFun('err', '请选择考场！');
               }
             }
             else{
@@ -821,10 +820,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                 if(data.result){
                   $scope.showKaoShiList($scope.kwParams.ksListZt);
-                  messageService.alertInfFun('suc', '考试删除成功！');
+                  DataService.alertInfFun('suc', '考试删除成功！');
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
@@ -840,10 +839,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $http.get(faBuKaoShiUrl).success(function(data){
                 if(data.result){
                   $scope.showKaoShiList();
-                  messageService.alertInfFun('suc', '本次考试发布成功！');
+                  DataService.alertInfFun('suc', '本次考试发布成功！');
                 }
                 else{
-                  messageService.alertInfFun('err', '考试发布失败！');
+                  DataService.alertInfFun('err', '考试发布失败！');
                 }
               });
             }
@@ -891,7 +890,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.kaoChangList = kcdtl;
               }
               else{
-                messageService.alertInfFun('err', '没有相关的考场信息！');
+                DataService.alertInfFun('err', '没有相关的考场信息！');
                 $scope.loadingImgShow = false; //kaoChangList.html
               }
             });
@@ -923,7 +922,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 $scope.txTpl = 'views/kaowu/kaoChangList.html';
                 isEditKaoChang = false; //是否为编辑考场
                 isDeleteKaoChang = false; //是否为删除考场
-                messageService.alertInfFun('err', '没有相关的考场信息！');
+                DataService.alertInfFun('err', '没有相关的考场信息！');
                 $scope.loadingImgShow = false; //kaoChangList.html
               }
             });
@@ -991,10 +990,10 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
                 if(data.result){
                   $scope.showKaoChangList();
                   qryAllKaoChang();
-                  messageService.alertInfFun('suc', '考场删除成功！');
+                  DataService.alertInfFun('suc', '考场删除成功！');
                 }
                 else{
-                  messageService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
@@ -1017,11 +1016,11 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
               if(data.result){
                 $scope.loadingImgShow = false; //保存考场
-                messageService.alertInfFun('suc', '考场保存成功！');
+                DataService.alertInfFun('suc', '考场保存成功！');
                 $scope.showKaoChangList();
               }
               else{
-                messageService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', data.error);
               }
             });
           };
