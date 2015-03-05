@@ -9,17 +9,16 @@
     </div>
     <div class="selectedDgName">
       <h2>题库默认大纲：</h2>
-
       <p ng-bind="defaultDaGang ? defaultDaGang : ''"></p>
     </div>
   </div>
   <div class="content">
-    <div class="back-home-box">
-      <button class="btn btn-danger" ng-click="backToDaGangHome();daGangParam.showDaGangAsNew = false"
-              ng-show="isPrivateDg || isPublicDg">
-        返回大纲首页
-      </button>
-    </div>
+    <!--<div class="back-home-box">-->
+      <!--<button class="btn btn-danger" ng-click="backToDaGangHome();daGangParam.showDaGangAsNew = false"-->
+              <!--ng-show="isPrivateDg || isPublicDg">-->
+        <!--返回大纲首页-->
+      <!--</button>-->
+    <!--</div>-->
     <div class="save-box">
       <button class="btn btn-primary" ng-click="daGangParam.showDaGangAsNew = true" ng-show="isPrivateDg || isPublicDg"
               ng-disabled="!daGangParam.selected_dg">
@@ -41,8 +40,24 @@
         用作默认大纲
       </button>
     </div>
-    <div class="row pt10 dagangInput" ng-init="dgTpl = 'views/dagang/daGangHome.html'" ng-include="dgTpl">
+    <div class="row dagangInput" ng-init="dgTpl = 'views/dagang/daGangPublic.html'">
+      <div class="sub-nav">
+        <ul class="nav nav-tabs">
+          <li ng-class="{active:daGangParam.activeIdx==1}">
+            <a href="javascript:void(0)" ng-click="renderDgPage('1')">
+              公共知识大纲
+            </a>
+          </li>
+          <li ng-class="{active:daGangParam.activeIdx==2}">
+            <a href="javascript:void(0)" ng-click="renderDgPage('2')">
+              自建知识大纲
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div ng-include="dgTpl">
 
+      </div>
     </div>
     <div class="popup-wrap" ng-show="daGangParam.showDaGangAsNew">
       <div class="popup-wrap-inner no-header">

@@ -47,7 +47,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           dgSaveAsName: '',
           showDaGangAsNew: false,
           defaultDaGangId: '', //获得默认知识大纲的ID
-          zsdKind: '' //知识点类型
+          zsdKind: '', //知识点类型
+          activeIdx: 1 //激活标签
         };
 
         /**
@@ -151,9 +152,24 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
+         * 返回大纲首页
+         */
+        $scope.backToDaGangHome = function(){
+          $scope.isPrivateDg = false;
+          $scope.isPublicDg = false;
+          $scope.daGangParam.selected_dg = '';
+          $scope.selectZjDgId = '';
+          $scope.publicKnowledge = '';
+          $scope.daGangParam.zsdKind = '';
+          //$scope.dgTpl = 'views/dagang/daGangHome.html';
+        };
+
+        /**
          *加载对应的大纲页面
          */
         $scope.renderDgPage = function(lx){
+          $scope.daGangParam.showDaGangAsNew = false;
+          $scope.backToDaGangHome();
           $scope.selectZjDgId = ''; //已经选择的自建知识大纲的值
           if(lx == 1){
             if($scope.publicZsdgList && $scope.publicZsdgList.length > 0){
@@ -166,6 +182,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.dgTpl = 'views/dagang/daGangPublic.html';
             $scope.isPrivateDg = false;
             $scope.isPublicDg = true;
+            $scope.daGangParam.activeIdx = 1;
           }
           if(lx == 2){
             if(!$scope.privateZsdgList.length){
@@ -176,8 +193,10 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.isPublicDg = false;
             $scope.knowledgePr = '';
             $scope.prDgBtnDisabled = true;
+            $scope.daGangParam.activeIdx = 2;
           }
         };
+        $scope.renderDgPage('1');
 
         /**
          * 获得自建知识大纲获知识点
@@ -427,7 +446,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
             targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
             targetNd.LEIXING = zsd.LEIXING;
-  //        targetInput.focus();
             targetNd = '';
             $scope.publicKnowledge.splice(idx, 1);
           }
@@ -523,19 +541,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             DataService.alertInfFun('err', '请选择或新建一个大纲！');
             $scope.prDgBtnDisabled = false;
           }
-        };
-
-        /**
-         * 返回大纲首页
-         */
-        $scope.backToDaGangHome = function(){
-          $scope.isPrivateDg = false;
-          $scope.isPublicDg = false;
-          $scope.daGangParam.selected_dg = '';
-          $scope.selectZjDgId = '';
-          $scope.publicKnowledge = '';
-          $scope.daGangParam.zsdKind = '';
-          $scope.dgTpl = 'views/dagang/daGangHome.html';
         };
 
         /**

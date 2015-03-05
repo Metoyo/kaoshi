@@ -113,6 +113,9 @@ body {
 .ml15{
   margin-left: 15px;
 }
+.p0{
+  padding: 0;
+}
 .pl10 {
   padding-left: 10px;
 }
@@ -1091,7 +1094,8 @@ label.checkbox{
     background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
   }
   .dagangBox {
-    margin-left: 40px;
+//    margin-left: 40px;
+    margin-left: 15px;
     margin-top: 10px;
     padding-top: 0;
   }
@@ -1729,7 +1733,7 @@ label.checkbox{
   .content {
     padding-left: 220px;
     background-color: #fff;
-    padding-top: 50px;
+//    padding-top: 50px;
   }
   .dagangListWrap {
     width: 221px;
@@ -1777,7 +1781,8 @@ label.checkbox{
   .publicKnowledgeWrap{
     position: fixed;
     right: 20px;
-    top: 40px;
+//    top: 40px;
+    top: 60px;
     bottom: 0;
     width: 250px;
     padding-bottom: 90px;
@@ -1809,7 +1814,8 @@ label.checkbox{
   }
   .dg-list-box{
     width: 50%;
-    margin: -40px 0 20px 45px;
+//    margin: -40px 0 20px 45px;
+    margin: 15px 0 20px 15px;
     .daGangListSelect{
       display: inline;
       width: 80%;
@@ -1819,7 +1825,6 @@ label.checkbox{
     width: 100%;
     float: left;
     padding: 0 10px;
-    //    border-bottom: 1px solid #cfcfcf;
     h2{
       margin-top: 10px;
       margin-bottom: 0;
@@ -1837,7 +1842,6 @@ label.checkbox{
     width: 100%;
     float: left;
     padding: 0 10px;
-    //    border-bottom: 1px solid #cfcfcf;
     h2{
       margin-top: 10px;
     }
