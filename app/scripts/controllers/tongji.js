@@ -758,7 +758,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
                   }
                   return memo + z.ZUIHOUDEFEN;
                 }, 0);
-                zsdObj.zsd_dfl_all = ((sumSgl/sumAll) * 100).toFixed(1);
+                zsdObj.zsd_dfl_all = parseFloat(((sumSgl/sumAll) * 100).toFixed(1));
                 zsdAllArr.push(zsdObj);
               });
               $scope.tjZsdDataDu = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all});

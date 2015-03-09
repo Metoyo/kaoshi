@@ -1,24 +1,15 @@
 <div class="innerWrap dagangWrapper">
-  <div class="dagangListWrap">
-    <h2 class="logo pull-left"><img src="/images/mingti/icon/logo.png" alt=""/></h2>
-
-    <div class="keMuName">
-      <h2>科目名称：</h2>
-
-      <p ng-bind="session.defaultLyName" class="keMuNameDetail"></p>
+  <div class="subDashboard">
+    <div class="plr10">
+      <h2 class="sdb-title">科目名称</h2>
+      <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
     </div>
-    <div class="selectedDgName">
-      <h2>题库默认大纲：</h2>
-      <p ng-bind="defaultDaGang ? defaultDaGang : ''"></p>
+    <div class="plr10">
+      <h2 class="sdb-title">题库默认大纲</h2>
+      <p ng-bind="defaultDaGang ? defaultDaGang : ''" class="sdb-cont cYell"></p>
     </div>
   </div>
   <div class="content">
-    <!--<div class="back-home-box">-->
-      <!--<button class="btn btn-danger" ng-click="backToDaGangHome();daGangParam.showDaGangAsNew = false"-->
-              <!--ng-show="isPrivateDg || isPublicDg">-->
-        <!--返回大纲首页-->
-      <!--</button>-->
-    <!--</div>-->
     <div class="save-box">
       <button class="btn btn-primary" ng-click="daGangParam.showDaGangAsNew = true" ng-show="isPrivateDg || isPublicDg"
               ng-disabled="!daGangParam.selected_dg">

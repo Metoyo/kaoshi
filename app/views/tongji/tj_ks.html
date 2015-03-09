@@ -1,9 +1,6 @@
-<div class="sub-nav">
+<div class="sub-nav tj-ks">
   <ul class="nav nav-tabs" ng-hide="isTjDetailShow">
-    <li>
-      <img src="images/mingti/icon/logo.png" alt="" style="height: 40px"/>
-    </li>
-    <li ng-class="{active: tj_tabActive == 'kaoshiTj'}">
+    <li ng-class="{active: tj_tabActive == 'kaoshiTj'}" class="mlp5">
       <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
         考试统计
       </a>
@@ -16,7 +13,7 @@
   </ul>
 </div>
 <!-- 统计的容器 开始-->
-<div class="tab-content" >
+<div class="tab-content wp90 mlp5 ptb10">
   <table class="tj-table">
     <tr>
       <th>考试名称</th>
@@ -24,15 +21,12 @@
       <th width="120px" class="text-center">考试人数</th>
       <th width="120px" class="text-center">考试时间</th>
     </tr>
-    <tr ng-repeat="ks in tjData">
+    <tr ng-repeat="ks in tjData" ng-click="tjShowKaoShiChart(ks)">
       <td>
-        <a href="javascript:void(0)"
-           ng-click="tjShowKaoShiChart(ks)"
-           ng-bind="ks.KAOSHI_MINGCHENG"></a>
+        <a href="javascript:void(0)" ng-bind="ks.KAOSHI_MINGCHENG"></a>
       </td>
       <td>
-        <a href="javascript:void(0)" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"
-           ng-click="tjShowStudentInfo(kssj.SHIJUAN_ID, 'sjId', 'ksList', kssj.SHIJUAN_MINGCHENG)"></a>
+        <span ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></span>
       </td>
       <td class="text-center" ng-bind="ks.KSRS"></td>
       <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>

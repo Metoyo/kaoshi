@@ -61,7 +61,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.daGangParam.defaultDaGangId = data[0].ZHISHIDAGANG_ID;
             }
             else{
-              DataService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.error);
             }
           });
         };
@@ -77,7 +77,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.publicZsdgList = data;
             }
             else{
-              DataService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.error);
               $scope.publicZsdgList = [];
             }
           });
@@ -94,7 +94,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
               $scope.privateZsdgList = data;
             }
             else{
-              DataService.alertInfFun('err', data.err);
+              DataService.alertInfFun('err', data.error);
               $scope.privateZsdgList = [];
             }
           });
@@ -119,7 +119,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 查询该领域的在公共知识点或者私有知识点
+         * 查询该领域的在公共知识点或者私有知识点, 最新方法
          */
         $scope.getThisOrgPublicZsd = function(){
           publicKnowledgeData = '';
@@ -127,6 +127,29 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.publicKnowledge = '';
           if($scope.daGangParam.zsdKind){
             var qryPubZsd = qryPubZsdUrl + $scope.daGangParam.zsdKind;
+            //var getDaGang = $resource(qryPubZsd);
+            //var ggzsd = getDaGang.query();
+            //$scope.publicKnowledge = aaa;
+            //console.log($scope.publicKnowledge);
+            //if(ggzsd && ggzsd.length > 0){
+            //  $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+            //  publicKnowledgeData = ggzsd;
+            //  //得到公共知识点id的数组
+            //  publicZsdArr = _.map(ggzsd, function(szsd){
+            //    return szsd.ZHISHIDIAN_ID;
+            //  });
+            //  if(zsdgZsdArr && zsdgZsdArr.length > 0){
+            //    $scope.publicKnowledge = deleteTheSameZsd();
+            //  }
+            //  else{
+            //    $scope.publicKnowledge = ggzsd;
+            //  }
+            //}
+            //else{
+            //  $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
+            //  DataService.alertInfFun('pmt', '此领域下没有此类型的知识点！');
+            //  publicKnowledgeData = '';
+            //}
             $http.get(qryPubZsd).success(function(ggzsd){
               if(ggzsd && ggzsd.length > 0){
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html

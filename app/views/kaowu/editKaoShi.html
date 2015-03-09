@@ -10,7 +10,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">考试名称<i>*</i></label>
 
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <input type="text" name="ksName" class="form-control" placeholder="考试名称" required autofocus="true"
                ng-model="kaoshiData.shuju.KAOSHI_MINGCHENG"/>
       </div>
@@ -21,7 +21,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">试卷<i>*</i></label>
 
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <!--<input type="text" name="ksShiJuan" class="form-control" placeholder="试卷" required-->
         <!--ng-model="kaoshiData.shuju.shijuan_name" ng-focus="showPaperList()"/>-->
         <!--<button type="button" ng-click="showPaperList()"></button>-->
@@ -44,7 +44,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">开考时间<i>*</i></label>
 
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <input type="text" name="ksStartTime" class="form-control start-date" placeholder="开考时间" required
                ng-model="kaoshiData.shuju.KAISHISHIJIAN"/>
       </div>
@@ -55,7 +55,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
 
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <input type="text" name="ksTime" class="form-control" placeholder="考试时长" required maxlength="3"
                onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
                onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-blur="calculateEndDate()"/>
@@ -67,7 +67,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">结束时间<i>*</i></label>
 
-      <div class="col-sm-6">
+      <div class="col-sm-5">
         <input type="text" name="ksTime" class="form-control" placeholder="结束时间" required disabled="disabled"
                ng-model="kaoshiData.shuju.JIESHUSHIJIAN"/>
 

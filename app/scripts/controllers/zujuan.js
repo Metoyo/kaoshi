@@ -160,7 +160,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
               + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
 
           /**
-           * 初始化是DOM元素的隐藏和显示//
+           * 初始化是DOM元素的隐藏和显示
            */
           $scope.keMuList = true; //科目选择列表内容隐藏
           $scope.dgListBox = true; //大纲选择列表隐藏
@@ -782,7 +782,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                 aKmtx.tmNanDu = '';
                 aKmtx.dagangArr = [];
               });
-              $scope.autoMakePaperClass = true; //加载自动组卷的样式
+              //$scope.autoMakePaperClass = true; //加载自动组卷的样式
               $scope.ampKmtx = autoMakePaperKmtx;
             });
           };
@@ -940,7 +940,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
             });
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
-            $scope.autoMakePaperClass = false; //加载自动组卷的样式
+            //$scope.autoMakePaperClass = false; //加载自动组卷的样式
             //clearData()代码
             mubanData.shuju.MUBANDATI = []; //清除模板中试题的临时数据
             shijuanData.shuju.SHIJUAN_TIMU = []; //清除试卷中的数据
@@ -1487,7 +1487,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
                                     $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                                     $scope.baocunshijuanBtn = true; //保存试卷的按钮
                                     $scope.loadingImgShow = false;  //paper_preview.html loading
-                                    $scope.autoMakePaperClass = false; //自动组卷删除样式
+                                    //$scope.autoMakePaperClass = false; //自动组卷删除样式
                                     $scope.shijuanPreview();
                                   }
                                 }
@@ -2326,7 +2326,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
-            $scope.autoMakePaperClass = false; //加载自动组卷的样式
+            //$scope.autoMakePaperClass = false; //加载自动组卷的样式
             $scope.zuJuanParam.xuanTiError = [];
             deleteTempTemp();
             clearData();

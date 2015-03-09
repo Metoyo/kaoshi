@@ -33,54 +33,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * dashboard的显示和隐藏
-         */
-        $scope.dsfoldBtn = function (page) {
-          var dashboard = angular.element('.dashboard'),
-            main = angular.element('.main'),
-            dashboardWith = dashboard.width(),
-            foldBtn = angular.element('.dsfoldBtn'),
-            hideIcon = angular.element('.userInfo,.nav-icon');
-          if(dashboardWith == 120){
-            hideIcon.hide();
-            foldBtn.css('background-position-y','-20px');
-            dashboard.animate({
-              width: '20px'
-            }, 500, function() {
-
-            });
-            $('.fixed-top').animate({
-              left: '461px'
-            }, 500, function() {
-
-            });
-            main.animate({
-              'padding-left': '20px'
-            }, 500, function() {
-
-            });
-          }
-          else{
-            foldBtn.css('background-position-y','5px');
-            main.animate({
-              'padding-left': '120px'
-            }, 500, function() {
-
-            });
-            dashboard.animate({
-              width: '120px'
-            }, 500, function() {
-              hideIcon.show();
-            });
-            $('.fixed-top').animate({
-              left: '561px'
-            }, 500, function() {
-
-            });
-          }
-        };
-
-        /**
          * 显示个人详情
          */
         $rootScope.showUserInfo = function(){
