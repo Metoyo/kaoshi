@@ -14,18 +14,21 @@ requirejs.config({
 
     paths: {
     angular: '../../bower_components/angular/angular',
-    'angular-animate': '../../bower_components/angular-animate/angular-animate',
     'angular-cookies': '../../bower_components/angular-cookies/angular-cookies',
-    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
     'angular-resource': '../../bower_components/angular-resource/angular-resource',
     'angular-route': '../../bower_components/angular-route/angular-route',
     'angular-sanitize': '../../bower_components/angular-sanitize/angular-sanitize',
-    'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
-    'angular-touch': '../../bower_components/angular-touch/angular-touch',
     jquery: '../../bower_components/jquery/dist/jquery.min',
     underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
+    markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
+    setJs: '../../bower_components/markitup/set',
+    mathjax: '../../bower_components/markitup/MathJax',
+    'angular-animate': '../../bower_components/angular-animate/angular-animate',
+    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
+    'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
+    'angular-touch': '../../bower_components/angular-touch/angular-touch',
     sizzle: '../../bower_components/sizzle/dist/sizzle'
   },
 

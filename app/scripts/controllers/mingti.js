@@ -1,5 +1,5 @@
-define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
-  function ( angular, config, $, _, markitup, setJs) {
+define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'setJs'],
+  function ( angular, config, $, _, mathjax, markitup, setJs) {
   'use strict';
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
@@ -24,8 +24,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
           chaxunzilingyu = true,
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
             jigouid + '&lingyuid=', //查询科目包含什么题型的url
-          qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url(自建)
+
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
             caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
@@ -85,7 +84,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
             lingyuid: lingyuid,
             timu_id: ''
           },
-//          timudetails,//获得的题目数组
           tiMuIdArr = [], //获得查询题目ID的数组
           pageArr = [], //根据得到的数据定义一个分页数组
           totalPage, //符合条件的数据一共有多少页
@@ -428,20 +426,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
             }
           });
         };
-
-        /**
-         * 重新加载mathjax
-         */
-        $scope.$on('onRepeatLast', function(scope, element, attrs){
-          $('.reloadMath').click();
-          //MathJax.Hub.Config({
-          //  tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
-          //  messageStyle: "none",
-          //  showMathMenu: false,
-          //  processEscapes: true
-          //});
-          //MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
-        });
 
         /**
          * 得到特定页面的数据
@@ -1698,7 +1682,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
           $('#mediaPlugin').hide();
         };
 
-        //保存上传文件//
+        //保存上传文件
         $scope.uploadMyFiles = function() {
           var file = $scope.uploadFiles,
             fields = [{"name": "token", "data": token}],
@@ -1749,6 +1733,21 @@ define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
             DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
           }
         };
+
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          //$('.reloadMath').click();
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
+        });
 
       }
     ]

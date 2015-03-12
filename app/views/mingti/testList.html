@@ -36,7 +36,7 @@
                 <!--查看学校题库-->
             <!--</label>-->
         <!--</div>-->
-        <button type="button" class="reloadMath">点我</button> <!--用于刷新函数-->
+        <!--<button type="button" class="reloadMath">点我</button> &lt;!&ndash;用于刷新函数&ndash;&gt;-->
     </div>
     <ul class="list-unstyled testList" id="testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}" repeat-done>
@@ -117,18 +117,18 @@
         </div>
     </div>
 </div>
-<script src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
-    messageStyle: "none",
-    showMathMenu: false,
-    processEscapes: true
-  });
-</script>
-<script type="text/javascript">
-    $('.reloadMath').on('click', function(){
-      console.log('click!');
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
-    });
-</script>
+<!--<script src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>-->
+<!--<script type="text/x-mathjax-config">-->
+  <!--MathJax.Hub.Config({-->
+    <!--tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},-->
+    <!--messageStyle: "none",-->
+    <!--showMathMenu: false,-->
+    <!--processEscapes: true-->
+  <!--});-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+    <!--$('.reloadMath').on('click', function(){-->
+      <!--console.log('click!');-->
+      <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);-->
+    <!--});-->
+<!--</script>-->
