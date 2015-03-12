@@ -13,8 +13,11 @@ require.config({
     jquery: '../../bower_components/jquery/dist/jquery.min',
     underscore: '../../bower_components/underscore/underscore.min',
     charts: '../../bower_components/echarts/echarts-plain',
+    //charts: 'http://echarts.baidu.com/build/dist/echarts-all.js',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap.min',
-    sizzle: '../../bower_components/sizzle/dist/sizzle'
+    //sizzle: '../../bower_components/sizzle/dist/sizzle'
+    markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
+    setJs: '../../bower_components/markitup/set'
   },
   shim: {
     angular: {
@@ -41,11 +44,26 @@ require.config({
     jquery: {
       exports: 'jquery'
     },
+    //MathJax: {
+    //  exports: 'MathJax'
+    //},
     underscore: {
       deps: [
         'jquery'
       ],
       exports: 'underscore'
+    },
+    markitup:{
+      deps: [
+        'jquery'
+      ],
+      exports: 'markitup'
+    },
+    setJs:{
+      deps: [
+        'markitup'
+      ],
+      exports: 'setJs'
     }
     //'angular-mocks': {
     //  deps: [
@@ -59,7 +77,8 @@ require.config({
   ],
   packages: [
 
-  ]
+  ],
+  waitSeconds: 15
 });
 //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
 window.name = 'NG_DEFER_BOOTSTRAP!';

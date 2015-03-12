@@ -1,4 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
+define(['angular', 'config', 'jquery', 'underscore', 'markitup', 'setJs'],
+  function ( angular, config, $, _, markitup, setJs) {
   'use strict';
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
@@ -433,6 +434,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           $('.reloadMath').click();
+          //MathJax.Hub.Config({
+          //  tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+          //  messageStyle: "none",
+          //  showMathMenu: false,
+          //  processEscapes: true
+          //});
+          //MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
         });
 
         /**
@@ -475,7 +483,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 通过出题人的UID查询试题//
+         * 通过出题人的UID查询试题
          */
         $scope.qryTiMuByChuTiRenId = function(){
           if($scope.mingTiParam.tiMuAuthorId){

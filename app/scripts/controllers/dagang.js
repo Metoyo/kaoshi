@@ -47,22 +47,27 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           dgSaveAsName: '',
           showDaGangAsNew: false,
           defaultDaGangId: '', //获得默认知识大纲的ID
+          defaultDaGangLeiXing: '', //获得默认知识大纲类型
           zsdKind: '', //知识点类型
           activeIdx: 1 //激活标签
         };
 
         /**
-         * 查询默认知识大纲
+         * 查询默认知识大纲//
          */
         var getMoRenDaGangFun = function(){
           $http.get(qryMoRenDgUrl).success(function(data){
             if(data && data.length > 0){
               $scope.defaultDaGang = data[0].ZHISHIDAGANGMINGCHENG;
               $scope.daGangParam.defaultDaGangId = data[0].ZHISHIDAGANG_ID;
+              $scope.daGangParam.defaultDaGangLeiXing = data[0].LEIXING;
+              console.log(data);
             }
             else{
               DataService.alertInfFun('err', data.error);
             }
+            getPubDaGangListFun();
+            getPriDaGangListFun();
           });
         };
         getMoRenDaGangFun();
@@ -82,7 +87,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
           });
         };
-        getPubDaGangListFun();
 
         /**
          * 加载自建知识大纲
@@ -99,10 +103,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             }
           });
         };
-        getPriDaGangListFun();
 
         /**
-         * 删除共有知识点//
+         * 删除共有知识点
          */
         var deleteTheSameZsd = function(){
           var differentArr, //从已有的公共知识点ID中减去知识大纲知识点ID
@@ -119,7 +122,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 查询该领域的在公共知识点或者私有知识点, 最新方法
+         * 查询该领域的在公共知识点或者私有知识点, 最新方法!!!!
          */
         $scope.getThisOrgPublicZsd = function(){
           publicKnowledgeData = '';
@@ -184,7 +187,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.selectZjDgId = '';
           $scope.publicKnowledge = '';
           $scope.daGangParam.zsdKind = '';
-          //$scope.dgTpl = 'views/dagang/daGangHome.html';
         };
 
         /**
@@ -196,7 +198,7 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $scope.selectZjDgId = ''; //已经选择的自建知识大纲的值
           if(lx == 1){
             if($scope.publicZsdgList && $scope.publicZsdgList.length > 0){
-              $scope.daGangParam.selected_dg = '';
+              //$scope.daGangParam.selected_dg = '';
               $scope.knowledgePb = '';
             }
             else{
@@ -206,6 +208,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.isPrivateDg = false;
             $scope.isPublicDg = true;
             $scope.daGangParam.activeIdx = 1;
+            if($scope.daGangParam.defaultDaGangLeiXing == lx){
+              $scope.getPublicDgZsd($scope.daGangParam.defaultDaGangId);
+            }
           }
           if(lx == 2){
             if(!$scope.privateZsdgList.length){
@@ -217,6 +222,9 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             $scope.knowledgePr = '';
             $scope.prDgBtnDisabled = true;
             $scope.daGangParam.activeIdx = 2;
+            if($scope.daGangParam.defaultDaGangLeiXing == lx){
+              $scope.getPrivateDgZsd($scope.daGangParam.defaultDaGangId);
+            }
           }
         };
         $scope.renderDgPage('1');
@@ -316,8 +324,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
           $http.post(xgMoRenDaGangUrl, defaultDg).success(function(result) {
             if(result.result){
               getMoRenDaGangFun();
-              getPubDaGangListFun();
-              getPriDaGangListFun();
+              //getPubDaGangListFun();
+              //getPriDaGangListFun();
               DataService.alertInfFun('suc', '将此大纲设置为默认大纲的操作成功！');
             }
             else{
@@ -538,8 +546,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                     $scope.makeDaGangAsDefault(result.id);
                   }
                   getMoRenDaGangFun();
-                  getPubDaGangListFun();
-                  getPriDaGangListFun();
+                  //getPubDaGangListFun();
+                  //getPriDaGangListFun();
                   $scope.knowledgePr = '';
                   $scope.selectZjDgId = '';
                   $scope.prDgBtnDisabled = true;
@@ -634,8 +642,8 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
                 DataService.alertInfFun('suc', '大纲另存为成功！');
                 $scope.daGangParam.dgSaveAsName = '';
                 getMoRenDaGangFun();
-                getPubDaGangListFun();
-                getPriDaGangListFun();
+                //getPubDaGangListFun();
+                //getPriDaGangListFun();
               }
               else{
                 DataService.alertInfFun('err', result.error);

@@ -115,7 +115,7 @@ define([
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
             $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
           }
-          if(tiKuInfo){
+          if(tiKuInfo && $rootScope.session){
             $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;
           }
           if(isKeMuManage){ //判断科目负责人

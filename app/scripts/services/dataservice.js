@@ -29,7 +29,12 @@ define(['angular', 'config'], function (angular, config) {
         $timeout(fadeOutFun, 3000);
       }
       this.alertInfFun = function(a, b){
-        alertFun(a, b);
+        if(b){
+          alertFun(a, b);
+        }
+        else{
+          alertFun(a, '没有符合的数据！');
+        }
       };
 
       //查询数据，GET方法

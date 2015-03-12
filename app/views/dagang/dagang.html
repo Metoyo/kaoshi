@@ -11,8 +11,8 @@
   </div>
   <div class="content">
     <div class="save-box">
-      <button class="btn btn-primary" ng-click="daGangParam.showDaGangAsNew = true" ng-show="isPrivateDg || isPublicDg"
-              ng-disabled="!daGangParam.selected_dg">
+      <button class="btn btn-primary" ng-click="daGangParam.showDaGangAsNew = true"
+              ng-show="isPrivateDg || isPublicDg" ng-disabled="!daGangParam.selected_dg">
         大纲另存
       </button>
       <button class="btn btn-primary" ng-click="deleteDaGang()" ng-show="selectZjDgId">
@@ -47,7 +47,6 @@
         </ul>
       </div>
       <div ng-include="dgTpl">
-
       </div>
     </div>
     <div class="popup-wrap" ng-show="daGangParam.showDaGangAsNew">
