@@ -5,27 +5,28 @@ define(['jquery', 'angular'], function ($, angular) {
       return {
         restrict: 'A',
         link: function postLink(scope, element, attrs) {
-          var targetA = element.find('a'),
-            nanduTarget = element.find('.nandu-input'),
+          var targetClass = '.' + attrs.class,
+            targetSlt = $(targetClass),
+            targetA = targetSlt.find('a'),
+            nanduTarget = element.find('input'),
             hoverIdx, hoverCss, clickCss;
           targetA.hover(function(){
             hoverIdx = $(this).index() + 1;
             hoverCss = 'starHover' + hoverIdx;
-            element.addClass(hoverCss);
-            element.removeClass(clickCss);
+            targetSlt.addClass(hoverCss);
+            targetSlt.removeClass(clickCss);
             $(this).click(function(){
               for(var i = 1; i <= 5; i++){
                 var rmCss = 'starClick' + i;
-                element.removeClass(rmCss);
+                targetSlt.removeClass(rmCss);
               }
               clickCss = 'starClick' + hoverIdx;
-              element.addClass(clickCss);
+              targetSlt.addClass(clickCss);
               nanduTarget.val(clickCss.slice(-1));
-              console.log(clickCss.slice(-1));
             });
           },function(){
-            element.removeClass(hoverCss);
-            element.addClass(clickCss);
+            targetSlt.removeClass(hoverCss);
+            targetSlt.addClass(clickCss);
           });
         }
       };

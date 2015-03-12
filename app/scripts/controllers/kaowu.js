@@ -1025,7 +1025,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
             });
           };
 
-
         } // 002 结束
       ]); //controller 结束
   } // 001 结束

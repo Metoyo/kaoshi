@@ -5,7 +5,7 @@
             <li>答对人数 <span ng-bind="tm.DDRS"></span></li>
             <li>失分率 <span ng-bind="tm.SHIFENLV"></span></li>
         </ul>
-        <div class="tm-err-rate-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
+        <div class="tm-err-rate-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
             <div ng-bind-html="tm.TIGAN.tiGan"></div>
             <div class="item-tizhi-wrap">
                 <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">

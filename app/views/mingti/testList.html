@@ -36,7 +36,7 @@
                 <!--查看学校题库-->
             <!--</label>-->
         <!--</div>-->
-        <button type="button" class="hide reloadMath">点我</button> <!--用于刷新函数-->
+        <button type="button" class="reloadMath">点我</button> <!--用于刷新函数-->
     </div>
     <ul class="list-unstyled testList" id="testList">
         <li ng-repeat="tm in timudetails" class="delete_{{tm.TIMU_ID}}" repeat-done>
@@ -65,7 +65,8 @@
                             ng-click="patternListToggle = true; editItem(tm)">修改</button>
                 </div>
             </div>
-            <div class="item-cont" bn-slide-show slide-show-target="answer-cont" title="显示答案">
+            <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}"
+                 title="显示答案">
                 <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGan">
                 </h3>
                 <div class="item-tizhi-wrap">
@@ -116,15 +117,15 @@
         </div>
     </div>
 </div>
-<!--<script src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>-->
-<!--<script type="text/x-mathjax-config">-->
-  <!--MathJax.Hub.Config({-->
-    <!--tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},-->
-    <!--messageStyle: "none",-->
-    <!--showMathMenu: false,-->
-    <!--processEscapes: true-->
-  <!--});-->
-<!--</script>-->
+<script src="/bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+    messageStyle: "none",
+    showMathMenu: false,
+    processEscapes: true
+  });
+</script>
 <script type="text/javascript">
     $('.reloadMath').on('click', function(){
       console.log('click!');

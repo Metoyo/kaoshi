@@ -41,8 +41,7 @@
     </td>
     <td class="text-center">
       <img src="/images/moreBtn.png" class="moreBtn" alt="更多炒作" bn-slide-show slide-show-target="moreBtnCont"
-           slide-show-dirt="left" ng-hide="ks.ZHUANGTAI >= 3"/>
-
+           slide-show-dirt="left" slide-show-idx="{{$index}}" ng-hide="ks.ZHUANGTAI >= 3"/>
       <div class="moreBtnCont">
         <div class="mbc-inner">
           <button type="button" class="btn btn-default" ng-click="deleteKaoShi(ks)">删除</button>

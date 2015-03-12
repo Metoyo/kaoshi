@@ -16,7 +16,7 @@
             </table>
         </li>
         <li ng-repeat="zjr in zjRuleData">
-            <table class="table" bn-slide-show slide-show-target="more-info">
+            <table class="table" bn-slide-show  slide-show-target="more-info" slide-show-idx="{{$index}}">
                 <tr ng-init="zjRuleNameInputShow=false">
                     <td>
                         <a href="javascript:void(0)" ng-bind="zjr.GUIZEMINGCHENG" ng-hide="zjRuleNameInputShow"
