@@ -9,23 +9,25 @@
       <!--<p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont cYell"></p>-->
     <!--</div>-->
   </div>
-  <div class="sub-nav" ng-init="tabActive = 'ksgl'">
-    <ul class="nav nav-tabs">
-      <li ng-class="{active: tabActive == 'kcgl' }">
-        <a href="javascript:void(0)" ng-click="tabActive = 'kcgl';showKaoChangList()">
-          考场管理
-        </a>
-      </li>
-      <li ng-class="{active: tabActive == 'ksgl'}">
-        <a href="javascript:void(0)" ng-click="tabActive = 'ksgl';showKaoShiList('all')">
-          考试管理
-        </a>
-      </li>
-    </ul>
+  <div class="content">
+    <div class="sub-nav" ng-init="tabActive = 'ksgl'">
+      <ul class="nav nav-tabs">
+        <li ng-class="{active: tabActive == 'kcgl' }">
+          <a href="javascript:void(0)" ng-click="tabActive = 'kcgl';showKaoChangList()">
+            考场管理
+          </a>
+        </li>
+        <li ng-class="{active: tabActive == 'ksgl'}">
+          <a href="javascript:void(0)" ng-click="tabActive = 'ksgl';showKaoShiList('all')">
+            考试管理
+          </a>
+        </li>
+      </ul>
+    </div>
     <!-- 考务的容器 开始-->
     <div class="tab-content" ng-init="txTpl = 'views/kaowu/kaoShiList.html'" ng-include="txTpl">
 
     </div>
-    <!-- 考务的容器 结束-->
   </div>
+  <!-- 考务的容器 结束-->
 </div>

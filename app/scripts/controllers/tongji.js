@@ -1,4 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, angular, config, charts) {
+define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
+  function ($, _, angular, config, charts, mathjax) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
@@ -237,13 +238,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
           //查询数据的代码
           $scope.tjData = tjNeedData.slice((currentPage-1)*10, currentPage*10);
         };
-
-        /**
-         * 重新加载mathjax
-         */
-        $scope.$on('onRepeatLast', function(scope, element, attrs){
-          $('.reloadMath').click();
-        });
 
         /**
          * 数据排序
@@ -936,6 +930,20 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts'], function ($, _, 
             DataService.alertInfFun('pmt', '缺少考试ID');
           }
         };
+
+        /**
+         * 重新加载 mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList1"]);
+        });
 
     }]);
 });

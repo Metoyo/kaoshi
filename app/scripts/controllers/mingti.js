@@ -1738,7 +1738,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          * 重新加载mathjax
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
-          //$('.reloadMath').click();
           MathJax.Hub.Config({
             tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
             messageStyle: "none",

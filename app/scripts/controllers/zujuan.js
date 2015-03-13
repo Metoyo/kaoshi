@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'config'],
-  function ($, _, angular, config) { // 001
+define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
+  function ($, _, angular, config, mathjax) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
@@ -456,13 +456,6 @@ define(['jquery', 'underscore', 'angular', 'config'],
               $scope.keMuList = true;
             }
           };
-
-          /**
-           * 重新加载 mathjax
-           */
-          $scope.$on('onRepeatLast', function(scope, element, attrs){
-            $('.reloadMath').click();
-          });
 
           /**
            * 查询试题的函数
@@ -1892,7 +1885,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 试卷预览代码//
+           * 试卷预览代码
            */
           $scope.shijuanPreview = function(){
             var mbdtArr = [], //定义一个空的数组用来存放模板大题
@@ -2501,7 +2494,7 @@ define(['jquery', 'underscore', 'angular', 'config'],
           };
 
           /**
-           * 查看试卷详情//
+           * 查看试卷详情
            */
           $scope.showPaperDetail = function(sjId){
             var qryPaperDetailUrl = qryPaperDetailUrlBase + sjId;
@@ -2638,6 +2631,20 @@ define(['jquery', 'underscore', 'angular', 'config'],
             }
             $('button.reloadMath').click();
           };
+
+          /**
+           * 重新加载 mathjax
+           */
+          $scope.$on('onRepeatLast', function(scope, element, attrs){
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+              messageStyle: "none",
+              showMathMenu: false,
+              processEscapes: true
+            });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+          });
 
           /**
            * 当离开本页的时候触发事件，删除无用的临时模板

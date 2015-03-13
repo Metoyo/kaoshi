@@ -365,7 +365,6 @@
         <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closePaperDetail()">
           关闭
         </button>
-        <!--<button type="button" class="hide reloadMath">点我</button>-->
         <!--用于刷新函数-->
       </div>
       <div class="inner-box">
@@ -399,7 +398,6 @@
                   <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
                   <span>小题，</span>
                 </p>
-
                 <p>
                   <span>共</span>
                                 <span class="dati-total-score" ng-bind="mbdt.datiScore">
@@ -439,18 +437,4 @@
       $('.intimidatetime').css('left', '150px');
     });
   </script>
-  <!--<script type="text/javascript" src="bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full"></script>-->
-  <!--<script type="text/x-mathjax-config">-->
-      <!--MathJax.Hub.Config({-->
-        <!--tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},-->
-        <!--messageStyle: "none",-->
-        <!--showMathMenu: false,processEscapes: true-->
-      <!--});-->
-
-  <!--</script>-->
-  <!--<script type="text/javascript">-->
-    <!--$('.reloadMath').on('click', function () {-->
-      <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "kaoWuPaperDetail"]);-->
-    <!--});-->
-  <!--</script>-->
 </div>

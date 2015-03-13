@@ -110,15 +110,9 @@
                 <!--</select>-->
             </div>
         </div>
-        <button type="button" class="reloadMath hide">点我</button>
         <div class="innerBox" id="daGangList" ng-show="publicKnowledge">
             <p ng-repeat="pzsd in publicKnowledge" title="点击加入到知识大纲" ng-bind="pzsd.ZHISHIDIANMINGCHENG"
                ng-click="addToZjDaGang(pzsd, $index)" repeat-done></p>
         </div>
-        <script type="text/javascript">
-            $('.reloadMath').on('click', function(){
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
-            });
-        </script>
     </div>
 </div>

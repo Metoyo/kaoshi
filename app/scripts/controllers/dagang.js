@@ -1,4 +1,4 @@
-define(['jquery', 'angular', 'config'], function ($, angular, config) {
+define(['jquery', 'angular', 'config', 'mathjax'], function ($, angular, config, mathjax) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
@@ -575,13 +575,6 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
         };
 
         /**
-         * 重新加载mathjax
-         */
-        $scope.$on('onRepeatLast', function(scope, element, attrs){
-          $('.reloadMath').click();
-        });
-
-        /**
          * 大纲另存为
          */
         $scope.saveDaGangAsNew = function(){
@@ -651,6 +644,19 @@ define(['jquery', 'angular', 'config'], function ($, angular, config) {
             });
           }
         };
+
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
+        });
 
     }]);
 });
