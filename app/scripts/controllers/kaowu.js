@@ -1,12 +1,12 @@
-define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
-  function ($, _, angular, config) { // 001 开始
+define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], // 000 开始
+  function ($, _, angular, config, mathjax, datepicker) { // 001 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
       .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
         function ($rootScope, $scope, $http, $timeout, DataService) { // 002 开始
           /**
-           * 操作title
+           * 操作title//
            */
           $rootScope.isRenZheng = false; //判读页面是不是认证
 
@@ -224,13 +224,6 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           $scope.showKaoShiList();
 
           /**
-           * 重新加载 mathjax
-           */
-          $scope.$on('onRepeatLast', function(scope, element, attrs){
-            $('.reloadMath').click();
-          });
-
-          /**
            * 显示试卷详情
            */
           $scope.showShiJuanInfo = function(sjId){
@@ -300,6 +293,14 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
           };
 
           /**
+           * 显示时间选择器
+           */
+          $scope.showDatePicker = function(){
+            $('.start-date').intimidatetime();
+            $('.intimidatetime').css('left', '150px');
+          };
+
+          /**
            * 新增一个考试
            */
           $scope.addNewKaoShi = function(ks){
@@ -361,6 +362,7 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               $scope.kaoshiData = kaoshi_data;
               $scope.txTpl = 'views/kaowu/editKaoShi.html';
             }
+            $scope.showDatePicker();
           };
 
           /**
@@ -1024,6 +1026,18 @@ define(['jquery', 'underscore', 'angular', 'config'], // 000 开始
               }
             });
           };
+
+          /**
+           * 重新加载 mathjax
+           */
+          $scope.$on('onRepeatLast', function(scope, element, attrs){
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+              messageStyle: "none",
+              showMathMenu: false,processEscapes: true
+            });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "kaoWuPaperDetail"]);
+          });
 
         } // 002 结束
       ]); //controller 结束
