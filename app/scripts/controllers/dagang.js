@@ -61,7 +61,6 @@ define(['jquery', 'angular', 'config', 'mathjax'], function ($, angular, config,
               $scope.defaultDaGang = data[0].ZHISHIDAGANGMINGCHENG;
               $scope.daGangParam.defaultDaGangId = data[0].ZHISHIDAGANG_ID;
               $scope.daGangParam.defaultDaGangLeiXing = data[0].LEIXING;
-              console.log(data);
             }
             else{
               DataService.alertInfFun('err', data.error);

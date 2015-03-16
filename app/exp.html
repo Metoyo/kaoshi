@@ -1,76 +1,223 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <script src="../bower_components/jquery/jquery.min.js"></script>
-  <script src="jspdf.min.js"></script>
-  <script src="html2canvas.min.js"></script>
-  <script src="jspdf.plugin.addhtml.js"></script>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+
+  <title>JSÑ­»·µ¹¼ÆÊ±</title>
+
 </head>
+
 <body>
-<p>I'am p target!</p>
-<p>æˆ‘æ˜¯ä¸­æ–‡ï¼Œèƒ½æ­£å¸¸æ˜¾ç¤ºå—ï¼Ÿ</p>
-<table id="content">
-  <tr>
-    <td>åˆ—1</td>
-    <td>åˆ—2</td>
-  </tr>
-  <tr>
-    <td>åˆ—1</td>
-    <td>åˆ—2</td>
-  </tr>
-  <tr>
-    <td>åˆ—1</td>
-    <td>åˆ—2</td>
-  </tr>
-  <tr>
-    <td>åˆ—1</td>
-    <td>åˆ—2</td>
-  </tr>
-  <tr>
-    <td>åˆ—1</td>
-    <td>åˆ—2</td>
-  </tr>
-</table>
-<div id="bypassme" class="bypass"></div>
-<input type="button" value="ä¸‹è½½" onclick="demoTwoPageDocument()"/>
-<script>
-  function demoTwoPageDocument() {
-    var pdf = new jsPDF('p', 'pt', 'letter');
-    var source = $('body')[0],
-      specialElementHandlers = {
-        // element with id of "bypass" - jQuery style selector
-        '#bypassme': function (element, renderer) {
-          // true = "handled elsewhere, bypass text extraction"
-          return true
-        }
-      },
-      margins = {
-        top: 80,
-        bottom: 60,
-        left: 40,
-        width: 522
-      };
-    // all coords and widths are in jsPDF instance's declared units
-    // 'inches' in this case
-    pdf.addHTML(
-      source // HTML string or DOM elem ref.
-      , margins.left // x coord
-      , margins.top // y coord
-      , {
-        'width': margins.width // max width of content on PDF
-        , 'elementHandlers': specialElementHandlers
-      },
-      function (dispose) {
-        // dispose: object with X, Y of the last line add to the PDF
-        //          this allow the insertion of new lines after html
-        pdf.save('Test.pdf');
-      },
-      margins
-    )
+
+<div id="times_container"
+     style="border:1px; border-color:#999999; border-style:solid; background:#333333; color:#FFFFFF; width:500px; height:40px; line-height:40px; font-size:24px">
+
+  ¾àÀë»î¶¯½áÊø»¹ÓĞ£º<span id="times_day"> </span>Ìì
+
+  <span id="times_hour"> </span>Ê±
+
+  <span id="times_minute"> </span>·Ö
+
+  <span id="second"> </span>Ãë
+
+</div>
+
+
+<script type="text/javascript" language="javascript">
+
+  setTimeout("count_down()", 1000);//ÉèÖÃÃ¿Ò»Ãëµ÷ÓÃÒ»´Îµ¹¼ÆÊ±º¯Êı
+
+
+  //¸ù¾İÌì£¬Ê±£¬·Ö£¬ÃëµÄIDÕÒµ½Ïà¶ÔÓ¦µÄÔªËØ
+
+  var time_day = document.getElementById("times_day");
+
+  var time_hour = document.getElementById("times_hour");
+
+  var time_minute = document.getElementById("times_minute");
+
+  var time_second = document.getElementById("second");
+
+  var time_end = new Date("2015/06/05 00:00:00");  // Éè¶¨»î¶¯½áÊø½áÊøÊ±¼ä
+
+  time_end = time_end.getTime();
+
+
+  //¶¨Òåµ¹¼ÆÊ±º¯Êı
+
+  function count_down() {
+
+    var time_now = new Date();  // »ñÈ¡µ±Ç°Ê±¼ä
+
+    time_now = time_now.getTime();
+
+    var time_distance = time_end - time_now;  // Ê±¼ä²î£º»î¶¯½áÊøÊ±¼ä¼õÈ¥µ±Ç°Ê±¼ä
+
+    var int_day, int_hour, int_minute, int_second;
+
+    if (time_distance >= 0) {
+
+      // Ïà¼õµÄ²îÊı»»Ëã³ÉÌìÊı
+
+      int_day = Math.floor(time_distance / 86400000);
+
+      time_distance -= int_day * 86400000;
+
+
+      // Ïà¼õµÄ²îÊı»»Ëã³ÉĞ¡Ê±
+
+      int_hour = Math.floor(time_distance / 3600000);
+
+      time_distance -= int_hour * 3600000;
+
+
+// Ïà¼õµÄ²îÊı»»Ëã³É·ÖÖÓ
+
+      int_minute = Math.floor(time_distance / 60000);
+
+      time_distance -= int_minute * 60000;
+
+
+      // Ïà¼õµÄ²îÊı»»Ëã³ÉÃëÊı
+
+      int_second = Math.floor(time_distance / 1000);
+
+
+      // ÅĞ¶ÏĞ¡Ê±Ğ¡ÓÚ10Ê±£¬Ç°Ãæ¼Ó0½øĞĞÕ¼Î»
+
+      if (int_hour < 10)
+
+        int_hour = "0" + int_hour;
+
+
+// ÅĞ¶Ï·ÖÖÓĞ¡ÓÚ10Ê±£¬Ç°Ãæ¼Ó0½øĞĞÕ¼Î»
+
+      if (int_minute < 10)
+
+        int_minute = "0" + int_minute;
+
+
+      // ÅĞ¶ÏÃëÊıĞ¡ÓÚ10Ê±£¬Ç°Ãæ¼Ó0½øĞĞÕ¼Î»
+
+      if (int_second < 10)
+
+        int_second = "0" + int_second;
+
+
+// ÏÔÊ¾µ¹¼ÆÊ±Ğ§¹û
+
+      time_day.innerHTML = int_day;
+
+      time_hour.innerHTML = int_hour;
+
+      time_minute.innerHTML = int_minute;
+
+      time_second.innerHTML = int_second;
+
+      setTimeout("count_down()", 1000);
+
+    } else {
+
+//Ö¸¶¨µÄ½áÊøÈÕÆÚ½áÊøºó£¬ÍùºóÍÆ³Ù3Ìì£¬»òÕß³ÆÖ®Îª£ºÍùºó¼Ó3Ìì
+
+//ÔÚÕâÀï¿ÉÒÔ·Ç³£Áé»îµÄÉèÖÃ£º±ÈÈçÍùºóÍÆ³Ù2Ìì»òÍùºó¼Ó2Ìì£º2*24*60*60*1000
+
+//±ÈÈçÍùºóÍÆ³Ù1Ìì»òÍùºó¼Ó1Ìì£º1*24*60*60*1000
+
+//±ÈÈçÍùºóÍÆ³Ù2Ğ¡Ê±»òÍùºó¼Ó2Ğ¡Ê±£º2*60*60*1000
+
+// ±ÈÈçÍùºóÍÆ³Ù40·ÖÖÓ»òÍùºó¼Ó40·ÖÖÓ£º40*1000ÕâÀïÉèÖÃ¸ù¾İ´ó¼ÒĞèÒª£¬Áé»îÉèÖÃ¡£
+
+      time_end = time_end + 3 * 24 * 60 * 60 * 1000;
+
+      setTimeout("count_down()", 1000);
+
+    }
+
   }
 
 </script>
+
 </body>
+
 </html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--<meta charset="utf-8">-->
+<!--<title></title>-->
+<!--<script src="../bower_components/jquery/jquery.min.js"></script>-->
+<!--<script src="jspdf.min.js"></script>-->
+<!--<script src="html2canvas.min.js"></script>-->
+<!--<script src="jspdf.plugin.addhtml.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<p>I'am p target!</p>-->
+<!--<p>ÎÒÊÇÖĞÎÄ£¬ÄÜÕı³£ÏÔÊ¾Âğ£¿</p>-->
+<!--<table id="content">-->
+<!--<tr>-->
+<!--<td>ÁĞ1</td>-->
+<!--<td>ÁĞ2</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>ÁĞ1</td>-->
+<!--<td>ÁĞ2</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>ÁĞ1</td>-->
+<!--<td>ÁĞ2</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>ÁĞ1</td>-->
+<!--<td>ÁĞ2</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>ÁĞ1</td>-->
+<!--<td>ÁĞ2</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--<div id="bypassme" class="bypass"></div>-->
+<!--<input type="button" value="ÏÂÔØ" onclick="demoTwoPageDocument()"/>-->
+<!--<script>-->
+<!--function demoTwoPageDocument() {-->
+<!--var pdf = new jsPDF('p', 'pt', 'letter');-->
+<!--var source = $('body')[0],-->
+<!--specialElementHandlers = {-->
+<!--// element with id of "bypass" - jQuery style selector-->
+<!--'#bypassme': function (element, renderer) {-->
+<!--// true = "handled elsewhere, bypass text extraction"-->
+<!--return true-->
+<!--}-->
+<!--},-->
+<!--margins = {-->
+<!--top: 80,-->
+<!--bottom: 60,-->
+<!--left: 40,-->
+<!--width: 522-->
+<!--};-->
+<!--// all coords and widths are in jsPDF instance's declared units-->
+<!--// 'inches' in this case-->
+<!--pdf.addHTML(-->
+<!--source // HTML string or DOM elem ref.-->
+<!--, margins.left // x coord-->
+<!--, margins.top // y coord-->
+<!--, {-->
+<!--'width': margins.width // max width of content on PDF-->
+<!--, 'elementHandlers': specialElementHandlers-->
+<!--},-->
+<!--function (dispose) {-->
+<!--// dispose: object with X, Y of the last line add to the PDF-->
+<!--//          this allow the insertion of new lines after html-->
+<!--pdf.save('Test.pdf');-->
+<!--},-->
+<!--margins-->
+<!--)-->
+<!--}-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

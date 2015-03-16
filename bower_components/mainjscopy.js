@@ -6,13 +6,15 @@ require.config({
     //'angular-resource': '../../bower_components/angular-resource/angular-resource',
     //'angular-route': '../../bower_components/angular-route/angular-route',
     //'angular-sanitize': '../../bower_components/angular-sanitize/angular-sanitize',
-    //jquery: '../../bower_components/jquery/dist/jquery.min',
+    //jquery: '../../bower_components/jquery/jquery.min',
     //underscore: '../../bower_components/underscore/underscore',
     //charts: '../../bower_components/echarts/echarts-plain',
+    //charts: 'http://echarts.baidu.com/build/dist/echarts-all',
     //bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     //markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     //setJs: '../../bower_components/markitup/set',
-    //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full'
+    //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
+    //datepicker: '../../bower_components/intimidatetime/intimidatetime'
   },
   shim: {
     angular: {
@@ -53,6 +55,9 @@ require.config({
     },
     mathjax: {
       exports: 'mathjax'
+    },
+    datepicker: {
+      exports: 'datepicker'
     }
   },
   priority: [

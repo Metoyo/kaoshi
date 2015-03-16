@@ -289,13 +289,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             case 'score' : //分数排序
               if($scope.tjParas.scoreCount){
                 $scope.studentData = _.sortBy($scope.studentData, function(stu){
-                  return stu.ZUIHOU_PINGFEN;
+                  return stu.ZONGFEN;
                 });
                 $scope.tjParas.scoreCount = false;
               }
               else{
                 $scope.studentData = _.sortBy($scope.studentData, function(stu){
-                  return stu.ZUIHOU_PINGFEN;
+                  return stu.ZONGFEN;
                 }).reverse();
                 $scope.tjParas.scoreCount = true;
               }
@@ -315,11 +315,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             ksArr = [];
           ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '成绩'});
           _.each(stuData, function(ks){
-            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUIHOU_PINGFEN: ''};
+            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZONGFEN: ''};
             ksObj.YONGHUHAO = ks.YONGHUHAO;
             ksObj.XINGMING = ks.XINGMING;
             ksObj.BANJI = ks.BANJI;
-            ksObj.ZUIHOU_PINGFEN = ks.ZUIHOU_PINGFEN;
+            ksObj.ZONGFEN = ks.ZONGFEN;
             ksArr.push(ksObj);
           });
           ksData.data = JSON.stringify(ksArr);
@@ -416,19 +416,19 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             }
           ];
           _.each(data, function(item, idx, lst){
-            if(item.ZUIHOU_PINGFEN < 60){
+            if(item.ZONGFEN < 60){
               pieDataArr[0].value ++;
             }
-            if(item.ZUIHOU_PINGFEN >= 60 && item.ZUIHOU_PINGFEN < 70){
+            if(item.ZONGFEN >= 60 && item.ZONGFEN < 70){
               pieDataArr[1].value ++;
             }
-            if(item.ZUIHOU_PINGFEN >= 70 && item.ZUIHOU_PINGFEN < 80){
+            if(item.ZONGFEN >= 70 && item.ZONGFEN < 80){
               pieDataArr[2].value ++;
             }
-            if(item.ZUIHOU_PINGFEN >= 80 && item.ZUIHOU_PINGFEN < 90){
+            if(item.ZONGFEN >= 80 && item.ZONGFEN < 90){
               pieDataArr[3].value ++;
             }
-            if(item.ZUIHOU_PINGFEN >= 90){
+            if(item.ZONGFEN >= 90){
               pieDataArr[4].value ++;
             }
           });
@@ -440,7 +440,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
          */
         var lineDataDealFun = function(data){
           var disByScore, lineDataArr = [];
-          disByScore = _.groupBy(data, function(item){return item.ZUIHOU_PINGFEN});
+          disByScore = _.groupBy(data, function(item){return item.ZONGFEN});
           _.each(disByScore, function(v, k, l){
             var ary = [];
             ary[0] = parseInt(k);
@@ -484,8 +484,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                 },
                 data : ''
               }]
-            },
-            optBar = {
+            };
+            var optBar = {
               tooltip : {
                 trigger : 'axis',
                 axisPointer : {
@@ -542,8 +542,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                   ]
                 }
               }]
-            },
-            optLine = {
+            };
+            var optLine = {
               tooltip : {
                 trigger: 'axis',
                 formatter: function (params,ticket,callback) {
@@ -699,7 +699,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                 banJiObj.bjName = k;
                 banJiObj.bjStu = v;
                 banJiObj.bjIdx = idxCount;
-                banJiObj.bjAvgScore = (_.reduce(v, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0) / v.length).toFixed(1);
+                banJiObj.bjAvgScore = (_.reduce(v, function(memo, stu){ return memo + stu.ZONGFEN; }, 0) / v.length).toFixed(1);
                 totalScore += parseInt(banJiObj.bjAvgScore);
                 banJiArray.push(banJiObj);
                 idxCount ++;
@@ -723,6 +723,50 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
               };
               /* 按分数分组统计数据，用在按分数和人数统计的折线图中 */
               tjParaObj.lineDataAll = lineDataDealFun(data);
+              //查询知识点
+              DataService.getData(queryZsd).then(function(zsdData) {
+                var disByZsd;
+                if(zsdData && zsdData.length > 0){
+                  $scope.tjParas.zsdOriginData = angular.copy(zsdData);
+                  disByZsd = _.groupBy(zsdData, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; });
+                  _.each(disByZsd, function(v, k, l){
+                    var zsdObj = {
+                      zsd_id: v[0].ZHISHIDIAN_ID,
+                      zsd_name: k,
+                      zsd_dfl_all: '', //总得分率
+                      zsd_cont_all: v.length, //使用次数
+                      zsd_dfl_bj: '', //班级得分率
+                      zsd_timu_num: '' //使用次数
+                    };
+                    var allBanJi = _.find(v, function(bj){ return bj.BANJI == 'all_banji'; });
+                    if(allBanJi){
+                      if(allBanJi.DEFENLV && allBanJi.DEFENLV > 0){
+                        zsdObj.zsd_dfl_all = parseFloat((allBanJi.DEFENLV * 100).toFixed(1));
+                      }
+                      else{
+                        zsdObj.zsd_dfl_all = 0;
+                      }
+                      zsdAllArr.push(zsdObj);
+                    }
+                  });
+                  $scope.tjZsdDataDu = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all});
+                  $scope.tjZsdDataUd = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all}).reverse();
+                  $scope.tjParas.zsdIdArr = _.map($scope.tjZsdDataUd, function(item){ return item.zsd_id});
+
+                  //考生统计图表
+                  var addActiveFun = function() {
+                    tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
+                    tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
+                    tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+                    chartShowFun('all');
+                  };
+                  $timeout(addActiveFun, 100);
+                }
+                else{
+                  $scope.tjZsdDataUd = '';
+                  $scope.tjParas.zsdIdArr = '';
+                }
+              });
             }
             else{
               $scope.studentData = '';
@@ -730,50 +774,16 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
               //DataService.alertInfFun('err', data.error);
             }
           });
-          //查询知识点
-          DataService.getData(queryZsd).then(function(zsdData) {
-            var disByZsd, sumAll, sumSgl;
-            if(zsdData && zsdData.length > 0){
-              $scope.tjParas.zsdOriginData = zsdData;
-              disByZsd = _.groupBy(zsdData, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; });
-              _.each(disByZsd, function(v, k, l){
-                var zsdObj = {
-                  zsd_id: v[0].ZHISHIDIAN_ID,
-                  zsd_name: k,
-                  zsd_dfl_all: '', //总得分率
-                  zsd_cont_all: v.length, //使用次数
-                  zsd_dfl_bj: '', //班级得分率
-                  zsd_cont_bj: '' //使用次数
-                };
-                sumAll = _.reduce(v, function(memo, z){ return memo + z.XIAOTI_FENZHI; }, 0);
-                sumSgl = _.reduce(v, function(memo, z){
-                  if(!z.ZUIHOUDEFEN){
-                    z.ZUIHOUDEFEN = 0;
-                  }
-                  return memo + z.ZUIHOUDEFEN;
-                }, 0);
-                zsdObj.zsd_dfl_all = parseFloat(((sumSgl/sumAll) * 100).toFixed(1));
-                zsdAllArr.push(zsdObj);
-              });
-              $scope.tjZsdDataDu = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all});
-              $scope.tjZsdDataUd = _.sortBy(zsdAllArr, function(item){ return item.zsd_dfl_all}).reverse();
-              $scope.tjParas.zsdIdArr = _.map($scope.tjZsdDataUd, function(item){ return item.zsd_id});
-            }
-            else{
-              $scope.tjZsdDataUd = '';
-              $scope.tjParas.zsdIdArr = '';
-            }
-          });
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
-          //考生统计图表
-          var addActiveFun = function() {
-              tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
-              tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
-              tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-              chartShowFun('all');
-            };
-          $timeout(addActiveFun, 100);
+          ////考生统计图表
+          //var addActiveFun = function() {
+          //    tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
+          //    tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
+          //    tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+          //    chartShowFun('all');
+          //  };
+          //$timeout(addActiveFun, 100);
         };
 
         /**
@@ -830,7 +840,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           //知识点数据,初始化班级数据
           _.each($scope.tjZsdDataUd, function(zsd, idx, lst){
             zsd.zsd_dfl_bj = '';
-            zsd.zsd_cont_bj = '';
+            zsd.zsd_timu_num = '';
           });
           if(bj == 'all'){
             $scope.tjParas.selectBanJi = '所有班级';
@@ -870,17 +880,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
               disByZsd = _.groupBy(banJiZsd, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }); //用知识点把数据分组
               _.each(disByZsd, function(v, k, l) {
                 posIdx = _.indexOf($scope.tjParas.zsdIdArr, v[0].ZHISHIDIAN_ID);
-                sumAll = _.reduce(v, function (memo, z) {
-                  return memo + z.XIAOTI_FENZHI;
-                }, 0);
-                sumSgl = _.reduce(v, function (memo, z) {
-                  if (!z.ZUIHOUDEFEN) {
-                    z.ZUIHOUDEFEN = 0;
-                  }
-                  return memo + z.ZUIHOUDEFEN;
-                }, 0);
-                $scope.tjZsdDataUd[posIdx].zsd_cont_bj = v.length;
-                $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = ((sumSgl / sumAll) * 100).toFixed(1);
+                $scope.tjZsdDataUd[posIdx].zsd_timu_num = v[0].TIMUSHULIANG;
+                if(v[0].DEFENLV && v[0].DEFENLV > 0){
+                  $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = (v[0].DEFENLV * 100).toFixed(1);
+                }
+                else{
+                  $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = 0;
+                }
               });
             }
           }
