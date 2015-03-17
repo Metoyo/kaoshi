@@ -90,7 +90,6 @@ define([
               info: {},
               userInfo: {}
             };
-
           //cookies 代码
           $cookieStore.put('lastUrl', current);
           var loggedInfo = $cookieStore.get('logged'),
@@ -126,6 +125,7 @@ define([
           }
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
+
           if(currentUrlParser.protocol === nextUrlParser.protocol
             && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
             nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
@@ -142,7 +142,6 @@ define([
               }
               return false;
             });
-
             if(findRoute) { // 如果在我们的路由表中已找到即将要访问的路由， 那么执行以下代码
               nextRoute = routes[nextUrlPattern]; // 找到即将要访问的路由的配置信息
               /**

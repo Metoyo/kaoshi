@@ -2,13 +2,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
-    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService',
-      function ($rootScope, $scope, $location, $http, DataService) {
+    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService', 'urlRedirect',
+      function ($rootScope, $scope, $location, $http, DataService, urlRedirect) {
         /**
          * 定义变量
          */
         var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
           token = config.token,
+          currentPath = $location.$$path,
           alterYongHu = baseRzAPIUrl + 'xiugai_yonghu',
           apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
           apiLyKm = baseRzAPIUrl + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
@@ -243,5 +244,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.signOut = function(){
           DataService.logout();
         };
+
+        /**
+         * 点击相应的模块刷新
+         */
+        $scope.reloadModule = function(targUrl){
+          if($location.$$url == targUrl){
+            $location.path($location.$$absUrl);
+          }
+        };
+
     }]);
 });

@@ -53,7 +53,7 @@ define(['jquery', 'angular', 'config', 'mathjax'], function ($, angular, config,
         };
 
         /**
-         * 查询默认知识大纲//
+         * 查询默认知识大纲
          */
         var getMoRenDaGangFun = function(){
           $http.get(qryMoRenDgUrl).success(function(data){

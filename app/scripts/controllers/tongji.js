@@ -734,9 +734,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                       zsd_id: v[0].ZHISHIDIAN_ID,
                       zsd_name: k,
                       zsd_dfl_all: '', //总得分率
-                      zsd_cont_all: v.length, //使用次数
                       zsd_dfl_bj: '', //班级得分率
-                      zsd_timu_num: '' //使用次数
+                      zsd_timu_num: 0, //使用次数
+                      zsd_timu_num_bj: 0
                     };
                     var allBanJi = _.find(v, function(bj){ return bj.BANJI == 'all_banji'; });
                     if(allBanJi){
@@ -746,6 +746,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                       else{
                         zsdObj.zsd_dfl_all = 0;
                       }
+                      zsdObj.zsd_timu_num = allBanJi.TIMUSHULIANG;
                       zsdAllArr.push(zsdObj);
                     }
                   });
@@ -776,14 +777,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           });
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
-          ////考生统计图表
-          //var addActiveFun = function() {
-          //    tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
-          //    tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
-          //    tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-          //    chartShowFun('all');
-          //  };
-          //$timeout(addActiveFun, 100);
         };
 
         /**
@@ -840,7 +833,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           //知识点数据,初始化班级数据
           _.each($scope.tjZsdDataUd, function(zsd, idx, lst){
             zsd.zsd_dfl_bj = '';
-            zsd.zsd_timu_num = '';
+            zsd.zsd_timu_num_bj = 0;
           });
           if(bj == 'all'){
             $scope.tjParas.selectBanJi = '所有班级';
@@ -880,7 +873,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
               disByZsd = _.groupBy(banJiZsd, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }); //用知识点把数据分组
               _.each(disByZsd, function(v, k, l) {
                 posIdx = _.indexOf($scope.tjParas.zsdIdArr, v[0].ZHISHIDIAN_ID);
-                $scope.tjZsdDataUd[posIdx].zsd_timu_num = v[0].TIMUSHULIANG;
+                $scope.tjZsdDataUd[posIdx].zsd_timu_num_bj = v[0].TIMUSHULIANG;
                 if(v[0].DEFENLV && v[0].DEFENLV > 0){
                   $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = (v[0].DEFENLV * 100).toFixed(1);
                 }
@@ -938,7 +931,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
         };
 
         /**
-         * 重新加载 mathjax
+         * 重新加载mathjax
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           MathJax.Hub.Config({
