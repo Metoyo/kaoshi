@@ -2647,18 +2647,18 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
           });
 
           /**
-           * 当离开本页的时候触发事件，删除无用的临时模板
+           * 当离开本页的时候触发事件，删除无用的临时模板//
            */
           $scope.$on('$destroy', function () {
-            var nextPath = $location.$$path,
-                myInterval = setInterval(1000);
+            //var nextPath = $location.$$path,
+            var myInterval = setInterval(1000);
             deletelsmbData.muban_id = $rootScope.session.lsmb_id;
             if(deletelsmbData.muban_id && deletelsmbData.muban_id.length > 0){
               $http.post(deletelsmbUrl, deletelsmbData).success(function(data){
                 if(data.result){
                   $rootScope.session.lsmb_id = [];
                   clearInterval(myInterval);
-                  urlRedirect.goTo('/zujuan', nextPath);
+                  //urlRedirect.goTo('/zujuan', nextPath);
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
@@ -2666,7 +2666,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
               });
             }
             else{
-              urlRedirect.goTo('/zujuan', nextPath);
+              //urlRedirect.goTo('/zujuan', nextPath);
             }
           });
 

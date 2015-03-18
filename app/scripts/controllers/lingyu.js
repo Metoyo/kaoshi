@@ -42,7 +42,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             });
             //默认url
             if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
-              jsUrl = '/' + urlShowAndHideArr[0];
+              var keMuManage = _.contains(ly.quanxian, '2032'); //判断科目负责人
+              var hasMingTiUrl = _.contains(urlShowAndHideArr, 'mingti');//判断有没有命题模块
+              if(keMuManage && hasMingTiUrl){
+                jsUrl = '/mingti';
+              }
+              else{
+                jsUrl = '/' + urlShowAndHideArr[0];
+              }
             }
             session.quanxianStr = urlShowAndHideArr.join();
             //cookies代码

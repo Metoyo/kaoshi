@@ -17,6 +17,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           loginPostParams,
           session = {},
           currentPath = $location.$$path,
+          checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token, //检测用户是否存在的url
           findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
           resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         $rootScope.session = session;
@@ -64,7 +65,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                 var profileUrl = '/user/' + login.userName,
                   yhxxxxApiUrl = config.apiurl_rz + 'yonghu_xiangxi_xinxi?token=' + config.token + '&yonghuid=' +
                     session.info.UID; //通过UID查询用户详细的url
-
                 /**
                  *查询过用户的详细信息，得到jigouid,lingyuid等等 JUESE
                  */
@@ -84,9 +84,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                         var qxIds = _.map(quanxianDist[parseInt(ly.LINGYU_ID)], function(qx){ return qx.QUANXIAN_ID; });
                         ly.quanxian = qxIds;
                       });
-
                       if(_.contains(jsArr, "1")){
-
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else{
@@ -98,11 +96,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                           quanxianArr = [],
                           urlShowAndHideArr = [],
                           jsUrl = '';
-
                         find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2004;
                         });
-
                         find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
                           return permission.QUANXIAN_ID == 2005;
                         });
@@ -137,7 +133,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                             });
                             //默认url
                             if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
-                              jsUrl = '/' + urlShowAndHideArr[0];
+                              //jsUrl = '/' + urlShowAndHideArr[0];
+                              var keMuManage = _.contains(quanxianArr, '2032'); //判断科目负责人
+                              var hasMingTiUrl = _.contains(urlShowAndHideArr, 'mingti');//判断有没有命题模块
+                              if(keMuManage && hasMingTiUrl){
+                                jsUrl = '/mingti';
+                              }
+                              else{
+                                jsUrl = '/' + urlShowAndHideArr[0];
+                              }
                             }
                             session.quanxianStr = urlShowAndHideArr.join();
                             urlRedirect.goTo(currentPath, jsUrl);
@@ -196,7 +200,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 重置密码
+         * 检查输入的邮箱或者是用户名，在数据库中是否存在
+         */
+        $scope.checkUsrExist = function(nme, info){
+          var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
+          $http.get(checkUserUrl).success(function(data){
+            if(data.result){
+              $scope.youxiangExist = true;
+            }
+            else{
+              $scope.youxiangExist = false;
+            }
+          });
+        };
+
+        /**
+         * 重置密码//
          */
         $scope.newPasswordObj = {
           token: token,

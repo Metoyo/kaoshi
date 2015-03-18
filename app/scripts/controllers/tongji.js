@@ -651,6 +651,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           $scope.tjZsdDataUd = '';
           $scope.tjZsdDataDu = '';
           $scope.tjParas.selectBanJi = '所有班级';
+          $scope.showKaoShengList = true;
           if(isArr){
             _.each(ks, function(item, idx, lst){
               queryIds.push(item.KAOSHI_ID); //考试id
@@ -677,6 +678,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           //查询考生
           DataService.getData(queryKaoSheng).then(function(data) {
             if(data && data.length > 0){
+              console.log(data);
               $scope.studentData = data;
               $scope.tjParas.allStudents = data;
               /* 饼图用到的数据，全部班级 */
@@ -931,7 +933,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
         };
 
         /**
-         * 重新加载mathjax
+         * 重新加载mathjax//
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           MathJax.Hub.Config({

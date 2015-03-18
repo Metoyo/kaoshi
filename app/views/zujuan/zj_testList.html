@@ -101,14 +101,18 @@
                     ID：<span class="pull-right" ng-bind="tm.TIMU_ID"></span>
                 </p>
             </div>
-            <div class="item-cont">
+            <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
                 <h3 class="item-tigan" ng-bind-html="tm.TIGAN.tiGan | outTiGan:tm.TIXING_ID"></h3>
                 <div class="item-tizhi-wrap">
                     <p class="item-tizhi" ng-repeat="tz in tm.TIGAN.tiZhiNeiRong track by $index">
                         <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
-                        <span ng-bind="tz"></span>
+                        <span class="tiZhiSpan" ng-bind-html="tz"></span>
                     </p>
                 </div>
+            </div>
+            <div class="answer-cont">
+                <span class="daAnLabel">答案：</span>
+                <div class="daAnBox" ng-bind-html="tm.DAAN"></div>
             </div>
         </li>
     </ul>

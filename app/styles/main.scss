@@ -86,6 +86,9 @@ body {
 .w200 {
   width: 200px;
 }
+.h20{
+  height: 20px;
+}
 .h28{
   height: 28px;
 }
@@ -177,6 +180,12 @@ body {
 }
 .tagnCent{
   text-align: center;
+}
+.wordBreak{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 300px;
 }
 .btn {
   padding: 3px 12px;
@@ -624,16 +633,16 @@ a.add-btn:hover span {
   background: url('../images/mingti/icon/icon-right.png') no-repeat 10px 12px;
 }
 .userInfo {
-  text-align: center;
   a {
     text-decoration: none;
     font-size: 14px;
     color: #efefef;
     margin-top: 5px;
-    margin-left: 0;
+    margin-left: 5px;
     text-align: center;
-    width: 100%;
+    width: 70px;
     display: block;
+    overflow: hidden;
     &:hover {
       color: #62AC19;
     }
@@ -921,6 +930,9 @@ a.add-btn:hover span {
     img{
       max-width: 100%;
     }
+  }
+  .answer-cont{
+    display: none;
   }
 }
 /* test list styls end*/

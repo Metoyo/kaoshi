@@ -36,13 +36,14 @@
         <form name="sendEmailForm" ng-hide="rzParams.sendEmailSuccess">
           <input type="email" class="form-control mb10" ng-model="registerEmail" required="true"
                  placeholder="请输入注册时的邮箱" autofocus="true" name="registerEmail"
-                 ng-pattern="/^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/">
+                 ng-pattern="/^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/"
+                 ng-blur="checkUsrExist('youxiang', registerEmail)">
           <p class="clRed" ng-show="sendEmailForm.registerEmail.$error.pattern">邮箱格式错误！</p>
           <button type="button" class="btn btn-danger" ng-click="rzParams.showFindPwWrap = false">
             返回登录
           </button>
           <button type="button" class="btn btn-success pull-right" ng-click="sendFindPwEmail()"
-                  ng-disabled="sendEmailForm.registerEmail.$error.pattern">
+                  ng-disabled="sendEmailForm.registerEmail.$error.pattern || youxiangExist">
             找回密码
           </button>
         </form>

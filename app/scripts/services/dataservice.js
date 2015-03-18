@@ -24,9 +24,9 @@ define(['angular', 'config'], function (angular, config) {
         }
         $('.popInfoWrap').css('display', 'block');
         var fadeOutFun = function(){
-          $('.popInfoWrap').fadeOut(3000);
+          $('.popInfoWrap').fadeOut(1000);
         };
-        $timeout(fadeOutFun, 3000);
+        $timeout(fadeOutFun, 1000);
       }
       this.alertInfFun = function(a, b){
         if(b){
@@ -182,7 +182,7 @@ define(['angular', 'config'], function (angular, config) {
           //  }
           //  tm.KAOSHENGDAAN = finalDaAn.join(';');
           //}
-          else if(tm.TIXING_ID == 9) {
+          else if(tm.TIXING_ID >= 9) {
             var jstKsDa = tm.KAOSHENGDAAN,
               jstKsFinalDaAn = [];
             if(typeof(jstKsDa) == 'string'){
