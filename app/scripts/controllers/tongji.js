@@ -26,7 +26,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token, //查询考生数据
           queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token, //查询带分数的知识点
           queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token, //查询题目数据
-          qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&xuehao=', //查询考试通过考生学号
+          qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + jigouid
+            + '&lingyuid=' + lingyuid + '&xuehao=', //查询考试通过考生学号
           dataNumOfPerPage = 10, //每页显示多少条数据
           paginationLength = 11, //分页部分，页码的长度，目前设定为11
           pagesArr = [], //定义考试页码数组
@@ -678,7 +679,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           //查询考生
           DataService.getData(queryKaoSheng).then(function(data) {
             if(data && data.length > 0){
-              console.log(data);
               $scope.studentData = data;
               $scope.tjParas.allStudents = data;
               /* 饼图用到的数据，全部班级 */
@@ -898,6 +898,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
          * 查询考试通过考生UID
          */
         $scope.qryKaoShiByXueHao = function(){
+          console.log($rootScope.session.userInfo);
           if($scope.tjParas.studentUid){
             var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + $scope.tjParas.studentUid;
             DataService.getData(qryKaoShiByXueHaoUrl).then(function(data) {
@@ -933,7 +934,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
         };
 
         /**
-         * 重新加载mathjax//
+         * 重新加载mathjax
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           MathJax.Hub.Config({

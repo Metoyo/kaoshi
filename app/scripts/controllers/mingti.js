@@ -180,25 +180,25 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         /**
          * 加载大纲知识点,用于切换大纲，目前没有用到
          */
-        $scope.loadDgZsd = function(dg){
-          angular.element(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
-          qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
-          $http.get(qryKnowledge).success(function(data){
-            if(data.length){
-              $scope.kowledgeList = data;
-            }
-            else{
-              DataService.alertInfFun('err', '查询知识点失败！错误信息：' + data.error);
-            }
-          });
-        };
+        //$scope.loadDgZsd = function(dg){
+        //  $(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
+        //  qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
+        //  $http.get(qryKnowledge).success(function(data){
+        //    if(data.length){
+        //      $scope.kowledgeList = data;
+        //    }
+        //    else{
+        //      DataService.alertInfFun('err', '查询知识点失败！错误信息：' + data.error);
+        //    }
+        //  });
+        //};
 
         /**
          * 点击展开和收起的按钮子一级显示和隐藏
          */
         $scope.toggleChildNode = function(idx) {
           var onClass = '.node' + idx,//得到那个button被点击了
-            gitThisBtn = angular.element(onClass),//得到那个展开和隐藏按钮被点击了
+            gitThisBtn = $(onClass),//得到那个展开和隐藏按钮被点击了
             getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
           gitThisBtn.toggleClass('unfoldBtn');
           getTargetChild.toggle();//实现子元素的显示和隐藏
@@ -226,7 +226,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
 
         $scope.toggleSelection = function(zsdId) {
           var onSelect = '.select' + zsdId,
-            gitThisChbx = angular.element(onSelect),//得到那个展开和隐藏按钮被点击了
+            gitThisChbx = $(onSelect),//得到那个展开和隐藏按钮被点击了
             getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
           gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
           gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
@@ -744,7 +744,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             dataTpl.shuju.TIXING_ID = 2;
             dataTpl.shuju.TIMULEIXING_ID = 2;
           }
-          var tiZhiArr = angular.element('.tizhiWrap').find('input.tiZhi'),
+          var tiZhiArr = $('.tizhiWrap').find('input.tiZhi'),
             tizhineirong = []; //存放题支内容
           //整理题支
           _.each(tiZhiArr, function(tizhi, idx, lst){
@@ -1005,8 +1005,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          */
         $scope.chooseDanxuanDaan = function(idx){
           var tgt = '.answer' + idx,
-            tgtElement = angular.element(tgt);
-          angular.element('div.radio').removeClass('radio-select');
+            tgtElement = $(tgt);
+          $('div.radio').removeClass('radio-select');
           tgtElement.addClass('radio-select');
           tgtElement.find("input[name='rightAnswer']").prop('checked',true);
           danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
@@ -1067,8 +1067,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          */
         $scope.choosePanDuanDaan = function(idx){
           var tgt = '.answer' + idx,
-            tgtElement = angular.element(tgt);
-          angular.element('div.radio').removeClass('radio-select');
+            tgtElement = $(tgt);
+          $('div.radio').removeClass('radio-select');
           tgtElement.addClass('radio-select');
           tgtElement.find("input[name='rightAnswer']").prop('checked',true);
           pandu_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
@@ -1172,7 +1172,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          * 保存填空试题//
          */
         $scope.addTianKongShiTi = function(){
-          var tiZhiArr = angular.element('.tizhiWrap').find('ul.tiZhi'),
+          var tiZhiArr = $('.tizhiWrap').find('ul.tiZhi'),
             reg = new RegExp('<span>.*?</span>', 'g'),
             count = 0,
             tizhineirong = [], //存放题支内容;
