@@ -41,15 +41,22 @@
     </div>
     <div class="form-group">
       <label class="col-sm-2 control-label">开考时间<i>*</i></label>
-      <div class="col-sm-6">
+      <div class="col-sm-3">
         <input type="text" name="ksStartTime" class="form-control start-date" placeholder="开考时间" required
-               ng-focus="showDatePicker()" ng-model="kaoshiData.shuju.KAISHISHIJIAN"/>
+               ng-model="kaoshiData.shuju.KAISHISHIJIAN"/>
+      </div>
+      <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
+      <div class="col-sm-1">
+        <input type="text" name="ksTime" class="form-control" placeholder="时长" required maxlength="3"
+               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
+               onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-blur="calculateEndDate()"/>
       </div>
       <div class="col-sm-2">
         <p class="help-block" ng-show='startDateIsNull'>开考时间不能为空！</p>
+        <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
       </div>
     </div>
-    <div class="form-group">
+    <!--div class="form-group">
       <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
       <div class="col-sm-6">
         <input type="text" name="ksTime" class="form-control" placeholder="考试时长" required maxlength="3"
@@ -59,14 +66,14 @@
       <div class="col-sm-2">
         <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
       </div>
-    </div>
-    <div class="form-group">
+    </div-->
+    <!--div class="form-group">
       <label class="col-sm-2 control-label">结束时间<i>*</i></label>
       <div class="col-sm-6">
         <input type="text" name="ksTime" class="form-control" placeholder="结束时间" required disabled="disabled"
                ng-model="kaoshiData.shuju.JIESHUSHIJIAN"/>
       </div>
-    </div>
+    </div-->
     <!--<div class="form-group">-->
       <!--<label class="col-sm-2 control-label">开考时间<i>*</i></label>-->
 
@@ -103,18 +110,20 @@
       <!--&lt;!&ndash;</div>&ndash;&gt;-->
     <!--</div>-->
     <div class="form-group advanced-set" ng-init="showKaoShiXuZhi=false;showAdvancedSet=false">
-      <div class="col-sm-8 col-sm-offset-2">
-        <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-hide="showKaoShiXuZhi">
-          <span class="glyphicon glyphicon-plus"></span>增加考试须知
-        </a>
-        <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-show="showKaoShiXuZhi">
-          <span class="glyphicon glyphicon-plus"></span>取消考试须知
-        </a>
-      </div>
-      <div class="col-sm-8 col-sm-offset-2">
-        <a href="javascript:void(0)" ng-click="showAdvancedSet=!showAdvancedSet">
-          <span class="glyphicon glyphicon-plus"></span>高级设置
-        </a>
+      <div class="col-sm-6 col-sm-offset-2">
+        <div class="pull-left">
+          <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-hide="showKaoShiXuZhi">
+            <span class="glyphicon glyphicon-plus"></span>增加考试须知
+          </a>
+          <a href="javascript:void(0)" ng-click="showKaoShiXuZhi = !showKaoShiXuZhi" ng-show="showKaoShiXuZhi">
+            <span class="glyphicon glyphicon-plus"></span>取消考试须知
+          </a>
+        </div>
+        <div class="pull-right">
+          <a href="javascript:void(0)" ng-click="showAdvancedSet=!showAdvancedSet">
+            <span class="glyphicon glyphicon-plus"></span>高级设置
+          </a>
+        </div>
       </div>
       <div class="col-sm-8 col-sm-offset-2" ng-show="showKaoShiXuZhi">
                 <textarea class="form-control" cols="30" rows="6" placeholder="考试须知"
@@ -435,9 +444,9 @@
                   <h3 class="item-tigan">
                     <div class="item-score">
                       <span ng-bind-html="($index + 1) + '、' + tmd.DETAIL.TIGAN.tiGan"></span>
-                                        <span>
-                                            {{'（本小题' + tmd.FENZHI + '分）'}}
-                                        </span>
+                      <span>
+                          {{'（本小题' + tmd.FENZHI + '分）'}}
+                      </span>
                     </div>
                   </h3>
                   <div class="item-tizhi-wrap">
@@ -453,11 +462,7 @@
       </div>
     </div>
   </div>
-  <script src="/bower_components/intimidatetime/intimidatetime.js"></script>
   <script type="text/javascript">
-    $(function () {
-      $('.start-date').intimidatetime();
-      $('.intimidatetime').css('left', '150px');
-    });
+    $('.start-date').intimidatetime();
   </script>
 </div>

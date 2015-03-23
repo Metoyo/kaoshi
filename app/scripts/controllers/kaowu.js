@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
       .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
         function ($rootScope, $scope, $http, $timeout, DataService) { // 002 开始
           /**
-           * 操作title//
+           * 操作title
            */
           $rootScope.isRenZheng = false; //判读页面是不是认证
 
@@ -293,14 +293,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
           };
 
           /**
-           * 显示时间选择器
-           */
-          $scope.showDatePicker = function(){
-            $('.start-date').intimidatetime();
-            $('.intimidatetime').css('left', '150px');
-          };
-
-          /**
            * 新增一个考试
            */
           $scope.addNewKaoShi = function(ks){
@@ -362,7 +354,15 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
               $scope.kaoshiData = kaoshi_data;
               $scope.txTpl = 'views/kaowu/editKaoShi.html';
             }
-            $scope.showDatePicker();
+            //显示时间选择器
+            var showDatePicker = function() {
+              $('.start-date').intimidatetime({
+                buttons: [
+                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                ]
+              });
+            };
+            $timeout(showDatePicker, 1000);
           };
 
           /**

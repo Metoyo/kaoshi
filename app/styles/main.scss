@@ -311,6 +311,7 @@ a.add-btn:hover span {
 .form-horizontal .form-group {
   margin-right: 0;
   margin-left: 0;
+  margin-bottom: 10px;
 }
 .logo {
   margin: 0;
@@ -1188,35 +1189,6 @@ label.checkbox{
   z-index: 10;
   background-color: #f5f5f5;
   border-right: 1px solid #cfcfcf;
-//  .selectedItems{
-//    h3{
-//      font-size: 12px;
-//      margin: 15px 0 5px 0;
-//    }
-//    table{
-//      width: 100%;
-//      margin-bottom: 10px;
-//      td,th{
-//        font-size: 12px;
-//        text-align: center;
-//        padding: 3px;
-//        .glyphicon {
-//          top: 3px;
-//          margin-right: 0;
-//        }
-//      }
-//      .text-left{
-//        text-align: left;
-//      }
-//      .deleteBtn{
-//        width: 21px;
-//      }
-//    }
-//  }
-//  .sj-preview-btns{
-//    padding: 10px 0;
-//    text-align: center;
-//  }
 }
 /**
 *日期选择器的样式
