@@ -55,7 +55,11 @@
         </h4>
         <ul class="list-unstyled">
           <li class="ptb5" ng-repeat="xtm in dati.tm">
-            <h4 ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan" class="ar-tiGan itemHasImg"></h4>
+            <h4 class="ar-tiGan itemHasImg">
+              <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
+                  (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
+                  (最后得分：<b class="clRed">{{xtm.ZUIHOUDEFEN}}</b>  分)
+            </h4>
             <!-- 单选题 -->
             <div class="ar-tzs" ng-if="xtm.TIXING_ID == 1">
               <div class="ar-tz" ng-repeat="tznr in xtm.TIGAN.tiZhiNeiRong track by $index">
@@ -63,7 +67,7 @@
                   <input type="radio" name="{{'radio' + $parent.$index}}" value="{{tjParas.letterArr[$index]}}"
                          ng-model="xtm.KAOSHENGDAAN" disabled/>    {{'(' + tjParas.letterArr[$index] + ')'}}
                 </p>
-                <p class="pl40" ng-bind-html="tznr"></p>
+                <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm.KAOSHENGDAAN == tjParas.letterArr[$index]}"></p>
               </div>
             </div>
             <!-- 双选选题和多选 -->
@@ -74,14 +78,18 @@
                          ng-checked="xtm.KAOSHENGDAAN.indexOf(tjParas.letterArr[$index]) > -1" disabled/>
                   {{'(' + tjParas.letterArr[$index] + ')'}}
                 </p>
-                <p class="pl40" ng-bind-html="tznr"></p>
+                <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm.KAOSHENGDAAN == tjParas.letterArr[$index]}"></p>
               </div>
             </div>
             <!-- 判读题 -->
             <div class="ar-tzs" ng-if="xtm.TIXING_ID == 4">
-              <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="对" ng-model="xtm.KAOSHENGDAAN" disabled/>  对
-              <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="错" style="margin: 0 0 0 20px"
-                     ng-model="xtm.KAOSHENGDAAN" disabled/>  错
+              <span ng-class="{clRed:xtm.KAOSHENGDAAN == '对'}">
+                <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="对" ng-model="xtm.KAOSHENGDAAN" disabled/>  对
+              </span>
+              <span ng-class="{clRed:xtm.KAOSHENGDAAN == '错'}">
+                <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="错" style="margin: 0 0 0 20px"
+                       ng-model="xtm.KAOSHENGDAAN" disabled/>  错
+              </span>
             </div>
             <!-- 题型ID大于等于9的 -->
             <div class="ar-tzs itemHasImg" ng-if="xtm.TIXING_ID >= 9" ng-bind-html="xtm.KAOSHENGDAAN">

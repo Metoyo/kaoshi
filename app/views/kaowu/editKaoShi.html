@@ -56,59 +56,6 @@
         <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
       </div>
     </div>
-    <!--div class="form-group">
-      <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
-      <div class="col-sm-6">
-        <input type="text" name="ksTime" class="form-control" placeholder="考试时长" required maxlength="3"
-               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
-               onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-blur="calculateEndDate()"/>
-      </div>
-      <div class="col-sm-2">
-        <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>
-      </div>
-    </div-->
-    <!--div class="form-group">
-      <label class="col-sm-2 control-label">结束时间<i>*</i></label>
-      <div class="col-sm-6">
-        <input type="text" name="ksTime" class="form-control" placeholder="结束时间" required disabled="disabled"
-               ng-model="kaoshiData.shuju.JIESHUSHIJIAN"/>
-      </div>
-    </div-->
-    <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 control-label">开考时间<i>*</i></label>-->
-
-      <!--<div class="col-sm-6">-->
-        <!--<input type="text" name="ksStartTime" class="form-control start-date" placeholder="开考时间" required-->
-               <!--ng-focus="showDatePicker()" ng-model="kaoshiData.shuju.KAISHISHIJIAN"/>-->
-      <!--</div>-->
-      <!--<div class="col-sm-2">-->
-        <!--<p class="help-block" ng-show='startDateIsNull'>开考时间不能为空！</p>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>-->
-
-      <!--<div class="col-sm-6">-->
-        <!--<input type="text" name="ksTime" class="form-control" placeholder="考试时长" required maxlength="3"-->
-               <!--onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"-->
-               <!--onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-blur="calculateEndDate()"/>-->
-      <!--</div>-->
-      <!--<div class="col-sm-2">-->
-        <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 control-label">结束时间<i>*</i></label>-->
-
-      <!--<div class="col-sm-6">-->
-        <!--<input type="text" name="ksTime" class="form-control" placeholder="结束时间" required disabled="disabled"-->
-               <!--ng-model="kaoshiData.shuju.JIESHUSHIJIAN"/>-->
-
-      <!--</div>-->
-      <!--&lt;!&ndash;<div class="col-sm-2">&ndash;&gt;-->
-      <!--&lt;!&ndash;<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长不能为空！</p>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
     <div class="form-group advanced-set" ng-init="showKaoShiXuZhi=false;showAdvancedSet=false">
       <div class="col-sm-6 col-sm-offset-2">
         <div class="pull-left">
@@ -141,7 +88,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-6">
         <button type="button" class="btn btn-primary" ng-click="addNewKaoSheng()">增加考生</button>
-        <button type="button" class="btn btn-primary" ng-click="importKaoSheng()">导入考生</button>
+        <button type="button" class="btn btn-primary ml10" ng-click="importKaoSheng()">导入考生</button>
         <span class="ml10">共  <b ng-bind="kaoshiData.shuju.KAOCHANG[selectKaoChangIdx].USERS.length"></b>  名考生</span>
       </div>
     </div>
@@ -313,7 +260,7 @@
       <button type="button" class="btn btn-primary" ng-click="saveKaoShi()"
               ng-disabled="kwParams.saveKaoShiBtnStat">保存考试
       </button>
-      <button type="button" class="btn btn-danger" ng-click="showKaoShiList()">取消</button>
+      <button type="button" class="btn btn-danger ml10" ng-click="showKaoShiList()">取消</button>
     </div>
   </div>
   <!-- 试卷选择 -->
@@ -462,7 +409,7 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    $('.start-date').intimidatetime();
-  </script>
+  <!--<script type="text/javascript">-->
+    <!--$('.start-date').intimidatetime();-->
+  <!--</script>-->
 </div>

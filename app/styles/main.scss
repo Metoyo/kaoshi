@@ -511,6 +511,9 @@ a.add-btn:hover span {
   .sdb-cont{
     font-size: 18px;
   }
+  .sdb-cont-dg{
+    font-size: 16px;
+  }
   .selectedItems{
     h3{
       font-size: 12px;
@@ -2679,6 +2682,7 @@ label.checkbox{
     .ar-tk-da{
       border-bottom: 1px solid #000000;
       padding: 0 10px;
+      color: red;
     }
   }
   .ar-tzs{

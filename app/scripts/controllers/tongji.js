@@ -110,7 +110,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
         };
 
         /**
-         * 初始化运行的程序
+         * 初始化运行的程序//
          */
         $scope.showKaoShiTjList();
 
