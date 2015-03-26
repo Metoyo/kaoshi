@@ -1470,7 +1470,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             if(!item.LEIXING){
               item.ZHISHIDIAN_LEIXING = 1;
             }
-            item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
+            //item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
             if(!item.ZHISHIDIANMINGCHENG){
               countEmpty = false;
             }
@@ -1922,11 +1922,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           }
 
         };
-
-        /**
-         * 删除知识点
-         */
-
 
     }]);
 });

@@ -5,7 +5,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $q, $timeout, DataService) {
         /**
-         * 操作title
+         * 操作title//
          */
         $rootScope.isRenZheng = false; //判读页面是不是认证
 
@@ -63,7 +63,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
               ISFENDUANPINGFEN: '',
               TIMUWENJIAN:[],
               ZHISHIDIAN: [],
-              ZHUANGTAI: 1
+              ZHUANGTAI: 1,
+              REMARK: ''
             }
           },
           danxuan_data, //单选题数据模板
@@ -101,7 +102,9 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           replaceStr = '<br/>', //匹配<br/>
           fileTypeReg = /\.\b\w+$\b/, // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
           qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1', //查询默认知识大纲的url
+          queryTiMuSource = baseMtAPIUrl + 'query_timusource?token=' + token + '&jigouid=' + jigouid
+            + '&lingyuid=' + lingyuid; //查询题目来源
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -117,7 +120,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           goToPageNum: '', //分页的页码跳转
           isConvertTiXing: false, //是否是题型转换
           tiXingId: '',
-          isFirstEnterMingTi: true
+          isFirstEnterMingTi: true,
+          tiMuLaiYuan: '' //存放题目来源的数据
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 9, txName: '计算题'},
@@ -178,22 +182,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         cxKmTx();
 
         /**
-         * 加载大纲知识点,用于切换大纲，目前没有用到
-         */
-        //$scope.loadDgZsd = function(dg){
-        //  $(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
-        //  qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
-        //  $http.get(qryKnowledge).success(function(data){
-        //    if(data.length){
-        //      $scope.kowledgeList = data;
-        //    }
-        //    else{
-        //      DataService.alertInfFun('err', '查询知识点失败！错误信息：' + data.error);
-        //    }
-        //  });
-        //};
-
-        /**
          * 点击展开和收起的按钮子一级显示和隐藏
          */
         $scope.toggleChildNode = function(idx) {
@@ -226,18 +214,18 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
 
         $scope.toggleSelection = function(zsdId) {
           var onSelect = '.select' + zsdId,
-            gitThisChbx = $(onSelect),//得到那个展开和隐藏按钮被点击了
-            getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
+            gitThisChbx = $(onSelect);//得到那个展开和隐藏按钮被点击了
+            //getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
           gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
           gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
 
-          getTarChbxChild.find('input[name=point]').each(function() {
-            if(gitThisChbx.prop("checked")) {
-              this.checked = true;
-            } else {
-              this.checked = false;
-            }
-          });
+          //getTarChbxChild.find('input[name=point]').each(function() {
+          //  if(gitThisChbx.prop("checked")) {
+          //    this.checked = true;
+          //  } else {
+          //    this.checked = false;
+          //  }
+          //});
           selectZsdFun();
           if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
             $scope.qryTestFun();
@@ -618,6 +606,19 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         };
 
         /**
+         * 查询题目来源的数据
+         */
+        var qryTiMuSourceFun = function(){
+          if(!($scope.mingTiParam.tiMuLaiYuan && $scope.mingTiParam.tiMuLaiYuan.length)){
+            DataService.getData(queryTiMuSource).then(function(data) {
+              if(data && data.length > 0){
+                $scope.mingTiParam.tiMuLaiYuan = data;
+              }
+            });
+          }
+        };
+
+        /**
          * 添加新的试题
          */
         $scope.addNewShiTi = function(){
@@ -704,6 +705,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           $scope.tkLoopArr = [];
           $('.pointTree').find('input[name=point]').prop('checked', false); // add new
           $scope.addDanXuan('views/mingti/danxuan.html');
+          qryTiMuSourceFun();
         };
 
         /**
@@ -713,17 +715,11 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           $('.resetForm').click();
           $('div.radio').removeClass('radio-select');
           $("input[name=rightAnswer]").prop('checked',false); //重置正确答案的数据
-//          $("input[name=difficulty]").prop('checked',false); //重置难度的数据
           dataTpl.shuju.DAAN = ''; //重置难度
-//          dataTpl.shuju.NANDU_ID = ''; //重置难度
           dataTpl.shuju.TIGAN = ''; //重置题干
           dataTpl.shuju.TIZHINEIRONG = ''; //重置题支
-//          dataTpl.shuju.TIGAN_SOURCE = ''; //重置题干
-//          dataTpl.shuju.TIZHI_SOURCE = ''; //重置题支
           $('.tiZhi').val('').show();
           $('.imitationInput').html('').hide();
-//          zhishidian_id = '';
-//          $scope.selectZsdStr = '';
         };
 
         $scope.resetForm = function(){
@@ -1169,7 +1165,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         };
 
         /**
-         * 保存填空试题//
+         * 保存填空试题
          */
         $scope.addTianKongShiTi = function(){
           var tiZhiArr = $('.tizhiWrap').find('ul.tiZhi'),
@@ -1345,6 +1341,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             danxuan_data.shuju.DAAN = tmxq.DAAN;
             danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            danxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            danxuan_data.shuju.REMARK = tmxq.REMARK;
             $scope.timudetail = tmxq;
             $scope.alterTiMuTiXing = '单选题';
             renderTpl(tpl); //render 修改过模板
@@ -1358,6 +1356,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             duoxuan_data.shuju.DAAN = tmxq.DAAN;
             duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            duoxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            duoxuan_data.shuju.REMARK = tmxq.REMARK;
             $scope.timudetail = tmxq;
             $scope.alterTiMuTiXing = '多选题';
             renderTpl(tpl); //render 修改过模板
@@ -1378,6 +1378,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             pandu_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             pandu_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             pandu_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            pandu_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            pandu_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '判断题';
             renderTpl(tpl); //render 修改过模板
             var daAnSelectFun = function() {
@@ -1430,6 +1432,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             tiankong_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
             tiankong_data.shuju.TIMU_ID = tmxq.TIMU_ID;
             tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            tiankong_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            tiankong_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '填空题';
             renderTpl(tpl); //render 修改过模板
 //            $timeout(DataService.tiMuContPreview, 1000);
@@ -1445,6 +1449,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             jisuan_data.shuju.DAAN = tmxq.DAAN;
             jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            jisuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            jisuan_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '计算题';
             $scope.mingTiParam.isConvertTiXing = true;
             renderTpl(tpl); //render 修改过模板
@@ -1460,6 +1466,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             jieda_data.shuju.DAAN = tmxq.DAAN;
             jieda_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
             jieda_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            jieda_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            jieda_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '解答题';
             $scope.mingTiParam.isConvertTiXing = true;
             renderTpl(tpl); //render 修改过模板
@@ -1483,6 +1491,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             }
 
           };
+          qryTiMuSourceFun();
           $scope.alterTiXingBox = true;
           onceMakeWord = false;
           $timeout(nanDuSelectFun, 500);

@@ -76,8 +76,18 @@
                 </div>
             </div>
             <div class="answer-cont">
+              <div class="positionRe">
                 <span class="daAnLabel">答案：</span>
                 <div class="daAnBox" ng-bind-html="tm.DAAN"></div>
+              </div>
+              <div class="positionRe" ng-show="tm.TIMULAIYUAN[0].LAIYUANMINGCHENG">
+                <span class="daAnLabel">来源：</span>
+                <div class="daAnBox" ng-bind-html="tm.TIMULAIYUAN[0].LAIYUANMINGCHENG"></div>
+              </div>
+              <div class="positionRe" ng-show="tm.REMARK">
+                <span class="daAnLabel">备注：</span>
+                <div class="daAnBox" ng-bind-html="tm.REMARK"></div>
+              </div>
             </div>
         </li>
     </ul>

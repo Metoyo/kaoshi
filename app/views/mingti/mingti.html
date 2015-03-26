@@ -10,58 +10,110 @@
           <p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont-dg cYell"></p>
         </div>
         <div class="pointTree">
-            <ul class="list-unstyled levelOne" id="daGangList">
-                <li ng-repeat="zsd in kowledgeList">
-                    <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}"
-                         ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
-                    <div class="checkbox">
+          <ul class="list-unstyled levelOne" id="daGangList">
+            <li ng-repeat="zsd in kowledgeList">
+              <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}"
+                   ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
+              <div class="checkbox">
+                <label>
+                  <!--<input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"-->
+                         <!--ng-checked="selectZsdStr.indexOf('select' + zsd.ZHISHIDIAN_ID + ',')>=0"-->
+                         <!--class="{{'select' + zsd.ZHISHIDIAN_ID}}" ng-click="toggleSelection(zsd.ZHISHIDIAN_ID)"/>-->
+                  {{zsd.ZHISHIDIANMINGCHENG}}</label>
+              </div>
+              <ul class="list-unstyled levelTwo">
+                <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+                  <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}"
+                       ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
+                             ng-checked="selectZsdStr.indexOf('select' + nd2.ZHISHIDIAN_ID + ',')>=0"
+                             class="{{'select' + nd2.ZHISHIDIAN_ID}}" ng-click="toggleSelection(nd2.ZHISHIDIAN_ID)"/>
+                      {{nd2.ZHISHIDIANMINGCHENG}}</label>
+                  </div>
+                  <ul class="list-unstyled levelThree">
+                    <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                      <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}"
+                           ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
+                      <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
-                                   ng-checked="selectZsdStr.indexOf('select' + zsd.ZHISHIDIAN_ID + ',')>=0"
-                                   class="{{'select' + zsd.ZHISHIDIAN_ID}}" ng-click="toggleSelection(zsd.ZHISHIDIAN_ID)"/>
-                            {{zsd.ZHISHIDIANMINGCHENG}}</label>
-                    </div>
-                    <ul class="list-unstyled levelTwo">
-                        <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
-                            <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}"
-                                 ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
-                                           ng-checked="selectZsdStr.indexOf('select' + nd2.ZHISHIDIAN_ID + ',')>=0"
-                                           class="{{'select' + nd2.ZHISHIDIAN_ID}}" ng-click="toggleSelection(nd2.ZHISHIDIAN_ID)"/>
-                                    {{nd2.ZHISHIDIANMINGCHENG}}</label>
-                            </div>
-                            <ul class="list-unstyled levelThree">
-                                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
-                                    <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}"
-                                         ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"
-                                                   ng-checked="selectZsdStr.indexOf('select' + nd3.ZHISHIDIAN_ID + ',')>=0"
-                                                   class="{{'select' + nd3.ZHISHIDIAN_ID}}"
-                                                   ng-click="toggleSelection(nd3.ZHISHIDIAN_ID)"/>
-                                            {{nd3.ZHISHIDIANMINGCHENG}}</label>
-                                    </div>
-                                    <ul class="list-unstyled levelFour">
-                                        <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"
-                                                           ng-checked="selectZsdStr.indexOf('select' + nd4.ZHISHIDIAN_ID + ',')>=0"
-                                                           class="{{'select' + nd4.ZHISHIDIAN_ID}}"
-                                                           ng-click="toggleSelection(nd4.ZHISHIDIAN_ID)"/>
-                                                    {{nd4.ZHISHIDIANMINGCHENG}}</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                          <input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"
+                                 ng-checked="selectZsdStr.indexOf('select' + nd3.ZHISHIDIAN_ID + ',')>=0"
+                                 class="{{'select' + nd3.ZHISHIDIAN_ID}}"
+                                 ng-click="toggleSelection(nd3.ZHISHIDIAN_ID)"/>
+                          {{nd3.ZHISHIDIANMINGCHENG}}</label>
+                      </div>
+                      <ul class="list-unstyled levelFour">
+                        <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"
+                                     ng-checked="selectZsdStr.indexOf('select' + nd4.ZHISHIDIAN_ID + ',')>=0"
+                                     class="{{'select' + nd4.ZHISHIDIAN_ID}}"
+                                     ng-click="toggleSelection(nd4.ZHISHIDIAN_ID)"/>
+                              {{nd4.ZHISHIDIANMINGCHENG}}</label>
+                          </div>
                         </li>
-                    </ul>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
-            </ul>
+              </ul>
+            </li>
+          </ul>
+            <!--<ul class="list-unstyled levelOne" id="daGangList">-->
+                <!--<li ng-repeat="zsd in kowledgeList">-->
+                    <!--<div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}"-->
+                         <!--ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>-->
+                    <!--<div class="checkbox">-->
+                        <!--<label>-->
+                            <!--<input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"-->
+                                   <!--ng-checked="selectZsdStr.indexOf('select' + zsd.ZHISHIDIAN_ID + ',')>=0"-->
+                                   <!--class="{{'select' + zsd.ZHISHIDIAN_ID}}" ng-click="toggleSelection(zsd.ZHISHIDIAN_ID)"/>-->
+                            <!--{{zsd.ZHISHIDIANMINGCHENG}}</label>-->
+                    <!--</div>-->
+                    <!--<ul class="list-unstyled levelTwo">-->
+                        <!--<li ng-repeat="nd2 in zsd.ZIJIEDIAN">-->
+                            <!--<div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}"-->
+                                 <!--ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label>-->
+                                    <!--<input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"-->
+                                           <!--ng-checked="selectZsdStr.indexOf('select' + nd2.ZHISHIDIAN_ID + ',')>=0"-->
+                                           <!--class="{{'select' + nd2.ZHISHIDIAN_ID}}" ng-click="toggleSelection(nd2.ZHISHIDIAN_ID)"/>-->
+                                    <!--{{nd2.ZHISHIDIANMINGCHENG}}</label>-->
+                            <!--</div>-->
+                            <!--<ul class="list-unstyled levelThree">-->
+                                <!--<li ng-repeat="nd3 in nd2.ZIJIEDIAN">-->
+                                    <!--<div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}"-->
+                                         <!--ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>-->
+                                    <!--<div class="checkbox">-->
+                                        <!--<label>-->
+                                            <!--<input type="checkbox" name="point" value="{{nd3.ZHISHIDIAN_ID}}"-->
+                                                   <!--ng-checked="selectZsdStr.indexOf('select' + nd3.ZHISHIDIAN_ID + ',')>=0"-->
+                                                   <!--class="{{'select' + nd3.ZHISHIDIAN_ID}}"-->
+                                                   <!--ng-click="toggleSelection(nd3.ZHISHIDIAN_ID)"/>-->
+                                            <!--{{nd3.ZHISHIDIANMINGCHENG}}</label>-->
+                                    <!--</div>-->
+                                    <!--<ul class="list-unstyled levelFour">-->
+                                        <!--<li ng-repeat="nd4 in nd3.ZIJIEDIAN">-->
+                                            <!--<div class="checkbox">-->
+                                                <!--<label>-->
+                                                    <!--<input type="checkbox" name="point" value="{{nd4.ZHISHIDIAN_ID}}"-->
+                                                           <!--ng-checked="selectZsdStr.indexOf('select' + nd4.ZHISHIDIAN_ID + ',')>=0"-->
+                                                           <!--class="{{'select' + nd4.ZHISHIDIAN_ID}}"-->
+                                                           <!--ng-click="toggleSelection(nd4.ZHISHIDIAN_ID)"/>-->
+                                                    <!--{{nd4.ZHISHIDIANMINGCHENG}}</label>-->
+                                            <!--</div>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            <!--</ul>-->
         </div>
     </div>
     <!--第二级控制面板代码，包含科目和大纲内容。 结束-->

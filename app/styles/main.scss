@@ -852,6 +852,8 @@ a.add-btn:hover span {
     margin-top: 10px;
     border: 1px solid #d8d8d8;
     position: relative;
+    float: left;
+    width: 100%;
   }
   h3{
     font-size: 14px;
@@ -872,6 +874,7 @@ a.add-btn:hover span {
   .item-sub-title{
     font-size: 14px;
     width: 100%;
+    line-height: 30px;
     p{
       display: inline;
       margin-right: 10px;
@@ -900,7 +903,7 @@ a.add-btn:hover span {
       span{
         width: 42px;
         height: 10px;
-        margin-top: 2px;
+        margin-top: 10px;
         background: url("../images/mingti/icon/levelstar.png") no-repeat 0 0;
       }
       .level-star-2{
@@ -918,7 +921,9 @@ a.add-btn:hover span {
     }
   }
   .item-cont {
-    margin-top: 35px;
+    width: 100%;
+    float: left;
+    cursor: pointer;
     .item-tizhi-wrap{
       margin-bottom: 5px;
       .item-tizhi{
@@ -936,7 +941,18 @@ a.add-btn:hover span {
     }
   }
   .answer-cont{
+    float: left;
+    width: 100%;
+    position: relative;
+    font-size: 14px;
+    line-height: 24px;
     display: none;
+    .daAnLabel{
+      position: absolute;
+    }
+    .daAnBox{
+      margin-left: 45px;
+    }
   }
 }
 /* test list styls end*/
@@ -1900,33 +1916,9 @@ label.checkbox{
     }
   }
   .testList{
-    li{
-      float: left;
-      width: 100%;
-    }
     .item-tigan{
       font-size: 14px;
       font-weight: normal;
-    }
-    .item-cont {
-      margin-top: 10px;
-      width: 100%;
-      float: left;
-      cursor: pointer;
-    }
-    .answer-cont{
-      float: left;
-      width: 100%;
-      position: relative;
-      font-size: 14px;
-      line-height: 24px;
-      display: none;
-      .daAnLabel{
-        position: absolute;
-      }
-      .daAnBox{
-        margin-left: 45px;
-      }
     }
   }
   /* test list styls end*/

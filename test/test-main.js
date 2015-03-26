@@ -23,7 +23,7 @@ requirejs.config({
     charts: '../../bower_components/echarts/echarts-plain',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
-    setJs: '../../bower_components/markitup/set',
+    setJs: '../../bower_components/markitup/set.min',
     mathjax: '../../bower_components/markitup/MathJax',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
     'angular-animate': '../../bower_components/angular-animate/angular-animate',

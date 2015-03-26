@@ -574,6 +574,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
             $http.get(qrytimuxiangqing).success(function(data){
               if(data.length){
                 _.each(data, function(tm, idx, lst){
+                  DataService.formatDaAn(tm);
                   //件创建人的姓名加入到题目里面
                   _.each($scope.chuTiRens, function(usr, subidx, sublst){
                     if(usr.UID == tm.CHUANGJIANREN_UID){

@@ -11,7 +11,7 @@ require.config({
     charts: '../../bower_components/echarts/echarts-plain',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap.min',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
-    setJs: '../../bower_components/markitup/set.min',
+    setJs: '../../bower_components/markitup/set',
     mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
     datepicker: '../../bower_components/intimidatetime/intimidatetime'
   },

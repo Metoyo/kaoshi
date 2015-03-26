@@ -3,9 +3,13 @@
         <div class="form-horizontal">
             <div class="form-header">
                 <div class="form-group form-th">
-                    <div class="col-sm-8 col-sm-offset-1 text-center">
-                        题干
-                    </div>
+                  <label class="col-sm-1 control-label">题目来源</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" ng-model="danXuanData.shuju.TIMULAIYUAN_ID"
+                            ng-options="tmly.TIMULAIYUAN_ID as tmly.LAIYUANMINGCHENG for tmly in mingTiParam.tiMuLaiYuan">
+                      <option value="">请选择题目来源</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="form-group zsdNameBox">
                     <div class="col-sm-8 col-sm-offset-1">
@@ -127,6 +131,12 @@
                             <input type="text" class="hide nandu-input" value="">
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-1 control-label">备注</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control" rows="5" ng-model="danXuanData.shuju.REMARK" placeholder="备注"></textarea>
+                  </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-8 text-right">

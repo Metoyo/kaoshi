@@ -18,6 +18,12 @@ var ifHasMark,
     return '#$' + gs + '$#';
   }
 };
+function matheq_preview() {
+  $('#prevDoc').html($('.formulaEditTiGan').val());
+  $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+}
 var mySettings = {
   nameSpace:       "mktEditor",
   onShiftEnter:    {keepDefault:false, replaceWith:'<br />\n'},
