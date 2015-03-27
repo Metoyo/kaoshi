@@ -22,7 +22,7 @@
                         知识点：【<span ng-bind="selectZhiShiDian"></span>】
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group tianKong">
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
                         <textarea class="form-control formulaEditTiGan" rows="5" ng-model="tianKongData.shuju.TIGAN"
@@ -153,19 +153,19 @@
             </fieldset>
         </form>
     </div>
-    <script type="text/javascript">
-        var tiGanClass = $('.formulaEditTiGan');
-        tiGanClass.markItUp(mySettings);
-        //题支的编辑器预览
-        $('.formulaEditTiZhi').keyup(function() {
-            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        });
-        function matheq_preview() {
-            $('#prevDoc').html($('.formulaEditTiGan').val());
-            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        }
-    </script>
+    <!--<script type="text/javascript">-->
+        <!--var tiGanClass = $('.formulaEditTiGan');-->
+        <!--tiGanClass.markItUp(mySettings);-->
+        <!--//题支的编辑器预览-->
+        <!--$('.formulaEditTiZhi').keyup(function() {-->
+            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
+        <!--});-->
+        <!--function matheq_preview() {-->
+            <!--$('#prevDoc').html($('.formulaEditTiGan').val());-->
+            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
+        <!--}-->
+    <!--</script>-->
 </div>

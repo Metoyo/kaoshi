@@ -5,7 +5,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $q, $timeout, DataService) {
         /**
-         * 操作title//
+         * 操作title
          */
         $rootScope.isRenZheng = false; //判读页面是不是认证
 
@@ -1086,6 +1086,10 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           tiankong_data.shuju.TIMULEIXING_ID = 4;
           $scope.tianKongData = tiankong_data;
           $scope.loadingImgShow = false; //panduan.html
+          var addTianKongFun = function() {
+            $('.formulaEditTiGan').markItUp(mySettings);
+          };
+          $timeout(addTianKongFun, 500);
         };
 
         /**
@@ -1271,7 +1275,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         };
 
         /**
-         * 点击删除按钮删除一项题支输入框//
+         * 点击删除按钮删除一项题支输入框
          */
         $scope.deleteOneItem = function(){
           loopArr.pop();
@@ -1741,6 +1745,26 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           else{
             DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
           }
+        };
+
+        /**
+         * 显示题干预览
+         */
+        $scope.previewTiGan = function(){
+          var tgCont = $('.formulaEditTiGan').val();
+          tgCont = tgCont.replace(/\n/g, '<br/>');
+          $('#prevDoc').html(tgCont);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+        };
+
+        /**
+         * 显示题干预览
+         */
+        $scope.previewTiZhi = function(){
+          var tzCont = $('.formulaEditTiZhi').val();
+          tzCont = tzCont.replace(/\n/g, '<br/>');
+          $('#prevTiZhiDoc').html(tzCont);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         };
 
         /**

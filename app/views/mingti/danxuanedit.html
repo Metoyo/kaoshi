@@ -25,7 +25,7 @@
                     <label class="col-sm-1 control-label">题目</label>
                     <div class="col-sm-8">
                         <textarea class="form-control formulaEditTiGan" rows="5" ng-model="danXuanData.shuju.TIGAN"
-                                  placeholder="请输入题干"></textarea>
+                                  placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
                         <div class="previewBox" ng-show="hideDanXuanEdt">
                             <h4 class="title">
                                 <span class="pull-left">
@@ -66,7 +66,8 @@
             <div class="form-body">
                 <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">
                     <div class="col-sm-8 col-sm-offset-1">
-                        <textarea class="form-control formulaEditTiZhi" rows="5"></textarea>
+                        <textarea class="form-control formulaEditTiZhi" ng-model="xuanZheTiZhi" rows="5"
+                                  ng-change="previewTiZhi()"></textarea>
                         <div class="previewBox">
                             <h4 class="title">
                             <span class="pull-left">
@@ -148,24 +149,24 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        //题干的编辑器预览
-        $('.formulaEditTiGan').keyup(function() {
-            var tgCont = $('.formulaEditTiGan').val();
-            tgCont = tgCont.replace(/\n/g, '<br/>');
-            $('#prevDoc').html(tgCont);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-        });
-        //题支的编辑器预览
-        $('.formulaEditTiZhi').keyup(function() {
-            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        });
-        function matheq_preview() {
-            $('#prevDoc').html($('.formulaEditTiGan').val());
-            $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
-        }
-    </script>
+    <!--<script type="text/javascript">-->
+        <!--//题干的编辑器预览-->
+        <!--$('.formulaEditTiGan').keyup(function() {-->
+            <!--var tgCont = $('.formulaEditTiGan').val();-->
+            <!--tgCont = tgCont.replace(/\n/g, '<br/>');-->
+            <!--$('#prevDoc').html(tgCont);-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);-->
+        <!--});-->
+        <!--//题支的编辑器预览-->
+        <!--$('.formulaEditTiZhi').keyup(function() {-->
+            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
+        <!--});-->
+        <!--function matheq_preview() {-->
+            <!--$('#prevDoc').html($('.formulaEditTiGan').val());-->
+            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);-->
+            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
+        <!--}-->
+    <!--</script>-->
 </div>
