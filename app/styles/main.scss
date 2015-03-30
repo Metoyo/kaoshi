@@ -172,6 +172,9 @@ body {
 .cInfo{
   color: #46b8da;
 }
+.cBlue{
+  color: #357ebd;
+}
 .cYell{
   color: #f60;
 }
@@ -1099,6 +1102,7 @@ label.checkbox{
   .keMuWrap{
     max-height: 360px;
     overflow-y: auto;
+    padding-left: 20px;
   }
   .btns{
     .btn{
@@ -1711,6 +1715,16 @@ label.checkbox{
       margin-left: 10px;
       .all-lingYu{
         border-radius: 4px;
+      }
+    }
+  }
+  .teacherInfo{
+    padding: 10px;
+    table{
+      width: 100%;
+      th,td{
+        padding: 5px;
+        font-size: 14px;
       }
     }
   }
