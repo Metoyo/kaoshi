@@ -68,7 +68,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
             ksListZt: '', //考试列表的状态
             showKaoShiDetail: false, //考试详细信息
             selectShiJuan: [], //存放已选择试卷的数组
-            saveKaoShiBtnStat: false
+            saveKaoShiBtnStat: false,
+            isAllKeGuanTi: false //判断全部是否为客观题
           };
 
           /**
@@ -473,7 +474,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
           $scope.addToKaoShi = function(sj){
             var ifHasIn = _.find($scope.kwParams.selectShiJuan, function(sjData){
               return sjData.SHIJUAN_ID == sj.SHIJUAN_ID;
-            });
+            }),
+              selectShiJuanLen;
             if(ifHasIn){
               DataService.alertInfFun('pmt', '此试卷已经在添加的考试，请选择其他试卷！');
             }
@@ -481,33 +483,19 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
               $scope.kwParams.selectShiJuan.push(sj);
               $scope.showPopupBox = false;
             }
-//            var qryPaperDetail = qryPaperDetailBase + sj.SHIJUAN_ID;
-//            $http.get(qryPaperDetail).success(function(data){
-//              if(!data.error){
-//                //给模板大题添加存放题目的数组
-//                _.each(data.MUBANDATI, function(mbdt, idx, lst){
-//                  mbdt.TIMUARR = [];
-//                  mbdt.datiScore = 0;
-//                });
-//                //将各个题目添加到对应的模板大题中
-//                _.each(data.TIMU, function(tm, idx, lst){
-//                  _.each(data.MUBANDATI, function(mbdt, subIdx, subLst){
-//                    if(mbdt.MUBANDATI_ID == tm.MUBANDATI_ID){
-//                      mbdt.TIMUARR.push(tm);
-//                      mbdt.datiScore += parseFloat(tm.FENZHI);
-//                    }
-//                  });
-//                });
-//                //赋值
-//                $scope.paperDetail = data;
-//                kaoshi_data.shuju.SHIJUAN_ID = sj.SHIJUAN_ID; //试卷id
-//                kaoshi_data.shuju.shijuan_name = sj.SHIJUANMINGCHENG; //试卷名称
-//                $scope.showPopupBox = false;
-//              }
-//              else{
-//                DataService.alertInfFun('err', '查询试卷失败！错误信息为：' + data.error);
-//              }
-//            });
+            //判断试题是不是全为客观题
+            selectShiJuanLen = $scope.kwParams.selectShiJuan.length;
+            if($scope.kwParams.selectShiJuan && selectShiJuanLen> 0){
+              for(var i=0; i < selectShiJuanLen; i++){
+                var idx = _.findIndex($scope.kwParams.selectShiJuan[i].TIXING_DATA, function(dt){
+                  return dt.TIXING_ID > 6;
+                });
+                if(idx >= 0){
+                  $scope.kwParams.isAllKeGuanTi = false;
+                  break;
+                }
+              }
+            }
           };
 
           /**

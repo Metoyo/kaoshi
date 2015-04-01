@@ -120,9 +120,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
         $scope.tjShowItemInfo = function(id, idType, comeForm, tjName){
           var queryTiMu, newCont,
             tgReg = new RegExp('<\%{.*?}\%>', 'g');
-          //tjDataPara = '';
-          //tjIdType = '';
-          //tjNamePara = '';
           if(idType == 'ksId'){
             queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
           }
@@ -174,12 +171,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                   tm.TIGAN.tiGan = newCont;
                 }
                 else{
-
                 }
                 backToWhere = comeForm;
-                //tjDataPara = id;
-                //tjIdType = idType;
-                //tjNamePara = tjName;
               });
               $scope.tjTmQuantity = 5; //加载是显示的题目数量
               $scope.letterArr = config.letterArr; //题支的序号

@@ -1,6 +1,6 @@
-<div class="row tj-ks-title">
+<div class="row tj-ks-title fixed-top">
   <span>按考试统计</span>
-  <button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回</button>
+  <button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回统计</button>
 </div>
 <div class="tab-content ks-chart-page">
   <div class="bg">
@@ -288,6 +288,9 @@
 <div class="popup-percent" ng-hide="showKaoShengList">
   <div class="popup-percent-inner">
     <div>
+      <label class="closePaperDetailBtn fz16" ng-hide="showKaoShengList">
+        <input type="checkbox" ng-model="checkboxModel"> 只看失分题目
+      </label>
       <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closeZuoDaReappear()">
         关闭
       </button>
@@ -295,9 +298,6 @@
     <div class="inner-box">
       <h2 class="text-center">
         <span ng-bind="kaoShengShiJuan.sj_name"></span>
-        <!--<button type="button" class="btn btn-danger pull-right" ng-click="closeZuoDaReappear()">-->
-        <!--关闭-->
-        <!--</button>-->
       </h2>
       <div id="answerReappearShiJuan">
         <div ng-repeat="dati in kaoShengShiJuan.sj_tm" repeat-done>
@@ -306,7 +306,7 @@
             <span  ng-bind="dati.tx_name"></span>
           </h4>
           <ul class="list-unstyled">
-            <li class="ptb5" ng-repeat="xtm in dati.tm">
+            <li class="ptb5" ng-repeat="xtm in dati.tm" ng-hide="checkboxModel && xtm.ZUIHOUDEFEN != 0">
               <h4 class="ar-tiGan itemHasImg">
                 <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
                 (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
@@ -352,6 +352,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

@@ -33,9 +33,6 @@
                                 <span class="pull-left">
                                     内容预览：
                                 </span>
-                                <!--<span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">-->
-                                    <!--关闭题干编辑器-->
-                                <!--</span>-->
                             </h4>
                             <div id="prevDoc">
                             </div>
@@ -110,22 +107,11 @@
                         </ul>
                     </div>
                 </div>
-                <!--<div class="form-group tizhiWrap" ng-repeat="num in tkLoopArr track by $index">-->
-                    <!--<label class="col-sm-1 control-label">{{'答案' + ($index + 1)}}.</label>-->
-                    <!--<div class="col-sm-8">-->
-                        <!--<a href="javascript:void(0)" ng-click="addMore">-->
-                            <!--<span class="glyphicon glyphicon-plus"></span>再添加一种答案格式-->
-                        <!--</a>-->
-                        <!--<div class="tiZhi">-->
-                            <!--<input type="text" class="form-control subTiZhi" placeholder="请输入此空的答案">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </fieldset>
             <fieldset class="form-footer">
                 <div class="form-group nandu-select">
-                    <label class="col-sm-1 control-label">难度：</label>
-                    <div class="col-sm-8">
+                    <label class="col-sm-1 control-label">难度</label>
+                    <div class="col-sm-5">
                         <div class="nandu-star-box" nandu-star>
                             <a href="javascript:void(0)"></a>
                             <a href="javascript:void(0)"></a>
@@ -135,8 +121,12 @@
                             <input type="text" class="hide nandu-input" value="">
                         </div>
                     </div>
+                    <div class="col-sm-3 text-right pt10" ng-init="showRemarkInput=false">
+                      <a href="javascript:void(0)" ng-hide="showRemarkInput" ng-click="showRemarkInput=true">备注</a>
+                      <a href="javascript:void(0)" ng-show="showRemarkInput" ng-click="showRemarkInput=false">关闭备注</a>
+                    </div>
                 </div>
-              <div class="form-group">
+              <div class="form-group" ng-show="showRemarkInput">
                 <label class="col-sm-1 control-label">备注</label>
                 <div class="col-sm-8">
                   <textarea class="form-control" rows="5" ng-model="tianKongData.shuju.REMARK" placeholder="备注"></textarea>
@@ -153,19 +143,4 @@
             </fieldset>
         </form>
     </div>
-    <!--<script type="text/javascript">-->
-        <!--var tiGanClass = $('.formulaEditTiGan');-->
-        <!--tiGanClass.markItUp(mySettings);-->
-        <!--//题支的编辑器预览-->
-        <!--$('.formulaEditTiZhi').keyup(function() {-->
-            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
-            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
-        <!--});-->
-        <!--function matheq_preview() {-->
-            <!--$('#prevDoc').html($('.formulaEditTiGan').val());-->
-            <!--$('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());-->
-            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);-->
-            <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);-->
-        <!--}-->
-    <!--</script>-->
 </div>

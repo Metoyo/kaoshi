@@ -94,7 +94,7 @@
             <div class="form-footer">
                 <div class="form-group nandu-select">
                     <label class="col-sm-1 control-label">难度</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-5">
                         <div class="nandu-star-box" nandu-star>
                             <a href="javascript:void(0)"></a>
                             <a href="javascript:void(0)"></a>
@@ -104,8 +104,12 @@
                             <input type="text" class="hide nandu-input" value="">
                         </div>
                     </div>
+                    <div class="col-sm-3 text-right pt10" ng-init="showRemarkInput=false">
+                      <a href="javascript:void(0)" ng-hide="showRemarkInput" ng-click="showRemarkInput=true">备注</a>
+                      <a href="javascript:void(0)" ng-show="showRemarkInput" ng-click="showRemarkInput=false">关闭备注</a>
+                    </div>
                 </div>
-              <div class="form-group">
+              <div class="form-group" ng-show="showRemarkInput">
                 <label class="col-sm-1 control-label">备注</label>
                 <div class="col-sm-8">
                   <textarea class="form-control" rows="5" ng-model="panDuanData.shuju.REMARK" placeholder="备注"></textarea>
@@ -122,34 +126,4 @@
             </div>
         </div>
     </div>
-    <!--<script type="text/javascript">-->
-        <!--//题干的编辑器预览-->
-        <!--$('.formulaEditTiGan').keyup(function(event) {-->
-          <!--var currKey = 0, e = event || e, obj = document.getElementById('aa47'),-->
-            <!--str = ' ';-->
-          <!--currKey = e.keyCode || e.which || e.charCode;-->
-          <!--if(e.shiftKey && currKey == 188){-->
-            <!--if (document.selection) {-->
-              <!--var sel = document.selection.createRange();-->
-              <!--sel.text = str;-->
-            <!--}-->
-            <!--else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {-->
-              <!--var startPos = obj.selectionStart,-->
-                <!--endPos = obj.selectionEnd,-->
-                <!--cursorPos = startPos,-->
-                <!--tmpStr = obj.value;-->
-              <!--obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);-->
-              <!--cursorPos += str.length;-->
-              <!--obj.selectionStart = obj.selectionEnd = cursorPos;-->
-            <!--}-->
-            <!--else {-->
-              <!--obj.value += str;-->
-            <!--}-->
-          <!--}-->
-          <!--var tgCont = $('.formulaEditTiGan').val();-->
-          <!--tgCont = tgCont.replace(/\n/g, '<br/>');-->
-          <!--$('#prevDoc').html(tgCont);-->
-          <!--MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);-->
-        <!--});-->
-    <!--</script>-->
 </div>

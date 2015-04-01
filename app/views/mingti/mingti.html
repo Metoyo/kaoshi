@@ -12,7 +12,7 @@
         <div class="pointTree">
           <ul class="list-unstyled levelOne" id="daGangList">
             <li ng-repeat="zsd in kowledgeList">
-              <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}"
+              <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}" ng-show="zsd.ZIJIEDIAN.length"
                    ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
               <div class="checkbox">
                 <label>
@@ -23,7 +23,7 @@
               </div>
               <ul class="list-unstyled levelTwo">
                 <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
-                  <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}"
+                  <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}" ng-show="nd2.ZIJIEDIAN.length"
                        ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
                   <div class="checkbox">
                     <label>
@@ -34,7 +34,7 @@
                   </div>
                   <ul class="list-unstyled levelThree">
                     <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
-                      <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}"
+                      <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}" ng-show="nd3.ZIJIEDIAN.length"
                            ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
                       <div class="checkbox">
                         <label>
@@ -119,7 +119,7 @@
     <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
     <div class="content">
         <!--题型和难度DOM元素， 开始-->
-        <div class="kmTxWrap">
+        <div class="kmTxWrap fixed-top">
             <div ng-hide="patternListToggle || alterTiXingBox">
                 <div class="kmTxBox" ng-init="txSelectenIdx = 0">
                     <ul class="list-inline kmTxNdList pull-left getTiXingIdList">

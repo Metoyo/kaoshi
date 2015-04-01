@@ -110,6 +110,9 @@ body {
 .mr5{
   margin-right: 5px;
 }
+.mr10{
+  margin-right: 10px;
+}
 .mlp5{
   margin-left: 5%;
 }
@@ -473,6 +476,9 @@ a.add-btn:hover span {
       top: 10px;
       right: 20px;
       z-index: 1015;
+    }
+    label.closePaperDetailBtn{
+      top: 50px;
     }
   }
 }
@@ -858,6 +864,12 @@ a.add-btn:hover span {
     float: left;
     width: 100%;
   }
+  .pr130{
+    padding-right: 130px;
+  }
+  .pr100{
+    padding-right: 100px;
+  }
   h3{
     font-size: 14px;
     margin: 0;
@@ -1122,7 +1134,6 @@ label.checkbox{
   }
   .btn {
     padding: 6px 12px;
-    //    border-radius: 0 4px 4px 0;
     margin-left: -5px;
   }
   .saveDagangBtn{
@@ -1148,7 +1159,6 @@ label.checkbox{
     background: white url('../images/mingti/icon/sline.jpg') no-repeat 15px -2px;
   }
   .dagangBox {
-//    margin-left: 40px;
     margin-left: 15px;
     margin-top: 10px;
     padding-top: 0;
@@ -1281,6 +1291,15 @@ label.checkbox{
 }
 .intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit span {
   display: block;
+}
+//固定到顶部
+.fixed-top{
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 520px;
+  z-index: 2;
+  background-color: #fff;
 }
 //认证样式
 .renzhengWrapper{
@@ -1760,38 +1779,14 @@ label.checkbox{
 }
 //大纲样式
 .dagangWrapper{
+  .content{
+    padding-top: 50px;
+  }
   .itemTitle {
     font-size: 120%;
     font-weight: 600;
     margin-left: 20px;
   }
-//  .content {
-//    padding-left: 220px;
-//    background-color: #fff;
-////    padding-top: 50px;
-//  }
-//  .dagangListWrap {
-//    width: 221px;
-//    height: 100%;
-//    position: fixed;
-//    background-color: #f5f5f5;
-//    border-right: 1px solid #cfcfcf;
-//    z-index: 10;
-//    h2{
-//      font-size: 20px;
-//    }
-//    .btn {
-//      width: 180px;
-//      text-align: left;
-//    }
-//    span.caret {
-//      float: right;
-//      margin-top: 8px;
-//    }
-//    .dropdown-menu {
-//      width: 190px;
-//    }
-//  }
   .list-sheet {
     li {
       margin-top: 5px;
@@ -1816,7 +1811,6 @@ label.checkbox{
   .publicKnowledgeWrap{
     position: fixed;
     right: 20px;
-//    top: 40px;
     top: 60px;
     bottom: 0;
     width: 250px;
@@ -1849,7 +1843,6 @@ label.checkbox{
   }
   .dg-list-box{
     width: 50%;
-//    margin: -40px 0 20px 45px;
     margin: 15px 0 20px 15px;
     .daGangListSelect{
       display: inline;
@@ -1883,6 +1876,10 @@ label.checkbox{
     p{
       line-height: 26px;
     }
+  }
+  .fixed-top{
+    left: 300px;
+    z-index: 3;
   }
   /*main styles end*/
 }
@@ -1992,6 +1989,12 @@ label.checkbox{
   }
   .starClick5{
     background-position: 0 -250px;
+  }
+  .contentWraps{
+    padding-top: 55px;
+  }
+  .fixed-top{
+    left: 300px;
   }
 }
 .tiKong{
@@ -2276,12 +2279,8 @@ label.checkbox{
     }
   }
   .fixed-top{
-    position: fixed;
-    top: 0;
     height: 55px;
-    right: 0;
-    left: 520px;
-    z-index: 2;
+
   }
   .kmTxWrap{
     padding-right: 100px;
@@ -2559,7 +2558,7 @@ label.checkbox{
     }
   }
   .tab-content{
-    padding: 15px;
+    padding: 60px 15px 15px 15px;
     .help-block{
       font-size: 13px;
       color: indianred;
@@ -2586,6 +2585,9 @@ label.checkbox{
     a{
       margin-right: 15px;
     }
+  }
+  .fixed-top{
+    left: 300px;
   }
 }
 //统计样式
@@ -2620,6 +2622,7 @@ label.checkbox{
   }
   .tab-content{
     padding: 15px;
+    margin-top: 49px;
   }
   .ptb10{
     padding: 10px 0;
@@ -2733,6 +2736,10 @@ label.checkbox{
       font-size: 18px;
       line-height: 28px;
     }
+  }
+  .fixed-top{
+    left: 80px;
+    height: 49px;
   }
   .tj-ks-box{
     background-color: #fff;

@@ -282,14 +282,10 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           tiMuIdArr = [];
           pageArr = [];
           if(zhishidian_id){
-//            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-//              + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
               + '&zhishidian_id=' + zhishidian_id + '&chuangjianren_uid=' + $scope.mingTiParam.tiMuAuthorId; //查询题目列表的url
           }
           else{
-//            qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
-//              + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + checkSchoolTiKu; //查询题目列表的url
             qrytimuliebiao = qrytimuliebiaoBase + '&tixing_id=' + tixing_id + '&nandu_id=' + nandu_id
               + '&zhishidian_id=' + zsdgZsdArr.join() + '&chuangjianren_uid=' + $scope.mingTiParam.tiMuAuthorId; //查询题目列表的url
           }
@@ -1440,7 +1436,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             tiankong_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '填空题';
             renderTpl(tpl); //render 修改过模板
-//            $timeout(DataService.tiMuContPreview, 1000);
           }
           //计算题
           if(tmxq.TIXING_ID == 9){

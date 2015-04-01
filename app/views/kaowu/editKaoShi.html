@@ -21,11 +21,9 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">试卷<i>*</i></label>
       <div class="col-sm-6">
-        <!--<input type="text" name="ksShiJuan" class="form-control" placeholder="试卷" required-->
-        <!--ng-model="kaoshiData.shuju.shijuan_name" ng-focus="showPaperList()"/>-->
-        <!--<button type="button" ng-click="showPaperList()"></button>-->
         <h5 ng-click="showPaperList()" class="fz16">
           <a href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span>添加试卷</a>
+          <span ng-show="kwParams.isAllKeGuanTi" class="pull-right">全部为客观题</span>
         </h5>
         <div ng-show="kwParams.selectShiJuan.length > 0">
           <p ng-repeat="sltSj in kwParams.selectShiJuan">
@@ -126,9 +124,6 @@
             <div class="col-sm-8">
               <input type="text" class="form-control studentID" placeholder="学号"
                      ng-keyup="checkInputVal()"/>
-              <!--<input type="text" class="form-control studentID" placeholder="学号"-->
-              <!--onkeyup="this.value=this.value.replace(/\D/g,'')" ng-keyup="checkInputVal()"-->
-              <!--onafterpaste="this.value=this.value.replace(/\D/g,'')"/>-->
             </div>
             <div class="col-sm-2">
               <p class="help-block" ng-show='studentIDIsNull'>请输入学号！</p>
@@ -192,7 +187,6 @@
               <em>
                 请选择上传考生信息的文件，格式为Excel格式
               </em>
-              <!--<input type="file" name="students" class="findFileBtn" id="uploadKsInput">-->
               <input type="file" file-upload multiple class="pull-left hide addFileBtn"/>
               <button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>
             </form>
@@ -295,14 +289,12 @@
                 <span>试卷难度：{{pld.NANDU.paperNanDu}}</span>
                 <span>出卷日期：{{pld.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}</span>
               </p>
-
               <p>
                 题型分布：
                   <span ng-repeat="dati in pld.TIXING_DATA">
                       {{tiXingNameArr[dati.TIXING_ID -1]}}:{{dati.COUNT}}
                   </span>
               </p>
-
               <p>
                 题型难度：
                   <span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">
