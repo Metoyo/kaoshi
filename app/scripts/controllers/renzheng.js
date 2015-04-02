@@ -215,7 +215,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         };
 
         /**
-         * 重置密码//
+         * 重置密码
          */
         $scope.newPasswordObj = {
           token: token,
@@ -235,7 +235,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               }
             });
           }
-        }
+        };
+
+        /**
+         * 学生登录
+         */
+        $scope.studentLogin = function(){
+
+        };
 
     }]);
 });
