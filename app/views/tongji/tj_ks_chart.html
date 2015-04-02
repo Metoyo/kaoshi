@@ -306,7 +306,7 @@
             <span  ng-bind="dati.tx_name"></span>
           </h4>
           <ul class="list-unstyled">
-            <li class="ptb5" ng-repeat="xtm in dati.tm" ng-hide="checkboxModel && xtm.ZUIHOUDEFEN != 0">
+            <li class="ptb5" ng-repeat="xtm in dati.tm" ng-hide="checkboxModel && xtm.ZUIHOUDEFEN == xtm.XIAOTI_FENZHI">
               <h4 class="ar-tiGan itemHasImg">
                 <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
                 (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)

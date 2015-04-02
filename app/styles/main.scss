@@ -1134,7 +1134,6 @@ label.checkbox{
   }
   .btn {
     padding: 6px 12px;
-    margin-left: -5px;
   }
   .saveDagangBtn{
     margin-left: 10px;
@@ -1172,7 +1171,6 @@ label.checkbox{
     height: 34px;
     margin: 0;
     position: relative;
-    /*border: 1px solid red;*/
   }
   .media-body {
     padding: 0;
@@ -1182,8 +1180,8 @@ label.checkbox{
     margin-right: 0;
   }
   .col-md-4, .col-md-3 {
-    padding-left: 0;
-    padding-right: 0;
+//    padding-left: 0;
+//    padding-right: 0;
   }
 }
 .dgLevel_0 .dagangName {
@@ -1323,10 +1321,6 @@ label.checkbox{
   .row {
     margin-left: 0;
     margin-right: 0;
-  }
-  .admin-row{
-    margin-top: 10px;
-    padding: 0 10px;
   }
   label {
     color: #000;
@@ -1718,7 +1712,7 @@ label.checkbox{
   }
   .dagangInput{
     background-color: #fff;
-    padding: 5px 0 10px 0;
+    padding: 10px;
     .btn{
       padding: 6px 12px;
     }
@@ -1736,6 +1730,13 @@ label.checkbox{
         border-radius: 4px;
       }
     }
+    .dagangBox {
+      margin-left: 0;
+      margin-top: 0;
+    }
+    .text-left{
+      text-align: left;
+    }
   }
   .teacherInfo{
     padding: 10px;
@@ -1751,7 +1752,8 @@ label.checkbox{
     float: left;
     width: 100%;
     .dagangBox{
-      margin-left: 10px;
+      margin-left: 5px;
+      margin-top: 10px;
     }
     .ly-select-box{
       width: 50%;

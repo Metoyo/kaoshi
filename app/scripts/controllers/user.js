@@ -1017,7 +1017,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           var chaXunTiKu = function(lyData){
             queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
             $http.get(queryTiKuUrl).success(function(data){
-              count ++;
               if(count < lyLength){
                 if(data.length){
                   chaXunTiKu($scope.jgSelectLingYu[count]);
@@ -1035,6 +1034,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   });
                 }
               }
+              count ++;
             });
           };
           if($scope.jgSelectLingYu && $scope.jgSelectLingYu.length > 0){
@@ -2036,6 +2036,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           else{
             DataService.alertInfFun('pmt', '请选择要修改的知识点，并输入新名称！');
           }
+        };
+
+        /**
+         * 学生报名设定
+         */
+        $scope.renderBaoMingSetTpl = function(){
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.adminSubWebTpl = 'views/renzheng/rz_baoMing.html';
         };
 
     }]);

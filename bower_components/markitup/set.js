@@ -1310,40 +1310,40 @@ var mySettings = {
     ]},
     {name:'a15', className:'width70 wh105x70', dropMenu: [
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{1}}&\\cdots&{a_{n}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}&\\cdots&{a_{n}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{1}}\\\\\\vdots\\\\{a_{n}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}\\\\\\vdots\\\\{a_{n}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{1}}& & \\\\ &\\ddots& \\\\ & &{a_{n}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}& & \\\\ &\\ddots& \\\\ & &{a_{n}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{array}{ll}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{array}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{array}{ll}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{array}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right|');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{array}{ll}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{array}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{array}{ll}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{array}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right|');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{array}{ll}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{array}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{array}{ll}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{array}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{array}{ll}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{array}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right|');
       }}
     ]},
     {name:'a16', className:'width70', dropMenu: [
@@ -1509,10 +1509,10 @@ var mySettings = {
         return gsReplaceFun('\\dfrac{-b\\pm\\sqrt{b^2 - 4ac}}{2a}');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\int f(x)dx');
+        return gsReplaceFun('\\int f(x)\\text{d}x');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\int_a^bf(x)dx');
+        return gsReplaceFun('\\int_a^bf(x)\\text{d}x');
       }},
       {name:'', className:'', replaceWith: function(){
         return gsReplaceFun('\\lim\\limits_{x\\to\\infty}f(x)');

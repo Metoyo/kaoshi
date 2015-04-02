@@ -56,7 +56,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               yonghuming : login.userName,
               mima : login.password
             };
-
             //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
               var jsArr, quanxianDist;
@@ -246,7 +245,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 学生登录
          */
         $scope.studentLogin = function(){
-          console.log($scope.stuLogin);
+          //console.log($scope.stuLogin);
         };
 
     }]);
