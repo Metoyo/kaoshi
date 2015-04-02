@@ -10,8 +10,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var baseRzAPIUrl = config.apiurl_rz,
           token = config.token,
           loginApiUrl =  baseRzAPIUrl + 'denglu',
-          login = {
+          login = { //教师登录数据格式
             userName: '',
+            password: ''
+          },
+          stuLogin = { //学生登录数据格式
+            xueHao: '',
             password: ''
           },
           loginPostParams,
@@ -23,6 +27,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $rootScope.session = session;
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.login = login;
+        $scope.stuLogin = stuLogin;
         $rootScope.isPromiseAlterOthersTimu = false;
         $scope.rzParams = { //全局参数
           registerEmail: '',
@@ -241,7 +246,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 学生登录
          */
         $scope.studentLogin = function(){
-
+          console.log($scope.stuLogin);
         };
 
     }]);

@@ -62,19 +62,17 @@
         <div>
           <div class="form-group">
             <label>学号</label>
-            <input type="text" class="form-control" name="yonghuming" ng-model="login.userName" required="true"
+            <input type="text" class="form-control" name="xuehao" ng-model="stuLogin.xueHao" required="true"
                    placeholder="学号" autofocus="true">
-            <span class="help-block" ng-hide="login.userName">学号不能为空！</span>
+            <span class="help-block" ng-hide="stuLogin.xueHao">学号不能为空！</span>
           </div>
           <div class="form-group">
             <label>密码</label>
-            <input type="password" class="form-control" name="mima" ng-model="login.password" required="true"
+            <input type="password" class="form-control" name="stuMiMa" ng-model="stuLogin.password" required="true"
                    placeholder="密码">
-            <span class="help-block" ng-hide="login.password">密码不能为空!</span>
+            <span class="help-block" ng-hide="stuLogin.password">密码不能为空!</span>
           </div>
           <div class="form-group text-right">
-            <!--<a ng-href="{{rzParams.zhuCeUrl}}" class="pull-left mt" target="_blank">注册</a>-->
-            <!--<a href="javascript:void(0)" class="pull-left mt ml10" ng-click="rzParams.showFindPwWrap = true">忘记密码？</a>-->
             <button type="submit" class="btn btn-success" ng-click="studentLogin()">
               登录
             </button>
