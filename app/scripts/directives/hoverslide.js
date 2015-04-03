@@ -1,4 +1,4 @@
-define(['jquery', 'angular'], function ($, angular) {
+define(['jquery', 'angular'], function (JQ, angular) {
   'use strict';
 
   angular.module('kaoshiApp.directives.Hoverslide', [])
@@ -14,14 +14,14 @@ define(['jquery', 'angular'], function ($, angular) {
             function () {
               var  cont = element.find(slideGetval).val();
               timeOut = $timeout(function(){
-                $(slideSetval).html(cont);
-                $(slideTarget).show();
+                JQ(slideSetval).html(cont);
+                JQ(slideTarget).show();
               }, 500);
             },
             function () {
               $timeout.cancel(timeOut);
-              $(slideTarget).hide();
-              $(slideSetval).html('');
+              JQ(slideTarget).hide();
+              JQ(slideSetval).html('');
             }
           );
         }

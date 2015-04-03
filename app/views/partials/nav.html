@@ -33,21 +33,20 @@
         <span class="nav-icon"></span> <span class="nav-name">考务</span>
       </a>
     </li>
-    <!--<li class="list-group-item" ng-class="navClass('shenpi')"-->
-    <!--ng-show="session.quanxianStr.indexOf('juese3')>=0">-->
-    <!--<a href="javascript:void(0)" class="dropdownToggle droTogSp">-->
-    <!--<span class="nav-icon"></span> <span class="nav-name">审批</span>-->
-    <!--</a>-->
-    <!--</li>-->
     <li class="list-group-item" ng-class="navClass('tongji')"
         ng-show="session.quanxianStr.indexOf('tongji')>=0">
       <a href="/tongji" class="dropdownToggle droTogTj" ng-click="reloadModule('/tongji')">
         <span class="nav-icon"></span> <span class="nav-name">统计</span>
       </a>
     </li>
+    <li class="list-group-item" ng-class="navClass('student')"
+        ng-show="session.quanxianStr.indexOf('student')>=0">
+      <a href="/student" class="dropdownToggle droTogSt">
+        <span class="nav-icon"></span> <span class="nav-name">学生</span>
+      </a>
+    </li>
   </ul>
   <div class="dsfoldBox">
-    <!--<a href="javascript:void(0)" class="dsfoldBtn" ng-click="dsfoldBtn()"> </a>-->
     <a href="javascript:void(0)" ng-click="signOut()">退出</a>
   </div>
   <!-- 显示个人信息的页面 -->

@@ -79,9 +79,8 @@ require([
   'angular-cookies',
   'angular-sanitize',
   'angular-resource',
-  'jquery',
   'underscore'
-], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, $, _) {
+], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, _) {
   //angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, $, _
   'use strict';
   /* jshint ignore:start */

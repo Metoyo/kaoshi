@@ -705,15 +705,6 @@ a.add-btn:hover span {
     .popup-gray-box .innerBox .changePsw th {
       border-top: 1px solid #dddddd; }
 
-.save-msg {
-  margin-right: 10px;
-  color: red;
-  display: none; }
-
-.delete-msg {
-  color: red;
-  display: none; }
-
 /* 组卷规则难度选择图片 */
 .zj-style-star {
   width: 200px;

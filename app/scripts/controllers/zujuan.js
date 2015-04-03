@@ -296,7 +296,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            * 加载大纲知识点
            */
           //$scope.loadDgZsd = function(dg){
-          //  $(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
+          //  JQ(".selectDgName").html(dg.ZHISHIDAGANGMINGCHENG); //切换大纲名称
           //  qryKnowledge = qryKnowledgeBaseUrl + dg.ZHISHIDAGANG_ID;
           //  $http.get(qryKnowledge).success(function(data){
           //    if(data.error){
@@ -314,7 +314,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            */
           $scope.toggleChildNode = function(idx) {
             var onClass = '.node' + idx,//得到那个button被点击了
-              gitThisBtn = $(onClass),//得到那个展开和隐藏按钮被点击了
+              gitThisBtn = JQ(onClass),//得到那个展开和隐藏按钮被点击了
               getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
             gitThisBtn.toggleClass('unfoldBtn');
             getTargetChild.toggle();//实现子元素的显示和隐藏
@@ -325,7 +325,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            */
           $scope.toggleSelection = function(zsdId) {
             var onSelect = '.select' + zsdId,
-              gitThisChbx = $(onSelect),//得到那个展开和隐藏按钮被点击了
+              gitThisChbx = JQ(onSelect),//得到那个展开和隐藏按钮被点击了
               getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
             gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
             gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
@@ -340,7 +340,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
 
             selectZsd = [];
             selectZsdName = [];
-            var cbArray = $('input[name=point]'),
+            var cbArray = JQ('input[name=point]'),
               cbl = cbArray.length;
             for( var i = 0; i < cbl; i++) {
               if(cbArray.eq(i).prop("checked")) {
@@ -384,9 +384,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
               maxWidth = 220,
               distNum = 100;
 
-            $(el).mousedown(function(e) {
+            JQ(el).mousedown(function(e) {
               //按下元素后，计算当前鼠标与对象计算后的坐标
-              x = e.clientX - el.offsetWidth - $(dragItemClass).width();
+              x = e.clientX - el.offsetWidth - JQ(dragItemClass).width();
               //在支持 setCapture 做些东东
               el.setCapture ? (
                 //捕捉焦点
@@ -398,7 +398,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
                   el.onmouseup = mouseUp
                 ) : (
                 //绑定事件
-                $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
+                JQ(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
                 );
               //防止默认事件发生
               e.preventDefault();
@@ -406,9 +406,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
 
             //移动事件
             function mouseMove(e) {
-              var subDbWidth = $(dragItemClass).width();
+              var subDbWidth = JQ(dragItemClass).width();
               if(subDbWidth < minWidth - 1){
-                $(document).unbind('mousemove', mouseMove);
+                JQ(document).unbind('mousemove', mouseMove);
                 els.width = minWidth + 'px';
               }
               if(subDbWidth >= minWidth - 1 && subDbWidth <= maxWidth + 4){
@@ -416,10 +416,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
               }
               if(subDbWidth > maxWidth + 4){
                 els.width = maxWidth + 'px';
-                $(document).unbind('mousemove', mouseMove);
+                JQ(document).unbind('mousemove', mouseMove);
               }
-              distNum = $(greenBoxClass).width()/maxWidth; //得到难度系数
-              $(showBoxClass).html(distNum.toFixed(2));
+              distNum = JQ(greenBoxClass).width()/maxWidth; //得到难度系数
+              JQ(showBoxClass).html(distNum.toFixed(2));
               if($scope.isAutoMakePaperDetailSetShow){
                 $scope.ampKmtx[idx].tmNanDu = distNum.toFixed(2) ? distNum.toFixed(2) : 0.5; //每种题型设置个难度
                 $scope.ampKmtx[idx].dagangArr = selectZsd;
@@ -439,7 +439,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
                   el.onmousemove = el.onmouseup = null
                 ) : (
                 //卸载事件
-                $(document).unbind('mousemove', mouseMove).unbind('mouseup', mouseUp)
+                JQ(document).unbind('mousemove', mouseMove).unbind('mouseup', mouseUp)
                 );
             }
           };
@@ -722,11 +722,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            * 显示试题列表
            */
           $scope.showTestList = function(txid){
-            var dashboardWith = $('.dashboard').width();
+            var dashboardWith = JQ('.dashboard').width();
             if(dashboardWith == 120){
             }
             else{
-              $('.popupWrap').animate({
+              JQ('.popupWrap').animate({
                 left: '241px'
               }, 500, function() {
               });
@@ -997,7 +997,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
                   COUNT: ''
                 }] //{TIXING_ID: 1, COUNT: 10}
               },
-              txNumClass = $('.ruleMakePaper-header input.txNum'),
+              txNumClass = JQ('.ruleMakePaper-header input.txNum'),
               txNum = parseInt(txNumClass.val()),
               coefftRule = (parseInt($scope.zuJuanParam.zjLastNd) - 1) * 0.25;
             if(selectZsd.length){
@@ -1016,10 +1016,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
                       }
                     });
                     txNumClass.val(''); //重置题目数量
-                    $('input[name=point]:checked').prop('checked', false);//重置知识点
+                    JQ('input[name=point]:checked').prop('checked', false);//重置知识点
                     selectZsd = [];
                     selectZsdName = [];
-                    $('.zj-style-star li').removeClass('active');
+                    JQ('.zj-style-star li').removeClass('active');
                     $scope.zuJuanParam.zjLastNd = '';
                     $scope.zjNaDuStar = '';
                   }
@@ -2046,7 +2046,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
             $scope.shijuan_edit = true;
             if($scope.shijuan_edit){
               var setScoreFun = function(){
-                $(focusTarget).focus();
+                JQ(focusTarget).focus();
               };
               $timeout(setScoreFun, 500);
             }
@@ -2237,7 +2237,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            */
           //$scope.exportShiJuanToPdf = function(id){
           //  var idSl = '#' + id;
-          //  var source = $('body')[0];
+          //  var source = JQ('body')[0];
           //  var pdfCode = new jsPDF('p', 'pt', 'letter');
           //  var specialElementHandlers = {
           //      '#bypassme': function (element, renderer) {
@@ -2331,7 +2331,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
            * 当考试和考试规则列表加载时，变换tab-content的宽度
            */
           var widthChangeFun = function() {
-            $('.tab-content').width($('.sub-nav').width() - 16 + 'px');
+            JQ('.tab-content').width(JQ('.sub-nav').width() - 16 + 'px');
           };
 
           /**
@@ -2630,7 +2630,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
               dati.TIMUARR.splice(index, 1);
               dati.TIMUARR.splice(toIndex, 0, item);
             }
-            $('button.reloadMath').click();
+            JQ('button.reloadMath').click();
           };
 
           /**

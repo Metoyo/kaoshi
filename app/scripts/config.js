@@ -74,6 +74,11 @@ define( "config", [], function () {
         templateUrl: '../views/renzheng/rz_resetPw.html',
         controller: 'RenzhengCtrl',
         requireLogin: false
+      },
+      '/student': {
+        templateUrl: '../views/student/student.html',
+        controller: 'StudentCtrl',
+        requireLogin: true
       }
     },
     quanxianObj: [ //得到角色是数组

@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], // 000 开始
-  function ($, _, angular, config, mathjax, datepicker) { // 001 开始
+  function (JQ, _, angular, config, mathjax, datepicker) { // 001 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
@@ -357,7 +357,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
             }
             //显示时间选择器
             var showDatePicker = function() {
-              $('.start-date').intimidatetime({
+              JQ('.start-date').intimidatetime({
                 buttons: [
                   { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
                 ]
@@ -559,7 +559,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
 
           //添加文件
           $scope.addMyFile = function(){
-            $('input.addFileBtn').click();
+            JQ('input.addFileBtn').click();
           };
 
           //删除选择的文件
@@ -569,7 +569,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
 
           //关闭上传文件弹出层
           $scope.closeMediaPlugin = function(){
-            $('#mediaPlugin').hide();
+            JQ('#mediaPlugin').hide();
           };
 
           //保存上传文件
@@ -671,9 +671,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
            */
           $scope.saveNewStudent = function(){
             var usr = {},
-              studentName = $('.studentName'),
-              studentID = $('.studentID'),
-              studentClass = $('.studentClass');
+              studentName = JQ('.studentName'),
+              studentID = JQ('.studentID'),
+              studentClass = JQ('.studentClass');
             if(!studentName.val()){
               $scope.studentNameIsNull = true;
             }
@@ -702,8 +702,8 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
            * 检查输入的学号和姓名是否为空
            */
           $scope.checkInputVal = function(){
-            var studentName = $('.studentName').val(),
-              studentID = $('.studentID').val();
+            var studentName = JQ('.studentName').val(),
+              studentID = JQ('.studentID').val();
             if(studentName){
               $scope.studentNameIsNull = false;
             }
@@ -716,7 +716,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
            * 计算结束时间
            */
           $scope.calculateEndDate = function(){
-            var inputStartDate = $('.start-date').val();
+            var inputStartDate = JQ('.start-date').val();
             if(inputStartDate && kaoshi_data.shuju.SHICHANG){
               var startDate = Date.parse(inputStartDate), //开始时间
                 endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000; //结束时间
@@ -729,7 +729,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
            */
           $scope.saveKaoShi = function(){
             $scope.kaoShengErrorInfo = '';
-            var inputStartDate = $('.start-date').val();
+            var inputStartDate = JQ('.start-date').val();
             //其他信息判断
             if(inputStartDate){
               if(kaoshi_data.shuju.KAOCHANG && kaoshi_data.shuju.KAOCHANG.length > 0){

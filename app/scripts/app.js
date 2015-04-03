@@ -13,6 +13,7 @@ define([
   'controllers/kaowu',
   'controllers/lingyu',
   'controllers/tongji',
+  'controllers/student',
   'filters/mylocaldate',
   'filters/mylocaldatewithweek',
   'filters/examstatus',
@@ -24,8 +25,8 @@ define([
   'directives/fileupload',
   'directives/repeatdone',
   'services/dataservice'
-], function (angular, config, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl,
-             RegisterCtrl, ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
+], function (angular, config, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl,RegisterCtrl,
+             ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, StudentCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
@@ -42,6 +43,7 @@ define([
     'kaoshiApp.controllers.KaowuCtrl',
     'kaoshiApp.controllers.LingyuCtrl',
     'kaoshiApp.controllers.TongjiCtrl',
+    'kaoshiApp.controllers.StudentCtrl',
     'kaoshiApp.filters.Mylocaldate',
     'kaoshiApp.filters.Mylocaldatewithweek',
     'kaoshiApp.filters.Examstatus',

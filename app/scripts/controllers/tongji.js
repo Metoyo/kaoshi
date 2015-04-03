@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
-  function ($, _, angular, config, charts, mathjax) {
+  function (JQ, _, angular, config, charts, mathjax) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
@@ -778,7 +778,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
          * 统计页面试卷多选，将试卷加入到数组
          */
         $scope.addKaoShiToTj = function(event, ks){
-          var isChecked = $(event.target).prop('checked');
+          var isChecked = JQ(event.target).prop('checked');
           if(isChecked){
             $scope.tjParas.selectedKaoShi.push(ks);
           }

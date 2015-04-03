@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
+define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
@@ -349,7 +349,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $http.post(modifyJiGouUrl, jiGouData).success(function(data){
               if(data.result){
                 $scope.loadingImgShow = false; //rz_setJiGou.html
-                $('.save-msg').show().fadeOut(3000);
+                DataService.alertInfFun('suc', '保存成功');
                 jiGouData.shuju[0].JIGOUMINGCHENG = '';
                 $scope.getJgList(jgLeiBieId);
               }
@@ -380,7 +380,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           jiGouData.shuju.push(jgsjObj);
           $http.post(modifyJiGouUrl, jiGouData).success(function(data){
             if(data.result){
-              $('.delete-msg').show().fadeOut(3000);
+              DataService.alertInfFun('suc', '删除成功！');
               jiGouData.shuju = [];
               $scope.getJgList(jgLeiBieId);
             }
@@ -421,7 +421,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
               $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
                 if(data.result){
                   $scope.loadingImgShow = false; //rz_setJiGou.html
-                  $('.save-msg').show().fadeOut(3000);
+                  DataService.alertInfFun('suc', '保存成功');
                   $scope.getJgList(jgLeiBieId);
                   adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
                   adminData.shuju.ADMINISTRATORS[0].MIMA = '';
@@ -644,7 +644,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 添加领域到已选 media-body selectLingYuChangedArr
          */
         $scope.addLingYuToSelect = function(event, nd, parentLy){
-          var ifCheckOrNot = $(event.target).prop('checked'),
+          var ifCheckOrNot = JQ(event.target).prop('checked'),
             ifInOriginSelectLingYu, //是否存在于原始的领域里面
             targetId = nd.LINGYU_ID, //选中的领域
             ifInChangLingYuArr; //是否存在变动的领域数组里
@@ -727,16 +727,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     $scope.jgSelectLingYu.push(ly);
                   }
                 });
-                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
+                JQ(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
               }
             }
             else{ //子领域
               //当选择子领域的时候，同时选择父领域
               if(parentLy){
                 var parentLyCss = '.checkbox' + parentLyId,
-                  ifParentLyChecked = $(parentLyCss).prop('checked');
+                  ifParentLyChecked = JQ(parentLyCss).prop('checked');
                 if(!ifParentLyChecked){
-                  $(parentLyCss).prop('checked', true);
+                  JQ(parentLyCss).prop('checked', true);
                 }
                 //判断父是否在原始数据里
                 var chd_lyHasInOriginDataAdd = _.find(originSelectLingYuArr, function(sLyId){
@@ -843,7 +843,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                     }
                   });
                 });
-                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
+                JQ(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
               }
             }
             else{ //子领域
@@ -853,14 +853,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   lyClass, ifLyChecked;
                 _.each(parentLy.CHILDREN, function(ly){
                   lyClass = '.checkbox' + ly.LINGYU_ID,
-                    ifLyChecked = $(lyClass).prop('checked');
+                    ifLyChecked = JQ(lyClass).prop('checked');
                   if(ifLyChecked){
                     isAllLyUnChecked = false;
                   }
                 });
                 if(isAllLyUnChecked){
                   var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
-                  $(parentLyClass).prop('checked', false);
+                  JQ(parentLyClass).prop('checked', false);
                   //所有的子都不选的时候，将父也去除
                   var chd_lyHasInOriginDataDel = _.find(originSelectLingYuArr, function(sLyId){
                       return sLyId == parentLy.LINGYU_ID;
@@ -945,21 +945,21 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           });
           //操作已选的领域数据
           if(findLyArr.CHILDREN.length){
-            $('.media').find(targetClass).prop('checked', false);
+            JQ('.media').find(targetClass).prop('checked', false);
             _.each(findLyArr.CHILDREN, function(ly){
               checkBoxParm = '.checkbox' + ly.LINGYU_ID;
-              checkBoxElm = $(checkBoxParm).prop('checked');
+              checkBoxElm = JQ(checkBoxParm).prop('checked');
               if(checkBoxElm){
                 isAllCheckBoxUnChecked = false;
               }
             });
             if(isAllCheckBoxUnChecked){
               parentCheckBoxElm = '.checkbox' + findLyArr.LINGYU_ID;
-              $(parentCheckBoxElm).prop('checked', false);
+              JQ(parentCheckBoxElm).prop('checked', false);
             }
           }
           else{
-            $('.media').find(targetClass).prop('checked', false);
+            JQ('.media').find(targetClass).prop('checked', false);
           }
           //新代码
           if(ifInOriginSelectLy){
@@ -1387,7 +1387,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         var targetInput, targetNd;
         $scope.getInputIndex = function(event, nd){
-          targetInput = $(event.target);
+          targetInput = JQ(event.target);
           targetNd = nd;
         };
 
@@ -1465,7 +1465,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         var isAddNewPubDg = false; //是不是新建知识大纲
         $scope.addNewPubDaGang = function(){
           var jieDianObj = {},
-            selectLyText = $(".daGangLySelect").find("option:selected").text();
+            selectLyText = JQ(".daGangLySelect").find("option:selected").text();
           $scope.dgZsdList = ''; //重置公共知识大纲知识点
           daGangJieDianData = []; //定义一个大纲节点的数据
           //保存大纲是用到的第一级子节点
@@ -1647,7 +1647,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.addOrRemoveTiXing = function(event, tx){
           tiXingData.shuju = [];
           var hasIn = _.contains(originKmtx, tx.TIXING_ID),
-            ifCheckOrNot = $(event.target).prop('checked');
+            ifCheckOrNot = JQ(event.target).prop('checked');
           if(ifCheckOrNot){
             $scope.kmtxList.push(tx);
           }
@@ -1702,10 +1702,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           newPsdData.mima = $scope.adminParams.newPsd;
           $http.post(alterYongHu, newPsdData).success(function(data){
             if(data.result){
-              $('.adminMiMaInfo').html('密码修改成功!').fadeOut(5000);
+              DataService.alertInfFun('suc', '密码修改成功!');
             }
             else{
-              $('.adminMiMaInfo').html(data.error).fadeOut(5000);
+              DataService.alertInfFun('err', data.error);
             }
           });
         };
@@ -1760,7 +1760,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 添加或删除科目IDs
          */
         $scope.getKeMuId = function(event, keMu, isKeMuSelect){
-          var ifCheckOrNot = $(event.target).prop('checked'),
+          var ifCheckOrNot = JQ(event.target).prop('checked'),
             idxVal = '';
           if(ifCheckOrNot){
             if(isKeMuSelect){ //此处的keMu数数据为lingyu_id
@@ -1853,12 +1853,12 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
             $scope.adminParams.selectZsdId = zsdId;
             $scope.adminParams.zsdOldName = zsdName;
             $scope.adminParams.zsdNewName = zsdName;
-            $('input[name="zsdKeMuCb"]').prop('checked', false);
+            JQ('input[name="zsdKeMuCb"]').prop('checked', false);
             $http.get(cxLyOfZsd).success(function(kmData){
               if(kmData){
                 _.each(kmData, function(km, idx, lst){
                   var kmcss = '.keMu' + km.LINGYU_ID;
-                  $(kmcss).prop('checked', true);
+                  JQ(kmcss).prop('checked', true);
                   km.origin = true;
                   km.changeStat = false;
                   $scope.adminParams.zsdKeMuArr.push(km);
@@ -1901,7 +1901,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
                   $http.post(alterZsdUrl, zsdData).success(function(data){
                     if(data.result){
                       $scope.adminParams.zsdWrapShow = false;
-                      $('input[name="zsdKeMuCb"]').prop('checked', false);
+                      JQ('input[name="zsdKeMuCb"]').prop('checked', false);
                       $scope.zsdSetZsdData = _.reject($scope.zsdSetZsdData, function(zsd){
                         return zsd.ZHISHIDIAN_ID  == data.id;
                       });
@@ -2044,6 +2044,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.renderBaoMingSetTpl = function(){
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_baoMing.html';
+        };
+
+        $scope.testJquery = function(){
+          var aaa = JQ('.jqueryDiv').html();
+          console.log(aaa);
         };
 
     }]);

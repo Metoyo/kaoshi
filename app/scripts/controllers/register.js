@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, config) {
+define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, config) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
@@ -92,8 +92,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          */
         $scope.validatePersonalInfo = function(){
           $scope.stepTwo = true;
-          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          $('.tab-pane').removeClass('active').eq(1).addClass('active');
+          JQ('.nav-tabs li').removeClass('active').eq(1).addClass('active');
+          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
         /**
@@ -128,7 +128,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         });
 
         /**
-         * 由机构类别查询机构 getJgId//
+         * 由机构类别查询机构 getJgId
          */
         $scope.getJglist = function(jglbId){
           $scope.keMuListLengthExist = false;
@@ -149,14 +149,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.getJglist(1);
 
         /**
-         * 得到机构id//
+         * 得到机构id
          */
         $scope.getJgId = function(jgId){
           $scope.keMuListLengthExist = false;
           $scope.lingyu_list = ''; //重置领域
           $scope.selected_ly = '';
           jigouId = jgId;
-          registerDate.jiGouName = $(".subOrganization  option:selected").text();
+          registerDate.jiGouName = JQ(".subOrganization  option:selected").text();
           qryParentLingYu(jgId);
         };
 
@@ -237,7 +237,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           objAndRightObj.juese.jueseName = selectJueseNameArr;
           objAndRightList.push(objAndRightObj);
           $scope.objAndRight = objAndRightList;
-          $('input[name=rightName]:checked').prop('checked', false);
+          JQ('input[name=rightName]:checked').prop('checked', false);
           $scope.jueseValue = false;
           $scope.linyuValue = false;
           if(!$scope.kemu_list.length){
@@ -263,7 +263,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
         $scope.getJueSeArr = function(){
           selectJueseIdArr = [];
           selectJueseNameArr = [];
-          var jueseItem = $('input[name=rightName]:checked');
+          var jueseItem = JQ('input[name=rightName]:checked');
           _.each(jueseItem,function(js, idx, lst){
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
@@ -286,8 +286,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
          * 回到填写个人信息页面
          */
         $scope.goToPersonInfo = function(){
-          $('.nav-tabs li').removeClass('active').eq(0).addClass('active');
-          $('.tab-pane').removeClass('active').eq(0).addClass('active');
+          JQ('.nav-tabs li').removeClass('active').eq(0).addClass('active');
+          JQ('.tab-pane').removeClass('active').eq(0).addClass('active');
         };
 
         /**
@@ -310,16 +310,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function ($, _, angular, c
           registerDate.juese = select_juese;
           $scope.registerDate = registerDate;
           $scope.stepThree = true;
-          $('.nav-tabs li').removeClass('active').eq(2).addClass('active');
-          $('.tab-pane').removeClass('active').eq(2).addClass('active');
+          JQ('.nav-tabs li').removeClass('active').eq(2).addClass('active');
+          JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
         /**
          * 去提交个人信息页面 getObjectAndRight
          */
         $scope.goToJueSe = function(){
-          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          $('.tab-pane').removeClass('active').eq(1).addClass('active');
+          JQ('.nav-tabs li').removeClass('active').eq(1).addClass('active');
+          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
         /**
