@@ -1,9 +1,9 @@
-define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
+define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ, angular, config, _, datepicker) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService',
-      function ($rootScope, $scope, $http, $location, DataService) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$timeout',
+      function ($rootScope, $scope, $http, $location, DataService, $timeout) {
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.addedContainerClass = 'userBox';
@@ -17,6 +17,7 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
         var userInfo = $rootScope.session.userInfo,
           baseRzAPIUrl = config.apiurl_rz, //renzheng的api;
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
+          baseKwAPIUrl = config.apiurl_kw, //考务的api
           token = config.token, //token的值
           caozuoyuan = userInfo.UID,//登录的用户的UID
           jigouid = userInfo.JIGOU[0].JIGOU_ID,
@@ -93,7 +94,34 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
           qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid=', //查询此题目
           originSelectLingYuArr = [], //存放本机构所选领域的原始数据
           selectLingYuChangedArr = [], //存放本机构变动的领域数据
-          qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
+          qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid, //查询本机构下教师
+          qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
+            + caozuoyuan + '&jigouid=1000' + '&lingyuid=', //查询考场详细的url
+          baoming = { //报名信息表
+            baomingxinxi: {
+              jigou_id: '',
+              kemu_id: '',
+              kaoshimingcheng: '',
+              kaoshishichang: '',
+              baomingjiezhishijian: '',
+              zhuangtai: 1
+            },
+            baomingkaoshishijian: [
+              //{
+              //  baoming_id: '',
+              //  kaishishijian: '',
+              //  jieshushijian: ''
+              //}
+            ],
+            baomingkaodian: [
+              //{
+              //  baoming_id: '',
+              //  kaodian_id: '',
+              //  kaodianmingcheng: '',
+              //  kaowei: ''
+              //}
+            ]
+          };
 
         $scope.adminParams = {
           selected_dg: '',
@@ -109,9 +137,12 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
           fakePlaceHolder: '请选择科目',
           selectZsdId: '',
           zsdOldName: '', //知识
-          zsdNewName: ''//知识点修改新名称
+          zsdNewName: '', //知识点修改新名称
+          datePickerIdx: ''//时间选择器的索引
         };
         $scope.selectedKeMu = '';
+        $scope.baoMing = baoming;
+        $scope.cnNumArr = config.cnNumArr; //题支的序号
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -274,11 +305,11 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
           if(jglbId){
             $scope.loadingImgShow = true; //rz_setJiGou.html
             jgLeiBieId = jglbId; //给机构类别赋值
-            $http.get(qryJiGouUrl + jglbId).success(function(data) {
+            DataService.getData(qryJiGouUrl + jglbId).then(function(data){
               if(data.length){
                 var jgIdStr = _.map(data, function(jg){return jg.JIGOU_ID}).toString(),
                   qryJiGouAdminUrl = qryJiGouAdminBase + jgIdStr;
-                $http.get(qryJiGouAdminUrl).success(function(jgAdmin){
+                DataService.getData(qryJiGouAdminUrl).then(function(jgAdmin){
                   if(jgAdmin.length){
                     $scope.jigou_list = jgAdmin;
                     $scope.loadingImgShow = false; //rz_setJiGou.html
@@ -289,14 +320,12 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
                   else{
                     $scope.jigou_list = '';
                     $scope.loadingImgShow = false; //rz_setJiGou.html
-                    DataService.alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
                   }
                 });
               }
               else{
                 $scope.jigou_list = '';
                 $scope.loadingImgShow = false; //rz_setJiGou.html
-                DataService.alertInfFun('err', '没有相关的机构!错误信息:' + jgAdmin.error);
               }
             });
           }
@@ -2039,16 +2068,152 @@ define(['jquery', 'angular', 'config'], function (JQ, angular, config) {
         };
 
         /**
+         * 时间设定
+         */
+        var showDatePicker = function() {
+          JQ('.datePickerJz').intimidatetime({
+            buttons: [
+              { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+            ]
+          });
+          JQ('.datePicker').intimidatetime({
+            buttons: [
+              { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+            ],
+            events: {
+              change: function(e, date, inst){
+                calculateEndDate(inst);
+                return;
+              }
+            }
+          });
+        };
+
+        /**
          * 学生报名设定
          */
         $scope.renderBaoMingSetTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            DataService.getData(qryJiGouUrl + '1').then(function(data){
+              $scope.jigou_list = data;
+            });
+          }
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_baoMing.html';
+          //显示时间选择器
+          $timeout(showDatePicker, 1000);
         };
 
-        $scope.testJquery = function(){
-          var aaa = JQ('.jqueryDiv').html();
-          console.log(aaa);
+        /**
+         * 由所选机构，得到相应的科目
+         */
+        $scope.getKeMuList = function(jgid){
+          if(jgid){
+            var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
+              dataArr = [];
+            $scope.kemu_list = '';
+            DataService.getData(qryLy).then(function(lyData){
+              console.log(lyData);
+              _.each(lyData, function(ly, idx, lst){
+                _.each(ly.CHILDREN, function(km, kmIdx, kmLst){
+                  dataArr.push(km);
+                });
+              });
+              $scope.kemu_list = dataArr;
+            });
+          }
+          else{
+            $scope.kemu_list = '';
+            DataService.alertInfFun('pmt', '请选择机构ID');
+          }
+        };
+
+        /**
+         * 由所选科目，查询考场
+         */
+        $scope.getKaoChangList = function(kmId){
+          var qryKaoChangDetail, lyData;
+          if($scope.kemu_list && $scope.kemu_list.length > 0){
+            lyData = _.find($scope.kemu_list, function(km){ return km.LINGYU_ID == kmId; });
+            qryKaoChangDetail = qryKaoChangDetailBaseUrl + lyData.PARENT_LINGYU_ID;
+            DataService.getData(qryKaoChangDetail).then(function(data){
+              $scope.kaoChangList = data;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择科目');
+          }
+        };
+
+        /**
+         * 有场次和截止时间分配场次
+         */
+        $scope.distChangCi = function(cc){
+          if(cc){
+            var bmksshj = {
+              baoming_id: '',
+              kaishishijian: '',
+              jieshushijian: ''
+            };
+            $scope.bmkssjArr = [];
+            for(var i=0; i < cc; i++){
+              $scope.bmkssjArr.push(bmksshj);
+            }
+            //显示时间选择器
+            $timeout(showDatePicker, 1000);
+          }
+        };
+
+        /**
+        * 计算结束时间
+        */
+        var calculateEndDate = function(startTime){
+          var idx = $scope.adminParams.datePickerIdx;
+          if(idx >= 0){
+            var ccStart = JQ('.changCiStart').eq(idx).val(),
+              ccEnd = JQ('.changCiEnd').eq(idx),
+              ksLong = parseInt($scope.baoMing.baomingxinxi.kaoshishichang),
+              bmEnd = JQ('.datePickerJz').val(),
+              endDate, endDateFormate, startDate;
+            if(ccStart){
+              if(ksLong){
+                if(bmEnd){
+                  startDate = Date.parse(startTime); //开始时间
+                  if(startDate > Date.parse(bmEnd)){
+                    endDate = startDate + ksLong * 60 * 1000; //结束时间
+                    endDateFormate = DataService.formatDateZh(endDate); //结束时间格式化
+                    ccEnd.val(endDateFormate);
+                  }
+                  else{
+                    DataService.alertInfFun('pmt', '开考时间不能早于报名截止时间!');
+                  }
+                }
+                else{
+                  DataService.alertInfFun('pmt', '报名截止时间不能为空！');
+                }
+              }
+              else{
+                DataService.alertInfFun('pmt', '考试时长不能为空！');
+              }
+            }
+          }
+        };
+
+        $scope.getChangCiInx = function(idx){
+          $scope.adminParams.datePickerIdx = idx;
+        };
+
+        /**
+         * 保存报名信息
+         */
+        $scope.saveBaoMingInfo = function(){
+          var ccStartArr = JQ('.changCiStart'),
+            ccEndArr = JQ('.changCiEnd');
+          _.each($scope.bmkssjArr, function(cc, idx, lst){
+            cc.kaishishijian = ccStartArr.eq(idx).val();
+            cc.jieshushijian = ccEndArr.eq(idx).val();
+          });
+          console.log($scope.bmkssjArr);
         };
 
     }]);

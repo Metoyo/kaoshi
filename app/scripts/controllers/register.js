@@ -112,15 +112,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           $scope.jigoulb_list = [];
           if(data && data.length > 0){
             $scope.jigoulb_list = data;
-//            $scope.jigoulb_list = _.reject(data, function(jglb){
-//              return jglb.LEIBIE_ID == 0;
-//            });
-            //锁定大学
-//            _.each(data, function(jg, idx, lst){
-//              if(jg.LEIBIE_ID == 1){
-//                $scope.jigoulb_list.push(jg);
-//              }
-//            });
           }
           else{
             DataService.alertInfFun('err', '没用相关机构！');
@@ -327,7 +318,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          */
         $scope.submitRegisterInfo = function(){
           registerDate.token = config.token;
-//          registerDate.juese = select_juese;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '提交成功！');

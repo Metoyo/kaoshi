@@ -73,56 +73,6 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
           };
 
           /**
-           * 格式化时间
-           */
-          var formatDate = function(dateStr){
-            var mydateNew = new Date(dateStr),
-              year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
-              month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
-              day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
-              hour = mydateNew.getUTCHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
-              minute = mydateNew.getUTCMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
-              joinDate; //返回最终时间
-            if(month < 10){
-              month = '0' + month;
-            }
-            if(day < 10){
-              day = '0' + day;
-            }
-            if(hour < 10){
-              hour = '0' + hour;
-            }
-            if(minute < 10){
-              minute = '0' + minute;
-            }
-            joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
-            return joinDate;
-          };
-          var formatDateZh = function(dateStr){ //转换为中国
-            var mydateNew = new Date(dateStr),
-              year = mydateNew.getFullYear(), //根据世界时从 Date 对象返回四位数的年份
-              month = mydateNew.getMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
-              day = mydateNew.getDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
-              hour = mydateNew.getHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
-              minute = mydateNew.getMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
-              joinDate; //返回最终时间
-            if(month < 10){
-              month = '0' + month;
-            }
-            if(day < 10){
-              day = '0' + day;
-            }
-            if(hour < 10){
-              hour = '0' + hour;
-            }
-            if(minute < 10){
-              minute = '0' + minute;
-            }
-            joinDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
-            return joinDate;
-          };
-
-          /**
            * 考试的分页数据查询函数
            */
           $scope.getThisKaoShiPageData = function(pg){
@@ -324,14 +274,12 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
               qryAllKaoChang();
               kaoshi_data.shuju.KAOSHI_ID = ks.KAOSHI_ID;
               kaoshi_data.shuju.KAOSHI_MINGCHENG = ks.KAOSHI_MINGCHENG;
-              kaoshi_data.shuju.KAISHISHIJIAN = formatDate(ks.KAISHISHIJIAN);
+              kaoshi_data.shuju.KAISHISHIJIAN = DataService.formatDateZh(ks.KAISHISHIJIAN);
               kaoshi_data.shuju.JIESHUSHIJIAN = ks.JIESHUSHIJIAN;
               kaoshi_data.shuju.SHICHANG = ks.SHICHANG;
               kaoshi_data.shuju.XINGZHI = ks.XINGZHI;
               kaoshi_data.shuju.LEIXING = ks.LEIXING;
               kaoshi_data.shuju.XUZHI = ks.XUZHI;
-//              kaoshi_data.shuju.SHIJUAN_ID = ks.SHIJUAN[0].SHIJUAN_ID;
-//              kaoshi_data.shuju.shijuan_name = ks.SHIJUAN[0].SHIJUAN_MINGCHENG;
               $scope.kwParams.selectShiJuan = ks.SHIJUAN;
               kaoshi_data.shuju.KAOCHANG = ks.KAODIANKAOCHANG;
               kaoshi_data.shuju.ZHUANGTAI = ks.ZHUANGTAI;
@@ -720,7 +668,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
             if(inputStartDate && kaoshi_data.shuju.SHICHANG){
               var startDate = Date.parse(inputStartDate), //开始时间
                 endDate = startDate + kaoshi_data.shuju.SHICHANG * 60 * 1000; //结束时间
-              kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+              kaoshi_data.shuju.JIESHUSHIJIAN = DataService.formatDateZh(endDate);
             }
           };
 
@@ -753,7 +701,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
                     });
                   }
                   kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
-                  kaoshi_data.shuju.JIESHUSHIJIAN = formatDateZh(endDate);
+                  kaoshi_data.shuju.JIESHUSHIJIAN = DataService.formatDateZh(endDate);
                   kaoshi_data.shuju.SHIJUAN_ID = shijuan_info.shijuanid;
                   $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
                     if(rst.result){
