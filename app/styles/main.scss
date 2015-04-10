@@ -1170,11 +1170,14 @@ label.checkbox{
   .media > .pull-left {
     margin-right: 0;
   }
-//  .kaoChang {
-//    .col-md-5{
-//      margin-left: 10px;
-//    }
-//  }
+  .kaoChang {
+    .col-md-5{
+      margin-left: 10px;
+    }
+    .checkbox-inline:first-child{
+      margin-left: 10px;
+    }
+  }
 }
 .dgLevel_0 .dagangName {
   color: #16418b;
