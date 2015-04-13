@@ -5,17 +5,23 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
     .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'DataService',
       function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
 
-        var apiUrlLy = config.apiurl_rz + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
-            apiLyKm = config.apiurl_rz + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
-            apiUrlJglb = config.apiurl_rz + 'jiGou_LeiBie?token=' + config.token + '&leibieid=1,2', //jiGouLeiBie 机构类别的api
-            apiUrlJueSe = config.apiurl_rz + 'jueSe?token=' + config.token, //jueSe 查询科目权限的数据的api
-            jiGou_LeiBieUrl = config.apiurl_rz + 'jiGou?token=' + config.token + '&leibieid=', //由机构类别查询机构的url
-            select_juese = [], //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
-            registerDate = {}, // 注册时用到的数据
-            jigouId, //所选的机构ID
-            registerUrl = config.apiurl_rz + 'zhuce', //提交注册信息的url
-            objAndRightList = [], //已经选择的科目和单位
-            checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
+        var baseRzAPIUrl = config.apiurl_rz,
+          baseBmAPIUrl = config.apiurl_bm, //报名的api
+          token = config.token,
+          apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid=', //lingYu 学科领域的api
+          apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid=', //由lingYu id 的具体的学科
+          apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2', //jiGouLeiBie 机构类别的api
+          apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token, //jueSe 查询科目权限的数据的api
+          jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid=', //由机构类别查询机构的url
+          select_juese = [], //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
+          registerDate = {}, // 注册时用到的数据
+          jigouId, //所选的机构ID
+          registerUrl = baseRzAPIUrl + 'zhuce', //提交注册信息的url
+          stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce', //提交学生注册信息的url
+          objAndRightList = [], //已经选择的科目和单位
+          checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token, //检测用户是否存在的url
+          qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token, //检查考生是否在报名表里
+          checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
@@ -27,6 +33,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         $scope.objectWrap = false;
         $scope.stepTwo = false; //第二步的显示和隐藏
         $scope.stepThree = false; //第三步的显示和隐藏
+        $scope.stuRegisterInfo = { //学生注册信息
+          jigouid: '',
+          xuehao: '',
+          xingming: '',
+          youxiang: '',
+          mima: ''
+        };
+        $scope.ifTheStuHasRegister = false;
+        $scope.studentInfo = '';
 
         /**
          * 注册信息的第一步，个人详情信息//
@@ -41,6 +56,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         registerDate = $scope.personalInfo;
         $scope.registerParam = {
           selectJiGouId: ''
+        };
+        $scope.stuRegisterInfo = {
+          jigouid: '',
+          xuehao: '',
+          xingming: '',
+          youxiang: '',
+          mima: ''
         };
 
         /**
@@ -317,12 +339,111 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 提交个人信息
          */
         $scope.submitRegisterInfo = function(){
-          registerDate.token = config.token;
+          registerDate.token = token;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
+              urlRedirect.goTo($location.$$path, '/renzheng');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 去第二步，显示学号和姓名输入框
+         */
+        $scope.stuShowStepOne = function(){
+          JQ('.tab-pane').removeClass('active').eq(0).addClass('active');
+        };
+
+        /**
+         * 去第二步，显示学号和姓名输入框
+         */
+        $scope.stuShowStepTwo = function(){
+          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
+        };
+
+        /**
+         * 查询用户信息表
+         */
+        var qryUserIfRegister = function(){
+          var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
+          checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
+          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+          $http.get(checkStuInYhxxUrl).success(function(student){
+            if(student && student.length > 0){
+              $scope.studentInfo = student;
+              JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+              DataService.alertInfFun('pmt', '用户已存在，请登录！');
+            }
+            else{
+              $scope.studentInfo = '';
+              $scope.ifTheStuHasRegister = true;
+            }
+          });
+        };
+
+        /**
+         * 查询考生是否已经存在
+         */
+        $scope.confirmTheStuIn = function(){
+          var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
+          if($scope.stuRegisterInfo.jigouid){
+            chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
+            if($scope.stuRegisterInfo.xuehao){
+              chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
+              if($scope.stuRegisterInfo.xingming){
+                chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
+                DataService.getData(chaXunKaoSheng).then(function(data){
+                  if(data && data.length > 0){
+                    qryUserIfRegister();
+                  }
+                  else{
+                    $scope.ifTheStuHasRegister = false;
+                    DataService.alertInfFun('err', '无学号信息，请核对学号信息！');
+                  }
+                });
+              }
+              else{
+                DataService.alertInfFun('pmt', '请输入姓名！');
+              }
+            }
+            else{
+              DataService.alertInfFun('pmt', '请输入学号！');
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+        };
+
+        /**
+         * 返回登录页面
+         */
+        $scope.backToLoginPage = function(){
+          urlRedirect.goTo($location.$$path, '/renzheng');
+        };
+
+        /**
+         * 保存学生注册信息
+         */
+        $scope.saveStudentInfo = function(){
+          var stuData = {
+            token: token,
+            YONGHULEIBIE: 2,
+            YONGHUHAO: $scope.stuRegisterInfo.xuehao,
+            XINGMING: $scope.stuRegisterInfo.xingming,
+            YOUXIANG: $scope.stuRegisterInfo.youxiang,
+            JIGOU:  [{JIGOU_ID:$scope.stuRegisterInfo.jigouid, ZHUANGTAI: 1}],
+            MIMA: $scope.stuRegisterInfo.mima
+          };
+          $http.post(stuRegisterUrl, stuData).success(function(data){
+            if(data.result){
+              DataService.alertInfFun('suc', '提交成功！');
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{

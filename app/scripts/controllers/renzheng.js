@@ -15,15 +15,17 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
             password: ''
           },
           stuLogin = { //学生登录数据格式
-            xueHao: '',
+            userName: '',
             password: ''
           },
           loginPostParams,
           session = {},
+          urlArr = [],
           currentPath = $location.$$path,
           checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token, //检测用户是否存在的url
           findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
           resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
+
         $rootScope.session = session;
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.login = login;
@@ -41,11 +43,14 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
         };
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
+        $scope.dengluInfo = false;
+        $scope.stuDengluInfo = false;
 
         /**
          * 登录程序
          */
         $scope.signIn = function() {
+          urlArr = [];
           if(login.userName && login.password) {
             /**
              * 构建登陆回传参数，token, 用户名， 密码
@@ -58,14 +63,11 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
             };
             //登录信息的验证
             $http.post(loginApiUrl, loginPostParams).success(function(result) {
-              var jsArr, quanxianDist;
+              var jsArr, quanxianDist, userCookie, lingyuCookie, myUrlCookie;
               session.info = result[0];
               session.userInfo = '';
               session.quanxian2032 = false;
-              if(result.error){
-                $scope.dengluInfo = result;
-              }
-              else{
+              if(result && result.length > 0){
                 var profileUrl = '/user/' + login.userName,
                   yhxxxxApiUrl = config.apiurl_rz + 'yonghu_xiangxi_xinxi?token=' + config.token + '&yonghuid=' +
                     session.info.UID; //通过UID查询用户详细的url
@@ -77,11 +79,11 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                     if(data.JUESE){
                       session.userInfo = data;
                       jsArr = _.chain(data.JUESE)
-                          .sortBy(function(js){ return js.JUESE_ID; })
-                          .map(function(js){ return js.JUESE_ID; })
-                          .uniq()
-                          .without("9", "10")
-                          .value(); //得到角色的数组
+                        .sortBy(function(js){ return js.JUESE_ID; })
+                        .map(function(js){ return js.JUESE_ID; })
+                        .uniq()
+                        .without("9", "10")
+                        .value(); //得到角色的数组
                       //把权限加入到对应的领域中
                       quanxianDist = _.groupBy(data.QUANXIAN, function(qx){ return qx.LINGYU_ID; });
                       _.each(data.LINGYU, function(ly){
@@ -120,7 +122,7 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                             quanxianArr = _.uniq(quanxianArr);
                             //存放权限id的cookies
                             var quanXianCookie = {
-                              quanXianId: quanxianArr
+                                quanXianId: quanxianArr
                               },
                               tiKuCookie = {
                                 tkLingYuId: data.LINGYU[0].PARENT_LINGYU_ID
@@ -129,14 +131,22 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                             $cookieStore.put('tiKuCk', tiKuCookie);
                             //根据权限判断导向
                             _.each(config.quanxianObj, function(qx, idx, lst){
-                              var navName = _.intersection(qx.qxArr, quanxianArr).length;
+                              var navName = _.intersection(qx.qxArr, quanxianArr).length,
+                                urlObj = {
+                                  myUrl: '',
+                                  urlName: ''
+                                };
                               //显示和隐藏url
                               if(navName > 0){
                                 urlShowAndHideArr.push(qx.navName);
+                                urlObj.myUrl = qx.navName;
+                                urlObj.urlName = qx.hanName;
+                                urlArr.push(urlObj);
                               }
                             });
                             //默认url
                             if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
+                              $rootScope.urlArrs = urlArr;
                               //jsUrl = '/' + urlShowAndHideArr[0];
                               var keMuManage = _.contains(quanxianArr, '2032'); //判断科目负责人
                               var hasMingTiUrl = _.contains(urlShowAndHideArr, 'mingti');//判断有没有命题模块
@@ -156,29 +166,71 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                         }
                       }
                       //cookies代码
-                      var userCookie = {
-                          UID: $rootScope.session.info.UID,
-                          YONGHUMING: $rootScope.session.info.YONGHUMING,
-                          defaultLyId: session.defaultLyId,
-                          defaultLyName: session.defaultLyName,
-                          quanxianStr: session.quanxianStr,
-                          JIGOU: session.userInfo.JIGOU,
-                          JUESE: jsArr
-                        },
-                        lingyuCookie = {
-                          lingyu: data.LINGYU
-                        };
+                      userCookie = {
+                        UID: $rootScope.session.info.UID,
+                        YONGHUMING: $rootScope.session.info.YONGHUMING,
+                        defaultLyId: session.defaultLyId,
+                        defaultLyName: session.defaultLyName,
+                        quanxianStr: session.quanxianStr,
+                        JIGOU: session.userInfo.JIGOU,
+                        JUESE: jsArr
+                      };
+                      lingyuCookie = {
+                        lingyu: data.LINGYU
+                      };
+                      myUrlCookie = {
+                        myUrl: $rootScope.urlArrs
+                      };
                       $cookieStore.put('logged', userCookie);
                       $cookieStore.put('lingyuCk', lingyuCookie);
+                      $cookieStore.put('myUrlCk', myUrlCookie);
                     }
                     else{
                       DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                     }
                   }
                   else{
-                    DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                    if(data.YONGHULEIBIE == 2){
+                      var urlObj = {
+                        myUrl: 'student',
+                        urlName: '报名'
+                      };
+                      urlArr.push(urlObj);
+                      $rootScope.urlArrs = urlArr;
+                      //cookies代码
+                      userCookie = {
+                        UID: $rootScope.session.info.UID,
+                        YONGHUMING: $rootScope.session.info.YONGHUMING,
+                        defaultLyId: session.defaultLyId,
+                        defaultLyName: session.defaultLyName,
+                        quanxianStr: session.quanxianStr,
+                        JIGOU: JSON.parse(session.info.JIGOU)[0].JIGOU_ID,
+                        JUESE: jsArr,
+                        xuehao: session.info.YONGHUHAO
+                      };
+                      lingyuCookie = {
+                        lingyu: data.LINGYU
+                      };
+                      myUrlCookie = {
+                        myUrl: $rootScope.urlArrs
+                      };
+                      $cookieStore.put('logged', userCookie);
+                      $cookieStore.put('lingyuCk', lingyuCookie);
+                      $cookieStore.put('myUrlCk', myUrlCookie);
+                      console.log($rootScope.session);
+                      urlRedirect.goTo(currentPath, '/student');
+                    }
+                    else{
+                      $scope.dengluInfo = false;
+                      $scope.stuDengluInfo = true;
+                      DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                    }
                   }
                 });
+              }
+              else{
+                $scope.dengluInfo = true;
+                $scope.stuDengluInfo = false;
               }
             });
           }
@@ -242,10 +294,48 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
         };
 
         /**
+         * 重置错误信息
+         */
+        $scope.errorInfoReset = function(){
+          $scope.dengluInfo = false;
+          $scope.stuDengluInfo = false;
+          login.userName = '';
+          login.password = '';
+          stuLogin.userName = '';
+          stuLogin.password = '';
+        };
+
+        /**
          * 学生登录
          */
         $scope.studentLogin = function(){
-          //console.log($scope.stuLogin);
+          urlArr = [];
+          if(stuLogin.userName && stuLogin.password) {
+            var stuLoginParams = {
+              token : config.token,
+              yonghuming : stuLogin.userName,
+              mima : stuLogin.password
+            };
+            //登录信息的验证
+            $http.post(loginApiUrl, stuLoginParams).success(function(result) {
+              if(result && result.length > 0){
+                if(result[0].YONGHULEIBIE == 2){
+                  var urlObj = {
+                    myUrl: 'student',
+                    urlName: '报名'
+                  };
+                  urlArr.push(urlObj);
+                  $rootScope.urlArrs = urlArr;
+                  urlRedirect.goTo(currentPath, '/student');
+                }
+              }
+              else{
+                //DataService.alertInfFun('err', result.error);
+                $scope.dengluInfo = false;
+                $scope.stuDengluInfo = true;
+              }
+            })
+          }
         };
 
     }]);

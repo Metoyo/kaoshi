@@ -283,13 +283,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             case 'score' : //分数排序
               if($scope.tjParas.scoreCount){
                 $scope.studentData = _.sortBy($scope.studentData, function(stu){
-                  return stu.ZONGFEN;
+                  return stu.ZUIHOU_PINGFEN;
                 });
                 $scope.tjParas.scoreCount = false;
               }
               else{
                 $scope.studentData = _.sortBy($scope.studentData, function(stu){
-                  return stu.ZONGFEN;
+                  return stu.ZUIHOU_PINGFEN;
                 }).reverse();
                 $scope.tjParas.scoreCount = true;
               }
@@ -309,11 +309,11 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             ksArr = [];
           ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '成绩'});
           _.each(stuData, function(ks){
-            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZONGFEN: ''};
+            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUIHOU_PINGFEN: ''};
             ksObj.YONGHUHAO = ks.YONGHUHAO;
             ksObj.XINGMING = ks.XINGMING;
             ksObj.BANJI = ks.BANJI;
-            ksObj.ZONGFEN = ks.ZONGFEN;
+            ksObj.ZUIHOU_PINGFEN = ks.ZUIHOU_PINGFEN;
             ksArr.push(ksObj);
           });
           ksData.data = JSON.stringify(ksArr);
@@ -410,19 +410,19 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             }
           ];
           _.each(data, function(item, idx, lst){
-            if(item.ZONGFEN < 60){
+            if(item.ZUIHOU_PINGFEN < 60){
               pieDataArr[0].value ++;
             }
-            if(item.ZONGFEN >= 60 && item.ZONGFEN < 70){
+            if(item.ZUIHOU_PINGFEN >= 60 && item.ZUIHOU_PINGFEN < 70){
               pieDataArr[1].value ++;
             }
-            if(item.ZONGFEN >= 70 && item.ZONGFEN < 80){
+            if(item.ZUIHOU_PINGFEN >= 70 && item.ZUIHOU_PINGFEN < 80){
               pieDataArr[2].value ++;
             }
-            if(item.ZONGFEN >= 80 && item.ZONGFEN < 90){
+            if(item.ZUIHOU_PINGFEN >= 80 && item.ZUIHOU_PINGFEN < 90){
               pieDataArr[3].value ++;
             }
-            if(item.ZONGFEN >= 90){
+            if(item.ZUIHOU_PINGFEN >= 90){
               pieDataArr[4].value ++;
             }
           });
@@ -434,7 +434,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
          */
         var lineDataDealFun = function(data){
           var disByScore, lineDataArr = [];
-          disByScore = _.groupBy(data, function(item){return item.ZONGFEN});
+          disByScore = _.groupBy(data, function(item){return item.ZUIHOU_PINGFEN});
           _.each(disByScore, function(v, k, l){
             var ary = [];
             ary[0] = parseInt(k);
@@ -694,7 +694,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
                 banJiObj.bjName = k;
                 banJiObj.bjStu = v;
                 banJiObj.bjIdx = idxCount;
-                banJiObj.bjAvgScore = (_.reduce(v, function(memo, stu){ return memo + stu.ZONGFEN; }, 0) / v.length).toFixed(1);
+                banJiObj.bjAvgScore = (_.reduce(v, function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0) / v.length).toFixed(1);
                 totalScore += parseInt(banJiObj.bjAvgScore);
                 banJiArray.push(banJiObj);
                 idxCount ++;

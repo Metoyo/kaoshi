@@ -48,8 +48,13 @@ define( "config", [], function () {
         controller: 'UserCtrl',
         requireLogin: true
       },
-      '/register': {
+      '/register/teacher': {
         templateUrl: '../views/partials/register.html',
+        controller: 'RegisterCtrl',
+        requireLogin: false
+      },
+      '/register/student': {
+        templateUrl: '../views/partials/registerStu.html',
         controller: 'RegisterCtrl',
         requireLogin: false
       },
@@ -88,27 +93,38 @@ define( "config", [], function () {
       {
         qxArr: ['2006', '2007'],
         targetUrl: '/dagang',
-        navName : 'dagang'
+        navName : 'dagang',
+        hanName: '大纲'
       },
       {
         qxArr: ['2010', '2011', '2012', '2013', '2031', '2032'],
         targetUrl: '/mingti',
-        navName : 'mingti'
+        navName : 'mingti',
+        hanName: '命题'
       },
       {
         qxArr: ['2017', '2020', '2021', '2022', '2023', '2030', '2033', '2034'],
         targetUrl: '/zujuan',
-        navName : 'zujuan'
+        navName : 'zujuan',
+        hanName: '组卷'
       },
       {
         qxArr: ['3001'],
         targetUrl: '/kaowu',
-        navName : 'kaowu'
+        navName : 'kaowu',
+        hanName: '考务'
       },
       {
         qxArr: ['4001', '4002'],
         targetUrl: '/tongji',
-        navName : 'tongji'
+        navName : 'tongji',
+        hanName: '统计'
+      },
+      {
+        qxArr: [],
+        targetUrl: '/student',
+        navName : 'student',
+        hanName: '报名'
       }
     ],
     tiXingNameArr: [
@@ -119,6 +135,5 @@ define( "config", [], function () {
     videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
     audioType: ['.ogg', '.mp3', '.wav'],
     uploadFileSizeLimit: 2097152 //上传文件的大小限制2MB
-//    uploadCommand: git push edu master && git push bt master
   };
 });

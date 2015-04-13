@@ -45,6 +45,7 @@ define(['angular', 'config', 'jquery'], function (angular, config, JQ) {
             deferred.resolve(data);
           }
           else{
+            console.log(data.error);
             alertFun('err', data.error || '没有符合的数据！');
             deferred.reject(data.error);
           }

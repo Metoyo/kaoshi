@@ -30,7 +30,6 @@ define([
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
-
   return angular.module('kaoshiApp', [
     'kaoshiApp.controllers.RenzhengCtrl',
     'kaoshiApp.controllers.NavCtrl',
@@ -98,7 +97,9 @@ define([
             lastUrl = $cookieStore.get('lastUrl'),
             quanXianIds = $cookieStore.get('quanXianCk'),
             tiKuInfo = $cookieStore.get('tiKuCk'),
-            isKeMuManage;
+            isKeMuManage,
+            myUrl = $cookieStore.get('myUrlCk');
+          $rootScope.urlArrs = myUrl.myUrl;
           if(quanXianIds){
             if(quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0){
               isKeMuManage = _.contains(quanXianIds.quanXianId, '2032');
@@ -115,6 +116,7 @@ define([
             $rootScope.session.userInfo.YONGHUMING = loggedInfo.YONGHUMING;
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
             $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
+            $rootScope.session.userInfo.xuehao = loggedInfo.xuehao;
           }
           if(tiKuInfo && $rootScope.session){
             $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;

@@ -585,22 +585,22 @@ a.add-btn:hover span {
   display: block;
   font-weight: normal;
 }
-.droTogZj .nav-icon {
+.zujuan .nav-icon {
   background-position: left -40px;
 }
-.droTogDg .nav-icon {
+.dagang .nav-icon {
   background-position: left -80px;
 }
-.droTogKw .nav-icon {
+.kaowu .nav-icon {
   background-position: left -120px;
 }
-.droTogSp .nav-icon {
+.shenpi .nav-icon {
   background-position: left -160px;
 }
-.droTogSt .nav-icon {
+.student .nav-icon {
   background-position: left -200px;
 }
-.droTogTj .nav-icon {
+.tongji .nav-icon {
   background-position: left -240px;
 }
 .dropdownToggle:hover {
@@ -2856,6 +2856,10 @@ label.checkbox{
       }
     }
   }
+}
+//报名样式
+.studentWrapper{
+
 }
 /* -------------------------------------------------------------------
 // markItUp! Universal MarkUp Engine, JQuery plugin
