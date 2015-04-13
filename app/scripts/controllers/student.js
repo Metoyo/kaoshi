@@ -21,7 +21,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           saveStudentSelect = baseBmAPIUrl + 'modify_baoming_kaosheng', //保存考生的报名选择
           qryKaoDianRenShuBase = baseBmAPIUrl + 'query_kaodian_renshu?token=' + token, //查询次考场报了多少人
           //qryKsBmStateBase = baseBmAPIUrl + 'query_kaosheng_baoming_state?token=' + token, //查询考生是否已经报名
-          qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg + '&xuehao=' + xuehao; //查询考生有几场考试
+          qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg +
+            '&xuehao=' + xuehao, //查询考生有几场考试
+          qryKsDetailBase = baseBmAPIUrl + 'query_kaoshi_detail?token=' + token; //查询考试详情
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -29,6 +31,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           hasBaoMing: true
         };
         $scope.kaoShiArrs = '';
+        $scope.kaoShiDetail = '';
 
         /**
          * 查询考生有几场考试
@@ -93,7 +96,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         //};
 
         /**
-         * 获得选择的考点//
+         * 获得选择的考点
          */
         $scope.getSelectKd = function(val){
           $scope.stuParams.selectKaoDian = val;
@@ -138,6 +141,22 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           else{
             DataService.alertInfFun('pmt', '请选择考试场次！');
           }
+        };
+
+        /**
+         * 查询考试详情
+         */
+        $scope.qryKaoShiDetail = function(ks){
+          $scope.kaoShiDetail = '';
+          var qryKsDetail = qryKsDetailBase + '&baomingkaoshishijian_id=';
+          qryKsDetail += ks.BAOMINGKAOSHISHIJIAN_ID;
+          qryKsDetail += '&baomingkaodian_id=' + ks.BAOMINGKAODIAN_ID;
+          DataService.getData(qryKsDetail).then(function(detail){
+            if(detail && detail.length){
+              $scope.kaoShiDetail = detail;
+              console.log(detail);
+            }
+          });
         };
 
       }]);

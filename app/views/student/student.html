@@ -13,11 +13,19 @@
           <td ng-bind="ks.KAOSHISHICHANG"></td>
           <td ng-bind="ks.BAOMINGJIEZHISHIJIAN | myLocalDateWithWeek"></td>
           <td>
+            <a href="javascript:void(0)" class="ml15" ng-show="ks.BAOMINGKAODIAN_ID || ks.BAOMINGKAOSHISHIJIAN_ID"
+               ng-click="qryKaoShiDetail(ks)">详情</a>
             <a href="javascript:void(0)" class="ml15" ng-hide="ks.BAOMINGKAODIAN_ID || ks.BAOMINGKAOSHISHIJIAN_ID"
                ng-click="chaXunBaoMing(ks)">报名</a>
           </td>
         </tr>
       </table>
+    </div>
+    <div class="row wp80" ng-show="kaoShiDetail">
+      <p ng-repeat="dt in kaoShiDetail">
+        <span>考试时间：{{dt.KAISHISHIJIAN | myLocalDateWithWeek}}——{{dt.JIESHUSHIJIAN | myLocalDateWithWeek}}</span>
+        <span class="ml15">考场：{{dt.KAODIANMINGCHENG}}</span>
+      </p>
     </div>
     <div class="row wp80" ng-hide="stuParams.hasBaoMing">
       <table class="table table-bordered jg-table">
