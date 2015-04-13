@@ -1,37 +1,53 @@
 <div class="studentWrapper">
   <div class="tab-content p10">
-    <div class="row">
-      <ul>
-        <li>
-          <a href="#">报名测试考试一</a>
-        </li>
-        <li>
-          <a href="#">报名测试考试二</a>
-        </li>
-      </ul>
-    </div>
-    <div class="row">
-      <table class="table-bordered">
-        <tr ng-repeat="bm in bmKaoChang">
+    <div class="row wp80">
+      <table class="table table-bordered baoMingTable">
+        <tr>
+          <th>考试名称</th>
+          <th>考试时长(分钟)</th>
+          <th>报名截止时间</th>
+          <th>操作</th>
+        </tr>
+        <tr ng-repeat="ks in kaoShiArrs">
+          <td ng-bind="ks.KAOSHIMINGCHENG"></td>
+          <td ng-bind="ks.KAOSHISHICHANG"></td>
+          <td ng-bind="ks.BAOMINGJIEZHISHIJIAN | myLocalDateWithWeek"></td>
           <td>
-            <span>{{bm.ksStart | myLocalDateWithWeek}}</span>--
-            <span>{{bm.ksEnd | myLocalDateWithWeek}}</span>
-          </td>
-          <td ng-repeat="kd in bm.ksKc">
-            <label>
-              <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)">{{kd.KAODIANMINGCHENG}}
-            </label>
+            <a href="javascript:void(0)" class="ml15" ng-hide="ks.BAOMINGKAODIAN_ID || ks.BAOMINGKAOSHISHIJIAN_ID"
+               ng-click="chaXunBaoMing(ks)">报名</a>
           </td>
         </tr>
       </table>
     </div>
-    <div class="row">
-      <button type="button" class="btn btn-success" ng-click="saveStudentSelcet()">
-        查询考试
-      </button>
-      <button type="button" class="btn btn-success">
-        查询考试
+    <div class="row wp80" ng-hide="stuParams.hasBaoMing">
+      <table class="table table-bordered jg-table">
+        <tr>
+          <th class="text-center">时间</th>
+          <th class="text-center" colspan="{{bmKaoChang[0].ksKc.length}}">
+            考场
+          </th>
+        </tr>
+        <tr ng-repeat="bm in bmKaoChang">
+          <td width="370px">
+            <span>{{bm.ksStart | myLocalDateWithWeek}}</span>--
+            <span>{{bm.ksEnd | myLocalDateWithWeek}}</span>
+          </td>
+          <td ng-repeat="kd in bm.ksKc">
+            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)">
+            <span ng-bind="kd.KAODIANMINGCHENG"></span>
+            <span>(考位:{{kd.KAOWEI}})</span>
+            <span>(已报:{{kd.BAOMING_RENSHU || 0}})</span>
+          </td>
+        </tr>
+      </table>
+      <button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">
+        保存选择
       </button>
     </div>
+    <!--<div class="row">-->
+      <!--<button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">-->
+        <!--保存选择-->
+      <!--</button>-->
+    <!--</div>-->
   </div>
 </div>

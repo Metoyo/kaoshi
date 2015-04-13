@@ -2859,7 +2859,11 @@ label.checkbox{
 }
 //报名样式
 .studentWrapper{
-
+  .baoMingTable{
+    th,td{
+      text-align: center;
+    }
+  }
 }
 /* -------------------------------------------------------------------
 // markItUp! Universal MarkUp Engine, JQuery plugin
