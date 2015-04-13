@@ -2141,14 +2141,16 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
          */
         $scope.distChangCi = function(cc){
           if(cc){
-            var bmksshj = {
-              baomingkaoshishijian_id: '',
-              baoming_id: '',
-              kaishishijian: '',
-              jieshushijian: ''
-            };
             $scope.bmkssjArr = [];
             for(var i=0; i < cc; i++){
+              var bmksshj = {
+                baomingkaoshishijian_id: '',
+                baoming_id: '',
+                kaishishijian: '',
+                jieshushijian: '',
+                count: ''
+              };
+              bmksshj.count = i;
               $scope.bmkssjArr.push(bmksshj);
             }
             //显示时间选择器
@@ -2258,6 +2260,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             cc.kaishishijian = ccStartArr.eq(idx).val();
             cc.jieshushijian = ccEndArr.eq(idx).val();
           });
+          console.log($scope.bmkssjArr);
           DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
             $scope.uploadFiles = [];
             if(result.data.json){
@@ -2303,12 +2306,12 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               baoming.baomingkaoshishijian = $scope.bmkssjArr;
               baoming.baomingkaodian = baomingkaodianArr;
               baoming.baomingkaosheng = kaoShengNewArr;
+              console.log(bmData);
               $http.post(saveBaoMingUrl, bmData).success(function(data){
                 if(data.result){
                   console.log(data.id);
                   DataService.alertInfFun('suc', '保存成功！');
                 }
-
               });
             }
             else{

@@ -11,15 +11,25 @@
       </ul>
     </div>
     <div class="row">
-      <table>
-        <tr>
-          <td>考场一</td>
-          <td>考场二</td>
+      <table class="table-bordered">
+        <tr ng-repeat="bm in bmKaoChang">
+          <td>
+            <span>{{bm.ksStart | myLocalDateWithWeek}}</span>--
+            <span>{{bm.ksEnd | myLocalDateWithWeek}}</span>
+          </td>
+          <td ng-repeat="kd in bm.ksKc">
+            <label>
+              <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)">{{kd.KAODIANMINGCHENG}}
+            </label>
+          </td>
         </tr>
       </table>
     </div>
     <div class="row">
-      <button type="button" class="btn btn-success" ng-click="cancelAddPattern()">
+      <button type="button" class="btn btn-success" ng-click="saveStudentSelcet()">
+        查询考试
+      </button>
+      <button type="button" class="btn btn-success">
         查询考试
       </button>
     </div>
