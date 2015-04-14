@@ -27,7 +27,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
-//        $scope.userNameRegexp = /^.{4,30}$/;//用户名的正则表达式
+        $scope.xuHaoRegexp = /^.{4,30}$/;//用户名的正则表达式
         $scope.userNameRegexp = /^([a-zA-Z])([a-zA-Z0-9_]){3,29}$/;//用户名的正则表达式
         $scope.realNameRegexp = /(^[A-Za-z]{2,20}$)|(^[\u4E00-\u9FA5]{2,20}$)/;//真实姓名的正则表达式
         $scope.passwordRegexp = /^.{6,20}$/;//密码的正则表达式
@@ -43,6 +43,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         };
         $scope.ifTheStuHasRegister = false;
         $scope.studentInfo = '';
+        $scope.stuIfPswTheSame = false;
 
         /**
          * 注册信息的第一步，个人详情信息//
@@ -63,7 +64,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           xuehao: '',
           xingming: '',
           youxiang: '',
-          mima: ''
+          mima: '',
+          mima_verify: ''
         };
 
         /**
@@ -107,6 +109,25 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           }
           else{
             $scope.ifPswTheSame = false;
+          }
+        };
+
+        /**
+         * 学生注册检查密码是否一致
+         */
+        $scope.stuCheckPassword = function(){
+          var psw = $scope.stuRegisterInfo.mima,
+            pswConfirm = $scope.stuRegisterInfo.mima_verify;
+          if(pswConfirm){
+            if(psw == pswConfirm){
+              $scope.stuIfPswTheSame = false;
+            }
+            else{
+              $scope.stuIfPswTheSame = true;
+            }
+          }
+          else{
+            $scope.stuIfPswTheSame = false;
           }
         };
 

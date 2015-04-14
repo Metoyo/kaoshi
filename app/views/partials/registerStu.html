@@ -7,7 +7,7 @@
     </h4>
     <div class="col-md-10 col-md-offset-1 infoBox">
       <!-- FORM -->
-      <form name="studForm" novalidate>
+      <form name="studForm">
         <div class="tab-content">
           <div class="col-md-6 col-md-offset-3">
             <div class="tab-pane clearfix active">
@@ -32,17 +32,15 @@
               <div class="form-group col-md-12">
                 <label>学号<strong class="clRed">*</strong></label>
                 <input type="text" name="xuehao" placeholder="学号" tabindex="1" class="form-control"
-                       ng-model="stuRegisterInfo.xuehao" required autofocus="true"/>
-                <!--<p ng-show="userForm.yonghuming.$error.pattern" class="help-block yonghuming">系统账号格式不正确！</p>-->
-                <!--<p ng-show="yonghumingExist" class="help-block yonghuming">系统账号已存在！</p>-->
+                       ng-pattern="xuHaoRegexp" ng-model="stuRegisterInfo.xuehao" required autofocus="true"/>
+                <p ng-show="studForm.xuehao.$error.pattern" class="help-block yonghuming">学号格式不正确！</p>
               </div>
               <!-- 姓名 -->
               <div class="form-group col-md-12">
                 <label>姓名<strong class="clRed">*</strong></label>
                 <input type="text" name="xingMing" placeholder="姓名" tabindex="2" class="form-control"
-                       ng-model="stuRegisterInfo.xingming" required/>
-                <!--<p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>-->
-                <!--<p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>-->
+                       ng-pattern="realNameRegexp" ng-model="stuRegisterInfo.xingming" required/>
+                <p ng-show="studForm.xingMing.$error.pattern" class="help-block">姓名格式不正确！</p>
               </div>
               <div ng-show="ifTheStuHasRegister">
                 <!-- 邮箱 -->
@@ -51,7 +49,6 @@
                   <input type="email" name="youxiang" placeholder="邮箱" tabindex="3" class="form-control"
                          ng-model="stuRegisterInfo.youxiang" ng-pattern="emailRegexp" required/>
                   <p ng-show="studForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
-                  <!--<p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>-->
                 </div>
                 <!-- 密码 -->
                 <div class="form-group col-md-12">
@@ -59,19 +56,19 @@
                   <input type="password" name="mima" placeholder="密码" tabindex="4"
                          class="form-control regPassword" ng-minlength=6 ng-maxlength=20
                          ng-model="stuRegisterInfo.mima" ng-pattern="passwordRegexp" required
-                         ng-blur="checkPassword()"/>
+                         ng-change="stuCheckPassword()"/>
                   <p ng-show="studForm.mima.$error.pattern" class="help-block">密码需要6-20个字符！</p>
                 </div>
                 <!-- 确认密码 -->
                 <div class="form-group col-md-12">
                   <label>确认密码<strong class="clRed">*</strong><em>(6-20个字符)</em></label>
-                  <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
-                         data-password-verify="personalInfo.mima" ng-blur="checkPassword()"
-                         required placeholder="确认密码" tabindex="3" class="form-control" />
-                  <!--<p class="help-block" ng-show="studForm.confirmPassword.$error.passwordVerify">-->
-                    <!--确认密码和密码不匹配！-->
-                  <!--</p>-->
-                  <p class="help-block" ng-show="ifPswTheSame">
+                  <input type="password" name="confirmPassword" ng-model="stuRegisterInfo.mima_verify"
+                         data-password-verify="stuRegisterInfo.mima" ng-change="stuCheckPassword()"
+                         required placeholder="确认密码" tabindex="5" class="form-control" />
+                  <p class="help-block" ng-show="studForm.confirmPassword.$error.passwordVerify">
+                    确认密码和密码不匹配！
+                  </p>
+                  <p class="help-block" ng-show="stuIfPswTheSame">
                     确认密码和密码不匹配！
                   </p>
                 </div>
@@ -81,11 +78,13 @@
                   上一步<span></span>
                 </button>
                 <button type="button" class="btn btn-success nextBtn pull-right" ng-click="confirmTheStuIn()"
+                        ng-disabled="studForm.xuehao.$invalid || studForm.xingMing.$invalid"
                         ng-hide="ifTheStuHasRegister">
                   下一步<span></span>
                 </button>
                 <button type="button" class="btn btn-success submitBtn pull-right" ng-click="saveStudentInfo()"
-                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.youxiang.$error.pattern">
+                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.xuehao.$invalid || studForm.xingMing.$invalid ||
+                  studForm.youxiang.$invalid || studForm.mima.$invalid ||studForm.confirmPassword.$invalid || stuIfPswTheSame">
                   提交<span></span>
                 </button>
               </div>
