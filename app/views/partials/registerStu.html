@@ -50,7 +50,7 @@
                   <label>邮箱<strong class="clRed">*</strong></label>
                   <input type="email" name="youxiang" placeholder="邮箱" tabindex="3" class="form-control"
                          ng-model="stuRegisterInfo.youxiang" ng-pattern="emailRegexp" required/>
-                  <!--<p ng-show="userForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>-->
+                  <p ng-show="studForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
                   <!--<p ng-show="youxiangExist" class="help-block">邮箱地址已存在！</p>-->
                 </div>
                 <!-- 密码 -->
@@ -60,7 +60,7 @@
                          class="form-control regPassword" ng-minlength=6 ng-maxlength=20
                          ng-model="stuRegisterInfo.mima" ng-pattern="passwordRegexp" required
                          ng-blur="checkPassword()"/>
-                  <!--<p ng-show="userForm.mima.$error.pattern" class="help-block">密码需要6-20个字符！</p>-->
+                  <p ng-show="studForm.mima.$error.pattern" class="help-block">密码需要6-20个字符！</p>
                 </div>
                 <!-- 确认密码 -->
                 <div class="form-group col-md-12">
@@ -68,12 +68,12 @@
                   <input type="password" name="confirmPassword" ng-model="personalInfo.mima_verify"
                          data-password-verify="personalInfo.mima" ng-blur="checkPassword()"
                          required placeholder="确认密码" tabindex="3" class="form-control" />
-                  <!--<p class="help-block" ng-show="userForm.confirmPassword.$error.passwordVerify">-->
+                  <!--<p class="help-block" ng-show="studForm.confirmPassword.$error.passwordVerify">-->
                     <!--确认密码和密码不匹配！-->
                   <!--</p>-->
-                  <!--<p class="help-block" ng-show="ifPswTheSame">-->
-                    <!--确认密码和密码不匹配！-->
-                  <!--</p>-->
+                  <p class="help-block" ng-show="ifPswTheSame">
+                    确认密码和密码不匹配！
+                  </p>
                 </div>
               </div>
               <div class="form-group col-md-12 pull-left">
@@ -85,7 +85,7 @@
                   下一步<span></span>
                 </button>
                 <button type="button" class="btn btn-success submitBtn pull-right" ng-click="saveStudentInfo()"
-                  ng-show="ifTheStuHasRegister">
+                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.youxiang.$error.pattern">
                   提交<span></span>
                 </button>
               </div>

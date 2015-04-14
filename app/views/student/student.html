@@ -23,7 +23,7 @@
     </div>
     <div class="row wp80" ng-show="kaoShiDetail">
       <p ng-repeat="dt in kaoShiDetail">
-        <span>考试时间：{{dt.KAISHISHIJIAN | myLocalDateWithWeek}}——{{dt.JIESHUSHIJIAN | myLocalDateWithWeek}}</span>
+        <span>考试时间：{{dt.ksShijian}}</span>
         <span class="ml15">考场：{{dt.KAODIANMINGCHENG}}</span>
       </p>
     </div>
@@ -36,15 +36,13 @@
           </th>
         </tr>
         <tr ng-repeat="bm in bmKaoChang">
-          <td width="370px">
-            <span>{{bm.ksStart | myLocalDateWithWeek}}</span>--
-            <span>{{bm.ksEnd | myLocalDateWithWeek}}</span>
+          <td ng-bind="bm.ksShiJian">
           </td>
           <td ng-repeat="kd in bm.ksKc">
-            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)">
+            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)" ng-hide="kd.KAOWEI == kd.BAOMING_RENSHU">
             <span ng-bind="kd.KAODIANMINGCHENG"></span>
             <span>(考位:{{kd.KAOWEI}})</span>
-            <span>(已报:{{kd.BAOMING_RENSHU || 0}})</span>
+            <span>(剩余:{{kd.KAOWEI - kd.BAOMING_RENSHU || kd.KAOWEI}})</span>
           </td>
         </tr>
       </table>
@@ -52,10 +50,5 @@
         保存选择
       </button>
     </div>
-    <!--<div class="row">-->
-      <!--<button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">-->
-        <!--保存选择-->
-      <!--</button>-->
-    <!--</div>-->
   </div>
 </div>

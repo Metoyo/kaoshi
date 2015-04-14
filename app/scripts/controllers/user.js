@@ -112,8 +112,12 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             baomingkaodian: [],
             baomingkaosheng: []
           },
+          studentData = '', //存放报名考试查出来的考试
           uploadKsUrl = baseBmAPIUrl + 'excel_to_json', //上传考生信息
-          saveBaoMingUrl = baseBmAPIUrl + 'save_baoming_set'; //保存报名信息
+          saveBaoMingUrl = baseBmAPIUrl + 'save_baoming_set', //保存报名信息
+          qryBmByJgBase = baseBmAPIUrl + 'query_baoming_byjg?token=' + token + '&jigouid=', //由机构查询报名
+          qryStudentByBmIdBase = baseBmAPIUrl + 'query_mingdan_bybmid?token=' + token + '&baoming_id=', //由报名ID查询考生
+          qryBaoMingShiJianBase = baseBmAPIUrl + 'query_baoming_shijian?token=' + token + '&baoming_id='; //由报名ID查询考试时间
 
         $scope.adminParams = {
           selected_dg: '',
@@ -130,11 +134,15 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           selectZsdId: '',
           zsdOldName: '', //知识
           zsdNewName: '', //知识点修改新名称
-          datePickerIdx: ''//时间选择器的索引
+          datePickerIdx: '' //时间选择器的索引
         };
         $scope.selectedKeMu = '';
         $scope.baoMing = baoming;
         $scope.cnNumArr = config.cnNumArr; //题支的序号
+        $scope.studentArrs = ''; //查询出来的报名考生
+        $scope.baoMingArrs = ''; //报名数据
+        $scope.baoMingShiJianArrs = ''; //有报名ID查出来的报名时间数据
+        $scope.whichChangCiSelect = ''; //那个场次被选中
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -2318,6 +2326,96 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               DataService.alertInfFun('err', result.error);
             }
           });
+        };
+
+        /**
+         * 学生报名设定
+         */
+        $scope.renderBaoMingChaKanTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            DataService.getData(qryJiGouUrl + '1').then(function(data){
+              $scope.jigou_list = data;
+            });
+          }
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.adminSubWebTpl = 'views/renzheng/rz_chaKanBaoMing.html';
+        };
+
+        /**
+         * 查看机构下的所有报名信息
+         */
+        $scope.chaXunBaoMing = function(jgId){
+          if(jgId){
+            var qryBmByJgUrl = qryBmByJgBase + jgId;
+            DataService.getData(qryBmByJgUrl).then(function(data){
+              $scope.baoMingArrs = data;
+              console.log($scope.baoMingArrs);
+            });
+          }
+          else{
+            $scope.baoMingArrs = '';
+            DataService.alertInfFun('pmt', '请选择机构！')
+          }
+        };
+
+        /**
+         * 查看本次报名的所有考生
+         */
+        $scope.qryKaoShengByBaoMing = function(bm){
+          if(bm.BAOMING_ID){
+            var qryBaoMingShiJian = qryBaoMingShiJianBase + bm.BAOMING_ID,
+              qryStudentByBmId =  qryStudentByBmIdBase + bm.BAOMING_ID;
+            DataService.getData(qryBaoMingShiJian).then(function(sjData){
+              if(sjData && sjData.length > 0){
+                $scope.baoMingShiJianArrs = sjData;
+                DataService.getData(qryStudentByBmId).then(function(data){
+                  studentData = data;
+                  $scope.studentArrs = angular.copy(data);
+                  console.log(data);
+                });
+              }
+              else{
+                $scope.baoMingShiJianArrs = '';
+              }
+            });
+
+          }
+          else{
+            $scope.studentArrs = '';
+            $scope.baoMingShiJianArrs = '';
+            DataService.alertInfFun('pmt', '请选择考试！');
+          }
+        };
+
+        /**
+         * 有不同的查询条件得到考生
+         */
+        $scope.distBaoMingKaoSheng = function(cdt, idx){
+          JQ('.baoMingChaKanChangCi li').removeClass('active').eq(idx).addClass('active');
+          $scope.whichChangCiSelect = '';
+          if(cdt == 'All'){
+            $scope.studentArrs = angular.copy(studentData);
+          }
+          else if(cdt == 'NotApply'){
+            $scope.studentArrs = _.reject(studentData, function(std){
+              if(std.KAODIANMINGCHENG){
+                return std;
+              }
+            });
+          }
+          else{
+            if(cdt){
+              var bmkssj_id = cdt.BAOMINGKAOSHISHIJIAN_ID;
+              cdt.kaoshiDate = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
+              $scope.whichChangCiSelect = cdt;
+              $scope.studentArrs = _.filter(studentData, function(std){
+                return std.BAOMINGKAOSHISHIJIAN_ID == bmkssj_id;
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选场次！');
+            }
+          }
         };
 
     }]);

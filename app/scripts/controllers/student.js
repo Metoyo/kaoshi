@@ -61,11 +61,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                 var bmksObj = {
                   ksStart: '',
                   ksEnd: '',
+                  ksShiJian: '',
                   ksKc: ''
                 };
                 bmksObj.ksStart = k;
                 bmksObj.ksKc = v;
                 bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
+                bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
                 bmKsArr.push(bmksObj);
               });
               $scope.bmKaoChang = bmKsArr;
@@ -76,24 +78,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
             }
           });
         };
-
-        /**
-         * 查询考生是否已经报名
-         */
-        //var qryKaoShengHasBaoMing = function(){
-        //  var qryKsBmState = qryKsBmStateBase + '&jigouid=' + defaultJg + '&xuehao=' + xuehao;
-        //  DataService.getData(qryKsBmState).then(function(ksInfo){
-        //    if(ksInfo && ksInfo.length){
-        //      if(ksInfo[0].BAOMINGKAODIAN_ID && ksInfo[0].BAOMINGKAOSHISHIJIAN_ID){
-        //        $scope.stuParams.hasBaoMing = true;
-        //        DataService.alertInfFun('pmt', '你已报名，请等待考试！');
-        //      }
-        //      else{
-        //        chaXunBaoMing();
-        //      }
-        //    }
-        //  });
-        //};
 
         /**
          * 获得选择的考点
@@ -115,7 +99,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               baomingkaodian_id: $scope.stuParams.selectKaoDian.BAOMINGKAODIAN_ID,
               baomingkaoshishijian_id: $scope.stuParams.selectKaoDian.BAOMINGKAOSHISHIJIAN_ID
             };
-            if(confirm('已经选择不能更改，确定提交？')){
+            if(confirm('时间和考场选择后无法修改，是否确定？')){
               var qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
               qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
               qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
@@ -126,7 +110,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                     if(data.result){
                       $scope.bmKaoChang = '';
                       DataService.alertInfFun('suc', '保存成功！');
-                      $scope.stuParams.hasBaoMing = false;
+                      $scope.stuParams.hasBaoMing = true;
                       chaXunBaoMingChangCi();
                     }
                   });
@@ -153,6 +137,9 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           qryKsDetail += '&baomingkaodian_id=' + ks.BAOMINGKAODIAN_ID;
           DataService.getData(qryKsDetail).then(function(detail){
             if(detail && detail.length){
+              _.each(detail, function(ks, idx, lst){
+                ks.ksShijian = DataService.baoMingDateFormat(ks.KAISHISHIJIAN, ks.JIESHUSHIJIAN);
+              });
               $scope.kaoShiDetail = detail;
               console.log(detail);
             }

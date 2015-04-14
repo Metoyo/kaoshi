@@ -21,7 +21,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           objAndRightList = [], //已经选择的科目和单位
           checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token, //检测用户是否存在的url
           qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token, //检查考生是否在报名表里
-          checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
+          checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid=', //检查考生是否在报名表里
+          delBlankReg = /\s/g; //去除空格的正则表达
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
@@ -395,8 +396,10 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           if($scope.stuRegisterInfo.jigouid){
             chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
             if($scope.stuRegisterInfo.xuehao){
+              $scope.stuRegisterInfo.xuehao = $scope.stuRegisterInfo.xuehao.replace(delBlankReg, '');
               chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
               if($scope.stuRegisterInfo.xingming){
+                $scope.stuRegisterInfo.xingming = $scope.stuRegisterInfo.xingming.replace(delBlankReg, '');
                 chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
                 DataService.getData(chaXunKaoSheng).then(function(data){
                   if(data && data.length > 0){
@@ -432,6 +435,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 保存学生注册信息
          */
         $scope.saveStudentInfo = function(){
+          $scope.stuRegisterInfo.youxiang = $scope.stuRegisterInfo.youxiang.replace(delBlankReg,'');
+          $scope.stuRegisterInfo.mima = $scope.stuRegisterInfo.mima.replace(delBlankReg,'');
           var stuData = {
             token: token,
             YONGHULEIBIE: 2,
