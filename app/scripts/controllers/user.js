@@ -18,6 +18,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           baseRzAPIUrl = config.apiurl_rz, //renzheng的api;
           baseMtAPIUrl = config.apiurl_mt, //mingti的api
           baseKwAPIUrl = config.apiurl_kw, //考务的api
+          baseTjAPIUrl = config.apiurl_tj, //统计的api
           baseBmAPIUrl = config.apiurl_bm, //报名的api
           token = config.token, //token的值
           caozuoyuan = userInfo.UID,//登录的用户的UID
@@ -117,7 +118,10 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           saveBaoMingUrl = baseBmAPIUrl + 'save_baoming_set', //保存报名信息
           qryBmByJgBase = baseBmAPIUrl + 'query_baoming_byjg?token=' + token + '&jigouid=', //由机构查询报名
           qryStudentByBmIdBase = baseBmAPIUrl + 'query_mingdan_bybmid?token=' + token + '&baoming_id=', //由报名ID查询考生
-          qryBaoMingShiJianBase = baseBmAPIUrl + 'query_baoming_shijian?token=' + token + '&baoming_id='; //由报名ID查询考试时间
+          qryBaoMingShiJianBase = baseBmAPIUrl + 'query_baoming_shijian?token=' + token + '&baoming_id=', //由报名ID查询考试时间
+          exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel', //导出excel名单
+          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/',
+          delBlankReg = /\s/g; //去除空格的正则表达
 
         $scope.adminParams = {
           selected_dg: '',
@@ -142,7 +146,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
         $scope.studentArrs = ''; //查询出来的报名考生
         $scope.baoMingArrs = ''; //报名数据
         $scope.baoMingShiJianArrs = ''; //有报名ID查出来的报名时间数据
-        $scope.whichChangCiSelect = ''; //那个场次被选中
+        $scope.whichChangCiSelect = '全部考生'; //那个场次被选中
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -2268,7 +2272,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             cc.kaishishijian = ccStartArr.eq(idx).val();
             cc.jieshushijian = ccEndArr.eq(idx).val();
           });
-          console.log($scope.bmkssjArr);
           DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
             $scope.uploadFiles = [];
             if(result.data.json){
@@ -2314,10 +2317,8 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               baoming.baomingkaoshishijian = $scope.bmkssjArr;
               baoming.baomingkaodian = baomingkaodianArr;
               baoming.baomingkaosheng = kaoShengNewArr;
-              console.log(bmData);
               $http.post(saveBaoMingUrl, bmData).success(function(data){
                 if(data.result){
-                  console.log(data.id);
                   DataService.alertInfFun('suc', '保存成功！');
                 }
               });
@@ -2349,7 +2350,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             var qryBmByJgUrl = qryBmByJgBase + jgId;
             DataService.getData(qryBmByJgUrl).then(function(data){
               $scope.baoMingArrs = data;
-              console.log($scope.baoMingArrs);
             });
           }
           else{
@@ -2371,7 +2371,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
                 DataService.getData(qryStudentByBmId).then(function(data){
                   studentData = data;
                   $scope.studentArrs = angular.copy(data);
-                  console.log(data);
                 });
               }
               else{
@@ -2395,6 +2394,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           $scope.whichChangCiSelect = '';
           if(cdt == 'All'){
             $scope.studentArrs = angular.copy(studentData);
+            $scope.whichChangCiSelect = '全部考生';
           }
           else if(cdt == 'NotApply'){
             $scope.studentArrs = _.reject(studentData, function(std){
@@ -2402,12 +2402,13 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
                 return std;
               }
             });
+            $scope.whichChangCiSelect = '未报名';
           }
           else{
             if(cdt){
               var bmkssj_id = cdt.BAOMINGKAOSHISHIJIAN_ID;
-              cdt.kaoshiDate = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
-              $scope.whichChangCiSelect = cdt;
+              //cdt.kaoshiDate = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
+              $scope.whichChangCiSelect = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
               $scope.studentArrs = _.filter(studentData, function(std){
                 return std.BAOMINGKAOSHISHIJIAN_ID == bmkssj_id;
               });
@@ -2416,6 +2417,39 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               DataService.alertInfFun('pmt', '请选场次！');
             }
           }
+        };
+
+        /**
+         * 导出考生名单
+         */
+        $scope.exportKsInfo = function(stuData){
+          var ksData = {
+              token: token,
+              sheetName: '',
+              data: ''
+            },
+            ksArr = [];
+          ksData.sheetName = $scope.whichChangCiSelect.replace(delBlankReg, '');
+          ksData.sheetName = ksData.sheetName.replace(/\:/g, '');
+          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '备注'});
+          _.each($scope.studentArrs, function(stu){
+            var ksObj = {XUEHAO: '', XINGMING: '', BANJI: '', XUHAO: '', REMARK: ''};
+            ksObj.XUEHAO = stu.XUEHAO;
+            ksObj.XINGMING = stu.XINGMING;
+            ksObj.BANJI = stu.BANJI;
+            ksObj.XUHAO = stu.XUHAO;
+            ksObj.REMARK = stu.REMARK;
+            ksArr.push(ksObj);
+          });
+          ksData.data = JSON.stringify(ksArr);
+          $http.post(exportStuInfoUrl, ksData).success(function(data){
+            var downloadTempFile = downloadTempFileBase + data.filename,
+              aLink = document.createElement('a'),
+              evt = document.createEvent("HTMLEvents");
+            evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+            aLink.href = downloadTempFile; //url
+            aLink.dispatchEvent(evt);
+          });
         };
 
     }]);

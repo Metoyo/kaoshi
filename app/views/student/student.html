@@ -52,3 +52,23 @@
     </div>
   </div>
 </div>
+<div class="popup-wrap" ng-show="showStuSelectInfo">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10">
+      <p class="title text-center">确认信息</p>
+    </div>
+    <div class="pwi-body plr10">
+      <p>时间：{{confirmInfo.shijian}}</p>
+      <p>考场：{{confirmInfo.kaochang}}</p>
+      <p>时间和考场选择后无法修改，是否确定？</p>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-primary mt5" ng-click="saveStudentSelectFun()">
+        确定
+      </button>
+      <button type="button" class="btn btn-danger mt5 ml15" ng-click="colseSaveBaoMingSelect()">
+        取消
+      </button>
+    </div>
+  </div>
+</div>

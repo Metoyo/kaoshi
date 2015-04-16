@@ -1,6 +1,7 @@
 define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'setJs'],
   function ( angular, config, JQ, _, mathjax, markitup, setJs) {
   'use strict';
+
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $q, $timeout, DataService) {
@@ -24,7 +25,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           chaxunzilingyu = true,
           qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
             jigouid + '&lingyuid=', //查询科目包含什么题型的url
-
           qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
             caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
           xgtmUrl = baseMtAPIUrl + 'xiugai_timu', //保存添加题型的url
@@ -159,7 +159,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
               });
             }
             else{
-              DataService.alertInfFun('err', mrDg.err);
+              DataService.alertInfFun('err', mrDg.error);
             }
           });
         };
@@ -1509,7 +1509,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           var daAnArrOne = $scope.timudetail.DAAN.split(','),
             ifHasIn = _.contains(daAnArrOne, idx.toString());
           if(ifHasIn){
-            DataService.alertInfFun('pmt', '此项为正确答案不能删除！'); //
+            DataService.alertInfFun('pmt', '此项为正确答案不能删除！');
           }
           else{
             $scope.timudetail.TIGAN.tiZhiNeiRong.splice(idx, 1);

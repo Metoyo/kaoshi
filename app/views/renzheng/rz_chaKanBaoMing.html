@@ -42,7 +42,8 @@
       </li>
     </ul>
     <div class="ptb5 mt5" ng-show="whichChangCiSelect">
-      考试时间：<span ng-bind="whichChangCiSelect.kaoshiDate"></span>
+      考试时间：<span ng-bind="whichChangCiSelect"></span>
+      <a href="javascript:void(0)" ng-click="exportKsInfo()" class="pull-right">导出考生</a>
     </div>
     <table class="table table-bordered baoMingTable mt5">
       <tr>

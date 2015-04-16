@@ -45,7 +45,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
             lineDataBanJi: ''
           }, //存放统计参数的Object
           tjBarData = [], //柱状图数据
-          exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel',
+          exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel', //导出excel名单
           downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/',
           answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
 

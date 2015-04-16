@@ -32,6 +32,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         };
         $scope.kaoShiArrs = '';
         $scope.kaoShiDetail = '';
+        $scope.showStuSelectInfo = false;
 
         /**
          * 查询考生有几场考试
@@ -87,44 +88,64 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         };
 
         /**
-         * 获得选择的考点
+         * 保存考生选择的确认信息
          */
         $scope.saveStudentSelcet = function(){
           if($scope.stuParams.selectKaoDian){
-            var kddData = {
-              token: token,
-              jigouid: defaultJg,
-              xuehao: xuehao,
-              baoming_id: $scope.stuParams.selectKaoDian.BAOMING_ID,
-              baomingkaodian_id: $scope.stuParams.selectKaoDian.BAOMINGKAODIAN_ID,
-              baomingkaoshishijian_id: $scope.stuParams.selectKaoDian.BAOMINGKAOSHISHIJIAN_ID
+            var kdInfo = $scope.stuParams.selectKaoDian;
+            $scope.confirmInfo = {
+              shijian: '',
+              kaochang: ''
             };
-            if(confirm('时间和考场选择后无法修改，是否确定？')){
-              var qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
-              qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
-              qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
-              DataService.getData(qryKaoDianRenShu).then(function(kdRenShu){
-                console.log(kdRenShu);
-                if(kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI){
-                  $http.post(saveStudentSelect, kddData).success(function(data){
-                    if(data.result){
-                      $scope.bmKaoChang = '';
-                      DataService.alertInfFun('suc', '保存成功！');
-                      $scope.stuParams.hasBaoMing = true;
-                      chaXunBaoMingChangCi();
-                    }
-                  });
-                }
-                else{
-                  DataService.alertInfFun('pmt', '此时间段的本考场已没有空余考位，请重新选择！');
-                }
-              });
-
-            }
+            $scope.confirmInfo.shijian = DataService.baoMingDateFormat(kdInfo.KAISHISHIJIAN, kdInfo.JIESHUSHIJIAN);
+            $scope.confirmInfo.kaochang = kdInfo.KAODIANMINGCHENG;
+            $scope.showStuSelectInfo = true;
           }
           else{
             DataService.alertInfFun('pmt', '请选择考试场次！');
           }
+        };
+
+        /**
+         * 保存考试选择信息
+         */
+        $scope.saveStudentSelectFun = function(){
+          var kdInfo = $scope.stuParams.selectKaoDian,
+            kddData = {
+              token: token,
+              jigouid: defaultJg,
+              xuehao: xuehao,
+              baoming_id: kdInfo.BAOMING_ID,
+              baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
+              baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID
+            },
+            qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
+          qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
+          qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
+          DataService.getData(qryKaoDianRenShu).then(function(kdRenShu){
+            console.log(kdRenShu);
+            if(kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI){
+              $http.post(saveStudentSelect, kddData).success(function(data){
+                if(data.result){
+                  $scope.bmKaoChang = '';
+                  DataService.alertInfFun('suc', '保存成功！');
+                  $scope.stuParams.hasBaoMing = true;
+                  $scope.showStuSelectInfo = false;
+                  chaXunBaoMingChangCi();
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '此时间段的本考场已没有空余考位，请重新选择！');
+            }
+          });
+        };
+
+        /**
+         * 关闭保存考生选择的弹出层
+         */
+        $scope.colseSaveBaoMingSelect = function(){
+          $scope.showStuSelectInfo = false;
         };
 
         /**
