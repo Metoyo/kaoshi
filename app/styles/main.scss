@@ -2152,6 +2152,9 @@ label.checkbox{
     }
     .shijuantimu-list{
       margin-top: 15px;
+      .btn{
+        margin-left: 5px;
+      }
       .mubandati{
         font-weight: bold;
         line-height: 28px;
@@ -2172,6 +2175,14 @@ label.checkbox{
         }
         .btn{
           margin-top: -2px;
+        }
+        .datiMoveBtns{
+          display: none;
+        }
+        &:hover{
+          .datiMoveBtns{
+            display: inline;
+          }
         }
       }
       .testList li{

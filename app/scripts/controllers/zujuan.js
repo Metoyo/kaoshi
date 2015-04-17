@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
-  function ($, _, angular, config, mathjax) { // 001
+  function (JQ, _, angular, config, mathjax) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
@@ -2148,9 +2148,9 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
                 nanDuArr.paperNanDu = (ppNanDuAdd/muBanDaTiLen).toFixed(2);
                 shijuanData.shuju.NANDU = nanDuArr;
               }
+              dati.XUHAO = idx + 1;
             });
             if(shijuanData.shuju.SHIJUANMINGCHENG){ //11 检查试卷名称
-
               if(!fenZhiIsNull){// 22 检查每小题是否有分值 开始
                 //提交数据
                 if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
@@ -2614,11 +2614,27 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
           };
 
           /**
-           * 上下移动题目 //周
+           *  大题的上下移动
            */
-          $scope.moveTM = function(tm, num){
-            var dati = _.where(mubanData.shuju.MUBANDATI, { MUBANDATI_ID: tm.TIMULEIXING_ID })[0],
-                tmIds = _.map(dati.TIMUARR, function(t){ return t.TIMU_ID;}),
+          $scope.moveDaTi = function(idx, dirt){
+            var toIndex = idx + dirt,
+              item = mubanData.shuju.MUBANDATI[idx];
+            if(dirt>0){
+              mubanData.shuju.MUBANDATI.splice(toIndex + 1, 0, item);
+              mubanData.shuju.MUBANDATI.splice(idx, 1);
+            }
+            else{
+              mubanData.shuju.MUBANDATI.splice(idx, 1);
+              mubanData.shuju.MUBANDATI.splice(toIndex, 0, item);
+            }
+          };
+
+          /**
+           * 上下移动题目
+           */
+          $scope.moveTM = function(tm, num, mbdtId){
+            var dati = _.where(mubanData.shuju.MUBANDATI, { MUBANDATI_ID: mbdtId })[0];
+            var tmIds = _.map(dati.TIMUARR, function(t){ return t.TIMU_ID;}),
                 index = _.indexOf(tmIds, tm.TIMU_ID),
                 toIndex = index + num,
                 item = dati.TIMUARR[index];
@@ -2630,7 +2646,10 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
               dati.TIMUARR.splice(index, 1);
               dati.TIMUARR.splice(toIndex, 0, item);
             }
-            JQ('button.reloadMath').click();
+            var reloadFun = function(){
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+            };
+            $timeout(reloadFun, 500);
           };
 
           /**

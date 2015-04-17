@@ -74,6 +74,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
           pandu_data, //判断题数据模板
           tiankong_data, //填空题数据模板
           yuedu_data, //阅读题数据模板
+          zhengming_data,//证明题数据模板
           loopArr = [0,1,2,3], //用于题支循环的数组
           tkLoopArr = [], //用于填空题支循环的数组
           tznrIsNull,//用了判断题支内容是否为空
@@ -817,6 +818,11 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
               tx_data.shuju.TIGAN = formulaTiGan.val();
               tx_data.shuju.DAAN = formulaTiZhi.val();
               break;
+            case 'zhengming_data':
+              tx_data = zhengming_data;
+              tx_data.shuju.TIGAN = formulaTiGan.val();
+              tx_data.shuju.DAAN = formulaTiZhi.val();
+              break;
             case 'jieda_data':
               tx_data = jieda_data;
               tx_data.shuju.TIGAN = formulaTiGan.val();
@@ -1026,6 +1032,21 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         /**
          * 解答题模板添加
          */
+        $scope.addZhengMing = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
+          zhengming_data = timu_data;
+          renderTpl(tpl);
+          JQ('.patternList li').removeClass('active');
+          JQ('li.zhengming').addClass('active');
+          zhengming_data.shuju.TIXING_ID = 15;
+          zhengming_data.shuju.TIMULEIXING_ID = 9;
+          $scope.zhengMingData = zhengming_data;
+          $scope.loadingImgShow = false; //jieda.html
+        };
+
+        /**
+         * 解答题模板添加
+         */
         $scope.addJieDa = function(tpl){
           $scope.selectZhiShiDian = ''; //知识大纲名称清空
           jieda_data = timu_data;
@@ -1100,7 +1121,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
               offset += subStr.length;
             }
           }
-          while(offset != -1) return count;
+          while(offset != -1);
+          return count;
         };
 
         /**
@@ -1453,6 +1475,23 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             $scope.mingTiParam.isConvertTiXing = true;
             renderTpl(tpl); //render 修改过模板
           }
+          //证明题
+          if(tmxq.TIXING_ID == 15){
+            tpl = 'views/mingti/zhengming.html';
+            zhengming_data = timu_data;
+            $scope.zhengMingData = zhengming_data; //数据赋值和模板展示的顺序
+            zhengming_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+            zhengming_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+            zhengming_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+            zhengming_data.shuju.DAAN = tmxq.DAAN;
+            zhengming_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+            zhengming_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+            zhengming_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+            zhengming_data.shuju.REMARK = tmxq.REMARK;
+            $scope.alterTiMuTiXing = '证明题';
+            $scope.mingTiParam.isConvertTiXing = true;
+            renderTpl(tpl); //render 修改过模板
+          }
           //解答题
           if(tmxq.TIXING_ID == 17){
             tpl = 'views/mingti/jieda.html';
@@ -1544,6 +1583,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          * 添加新试题
          */
         $scope.addNewShiTiFun = function(txId){
+          console.log(txId);
           switch (txId){
             case '1':
               $scope.addDanXuan('views/mingti/danxuan.html');
@@ -1588,7 +1628,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
 //              $scope.addPanDuan('views/mingti/panduan.html');
               break;
             case '15':
-//              $scope.addPanDuan('views/mingti/panduan.html');
+              $scope.addZhengMing('views/mingti/zhengming.html');
               break;
             case '16':
 //              $scope.addPanDuan('views/mingti/panduan.html');

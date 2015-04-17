@@ -354,7 +354,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'charts', 'mathjax'],
           DataService.getData(answerReappearUrl).then(function(data) {
             if(data && data.length > 0){
               finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-              dataDis = _.groupBy(data, 'TIXING_ID');
+              dataDis = _.groupBy(data, 'DATI_XUHAO');
               _.each(dataDis, function(val, key, list){
                 var dObj = {
                   tx_id: key,

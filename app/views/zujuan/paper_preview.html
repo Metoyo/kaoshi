@@ -64,6 +64,10 @@
               <span>分）</span>
             </p>
           </div>
+          <div class="dati-name-box datiMoveBtns">
+            <button type="button" class="btn btn-default" ng-click="moveDaTi($index,-1)" ng-hide="$first">上移</button>
+            <button type="button" class="btn btn-default" ng-click="moveDaTi($index,1)" ng-hide="$last">下移</button>
+          </div>
         </div>
         <ul class="list-unstyled testList">
           <li ng-repeat="tmd in mbdt.TIMUARR">
@@ -72,8 +76,8 @@
               <button type="button" class="btn btn-primary"
                       ng-click="changeItem(mbdt.MUBANDATI_ID, tmd.TIMU_ID)">换一题
               </button>
-              <button type="button" class="btn btn-default" ng-click="moveTM(tmd,-1)" ng-hide="$first">上移</button>
-              <button type="button" class="btn btn-default" ng-click="moveTM(tmd,1)" ng-hide="$last">下移</button>
+              <button type="button" class="btn btn-default" ng-click="moveTM(tmd,-1,mbdt.MUBANDATI_ID)" ng-hide="$first">上移</button>
+              <button type="button" class="btn btn-default" ng-click="moveTM(tmd,1,mbdt.MUBANDATI_ID)" ng-hide="$last">下移</button>
             </h5>
             <div class="item-cont">
               <div class="item-tigan" title="点击设置" ng-init="sj_item_score = true">
