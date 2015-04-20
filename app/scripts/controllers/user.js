@@ -2287,7 +2287,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
                   XUEHAO:'',
                   BANJI: '',
                   XUHAO: '',
-                  REMARK:'',
+                  KEXUHAO:'',
                   ZHUANGTAI: 1
                 };
                 _.each(ks, function(value, key, list){
@@ -2305,8 +2305,8 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
                     case '序号':
                       ksObj.XUHAO = value;
                       break;
-                    case '备注':
-                      ksObj.REMARK = value;
+                    case '课序号':
+                      ksObj.KEXUHAO = value;
                       break;
                   }
                 });
@@ -2431,14 +2431,15 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             ksArr = [];
           ksData.sheetName = $scope.whichChangCiSelect.replace(delBlankReg, '');
           ksData.sheetName = ksData.sheetName.replace(/\:/g, '');
-          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '备注'});
+          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '课序号',col6: '座位号'});
           _.each($scope.studentArrs, function(stu){
-            var ksObj = {XUEHAO: '', XINGMING: '', BANJI: '', XUHAO: '', REMARK: ''};
+            var ksObj = {XUEHAO: '', XINGMING: '', BANJI: '', XUHAO: '',  KEXUHAO: ''};
             ksObj.XUEHAO = stu.XUEHAO;
             ksObj.XINGMING = stu.XINGMING;
             ksObj.BANJI = stu.BANJI;
             ksObj.XUHAO = stu.XUHAO;
-            ksObj.REMARK = stu.REMARK;
+            ksObj.KEXUHAO = stu.KEXUHAO;
+            ksObj.ZUOWEIHAO = stu.ZUOWEIHAO;
             ksArr.push(ksObj);
           });
           ksData.data = JSON.stringify(ksArr);

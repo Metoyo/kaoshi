@@ -115,6 +115,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               token: token,
               jigouid: defaultJg,
               xuehao: xuehao,
+              kaowei: kdInfo.KAOWEI,
               baoming_id: kdInfo.BAOMING_ID,
               baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
               baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID

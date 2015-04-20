@@ -40,13 +40,13 @@
     <td class="text-center" ng-bind="ks.ZHUANGTAI | examStatus">
     </td>
     <td class="text-center">
-      <img src="/images/moreBtn.png" class="moreBtn" alt="更多炒作" bn-slide-show slide-show-target="moreBtnCont"
-           slide-show-dirt="left" slide-show-idx="{{$index}}" ng-hide="ks.ZHUANGTAI >= 3"/>
+      <img src="/images/moreBtn.png" class="moreBtn" alt="更多操作" bn-slide-show slide-show-target="moreBtnCont"
+           slide-show-dirt="left" slide-show-idx="{{$index}}"/>
       <div class="moreBtnCont">
         <div class="mbc-inner">
           <button type="button" class="btn btn-default" ng-click="deleteKaoShi(ks)">删除</button>
-          <button type="button" class="btn btn-primary" ng-click="editKaoShi(ks)">修改</button>
-          <button type="button" class="btn btn-primary" ng-click="faBuKaoShi(ks.KAOSHI_ID)">发布</button>
+          <button type="button" class="btn btn-primary" ng-click="editKaoShi(ks)" ng-hide="ks.ZHUANGTAI >= 3">修改</button>
+          <button type="button" class="btn btn-primary" ng-click="faBuKaoShi(ks.KAOSHI_ID)" ng-hide="ks.ZHUANGTAI >= 3">发布</button>
         </div>
       </div>
     </td>

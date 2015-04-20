@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="lazy.min.js"></script>
+</head>
+<body>
+<div id="zuoWeiHao1">
+
+</div>
+<div id="zuoWeiHao2">
+
+</div>
+<script type="text/javascript">
+//  var aaa =  Lazy([1, 2, 3, 4, 5]).shuffle().without([4, 5]);
+  var bbb = Lazy.range(1, 51).shuffle().value();
+  var ccc = Lazy(bbb).without([4, 5]).value();
+//  document.getElementById('zuoWeiHao1').innerHTML = aaa;
+  console.log(ccc);
+</script>
+</body>
+</html>

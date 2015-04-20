@@ -51,14 +51,16 @@
         <th>姓名</th>
         <th>考点</th>
         <th>开考时间</th>
-        <th>备注</th>
+        <th>课序号</th>
+        <th>座位号</th>
       </tr>
       <tr ng-repeat="stu in studentArrs">
         <td ng-bind="stu.XUEHAO"></td>
         <td ng-bind="stu.XINGMING"></td>
         <td ng-bind="stu.KAODIANMINGCHENG"></td>
         <td ng-bind="stu.KAISHISHIJIAN | myLocalDateWithWeek"></td>
-        <td ng-bind="stu.REMARK"></td>
+        <td ng-bind="stu.KEXUHAO"></td>
+        <td ng-bind="stu.ZUOWEIHAO"></td>
       </tr>
     </table>
   </div>
