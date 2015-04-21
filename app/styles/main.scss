@@ -104,6 +104,9 @@ body {
 .mt30 {
   margin-top: 30px;
 }
+.mt50 {
+  margin-top: 50px;
+}
 .mb10{
   margin-bottom: 10px;
 }
@@ -121,6 +124,9 @@ body {
 }
 .ml15{
   margin-left: 15px;
+}
+.ml50{
+  margin-left: 50px;
 }
 .p0{
   padding: 0;
@@ -415,6 +421,14 @@ a.add-btn:hover span {
     }
     th{
       border-top: 1px solid #dddddd;
+    }
+  }
+}
+.saveStuSelectInfo{
+  .popup-wrap-inner{
+    height: 300px;
+    .pwi-body{
+      height: 200px;
     }
   }
 }

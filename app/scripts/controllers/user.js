@@ -98,7 +98,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           selectLingYuChangedArr = [], //存放本机构变动的领域数据
           qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid, //查询本机构下教师
           qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
-            + caozuoyuan + '&jigouid=1000' + '&lingyuid=', //查询考场详细的url
+            + caozuoyuan + '&lingyuid=', //查询考场详细的url
           baoming = { //报名信息表
             baomingxinxi: {
               baoming_id: '',
@@ -2116,6 +2116,8 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
               dataArr = [];
             $scope.kemu_list = '';
+            $scope.kaoChangList = '';
+            $scope.baoMing.baomingxinxi.kemu_id = '';
             DataService.getData(qryLy).then(function(lyData){
               _.each(lyData, function(ly, idx, lst){
                 _.each(ly.CHILDREN, function(km, kmIdx, kmLst){
@@ -2139,9 +2141,15 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           if($scope.kemu_list && $scope.kemu_list.length > 0){
             lyData = _.find($scope.kemu_list, function(km){ return km.LINGYU_ID == kmId; });
             qryKaoChangDetail = qryKaoChangDetailBaseUrl + lyData.PARENT_LINGYU_ID;
-            DataService.getData(qryKaoChangDetail).then(function(data){
-              $scope.kaoChangList = data;
-            });
+            if($scope.baoMing.baomingxinxi.jigou_id){
+              qryKaoChangDetail += '&jigouid=' + $scope.baoMing.baomingxinxi.jigou_id;
+              DataService.getData(qryKaoChangDetail).then(function(data){
+                $scope.kaoChangList = data;
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选择机构！');
+            }
           }
           else{
             DataService.alertInfFun('pmt', '请选择科目');
@@ -2247,11 +2255,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           });
         });
 
-        //添加文件
-        //$scope.addMyFile = function(){
-        //  JQ('input.addFileBtn').click();
-        //};
-
         /**
          * 保存报名信息
          */
@@ -2312,7 +2315,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
                 });
                 kaoShengNewArr.push(ksObj);
               });
-
               baoming.baomingxinxi.baomingjiezhishijian = JQ('.datePickerJz').val();
               baoming.baomingkaoshishijian = $scope.bmkssjArr;
               baoming.baomingkaodian = baomingkaodianArr;
@@ -2320,6 +2322,16 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               $http.post(saveBaoMingUrl, bmData).success(function(data){
                 if(data.result){
                   DataService.alertInfFun('suc', '保存成功！');
+                  $scope.baoMing.baomingxinxi.jigou_id = '';
+                  $scope.baoMing.baomingxinxi.kemu_id = '';
+                  $scope.baoMing.baomingxinxi.kaoshimingcheng = '';
+                  $scope.baoMing.baomingxinxi.kaoshishichang = '';
+                  $scope.baoMing.baomingxinxi.baomingjiezhishijian = '';
+                  $scope.jigou_list = '';
+                  $scope.bmkssjArr = '';
+                  $scope.kemu_list = '';
+                  $scope.kaoChangList = '';
+                  $scope.closeShenheBox();
                 }
               });
             }

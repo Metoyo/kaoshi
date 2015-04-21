@@ -1,6 +1,6 @@
 <div class="studentWrapper">
-  <div class="tab-content p10">
-    <div class="row wp80">
+  <div class="tab-content wp80 mt50 ml50">
+    <div class="row">
       <table class="table table-bordered baoMingTable">
         <tr>
           <th>考试名称</th>
@@ -21,13 +21,15 @@
         </tr>
       </table>
     </div>
-    <div class="row wp80" ng-show="kaoShiDetail">
-      <p ng-repeat="dt in kaoShiDetail">
-        <span>考试时间：{{dt.ksShijian}}</span>
-        <span class="ml15">考场：{{dt.KAODIANMINGCHENG}}</span>
-      </p>
+    <div class="row" ng-show="kaoShiDetail">
+      <div ng-repeat="dt in kaoShiDetail">
+        <p>考试名称：{{dt.ksName}}</p>
+        <p>考试时间：{{dt.ksShijian}}</p>
+        <p>考场：{{dt.KAODIANMINGCHENG}}</p>
+        <p>座位号：{{dt.ZUOWEIHAO}}</p>
+      </div>
     </div>
-    <div class="row wp80" ng-hide="stuParams.hasBaoMing">
+    <div class="row" ng-hide="stuParams.hasBaoMing">
       <table class="table table-bordered jg-table">
         <tr>
           <th class="text-center">时间</th>
@@ -52,12 +54,13 @@
     </div>
   </div>
 </div>
-<div class="popup-wrap" ng-show="showStuSelectInfo">
+<div class="popup-wrap saveStuSelectInfo" ng-show="showStuSelectInfo">
   <div class="popup-wrap-inner">
     <div class="pwi-header plr10">
       <p class="title text-center">确认信息</p>
     </div>
     <div class="pwi-body plr10">
+      <p class="mt15">考试名称：{{confirmInfo.kaoshiName}}</p>
       <p>时间：{{confirmInfo.shijian}}</p>
       <p>考场：{{confirmInfo.kaochang}}</p>
       <p>时间和考场选择后无法修改，是否确定？</p>

@@ -44,6 +44,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         $scope.ifTheStuHasRegister = false;
         $scope.studentInfo = '';
         $scope.stuIfPswTheSame = false;
+        $scope.jigou_list = '';
 
         /**
          * 注册信息的第一步，个人详情信息//

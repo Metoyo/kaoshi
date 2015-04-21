@@ -73,6 +73,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               });
               $scope.bmKaoChang = bmKsArr;
               $scope.stuParams.hasBaoMing = false;
+              $scope.kaoShiDetail = '';
             }
             else{
               DataService.alertInfFun('err', '没有符合的数据！');
@@ -94,11 +95,13 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           if($scope.stuParams.selectKaoDian){
             var kdInfo = $scope.stuParams.selectKaoDian;
             $scope.confirmInfo = {
+              kaoshiName: '',
               shijian: '',
               kaochang: ''
             };
             $scope.confirmInfo.shijian = DataService.baoMingDateFormat(kdInfo.KAISHISHIJIAN, kdInfo.JIESHUSHIJIAN);
             $scope.confirmInfo.kaochang = kdInfo.KAODIANMINGCHENG;
+            $scope.confirmInfo.kaoshiName = kdInfo.KAOSHIMINGCHENG;
             $scope.showStuSelectInfo = true;
           }
           else{
@@ -157,13 +160,15 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           var qryKsDetail = qryKsDetailBase + '&baomingkaoshishijian_id=';
           qryKsDetail += ks.BAOMINGKAOSHISHIJIAN_ID;
           qryKsDetail += '&baomingkaodian_id=' + ks.BAOMINGKAODIAN_ID;
+          qryKsDetail += '&baomingkaosheng_id=' + ks.BAOMINGKAOSHENG_ID;
           DataService.getData(qryKsDetail).then(function(detail){
             if(detail && detail.length){
-              _.each(detail, function(ks, idx, lst){
-                ks.ksShijian = DataService.baoMingDateFormat(ks.KAISHISHIJIAN, ks.JIESHUSHIJIAN);
+              _.each(detail, function(ksd, idx, lst){
+                ksd.ksShijian = DataService.baoMingDateFormat(ksd.KAISHISHIJIAN, ksd.JIESHUSHIJIAN);
+                ksd.ksName = ks.KAOSHIMINGCHENG;
               });
               $scope.kaoShiDetail = detail;
-              console.log(detail);
+              $scope.stuParams.hasBaoMing = true;
             }
           });
         };
