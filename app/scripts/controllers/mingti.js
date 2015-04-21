@@ -113,6 +113,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
+        $scope.cnNumArr = config.cnNumArr;//大写汉字
         $scope.lyList = userInfo.LINGYU; //从用户详细信息中得到用户的lingyu
         $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
         $scope.mingTiParam = { //命题用到的参数
@@ -945,6 +946,13 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         };
 
         /**
+         * 填空题题支选项赋值
+         */
+        $scope.fuZhiFunTk = function(parentIdx, idx){
+          JQ('.tizhiWrap').eq(parentIdx).find('input.subTiZhi').eq(idx).val(JQ('.formulaEditTiZhi').val());
+        };
+
+        /**
          * 单选题添加代码
          */
         $scope.addDanxuanShiTi = function(){
@@ -1138,10 +1146,8 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          * loopArr
          */
         $scope.addTkDaanInput = function(){
-//          loopArr = [];
           var tgVal = JQ('.formulaEditTiGan').val(),
             cnum, i = '', loopArrObj,
-//            chaVal = '',
             asLength = '';
           cnum = countInstances(tgVal, '<span>');
           if(tkLoopArr && tkLoopArr.length > 0){
@@ -1186,29 +1192,33 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
         };
 
         /**
+         * 检查填空题输入的内容
+         */
+        $scope.checkTiKongVal = function(event){
+          var thisVal = JQ(event.target).val();
+          if(thisVal == '请输入答案'){
+            JQ(event.target).val('');
+          }
+        };
+
+        /**
          * 保存填空试题
          */
         $scope.addTianKongShiTi = function(){
-          var tiZhiArr = JQ('.tizhiWrap').find('ul.tiZhi'),
+          var tiZhiArr = JQ('.tizhiWrap').find('input.subTiZhi'),
             reg = new RegExp('<span>.*?</span>', 'g'),
             count = 0,
-            tizhineirong = [], //存放题支内容;
             tgVal = JQ('.formulaEditTiGan').val();
           tznrIsNull = true;
-
-          //整理题支//
-//          _.each(tiZhiArr, function(tizhi, idx, lst){
-//            if(tizhi.value){
-//              tizhineirong.push(tizhi.value);
-//            }
-//            else{
-//              tznrIsNull = false;
-//            }
-//          });
+          //整理题支
+          _.each(tiZhiArr, function(tizhi, idx, lst){
+            if((!tizhi.value) || (tizhi.value == '请输入答案')){
+              tznrIsNull = false;
+            }
+          });
           if(tznrIsNull){
             tiankong_data.shuju.TIGAN = tgVal.replace(reg, function(arg) {
-              var innerCount = count,
-                tzCont = [],
+              var tzCont = [],
                 tarCss,
                 tzJson = {"size": "", "placeholder": "请填写", "answer": ""};
               tarCss = '.tiZhi' + count;
@@ -1224,7 +1234,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             });
             tiankong_data.shuju.ZHISHIDIAN = selectZsd;
             tiankong_data.shuju.NANDU_ID = JQ('input.nandu-input').val(); //改造成星星选择难度后的代码
-            tiankong_data.shuju.DAAN = tizhineirong.join(';');
             //将题干重的换行转换为<br/>
             tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(regN, replaceStr);
             tiankong_data.shuju.TIGAN = tiankong_data.shuju.TIGAN.replace(regRN, replaceStr);
@@ -1266,7 +1275,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             }
           }
           else{
-            DataService.alertInfFun('pmt', '请输入填空题答案！'); //
+            DataService.alertInfFun('pmt', '请输入填空题答案！');
           }
         };
 
