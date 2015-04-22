@@ -1446,8 +1446,14 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
                     tiZhiNum: '',
                     subTiZhiNum: ''
                   };
+                  if(typeof(da.answer) == 'string'){
+                    loopArrObj.subTiZhiNum = [];
+                    loopArrObj.subTiZhiNum[0] = da.answer;
+                  }
+                  else{
+                    loopArrObj.subTiZhiNum = da.answer;
+                  }
                   loopArrObj.tiZhiNum = parseInt(idx) + 1;
-                  loopArrObj.subTiZhiNum = da.answer;
                   tkLoopArr.push(loopArrObj);
                 });
                 $scope.tkLoopArr = tkLoopArr;

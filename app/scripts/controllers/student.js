@@ -40,6 +40,18 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         var chaXunBaoMingChangCi = function(){
           DataService.getData(qryBmCcBase).then(function(data){
             if(data && data.length){
+              var d = new Date(),
+                nowTime = d.getTime();
+              _.each(data, function(bmxx, idx, lst){
+                var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN),
+                  jzTime = jz.getTime();
+                if(nowTime > jzTime){
+                  bmxx.hasEndBaoMing = true;
+                }
+                else{
+                  bmxx.hasEndBaoMing = false;
+                }
+              });
               $scope.kaoShiArrs = data;
             }
           });
@@ -54,7 +66,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           queryKaoShi = queryKaoShiBase + ks.BAOMING_ID;
           DataService.getData(queryKaoShi).then(function(data){
             if(data && data.length){
-              console.log(data);
               bmKs = _.groupBy(data, function(bm){
                 return bm.KAISHISHIJIAN;
               });
@@ -127,7 +138,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
           qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
           DataService.getData(qryKaoDianRenShu).then(function(kdRenShu){
-            console.log(kdRenShu);
             if(kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI){
               $http.post(saveStudentSelect, kddData).success(function(data){
                 if(data.result){

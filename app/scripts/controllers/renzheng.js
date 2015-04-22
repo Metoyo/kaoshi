@@ -44,7 +44,7 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
-        $scope.stuDengluInfo = false;
+        //$scope.stuDengluInfo = false;
 
         /**
          * 登录程序
@@ -217,12 +217,10 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                       $cookieStore.put('logged', userCookie);
                       $cookieStore.put('lingyuCk', lingyuCookie);
                       $cookieStore.put('myUrlCk', myUrlCookie);
-                      console.log($rootScope.session);
                       urlRedirect.goTo(currentPath, '/student');
                     }
                     else{
                       $scope.dengluInfo = false;
-                      $scope.stuDengluInfo = true;
                       DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                     }
                   }
@@ -230,7 +228,6 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
               }
               else{
                 $scope.dengluInfo = true;
-                $scope.stuDengluInfo = false;
               }
             });
           }
@@ -298,44 +295,10 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
          */
         $scope.errorInfoReset = function(){
           $scope.dengluInfo = false;
-          $scope.stuDengluInfo = false;
           login.userName = '';
           login.password = '';
           stuLogin.userName = '';
           stuLogin.password = '';
-        };
-
-        /**
-         * 学生登录
-         */
-        $scope.studentLogin = function(){
-          urlArr = [];
-          if(stuLogin.userName && stuLogin.password) {
-            var stuLoginParams = {
-              token : config.token,
-              yonghuming : stuLogin.userName,
-              mima : stuLogin.password
-            };
-            //登录信息的验证
-            $http.post(loginApiUrl, stuLoginParams).success(function(result) {
-              if(result && result.length > 0){
-                if(result[0].YONGHULEIBIE == 2){
-                  var urlObj = {
-                    myUrl: 'student',
-                    urlName: '报名'
-                  };
-                  urlArr.push(urlObj);
-                  $rootScope.urlArrs = urlArr;
-                  urlRedirect.goTo(currentPath, '/student');
-                }
-              }
-              else{
-                //DataService.alertInfFun('err', result.error);
-                $scope.dengluInfo = false;
-                $scope.stuDengluInfo = true;
-              }
-            })
-          }
         };
 
     }]);
