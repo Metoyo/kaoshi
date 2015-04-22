@@ -81,6 +81,20 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                 bmksObj.ksKc = v;
                 bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
                 bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
+                _.each(bmksObj.ksKc, function(kc, idx, lst){
+                  if(kc.BAOMING_RENSHU >= 0){
+                    var sywz = parseInt(kc.KAOWEI) - kc.BAOMING_RENSHU;
+                    if(sywz >= 0){
+                      kc.syKaoWei = sywz;
+                    }
+                    else{
+                      kc.syKaoWei = 0;
+                    }
+                  }
+                  else{
+                    kc.syKaoWei = parseInt(kc.KAOWEI);
+                  }
+                });
                 bmKsArr.push(bmksObj);
               });
               $scope.bmKaoChang = bmKsArr;
@@ -130,7 +144,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               token: token,
               jigouid: defaultJg,
               xuehao: xuehao,
-              kaowei: kdInfo.KAOWEI,
               baoming_id: kdInfo.BAOMING_ID,
               baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
               baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID

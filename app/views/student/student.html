@@ -45,10 +45,10 @@
           <td ng-bind="bm.ksShiJian">
           </td>
           <td ng-repeat="kd in bm.ksKc">
-            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)" ng-hide="kd.KAOWEI == kd.BAOMING_RENSHU">
+            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)" ng-show="kd.syKaoWei">
             <span ng-bind="kd.KAODIANMINGCHENG"></span>
             <span>(考位:{{kd.KAOWEI}})</span>
-            <span>(剩余:{{kd.KAOWEI - kd.BAOMING_RENSHU || kd.KAOWEI}})</span>
+            <span>(剩余:{{kd.syKaoWei}})</span>
           </td>
         </tr>
       </table>

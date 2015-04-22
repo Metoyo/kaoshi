@@ -39,9 +39,9 @@
               <!-- 姓名 -->
               <div class="form-group col-md-12">
                 <label>姓名<strong class="clRed">*</strong></label>
-                <input type="text" name="xingMing" placeholder="姓名" tabindex="2" class="form-control"  ng-disabled="ifTheStuHasRegister"
-                       ng-pattern="realNameRegexp" ng-model="stuRegisterInfo.xingming" required/>
-                <p ng-show="studForm.xingMing.$error.pattern" class="help-block">姓名格式不正确！</p>
+                <input id="xingMing" type="text" name="xingMing" placeholder="姓名" tabindex="2" class="form-control" ng-disabled="ifTheStuHasRegister"
+                       ng-model="stuRegisterInfo.xingming" required/>
+                <!--<p ng-show="studForm.xingMing.$error.pattern" class="help-block">姓名格式不正确！</p>-->
               </div>
               <div ng-show="ifTheStuHasRegister">
                 <!-- 邮箱 -->
@@ -79,12 +79,12 @@
                   上一步<span></span>
                 </button>
                 <button type="button" class="btn btn-success nextBtn pull-right" ng-click="confirmTheStuIn()"
-                        ng-disabled="studForm.xuehao.$invalid || studForm.xingMing.$invalid"
+                        ng-disabled="studForm.xuehao.$invalid"
                         ng-hide="ifTheStuHasRegister">
                   下一步<span></span>
                 </button>
                 <button type="button" class="btn btn-success submitBtn pull-right" ng-click="saveStudentInfo()"
-                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.xuehao.$invalid || studForm.xingMing.$invalid ||
+                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.xuehao.$invalid ||
                   studForm.youxiang.$invalid || studForm.mima.$invalid ||studForm.confirmPassword.$invalid || stuIfPswTheSame">
                   提交<span></span>
                 </button>

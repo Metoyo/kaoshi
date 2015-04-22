@@ -24,7 +24,7 @@
         <td ng-bind="ks.KAOSHISHICHANG"></td>
         <td ng-bind="ks.BAOMINGJIEZHISHIJIAN | myLocalDateWithWeek"></td>
         <td>
-          <a href="javascript:void(0)" ng-click="qryKaoShengByBaoMing(ks)">查看考生</a>
+          <a href="javascript:void(0)" ng-click="qryKaoShengByBaoMing(ks.BAOMING_ID)">查看考生</a>
         </td>
       </tr>
     </table>
@@ -43,7 +43,8 @@
     </ul>
     <div class="ptb5 mt5" ng-show="whichChangCiSelect">
       考试时间：<span ng-bind="whichChangCiSelect"></span>
-      <a href="javascript:void(0)" ng-click="exportKsInfo()" class="pull-right">导出考生</a>
+      <a href="javascript:void(0)" ng-click="exportKsInfo()" class="ml15 pull-right">导出考生</a>
+      <a href="javascript:void(0)" ng-click="endBaoMing()" class="pull-right">结束报名</a>
     </div>
     <table class="table table-bordered baoMingTable mt5">
       <tr>

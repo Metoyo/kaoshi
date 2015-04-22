@@ -110,8 +110,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               zhuangtai: 1
             },
             baomingkaoshishijian: [],
-            baomingkaodian: [],
-            baomingkaosheng: []
+            baomingkaodian: []
           },
           studentData = '', //存放报名考试查出来的考试
           uploadKsUrl = baseBmAPIUrl + 'excel_to_json', //上传考生信息
@@ -120,7 +119,8 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           qryStudentByBmIdBase = baseBmAPIUrl + 'query_mingdan_bybmid?token=' + token + '&baoming_id=', //由报名ID查询考生
           qryBaoMingShiJianBase = baseBmAPIUrl + 'query_baoming_shijian?token=' + token + '&baoming_id=', //由报名ID查询考试时间
           exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel', //导出excel名单
-          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/',
+          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/', //下载文件
+          closeBaoMingBase = baseBmAPIUrl + 'close_baoming?token=' + token + '&baoming_id=', //结束报名
           delBlankReg = /\s/g; //去除空格的正则表达
 
         $scope.adminParams = {
@@ -138,7 +138,8 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           selectZsdId: '',
           zsdOldName: '', //知识
           zsdNewName: '', //知识点修改新名称
-          datePickerIdx: '' //时间选择器的索引
+          datePickerIdx: '', //时间选择器的索引
+          selectBaoMing: '' //存放选中的报名信息
         };
         $scope.selectedKeMu = '';
         $scope.baoMing = baoming;
@@ -2261,84 +2262,46 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
         $scope.saveBaoMingInfo = function(){
           var ccStartArr = JQ('.changCiStart'),
             ccEndArr = JQ('.changCiEnd'),
-            file = $scope.uploadFiles,
-            fields = [{"name": "token", "data": token}],
-            kaoShengOldArr = [],
-            kaoShengNewArr = [],
-            trimBlankReg = /\s/g,
-            delBlank = '',
-            bmData = {
-              token: token,
-              shuju: baoming
-            };
+            file = $scope.uploadFiles;
+          var bmData = {
+            token: token,
+            shuju: baoming
+          };
+          $scope.loadingImgShow = true;
           _.each($scope.bmkssjArr, function(cc, idx, lst){
             cc.kaishishijian = ccStartArr.eq(idx).val();
             cc.jieshushijian = ccEndArr.eq(idx).val();
           });
-          DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
-            $scope.uploadFiles = [];
-            if(result.data.json){
-              for(var item in result.data.json){
-                kaoShengOldArr = result.data.json[item];
-                break;
-              }
-              _.each(kaoShengOldArr, function(ks, idx, list){
-                var ksObj = {
-                  BAOMINGKAOSHENG_ID: '',
-                  BAOMING_ID: '',
-                  XINGMING: '',
-                  XUEHAO:'',
-                  BANJI: '',
-                  XUHAO: '',
-                  KEXUHAO:'',
-                  ZHUANGTAI: 1
-                };
-                _.each(ks, function(value, key, list){
-                  delBlank = key.replace(trimBlankReg, "");
-                  switch (delBlank){
-                    case '姓名' :
-                      ksObj.XINGMING = value;
-                      break;
-                    case '学号':
-                      ksObj.XUEHAO = value;
-                      break;
-                    case '班级':
-                      ksObj.BANJI = value;
-                      break;
-                    case '序号':
-                      ksObj.XUHAO = value;
-                      break;
-                    case '课序号':
-                      ksObj.KEXUHAO = value;
-                      break;
-                  }
-                });
-                kaoShengNewArr.push(ksObj);
-              });
-              baoming.baomingxinxi.baomingjiezhishijian = JQ('.datePickerJz').val();
-              baoming.baomingkaoshishijian = $scope.bmkssjArr;
-              baoming.baomingkaodian = baomingkaodianArr;
-              baoming.baomingkaosheng = kaoShengNewArr;
-              $http.post(saveBaoMingUrl, bmData).success(function(data){
-                if(data.result){
-                  DataService.alertInfFun('suc', '保存成功！');
-                  $scope.baoMing.baomingxinxi.jigou_id = '';
-                  $scope.baoMing.baomingxinxi.kemu_id = '';
-                  $scope.baoMing.baomingxinxi.kaoshimingcheng = '';
-                  $scope.baoMing.baomingxinxi.kaoshishichang = '';
-                  $scope.baoMing.baomingxinxi.baomingjiezhishijian = '';
-                  $scope.jigou_list = '';
-                  $scope.bmkssjArr = '';
-                  $scope.kemu_list = '';
-                  $scope.kaoChangList = '';
-                  $scope.closeShenheBox();
-                }
-              });
-            }
-            else{
-              DataService.alertInfFun('err', result.error);
+          baoming.baomingxinxi.baomingjiezhishijian = JQ('.datePickerJz').val();
+          baoming.baomingkaoshishijian = $scope.bmkssjArr;
+          baoming.baomingkaodian = baomingkaodianArr;
+          bmData.shuju = JSON.stringify(bmData.shuju);
+
+          var fd = new FormData();
+          for(var j = 1; j <= file.length; j++){
+            fd.append('file' + j, file[j - 1]);
+          }
+          for(var key in bmData){
+            fd.append(key, bmData[key])
+          }
+
+          $http.post(saveBaoMingUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
+            if(data.result){
+              DataService.alertInfFun('suc', '保存成功！');
+              $scope.baoMing.baomingxinxi.jigou_id = '';
+              $scope.baoMing.baomingxinxi.kemu_id = '';
+              $scope.baoMing.baomingxinxi.kaoshimingcheng = '';
+              $scope.baoMing.baomingxinxi.kaoshishichang = '';
+              $scope.baoMing.baomingxinxi.baomingjiezhishijian = '';
+              $scope.jigou_list = '';
+              $scope.bmkssjArr = '';
+              $scope.kemu_list = '';
+              $scope.kaoChangList = '';
+              $scope.closeShenheBox();
+              $scope.loadingImgShow = false;
             }
           });
+
         };
 
         /**
@@ -2373,10 +2336,11 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
         /**
          * 查看本次报名的所有考生
          */
-        $scope.qryKaoShengByBaoMing = function(bm){
-          if(bm.BAOMING_ID){
-            var qryBaoMingShiJian = qryBaoMingShiJianBase + bm.BAOMING_ID,
-              qryStudentByBmId =  qryStudentByBmIdBase + bm.BAOMING_ID;
+        $scope.qryKaoShengByBaoMing = function(bmId){
+          if(bmId){
+            $scope.adminParams.selectBaoMing = bmId;
+            var qryBaoMingShiJian = qryBaoMingShiJianBase + bmId,
+              qryStudentByBmId =  qryStudentByBmIdBase + bmId;
             DataService.getData(qryBaoMingShiJian).then(function(sjData){
               if(sjData && sjData.length > 0){
                 $scope.baoMingShiJianArrs = sjData;
@@ -2441,6 +2405,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               data: ''
             },
             ksArr = [];
+          $scope.loadingImgShow = true;
           ksData.sheetName = $scope.whichChangCiSelect.replace(delBlankReg, '');
           ksData.sheetName = ksData.sheetName.replace(/\:/g, '');
           ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '课序号',col6: '座位号'});
@@ -2462,8 +2427,30 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
             aLink.href = downloadTempFile; //url
             aLink.dispatchEvent(evt);
+            $scope.loadingImgShow = false;
           });
         };
+
+        /**
+         * 结束报名
+         */
+        $scope.endBaoMing = function(){
+          var bmId = $scope.adminParams.selectBaoMing;
+          if(bmId){
+            $scope.loadingImgShow = true;
+            var closeBaoMing = closeBaoMingBase + bmId;
+            $http.get(closeBaoMing).success(function(data){
+              if(data.result){
+                $scope.qryKaoShengByBaoMing(bmId);
+                $scope.loadingImgShow = false;
+              }
+            });
+          }
+          else{
+            $scope.loadingImgShow = false;
+            DataService.alertInfFun('pmt', '请选择要结束的考试！');
+          }
+        }
 
     }]);
 });
