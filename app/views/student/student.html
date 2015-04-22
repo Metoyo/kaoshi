@@ -13,15 +13,14 @@
           <td ng-bind="ks.KAOSHISHICHANG"></td>
           <td ng-bind="ks.BAOMINGJIEZHISHIJIAN | myLocalDateWithWeek"></td>
           <td>
-            <p ng-hide="ks.hasEndBaoMing">
-              <a href="javascript:void(0)" class="ml15" ng-show="ks.BAOMINGKAODIAN_ID || ks.BAOMINGKAOSHISHIJIAN_ID"
+            <a href="javascript:void(0)" ng-if="ks.BAOMINGKAODIAN_ID!=null && ks.BAOMINGKAOSHISHIJIAN_ID!=null"
                  ng-click="qryKaoShiDetail(ks)">详情</a>
-              <a href="javascript:void(0)" class="ml15" ng-hide="ks.BAOMINGKAODIAN_ID || ks.BAOMINGKAOSHISHIJIAN_ID"
-                 ng-click="chaXunBaoMing(ks)">报名</a>
-            </p>
-            <p ng-show="ks.hasEndBaoMing">
+            <span ng-if="ks.BAOMINGKAODIAN_ID==null || ks.BAOMINGKAOSHISHIJIAN_ID==null">
+              <a href="javascript:void(0)" ng-click="chaXunBaoMing(ks)" ng-if="ks.hasEndBaoMing==false">报名</a>
+              <span ng-if="ks.hasEndBaoMing==true">
               报名已截止
-            </p>
+              </span>
+            </span>
           </td>
         </tr>
       </table>
