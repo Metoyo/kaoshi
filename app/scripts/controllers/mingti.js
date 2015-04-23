@@ -1472,6 +1472,10 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
             tiankong_data.shuju.REMARK = tmxq.REMARK;
             $scope.alterTiMuTiXing = '填空题';
             renderTpl(tpl); //render 修改过模板
+            var addTianKongFun = function() {
+              JQ('.formulaEditTiGan').markItUp(mySettings);
+            };
+            $timeout(addTianKongFun, 500);
           }
           //计算题
           if(tmxq.TIXING_ID == 9){
@@ -1598,7 +1602,6 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'set
          * 添加新试题
          */
         $scope.addNewShiTiFun = function(txId){
-          console.log(txId);
           switch (txId){
             case '1':
               $scope.addDanXuan('views/mingti/danxuan.html');

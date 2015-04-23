@@ -78,7 +78,7 @@
             <span ng-repeat="num in tkLoopArr track by $index">
               <label class="radio-inline" ng-repeat="subNum in num.subTiZhiNum track by $index">
                 <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFunTk($parent.$index, $index)'>
-                {{'空'+ cnNumArr[$index] + '答案' + ($index + 1)}}
+                {{'空'+ cnNumArr[$parent.$index] + '答案' + ($index + 1)}}
               </label>
             </span>
           </div>
