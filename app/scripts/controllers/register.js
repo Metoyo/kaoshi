@@ -414,36 +414,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 查询考生是否已经存在
          */
         $scope.confirmTheStuIn = function(){
-          //var kaoSheng = {
-          //  token: token,
-          //  jigouid: $scope.stuRegisterInfo.jigouid,
-          //  xuehao: $scope.stuRegisterInfo.xuehao,
-          //  xingming: $scope.stuRegisterInfo.xingming
-          //};
-          //if($scope.stuRegisterInfo.jigouid){
-          //  if(kaoSheng.xuehao){
-          //    if(kaoSheng.xingming){
-          //      $http.post(qryKaoShengBaseUrl, kaoSheng).then(function(data){
-          //        if(data.result){
-          //          qryUserIfRegister();
-          //        }
-          //        else{
-          //          $scope.ifTheStuHasRegister = false;
-          //          DataService.alertInfFun('err', '无学号信息，请核对学号信息！');
-          //        }
-          //      });
-          //    }
-          //    else{
-          //      DataService.alertInfFun('pmt', '请输入姓名！');
-          //    }
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '请输入学号！');
-          //  }
-          //}
-          //else{
-          //  DataService.alertInfFun('pmt', '请选择学校！');
-          //}
           var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
           if($scope.stuRegisterInfo.jigouid){
             chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
@@ -474,6 +444,36 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
           }
+          //var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
+          //if($scope.stuRegisterInfo.jigouid){
+          //  chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
+          //  if($scope.stuRegisterInfo.xuehao){
+          //    $scope.stuRegisterInfo.xuehao = $scope.stuRegisterInfo.xuehao.replace(delBlankReg, '');
+          //    chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
+          //    if($scope.stuRegisterInfo.xingming){
+          //      $scope.stuRegisterInfo.xingming = $scope.stuRegisterInfo.xingming.replace(delBlankReg, '');
+          //      chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
+          //      DataService.getData(chaXunKaoSheng).then(function(data){
+          //        if(data && data.length > 0){
+          //          qryUserIfRegister();
+          //        }
+          //        else{
+          //          $scope.ifTheStuHasRegister = false;
+          //          DataService.alertInfFun('err', '无学号信息，请核对学号信息！');
+          //        }
+          //      });
+          //    }
+          //    else{
+          //      DataService.alertInfFun('pmt', '请输入姓名！');
+          //    }
+          //  }
+          //  else{
+          //    DataService.alertInfFun('pmt', '请输入学号！');
+          //  }
+          //}
+          //else{
+          //  DataService.alertInfFun('pmt', '请选择学校！');
+          //}
         };
 
         /**
