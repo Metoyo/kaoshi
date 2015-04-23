@@ -522,13 +522,13 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
 
           //保存上传文件
           $scope.uploadXlsFile = function() {
-            var file = $scope.uploadFiles,
-              fields = [{"name": "token", "data": token}],
-              kaoShengOldArr = [],
-              kaoShengNewArr = [],
-              trimBlankReg = /\s/g,
-              delBlank = '';
-
+            var file = $scope.uploadFiles;
+            var fields = [{"name": "token", "data": token}];
+            var kaoShengOldArr = [];
+            var kaoShengNewArr = [];
+            var trimBlankReg = /\s/g;
+            var delBlank = '';
+            $scope.loadingImgShow = true;
             DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
               $scope.uploadFileUrl = result.data;
               $scope.uploadFiles = [];
@@ -550,14 +550,26 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
                         break;
                       case '班级':
                         ksObj.BANJI = value;
+                        break;
+                      case '序号':
+                        ksObj.XUHAO = value;
+                        break;
+                      case '课序号':
+                        ksObj.KEXUHAO = value;
+                        break;
+                      case '座位号':
+                        ksObj.ZUOWEIHAO = value;
+                        break;
                     }
                   });
                   kaoShengNewArr.push(ksObj);
                 });
                 kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
+                $scope.loadingImgShow = false;
                 DataService.alertInfFun('suc', '上传成功！');
               }
               else{
+                $scope.loadingImgShow = false;
                 DataService.alertInfFun('err', result.error);
               }
             });
@@ -703,22 +715,26 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
                   kaoshi_data.shuju.KAISHISHIJIAN = inputStartDate;
                   kaoshi_data.shuju.JIESHUSHIJIAN = DataService.formatDateZh(endDate);
                   kaoshi_data.shuju.SHIJUAN_ID = shijuan_info.shijuanid;
+                  $scope.loadingImgShow = true;
                   $http.post(tongBuShiJuanUrl, shijuan_info).success(function(rst){
                     if(rst.result){
                       $http.post(xiuGaiKaoShiUrl, kaoshi_data).success(function(data){
                         if(data.result){
                           $scope.showKaoShiList();
+                          $scope.loadingImgShow = false;
                           DataService.alertInfFun('suc', '考试添加成功！');
                           $scope.kwParams.selectShiJuan = []; //重置已选择的时间数组
                         }
                         else{
                           DataService.alertInfFun('err', data.error);
+                          $scope.loadingImgShow = false;
                           $scope.kaoShengErrorInfo = JSON.parse(data.error);
                           $scope.kwParams.saveKaoShiBtnStat = false;
                         }
                       });
                     }
                     else{
+                      $scope.loadingImgShow = false;
                       DataService.alertInfFun('err', rst.error);
                       $scope.kwParams.saveKaoShiBtnStat = false;
                     }

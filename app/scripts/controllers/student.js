@@ -40,11 +40,11 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         var chaXunBaoMingChangCi = function(){
           DataService.getData(qryBmCcBase).then(function(data){
             if(data && data.length){
-              var d = new Date(),
-                nowTime = d.getTime();
+              var d = new Date();
+              var nowTime = d.getTime();
               _.each(data, function(bmxx, idx, lst){
-                var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN),
-                  jzTime = jz.getTime();
+                var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN);
+                var jzTime = jz.getTime();
                 bmxx.hasEndBaoMing = false;
                 if(nowTime > jzTime){
                   bmxx.hasEndBaoMing = true;
@@ -82,6 +82,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                 bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
                 bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
                 _.each(bmksObj.ksKc, function(kc, idx, lst){
+                  kc.baomingjiezhishijian = ks.BAOMINGJIEZHISHIJIAN;
                   if(kc.BAOMING_RENSHU >= 0){
                     var sywz = parseInt(kc.KAOWEI) - kc.BAOMING_RENSHU;
                     if(sywz >= 0){
@@ -139,16 +140,17 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 保存考试选择信息
          */
         $scope.saveStudentSelectFun = function(){
-          var kdInfo = $scope.stuParams.selectKaoDian,
-            kddData = {
+          var kdInfo = $scope.stuParams.selectKaoDian;
+          var kddData = {
               token: token,
               jigouid: defaultJg,
               xuehao: xuehao,
               baoming_id: kdInfo.BAOMING_ID,
               baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
-              baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID
-            },
-            qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
+              baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID,
+              baomingjiezhishijian: kdInfo.baomingjiezhishijian
+          };
+          var qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
           qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
           qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
           DataService.getData(qryKaoDianRenShu).then(function(kdRenShu){
