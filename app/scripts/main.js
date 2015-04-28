@@ -14,11 +14,10 @@ require.config({
     setJs: '../../bower_components/markitup/set.min',
     mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    'angular-animate': '../../bower_components/angular-animate/angular-animate',
-    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
-    'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
-    'angular-touch': '../../bower_components/angular-touch/angular-touch',
-    sizzle: '../../bower_components/sizzle/dist/sizzle'
+    lazy: '../../bower_components/lazy/lazy.min'
+    //'angular-animate': '../../bower_components/angular-animate/angular-animate',
+    //'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
+    //'angular-scenario': '../../bower_components/angular-scenario/angular-scenario'
   },
   shim: {
     angular: {
@@ -65,6 +64,9 @@ require.config({
     },
     datepicker: {
       exports: 'datepicker'
+    },
+    lazy: {
+      exports: 'lazy'
     }
   },
   priority: [
@@ -84,8 +86,8 @@ require([
   'angular-cookies',
   'angular-sanitize',
   'angular-resource',
-  'underscore'
-], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, _) {
+  'lazy'
+], function(angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, lazy) {
   //angular, app, ngRoutes, ngCookies, ngSanitize, ngResource, $, _
   'use strict';
   /* jshint ignore:start */
@@ -102,11 +104,11 @@ require([
         elem.on('click', function(e) {
           var href = attrs.href;
           if(href.indexOf('/') === 0) {
-            var findRoute = _.find($route.routes, function(route) {
-              if(route.regexp.test(href)) {
-                return true;
-              }
-              return false;
+            var findRoute = Lazy($route.routes).find(function(route){
+                if(route.regexp.test(href)) {
+                  return true;
+                }
+                return false;
             });
             if(findRoute) {
               e.preventDefault();

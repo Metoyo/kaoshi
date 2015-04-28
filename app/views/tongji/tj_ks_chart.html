@@ -15,7 +15,7 @@
       <tr>
         <td width="20%">考试名称</td>
         <td ng-init="showMoreKaoShi=false">
-          <div ng-bind="tjKaoShiInfo.ksname" class="wordBreak pull-left"></div>
+          <div ng-bind="tjKaoShiPublicData.ksname" class="wordBreak pull-left"></div>
           <a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">
             <span class="glyphicon glyphicon-plus-sign"></span>
           </a>
@@ -23,26 +23,26 @@
       </tr>
       <tr class="success">
         <td>平均分数</td>
-        <td ng-bind="tjKaoShiInfo.ksAvgScore"></td>
+        <td ng-bind="tjKaoShiPublicData.ksAvgScore"></td>
       </tr>
       <tr>
         <td>考试人数</td>
-        <td ng-bind="tjKaoShiInfo.ksRenShu"></td>
+        <td ng-bind="tjKaoShiPublicData.ksRenShu"></td>
       <tr>
       <tr class="warning">
         <td>考试时间</td>
-        <td ng-show="tjKaoShiInfo.kaikaodate" ng-bind="tjKaoShiInfo.kaikaodate | myLocalDateWithWeek"></td>
+        <td ng-show="tjKaoShiPublicData.kaikaodate" ng-bind="tjKaoShiPublicData.kaikaodate | myLocalDateWithWeek"></td>
       </tr>
       <tr>
         <td>使用试卷</td>
         <td ng-init="showMoreShiJuan=false">
-          <span ng-if="tjKaoShiInfo.leixing == 1">此处考试为随机试卷</span>
-          <span ng-if="tjKaoShiInfo.leixing == 0" ng-bind="tjKaoShiInfo.shijuan[0].SHIJUAN_MINGCHENG"></span>
+          <span ng-if="tjKaoShiPublicData.leixing == 1">此处考试为随机试卷</span>
+          <span ng-if="tjKaoShiPublicData.leixing == 0" ng-bind="tjKaoShiPublicData.shijuan[0].SHIJUAN_MINGCHENG"></span>
           <!--<label class="checkbox-inline" ng-if="">-->
-            <!--<input type="checkbox" value="sj.SHIJUAN_ID" ng-if="tjKaoShiInfo.sjNum > 1">-->
-            <!--{{tjKaoShiInfo.shijuan[0].SHIJUAN_MINGCHENG}}-->
+            <!--<input type="checkbox" value="sj.SHIJUAN_ID" ng-if="tjKaoShiPublicData.sjNum > 1">-->
+            <!--{{tjKaoShiPublicData.shijuan[0].SHIJUAN_MINGCHENG}}-->
           <!--</label>-->
-          <a href="javascript:void(0)" class="pull-right" ng-show="tjKaoShiInfo.sjNum > 1"
+          <a href="javascript:void(0)" class="pull-right" ng-show="tjKaoShiPublicData.sjNum > 1"
              ng-click="showMoreShiJuan=true">
             <span class="glyphicon glyphicon-plus-sign"></span>
           </a>
@@ -50,12 +50,21 @@
       </tr>
     </table>
     <div class="tj-ks-box wp48 ml15">
-      <h4 class="title">所选班级</h4>
+      <h4 class="title">
+        <label class="radio-inline">
+          <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="keXuHao"
+                 ng-change="switchTongJiType(tjParas.tongJiType)"> 按课序号统计
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"
+                 ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计
+        </label>
+      </h4>
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
             <li ng-class="{active: tjParas.lastSelectBj.banJiIdx == 0}" ng-click="tjByBanJi('all')">
-              <a href="javascript:void(0)">所有班级</a>
+              <a href="javascript:void(0)">全部</a>
             </li>
             <li ng-repeat="bj in tjBanJi" ng-class="{active: bj.bjIdx == tjParas.lastSelectBj.banJiIdx}"
                 ng-click="tjByBanJi(bj)">
@@ -142,7 +151,7 @@
           <span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班
         </span>
       </h4>
-      <div class="chart">
+      <div class="chart zsd-list-chart" ng-init="moreBtnShow=false">
         <ul class="list-unstyled zsd-list">
           <li class="row">
             <div class="col-sm-3">
@@ -155,7 +164,7 @@
               得分率
             </div>
           </li>
-          <li class="row" ng-repeat="zsd in tjZsdDataUd">
+          <li class="row" ng-repeat="zsd in tjZsdData">
             <div class="col-sm-3" ng-bind="zsd.zsd_name">
             </div>
             <div class="col-sm-3">
@@ -172,9 +181,15 @@
             </div>
           </li>
         </ul>
+        <div ng-if="tjZsdDataUd.length>5">
+          <a href="javascript:void(0)" class="pull-right" ng-hide="moreBtnShow"
+             ng-click="moreBtnShow=true;getMoreZsd()">更多</a>
+          <a href="javascript:void(0)" class="pull-right" ng-show="moreBtnShow"
+             ng-click="moreBtnShow=false;closeMoreZsd()">收起</a>
+        </div>
       </div>
     </div>
-    <div class="tj-ks-box wp48 ml15">
+    <!--div class="tj-ks-box wp48 ml15">
       <h4 class="title">
         <span>知识点统计<em>(得分率倒序)</em></span>
         <span class="explain pl40">
@@ -212,7 +227,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </div-->
   </div>
 </div>
 <!--考试选择-->
@@ -230,7 +245,7 @@
           <th width="120px" class="text-center">考试人数</th>
           <th width="120px" class="text-center">考试时间</th>
         </tr>
-        <tr ng-repeat="ks in tjData">
+        <tr ng-repeat="ks in tjKaoShiList">
           <td>
             <input type="checkbox" ng-click="addKaoShiToTj($event, ks)"/> {{ks.KAOSHI_MINGCHENG}}
           </td>
@@ -243,7 +258,7 @@
       </table>
     </div>
     <div class="pwi-footer plr10 text-center">
-      <ul class="pagination pagination-sm pull-right" ng-hide="!tjData">
+      <ul class="pagination pagination-sm pull-right" ng-hide="!tjKaoShiList">
         <li ng-class="{disabled: currentPage == 1}">
           <a href ng-click="tjPaging(1)">首页</a>
         </li>
@@ -273,7 +288,7 @@
 <div class="popup-wrap" ng-show="showMoreShiJuan">
   <div class="popup-wrap-inner no-header">
     <div class="pwi-body plr10">
-      <label class="checkbox-inline" ng-repeat="sj in tjKaoShiInfo.shijuan">
+      <label class="checkbox-inline" ng-repeat="sj in tjKaoShiPublicData.shijuan">
         <input type="checkbox" value="sj.SHIJUAN_ID" checked>
         {{sj.SHIJUAN_MINGCHENG}}
       </label>

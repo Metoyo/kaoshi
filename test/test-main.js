@@ -30,7 +30,7 @@ requirejs.config({
     'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
     'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
     'angular-touch': '../../bower_components/angular-touch/angular-touch',
-    sizzle: '../../bower_components/sizzle/dist/sizzle'
+    lazy: '../../bower_components/lazy/lazy'
   },
 
     shim: {

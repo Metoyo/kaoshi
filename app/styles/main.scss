@@ -2792,11 +2792,17 @@ label.checkbox{
         font-size: 12px;
         font-weight: normal;
       }
+      input[type='radio']{
+        margin-top: 10px;
+      }
     }
     .chart{
       height: 320px;
       padding: 10px;
       overflow-y: auto;
+    }
+    .zsd-list-chart{
+      height: auto;
     }
     .selectBanJi{
       height: 190px;

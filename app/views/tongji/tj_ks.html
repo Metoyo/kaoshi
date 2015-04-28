@@ -21,7 +21,7 @@
       <th width="120px" class="text-center">考试人数</th>
       <th width="120px" class="text-center">考试时间</th>
     </tr>
-    <tr ng-repeat="ks in tjData" ng-click="tjShowKaoShiChart(ks)">
+    <tr ng-repeat="ks in tjKaoShiList" ng-click="tjShowKaoShiChart(ks)">
       <td>
         <a href="javascript:void(0)" ng-bind="ks.KAOSHI_MINGCHENG"></a>
       </td>
@@ -33,7 +33,7 @@
     </tr>
   </table>
   <div class="paging text-right">
-    <ul class="pagination pagination-sm" ng-hide="!tjData">
+    <ul class="pagination pagination-sm" ng-hide="!tjKaoShiList">
       <li ng-class="{disabled: currentPage == 1}">
         <a href ng-click="tjPaging(1)">首页</a>
       </li>

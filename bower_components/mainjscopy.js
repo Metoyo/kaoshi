@@ -14,7 +14,8 @@ require.config({
     //markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     //setJs: '../../bower_components/markitup/set.min',
     //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
-    //datepicker: '../../bower_components/intimidatetime/intimidatetime'
+    //datepicker: '../../bower_components/intimidatetime/intimidatetime',
+    //lazy: '../../bower_components/lazy/lazy'
 
     //angular: '../../bower_components/angular/angular',
     //'angular-cookies': '../../bower_components/angular-cookies/angular-cookies',
@@ -29,7 +30,8 @@ require.config({
     //markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     //setJs: '../../bower_components/markitup/set',
     //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
-    //datepicker: '../../bower_components/intimidatetime/intimidatetime'
+    //datepicker: '../../bower_components/intimidatetime/intimidatetime',
+    //lazy: '../../bower_components/lazy/lazy'
 
     //angular: '../../bower_components/angular/angular.min',
     //'angular-cookies': '../../bower_components/angular-cookies/angular-cookies.min',
@@ -43,7 +45,8 @@ require.config({
     //markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     //setJs: '../../bower_components/markitup/set.min',
     //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
-    //datepicker: '../../bower_components/intimidatetime/intimidatetime'
+    //datepicker: '../../bower_components/intimidatetime/intimidatetime',
+    //lazy: '../../bower_components/lazy/lazy'
 
     //angular: '../../bower_components/angular/angular',
     //'angular-cookies': '../../bower_components/angular-cookies/angular-cookies',
@@ -57,7 +60,8 @@ require.config({
     //markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     //setJs: '../../bower_components/markitup/set',
     //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
-    //datepicker: '../../bower_components/intimidatetime/intimidatetime'
+    //datepicker: '../../bower_components/intimidatetime/intimidatetime',
+    //lazy: '../../bower_components/lazy/lazy'
   },
   shim: {
     angular: {

@@ -5,7 +5,7 @@
         <th width="120px" class="text-center">完成试卷人数</th>
         <th width="120px" class="text-center">最后使用时间</th>
     </tr>
-    <tr ng-repeat="sj in tjData">
+    <tr ng-repeat="sj in tjKaoShiList">
         <td>
             <a href="javascript:void(0)" ng-click="tjShowStudentInfo(sj.SHIJUAN_ID, 'sjId', 'sjList', sj.SHIJUAN_MINGCHENG)"
                ng-bind="sj.SHIJUAN_MINGCHENG"></a>
@@ -16,7 +16,7 @@
     </tr>
 </table>
 <div class="paging text-right">
-    <ul class="pagination pagination-sm" ng-hide="!tjData">
+    <ul class="pagination pagination-sm" ng-hide="!tjKaoShiList">
         <li ng-class="{disabled: currentPage == 1}">
             <a href ng-click="tjPaging(1)">首页</a>
         </li>
