@@ -26,11 +26,10 @@ requirejs.config({
     setJs: '../../bower_components/markitup/set.min',
     mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    'angular-animate': '../../bower_components/angular-animate/angular-animate',
-    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
-    'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
-    'angular-touch': '../../bower_components/angular-touch/angular-touch',
-    lazy: '../../bower_components/lazy/lazy'
+    lazy: '../../bower_components/lazy/lazy.min'
+    //'angular-animate': '../../bower_components/angular-animate/angular-animate',
+    //'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
+    //'angular-scenario': '../../bower_components/angular-scenario/angular-scenario'
   },
 
     shim: {

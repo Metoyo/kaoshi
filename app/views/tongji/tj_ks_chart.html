@@ -96,7 +96,6 @@
     </div>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">考生成绩分布</h4>
-
       <div class="chart">
         <div id="chartPie" style="height:100%;width: 100%">
         </div>
@@ -125,6 +124,7 @@
               <th ng-click="ksSortDataFun('stuId')">学号</th>
               <th ng-click="ksSortDataFun('name')">姓名</th>
               <th ng-click="ksSortDataFun('class')">班级</th>
+              <th ng-click="ksSortDataFun('kexuhao')">课序号</th>
               <th ng-click="ksSortDataFun('score')">成绩</th>
             </tr>
             <tr ng-repeat="ksd in studentData">
@@ -134,6 +134,8 @@
                 <a href="javascript:void(0)" ng-bind="ksd.XINGMING" ng-click="zuoDaReappear(ksd.KAOSHENG_UID, ksd.KAOSHI_ID)"></a>
               </td>
               <td ng-bind="ksd.BANJI">
+              </td>
+              <td ng-bind="ksd.KEXUHAO">
               </td>
               <td ng-bind="ksd.ZUIHOU_PINGFEN">
               </td>

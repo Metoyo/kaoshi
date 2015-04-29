@@ -44,7 +44,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               var nowTime = d.getTime();
               _.each(data, function(bmxx, idx, lst){
                 var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN);
-                var jzTime = jz.getTime();
+                var jzp = jz.getTimezoneOffset();
+                var jzTime = jz.getTime() + jzp * 60 * 1000;
                 bmxx.hasEndBaoMing = false;
                 if(nowTime > jzTime){
                   bmxx.hasEndBaoMing = true;

@@ -2260,13 +2260,14 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
          * 保存报名信息
          */
         $scope.saveBaoMingInfo = function(){
-          var ccStartArr = JQ('.changCiStart'),
-            ccEndArr = JQ('.changCiEnd'),
-            file = $scope.uploadFiles;
+          var ccStartArr = JQ('.changCiStart');
+          var ccEndArr = JQ('.changCiEnd');
+          var file = $scope.uploadFiles;
           var bmData = {
             token: token,
             shuju: baoming
           };
+          var errorCount = 0;
           $scope.loadingImgShow = true;
           _.each($scope.bmkssjArr, function(cc, idx, lst){
             cc.kaishishijian = ccStartArr.eq(idx).val();
@@ -2277,6 +2278,12 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
           baoming.baomingkaodian = baomingkaodianArr;
           bmData.shuju = JSON.stringify(bmData.shuju);
 
+          //if(errorCount > 0){
+          //
+          //}
+          //else{
+          //
+          //}
           var fd = new FormData();
           for(var j = 1; j <= file.length; j++){
             fd.append('file' + j, file[j - 1]);
@@ -2301,7 +2308,6 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
               $scope.loadingImgShow = false;
             }
           });
-
         };
 
         /**

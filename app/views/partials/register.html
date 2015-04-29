@@ -60,9 +60,6 @@
                                  ng-pattern="realNameRegexp"
                                  ng-minlength=2 ng-maxlength=20 ng-model="personalInfo.xingming"
                                   required />
-                          <!--<p class="help-block" ng-show="userForm.xingming.$error.required">真实姓名不能为空！</p>-->
-                          <!--<p ng-show="userForm.xingming.$error.minlength" class="help-block">真实姓名太短了！</p>-->
-                          <!--<p ng-show="userForm.xingming.$error.maxlength" class="help-block">真实姓名太长了!</p>-->
                           <p ng-show="userForm.xingming.$error.pattern" class="help-block">真实姓名格式不正确！</p>
                       </div>
                       <!-- 确认密码 -->
