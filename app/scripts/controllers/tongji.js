@@ -49,6 +49,8 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         var downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
         var tjKaoShiIds = []; //查询考试数据用到的存放考试ID的数组
+        var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
+        var itemDeFenLv = ''; //存放考生得分率的变量
 
         $scope.tjKaoShiList = []; //试卷列表
         $scope.tjParas = { //统计用到的参数
@@ -378,6 +380,8 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
                   tm: ''
                 };
                 tmVal = _.each(val, function(tm, idx, lst){
+                  var findVal = _.find(itemDeFenLv, function(item){return item.TIMU_ID == tm.TIMU_ID});
+                  tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
                   if(typeof(tm.TIGAN) == 'string'){
                     tm.TIGAN = JSON.parse(tm.TIGAN);
                   }
@@ -825,6 +829,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
               $scope.switchTongJiType('keXuHao');
               /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
               tjParaObj.lineDataAll = lineDataDealFun(data);
+              qryItemDeFenLv(ks.KAOSHI_ID);
             }
             else{
               $scope.studentData = '';
@@ -991,6 +996,25 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         };
 
         /**
+         * 作答重现查询没道题目的得分率
+         */
+        var qryItemDeFenLv = function(ksId){
+          var qryItemDeFenLv = qryItemDeFenLvBase + ksId;
+          itemDeFenLv = '';
+          if(ksId){
+            DataService.getData(qryItemDeFenLv).then(function(data) {
+              if(data && data.length > 0) {
+                itemDeFenLv = data;
+              }
+            });
+          }
+          else{
+            itemDeFenLv = '';
+            DataService.alertInfFun('pmt', '缺少考试ID');
+          }
+        };
+
+        /**
          * 由考试查询考生
          */
         $scope.qryKaoSheng = function(id){
@@ -1002,6 +1026,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
                 $scope.studentData = data;
                 $scope.tjKaoShiData = '';
                 $scope.showKaoShengList = true;
+                qryItemDeFenLv(id);
                 $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
               }
             });
