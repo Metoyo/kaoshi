@@ -31,7 +31,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         var dataNumOfPerPage = 10; //每页显示多少条数据
         var paginationLength = 11; //分页部分，页码的长度，目前设定为11
         var pagesArr = []; //定义考试页码数组
-        var tjNeedData; //存放查询出来的统计数数据
+        var tjNeedData = []; //存放查询出来的统计数数据
         var lastPage; //符合条件的考试一共有多少页
         var tjKaoShiData = '';
         var backToWhere = ''; //返回按钮返回到什么列表
@@ -80,15 +80,63 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
+          var kaoShiZuDist;
           if(!($scope.tjKaoShiList && $scope.tjKaoShiList.length > 0)){
             tjKaoShiData = '';
             pagesArr = [];
-            tjNeedData = '';
+            tjNeedData = [];
             DataService.getData(queryKaoShi).then(function(data) {
               if(data && data.length > 0){
-                tjNeedData = data;
+                //tjNeedData = data;
                 tjKaoShiData = data;
-                lastPage = Math.ceil(data.length/dataNumOfPerPage); //得到所有考试的页码
+                kaoShiZuDist = Lazy(data).groupBy(function(ks, idx, lst){
+                  if(!ks.KAOSHIZU_ID){
+                    ks.KAOSHIZU_ID = 'others';
+                    ks.KAOSHIZU_NAME = '其他';
+                  }
+                  return ks.KAOSHIZU_ID;
+                });
+                Lazy(kaoShiZuDist).each(function(v, k, lst){
+                  var ksz = {
+                    KAOSHI_MINGCHENG: '',
+                    kaoshizu_id: k,
+                    kaoshiArray: '',
+                    KSRS: '',
+                    LEIXING: '',
+                    KAOSHI_ID: '',
+                    SHIJUAN: ''
+                  };
+                  var rsCont = 0;
+                  var kaoshiId = [];
+                  var shijuan = [];
+                  if(k == 'others'){
+                    Lazy(v).each(function(ks){
+                      tjNeedData.push(ks);
+                    });
+                  }
+                  else{
+                    ksz.KAOSHI_MINGCHENG = v[0].KAOSHIZU_NAME;
+                    ksz.LEIXING = v[0].LEIXING;
+                    Lazy(v).each(function(ks){
+                      rsCont += ks.KSRS;
+                      kaoshiId.push(ks.KAOSHI_ID);
+                      Lazy(ks.SHIJUAN).each(function(sj){
+                        var hasIn = Lazy(shijuan).find(function(osj){
+                          return osj.SHIJUAN_ID = sj.SHIJUAN_ID;
+                        });
+                        if(!hasIn){
+                          shijuan.push(sj);
+                        }
+                      });
+                    });
+                    ksz.KSRS = rsCont;
+                    ksz.KAOSHI_ID = kaoshiId.toString();
+                    ksz.SHIJUAN = shijuan;
+                    ksz.kaoshiArray = v;
+                    tjNeedData.push(ksz);
+                  }
+                });
+                lastPage = Math.ceil(tjNeedData.length/dataNumOfPerPage); //得到所有考试的页码
                 $scope.lastPageNum = lastPage;
                 for(var i = 1; i <= lastPage; i++){
                   pagesArr.push(i);
@@ -739,7 +787,6 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         /**
          * 统计，以课序号为准
          */
-        //$scope.keXuHaoData = '';
         var keXuHaoDateManage = function(data){
           var disByKeXuHao; //按课序号分组obj
           /* 按课序号分组统计数据，用在按课序号统计柱状图中 */
@@ -757,7 +804,6 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         /**
          * 统计，以班级为准
          */
-        //$scope.banJiData = '';
         var banJiDateManage = function(data){
           var disByBanJi; //按班级分组obj
           /* 按班级分组统计数据，用在按班级统计柱状图中 */
