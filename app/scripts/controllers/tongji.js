@@ -792,7 +792,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
           /* 按课序号分组统计数据，用在按课序号统计柱状图中 */
           disByKeXuHao = Lazy(data).groupBy(function(stu){
             if(!stu.KEXUHAO){
-              stu.KEXUHAO = '其他';
+              stu.KEXUHAO = '空';
             }
             return stu.KEXUHAO;
           });
@@ -834,6 +834,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
         $scope.tjShowKaoShiChart = function(ks){
           var queryKaoSheng;
           var isArr = _.isArray(ks); //判读传入的参数是否为数组
+          var ksIdStr;
           tjBarData = [];
           tjKaoShiIds = [];
           $scope.tjZsdDataUd = '';
@@ -841,6 +842,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
           $scope.tjParas.selectBanJi = '全部';
           $scope.tjParas.tongJiType = 'keXuHao';
           $scope.showKaoShengList = true;
+          $scope.tjKaoShiPublicData.ksRenShu = 0;
           if(isArr){
             Lazy(ks).each(function(item, idx, lst){
               tjKaoShiIds.push(item.KAOSHI_ID); //考试id
@@ -862,7 +864,8 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
             $scope.tjKaoShiPublicData.leixing = ks.LEIXING;
             $scope.tjKaoShiPublicData.kaikaodate = ks.KAISHISHIJIAN;
           }
-          queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + tjKaoShiIds.toString();
+          ksIdStr = tjKaoShiIds.toString();
+          queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ksIdStr;
           //查询考生
           DataService.getData(queryKaoSheng).then(function(data) {
             if(data && data.length > 0){
@@ -875,7 +878,7 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
               $scope.switchTongJiType('keXuHao');
               /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
               tjParaObj.lineDataAll = lineDataDealFun(data);
-              qryItemDeFenLv(ks.KAOSHI_ID);
+              qryItemDeFenLv(ksIdStr);
             }
             else{
               $scope.studentData = '';
@@ -1045,10 +1048,10 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
          * 作答重现查询没道题目的得分率
          */
         var qryItemDeFenLv = function(ksId){
-          var qryItemDeFenLv = qryItemDeFenLvBase + ksId;
+          var qryItemDeFenLvUrl = qryItemDeFenLvBase + ksId;
           itemDeFenLv = '';
           if(ksId){
-            DataService.getData(qryItemDeFenLv).then(function(data) {
+            DataService.getData(qryItemDeFenLvUrl).then(function(data) {
               if(data && data.length > 0) {
                 itemDeFenLv = data;
               }
