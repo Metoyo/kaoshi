@@ -225,11 +225,11 @@ define(['angular', 'config', 'jquery'], function (angular, config, JQ) {
       //格式化时间
       this.formatDateZh = function(dateStr){ //转换为中国
         var mydateNew = new Date(dateStr),
-          year = mydateNew.getFullYear(), //根据世界时从 Date 对象返回四位数的年份
-          month = mydateNew.getMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
-          day = mydateNew.getDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
-          hour = mydateNew.getHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
-          minute = mydateNew.getMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
+          year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
+          month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
+          day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)
+          hour = mydateNew.getUTCHours(), //根据世界时返回 Date 对象的小时 (0 ~ 23)
+          minute = mydateNew.getUTCMinutes(), //根据世界时返回 Date 对象的分钟 (0 ~ 59)
           joinDate; //返回最终时间
         if(month < 10){
           month = '0' + month;
