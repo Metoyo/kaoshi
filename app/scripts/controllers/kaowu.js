@@ -274,7 +274,7 @@ define(['jquery', 'underscore', 'angular', 'config', 'mathjax', 'datepicker'], /
               qryAllKaoChang();
               kaoshi_data.shuju.KAOSHI_ID = ks.KAOSHI_ID;
               kaoshi_data.shuju.KAOSHI_MINGCHENG = ks.KAOSHI_MINGCHENG;
-              kaoshi_data.shuju.KAISHISHIJIAN = DataService.formatDateZh(ks.KAISHISHIJIAN);
+              kaoshi_data.shuju.KAISHISHIJIAN = DataService.formatDateUtc(ks.KAISHISHIJIAN);
               kaoshi_data.shuju.JIESHUSHIJIAN = ks.JIESHUSHIJIAN;
               kaoshi_data.shuju.SHICHANG = ks.SHICHANG;
               kaoshi_data.shuju.XINGZHI = ks.XINGZHI;
