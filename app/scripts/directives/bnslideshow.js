@@ -1,4 +1,4 @@
-define(['jquery', 'angular'], function (JQ, angular) {
+define(['angular', 'jquery'], function (angular, JQ) {
   'use strict';
 
   angular.module('kaoshiApp.directives.Bnslideshow', [])

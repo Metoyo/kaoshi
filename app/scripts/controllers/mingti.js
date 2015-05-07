@@ -1,5 +1,5 @@
 define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'markitup', 'setJs'],
-  function ( angular, config, JQ, _, mathjax, markitup, setJs) {
+  function (angular, config, JQ, _, mathjax, markitup, setJs) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])

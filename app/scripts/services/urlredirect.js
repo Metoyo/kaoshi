@@ -2,10 +2,10 @@ define(['angular'], function (angular) {
   'use strict';
 
   angular.module('kaoshiApp.services.Urlredirect', [])
-    .factory('urlRedirect', ['$rootScope', '$location', '$q',  function ($rootScope, $location, $q) {
+    .factory('urlRedirect', ['$rootScope', '$location', '$q',
+      function ($rootScope, $location, $q) {
       // Service logic
       // ...
-
       function checkIfUrlApplied(currentPath, nextPath) {
         var deferred = $q.defer();
         // async call, resolved after ajax request completes

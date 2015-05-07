@@ -1,4 +1,4 @@
-define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ, angular, config, _, datepicker) {
+define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (angular, config, datepicker, JQ, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
@@ -2456,7 +2456,7 @@ define(['jquery', 'angular', 'config', 'underscore', 'datepicker'], function (JQ
             $scope.loadingImgShow = false;
             DataService.alertInfFun('pmt', '请选择要结束的考试！');
           }
-        }
+        };
 
     }]);
 });

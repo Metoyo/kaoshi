@@ -25,48 +25,9 @@
     <div class="dashboard" ng-class="{dashboard_shown_show: !isRenZheng}" ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: !isRenZheng}" ng-view>
-      <!-- 数据加载完全后将会被替换的部分 -->
-      <!--<div ng-show="isRenZheng" class="renzhengWrapper">-->
-        <!--<div class="bg">-->
-        <!--</div>-->
-        <!--<div class="row">-->
-          <!--<h4 class="logo text-center">-->
-            <!--<img src="/images/renzheng/icon/logo.png" alt="云教授">-->
-          <!--</h4>-->
-          <!--<div class="col-md-4 col-md-offset-2 loginBox">-->
-            <!--<form class="animate-show">-->
-              <!--<div>-->
-                <!--<div class="form-group">-->
-                  <!--<label>用户名/邮箱</label>-->
-                  <!--<input type="text" class="form-control" placeholder="用户名/邮箱" autofocus="true">-->
-                  <!--<span class="help-block" ng-hide="login.userName">登录信息不能为空！</span>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                  <!--<label>密码</label>-->
-                  <!--<input type="password" class="form-control" placeholder="密码">-->
-                  <!--<span class="help-block" ng-hide="login.password">密码不能为空!</span>-->
-                <!--</div>-->
-                <!--<div class="form-group text-right">-->
-                  <!--<a ng-href="{{rzParams.zhuCeUrl}}" class="pull-left mt" target="_blank">注册</a>-->
-                  <!--<a href="javascript:void(0)" class="pull-left mt ml10">忘记密码？</a>-->
-                  <!--<button type="submit" class="btn btn-success">-->
-                    <!--登录-->
-                  <!--</button>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</form>-->
-          <!--</div>-->
-          <!--<div class="col-md-4 loginWithXh">-->
-            <!--<button type="button" class="btn btn-primary">-->
-              <!--使用帮助-->
-            <!--</button>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!-- 数据加载完全后将会被替换的部分 -->
     </div>
     <div class="popInfoWrap" ng-include="'views/partials/info.html'"></div>
-    <script src="/bower_components/requirejs/require.min.js" data-main="scripts/main.js"></script>
+    <script src="/bower_components/requirejs/require.min.js" data-main="/scripts/main.js"></script>
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>

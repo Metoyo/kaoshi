@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'angular', 'config', 'mathjax'],
-  function (JQ, _, angular, config, mathjax) { // 001
+define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
+  function (angular, config, mathjax, JQ, _) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',

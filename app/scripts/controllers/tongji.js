@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'],
-  function (JQ, _, lazy, angular, config, charts, mathjax) {
+define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'],
+  function (angular, config, charts, mathjax, JQ, _, lazy) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
@@ -371,14 +371,18 @@ define(['jquery', 'underscore', 'lazy', 'angular', 'config', 'charts', 'mathjax'
               token: token,
               sheetName: $scope.tjItemName + '考生信息',
               data: ''
-            },
-            ksArr = [];
-          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '成绩'});
-          _.each(stuData, function(ks){
-            var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUIHOU_PINGFEN: ''};
+            };
+          var ksArr = [];
+          var exportStu;
+          ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
+          exportStu = _.sortBy(stuData, function(stu){ return stu.XUHAO;});
+          _.each(exportStu, function(ks){
+            var ksObj = {XUHAO: '', YONGHUHAO: '', XINGMING: '', BANJI: '', KEXUHAO: '', ZUIHOU_PINGFEN: ''};
+            ksObj.XUHAO = ks.XUHAO;
             ksObj.YONGHUHAO = ks.YONGHUHAO;
             ksObj.XINGMING = ks.XINGMING;
             ksObj.BANJI = ks.BANJI;
+            ksObj.KEXUHAO = ks.KEXUHAO;
             ksObj.ZUIHOU_PINGFEN = ks.ZUIHOU_PINGFEN;
             ksArr.push(ksObj);
           });
