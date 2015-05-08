@@ -168,7 +168,7 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                       //cookies代码
                       userCookie = {
                         UID: $rootScope.session.info.UID,
-                        YONGHUMING: $rootScope.session.info.YONGHUMING,
+                        XINGMING: $rootScope.session.info.XINGMING,
                         defaultLyId: session.defaultLyId,
                         defaultLyName: session.defaultLyName,
                         quanxianStr: session.quanxianStr,
@@ -191,16 +191,21 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                   }
                   else{
                     if(data.YONGHULEIBIE == 2){
-                      var urlObj = {
-                        myUrl: 'student',
+                      var urlObj1 = {
+                        myUrl: 'baoming',
                         urlName: '报名'
                       };
-                      urlArr.push(urlObj);
+                      var urlObj2 = {
+                        myUrl: 'chengji',
+                        urlName: '成绩'
+                      };
+                      urlArr.push(urlObj1);
+                      urlArr.push(urlObj2);
                       $rootScope.urlArrs = urlArr;
                       //cookies代码
                       userCookie = {
                         UID: $rootScope.session.info.UID,
-                        YONGHUMING: $rootScope.session.info.YONGHUMING,
+                        XINGMING: $rootScope.session.info.XINGMING,
                         defaultLyId: session.defaultLyId,
                         defaultLyName: session.defaultLyName,
                         quanxianStr: session.quanxianStr,
@@ -217,7 +222,7 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                       $cookieStore.put('logged', userCookie);
                       $cookieStore.put('lingyuCk', lingyuCookie);
                       $cookieStore.put('myUrlCk', myUrlCookie);
-                      urlRedirect.goTo(currentPath, '/student');
+                      urlRedirect.goTo(currentPath, '/baoming');
                     }
                     else{
                       $scope.dengluInfo = false;

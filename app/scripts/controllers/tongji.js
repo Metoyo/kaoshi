@@ -398,6 +398,25 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
         };
 
         /**
+         * 作答重现查询没道题目的得分率
+         */
+        var qryItemDeFenLv = function(ksId){
+          var qryItemDeFenLvUrl = qryItemDeFenLvBase + ksId;
+          itemDeFenLv = '';
+          if(ksId){
+            DataService.getData(qryItemDeFenLvUrl).then(function(data) {
+              if(data && data.length > 0) {
+                itemDeFenLv = data;
+              }
+            });
+          }
+          else{
+            itemDeFenLv = '';
+            DataService.alertInfFun('pmt', '缺少考试ID');
+          }
+        };
+
+        /**
          * 作答重现
          */
         $scope.zuoDaReappear = function(studId, examId){
@@ -482,20 +501,22 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
             }
           ];
           _.each(data, function(item, idx, lst){
-            if(item.ZUIHOU_PINGFEN < 60){
-              pieDataArr[0].value ++;
-            }
-            if(item.ZUIHOU_PINGFEN >= 60 && item.ZUIHOU_PINGFEN < 70){
-              pieDataArr[1].value ++;
-            }
-            if(item.ZUIHOU_PINGFEN >= 70 && item.ZUIHOU_PINGFEN < 80){
-              pieDataArr[2].value ++;
-            }
-            if(item.ZUIHOU_PINGFEN >= 80 && item.ZUIHOU_PINGFEN < 90){
-              pieDataArr[3].value ++;
-            }
-            if(item.ZUIHOU_PINGFEN >= 90){
-              pieDataArr[4].value ++;
+            if(item.ZUIHOU_PINGFEN){
+              if(item.ZUIHOU_PINGFEN < 60){
+                pieDataArr[0].value ++;
+              }
+              if(item.ZUIHOU_PINGFEN >= 60 && item.ZUIHOU_PINGFEN < 70){
+                pieDataArr[1].value ++;
+              }
+              if(item.ZUIHOU_PINGFEN >= 70 && item.ZUIHOU_PINGFEN < 80){
+                pieDataArr[2].value ++;
+              }
+              if(item.ZUIHOU_PINGFEN >= 80 && item.ZUIHOU_PINGFEN < 90){
+                pieDataArr[3].value ++;
+              }
+              if(item.ZUIHOU_PINGFEN >= 90){
+                pieDataArr[4].value ++;
+              }
             }
           });
           return pieDataArr;
@@ -705,11 +726,21 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
               bjAvgScore: '',
               bjIdx: ''
             };
+            var banJiRenShu = ''; //每个班级的人数
+            var ksNumWithoutNull = ''; //考试成绩不为空的考生
             banJiObj.bjName = k;
             banJiObj.bjStu = v;
             banJiObj.bjIdx = idxCount;
-            banJiObj.bjAvgScore = (Lazy(v).reduce(function(memo, stu){ return memo + stu.ZUIHOU_PINGFEN; }, 0) / v.length)
-              .toFixed(1);
+            ksNumWithoutNull = Lazy(v).reject(function(ks){return ks.ZUIHOU_PINGFEN == null}).toArray();
+            if(ksNumWithoutNull && ksNumWithoutNull.length > 0){
+              banJiRenShu = ksNumWithoutNull.length;
+            }
+            else{
+              banJiRenShu = 1;
+            }
+            banJiObj.bjAvgScore = (Lazy(ksNumWithoutNull).reduce(function(memo, stu){
+              return memo + stu.ZUIHOU_PINGFEN;
+            }, 0) / banJiRenShu).toFixed(1);
             totalScore += parseInt(banJiObj.bjAvgScore);
             bjOrKxhArray.push(banJiObj);
             idxCount ++;
@@ -1045,25 +1076,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
                 $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
               }
             });
-          }
-        };
-
-        /**
-         * 作答重现查询没道题目的得分率
-         */
-        var qryItemDeFenLv = function(ksId){
-          var qryItemDeFenLvUrl = qryItemDeFenLvBase + ksId;
-          itemDeFenLv = '';
-          if(ksId){
-            DataService.getData(qryItemDeFenLvUrl).then(function(data) {
-              if(data && data.length > 0) {
-                itemDeFenLv = data;
-              }
-            });
-          }
-          else{
-            itemDeFenLv = '';
-            DataService.alertInfFun('pmt', '缺少考试ID');
           }
         };
 

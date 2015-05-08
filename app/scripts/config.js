@@ -83,8 +83,13 @@ define( "config", [], function () {
         controller: 'RenzhengCtrl',
         requireLogin: false
       },
-      '/student': {
-        templateUrl: '../views/student/student.html',
+      '/baoming': {
+        templateUrl: '../views/student/baoming.html',
+        controller: 'StudentCtrl',
+        requireLogin: true
+      },
+      '/chengji': {
+        templateUrl: '../views/student/chengji.html',
         controller: 'StudentCtrl',
         requireLogin: true
       }
@@ -122,9 +127,15 @@ define( "config", [], function () {
       },
       {
         qxArr: [],
-        targetUrl: '/student',
-        navName : 'student',
+        targetUrl: '/baoming',
+        navName : 'baoming',
         hanName: '报名'
+      },
+      {
+        qxArr: [],
+        targetUrl: '/chengji',
+        navName : 'chengji',
+        hanName: '成绩'
       }
     ],
     tiXingNameArr: [

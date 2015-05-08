@@ -60,7 +60,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                 user.LINGYU.push(lyObj);
               });
               //基本信息
-              user.YONGHUMING = data.YONGHUMING;
+              user.XINGMING = data.XINGMING;
               user.XINGMING = data.XINGMING;
               user.YOUXIANG = data.YOUXIANG;
               user.SHOUJI = data.SHOUJI;

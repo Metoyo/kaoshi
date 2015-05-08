@@ -11,24 +11,31 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         /**
          * 声明变量
          */
-        var userInfo = $rootScope.session.userInfo,
-          defaultJg = userInfo.JIGOU,
-          xuehao = userInfo.xuehao,
-          baseBmAPIUrl = config.apiurl_bm, //报名的api
-          token = config.token,
-          queryKaoShiBase = baseBmAPIUrl + 'chaxun_baoming?token=' + token + '&jigouid=' + defaultJg +
-            '&xuehao=' + xuehao + '&baoming_id=', //查询考试考点
-          saveStudentSelect = baseBmAPIUrl + 'modify_baoming_kaosheng', //保存考生的报名选择
-          qryKaoDianRenShuBase = baseBmAPIUrl + 'query_kaodian_renshu?token=' + token, //查询次考场报了多少人
-          //qryKsBmStateBase = baseBmAPIUrl + 'query_kaosheng_baoming_state?token=' + token, //查询考生是否已经报名
-          qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg +
-            '&xuehao=' + xuehao, //查询考生有几场考试
-          qryKsDetailBase = baseBmAPIUrl + 'query_kaoshi_detail?token=' + token; //查询考试详情
+        var userInfo = $rootScope.session.userInfo;
+        var defaultJg = userInfo.JIGOU;
+        var xuehao = userInfo.xuehao;
+        var baseTjAPIUrl = config.apiurl_tj; //统计的api
+        var baseBmAPIUrl = config.apiurl_bm; //报名的api
+        var token = config.token;
+        var queryKaoShiBase = baseBmAPIUrl + 'chaxun_baoming?token=' + token + '&jigouid=' + defaultJg +
+            '&xuehao=' + xuehao + '&baoming_id='; //查询考试考点
+        var saveStudentSelect = baseBmAPIUrl + 'modify_baoming_kaosheng'; //保存考生的报名选择
+        var qryKaoDianRenShuBase = baseBmAPIUrl + 'query_kaodian_renshu?token=' + token; //查询次考场报了多少人
+        var qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg +
+            '&xuehao=' + xuehao; //查询考生有几场考试
+        var qryKsDetailBase = baseBmAPIUrl + 'query_kaoshi_detail?token=' + token; //查询考试详情
+        var currentPath = $location.$$path;
+        var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + defaultJg
+           + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
+        var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
+        var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
           selectKaoDian: '',
-          hasBaoMing: true
+          hasBaoMing: true,
+          letterArr: config.letterArr, //题支的序号
+          cnNumArr: config.cnNumArr //汉语的大写数字
         };
         $scope.kaoShiArrs = '';
         $scope.kaoShiDetail = '';
@@ -58,7 +65,6 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
             }
           });
         };
-        chaXunBaoMingChangCi();
 
         /**
          * 根据机构和学号查询报名信息
@@ -199,6 +205,112 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
             }
           });
         };
+
+        /**
+         * 查询考试通过考生UID
+         */
+        var qryKaoShiByXueHao = function(){
+          if(xuehao){
+            var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;
+            DataService.getData(qryKaoShiByXueHaoUrl).then(function(data) {
+              if(data && data.length > 0){
+                $scope.ksScoreData = data;
+              }
+            });
+          }
+        };
+
+        /**
+         * 判断是报名还是成绩
+         */
+        switch (currentPath){
+          case '/baoming':
+            chaXunBaoMingChangCi();
+            break;
+          case '/chengji':
+            qryKaoShiByXueHao();
+            break;
+        }
+
+        /**
+         * 作答重现
+         */
+        $scope.zuoDaReappear = function(ks){
+          var answerReappearUrl = answerReappearBaseUrl;
+          var  dataDis;
+          var tmVal;
+          var finaData = {
+              sj_name: '',
+              sj_tm: []
+            };
+          var studId = ks.KAOSHENG_UID;
+          var examId = ks.KAOSHI_ID;
+          var itemDeFenLv = '';
+          $scope.kaoShengShiJuan = '';
+          if(studId){
+            answerReappearUrl += '&kaoshengid=' + studId;
+          }
+          else{
+            DataService.alertInfFun('pmt', '缺少考生UID');
+            return;
+          }
+          if(examId){
+            answerReappearUrl += '&kaoshiid=' + examId;
+          }
+          else{
+            DataService.alertInfFun('pmt', '缺少考试ID');
+            return;
+          }
+          DataService.getData(answerReappearUrl).then(function(data) {
+            if(data && data.length > 0){
+              var qryItemDeFenLvUrl = qryItemDeFenLvBase + examId;
+              if(examId){
+                DataService.getData(qryItemDeFenLvUrl).then(function(dfl) {
+                  if(dfl && dfl.length > 0) {
+                    itemDeFenLv = dfl;
+                    finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
+                    dataDis = _.groupBy(data, 'DATI_XUHAO');
+                    _.each(dataDis, function(val, key, list){
+                      var dObj = {
+                        tx_id: key,
+                        tx_name: val[0].DATIMINGCHENG,
+                        tm: ''
+                      };
+                      tmVal = _.each(val, function(tm, idx, lst){
+                        var findVal = _.find(itemDeFenLv, function(item){return item.TIMU_ID == tm.TIMU_ID});
+                        tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
+                        if(typeof(tm.TIGAN) == 'string'){
+                          tm.TIGAN = JSON.parse(tm.TIGAN);
+                        }
+                        DataService.formatDaAn(tm);
+                      });
+                      dObj.tm = tmVal;
+                      finaData.sj_tm.push(dObj);
+                    });
+                    $scope.kaoShengShiJuan = finaData;
+                  }
+                });
+              }
+              else{
+                itemDeFenLv = '';
+                DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
+              }
+            }
+          });
+        };
+
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
+        });
 
       }]);
 });

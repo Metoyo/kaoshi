@@ -23,6 +23,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token, //检查考生是否在报名表里
           checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid=', //检查考生是否在报名表里
           delBlankReg = /\s/g; //去除空格的正则表达
+        var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
@@ -393,27 +394,27 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         /**
          * 查询用户信息表
          */
-        var qryUserIfRegister = function(){
-          var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
-          checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
-          $http.get(checkStuInYhxxUrl).success(function(student){
-            if(student && student.length > 0){
-              $scope.studentInfo = student;
-              JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
-              DataService.alertInfFun('pmt', '用户已存在，请登录！');
-            }
-            else{
-              $scope.studentInfo = '';
-              $scope.ifTheStuHasRegister = true;
-            }
-          });
-        };
+        //var qryUserIfRegister = function(){
+        //  var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
+        //  checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
+        //  checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+        //  $http.get(checkStuInYhxxUrl).success(function(student){
+        //    if(student && student.length > 0){
+        //      $scope.studentInfo = student;
+        //      JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+        //      DataService.alertInfFun('pmt', '用户已存在，请登录！');
+        //    }
+        //    else{
+        //      $scope.studentInfo = '';
+        //      $scope.ifTheStuHasRegister = true;
+        //    }
+        //  });
+        //};
 
         /**
-         * 查询考生是否已经存在
+         * 查询报名考生表
          */
-        $scope.confirmTheStuIn = function(){
+        var qryUserIfInBmksb = function(){
           var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
           if($scope.stuRegisterInfo.jigouid){
             chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
@@ -425,7 +426,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
                 chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
                 DataService.getData(chaXunKaoSheng).then(function(data){
                   if(data && data.length > 0){
-                    qryUserIfRegister();
+                    $scope.ifTheStuHasRegister = true;
                   }
                   else{
                     $scope.ifTheStuHasRegister = false;
@@ -444,36 +445,35 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
           }
-          //var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
-          //if($scope.stuRegisterInfo.jigouid){
-          //  chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
-          //  if($scope.stuRegisterInfo.xuehao){
-          //    $scope.stuRegisterInfo.xuehao = $scope.stuRegisterInfo.xuehao.replace(delBlankReg, '');
-          //    chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-          //    if($scope.stuRegisterInfo.xingming){
-          //      $scope.stuRegisterInfo.xingming = $scope.stuRegisterInfo.xingming.replace(delBlankReg, '');
-          //      chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
-          //      DataService.getData(chaXunKaoSheng).then(function(data){
-          //        if(data && data.length > 0){
-          //          qryUserIfRegister();
-          //        }
-          //        else{
-          //          $scope.ifTheStuHasRegister = false;
-          //          DataService.alertInfFun('err', '无学号信息，请核对学号信息！');
-          //        }
-          //      });
-          //    }
-          //    else{
-          //      DataService.alertInfFun('pmt', '请输入姓名！');
-          //    }
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '请输入学号！');
-          //  }
-          //}
-          //else{
-          //  DataService.alertInfFun('pmt', '请选择学校！');
-          //}
+        };
+
+        /**
+         * 查询考生是否已经存在
+         */
+
+        $scope.confirmTheStuIn = function(){
+          //查询用户信息表
+          checkUserData = '';
+          var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
+          checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
+          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+          $http.get(checkStuInYhxxUrl).success(function(student){
+            if(student && student.length > 0){
+              if(student.YOUXIANG && student.MIMA){
+                $scope.studentInfo = student;
+                JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+                DataService.alertInfFun('pmt', '用户已存在，请登录！');
+              }
+              else{
+                $scope.ifTheStuHasRegister = true;
+                checkUserData = student[0];
+              }
+            }
+            else{
+              $scope.studentInfo = '';
+              qryUserIfInBmksb();
+            }
+          });
         };
 
         /**
@@ -492,6 +492,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           var stuData = {
             token: token,
             YONGHULEIBIE: 2,
+            UID: checkUserData.UID || '',
             YONGHUHAO: $scope.stuRegisterInfo.xuehao,
             XINGMING: $scope.stuRegisterInfo.xingming,
             YOUXIANG: $scope.stuRegisterInfo.youxiang,

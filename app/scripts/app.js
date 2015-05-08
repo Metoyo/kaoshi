@@ -111,9 +111,9 @@ define([
             $rootScope.session.defaultLyName = loggedInfo.defaultLyName;
             $rootScope.session.quanxianStr = loggedInfo.quanxianStr;
             $rootScope.session.info.UID = loggedInfo.UID;
-            $rootScope.session.info.YONGHUMING = loggedInfo.YONGHUMING;
+            $rootScope.session.info.XINGMING = loggedInfo.XINGMING;
             $rootScope.session.userInfo.UID = loggedInfo.UID;
-            $rootScope.session.userInfo.YONGHUMING = loggedInfo.YONGHUMING;
+            $rootScope.session.userInfo.XINGMING = loggedInfo.XINGMING;
             $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
             $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
             $rootScope.session.userInfo.xuehao = loggedInfo.xuehao;
