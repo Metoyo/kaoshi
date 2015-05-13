@@ -991,7 +991,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 NANDU: '', // 难度系数
                 ZHISHIDIAN: [], //知识点ID, 数组
                 zsdNameArr: [], //知识点名称, 数组
-                PIPEIDU: 1, //匹配度
+                PIPEIDU: 0.6, //匹配度
                 TIXING: [{
                   TIXING_ID: '',
                   COUNT: ''

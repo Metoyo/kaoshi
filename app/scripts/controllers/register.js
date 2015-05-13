@@ -459,7 +459,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
           $http.get(checkStuInYhxxUrl).success(function(student){
             if(student && student.length > 0){
-              if(student.YOUXIANG && student.MIMA){
+              if(student[0].YOUXIANG && student[0].MIMA){
                 $scope.studentInfo = student;
                 JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
                 DataService.alertInfFun('pmt', '用户已存在，请登录！');
