@@ -375,7 +375,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           var ksArr = [];
           var exportStu;
           ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
-          exportStu = _.sortBy(stuData, function(stu){ return stu.XUHAO;});
+          exportStu = _.sortBy(stuData, function(stu){ return parseInt(stu.XUHAO);});
           _.each(exportStu, function(ks){
             var ksObj = {XUHAO: '', YONGHUHAO: '', XINGMING: '', BANJI: '', KEXUHAO: '', ZUIHOU_PINGFEN: ''};
             ksObj.XUHAO = ks.XUHAO;

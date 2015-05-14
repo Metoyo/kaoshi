@@ -199,8 +199,12 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
                         myUrl: 'chengji',
                         urlName: '成绩'
                       };
+                      var findNongDa = JSON.parse(result[0].JIGOU);
+                      var findNongDaIn = _.find(findNongDa, function(jd){ return jd.JIGOU_ID == 1003; });
+                      if(!findNongDaIn){
+                        urlArr.push(urlObj2);
+                      }
                       urlArr.push(urlObj1);
-                      urlArr.push(urlObj2);
                       $rootScope.urlArrs = urlArr;
                       //cookies代码
                       userCookie = {
@@ -264,10 +268,10 @@ define(['underscore', 'angular', 'config'], function (_, angular, config) {
           var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
           $http.get(checkUserUrl).success(function(data){
             if(data.result){
-              $scope.youxiangExist = true;
+              $scope.youxiangExist = false;
             }
             else{
-              $scope.youxiangExist = false;
+              $scope.youxiangExist = true;
             }
           });
         };
