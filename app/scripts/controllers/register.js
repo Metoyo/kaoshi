@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, config) {
+define(['angular', 'config','jquery', 'underscore'], function (angular, config, $, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
@@ -138,8 +138,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          */
         $scope.validatePersonalInfo = function(){
           $scope.stepTwo = true;
-          JQ('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
+          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
+          $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
         /**
@@ -193,7 +193,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           $scope.lingyu_list = ''; //重置领域
           $scope.selected_ly = '';
           jigouId = jgId;
-          registerDate.jiGouName = JQ(".subOrganization  option:selected").text();
+          registerDate.jiGouName = $(".subOrganization  option:selected").text();
           qryParentLingYu(jgId);
         };
 
@@ -274,7 +274,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           objAndRightObj.juese.jueseName = selectJueseNameArr;
           objAndRightList.push(objAndRightObj);
           $scope.objAndRight = objAndRightList;
-          JQ('input[name=rightName]:checked').prop('checked', false);
+          $('input[name=rightName]:checked').prop('checked', false);
           $scope.jueseValue = false;
           $scope.linyuValue = false;
           if(!$scope.kemu_list.length){
@@ -300,7 +300,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         $scope.getJueSeArr = function(){
           selectJueseIdArr = [];
           selectJueseNameArr = [];
-          var jueseItem = JQ('input[name=rightName]:checked');
+          var jueseItem = $('input[name=rightName]:checked');
           _.each(jueseItem,function(js, idx, lst){
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
@@ -323,8 +323,8 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 回到填写个人信息页面
          */
         $scope.goToPersonInfo = function(){
-          JQ('.nav-tabs li').removeClass('active').eq(0).addClass('active');
-          JQ('.tab-pane').removeClass('active').eq(0).addClass('active');
+          $('.nav-tabs li').removeClass('active').eq(0).addClass('active');
+          $('.tab-pane').removeClass('active').eq(0).addClass('active');
         };
 
         /**
@@ -347,16 +347,16 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           registerDate.juese = select_juese;
           $scope.registerDate = registerDate;
           $scope.stepThree = true;
-          JQ('.nav-tabs li').removeClass('active').eq(2).addClass('active');
-          JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+          $('.nav-tabs li').removeClass('active').eq(2).addClass('active');
+          $('.tab-pane').removeClass('active').eq(2).addClass('active');
         };
 
         /**
          * 去提交个人信息页面 getObjectAndRight
          */
         $scope.goToJueSe = function(){
-          JQ('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
+          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
+          $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
         /**
@@ -381,14 +381,14 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
          * 去第二步，显示学号和姓名输入框
          */
         $scope.stuShowStepOne = function(){
-          JQ('.tab-pane').removeClass('active').eq(0).addClass('active');
+          $('.tab-pane').removeClass('active').eq(0).addClass('active');
         };
 
         /**
          * 去第二步，显示学号和姓名输入框
          */
         $scope.stuShowStepTwo = function(){
-          JQ('.tab-pane').removeClass('active').eq(1).addClass('active');
+          $('.tab-pane').removeClass('active').eq(1).addClass('active');
         };
 
         /**
@@ -401,7 +401,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         //  $http.get(checkStuInYhxxUrl).success(function(student){
         //    if(student && student.length > 0){
         //      $scope.studentInfo = student;
-        //      JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+        //      $('.tab-pane').removeClass('active').eq(2).addClass('active');
         //      DataService.alertInfFun('pmt', '用户已存在，请登录！');
         //    }
         //    else{
@@ -461,7 +461,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
             if(student && student.length > 0){
               if(student[0].YOUXIANG && student[0].MIMA){
                 $scope.studentInfo = student;
-                JQ('.tab-pane').removeClass('active').eq(2).addClass('active');
+                $('.tab-pane').removeClass('active').eq(2).addClass('active');
                 DataService.alertInfFun('pmt', '用户已存在，请登录！');
               }
               else{

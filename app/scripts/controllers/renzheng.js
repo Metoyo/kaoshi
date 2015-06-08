@@ -1,4 +1,4 @@
-define(['underscore', 'angular', 'config'], function (_, angular, config) {
+define(['angular', 'config', 'underscore'], function (angular, config, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])

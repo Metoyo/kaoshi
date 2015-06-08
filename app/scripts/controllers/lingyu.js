@@ -1,4 +1,4 @@
-define(['underscore', 'angular', 'config'], function (_, angular, config) { // 00
+define(['angular', 'config', 'underscore'], function (angular, config, _) { // 00
   'use strict';
 
   angular.module('kaoshiApp.controllers.LingyuCtrl', [])

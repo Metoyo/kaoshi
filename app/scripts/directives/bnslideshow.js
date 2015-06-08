@@ -1,4 +1,4 @@
-define(['angular', 'jquery'], function (angular, JQ) {
+define(['angular', 'jquery'], function (angular, $) {
   'use strict';
 
   angular.module('kaoshiApp.directives.Bnslideshow', [])
@@ -19,19 +19,19 @@ define(['angular', 'jquery'], function (angular, JQ) {
           else{
             targetClass = '.' + attrs.class;
           }
-          targetSlt = JQ(targetClass).eq(slideIdx);
+          targetSlt = $(targetClass).eq(slideIdx);
           targetSlt.on('click', function(){
             if(slideDirection == 'left'){ //向左滑动展开
-              JQ(this).next(slideTarget).animate({width: 'toggle'});
+              $(this).next(slideTarget).animate({width: 'toggle'});
             }
             else{ //向下滑动展开
-              var eltTxt = JQ(this).text();
+              var eltTxt = $(this).text();
               if(slideText){ //用在考务里面的试卷列表
-                JQ(this).text(eltTxt == '关闭' ? slideText : '关闭');
-                JQ(this).closest('div').next(slideTarget).slideToggle();
+                $(this).text(eltTxt == '关闭' ? slideText : '关闭');
+                $(this).closest('div').next(slideTarget).slideToggle();
               }
               else{
-                JQ(this).next(slideTarget).slideToggle();
+                $(this).next(slideTarget).slideToggle();
               }
             }
           });

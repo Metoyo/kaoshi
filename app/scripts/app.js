@@ -14,6 +14,7 @@ define([
   'controllers/lingyu',
   'controllers/tongji',
   'controllers/student',
+  'controllers/guanli',
   'filters/mylocaldate',
   'filters/mylocaldatewithweek',
   'filters/examstatus',
@@ -26,7 +27,7 @@ define([
   'directives/repeatdone',
   'services/dataservice'
 ], function (angular, config, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
-             ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, StudentCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
+             ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
@@ -43,6 +44,7 @@ define([
     'kaoshiApp.controllers.LingyuCtrl',
     'kaoshiApp.controllers.TongjiCtrl',
     'kaoshiApp.controllers.StudentCtrl',
+    'kaoshiApp.controllers.GuanLiCtrl',
     'kaoshiApp.filters.Mylocaldate',
     'kaoshiApp.filters.Mylocaldatewithweek',
     'kaoshiApp.filters.Examstatus',
@@ -54,7 +56,7 @@ define([
     'kaoshiApp.directives.Nandustar',
     'kaoshiApp.directives.Passwordverify',
     'kaoshiApp.services.DataService',
-    /*angJSDeps*/
+/*angJSDeps*/
     'ngCookies',
     'ngResource',
     'ngSanitize',

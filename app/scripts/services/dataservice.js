@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery'], function (angular, config, JQ) {
+define(['angular', 'config', 'jquery'], function (angular, config, $) {
   'use strict';
   /**
    * @ngdoc service
@@ -12,19 +12,19 @@ define(['angular', 'config', 'jquery'], function (angular, config, JQ) {
     function ($rootScope, $location, urlRedirect, $cookieStore, $timeout, $http, $q) {
       //提示信息
       function alertFun(megKind, cont){
-        JQ('.messageTd').css('display', 'none').html('');
+        $('.messageTd').css('display', 'none').html('');
         if(megKind == 'err'){
-          JQ('.mesError').css('display', 'block').html(cont);
+          $('.mesError').css('display', 'block').html(cont);
         }
         if(megKind == 'suc'){
-          JQ('.mesSuccess').css('display', 'block').html(cont);
+          $('.mesSuccess').css('display', 'block').html(cont);
         }
         if(megKind == 'pmt'){
-          JQ('.mesPrompt').css('display', 'block').html(cont);
+          $('.mesPrompt').css('display', 'block').html(cont);
         }
-        JQ('.popInfoWrap').css('display', 'block');
+        $('.popInfoWrap').css('display', 'block');
         var fadeOutFun = function(){
-          JQ('.popInfoWrap').fadeOut(1000);
+          $('.popInfoWrap').fadeOut(1000);
         };
         $timeout(fadeOutFun, 1000);
       }
@@ -55,20 +55,20 @@ define(['angular', 'config', 'jquery'], function (angular, config, JQ) {
 
       //修改试题，点击编辑器，内容立刻预览 题干
       this.tiMuContPreview = function(tgCont){
-        var tgCont = JQ('.formulaEditTiGan').val() || tgCont;
+        var tgCont = $('.formulaEditTiGan').val() || tgCont;
         if(tgCont){
           tgCont = tgCont.replace(/\n/g, '<br/>');
-          JQ('#prevDoc').html(tgCont);
+          $('#prevDoc').html(tgCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
         }
       };
 
       //修改试题，点击编辑器，内容立刻预览 题支
       this.tiZhiContPreview = function(){
-        var tzCont = JQ('.formulaEditTiZhi').val();
+        var tzCont = $('.formulaEditTiZhi').val();
         if(tzCont){
           tzCont = tzCont.replace(/\n/g, '<br/>');
-          JQ('#prevTiZhiDoc').html(tzCont);
+          $('#prevTiZhiDoc').html(tzCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
         }
       };

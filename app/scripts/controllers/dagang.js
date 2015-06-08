@@ -1,4 +1,4 @@
-define(['jquery', 'angular', 'config', 'mathjax'], function (JQ, angular, config, mathjax) {
+define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $, mathjax) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
@@ -367,7 +367,7 @@ define(['jquery', 'angular', 'config', 'mathjax'], function (JQ, angular, config
           $scope.prDgBtnDisabled = false;
           //用于新建大纲的名称聚焦
           var focusFun = function() {
-            JQ('.dagangBox input').focus();
+            $('.dagangBox input').focus();
           };
           $timeout(focusFun, 500);
           $scope.selectZjDgId = ''; //已经选择的自建知识大纲的值
@@ -426,7 +426,7 @@ define(['jquery', 'angular', 'config', 'mathjax'], function (JQ, angular, config
           newNd.ZHISHIDIAN_LEIXING = 2;
           newNd.ZIJIEDIAN = [];
           nd.ZIJIEDIAN.push(newNd);
-          var parentNd = JQ(event.target),
+          var parentNd = $(event.target),
           focusFun = function() {
             parentNd.closest('.media-body').find('.media').last().find('input').last().focus();
           };
@@ -457,7 +457,7 @@ define(['jquery', 'angular', 'config', 'mathjax'], function (JQ, angular, config
         $scope.privateDgInputIdx = function(event, nd){
           targetNd = '';
           targetInput = '';
-          targetInput = JQ(event.target);
+          targetInput = $(event.target);
           targetNd = nd;
           oldNdId = nd.ZHISHIDIAN_ID;
         };

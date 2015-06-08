@@ -92,6 +92,11 @@ define( "config", [], function () {
         templateUrl: '../views/student/chengji.html',
         controller: 'StudentCtrl',
         requireLogin: true
+      },
+      '/guanli': {
+        templateUrl: '../views/guanli/guanli.html',
+        controller: 'GuanLiCtrl',
+        requireLogin: true
       }
     },
     quanxianObj: [ //得到角色是数组
@@ -136,6 +141,12 @@ define( "config", [], function () {
         targetUrl: '/chengji',
         navName : 'chengji',
         hanName: '成绩'
+      },
+      {
+        qxArr: ['3001'],
+        targetUrl: '/guanli',
+        navName : 'guanli',
+        hanName: '管理'
       }
     ],
     tiXingNameArr: [

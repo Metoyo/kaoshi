@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, config) {
+define(['angular', 'config', 'jquery', 'underscore'], function (angular, config, $, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.StudentCtrl', [])

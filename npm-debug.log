@@ -1,0 +1,1708 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'update' ]
+2 info using npm@2.10.1
+3 info using node@v0.12.4
+4 silly mapToRegistry name grunt
+5 silly mapToRegistry using default registry
+6 silly mapToRegistry registry https://registry.npmjs.org/
+7 silly mapToRegistry uri https://registry.npmjs.org/grunt
+8 silly mapToRegistry name grunt-autoprefixer
+9 silly mapToRegistry using default registry
+10 silly mapToRegistry registry https://registry.npmjs.org/
+11 silly mapToRegistry uri https://registry.npmjs.org/grunt-autoprefixer
+12 silly mapToRegistry name grunt-bower-requirejs
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/grunt-bower-requirejs
+16 silly mapToRegistry name grunt-concurrent
+17 silly mapToRegistry using default registry
+18 silly mapToRegistry registry https://registry.npmjs.org/
+19 silly mapToRegistry uri https://registry.npmjs.org/grunt-concurrent
+20 silly mapToRegistry name grunt-contrib-clean
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-clean
+24 silly mapToRegistry name grunt-contrib-compass
+25 silly mapToRegistry using default registry
+26 silly mapToRegistry registry https://registry.npmjs.org/
+27 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-compass
+28 silly mapToRegistry name grunt-contrib-concat
+29 silly mapToRegistry using default registry
+30 silly mapToRegistry registry https://registry.npmjs.org/
+31 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-concat
+32 silly mapToRegistry name grunt-contrib-connect
+33 silly mapToRegistry using default registry
+34 silly mapToRegistry registry https://registry.npmjs.org/
+35 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-connect
+36 silly mapToRegistry name grunt-contrib-copy
+37 silly mapToRegistry using default registry
+38 silly mapToRegistry registry https://registry.npmjs.org/
+39 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-copy
+40 silly mapToRegistry name grunt-contrib-cssmin
+41 silly mapToRegistry using default registry
+42 silly mapToRegistry registry https://registry.npmjs.org/
+43 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-cssmin
+44 silly mapToRegistry name grunt-contrib-htmlmin
+45 silly mapToRegistry using default registry
+46 silly mapToRegistry registry https://registry.npmjs.org/
+47 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-htmlmin
+48 silly mapToRegistry name grunt-contrib-imagemin
+49 silly mapToRegistry using default registry
+50 silly mapToRegistry registry https://registry.npmjs.org/
+51 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-imagemin
+52 silly mapToRegistry name grunt-contrib-jshint
+53 silly mapToRegistry using default registry
+54 silly mapToRegistry registry https://registry.npmjs.org/
+55 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-jshint
+56 silly mapToRegistry name grunt-contrib-uglify
+57 silly mapToRegistry using default registry
+58 silly mapToRegistry registry https://registry.npmjs.org/
+59 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-uglify
+60 silly mapToRegistry name grunt-contrib-watch
+61 silly mapToRegistry using default registry
+62 silly mapToRegistry registry https://registry.npmjs.org/
+63 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-watch
+64 silly mapToRegistry name grunt-filerev
+65 silly mapToRegistry using default registry
+66 silly mapToRegistry registry https://registry.npmjs.org/
+67 silly mapToRegistry uri https://registry.npmjs.org/grunt-filerev
+68 silly mapToRegistry name grunt-google-cdn
+69 silly mapToRegistry using default registry
+70 silly mapToRegistry registry https://registry.npmjs.org/
+71 silly mapToRegistry uri https://registry.npmjs.org/grunt-google-cdn
+72 silly mapToRegistry name grunt-karma
+73 silly mapToRegistry using default registry
+74 silly mapToRegistry registry https://registry.npmjs.org/
+75 silly mapToRegistry uri https://registry.npmjs.org/grunt-karma
+76 silly mapToRegistry name grunt-newer
+77 silly mapToRegistry using default registry
+78 silly mapToRegistry registry https://registry.npmjs.org/
+79 silly mapToRegistry uri https://registry.npmjs.org/grunt-newer
+80 silly mapToRegistry name grunt-ng-annotate
+81 silly mapToRegistry using default registry
+82 silly mapToRegistry registry https://registry.npmjs.org/
+83 silly mapToRegistry uri https://registry.npmjs.org/grunt-ng-annotate
+84 silly mapToRegistry name grunt-requirejs
+85 silly mapToRegistry using default registry
+86 silly mapToRegistry registry https://registry.npmjs.org/
+87 silly mapToRegistry uri https://registry.npmjs.org/grunt-requirejs
+88 silly mapToRegistry name grunt-svgmin
+89 silly mapToRegistry using default registry
+90 silly mapToRegistry registry https://registry.npmjs.org/
+91 silly mapToRegistry uri https://registry.npmjs.org/grunt-svgmin
+92 silly mapToRegistry name grunt-text-replace
+93 silly mapToRegistry using default registry
+94 silly mapToRegistry registry https://registry.npmjs.org/
+95 silly mapToRegistry uri https://registry.npmjs.org/grunt-text-replace
+96 silly mapToRegistry name grunt-usemin
+97 silly mapToRegistry using default registry
+98 silly mapToRegistry registry https://registry.npmjs.org/
+99 silly mapToRegistry uri https://registry.npmjs.org/grunt-usemin
+100 silly mapToRegistry name grunt-wiredep
+101 silly mapToRegistry using default registry
+102 silly mapToRegistry registry https://registry.npmjs.org/
+103 silly mapToRegistry uri https://registry.npmjs.org/grunt-wiredep
+104 silly mapToRegistry name jasmine-core
+105 silly mapToRegistry using default registry
+106 silly mapToRegistry registry https://registry.npmjs.org/
+107 silly mapToRegistry uri https://registry.npmjs.org/jasmine-core
+108 silly mapToRegistry name jshint-stylish
+109 silly mapToRegistry using default registry
+110 silly mapToRegistry registry https://registry.npmjs.org/
+111 silly mapToRegistry uri https://registry.npmjs.org/jshint-stylish
+112 silly mapToRegistry name karma
+113 silly mapToRegistry using default registry
+114 silly mapToRegistry registry https://registry.npmjs.org/
+115 silly mapToRegistry uri https://registry.npmjs.org/karma
+116 silly mapToRegistry name karma-jasmine
+117 silly mapToRegistry using default registry
+118 silly mapToRegistry registry https://registry.npmjs.org/
+119 silly mapToRegistry uri https://registry.npmjs.org/karma-jasmine
+120 silly mapToRegistry name karma-ng-html2js-preprocessor
+121 silly mapToRegistry using default registry
+122 silly mapToRegistry registry https://registry.npmjs.org/
+123 silly mapToRegistry uri https://registry.npmjs.org/karma-ng-html2js-preprocessor
+124 silly mapToRegistry name karma-ng-scenario
+125 silly mapToRegistry using default registry
+126 silly mapToRegistry registry https://registry.npmjs.org/
+127 silly mapToRegistry uri https://registry.npmjs.org/karma-ng-scenario
+128 silly mapToRegistry name karma-phantomjs-launcher
+129 silly mapToRegistry using default registry
+130 silly mapToRegistry registry https://registry.npmjs.org/
+131 silly mapToRegistry uri https://registry.npmjs.org/karma-phantomjs-launcher
+132 silly mapToRegistry name karma-requirejs
+133 silly mapToRegistry using default registry
+134 silly mapToRegistry registry https://registry.npmjs.org/
+135 silly mapToRegistry uri https://registry.npmjs.org/karma-requirejs
+136 silly mapToRegistry name load-grunt-tasks
+137 silly mapToRegistry using default registry
+138 silly mapToRegistry registry https://registry.npmjs.org/
+139 silly mapToRegistry uri https://registry.npmjs.org/load-grunt-tasks
+140 silly mapToRegistry name requirejs
+141 silly mapToRegistry using default registry
+142 silly mapToRegistry registry https://registry.npmjs.org/
+143 silly mapToRegistry uri https://registry.npmjs.org/requirejs
+144 silly mapToRegistry name time-grunt
+145 silly mapToRegistry using default registry
+146 silly mapToRegistry registry https://registry.npmjs.org/
+147 silly mapToRegistry uri https://registry.npmjs.org/time-grunt
+148 verbose request uri https://registry.npmjs.org/grunt-autoprefixer
+149 verbose request no auth needed
+150 info attempt registry request try #1 at 16:28:57
+151 verbose request id 14a0ed4d52da3d10
+152 verbose etag "6D5O6RQ4YCDC4YUXY0MD6JT2A"
+153 http request GET https://registry.npmjs.org/grunt-autoprefixer
+154 verbose request uri https://registry.npmjs.org/grunt-concurrent
+155 verbose request no auth needed
+156 info attempt registry request try #1 at 16:28:57
+157 verbose etag "7HUMMZCJ9Y3JLPVLTGFZX0GJI"
+158 http request GET https://registry.npmjs.org/grunt-concurrent
+159 verbose request uri https://registry.npmjs.org/grunt-bower-requirejs
+160 verbose request no auth needed
+161 info attempt registry request try #1 at 16:28:57
+162 verbose etag "DFNO2ZK5M0RJEP8DQAOG2BY1D"
+163 http request GET https://registry.npmjs.org/grunt-bower-requirejs
+164 verbose request uri https://registry.npmjs.org/grunt
+165 verbose request no auth needed
+166 info attempt registry request try #1 at 16:28:57
+167 verbose etag "DPS0MW33JUITZJJ39OI6VBSBW"
+168 http request GET https://registry.npmjs.org/grunt
+169 verbose request uri https://registry.npmjs.org/grunt-contrib-concat
+170 verbose request no auth needed
+171 info attempt registry request try #1 at 16:28:57
+172 verbose etag "5YSQRTHHXC6IDBJCIWFWIB07E"
+173 http request GET https://registry.npmjs.org/grunt-contrib-concat
+174 verbose request uri https://registry.npmjs.org/grunt-contrib-connect
+175 verbose request no auth needed
+176 info attempt registry request try #1 at 16:28:57
+177 verbose etag "8E3VUKD4SQUYG7XMNV63OJ0W8"
+178 http request GET https://registry.npmjs.org/grunt-contrib-connect
+179 verbose request uri https://registry.npmjs.org/grunt-contrib-copy
+180 verbose request no auth needed
+181 info attempt registry request try #1 at 16:28:57
+182 verbose etag "4OR7FBYCY7H641BBJ1U503QU5"
+183 http request GET https://registry.npmjs.org/grunt-contrib-copy
+184 verbose request uri https://registry.npmjs.org/grunt-contrib-htmlmin
+185 verbose request no auth needed
+186 info attempt registry request try #1 at 16:28:57
+187 verbose etag "5Z820Y8S6MBFDY946T2W460O7"
+188 http request GET https://registry.npmjs.org/grunt-contrib-htmlmin
+189 verbose request uri https://registry.npmjs.org/grunt-contrib-cssmin
+190 verbose request no auth needed
+191 info attempt registry request try #1 at 16:28:57
+192 verbose etag "ANO5472ADTLBZRRTM7OJKFT3C"
+193 http request GET https://registry.npmjs.org/grunt-contrib-cssmin
+194 verbose request uri https://registry.npmjs.org/grunt-contrib-imagemin
+195 verbose request no auth needed
+196 info attempt registry request try #1 at 16:28:57
+197 verbose etag "BDMVPPXRHTPP818DXPV43IIMX"
+198 http request GET https://registry.npmjs.org/grunt-contrib-imagemin
+199 verbose request uri https://registry.npmjs.org/grunt-contrib-jshint
+200 verbose request no auth needed
+201 info attempt registry request try #1 at 16:28:57
+202 verbose etag "C1Z3C99PQB195J1RLGZ2OYY2P"
+203 http request GET https://registry.npmjs.org/grunt-contrib-jshint
+204 verbose request uri https://registry.npmjs.org/grunt-filerev
+205 verbose request no auth needed
+206 info attempt registry request try #1 at 16:28:57
+207 verbose etag "E6E4T1WSTVB80VCHZHDFZKYDQ"
+208 http request GET https://registry.npmjs.org/grunt-filerev
+209 verbose request uri https://registry.npmjs.org/grunt-contrib-uglify
+210 verbose request no auth needed
+211 info attempt registry request try #1 at 16:28:57
+212 verbose etag "CJG62V7I3FJ24P2XCXAHP6PQO"
+213 http request GET https://registry.npmjs.org/grunt-contrib-uglify
+214 verbose request uri https://registry.npmjs.org/grunt-contrib-watch
+215 verbose request no auth needed
+216 info attempt registry request try #1 at 16:28:57
+217 verbose etag "18NB134DF58IN7BZ75F93JY73"
+218 http request GET https://registry.npmjs.org/grunt-contrib-watch
+219 verbose request uri https://registry.npmjs.org/grunt-google-cdn
+220 verbose request no auth needed
+221 info attempt registry request try #1 at 16:28:57
+222 verbose etag "98AMV143LFZ81CXMJP6SGCNQT"
+223 http request GET https://registry.npmjs.org/grunt-google-cdn
+224 verbose request uri https://registry.npmjs.org/grunt-newer
+225 verbose request no auth needed
+226 info attempt registry request try #1 at 16:28:57
+227 verbose etag "DAMRCCGEU43MHUWZ7KUQHH1K0"
+228 http request GET https://registry.npmjs.org/grunt-newer
+229 verbose request uri https://registry.npmjs.org/grunt-karma
+230 verbose request no auth needed
+231 info attempt registry request try #1 at 16:28:57
+232 verbose etag "B1VYIKC5CSBU9C1XK83OKY1IH"
+233 http request GET https://registry.npmjs.org/grunt-karma
+234 verbose request uri https://registry.npmjs.org/grunt-requirejs
+235 verbose request no auth needed
+236 info attempt registry request try #1 at 16:28:57
+237 verbose etag "5I4PN4R4L0HGFCQ6IWDS57BN"
+238 http request GET https://registry.npmjs.org/grunt-requirejs
+239 verbose request uri https://registry.npmjs.org/grunt-svgmin
+240 verbose request no auth needed
+241 info attempt registry request try #1 at 16:28:57
+242 verbose etag "2W77CN55VIF2ET6QKXHUJV0SV"
+243 http request GET https://registry.npmjs.org/grunt-svgmin
+244 verbose request uri https://registry.npmjs.org/grunt-text-replace
+245 verbose request no auth needed
+246 info attempt registry request try #1 at 16:28:57
+247 verbose etag "4RQ6DDMXA1BX8VL76YI1MXW3B"
+248 http request GET https://registry.npmjs.org/grunt-text-replace
+249 verbose request uri https://registry.npmjs.org/grunt-ng-annotate
+250 verbose request no auth needed
+251 info attempt registry request try #1 at 16:28:57
+252 verbose etag "1K61XI7JXZ6RHS6U5VH1JJ80L"
+253 http request GET https://registry.npmjs.org/grunt-ng-annotate
+254 verbose request uri https://registry.npmjs.org/grunt-usemin
+255 verbose request no auth needed
+256 info attempt registry request try #1 at 16:28:57
+257 verbose etag "2Y1YYYYM31G160CCLZ73Q880F"
+258 http request GET https://registry.npmjs.org/grunt-usemin
+259 verbose request uri https://registry.npmjs.org/jshint-stylish
+260 verbose request no auth needed
+261 info attempt registry request try #1 at 16:28:57
+262 verbose etag "BWWS2HLRCU93ZDN3VAJ4N34Y8"
+263 http request GET https://registry.npmjs.org/jshint-stylish
+264 verbose request uri https://registry.npmjs.org/grunt-wiredep
+265 verbose request no auth needed
+266 info attempt registry request try #1 at 16:28:57
+267 verbose etag "EF74FCKTXFTXPVW3K28EU6F6P"
+268 http request GET https://registry.npmjs.org/grunt-wiredep
+269 verbose request uri https://registry.npmjs.org/jasmine-core
+270 verbose request no auth needed
+271 info attempt registry request try #1 at 16:28:57
+272 verbose etag "BT5E0W5DI3521NJAL0Z0G43T"
+273 http request GET https://registry.npmjs.org/jasmine-core
+274 verbose request uri https://registry.npmjs.org/karma-ng-html2js-preprocessor
+275 verbose request no auth needed
+276 info attempt registry request try #1 at 16:28:57
+277 verbose etag "DFV7HNNFFL808JVDUY1K82E5C"
+278 http request GET https://registry.npmjs.org/karma-ng-html2js-preprocessor
+279 verbose request uri https://registry.npmjs.org/karma-phantomjs-launcher
+280 verbose request no auth needed
+281 info attempt registry request try #1 at 16:28:57
+282 verbose etag "8SS6P4R8XMW8A005XSDPMECFM"
+283 http request GET https://registry.npmjs.org/karma-phantomjs-launcher
+284 verbose request uri https://registry.npmjs.org/karma-jasmine
+285 verbose request no auth needed
+286 info attempt registry request try #1 at 16:28:57
+287 verbose etag "VORR8LHWJK4QEZWHEI16MFVJ"
+288 http request GET https://registry.npmjs.org/karma-jasmine
+289 verbose request uri https://registry.npmjs.org/karma-ng-scenario
+290 verbose request no auth needed
+291 info attempt registry request try #1 at 16:28:57
+292 verbose etag "BQOIIG3JX8DCWK38WYE21RZ2R"
+293 http request GET https://registry.npmjs.org/karma-ng-scenario
+294 verbose request uri https://registry.npmjs.org/karma
+295 verbose request no auth needed
+296 info attempt registry request try #1 at 16:28:57
+297 verbose etag "F27IGFL2GYP3HXXDQMM7665TK"
+298 http request GET https://registry.npmjs.org/karma
+299 verbose request uri https://registry.npmjs.org/load-grunt-tasks
+300 verbose request no auth needed
+301 info attempt registry request try #1 at 16:28:57
+302 verbose etag "1UP9IANIM2AMVASEUI0S47595"
+303 http request GET https://registry.npmjs.org/load-grunt-tasks
+304 verbose request uri https://registry.npmjs.org/karma-requirejs
+305 verbose request no auth needed
+306 info attempt registry request try #1 at 16:28:57
+307 verbose etag "4196EIJK2MUDYCE5OEEPO38T"
+308 http request GET https://registry.npmjs.org/karma-requirejs
+309 verbose request uri https://registry.npmjs.org/grunt-contrib-compass
+310 verbose request no auth needed
+311 info attempt registry request try #1 at 16:28:57
+312 verbose etag "24CTTNP0NZPE216YA6BJN69L5"
+313 http request GET https://registry.npmjs.org/grunt-contrib-compass
+314 verbose request uri https://registry.npmjs.org/grunt-contrib-clean
+315 verbose request no auth needed
+316 info attempt registry request try #1 at 16:28:57
+317 verbose etag "14YVIRDKQUAPPKR92CUAIQ0G9"
+318 http request GET https://registry.npmjs.org/grunt-contrib-clean
+319 verbose request uri https://registry.npmjs.org/requirejs
+320 verbose request no auth needed
+321 info attempt registry request try #1 at 16:28:57
+322 verbose etag "DDJCP641JL62TY16OT1N7BNFB"
+323 http request GET https://registry.npmjs.org/requirejs
+324 verbose request uri https://registry.npmjs.org/time-grunt
+325 verbose request no auth needed
+326 info attempt registry request try #1 at 16:28:57
+327 verbose etag "8KYFYTP9C9CDCIXMG6IIXKW77"
+328 http request GET https://registry.npmjs.org/time-grunt
+329 http 200 https://registry.npmjs.org/grunt-wiredep
+330 silly get cb [ 200,
+330 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+330 silly get     etag: '"34K7NTKG9YRIN1GI2RGNLG556"',
+330 silly get     'content-type': 'application/json',
+330 silly get     'cache-control': 'max-age=60',
+330 silly get     'content-length': '10653',
+330 silly get     'accept-ranges': 'bytes',
+330 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+330 silly get     via: '1.1 varnish',
+330 silly get     age: '39',
+330 silly get     connection: 'keep-alive',
+330 silly get     'x-served-by': 'cache-lax1420-LAX',
+330 silly get     'x-cache': 'HIT',
+330 silly get     'x-cache-hits': '1',
+330 silly get     'x-timer': 'S1433752137.767740,VS0,VE0',
+330 silly get     vary: 'Accept' } ]
+331 verbose get saving grunt-wiredep to /Users/songtao/.npm/registry.npmjs.org/grunt-wiredep/.cache.json
+332 http 304 https://registry.npmjs.org/grunt-google-cdn
+333 silly get cb [ 304,
+333 silly get   { date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+333 silly get     via: '1.1 varnish',
+333 silly get     'cache-control': 'max-age=60',
+333 silly get     etag: '"98AMV143LFZ81CXMJP6SGCNQT"',
+333 silly get     age: '40',
+333 silly get     connection: 'keep-alive',
+333 silly get     'x-served-by': 'cache-lax1420-LAX',
+333 silly get     'x-cache': 'HIT',
+333 silly get     'x-cache-hits': '4',
+333 silly get     'x-timer': 'S1433752137.774774,VS0,VE0',
+333 silly get     vary: 'Accept' } ]
+334 verbose etag https://registry.npmjs.org/grunt-google-cdn from cache
+335 verbose get saving grunt-google-cdn to /Users/songtao/.npm/registry.npmjs.org/grunt-google-cdn/.cache.json
+336 http 304 https://registry.npmjs.org/grunt-requirejs
+337 silly get cb [ 304,
+337 silly get   { date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+337 silly get     via: '1.1 varnish',
+337 silly get     'cache-control': 'max-age=60',
+337 silly get     etag: '"5I4PN4R4L0HGFCQ6IWDS57BN"',
+337 silly get     age: '0',
+337 silly get     connection: 'keep-alive',
+337 silly get     'x-served-by': 'cache-lax1422-LAX',
+337 silly get     'x-cache': 'HIT',
+337 silly get     'x-cache-hits': '1',
+337 silly get     'x-timer': 'S1433752137.757686,VS0,VE46',
+337 silly get     vary: 'Accept' } ]
+338 verbose etag https://registry.npmjs.org/grunt-requirejs from cache
+339 verbose get saving grunt-requirejs to /Users/songtao/.npm/registry.npmjs.org/grunt-requirejs/.cache.json
+340 http 304 https://registry.npmjs.org/grunt-bower-requirejs
+341 silly get cb [ 304,
+341 silly get   { date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+341 silly get     via: '1.1 varnish',
+341 silly get     'cache-control': 'max-age=60',
+341 silly get     etag: '"DFNO2ZK5M0RJEP8DQAOG2BY1D"',
+341 silly get     age: '0',
+341 silly get     connection: 'keep-alive',
+341 silly get     'x-served-by': 'cache-lax1422-LAX',
+341 silly get     'x-cache': 'HIT',
+341 silly get     'x-cache-hits': '1',
+341 silly get     'x-timer': 'S1433752137.754777,VS0,VE81',
+341 silly get     vary: 'Accept' } ]
+342 verbose etag https://registry.npmjs.org/grunt-bower-requirejs from cache
+343 verbose get saving grunt-bower-requirejs to /Users/songtao/.npm/registry.npmjs.org/grunt-bower-requirejs/.cache.json
+344 http 200 https://registry.npmjs.org/karma-phantomjs-launcher
+345 silly get cb [ 200,
+345 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+345 silly get     etag: '"9I3S2JPOW9HJW4TXZMZZ0P6YH"',
+345 silly get     'content-type': 'application/json',
+345 silly get     'cache-control': 'max-age=60',
+345 silly get     'content-length': '18640',
+345 silly get     'accept-ranges': 'bytes',
+345 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+345 silly get     via: '1.1 varnish',
+345 silly get     age: '39',
+345 silly get     connection: 'keep-alive',
+345 silly get     'x-served-by': 'cache-lax1421-LAX',
+345 silly get     'x-cache': 'HIT',
+345 silly get     'x-cache-hits': '1',
+345 silly get     'x-timer': 'S1433752137.779657,VS0,VE0',
+345 silly get     vary: 'Accept' } ]
+346 verbose get saving karma-phantomjs-launcher to /Users/songtao/.npm/registry.npmjs.org/karma-phantomjs-launcher/.cache.json
+347 http 200 https://registry.npmjs.org/grunt-contrib-clean
+348 silly get cb [ 200,
+348 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+348 silly get     etag: '"1NNDGYX02UTBJLMTJRKKOY7IH"',
+348 silly get     'content-type': 'application/json',
+348 silly get     'cache-control': 'max-age=60',
+348 silly get     'content-length': '23437',
+348 silly get     'accept-ranges': 'bytes',
+348 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+348 silly get     via: '1.1 varnish',
+348 silly get     age: '39',
+348 silly get     connection: 'keep-alive',
+348 silly get     'x-served-by': 'cache-lax1431-LAX',
+348 silly get     'x-cache': 'HIT',
+348 silly get     'x-cache-hits': '1',
+348 silly get     'x-timer': 'S1433752137.780092,VS0,VE0',
+348 silly get     vary: 'Accept' } ]
+349 verbose get saving grunt-contrib-clean to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-clean/.cache.json
+350 http 200 https://registry.npmjs.org/grunt-svgmin
+351 silly get cb [ 200,
+351 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+351 silly get     etag: '"80KQF6L7C1HKB1NGIBSJUQ1PM"',
+351 silly get     'content-type': 'application/json',
+351 silly get     'cache-control': 'max-age=60',
+351 silly get     'content-length': '13991',
+351 silly get     'accept-ranges': 'bytes',
+351 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+351 silly get     via: '1.1 varnish',
+351 silly get     age: '0',
+351 silly get     connection: 'keep-alive',
+351 silly get     'x-served-by': 'cache-lax1420-LAX',
+351 silly get     'x-cache': 'HIT',
+351 silly get     'x-cache-hits': '1',
+351 silly get     'x-timer': 'S1433752137.768592,VS0,VE46',
+351 silly get     vary: 'Accept' } ]
+352 verbose get saving grunt-svgmin to /Users/songtao/.npm/registry.npmjs.org/grunt-svgmin/.cache.json
+353 http 200 https://registry.npmjs.org/grunt-concurrent
+354 silly get cb [ 200,
+354 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+354 silly get     etag: '"9BAG1N5Z8NG8E81A77LGA3ZTB"',
+354 silly get     'content-type': 'application/json',
+354 silly get     'cache-control': 'max-age=60',
+354 silly get     'content-length': '16733',
+354 silly get     'accept-ranges': 'bytes',
+354 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+354 silly get     via: '1.1 varnish',
+354 silly get     age: '0',
+354 silly get     connection: 'keep-alive',
+354 silly get     'x-served-by': 'cache-lax1435-LAX',
+354 silly get     'x-cache': 'HIT',
+354 silly get     'x-cache-hits': '1',
+354 silly get     'x-timer': 'S1433752137.755192,VS0,VE82',
+354 silly get     vary: 'Accept' } ]
+355 verbose get saving grunt-concurrent to /Users/songtao/.npm/registry.npmjs.org/grunt-concurrent/.cache.json
+356 http 200 https://registry.npmjs.org/grunt-contrib-cssmin
+357 silly get cb [ 200,
+357 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+357 silly get     etag: '"C5NAG0NW5TD9GLTYVWM6GB0WH"',
+357 silly get     'content-type': 'application/json',
+357 silly get     'cache-control': 'max-age=60',
+357 silly get     'content-length': '35374',
+357 silly get     'accept-ranges': 'bytes',
+357 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+357 silly get     via: '1.1 varnish',
+357 silly get     age: '40',
+357 silly get     connection: 'keep-alive',
+357 silly get     'x-served-by': 'cache-lax1421-LAX',
+357 silly get     'x-cache': 'HIT',
+357 silly get     'x-cache-hits': '2',
+357 silly get     'x-timer': 'S1433752137.767862,VS0,VE0',
+357 silly get     vary: 'Accept' } ]
+358 verbose get saving grunt-contrib-cssmin to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-cssmin/.cache.json
+359 http 200 https://registry.npmjs.org/grunt-autoprefixer
+360 silly get cb [ 200,
+360 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+360 silly get     etag: '"77PSXUJPDN4YXNERMASVBPWQ8"',
+360 silly get     'content-type': 'application/json',
+360 silly get     'cache-control': 'max-age=60',
+360 silly get     'content-length': '58559',
+360 silly get     'accept-ranges': 'bytes',
+360 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+360 silly get     via: '1.1 varnish',
+360 silly get     age: '40',
+360 silly get     connection: 'keep-alive',
+360 silly get     'x-served-by': 'cache-lax1434-LAX',
+360 silly get     'x-cache': 'HIT',
+360 silly get     'x-cache-hits': '1',
+360 silly get     'x-timer': 'S1433752137.752082,VS0,VE0',
+360 silly get     vary: 'Accept' } ]
+361 verbose get saving grunt-autoprefixer to /Users/songtao/.npm/registry.npmjs.org/grunt-autoprefixer/.cache.json
+362 http 200 https://registry.npmjs.org/grunt-contrib-concat
+363 silly get cb [ 200,
+363 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+363 silly get     etag: '"CTLWQBD0HAPX7055V7ICM92DS"',
+363 silly get     'content-type': 'application/json',
+363 silly get     'cache-control': 'max-age=60',
+363 silly get     'content-length': '29953',
+363 silly get     'accept-ranges': 'bytes',
+363 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+363 silly get     via: '1.1 varnish',
+363 silly get     age: '55',
+363 silly get     connection: 'keep-alive',
+363 silly get     'x-served-by': 'cache-lax1426-LAX',
+363 silly get     'x-cache': 'HIT',
+363 silly get     'x-cache-hits': '1',
+363 silly get     'x-timer': 'S1433752137.752398,VS0,VE0',
+363 silly get     vary: 'Accept' } ]
+364 verbose get saving grunt-contrib-concat to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-concat/.cache.json
+365 http 200 https://registry.npmjs.org/grunt-contrib-jshint
+366 silly get cb [ 200,
+366 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+366 silly get     etag: '"9GXEUQ9RYBQBLEVLW6Z2FKIO3"',
+366 silly get     'content-type': 'application/json',
+366 silly get     'cache-control': 'max-age=60',
+366 silly get     'content-length': '59131',
+366 silly get     'accept-ranges': 'bytes',
+366 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+366 silly get     via: '1.1 varnish',
+366 silly get     age: '40',
+366 silly get     connection: 'keep-alive',
+366 silly get     'x-served-by': 'cache-lax1431-LAX',
+366 silly get     'x-cache': 'HIT',
+366 silly get     'x-cache-hits': '1',
+366 silly get     'x-timer': 'S1433752137.758173,VS0,VE0',
+366 silly get     vary: 'Accept' } ]
+367 verbose get saving grunt-contrib-jshint to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-jshint/.cache.json
+368 http 200 https://registry.npmjs.org/grunt-ng-annotate
+369 silly get cb [ 200,
+369 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+369 silly get     etag: '"26WWM1QCBBLUGV5T3VEQ5D14A"',
+369 silly get     'content-type': 'application/json',
+369 silly get     'cache-control': 'max-age=60',
+369 silly get     'content-length': '42226',
+369 silly get     'accept-ranges': 'bytes',
+369 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+369 silly get     via: '1.1 varnish',
+369 silly get     age: '39',
+369 silly get     connection: 'keep-alive',
+369 silly get     'x-served-by': 'cache-lax1420-LAX',
+369 silly get     'x-cache': 'HIT',
+369 silly get     'x-cache-hits': '1',
+369 silly get     'x-timer': 'S1433752137.765594,VS0,VE0',
+369 silly get     vary: 'Accept' } ]
+370 verbose get saving grunt-ng-annotate to /Users/songtao/.npm/registry.npmjs.org/grunt-ng-annotate/.cache.json
+371 http 304 https://registry.npmjs.org/karma-ng-scenario
+372 silly get cb [ 304,
+372 silly get   { date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+372 silly get     via: '1.1 varnish',
+372 silly get     'cache-control': 'max-age=60',
+372 silly get     etag: '"BQOIIG3JX8DCWK38WYE21RZ2R"',
+372 silly get     age: '0',
+372 silly get     connection: 'keep-alive',
+372 silly get     'x-served-by': 'cache-lax1421-LAX',
+372 silly get     'x-cache': 'HIT',
+372 silly get     'x-cache-hits': '1',
+372 silly get     'x-timer': 'S1433752137.774345,VS0,VE325',
+372 silly get     vary: 'Accept' } ]
+373 verbose etag https://registry.npmjs.org/karma-ng-scenario from cache
+374 verbose get saving karma-ng-scenario to /Users/songtao/.npm/registry.npmjs.org/karma-ng-scenario/.cache.json
+375 http 200 https://registry.npmjs.org/time-grunt
+376 silly get cb [ 200,
+376 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+376 silly get     etag: '"8X0YZ0ZW5HY40TYLQJXG3IDPU"',
+376 silly get     'content-type': 'application/json',
+376 silly get     'cache-control': 'max-age=60',
+376 silly get     'content-length': '27985',
+376 silly get     'accept-ranges': 'bytes',
+376 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+376 silly get     via: '1.1 varnish',
+376 silly get     age: '39',
+376 silly get     connection: 'keep-alive',
+376 silly get     'x-served-by': 'cache-lax1435-LAX',
+376 silly get     'x-cache': 'HIT',
+376 silly get     'x-cache-hits': '1',
+376 silly get     'x-timer': 'S1433752137.771082,VS0,VE0',
+376 silly get     vary: 'Accept' } ]
+377 verbose get saving time-grunt to /Users/songtao/.npm/registry.npmjs.org/time-grunt/.cache.json
+378 http 200 https://registry.npmjs.org/grunt-contrib-copy
+379 silly get cb [ 200,
+379 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+379 silly get     etag: '"9J4GGX3V9QNQ0FOFFXA2AMG0X"',
+379 silly get     'content-type': 'application/json',
+379 silly get     'cache-control': 'max-age=60',
+379 silly get     'content-length': '32768',
+379 silly get     'accept-ranges': 'bytes',
+379 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+379 silly get     via: '1.1 varnish',
+379 silly get     age: '40',
+379 silly get     connection: 'keep-alive',
+379 silly get     'x-served-by': 'cache-lax1422-LAX',
+379 silly get     'x-cache': 'HIT',
+379 silly get     'x-cache-hits': '2',
+379 silly get     'x-timer': 'S1433752137.769586,VS0,VE0',
+379 silly get     vary: 'Accept' } ]
+380 verbose get saving grunt-contrib-copy to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-copy/.cache.json
+381 http 200 https://registry.npmjs.org/grunt-contrib-compass
+382 silly get cb [ 200,
+382 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+382 silly get     etag: '"8BGUNFQ0DNI6WLZAMFY0QE1AF"',
+382 silly get     'content-type': 'application/json',
+382 silly get     'cache-control': 'max-age=60',
+382 silly get     'content-length': '48851',
+382 silly get     'accept-ranges': 'bytes',
+382 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+382 silly get     via: '1.1 varnish',
+382 silly get     age: '39',
+382 silly get     connection: 'keep-alive',
+382 silly get     'x-served-by': 'cache-lax1434-LAX',
+382 silly get     'x-cache': 'HIT',
+382 silly get     'x-cache-hits': '1',
+382 silly get     'x-timer': 'S1433752137.770491,VS0,VE0',
+382 silly get     vary: 'Accept' } ]
+383 verbose get saving grunt-contrib-compass to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-compass/.cache.json
+384 http 304 https://registry.npmjs.org/karma-ng-html2js-preprocessor
+385 silly get cb [ 304,
+385 silly get   { date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+385 silly get     via: '1.1 varnish',
+385 silly get     'cache-control': 'max-age=60',
+385 silly get     etag: '"DFV7HNNFFL808JVDUY1K82E5C"',
+385 silly get     age: '0',
+385 silly get     connection: 'keep-alive',
+385 silly get     'x-served-by': 'cache-lax1431-LAX',
+385 silly get     'x-cache': 'HIT',
+385 silly get     'x-cache-hits': '1',
+385 silly get     'x-timer': 'S1433752137.953702,VS0,VE191',
+385 silly get     vary: 'Accept' } ]
+386 verbose etag https://registry.npmjs.org/karma-ng-html2js-preprocessor from cache
+387 verbose get saving karma-ng-html2js-preprocessor to /Users/songtao/.npm/registry.npmjs.org/karma-ng-html2js-preprocessor/.cache.json
+388 http 200 https://registry.npmjs.org/jshint-stylish
+389 silly get cb [ 200,
+389 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+389 silly get     etag: '"1KHQGNIJLB3HUS8Q6WECPDC00"',
+389 silly get     'content-type': 'application/json',
+389 silly get     'cache-control': 'max-age=60',
+389 silly get     'content-length': '17394',
+389 silly get     'accept-ranges': 'bytes',
+389 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+389 silly get     via: '1.1 varnish',
+389 silly get     age: '0',
+389 silly get     connection: 'keep-alive',
+389 silly get     'x-served-by': 'cache-lax1423-LAX',
+389 silly get     'x-cache': 'HIT',
+389 silly get     'x-cache-hits': '1',
+389 silly get     'x-timer': 'S1433752137.772841,VS0,VE200',
+389 silly get     vary: 'Accept' } ]
+390 verbose get saving jshint-stylish to /Users/songtao/.npm/registry.npmjs.org/jshint-stylish/.cache.json
+391 http 200 https://registry.npmjs.org/grunt-contrib-htmlmin
+392 silly get cb [ 200,
+392 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+392 silly get     etag: '"6C9QF4P1JHF7KQ47WZ193VIC0"',
+392 silly get     'content-type': 'application/json',
+392 silly get     'cache-control': 'max-age=60',
+392 silly get     'content-length': '17162',
+392 silly get     'accept-ranges': 'bytes',
+392 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+392 silly get     via: '1.1 varnish',
+392 silly get     age: '0',
+392 silly get     connection: 'keep-alive',
+392 silly get     'x-served-by': 'cache-lax1434-LAX',
+392 silly get     'x-cache': 'HIT',
+392 silly get     'x-cache-hits': '1',
+392 silly get     'x-timer': 'S1433752137.756865,VS0,VE326',
+392 silly get     vary: 'Accept' } ]
+393 verbose get saving grunt-contrib-htmlmin to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-htmlmin/.cache.json
+394 http 200 https://registry.npmjs.org/grunt-contrib-imagemin
+395 silly get cb [ 200,
+395 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+395 silly get     etag: '"54VEZN6ADGM15AP47Z75JSDJZ"',
+395 silly get     'content-type': 'application/json',
+395 silly get     'cache-control': 'max-age=60',
+395 silly get     'content-length': '56457',
+395 silly get     'accept-ranges': 'bytes',
+395 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+395 silly get     via: '1.1 varnish',
+395 silly get     age: '39',
+395 silly get     connection: 'keep-alive',
+395 silly get     'x-served-by': 'cache-lax1425-LAX',
+395 silly get     'x-cache': 'HIT',
+395 silly get     'x-cache-hits': '1',
+395 silly get     'x-timer': 'S1433752137.760554,VS0,VE0',
+395 silly get     vary: 'Accept' } ]
+396 verbose get saving grunt-contrib-imagemin to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-imagemin/.cache.json
+397 http 200 https://registry.npmjs.org/requirejs
+398 silly get cb [ 200,
+398 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+398 silly get     etag: '"ANEYZ8CMJ58040C5V6Y5KSVSJ"',
+398 silly get     'content-type': 'application/json',
+398 silly get     'cache-control': 'max-age=60',
+398 silly get     'content-length': '39273',
+398 silly get     'accept-ranges': 'bytes',
+398 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+398 silly get     via: '1.1 varnish',
+398 silly get     age: '0',
+398 silly get     connection: 'keep-alive',
+398 silly get     'x-served-by': 'cache-lax1433-LAX',
+398 silly get     'x-cache': 'HIT',
+398 silly get     'x-cache-hits': '1',
+398 silly get     'x-timer': 'S1433752137.778050,VS0,VE46',
+398 silly get     vary: 'Accept' } ]
+399 verbose get saving requirejs to /Users/songtao/.npm/registry.npmjs.org/requirejs/.cache.json
+400 http 200 https://registry.npmjs.org/grunt-usemin
+401 silly get cb [ 200,
+401 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+401 silly get     etag: '"B4W6R4Y1U8BU9WGZVAGJJYQ98"',
+401 silly get     'content-type': 'application/json',
+401 silly get     'cache-control': 'max-age=60',
+401 silly get     'content-length': '60477',
+401 silly get     'accept-ranges': 'bytes',
+401 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+401 silly get     via: '1.1 varnish',
+401 silly get     age: '0',
+401 silly get     connection: 'keep-alive',
+401 silly get     'x-served-by': 'cache-lax1435-LAX',
+401 silly get     'x-cache': 'HIT',
+401 silly get     'x-cache-hits': '1',
+401 silly get     'x-timer': 'S1433752137.774037,VS0,VE209',
+401 silly get     vary: 'Accept' } ]
+402 verbose get saving grunt-usemin to /Users/songtao/.npm/registry.npmjs.org/grunt-usemin/.cache.json
+403 http 304 https://registry.npmjs.org/karma-requirejs
+404 silly get cb [ 304,
+404 silly get   { date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+404 silly get     via: '1.1 varnish',
+404 silly get     'cache-control': 'max-age=60',
+404 silly get     etag: '"4196EIJK2MUDYCE5OEEPO38T"',
+404 silly get     age: '0',
+404 silly get     connection: 'keep-alive',
+404 silly get     'x-served-by': 'cache-lax1427-LAX',
+404 silly get     'x-cache': 'HIT',
+404 silly get     'x-cache-hits': '1',
+404 silly get     'x-timer': 'S1433752138.732168,VS0,VE82',
+404 silly get     vary: 'Accept' } ]
+405 verbose etag https://registry.npmjs.org/karma-requirejs from cache
+406 verbose get saving karma-requirejs to /Users/songtao/.npm/registry.npmjs.org/karma-requirejs/.cache.json
+407 http 200 https://registry.npmjs.org/karma-jasmine
+408 silly get cb [ 200,
+408 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+408 silly get     etag: '"D33SC8GORB3I2U3WZCSBZ5NA5"',
+408 silly get     'content-type': 'application/json',
+408 silly get     'cache-control': 'max-age=60',
+408 silly get     'content-length': '32016',
+408 silly get     'accept-ranges': 'bytes',
+408 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+408 silly get     via: '1.1 varnish',
+408 silly get     age: '40',
+408 silly get     connection: 'keep-alive',
+408 silly get     'x-served-by': 'cache-lax1428-LAX',
+408 silly get     'x-cache': 'HIT',
+408 silly get     'x-cache-hits': '1',
+408 silly get     'x-timer': 'S1433752138.281656,VS0,VE0',
+408 silly get     vary: 'Accept' } ]
+409 verbose get saving karma-jasmine to /Users/songtao/.npm/registry.npmjs.org/karma-jasmine/.cache.json
+410 http 200 https://registry.npmjs.org/grunt
+411 silly get cb [ 200,
+411 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+411 silly get     etag: '"9UNXQBDWNSVW3HVYRPKWOKQXV"',
+411 silly get     'content-type': 'application/json',
+411 silly get     'cache-control': 'max-age=60',
+411 silly get     'content-length': '89381',
+411 silly get     'accept-ranges': 'bytes',
+411 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+411 silly get     via: '1.1 varnish',
+411 silly get     age: '48',
+411 silly get     connection: 'keep-alive',
+411 silly get     'x-served-by': 'cache-lax1429-LAX',
+411 silly get     'x-cache': 'HIT',
+411 silly get     'x-cache-hits': '3',
+411 silly get     'x-timer': 'S1433752137.760095,VS0,VE0',
+411 silly get     vary: 'Accept' } ]
+412 verbose get saving grunt to /Users/songtao/.npm/registry.npmjs.org/grunt/.cache.json
+413 http 200 https://registry.npmjs.org/jasmine-core
+414 silly get cb [ 200,
+414 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+414 silly get     etag: '"3A8I029YPZWBKLXWRP5YEBEMQ"',
+414 silly get     'content-type': 'application/json',
+414 silly get     'cache-control': 'max-age=60',
+414 silly get     'content-length': '19599',
+414 silly get     'accept-ranges': 'bytes',
+414 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+414 silly get     via: '1.1 varnish',
+414 silly get     age: '40',
+414 silly get     connection: 'keep-alive',
+414 silly get     'x-served-by': 'cache-lax1424-LAX',
+414 silly get     'x-cache': 'HIT',
+414 silly get     'x-cache-hits': '2',
+414 silly get     'x-timer': 'S1433752138.274322,VS0,VE0',
+414 silly get     vary: 'Accept' } ]
+415 verbose get saving jasmine-core to /Users/songtao/.npm/registry.npmjs.org/jasmine-core/.cache.json
+416 http 200 https://registry.npmjs.org/load-grunt-tasks
+417 silly get cb [ 200,
+417 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+417 silly get     etag: '"EBDEC82SGMGDM9CXLHPE842B"',
+417 silly get     'content-type': 'application/json',
+417 silly get     'cache-control': 'max-age=60',
+417 silly get     'content-length': '23106',
+417 silly get     'accept-ranges': 'bytes',
+417 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+417 silly get     via: '1.1 varnish',
+417 silly get     age: '0',
+417 silly get     connection: 'keep-alive',
+417 silly get     'x-served-by': 'cache-lax1423-LAX',
+417 silly get     'x-cache': 'HIT',
+417 silly get     'x-cache-hits': '1',
+417 silly get     'x-timer': 'S1433752138.731488,VS0,VE193',
+417 silly get     vary: 'Accept' } ]
+418 verbose get saving load-grunt-tasks to /Users/songtao/.npm/registry.npmjs.org/load-grunt-tasks/.cache.json
+419 http 200 https://registry.npmjs.org/grunt-contrib-connect
+420 silly get cb [ 200,
+420 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+420 silly get     etag: '"5G2531O493WZF5XLMKZH1Z89O"',
+420 silly get     'content-type': 'application/json',
+420 silly get     'cache-control': 'max-age=60',
+420 silly get     'content-length': '46313',
+420 silly get     'accept-ranges': 'bytes',
+420 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+420 silly get     via: '1.1 varnish',
+420 silly get     age: '19',
+420 silly get     connection: 'keep-alive',
+420 silly get     'x-served-by': 'cache-lax1431-LAX',
+420 silly get     'x-cache': 'HIT',
+420 silly get     'x-cache-hits': '1',
+420 silly get     'x-timer': 'S1433752138.288838,VS0,VE0',
+420 silly get     vary: 'Accept' } ]
+421 verbose get saving grunt-contrib-connect to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-connect/.cache.json
+422 http 200 https://registry.npmjs.org/grunt-text-replace
+423 silly get cb [ 200,
+423 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+423 silly get     etag: '"3WZTFHVT2CZ618EPM9K62GQTH"',
+423 silly get     'content-type': 'application/json',
+423 silly get     'cache-control': 'max-age=60',
+423 silly get     'content-length': '46232',
+423 silly get     'accept-ranges': 'bytes',
+423 silly get     date: 'Mon, 08 Jun 2015 08:28:59 GMT',
+423 silly get     via: '1.1 varnish',
+423 silly get     age: '0',
+423 silly get     connection: 'keep-alive',
+423 silly get     'x-served-by': 'cache-lax1423-LAX',
+423 silly get     'x-cache': 'HIT',
+423 silly get     'x-cache-hits': '1',
+423 silly get     'x-timer': 'S1433752138.808335,VS0,VE199',
+423 silly get     vary: 'Accept' } ]
+424 verbose get saving grunt-text-replace to /Users/songtao/.npm/registry.npmjs.org/grunt-text-replace/.cache.json
+425 http 304 https://registry.npmjs.org/grunt-newer
+426 silly get cb [ 304,
+426 silly get   { date: 'Mon, 08 Jun 2015 08:29:00 GMT',
+426 silly get     via: '1.1 varnish',
+426 silly get     'cache-control': 'max-age=60',
+426 silly get     etag: '"DAMRCCGEU43MHUWZ7KUQHH1K0"',
+426 silly get     age: '42',
+426 silly get     connection: 'keep-alive',
+426 silly get     'x-served-by': 'cache-lax1420-LAX',
+426 silly get     'x-cache': 'HIT',
+426 silly get     'x-cache-hits': '1',
+426 silly get     'x-timer': 'S1433752140.234411,VS0,VE0',
+426 silly get     vary: 'Accept' } ]
+427 verbose etag https://registry.npmjs.org/grunt-newer from cache
+428 verbose get saving grunt-newer to /Users/songtao/.npm/registry.npmjs.org/grunt-newer/.cache.json
+429 http 200 https://registry.npmjs.org/grunt-karma
+430 silly get cb [ 200,
+430 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+430 silly get     etag: '"8XHQBQA623X12XHRMMHKQQM9Q"',
+430 silly get     'content-type': 'application/json',
+430 silly get     'cache-control': 'max-age=60',
+430 silly get     'content-length': '47314',
+430 silly get     'accept-ranges': 'bytes',
+430 silly get     date: 'Mon, 08 Jun 2015 08:29:00 GMT',
+430 silly get     via: '1.1 varnish',
+430 silly get     age: '42',
+430 silly get     connection: 'keep-alive',
+430 silly get     'x-served-by': 'cache-lax1426-LAX',
+430 silly get     'x-cache': 'HIT',
+430 silly get     'x-cache-hits': '1',
+430 silly get     'x-timer': 'S1433752140.232936,VS0,VE1',
+430 silly get     vary: 'Accept' } ]
+431 verbose get saving grunt-karma to /Users/songtao/.npm/registry.npmjs.org/grunt-karma/.cache.json
+432 http 200 https://registry.npmjs.org/grunt-filerev
+433 silly get cb [ 200,
+433 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+433 silly get     etag: '"A3KP34U5UXIHCRAMZSLRL05CW"',
+433 silly get     'content-type': 'application/json',
+433 silly get     'cache-control': 'max-age=60',
+433 silly get     'content-length': '24019',
+433 silly get     'accept-ranges': 'bytes',
+433 silly get     date: 'Mon, 08 Jun 2015 08:29:00 GMT',
+433 silly get     via: '1.1 varnish',
+433 silly get     age: '21',
+433 silly get     connection: 'keep-alive',
+433 silly get     'x-served-by': 'cache-lax1422-LAX',
+433 silly get     'x-cache': 'HIT',
+433 silly get     'x-cache-hits': '1',
+433 silly get     'x-timer': 'S1433752140.237512,VS0,VE0',
+433 silly get     vary: 'Accept' } ]
+434 verbose get saving grunt-filerev to /Users/songtao/.npm/registry.npmjs.org/grunt-filerev/.cache.json
+435 http 200 https://registry.npmjs.org/grunt-contrib-uglify
+436 silly get cb [ 200,
+436 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+436 silly get     etag: '"9SZBHSCAGABYOMTLZ6D9OYYCT"',
+436 silly get     'content-type': 'application/json',
+436 silly get     'cache-control': 'max-age=60',
+436 silly get     'content-length': '65676',
+436 silly get     'accept-ranges': 'bytes',
+436 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+436 silly get     via: '1.1 varnish',
+436 silly get     age: '58',
+436 silly get     connection: 'keep-alive',
+436 silly get     'x-served-by': 'cache-lax1421-LAX',
+436 silly get     'x-cache': 'HIT',
+436 silly get     'x-cache-hits': '1',
+436 silly get     'x-timer': 'S1433752138.996415,VS0,VE0',
+436 silly get     vary: 'Accept' } ]
+437 verbose get saving grunt-contrib-uglify to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-uglify/.cache.json
+438 http 200 https://registry.npmjs.org/grunt-contrib-watch
+439 silly get cb [ 200,
+439 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+439 silly get     etag: '"4S5BTIS4X37S2KS7YLYWQJ226"',
+439 silly get     'content-type': 'application/json',
+439 silly get     'cache-control': 'max-age=60',
+439 silly get     'content-length': '58538',
+439 silly get     'accept-ranges': 'bytes',
+439 silly get     date: 'Mon, 08 Jun 2015 08:28:58 GMT',
+439 silly get     via: '1.1 varnish',
+439 silly get     age: '41',
+439 silly get     connection: 'keep-alive',
+439 silly get     'x-served-by': 'cache-lax1421-LAX',
+439 silly get     'x-cache': 'HIT',
+439 silly get     'x-cache-hits': '5',
+439 silly get     'x-timer': 'S1433752138.996388,VS0,VE0',
+439 silly get     vary: 'Accept' } ]
+440 verbose get saving grunt-contrib-watch to /Users/songtao/.npm/registry.npmjs.org/grunt-contrib-watch/.cache.json
+441 http 200 https://registry.npmjs.org/karma
+442 silly get cb [ 200,
+442 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+442 silly get     etag: '"7BQAEDJI7A78LO00QTU9FEJ12"',
+442 silly get     'content-type': 'application/json',
+442 silly get     'cache-control': 'max-age=60',
+442 silly get     'content-length': '795661',
+442 silly get     'accept-ranges': 'bytes',
+442 silly get     date: 'Mon, 08 Jun 2015 08:28:57 GMT',
+442 silly get     via: '1.1 varnish',
+442 silly get     age: '18',
+442 silly get     connection: 'keep-alive',
+442 silly get     'x-served-by': 'cache-lax1434-LAX',
+442 silly get     'x-cache': 'HIT',
+442 silly get     'x-cache-hits': '1',
+442 silly get     'x-timer': 'S1433752137.775777,VS0,VE3',
+442 silly get     vary: 'Accept' } ]
+443 verbose get saving karma to /Users/songtao/.npm/registry.npmjs.org/karma/.cache.json
+444 verbose outdated not updating grunt-wiredep because it's currently at the maximum version that matches its specified semver range
+445 verbose outdated not updating grunt-bower-requirejs because it's currently at the maximum version that matches its specified semver range
+446 verbose outdated not updating karma-phantomjs-launcher because it's currently at the maximum version that matches its specified semver range
+447 verbose outdated not updating grunt-contrib-clean because it's currently at the maximum version that matches its specified semver range
+448 verbose outdated not updating grunt-svgmin because it's currently at the maximum version that matches its specified semver range
+449 verbose outdated not updating grunt-concurrent because it's currently at the maximum version that matches its specified semver range
+450 verbose outdated not updating grunt-contrib-cssmin because it's currently at the maximum version that matches its specified semver range
+451 verbose outdated not updating grunt-contrib-jshint because it's currently at the maximum version that matches its specified semver range
+452 verbose outdated not updating grunt-contrib-concat because it's currently at the maximum version that matches its specified semver range
+453 verbose outdated not updating grunt-autoprefixer because it's currently at the maximum version that matches its specified semver range
+454 verbose outdated not updating grunt-ng-annotate because it's currently at the maximum version that matches its specified semver range
+455 verbose outdated not updating time-grunt because it's currently at the maximum version that matches its specified semver range
+456 verbose outdated not updating grunt-contrib-copy because it's currently at the maximum version that matches its specified semver range
+457 verbose outdated not updating grunt-contrib-compass because it's currently at the maximum version that matches its specified semver range
+458 verbose outdated not updating jshint-stylish because it's currently at the maximum version that matches its specified semver range
+459 verbose outdated not updating grunt-contrib-htmlmin because it's currently at the maximum version that matches its specified semver range
+460 verbose outdated not updating grunt-contrib-imagemin because it's currently at the maximum version that matches its specified semver range
+461 verbose outdated not updating grunt-usemin because it's currently at the maximum version that matches its specified semver range
+462 verbose outdated not updating load-grunt-tasks because it's currently at the maximum version that matches its specified semver range
+463 verbose outdated not updating grunt-contrib-connect because it's currently at the maximum version that matches its specified semver range
+464 verbose outdated not updating grunt-text-replace because it's currently at the maximum version that matches its specified semver range
+465 verbose outdated not updating grunt-newer because it's currently at the maximum version that matches its specified semver range
+466 verbose outdated not updating grunt-karma because it's currently at the maximum version that matches its specified semver range
+467 verbose outdated not updating grunt-filerev because it's currently at the maximum version that matches its specified semver range
+468 verbose outdated not updating grunt-contrib-uglify because it's currently at the maximum version that matches its specified semver range
+469 info outdated updating [ [ '/Users/songtao/projects/kaoshi',
+469 info outdated     'requirejs',
+469 info outdated     '2.1.17',
+469 info outdated     '2.1.18',
+469 info outdated     '2.1.18',
+469 info outdated     '^2.1.15' ],
+469 info outdated   [ '/Users/songtao/projects/kaoshi',
+469 info outdated     'jasmine-core',
+469 info outdated     '2.3.0',
+469 info outdated     '2.3.4',
+469 info outdated     '2.3.4',
+469 info outdated     '^2.1.3' ],
+469 info outdated   [ '/Users/songtao/projects/kaoshi',
+469 info outdated     'karma',
+469 info outdated     '0.12.32',
+469 info outdated     '0.12.36',
+469 info outdated     '0.12.36',
+469 info outdated     '^0.12.31' ] ]
+470 verbose install where, what [ '/Users/songtao/projects/kaoshi', [ 'requirejs@2.1.18' ] ]
+471 verbose install where, what [ '/Users/songtao/projects/kaoshi', [ 'jasmine-core@2.3.4' ] ]
+472 verbose install where, what [ '/Users/songtao/projects/kaoshi', [ 'karma@0.12.36' ] ]
+473 verbose install initial load of /Users/songtao/projects/kaoshi/package.json
+474 verbose install initial load of /Users/songtao/projects/kaoshi/package.json
+475 verbose install initial load of /Users/songtao/projects/kaoshi/package.json
+476 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/bower/package.json
+477 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt/package.json
+478 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-autoprefixer/package.json
+479 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-bower-requirejs/package.json
+480 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-concurrent/package.json
+481 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-clean/package.json
+482 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-compass/package.json
+483 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-concat/package.json
+484 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-connect/package.json
+485 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-copy/package.json
+486 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-cssmin/package.json
+487 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-htmlmin/package.json
+488 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-imagemin/package.json
+489 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-jshint/package.json
+490 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-uglify/package.json
+491 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-watch/package.json
+492 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-filerev/package.json
+493 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-google-cdn/package.json
+494 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-karma/package.json
+495 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-newer/package.json
+496 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-ng-annotate/package.json
+497 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-requirejs/package.json
+498 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-svgmin/package.json
+499 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-text-replace/package.json
+500 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-usemin/package.json
+501 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-wiredep/package.json
+502 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+503 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jshint-stylish/package.json
+504 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma/package.json
+505 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-jasmine/package.json
+506 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-html2js-preprocessor/package.json
+507 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-scenario/package.json
+508 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-phantomjs-launcher/package.json
+509 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-requirejs/package.json
+510 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/load-grunt-tasks/package.json
+511 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+512 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/time-grunt/package.json
+513 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/uglify-js/package.json
+514 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/bower/package.json
+515 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt/package.json
+516 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-autoprefixer/package.json
+517 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-bower-requirejs/package.json
+518 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-concurrent/package.json
+519 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-clean/package.json
+520 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-compass/package.json
+521 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-concat/package.json
+522 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-connect/package.json
+523 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-copy/package.json
+524 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-cssmin/package.json
+525 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-htmlmin/package.json
+526 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-imagemin/package.json
+527 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-jshint/package.json
+528 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-uglify/package.json
+529 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-watch/package.json
+530 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-filerev/package.json
+531 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-google-cdn/package.json
+532 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-karma/package.json
+533 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-newer/package.json
+534 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-ng-annotate/package.json
+535 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-requirejs/package.json
+536 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-svgmin/package.json
+537 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-text-replace/package.json
+538 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-usemin/package.json
+539 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-wiredep/package.json
+540 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+541 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jshint-stylish/package.json
+542 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma/package.json
+543 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-jasmine/package.json
+544 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-html2js-preprocessor/package.json
+545 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-scenario/package.json
+546 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-phantomjs-launcher/package.json
+547 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-requirejs/package.json
+548 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/load-grunt-tasks/package.json
+549 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+550 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/time-grunt/package.json
+551 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/uglify-js/package.json
+552 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/bower/package.json
+553 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt/package.json
+554 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-autoprefixer/package.json
+555 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-bower-requirejs/package.json
+556 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-concurrent/package.json
+557 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-clean/package.json
+558 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-compass/package.json
+559 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-concat/package.json
+560 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-connect/package.json
+561 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-copy/package.json
+562 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-cssmin/package.json
+563 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-htmlmin/package.json
+564 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-imagemin/package.json
+565 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-jshint/package.json
+566 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-uglify/package.json
+567 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-contrib-watch/package.json
+568 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-filerev/package.json
+569 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-google-cdn/package.json
+570 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-karma/package.json
+571 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-newer/package.json
+572 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-ng-annotate/package.json
+573 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-requirejs/package.json
+574 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-svgmin/package.json
+575 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-text-replace/package.json
+576 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-usemin/package.json
+577 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/grunt-wiredep/package.json
+578 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+579 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/jshint-stylish/package.json
+580 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma/package.json
+581 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-jasmine/package.json
+582 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-html2js-preprocessor/package.json
+583 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-ng-scenario/package.json
+584 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-phantomjs-launcher/package.json
+585 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/karma-requirejs/package.json
+586 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/load-grunt-tasks/package.json
+587 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+588 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/time-grunt/package.json
+589 verbose installManyTop reading scoped package data from /Users/songtao/projects/kaoshi/node_modules/uglify-js/package.json
+590 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/package.json
+591 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/package.json
+592 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/package.json
+593 silly cache add args [ 'karma@0.12.36', null ]
+594 verbose cache add spec karma@0.12.36
+595 silly cache add parsed spec { raw: 'karma@0.12.36',
+595 silly cache add   scope: null,
+595 silly cache add   name: 'karma',
+595 silly cache add   rawSpec: '0.12.36',
+595 silly cache add   spec: '0.12.36',
+595 silly cache add   type: 'version' }
+596 silly addNamed karma@0.12.36
+597 verbose addNamed "0.12.36" is a plain semver version for karma
+598 silly mapToRegistry name karma
+599 silly mapToRegistry using default registry
+600 silly mapToRegistry registry https://registry.npmjs.org/
+601 silly mapToRegistry uri https://registry.npmjs.org/karma
+602 verbose addNameVersion registry:https://registry.npmjs.org/karma not in flight; fetching
+603 silly cache add args [ 'jasmine-core@2.3.4', null ]
+604 verbose cache add spec jasmine-core@2.3.4
+605 silly cache add parsed spec { raw: 'jasmine-core@2.3.4',
+605 silly cache add   scope: null,
+605 silly cache add   name: 'jasmine-core',
+605 silly cache add   rawSpec: '2.3.4',
+605 silly cache add   spec: '2.3.4',
+605 silly cache add   type: 'version' }
+606 silly addNamed jasmine-core@2.3.4
+607 verbose addNamed "2.3.4" is a plain semver version for jasmine-core
+608 silly mapToRegistry name jasmine-core
+609 silly mapToRegistry using default registry
+610 silly mapToRegistry registry https://registry.npmjs.org/
+611 silly mapToRegistry uri https://registry.npmjs.org/jasmine-core
+612 verbose addNameVersion registry:https://registry.npmjs.org/jasmine-core not in flight; fetching
+613 silly cache add args [ 'requirejs@2.1.18', null ]
+614 verbose cache add spec requirejs@2.1.18
+615 silly cache add parsed spec { raw: 'requirejs@2.1.18',
+615 silly cache add   scope: null,
+615 silly cache add   name: 'requirejs',
+615 silly cache add   rawSpec: '2.1.18',
+615 silly cache add   spec: '2.1.18',
+615 silly cache add   type: 'version' }
+616 silly addNamed requirejs@2.1.18
+617 verbose addNamed "2.1.18" is a plain semver version for requirejs
+618 silly mapToRegistry name requirejs
+619 silly mapToRegistry using default registry
+620 silly mapToRegistry registry https://registry.npmjs.org/
+621 silly mapToRegistry uri https://registry.npmjs.org/requirejs
+622 verbose addNameVersion registry:https://registry.npmjs.org/requirejs not in flight; fetching
+623 verbose get https://registry.npmjs.org/requirejs not expired, no request
+624 verbose get https://registry.npmjs.org/jasmine-core not expired, no request
+625 verbose get https://registry.npmjs.org/karma not expired, no request
+626 silly mapToRegistry name requirejs
+627 silly mapToRegistry using default registry
+628 silly mapToRegistry registry https://registry.npmjs.org/
+629 silly mapToRegistry uri https://registry.npmjs.org/requirejs
+630 verbose addRemoteTarball https://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz not in flight; adding
+631 verbose addRemoteTarball [ 'https://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz',
+631 verbose addRemoteTarball   '627181efb8b7d184a6533c9736a90a5a378ec43c' ]
+632 silly mapToRegistry name jasmine-core
+633 silly mapToRegistry using default registry
+634 silly mapToRegistry registry https://registry.npmjs.org/
+635 silly mapToRegistry uri https://registry.npmjs.org/jasmine-core
+636 verbose addRemoteTarball https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz not in flight; adding
+637 verbose addRemoteTarball [ 'https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz',
+637 verbose addRemoteTarball   'ad772662b32d16c564ee25c863edae1d65a038f2' ]
+638 silly mapToRegistry name karma
+639 silly mapToRegistry using default registry
+640 silly mapToRegistry registry https://registry.npmjs.org/
+641 silly mapToRegistry uri https://registry.npmjs.org/karma
+642 verbose addRemoteTarball https://registry.npmjs.org/karma/-/karma-0.12.36.tgz not in flight; adding
+643 verbose addRemoteTarball [ 'https://registry.npmjs.org/karma/-/karma-0.12.36.tgz',
+643 verbose addRemoteTarball   '070848482162085139d5682d5ed3a4b6094557bc' ]
+644 info retry fetch attempt 1 at 16:29:07
+645 info attempt registry request try #1 at 16:29:07
+646 http fetch GET https://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz
+647 info retry fetch attempt 1 at 16:29:08
+648 info attempt registry request try #1 at 16:29:08
+649 http fetch GET https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz
+650 info retry fetch attempt 1 at 16:29:08
+651 info attempt registry request try #1 at 16:29:08
+652 http fetch GET https://registry.npmjs.org/karma/-/karma-0.12.36.tgz
+653 http fetch 200 https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz
+654 http fetch 200 https://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz
+655 http fetch 200 https://registry.npmjs.org/karma/-/karma-0.12.36.tgz
+656 silly fetchAndShaCheck shasum ad772662b32d16c564ee25c863edae1d65a038f2
+657 verbose addTmpTarball /var/folders/sx/4h2lbsxd3nxdmmgncrz_5xm80000gn/T/npm-1625-05d06205/registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz not in flight; adding
+658 verbose addTmpTarball already have metadata; skipping unpack for jasmine-core@2.3.4
+659 silly cache afterAdd jasmine-core@2.3.4
+660 verbose afterAdd /Users/songtao/.npm/jasmine-core/2.3.4/package/package.json not in flight; writing
+661 verbose afterAdd /Users/songtao/.npm/jasmine-core/2.3.4/package/package.json written
+662 silly install resolved [ { name: 'jasmine-core',
+662 silly install resolved     license: 'MIT',
+662 silly install resolved     version: '2.3.4',
+662 silly install resolved     repository: { type: 'git', url: 'https://github.com/jasmine/jasmine.git' },
+662 silly install resolved     keywords: [ 'test', 'jasmine', 'tdd', 'bdd' ],
+662 silly install resolved     scripts: { test: 'grunt jshint execSpecsInNode' },
+662 silly install resolved     description: 'Official packaging of Jasmine\'s core files for use by Node.js projects.',
+662 silly install resolved     homepage: 'http://jasmine.github.io',
+662 silly install resolved     main: './lib/jasmine-core.js',
+662 silly install resolved     devDependencies:
+662 silly install resolved      { glob: '~3.2.9',
+662 silly install resolved        grunt: '~0.4.1',
+662 silly install resolved        'grunt-cli': '^0.1.13',
+662 silly install resolved        'grunt-contrib-compass': '~0.6.0',
+662 silly install resolved        'grunt-contrib-compress': '~0.5.2',
+662 silly install resolved        'grunt-contrib-concat': '~0.3.0',
+662 silly install resolved        'grunt-contrib-jshint': '~0.7.0',
+662 silly install resolved        jasmine: 'https://github.com/jasmine/jasmine-npm/archive/master.tar.gz',
+662 silly install resolved        'load-grunt-tasks': '^0.4.0',
+662 silly install resolved        shelljs: '~0.1.4',
+662 silly install resolved        temp: '~0.8.1' },
+662 silly install resolved     gitHead: '0b1449228ff42df47f4e18a186134f4aa44b8b7b',
+662 silly install resolved     bugs: { url: 'https://github.com/jasmine/jasmine/issues' },
+662 silly install resolved     _id: 'jasmine-core@2.3.4',
+662 silly install resolved     _shasum: 'ad772662b32d16c564ee25c863edae1d65a038f2',
+662 silly install resolved     _from: 'jasmine-core@2.3.4',
+662 silly install resolved     _npmVersion: '2.5.1',
+662 silly install resolved     _nodeVersion: '0.12.0',
+662 silly install resolved     _npmUser: { name: 'slackersoft', email: 'gregg@slackersoft.net' },
+662 silly install resolved     dist:
+662 silly install resolved      { shasum: 'ad772662b32d16c564ee25c863edae1d65a038f2',
+662 silly install resolved        tarball: 'http://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz' },
+662 silly install resolved     maintainers: [ [Object], [Object] ],
+662 silly install resolved     directories: {},
+662 silly install resolved     _resolved: 'https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.4.tgz' } ]
+663 info install jasmine-core@2.3.4 into /Users/songtao/projects/kaoshi
+664 info installOne jasmine-core@2.3.4
+665 verbose installOne of jasmine-core to /Users/songtao/projects/kaoshi not in flight; installing
+666 verbose lock using /Users/songtao/.npm/_locks/jasmine-core-1d6c9957a6022e0e.lock for /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+667 silly install write writing jasmine-core 2.3.4 to /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+668 verbose unbuild node_modules/jasmine-core
+669 info preuninstall jasmine-core@2.3.0
+670 info uninstall jasmine-core@2.3.0
+671 verbose unbuild rmStuff jasmine-core@2.3.0 from /Users/songtao/projects/kaoshi/node_modules
+672 info postuninstall jasmine-core@2.3.0
+673 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/jasmine-core is being purged from base /Users/songtao/projects/kaoshi
+674 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+675 silly vacuum-fs purging /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+676 silly vacuum-fs quitting because other entries in /Users/songtao/projects/kaoshi/node_modules
+677 verbose tar unpack /Users/songtao/.npm/jasmine-core/2.3.4/package.tgz
+678 verbose tar unpacking to /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+679 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/jasmine-core is being purged
+680 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+681 silly gunzTarPerm modes [ '755', '644' ]
+682 silly gunzTarPerm extractEntry package.json
+683 silly gunzTarPerm extractEntry .npmignore
+684 silly gunzTarPerm extractEntry README.md
+685 silly gunzTarPerm extractEntry CONTRIBUTING.md
+686 silly gunzTarPerm extractEntry GOALS_2.0.md
+687 silly gunzTarPerm extractEntry MANIFEST.in
+688 silly gunzTarPerm extractEntry MIT.LICENSE
+689 silly gunzTarPerm extractEntry RELEASE.md
+690 silly gunzTarPerm extractEntry bower.json
+691 silly gunzTarPerm extractEntry images/jasmine-horizontal.png
+692 silly gunzTarPerm extractEntry images/jasmine-horizontal.svg
+693 silly gunzTarPerm extractEntry images/jasmine_favicon.png
+694 silly gunzTarPerm extractEntry lib/jasmine-core.js
+695 silly gunzTarPerm extractEntry lib/console/console.js
+696 silly gunzTarPerm extractEntry lib/jasmine-core/boot.js
+697 silly gunzTarPerm extractEntry lib/jasmine-core/jasmine-html.js
+698 silly gunzTarPerm extractEntry lib/jasmine-core/jasmine.js
+699 silly gunzTarPerm extractEntry lib/jasmine-core/json2.js
+700 silly gunzTarPerm extractEntry lib/jasmine-core/node_boot.js
+701 silly gunzTarPerm extractEntry lib/jasmine-core/example/node_example/lib/jasmine_examples/Player.js
+702 silly gunzTarPerm extractEntry lib/jasmine-core/example/node_example/lib/jasmine_examples/Song.js
+703 silly gunzTarPerm extractEntry lib/jasmine-core/example/node_example/spec/helpers/jasmine_examples/SpecHelper.js
+704 silly gunzTarPerm extractEntry lib/jasmine-core/example/node_example/spec/jasmine_examples/PlayerSpec.js
+705 silly gunzTarPerm extractEntry lib/jasmine-core/example/spec/PlayerSpec.js
+706 silly gunzTarPerm extractEntry lib/jasmine-core/example/spec/SpecHelper.js
+707 silly gunzTarPerm extractEntry lib/jasmine-core/example/src/Player.js
+708 silly gunzTarPerm extractEntry lib/jasmine-core/example/src/Song.js
+709 silly gunzTarPerm extractEntry lib/jasmine-core/jasmine.css
+710 silly gunzTarPerm extractEntry requirements.txt
+711 verbose write writing to /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+712 info preinstall jasmine-core@2.3.4
+713 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+714 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/node_modules/jasmine-core/package.json
+715 silly install resolved []
+716 verbose about to build /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+717 info build /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+718 info linkStuff jasmine-core@2.3.4
+719 silly linkStuff jasmine-core@2.3.4 has /Users/songtao/projects/kaoshi/node_modules as its parent node_modules
+720 verbose linkBins jasmine-core@2.3.4
+721 verbose linkMans jasmine-core@2.3.4
+722 verbose rebuildBundles jasmine-core@2.3.4
+723 info install jasmine-core@2.3.4
+724 info postinstall jasmine-core@2.3.4
+725 verbose unlock done using /Users/songtao/.npm/_locks/jasmine-core-1d6c9957a6022e0e.lock for /Users/songtao/projects/kaoshi/node_modules/jasmine-core
+726 verbose validateInstall loading /Users/songtao/projects/kaoshi/package.json for validation
+727 silly fetchAndShaCheck shasum 070848482162085139d5682d5ed3a4b6094557bc
+728 verbose addTmpTarball /var/folders/sx/4h2lbsxd3nxdmmgncrz_5xm80000gn/T/npm-1625-05d06205/registry.npmjs.org/karma/-/karma-0.12.36.tgz not in flight; adding
+729 verbose addTmpTarball already have metadata; skipping unpack for karma@0.12.36
+730 silly cache afterAdd karma@0.12.36
+731 verbose afterAdd /Users/songtao/.npm/karma/0.12.36/package/package.json not in flight; writing
+732 verbose afterAdd /Users/songtao/.npm/karma/0.12.36/package/package.json written
+733 silly install resolved [ { name: 'karma',
+733 silly install resolved     description: 'Spectacular Test Runner for JavaScript.',
+733 silly install resolved     homepage: 'http://karma-runner.github.io/',
+733 silly install resolved     repository: { type: 'git', url: 'git://github.com/karma-runner/karma.git' },
+733 silly install resolved     bugs: { url: 'https://github.com/karma-runner/karma/issues' },
+733 silly install resolved     keywords:
+733 silly install resolved      [ 'karma',
+733 silly install resolved        'spectacular',
+733 silly install resolved        'runner',
+733 silly install resolved        'karma',
+733 silly install resolved        'js',
+733 silly install resolved        'javascript',
+733 silly install resolved        'testing',
+733 silly install resolved        'test',
+733 silly install resolved        'remote',
+733 silly install resolved        'execution' ],
+733 silly install resolved     author: { name: 'Vojta Jína', email: 'vojta.jina@gmail.com' },
+733 silly install resolved     contributors:
+733 silly install resolved      [ [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object],
+733 silly install resolved        [Object] ],
+733 silly install resolved     dependencies:
+733 silly install resolved      { chokidar: '^1.0.1',
+733 silly install resolved        colors: '^1.1.0',
+733 silly install resolved        connect: '^2.29.2',
+733 silly install resolved        di: '^0.0.1',
+733 silly install resolved        glob: '^5.0.6',
+733 silly install resolved        'graceful-fs': '^3.0.6',
+733 silly install resolved        'http-proxy': '^0.10',
+733 silly install resolved        lodash: '^3.8.0',
+733 silly install resolved        log4js: '^0.6.25',
+733 silly install resolved        mime: '^1.3.4',
+733 silly install resolved        minimatch: '^2.0.7',
+733 silly install resolved        optimist: '^0.6.1',
+733 silly install resolved        q: '^1.4.1',
+733 silly install resolved        rimraf: '^2.3.3',
+733 silly install resolved        'socket.io': '0.9.16',
+733 silly install resolved        'source-map': '^0.4.2',
+733 silly install resolved        useragent: '^2.1.6' },
+733 silly install resolved     devDependencies:
+733 silly install resolved      { LiveScript: '^1.3.0',
+733 silly install resolved        chai: '^2.3.0',
+733 silly install resolved        'chai-as-promised': '^5.0.0',
+733 silly install resolved        'coffee-errors': '^0.8.6',
+733 silly install resolved        'coffee-script': '^1.9.2',
+733 silly install resolved        cucumber: '^0.4.7',
+733 silly install resolved        grunt: '^0.4',
+733 silly install resolved        'grunt-auto-release': '^0.0.6',
+733 silly install resolved        'grunt-browserify': '^3.8.0',
+733 silly install resolved        'grunt-bump': '^0.3.1',
+733 silly install resolved        'grunt-coffeelint': '^0.0.13',
+733 silly install resolved        'grunt-contrib-jshint': '^0.11.2',
+733 silly install resolved        'grunt-contrib-watch': '^0.6.1',
+733 silly install resolved        'grunt-conventional-changelog': '^1.2.2',
+733 silly install resolved        'grunt-cucumberjs': '^0.7.0',
+733 silly install resolved        'grunt-jscs': '^1.8.0',
+733 silly install resolved        'grunt-mocha-test': '^0.12.7',
+733 silly install resolved        'grunt-npm': '0.0.2',
+733 silly install resolved        'karma-browserstack-launcher': '*',
+733 silly install resolved        'karma-chrome-launcher': '*',
+733 silly install resolved        'karma-coffee-preprocessor': '*',
+733 silly install resolved        'karma-commonjs': '*',
+733 silly install resolved        'karma-coverage': '*',
+733 silly install resolved        'karma-firefox-launcher': '*',
+733 silly install resolved        'karma-growl-reporter': '*',
+733 silly install resolved        'karma-html2js-preprocessor': '*',
+733 silly install resolved        'karma-jasmine': '^0.1.5',
+733 silly install resolved        'karma-junit-reporter': '*',
+733 silly install resolved        'karma-live-preprocessor': '*',
+733 silly install resolved        'karma-mocha': '*',
+733 silly install resolved        'karma-ng-scenario': '*',
+733 silly install resolved        'karma-phantomjs-launcher': '*',
+733 silly install resolved        'karma-qunit': '*',
+733 silly install resolved        'karma-requirejs': '*',
+733 silly install resolved        'karma-sauce-launcher': '*',
+733 silly install resolved        'karma-script-launcher': '^0.1.0',
+733 silly install resolved        'load-grunt-tasks': '^3.1.0',
+733 silly install resolved        mkdirp: '^0.5.0',
+733 silly install resolved        mocha: '^2.2.5',
+733 silly install resolved        mocks: '^0.0.15',
+733 silly install resolved        sinon: '^1.14.1',
+733 silly install resolved        'sinon-chai': '^2.7.0',
+733 silly install resolved        'timer-shim': '^0.3.0',
+733 silly install resolved        which: '^1.1.1' },
+733 silly install resolved     main: './lib/index',
+733 silly install resolved     bin: { karma: './bin/karma' },
+733 silly install resolved     engines: { node: '>=0.8 <=0.12 || >=1 <=2' },
+733 silly install resolved     version: '0.12.36',
+733 silly install resolved     license: 'MIT',
+733 silly install resolved     gitHead: 'c0bd010dc5ed695bfcdec7ec816a4cc3060d934b',
+733 silly install resolved     _id: 'karma@0.12.36',
+733 silly install resolved     scripts: {},
+733 silly install resolved     _shasum: '070848482162085139d5682d5ed3a4b6094557bc',
+733 silly install resolved     _from: 'karma@0.12.36',
+733 silly install resolved     _npmVersion: '2.11.0',
+733 silly install resolved     _nodeVersion: '0.10.38',
+733 silly install resolved     _npmUser: { name: 'dignifiedquire', email: 'dignifiedquire@gmail.com' },
+733 silly install resolved     dist:
+733 silly install resolved      { shasum: '070848482162085139d5682d5ed3a4b6094557bc',
+733 silly install resolved        tarball: 'http://registry.npmjs.org/karma/-/karma-0.12.36.tgz' },
+733 silly install resolved     maintainers: [ [Object], [Object], [Object], [Object] ],
+733 silly install resolved     directories: {},
+733 silly install resolved     _resolved: 'https://registry.npmjs.org/karma/-/karma-0.12.36.tgz' } ]
+734 info install karma@0.12.36 into /Users/songtao/projects/kaoshi
+735 info installOne karma@0.12.36
+736 verbose installOne of karma to /Users/songtao/projects/kaoshi not in flight; installing
+737 verbose lock using /Users/songtao/.npm/_locks/karma-85ad2d118a5cee7b.lock for /Users/songtao/projects/kaoshi/node_modules/karma
+738 silly install write writing karma 0.12.36 to /Users/songtao/projects/kaoshi/node_modules/karma
+739 verbose unbuild node_modules/karma
+740 info preuninstall karma@0.12.32
+741 info uninstall karma@0.12.32
+742 verbose unbuild rmStuff karma@0.12.32 from /Users/songtao/projects/kaoshi/node_modules
+743 info postuninstall karma@0.12.32
+744 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/karma is being purged from base /Users/songtao/projects/kaoshi
+745 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/karma
+746 silly vacuum-fs purging /Users/songtao/projects/kaoshi/node_modules/karma
+747 verbose unlock done using /Users/songtao/.npm/_locks/karma-85ad2d118a5cee7b.lock for /Users/songtao/projects/kaoshi/node_modules/karma
+748 silly fetchAndShaCheck shasum 627181efb8b7d184a6533c9736a90a5a378ec43c
+749 verbose addTmpTarball /var/folders/sx/4h2lbsxd3nxdmmgncrz_5xm80000gn/T/npm-1625-05d06205/registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz not in flight; adding
+750 verbose addTmpTarball already have metadata; skipping unpack for requirejs@2.1.18
+751 silly cache afterAdd requirejs@2.1.18
+752 verbose afterAdd /Users/songtao/.npm/requirejs/2.1.18/package/package.json not in flight; writing
+753 verbose afterAdd /Users/songtao/.npm/requirejs/2.1.18/package/package.json written
+754 silly install resolved [ { name: 'requirejs',
+754 silly install resolved     description: 'Node adapter for RequireJS, for loading AMD modules. Includes RequireJS optimizer',
+754 silly install resolved     version: '2.1.18',
+754 silly install resolved     homepage: 'http://github.com/jrburke/r.js',
+754 silly install resolved     author:
+754 silly install resolved      { name: 'James Burke',
+754 silly install resolved        email: 'jrburke@gmail.com',
+754 silly install resolved        url: 'http://github.com/jrburke' },
+754 silly install resolved     licenses: [ [Object], [Object] ],
+754 silly install resolved     repository: { type: 'git', url: 'https://github.com/jrburke/r.js.git' },
+754 silly install resolved     main: './bin/r.js',
+754 silly install resolved     bin: { 'r.js': './bin/r.js' },
+754 silly install resolved     engines: { node: '>=0.4.0' },
+754 silly install resolved     bugs: { url: 'https://github.com/jrburke/r.js/issues' },
+754 silly install resolved     _id: 'requirejs@2.1.18',
+754 silly install resolved     scripts: {},
+754 silly install resolved     _shasum: '627181efb8b7d184a6533c9736a90a5a378ec43c',
+754 silly install resolved     _from: 'requirejs@2.1.18',
+754 silly install resolved     _npmVersion: '1.4.28',
+754 silly install resolved     _npmUser: { name: 'jrburke', email: 'jrburke@gmail.com' },
+754 silly install resolved     maintainers: [ [Object] ],
+754 silly install resolved     dist:
+754 silly install resolved      { shasum: '627181efb8b7d184a6533c9736a90a5a378ec43c',
+754 silly install resolved        tarball: 'http://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz' },
+754 silly install resolved     directories: {},
+754 silly install resolved     _resolved: 'https://registry.npmjs.org/requirejs/-/requirejs-2.1.18.tgz' } ]
+755 info install requirejs@2.1.18 into /Users/songtao/projects/kaoshi
+756 info installOne requirejs@2.1.18
+757 verbose installOne of requirejs to /Users/songtao/projects/kaoshi not in flight; installing
+758 verbose lock using /Users/songtao/.npm/_locks/requirejs-e6cb70af4f4c81b6.lock for /Users/songtao/projects/kaoshi/node_modules/requirejs
+759 silly install write writing requirejs 2.1.18 to /Users/songtao/projects/kaoshi/node_modules/requirejs
+760 verbose unbuild node_modules/requirejs
+761 info preuninstall requirejs@2.1.17
+762 info uninstall requirejs@2.1.17
+763 verbose unbuild rmStuff requirejs@2.1.17 from /Users/songtao/projects/kaoshi/node_modules
+764 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/.bin/r.js is being gently removed
+765 silly gentlyRm verifying /Users/songtao/projects/kaoshi is an npm working directory
+766 silly gentlyRm containing path /Users/songtao/projects/kaoshi is under npm's control, in /Users/songtao/projects/kaoshi
+767 silly gentlyRm deletion target /Users/songtao/projects/kaoshi/node_modules/.bin/r.js is under /Users/songtao/projects/kaoshi
+768 verbose gentlyRm vacuuming from /Users/songtao/projects/kaoshi/node_modules/.bin/r.js up to /Users/songtao/projects/kaoshi
+769 silly vacuum-fs removing /Users/songtao/projects/kaoshi/node_modules/.bin/r.js
+770 silly vacuum-fs quitting because other entries in /Users/songtao/projects/kaoshi/node_modules/.bin
+771 info postuninstall requirejs@2.1.17
+772 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/requirejs is being purged from base /Users/songtao/projects/kaoshi
+773 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/requirejs
+774 silly vacuum-fs purging /Users/songtao/projects/kaoshi/node_modules/requirejs
+775 silly vacuum-fs quitting because other entries in /Users/songtao/projects/kaoshi/node_modules
+776 verbose tar unpack /Users/songtao/.npm/requirejs/2.1.18/package.tgz
+777 verbose tar unpacking to /Users/songtao/projects/kaoshi/node_modules/requirejs
+778 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/requirejs is being purged
+779 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/requirejs
+780 silly gunzTarPerm modes [ '755', '644' ]
+781 silly gunzTarPerm extractEntry package.json
+782 silly gunzTarPerm extractEntry README.md
+783 silly gunzTarPerm extractEntry require.js
+784 silly gunzTarPerm extractEntry bin/r.js
+785 verbose write writing to /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+786 info preinstall requirejs@2.1.18
+787 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+788 verbose readDependencies loading dependencies from /Users/songtao/projects/kaoshi/node_modules/requirejs/package.json
+789 silly install resolved []
+790 verbose about to build /Users/songtao/projects/kaoshi/node_modules/requirejs
+791 info build /Users/songtao/projects/kaoshi/node_modules/requirejs
+792 info linkStuff requirejs@2.1.18
+793 silly linkStuff requirejs@2.1.18 has /Users/songtao/projects/kaoshi/node_modules as its parent node_modules
+794 verbose linkBins requirejs@2.1.18
+795 verbose link bins [ { 'r.js': './bin/r.js' },
+795 verbose link bins   '/Users/songtao/projects/kaoshi/node_modules/.bin',
+795 verbose link bins   false ]
+796 verbose linkMans requirejs@2.1.18
+797 verbose rebuildBundles requirejs@2.1.18
+798 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/.bin/r.js is being purged
+799 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/.bin/r.js
+800 info install requirejs@2.1.18
+801 info postinstall requirejs@2.1.18
+802 verbose unlock done using /Users/songtao/.npm/_locks/requirejs-e6cb70af4f4c81b6.lock for /Users/songtao/projects/kaoshi/node_modules/requirejs
+803 verbose validateInstall loading /Users/songtao/projects/kaoshi/package.json for validation
+804 verbose stack Error: EACCES, unlink '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/rimraf'
+804 verbose stack     at Error (native)
+805 verbose cwd /Users/songtao/projects/kaoshi
+806 error Darwin 14.3.0
+807 error argv "node" "/usr/local/bin/npm" "update"
+808 error node v0.12.4
+809 error npm  v2.10.1
+810 error path /Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/rimraf
+811 error code EACCES
+812 error errno -13
+813 error Error: EACCES, unlink '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/rimraf'
+813 error     at Error (native)
+813 error  { [Error: EACCES, unlink '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/rimraf']
+813 error   errno: -13,
+813 error   code: 'EACCES',
+813 error   path: '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/rimraf' }
+814 error Please try running this command again as root/Administrator.
+815 verbose exit [ -13, true ]
+816 verbose unbuild node_modules/karma
+817 silly gentlyRm /Users/songtao/projects/kaoshi/node_modules/karma is being purged from base /Users/songtao/projects/kaoshi
+818 verbose gentlyRm don't care about contents; nuking /Users/songtao/projects/kaoshi/node_modules/karma
+819 silly vacuum-fs purging /Users/songtao/projects/kaoshi/node_modules/karma
+820 error error rolling back Error: EACCES, unlink '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/node-http-proxy'
+820 error error rolling back     at Error (native)
+820 error error rolling back  { [Error: EACCES, unlink '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/node-http-proxy']
+820 error error rolling back   errno: -13,
+820 error error rolling back   code: 'EACCES',
+820 error error rolling back   path: '/Users/songtao/projects/kaoshi/node_modules/karma/node_modules/.bin/node-http-proxy' }

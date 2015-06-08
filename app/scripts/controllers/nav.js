@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, config) {
+define(['angular', 'config','jquery', 'underscore'], function (angular, config, $, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
@@ -66,7 +66,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
               user.SHOUJI = data.SHOUJI;
               user.JIGOUMINGCHENG = data.JIGOU[0].JIGOUMINGCHENG;
               user.SHOUJI = data.SHOUJI;
-              JQ('.modifuMiMaInfo').html('');
+              $('.modifuMiMaInfo').html('');
               //查询领域，去取已有领域;查询父领域的代码
               $http.get(apiUrlLy + data.JIGOU[0].JIGOU_ID).success(function(jgData) {
                 if(jgData && jgData.length){
@@ -137,7 +137,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           objAndRightObj.juese.jueseName = selectJueseNameArr;
           objAndRightList.push(objAndRightObj);
           $scope.objAndRight = objAndRightList;
-          JQ('input[name=rightName]:checked').prop('checked', false);
+          $('input[name=rightName]:checked').prop('checked', false);
           $scope.jueseValue = false;
           $scope.linyuValue = false;
         };
@@ -160,7 +160,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
         $scope.getJueSeArr = function(){
           selectJueseIdArr = [];
           selectJueseNameArr = [];
-          var jueseItem = JQ('input[name=rightName]:checked');
+          var jueseItem = $('input[name=rightName]:checked');
           _.each(jueseItem,function(js, idx, lst){
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
@@ -227,7 +227,7 @@ define(['jquery', 'underscore', 'angular', 'config'], function (JQ, _, angular, 
           };
           newPsdData.UID = userInfo.UID;
           newPsdData.MIMA = $scope.navData.newPsd;
-          JQ('.modifuMiMaInfo').html('');
+          $('.modifuMiMaInfo').html('');
           $http.post(alterYongHu, newPsdData).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '密码修改成功！');

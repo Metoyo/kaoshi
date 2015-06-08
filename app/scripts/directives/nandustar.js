@@ -1,4 +1,4 @@
-define(['angular', 'jquery'], function (angular, JQ) {
+define(['angular', 'jquery'], function (angular, $) {
   'use strict';
   angular.module('kaoshiApp.directives.Nandustar', [])
     .directive('nanduStar', function () {
@@ -6,16 +6,16 @@ define(['angular', 'jquery'], function (angular, JQ) {
         restrict: 'A',
         link: function postLink(scope, element, attrs) {
           var targetClass = '.' + attrs.class,
-            targetSlt = JQ(targetClass),
+            targetSlt = $(targetClass),
             targetA = targetSlt.find('a'),
             nanduTarget = element.find('input'),
             hoverIdx, hoverCss, clickCss;
           targetA.hover(function(){
-            hoverIdx = JQ(this).index() + 1;
+            hoverIdx = $(this).index() + 1;
             hoverCss = 'starHover' + hoverIdx;
             targetSlt.addClass(hoverCss);
             targetSlt.removeClass(clickCss);
-            JQ(this).click(function(){
+            $(this).click(function(){
               for(var i = 1; i <= 5; i++){
                 var rmCss = 'starClick' + i;
                 targetSlt.removeClass(rmCss);
