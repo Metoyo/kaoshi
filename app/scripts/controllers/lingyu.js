@@ -1,4 +1,4 @@
-define(['angular', 'config', 'underscore'], function (angular, config, _) { // 00
+define(['angular', 'config', 'lazy'], function (angular, config, lazy) { // 00
   'use strict';
 
   angular.module('kaoshiApp.controllers.LingyuCtrl', [])
@@ -35,9 +35,9 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) { // 0
             $cookieStore.put('quanXianCk', quanXianCookie);
             $cookieStore.put('tiKuCk', tiKuCookie);
             //根据权限判断导向
-            _.each(config.quanxianObj, function(qx, idx, lst){
-              var navName = _.intersection(qx.qxArr, ly.quanxian).length,
-                urlObj = {
+            Lazy(config.quanxianObj).each(function(qx, idx, lst){
+              var navName = Lazy(qx.qxArr).intersection(ly.quanxian).toArray().length;
+              var urlObj = {
                   myUrl: '',
                   urlName: ''
                 };
@@ -52,8 +52,8 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) { // 0
             //默认url
             if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
               $rootScope.urlArrs = urlArr;
-              var keMuManage = _.contains(ly.quanxian, '2032'); //判断科目负责人
-              var hasMingTiUrl = _.contains(urlShowAndHideArr, 'mingti');//判断有没有命题模块
+              var keMuManage = Lazy(ly.quanxian).contains('2032'); //判断科目负责人
+              var hasMingTiUrl = Lazy(urlShowAndHideArr).contains('mingti');//判断有没有命题模块
               if(keMuManage && hasMingTiUrl){
                 jsUrl = '/mingti';
               }

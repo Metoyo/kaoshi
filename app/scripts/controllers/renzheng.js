@@ -1,4 +1,4 @@
-define(['angular', 'config', 'underscore'], function (angular, config, _) {
+define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RenzhengCtrl', [])
@@ -78,19 +78,18 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                   if(data.JIGOU.length){
                     if(data.JUESE){
                       session.userInfo = data;
-                      jsArr = _.chain(data.JUESE)
+                      jsArr = Lazy(data.JUESE)
                         .sortBy(function(js){ return js.JUESE_ID; })
                         .map(function(js){ return js.JUESE_ID; })
                         .uniq()
                         .without("9", "10")
-                        .value(); //得到角色的数组
-                      //把权限加入到对应的领域中
-                      quanxianDist = _.groupBy(data.QUANXIAN, function(qx){ return qx.LINGYU_ID; });
-                      _.each(data.LINGYU, function(ly){
-                        var qxIds = _.map(quanxianDist[parseInt(ly.LINGYU_ID)], function(qx){ return qx.QUANXIAN_ID; });
+                        .toArray(); //得到角色的数组
+                      quanxianDist = Lazy(data.QUANXIAN).groupBy(function(qx){ return qx.LINGYU_ID; }).toObject();
+                      Lazy(data.LINGYU).each(function(ly){
+                        var qxIds = Lazy(quanxianDist[parseInt(ly.LINGYU_ID)]).map(function(qx){ return qx.QUANXIAN_ID; }).toArray();
                         ly.quanxian = qxIds;
                       });
-                      if(_.contains(jsArr, "1")){
+                      if(Lazy(jsArr).contains("1")){
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else{
@@ -102,10 +101,10 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                           quanxianArr = [],
                           urlShowAndHideArr = [],
                           jsUrl = '';
-                        find_QUANXIAN_ID_4 = _.find(permissions, function(permission) {
+                        find_QUANXIAN_ID_4 = Lazy(permissions).find(function(permission) {
                           return permission.QUANXIAN_ID == 2004;
                         });
-                        find_QUANXIAN_ID_5 = _.find(permissions, function(permission) {
+                        find_QUANXIAN_ID_5 = Lazy(permissions).find(function(permission) {
                           return permission.QUANXIAN_ID == 2005;
                         });
                         if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
@@ -116,10 +115,10 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                             session.defaultLyId = data.LINGYU[0].LINGYU_ID;
                             session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
                             session.defaultTiKuLyId = data.LINGYU[0].PARENT_LINGYU_ID;
-                            quanxianArr = _.map(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)], function(qx){
+                            quanxianArr = Lazy(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)]).map(function(qx){
                               return qx.QUANXIAN_ID;
-                            });
-                            quanxianArr = _.uniq(quanxianArr);
+                            }).toArray();
+                            quanxianArr = Lazy(quanxianArr).uniq().toArray();
                             //存放权限id的cookies
                             var quanXianCookie = {
                                 quanXianId: quanxianArr
@@ -130,12 +129,12 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                             $cookieStore.put('quanXianCk', quanXianCookie);
                             $cookieStore.put('tiKuCk', tiKuCookie);
                             //根据权限判断导向
-                            _.each(config.quanxianObj, function(qx, idx, lst){
-                              var navName = _.intersection(qx.qxArr, quanxianArr).length,
-                                urlObj = {
-                                  myUrl: '',
-                                  urlName: ''
-                                };
+                            Lazy(config.quanxianObj).each(function(qx, idx, lst){
+                              var navName = Lazy(qx.qxArr).intersection(quanxianArr).toArray().length;
+                              var urlObj = {
+                                myUrl: '',
+                                urlName: ''
+                              };
                               //显示和隐藏url
                               if(navName > 0){
                                 urlShowAndHideArr.push(qx.navName);
@@ -148,8 +147,8 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                             if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
                               $rootScope.urlArrs = urlArr;
                               //jsUrl = '/' + urlShowAndHideArr[0];
-                              var keMuManage = _.contains(quanxianArr, '2032'); //判断科目负责人
-                              var hasMingTiUrl = _.contains(urlShowAndHideArr, 'mingti');//判断有没有命题模块
+                              var keMuManage = Lazy(quanxianArr).contains('2032'); //判断科目负责人
+                              var hasMingTiUrl = Lazy(urlShowAndHideArr).contains('mingti');//判断有没有命题模块
                               if(keMuManage && hasMingTiUrl){
                                 jsUrl = '/mingti';
                               }
@@ -200,7 +199,7 @@ define(['angular', 'config', 'underscore'], function (angular, config, _) {
                         urlName: '成绩'
                       };
                       var findNongDa = JSON.parse(result[0].JIGOU);
-                      var findNongDaIn = _.find(findNongDa, function(jd){ return jd.JIGOU_ID == 1003; });
+                      var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
                       if(!findNongDaIn){
                         urlArr.push(urlObj2);
                       }
