@@ -232,6 +232,9 @@ body {
 .positionRe{
   position: relative;
 }
+.dpb{
+  display: block;
+}
 a.add-btn:hover span {
   color: #00CC33;
 }
@@ -4695,18 +4698,15 @@ label.checkbox{
   }
 }
 /* angular animation */
-.animate-show {
-  line-height: 20px;
-  opacity: 1;
-}
-.animate-show.ng-hide-add.ng-hide-add-active,
-.animate-show.ng-hide-remove.ng-hide-remove-active {
-  transition:all linear 5s;
-  -webkit-transition:all linear 5s;
-  -moz-transition:all linear 5s;
-  -o-transition:all linear 5s;
-}
-.animate-show.ng-hide {
-  line-height: 0;
-  opacity: 0;
+.guanLiWrapper{
+  .fixed-top{
+    left: 80px;
+  }
+  .tab-content{
+    padding: 60px 15px 15px 15px;
+  }
+  .radio-inline,
+  .checkbox-inline{
+    margin-left: 10px;
+  }
 }
