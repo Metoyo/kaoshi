@@ -90,6 +90,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 $scope.keXuHaoData = data;
               }
             }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
           });
         };
 
@@ -182,6 +185,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                     queryKeXuHao();
                     DataService.alertInfFun('suc', '新增课序号成功！');
                   }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
                 });
               }
               else{
@@ -223,6 +229,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                       $scope.glSelectData = '';
                       queryKeXuHao();
                       DataService.alertInfFun('suc', '修改成功！');
+                    }
+                    else{
+                      DataService.alertInfFun('err', data.error);
                     }
                   });
                 }
@@ -310,6 +319,33 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           //    DataService.alertInfFun('pmt', '请选择课序号！');
           //  }
           //}
+        };
+
+        /**
+         * 删除专业
+         */
+        $scope.deleteKeXuHao = function(kxh){
+          var keXuHaoObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            shuju: {
+              KEXUHAO_ID: ''
+            }
+          };
+          if(kxh){
+            keXuHaoObj.shuju.KEXUHAO_ID = kxh.KEXUHAO_ID;
+            if(confirm('确定要删除此课序号吗？')){
+              $http.delete(kxhManageUrl, {params: keXuHaoObj}).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '删除成功！');
+                  queryKeXuHao();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          }
         };
 
         /**
