@@ -42,46 +42,46 @@
     </div>
   </div>
   <div class="col-md-5 col-md-offset-1">
-    <h4 class="bdb pb10 h28" ng-show="selectBmOrKxh.KEXUHAO_MINGCHENG">
-      <span ng-bind="selectBmOrKxh.KEXUHAO_MINGCHENG"></span>
-      <span ng-bind="'(' + workersData.length + '人' + ')'"></span>
+    <h4 class="bdb pb10 h28" ng-show="selectKxh.KEXUHAO_MINGCHENG">
+      <span ng-bind="selectKxh.KEXUHAO_MINGCHENG"></span>
+      <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right fz14">
         <a href="javascript:void(0)" class="mr10" ng-click="deleteKxhYh('all')">清空</a>
-        <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('addSingleWork')">新增员工</a>
-        <a href="javascript:void(0)" ng-click="showKeXuHaoPop('addBatchWorks')">批量新增</a>
+        <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('addSingleStu')">新增员工</a>
+        <a href="javascript:void(0)" ng-click="showKeXuHaoPop('addBatchStus')">批量新增</a>
       </span>
     </h4>
-    <div ng-show="workersData.length>0">
+    <div ng-show="studentsData.length>0">
       <ul class="list-unstyled">
-        <li class="bdbd ptb5 pull-left wp100" ng-repeat="wk in workersDistData">
-          <span ng-bind="wk.ZHENGJIANHAO"></span>
-          <span class="pl10" ng-bind="wk.XINGMING"></span>
-          <a href="javascript:void(0)" class="pull-right" ng-click="deleteKxhYh(wk)">删除</a>
+        <li class="bdbd ptb5 pull-left wp100" ng-repeat="stu in studentsData">
+          <span ng-bind="stu.XINGMING"></span>
+          <span class="pl10" ng-bind="stu.YONGHUHAO"></span>
+          <a href="javascript:void(0)" class="pull-right" ng-click="deleteKxhYh(stu)">删除</a>
         </li>
       </ul>
     </div>
-    <div class="paging text-right" ng-if="worksPages.length>0">
+    <div class="paging text-right" ng-if="studentsPages.length>0">
       <ul class="pagination pagination-sm">
-        <li ng-class="{disabled: currentWkPageVal == 1}">
-          <a href ng-click="workPgDist(1)">首页</a>
+        <li ng-class="{disabled: currentStuPageVal == 1}">
+          <a href ng-click="studentPgDist(1)">首页</a>
         </li>
-        <li ng-class="{disabled: currentWkPageVal == 1}">
+        <li ng-class="{disabled: currentStuPageVal == 1}">
           <a href
-             ng-click="workPgDist(prevPg = currentWkPageVal > 1 ? currentWkPageVal - 1 : 1)">
+             ng-click="studentPgDist(prevPg = currentStuPageVal > 1 ? currentStuPageVal - 1 : 1)">
             上一页
           </a>
         </li>
-        <li ng-repeat="pg in worksPages" ng-class="{active: currentWkPageVal == pg}">
-          <a href ng-click="workPgDist(pg)">{{pg}}</a>
+        <li ng-repeat="pg in studentsPages" ng-class="{active: currentStuPageVal == pg}">
+          <a href ng-click="studentPgDist(pg)">{{pg}}</a>
         </li>
-        <li ng-class="{disabled: currentWkPageVal == lastWkPageNum}">
+        <li ng-class="{disabled: currentStuPageVal == lastStuPageNum}">
           <a href
-             ng-click="workPgDist(nextPg = currentWkPageVal < lastWkPageNum ? currentWkPageVal + 1 : lastWkPageNum)">
+             ng-click="studentPgDist(nextPg = currentStuPageVal < lastStuPageNum ? currentStuPageVal + 1 : lastStuPageNum)">
             下一页
           </a>
         </li>
-        <li ng-class="{disabled: currentWkPageVal == lastWkPageNum}">
-          <a href ng-click="workPgDist(lastWkPageNum)">尾页</a>
+        <li ng-class="{disabled: currentStuPageVal == lastStuPageNum}">
+          <a href ng-click="studentPgDist(lastStuPageNum)">尾页</a>
         </li>
       </ul>
     </div>
@@ -137,26 +137,26 @@
         </div>
       </div>
       <!--添加单个员工-->
-      <div class="row mt15" ng-if="glEditBoxShow=='addSingleWork'">
+      <div class="row mt15" ng-if="glEditBoxShow=='addSingleStu'">
         <div class="clearfix">
           <div class="col-md-2 text-right">
             <span class="mt5 dpb">姓名</span>
           </div>
           <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="姓名" ng-model="guanliParams.singleWorkName"/>
+            <input type="text" class="form-control" placeholder="姓名" ng-model="guanliParams.singleStuName"/>
           </div>
         </div>
         <div class="clearfix mt15">
           <div class="col-md-2 text-right">
-            <span class="mt5 dpb">身份证</span>
+            <span class="mt5 dpb">学号</span>
           </div>
           <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="身份证" ng-model="guanliParams.singleWorkID"/>
+            <input type="text" class="form-control" placeholder="学号" ng-model="guanliParams.singleStuID"/>
           </div>
         </div>
       </div>
       <!--批量添加员工-->
-      <div class="row mt15" ng-if="glEditBoxShow=='addBatchWorks'">
+      <div class="row mt15" ng-if="glEditBoxShow=='addBatchStus'">
         <div class="clearfix">
           <div class="col-md-2 text-right">
             <span class="mt5 dpb"></span>

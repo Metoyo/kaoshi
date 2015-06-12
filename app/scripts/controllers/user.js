@@ -1,4 +1,4 @@
-define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (angular, config, datepicker, JQ, _) {
+define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (angular, config, datepicker, $, _) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
@@ -678,7 +678,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 添加领域到已选 media-body selectLingYuChangedArr
          */
         $scope.addLingYuToSelect = function(event, nd, parentLy){
-          var ifCheckOrNot = JQ(event.target).prop('checked'),
+          var ifCheckOrNot = $(event.target).prop('checked'),
             ifInOriginSelectLingYu, //是否存在于原始的领域里面
             targetId = nd.LINGYU_ID, //选中的领域
             ifInChangLingYuArr; //是否存在变动的领域数组里
@@ -761,16 +761,16 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                     $scope.jgSelectLingYu.push(ly);
                   }
                 });
-                JQ(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
+                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
               }
             }
             else{ //子领域
               //当选择子领域的时候，同时选择父领域
               if(parentLy){
                 var parentLyCss = '.checkbox' + parentLyId,
-                  ifParentLyChecked = JQ(parentLyCss).prop('checked');
+                  ifParentLyChecked = $(parentLyCss).prop('checked');
                 if(!ifParentLyChecked){
-                  JQ(parentLyCss).prop('checked', true);
+                  $(parentLyCss).prop('checked', true);
                 }
                 //判断父是否在原始数据里
                 var chd_lyHasInOriginDataAdd = _.find(originSelectLingYuArr, function(sLyId){
@@ -877,7 +877,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                     }
                   });
                 });
-                JQ(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
+                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
               }
             }
             else{ //子领域
@@ -887,14 +887,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   lyClass, ifLyChecked;
                 _.each(parentLy.CHILDREN, function(ly){
                   lyClass = '.checkbox' + ly.LINGYU_ID,
-                    ifLyChecked = JQ(lyClass).prop('checked');
+                    ifLyChecked = $(lyClass).prop('checked');
                   if(ifLyChecked){
                     isAllLyUnChecked = false;
                   }
                 });
                 if(isAllLyUnChecked){
                   var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
-                  JQ(parentLyClass).prop('checked', false);
+                  $(parentLyClass).prop('checked', false);
                   //所有的子都不选的时候，将父也去除
                   var chd_lyHasInOriginDataDel = _.find(originSelectLingYuArr, function(sLyId){
                       return sLyId == parentLy.LINGYU_ID;
@@ -979,21 +979,21 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           });
           //操作已选的领域数据
           if(findLyArr.CHILDREN.length){
-            JQ('.media').find(targetClass).prop('checked', false);
+            $('.media').find(targetClass).prop('checked', false);
             _.each(findLyArr.CHILDREN, function(ly){
               checkBoxParm = '.checkbox' + ly.LINGYU_ID;
-              checkBoxElm = JQ(checkBoxParm).prop('checked');
+              checkBoxElm = $(checkBoxParm).prop('checked');
               if(checkBoxElm){
                 isAllCheckBoxUnChecked = false;
               }
             });
             if(isAllCheckBoxUnChecked){
               parentCheckBoxElm = '.checkbox' + findLyArr.LINGYU_ID;
-              JQ(parentCheckBoxElm).prop('checked', false);
+              $(parentCheckBoxElm).prop('checked', false);
             }
           }
           else{
-            JQ('.media').find(targetClass).prop('checked', false);
+            $('.media').find(targetClass).prop('checked', false);
           }
           //新代码
           if(ifInOriginSelectLy){
@@ -1421,7 +1421,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          */
         var targetInput, targetNd;
         $scope.getInputIndex = function(event, nd){
-          targetInput = JQ(event.target);
+          targetInput = $(event.target);
           targetNd = nd;
         };
 
@@ -1499,7 +1499,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         var isAddNewPubDg = false; //是不是新建知识大纲
         $scope.addNewPubDaGang = function(){
           var jieDianObj = {},
-            selectLyText = JQ(".daGangLySelect").find("option:selected").text();
+            selectLyText = $(".daGangLySelect").find("option:selected").text();
           $scope.dgZsdList = ''; //重置公共知识大纲知识点
           daGangJieDianData = []; //定义一个大纲节点的数据
           //保存大纲是用到的第一级子节点
@@ -1681,7 +1681,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.addOrRemoveTiXing = function(event, tx){
           tiXingData.shuju = [];
           var hasIn = _.contains(originKmtx, tx.TIXING_ID),
-            ifCheckOrNot = JQ(event.target).prop('checked');
+            ifCheckOrNot = $(event.target).prop('checked');
           if(ifCheckOrNot){
             $scope.kmtxList.push(tx);
           }
@@ -1794,7 +1794,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 添加或删除科目IDs
          */
         $scope.getKeMuId = function(event, keMu, isKeMuSelect){
-          var ifCheckOrNot = JQ(event.target).prop('checked'),
+          var ifCheckOrNot = $(event.target).prop('checked'),
             idxVal = '';
           if(ifCheckOrNot){
             if(isKeMuSelect){ //此处的keMu数数据为lingyu_id
@@ -1887,12 +1887,12 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             $scope.adminParams.selectZsdId = zsdId;
             $scope.adminParams.zsdOldName = zsdName;
             $scope.adminParams.zsdNewName = zsdName;
-            JQ('input[name="zsdKeMuCb"]').prop('checked', false);
+            $('input[name="zsdKeMuCb"]').prop('checked', false);
             $http.get(cxLyOfZsd).success(function(kmData){
               if(kmData){
                 _.each(kmData, function(km, idx, lst){
                   var kmcss = '.keMu' + km.LINGYU_ID;
-                  JQ(kmcss).prop('checked', true);
+                  $(kmcss).prop('checked', true);
                   km.origin = true;
                   km.changeStat = false;
                   $scope.adminParams.zsdKeMuArr.push(km);
@@ -1935,7 +1935,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   $http.post(alterZsdUrl, zsdData).success(function(data){
                     if(data.result){
                       $scope.adminParams.zsdWrapShow = false;
-                      JQ('input[name="zsdKeMuCb"]').prop('checked', false);
+                      $('input[name="zsdKeMuCb"]').prop('checked', false);
                       $scope.zsdSetZsdData = _.reject($scope.zsdSetZsdData, function(zsd){
                         return zsd.ZHISHIDIAN_ID  == data.id;
                       });
@@ -2076,12 +2076,12 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 时间设定
          */
         var showDatePicker = function() {
-          JQ('.datePickerJz').intimidatetime({
+          $('.datePickerJz').intimidatetime({
             buttons: [
               { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
             ]
           });
-          JQ('.datePicker').intimidatetime({
+          $('.datePicker').intimidatetime({
             buttons: [
               { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
             ],
@@ -2185,10 +2185,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         var calculateEndDate = function(startTime){
           var idx = $scope.adminParams.datePickerIdx;
           if(idx >= 0){
-            var ccStart = JQ('.changCiStart').eq(idx).val(),
-              ccEnd = JQ('.changCiEnd').eq(idx),
+            var ccStart = $('.changCiStart').eq(idx).val(),
+              ccEnd = $('.changCiEnd').eq(idx),
               ksLong = parseInt($scope.baoMing.baomingxinxi.kaoshishichang),
-              bmEnd = JQ('.datePickerJz').val(),
+              bmEnd = $('.datePickerJz').val(),
               endDate, endDateFormate, startDate;
             if(ccStart){
               if(ksLong){
@@ -2231,7 +2231,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               kaodianmingcheng: '',
               kaowei: ''
             };
-          isChecked = JQ(targetClass).prop('checked');
+          isChecked = $(targetClass).prop('checked');
           if(isChecked){
             bmkdObj.kaodian_id = kc.KID;
             bmkdObj.kaodianmingcheng = kc.KMINGCHENG;
@@ -2260,8 +2260,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 保存报名信息
          */
         $scope.saveBaoMingInfo = function(){
-          var ccStartArr = JQ('.changCiStart');
-          var ccEndArr = JQ('.changCiEnd');
+          var ccStartArr = $('.changCiStart');
+          var ccEndArr = $('.changCiEnd');
           var file = $scope.uploadFiles;
           var bmData = {
             token: token,
@@ -2273,7 +2273,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             cc.kaishishijian = ccStartArr.eq(idx).val();
             cc.jieshushijian = ccEndArr.eq(idx).val();
           });
-          baoming.baomingxinxi.baomingjiezhishijian = JQ('.datePickerJz').val();
+          baoming.baomingxinxi.baomingjiezhishijian = $('.datePickerJz').val();
           baoming.baomingkaoshishijian = $scope.bmkssjArr;
           baoming.baomingkaodian = baomingkaodianArr;
           bmData.shuju = JSON.stringify(bmData.shuju);
@@ -2372,7 +2372,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 有不同的查询条件得到考生
          */
         $scope.distBaoMingKaoSheng = function(cdt, idx){
-          JQ('.baoMingChaKanChangCi li').removeClass('active').eq(idx).addClass('active');
+          $('.baoMingChaKanChangCi li').removeClass('active').eq(idx).addClass('active');
           $scope.whichChangCiSelect = '';
           if(cdt == 'All'){
             $scope.studentArrs = angular.copy(studentData);
