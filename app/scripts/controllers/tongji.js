@@ -1,5 +1,5 @@
-define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'],
-  function (angular, config, charts, mathjax, $, _, lazy) {
+define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
+  function (angular, config, charts, mathjax, $, lazy) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
@@ -77,6 +77,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
         };
 
         /**
+         * 判断是否为数组
+         */
+        var isArray = function (obj) {
+          return obj instanceof Array;
+        };
+
+        /**
          * 显示考试统计列表
          */
         $scope.showKaoShiTjList = function(){
@@ -95,7 +102,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
                     ks.KAOSHIZU_NAME = '其他';
                   }
                   return ks.KAOSHIZU_ID;
-                });
+                }).toObject();
                 Lazy(kaoShiZuDist).each(function(v, k, lst){
                   var ksz = {
                     KAOSHI_MINGCHENG: '',
@@ -180,7 +187,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           }
           $http.get(queryTiMu).success(function(data){
             if(!data.error){
-              _.each(data, function(tm, idx, lst){
+              Lazy(data).each(function(tm, idx, lst){
                 tm.TIGAN = JSON.parse(tm.TIGAN);
                 if(tm.TIXING_ID <= 3){
                   var daanArr = tm.DAAN.split(','),
@@ -204,7 +211,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
                   var tkDaAnArr = [],
                     tkDaAn = JSON.parse(tm.DAAN),
                     tkDaAnStr;
-                  _.each(tkDaAn, function(da, idx, lst){
+                  Lazy(tkDaAn).each(function(da, idx, lst){
                     tkDaAnArr.push(da.answer);
                   });
                   tkDaAnStr = tkDaAnArr.join(';');
@@ -292,15 +299,15 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           switch (sortItem){
             case 'stuId' : //学号排序
               if($scope.tjParas.stuIdCount){
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.YONGHUHAO;
-                });
+                }).toArray();
                 $scope.tjParas.stuIdCount = false;
               }
               else{
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.YONGHUHAO;
-                }).reverse();
+                }).toArray().reverse();
                 $scope.tjParas.stuIdCount = true;
               }
               break;
@@ -334,29 +341,29 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
               break;
             case 'kexuhao' : //课序号排序
               if($scope.tjParas.stuIdCount){
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.KEXUHAO;
-                });
+                }).toArray();
                 $scope.tjParas.stuIdCount = false;
               }
               else{
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.KEXUHAO;
-                }).reverse();
+                }).toArray().reverse();
                 $scope.tjParas.stuIdCount = true;
               }
               break;
             case 'score' : //分数排序
               if($scope.tjParas.scoreCount){
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.ZUIHOU_PINGFEN;
-                });
+                }).toArray();
                 $scope.tjParas.scoreCount = false;
               }
               else{
-                $scope.studentData = _.sortBy($scope.studentData, function(stu){
+                $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
                   return stu.ZUIHOU_PINGFEN;
-                }).reverse();
+                }).toArray().reverse();
                 $scope.tjParas.scoreCount = true;
               }
               break;
@@ -375,8 +382,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           var ksArr = [];
           var exportStu;
           ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
-          exportStu = _.sortBy(stuData, function(stu){ return parseInt(stu.XUHAO);});
-          _.each(exportStu, function(ks){
+          exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
+          Lazy(exportStu).each(function(ks){
             var ksObj = {XUHAO: '', YONGHUHAO: '', XINGMING: '', BANJI: '', KEXUHAO: '', ZUIHOU_PINGFEN: ''};
             ksObj.XUHAO = ks.XUHAO;
             ksObj.YONGHUHAO = ks.YONGHUHAO;
@@ -443,15 +450,15 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           DataService.getData(answerReappearUrl).then(function(data) {
             if(data && data.length > 0){
               finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-              dataDis = _.groupBy(data, 'DATI_XUHAO');
-              _.each(dataDis, function(val, key, list){
+              dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
+              Lazy(dataDis).each(function(val, key, list){
                 var dObj = {
                   tx_id: key,
                   tx_name: val[0].DATIMINGCHENG,
                   tm: ''
                 };
-                tmVal = _.each(val, function(tm, idx, lst){
-                  var findVal = _.find(itemDeFenLv, function(item){return item.TIMU_ID == tm.TIMU_ID});
+                tmVal = Lazy(val).each(function(tm, idx, lst){
+                  var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
                   tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
                   if(typeof(tm.TIGAN) == 'string'){
                     tm.TIGAN = JSON.parse(tm.TIGAN);
@@ -500,7 +507,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
               value : 0
             }
           ];
-          _.each(data, function(item, idx, lst){
+          Lazy(data).each(function(item, idx, lst){
             if(item.ZUIHOU_PINGFEN){
               if(item.ZUIHOU_PINGFEN < 60){
                 pieDataArr[0].value ++;
@@ -527,8 +534,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
          */
         var lineDataDealFun = function(data){
           var disByScore, lineDataArr = [];
-          disByScore = _.groupBy(data, function(item){return item.ZUIHOU_PINGFEN});
-          _.each(disByScore, function(v, k, l){
+          disByScore = Lazy(data).groupBy(function(item){return item.ZUIHOU_PINGFEN}).toObject();
+          Lazy(disByScore).each(function(v, k, l){
             var ary = [];
             ary[0] = parseInt(k);
             ary[1] = v.length;
@@ -688,7 +695,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
             optLine.series[1].data = tjParaObj.lineDataBanJi;
           }
           //柱状图数据
-          tjBarData = _.sortBy(tjBarData, function(bj){return -bj.bjAvgScore;});
+          tjBarData = Lazy(tjBarData).sortBy(function(bj){return -bj.bjAvgScore;}).toArray();
           Lazy(tjBarData).each(function(bj, idx, lst){
             optBar.xAxis[0].data.push(bj.bjName);
             optBar.series[0].data.push(bj.bjAvgScore);
@@ -868,7 +875,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
         };
         $scope.tjShowKaoShiChart = function(ks){
           var queryKaoSheng;
-          var isArr = _.isArray(ks); //判读传入的参数是否为数组
+          var isArr = isArray(ks); //判读传入的参数是否为数组
           var ksIdStr;
           tjBarData = [];
           tjKaoShiIds = [];
@@ -934,9 +941,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
           }
           else{
             if($scope.tjParas.selectedKaoShi.length){
-              $scope.tjParas.selectedKaoShi = _.reject($scope.tjParas.selectedKaoShi, function(item){
+              $scope.tjParas.selectedKaoShi = Lazy($scope.tjParas.selectedKaoShi).reject(function(item){
                 return item.KAOSHI_ID == ks.KAOSHI_ID;
-              });
+              }).toArray();
             }
           }
         };
@@ -976,7 +983,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
             banJiIdx: ''
           };
           //知识点数据,初始化班级数据
-          _.each($scope.tjZsdDataUd, function(zsd, idx, lst){
+          Lazy($scope.tjZsdDataUd).each(function(zsd, idx, lst){
             zsd.zsd_dfl_bj = '';
             zsd.zsd_timu_num_bj = 0;
           });
@@ -1008,26 +1015,26 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'underscore', 'lazy'
             $timeout(addActiveFun, 100);
             //知识点数据
             if($scope.tjParas.tongJiType && $scope.tjParas.tongJiType == 'banJi'){
-              disByBj = _.groupBy($scope.tjParas.zsdOriginData, function(zsd){
+              disByBj = Lazy($scope.tjParas.zsdOriginData).groupBy(function(zsd){
                 if(!zsd.BANJI){
                   zsd.BANJI = '其他';
                 }
                 return zsd.BANJI;
-              });
+              }).toObject();
             }
             if($scope.tjParas.tongJiType && $scope.tjParas.tongJiType == 'keXuHao'){
-              disByBj = _.groupBy($scope.tjParas.zsdOriginData, function(zsd){
+              disByBj = Lazy($scope.tjParas.zsdOriginData).groupBy(function(zsd){
                 if(!zsd.KEXUHAO){
                   zsd.KEXUHAO = '其他';
                 }
                 return zsd.KEXUHAO;
-              });
+              }).toObject();
             }
             banJiZsd = disByBj[bj.bjName];
             if(banJiZsd){
-              disByZsd = _.groupBy(banJiZsd, function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }); //用知识点把数据分组
-              _.each(disByZsd, function(v, k, l) {
-                posIdx = _.indexOf($scope.tjParas.zsdIdArr, v[0].ZHISHIDIAN_ID);
+              disByZsd = Lazy(banJiZsd).groupBy(function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }).toObject(); //用知识点把数据分组
+              Lazy(disByZsd).each(function(v, k, l) {
+                posIdx = Lazy($scope.tjParas.zsdIdArr).indexOf(v[0].ZHISHIDIAN_ID);
                 $scope.tjZsdDataUd[posIdx].zsd_timu_num_bj = v[0].TIMUSHULIANG;
                 if(v[0].DEFENLV && v[0].DEFENLV > 0){
                   $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = (v[0].DEFENLV * 100).toFixed(1);

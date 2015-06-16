@@ -7,7 +7,7 @@ require.config({
     'angular-route': '../../bower_components/angular-route/angular-route',
     'angular-sanitize': '../../bower_components/angular-sanitize/angular-sanitize',
     jquery: '../../bower_components/jquery/jquery.min',
-    underscore: '../../bower_components/underscore/underscore',
+    //underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
@@ -35,12 +35,12 @@ require.config({
     jquery: {
       exports: 'jquery'
     },
-    underscore: {
-      deps: [
-        'jquery'
-      ],
-      exports: 'underscore'
-    },
+    //underscore: {
+    //  deps: [
+    //    'jquery'
+    //  ],
+    //  exports: 'underscore'
+    //},
     markitup: {
       deps: [
         'jquery'

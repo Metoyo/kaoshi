@@ -7,10 +7,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) { // 00
         /**
          * 定义变量和初始化
          */
-        var currentPath = $location.$$path,
-          session = $rootScope.session,
-          lingyu = $cookieStore.get('lingyuCk'),
-          urlArr = [];
+        var currentPath = $location.$$path;
+        var session = $rootScope.session;
+        var lingyu = $cookieStore.get('lingyuCk');
+        var urlArr = [];
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.linyuInfo = lingyu.lingyu;
 

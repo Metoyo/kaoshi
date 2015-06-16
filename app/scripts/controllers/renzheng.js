@@ -7,24 +7,24 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
       function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, DataService, $routeParams,
                 $timeout) {
 
-        var baseRzAPIUrl = config.apiurl_rz,
-          token = config.token,
-          loginApiUrl =  baseRzAPIUrl + 'denglu',
-          login = { //教师登录数据格式
+        var baseRzAPIUrl = config.apiurl_rz;
+        var token = config.token;
+        var loginApiUrl =  baseRzAPIUrl + 'denglu';
+        var login = { //教师登录数据格式
             userName: '',
             password: ''
-          },
-          stuLogin = { //学生登录数据格式
+          };
+        var stuLogin = { //学生登录数据格式
             userName: '',
             password: ''
-          },
-          loginPostParams,
-          session = {},
-          urlArr = [],
-          currentPath = $location.$$path,
-          checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token, //检测用户是否存在的url
-          findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail=', //忘记密码
-          resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
+          };
+        var loginPostParams;
+        var session = {};
+        var urlArr = [];
+        var currentPath = $location.$$path;
+        var checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
+        var findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail='; //忘记密码
+        var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
 
         $rootScope.session = session;
         $rootScope.isRenZheng = true; //判读页面是不是认证

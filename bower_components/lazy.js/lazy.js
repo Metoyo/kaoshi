@@ -2017,6 +2017,21 @@
   };
 
   /**
+   * 判断是否为数组
+   *
+   * @public
+   * @returns {boolean} True if the sequence is empty, false if it contains at
+   *     least one element.
+   *
+   * @examples
+   * Lazy({name:'zhang', age:'21'}).isArray()        // => false
+   * Lazy([1, 2, 3]).isArray() // => true
+   */
+  Sequence.prototype.isArray = function isArray(obj) {
+    return obj instanceof Array;
+  };
+
+  /**
    * Performs (at worst) a linear search from the head of this sequence,
    * returning the first index at which the specified value is found.
    *

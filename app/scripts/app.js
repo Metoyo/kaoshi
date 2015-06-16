@@ -2,6 +2,7 @@
 define([
   'angular',
   'config',
+  'lazy',
   'services/urlredirect',
   'controllers/renzheng',
   'controllers/nav',
@@ -26,7 +27,7 @@ define([
   'directives/fileupload',
   'directives/repeatdone',
   'services/dataservice'
-], function (angular, config, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
+], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
              ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
@@ -104,7 +105,7 @@ define([
           $rootScope.urlArrs = myUrl.myUrl;
           if (quanXianIds) {
             if (quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0) {
-              isKeMuManage = _.contains(quanXianIds.quanXianId, '2032');
+              isKeMuManage = Lazy(quanXianIds.quanXianId).contains('2032');
             }
           }
           if (loggedInfo && loggedInfo.UID) {
@@ -138,7 +139,7 @@ define([
              * 测试即将要访问的路由是否已经在我们的angular.js程序中定义
              * @type {*|Mixed}
              */
-            var findRoute = _.find($route.routes, function (route, urlPattern) {
+            var findRoute = Lazy($route.routes).find(function (route, urlPattern) {
               if (route && route !== 'null' && route.regexp) { // 测试即将要访问的url是否否何定义的路由规则
                 if (route.regexp.test(nextPath)) {
                   nextUrlPattern = urlPattern; // 记录即将要访问的路由模式，i.e: /user/:name

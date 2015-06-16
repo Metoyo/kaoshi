@@ -1,4 +1,4 @@
-define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (angular, config, datepicker, $, _) {
+define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular, config, datepicker, $, lazy) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.UserCtrl', [])
@@ -180,10 +180,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               notShenHe = []; //定义一个待审核的数组
           $http.get(dshyhjsUrl).success(function(data) {
             if(data){
-              _.each(data, function(sh, indx, lst) {
+              Lazy(data).each(function(sh, indx, lst) {
                 sh.AUTH_BTN_HIDE = true;
                 var zeroLength = 0; //判断有几个未审核的角色
-                _.each(sh.JUESE, function(js, indx, jsLst) {
+                Lazy(sh.JUESE).each(function(js, indx, jsLst) {
                   js.JUESE_CHECKED = js.ZHUANGTAI > -1;
                   if(js.ZHUANGTAI === 0) {
                     sh.AUTH_BTN_HIDE = false;
@@ -239,47 +239,43 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          * 通过审核的按钮
          */
         $scope.authPerm = function(shenhe) {
-          var juese = [],
-              authParam = {
-                token: config.token,
-                caozuoyuan: session.info.UID,
-                yonghujuese: [{
-                  yonghuid: shenhe.UID,
-                  jigou: shenhe.JIGOU_ID,
-                  lingyu: shenhe.LINGYU_ID
-                }]
-              };
-
-          _.chain(shenhe.JUESE)
-            .each(function(js, indx, lst) {
-              var tmpJS = {};
-
-              if(js.JUESE_CHECKED && (js.ZHUANGTAI === -1 || js.ZHUANGTAI === 0)) {
-                tmpJS.juese_id = js.JUESE_ID;
-                tmpJS.zhuangtai = 1;
-              } else if(!js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
-                tmpJS.juese_id = js.JUESE_ID;
-                tmpJS.zhuangtai = 0;
-              } else if(js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
-                tmpJS.juese_id = js.JUESE_ID;
-                tmpJS.zhuangtai = 1;
+          var juese = [];
+          var authParam = {
+            token: config.token,
+            caozuoyuan: session.info.UID,
+            yonghujuese: [{
+              yonghuid: shenhe.UID,
+              jigou: shenhe.JIGOU_ID,
+              lingyu: shenhe.LINGYU_ID
+            }]
+          };
+          Lazy(shenhe.JUESE).each(function(js, indx, lst) {
+            var tmpJS = {};
+            if(js.JUESE_CHECKED && (js.ZHUANGTAI === -1 || js.ZHUANGTAI === 0)) {
+              tmpJS.juese_id = js.JUESE_ID;
+              tmpJS.zhuangtai = 1;
+            } else if(!js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
+              tmpJS.juese_id = js.JUESE_ID;
+              tmpJS.zhuangtai = 0;
+            } else if(js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
+              tmpJS.juese_id = js.JUESE_ID;
+              tmpJS.zhuangtai = 1;
+            }
+            if(tmpJS.juese_id) {
+              juese.push(tmpJS);
+            }
+          });
+          if(juese && juese.length > 0){
+            authParam.yonghujuese[0].juese = juese;
+            $http.post(shyhjsUrl, authParam).success(function(data) {
+              if(data.result) {
+                shenhe.AUTH_BTN_HIDE = true;
               }
-
-              if(tmpJS.juese_id) {
-                juese.push(tmpJS);
+              else{
+                DataService.alertInfFun('err', data.error);
               }
-            })
-            .tap(function(){
-              authParam.yonghujuese[0].juese = juese;
-              $http.post(shyhjsUrl, authParam).success(function(data) {
-                if(data.result) {
-                  shenhe.AUTH_BTN_HIDE = true;
-                }
-                else{
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
-            }).value();
+            });
+          }
         };
 
         /**
@@ -312,8 +308,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             jgLeiBieId = jglbId; //给机构类别赋值
             DataService.getData(qryJiGouUrl + jglbId).then(function(data){
               if(data.length){
-                var jgIdStr = _.map(data, function(jg){return jg.JIGOU_ID}).toString(),
-                  qryJiGouAdminUrl = qryJiGouAdminBase + jgIdStr;
+                var jgIdStr = Lazy(data).map(function(jg){return jg.JIGOU_ID}).toArray().join();
+                var qryJiGouAdminUrl = qryJiGouAdminBase + jgIdStr;
                 DataService.getData(qryJiGouAdminUrl).then(function(jgAdmin){
                   if(jgAdmin.length){
                     $scope.jigou_list = jgAdmin;
@@ -640,13 +636,13 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   $scope.loadingImgShow = false; //rz_selectLingYu.html
                   $scope.lingyu_list = data;
                   $scope.isShenHeBox = false; //判断是不是审核页面
-                  _.each(jgLy, function(ply){
+                  Lazy(jgLy).each(function(ply){
                     lyStr = 'sly' + ply.LINGYU_ID + ';';
                     selectedLyArr.push(lyStr);
                     //保存原始的已选领域数据的id
                     originSelectLingYuArr.push(ply.LINGYU_ID);
                     if(ply.CHILDREN.length && ply.CHILDREN.length > 0){
-                      _.each(ply.CHILDREN, function(ly){
+                      Lazy(ply.CHILDREN).each(function(ly){
                         lyStr = 'sly' + ly.LINGYU_ID + ';';
                         selectedLyArr.push(lyStr);
                         //保存原始的已选领域数据的id
@@ -682,11 +678,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             ifInOriginSelectLingYu, //是否存在于原始的领域里面
             targetId = nd.LINGYU_ID, //选中的领域
             ifInChangLingYuArr; //是否存在变动的领域数组里
-          ifInOriginSelectLingYu = _.find(originSelectLingYuArr, function(lyId){
+          ifInOriginSelectLingYu = Lazy(originSelectLingYuArr).find(function(lyId){
             return lyId == targetId;
           });
           if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
-            ifInChangLingYuArr = _.find(selectLingYuChangedArr, function(cgLy){
+            ifInChangLingYuArr = Lazy(selectLingYuChangedArr).find(function(cgLy){
               return cgLy.LINGYU_ID == targetId;
             });
           }
@@ -697,27 +693,27 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             if(nd.PARENT_LINGYU_ID == 0){ // 父领域
               //存在原始数据里
               if(ifInOriginSelectLingYu){
-                var lyHasInChangArrDataPadd = _.find(selectLingYuChangedArr, function(cLy){
+                var lyHasInChangArrDataPadd = Lazy(selectLingYuChangedArr).find(function(cLy){
                   return cLy.LINGYU_ID == targetId;
                 });
                 if(lyHasInChangArrDataPadd){
-                  selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly) {
+                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
                     return ly.LINGYU_ID == targetId;
-                  });
+                  }).toArray();
                 }
                 if(nd.CHILDREN && nd.CHILDREN.length > 0){ //判断子nd下面的子领域
-                  _.each(nd.CHILDREN, function(sLy, sIdx, sLst){
-                    var lyHasInOriginData = _.find(originSelectLingYuArr, function(sLyId){
+                  Lazy(nd.CHILDREN).each(function(sLy, sIdx, sLst){
+                    var lyHasInOriginData = Lazy(originSelectLingYuArr).find(function(sLyId){
                         return sLyId == sLy.LINGYU_ID;
                       }),
-                      lyHasInChangArrDataC = _.find(selectLingYuChangedArr, function(cLy){
+                      lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
                         return cLy.LINGYU_ID == sLy.LINGYU_ID;
                       });
                     if(lyHasInOriginData){ //在原始数据里面
                       if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly) {
+                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
                           return ly.LINGYU_ID == sLy.LINGYU_ID;
-                        });
+                        }).toArray();
                       }
                     }
                     else{ //不在原始数据里面
@@ -731,7 +727,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               }
               //不存在原始数据里
               else{
-                var add_lyHasInChangArrDataP0 = _.find(selectLingYuChangedArr, function(cLy){
+                var add_lyHasInChangArrDataP0 = Lazy(selectLingYuChangedArr).find(function(cLy){
                   return cLy.LINGYU_ID == targetId;
                 });
                 if(!add_lyHasInChangArrDataP0){
@@ -739,8 +735,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   selectLingYuChangedArr.push(nd);
                 }
                 if(nd.CHILDREN && nd.CHILDREN.length > 0){
-                  _.each(nd.CHILDREN, function(sLy){
-                    var add_lyHasInChangArrDataC0 = _.find(selectLingYuChangedArr, function(cLy){
+                  Lazy(nd.CHILDREN).each(function(sLy){
+                    var add_lyHasInChangArrDataC0 = Lazy(selectLingYuChangedArr).find(function(cLy){
                       return cLy.LINGYU_ID == sLy.LINGYU_ID;
                     });
                     if(!add_lyHasInChangArrDataC0){
@@ -753,10 +749,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               $scope.jgSelectLingYu.push(nd);
               if(nd.CHILDREN.length){ //有子领域
                 //操作已选领域的代码
-                _.each(nd.CHILDREN, function(ly, idx, lst){
+                Lazy(nd.CHILDREN).each(function(ly, idx, lst){
                   var hasLingYuArr, hasIn;
-                  hasLingYuArr = _.map($scope.jgSelectLingYu, function(sly){return sly.LINGYU_ID});
-                  hasIn = _.contains(hasLingYuArr, ly.LINGYU_ID);
+                  hasLingYuArr = Lazy($scope.jgSelectLingYu).map(function(sly){return sly.LINGYU_ID}).toArray();
+                  hasIn = Lazy(hasLingYuArr).contains(ly.LINGYU_ID);
                   if(!hasIn){
                     $scope.jgSelectLingYu.push(ly);
                   }
@@ -773,10 +769,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   $(parentLyCss).prop('checked', true);
                 }
                 //判断父是否在原始数据里
-                var chd_lyHasInOriginDataAdd = _.find(originSelectLingYuArr, function(sLyId){
+                var chd_lyHasInOriginDataAdd = Lazy(originSelectLingYuArr).find(function(sLyId){
                     return sLyId == parentLy.LINGYU_ID;
                   }),
-                  chd_lyHasInChangArrDataAdd = _.find(selectLingYuChangedArr, function(cLy){
+                  chd_lyHasInChangArrDataAdd = Lazy(selectLingYuChangedArr).find(function(cLy){
                     return cLy.LINGYU_ID == parentLy.LINGYU_ID;
                   });
                 if(!chd_lyHasInOriginDataAdd){
@@ -786,7 +782,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   }
                 }
               }
-              _.each($scope.jgSelectLingYu, function(ly, idx, lst){
+              Lazy($scope.jgSelectLingYu).each(function(ly, idx, lst){
                 if(ly.LINGYU_ID == parentLyId){
                   ly.CHILDREN.push(nd);
                 }
@@ -794,9 +790,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               //所选领域存在原始数据里
               if(ifInOriginSelectLingYu){
                 if(ifInChangLingYuArr){ //存在于变动数组里面
-                  selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
                     return ly.LINGYU_ID == targetId;
-                  });
+                  }).toArray();
                 }
               }
               //所选领域不存在原始数据里
@@ -810,7 +806,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             if(nd.PARENT_LINGYU_ID == 0){ // 父领域
               //存在原始数据里
               if(ifInOriginSelectLingYu){
-                var lyHasInChangArrDataP = _.find(selectLingYuChangedArr, function(cLy){
+                var lyHasInChangArrDataP = Lazy(selectLingYuChangedArr).find(function(cLy){
                   return cLy.LINGYU_ID == targetId;
                 });
                 if(!lyHasInChangArrDataP){
@@ -818,11 +814,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   selectLingYuChangedArr.push(nd);
                 }
                 if(nd.CHILDREN && nd.CHILDREN.length > 0){
-                  _.each(nd.CHILDREN, function(sLy, sIdx, sLst){
-                    var lyHasInOriginData = _.find(originSelectLingYuArr, function(sLyId){
+                  Lazy(nd.CHILDREN).each(function(sLy, sIdx, sLst){
+                    var lyHasInOriginData = Lazy(originSelectLingYuArr).find(function(sLyId){
                         return sLyId == sLy.LINGYU_ID;
                       }),
-                      lyHasInChangArrDataC = _.find(selectLingYuChangedArr, function(cLy){
+                      lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
                         return cLy.LINGYU_ID == sLy.LINGYU_ID;
                       });
                     if(lyHasInOriginData){
@@ -833,7 +829,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                     }
                     else{
                       if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly) {
+                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
                           return ly.LINGYU_ID == sLy.LINGYU_ID;
                         });
                       }
@@ -843,22 +839,22 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               }
               //不在原始数据里
               else{
-                _.each(nd, function(ly){
-                  var lyHasInChangArrDataP = _.find(selectLingYuChangedArr, function(cLy){
+                Lazy(nd).each(function(ly){
+                  var lyHasInChangArrDataP = Lazy(selectLingYuChangedArr).find(function(cLy){
                     return cLy.LINGYU_ID == ly.LINGYU_ID;
                   });
                   if(lyHasInChangArrDataP){
-                    selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(cLy) {
+                    selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(cLy) {
                       return cLy.LINGYU_ID == ly.LINGYU_ID;
-                    });
+                    }).toArray();
                   }
                   if(ly.CHILDREN && ly.CHILDREN.length > 0){
-                    _.each(ly.CHILDREN, function(sLy){
-                      var lyHasInChangArrDataC = _.find(selectLingYuChangedArr, function(cLy){
+                    Lazy(ly.CHILDREN).each(function(sLy){
+                      var lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
                         return cLy.LINGYU_ID == sLy.LINGYU_ID;
                       });
                       if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(cLy) {
+                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(cLy) {
                           return cLy.LINGYU_ID == sLy.LINGYU_ID;
                         });
                       }
@@ -867,8 +863,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                 });
               }
               if(nd.CHILDREN.length){ //操作已选领域的代码
-                _.each(nd.CHILDREN, function(ly,idx,lst){
-                  _.each($scope.jgSelectLingYu, function(sly, sIdx, sLst){
+                Lazy(nd.CHILDREN).each(function(ly,idx,lst){
+                  Lazy($scope.jgSelectLingYu).each(function(sly, sIdx, sLst){
                     if(sly.LINGYU_ID == nd.LINGYU_ID){
                       $scope.jgSelectLingYu.splice(sIdx, 1);
                     }
@@ -885,9 +881,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               if(parentLy){
                 var isAllLyUnChecked = true,
                   lyClass, ifLyChecked;
-                _.each(parentLy.CHILDREN, function(ly){
-                  lyClass = '.checkbox' + ly.LINGYU_ID,
-                    ifLyChecked = $(lyClass).prop('checked');
+                Lazy(parentLy.CHILDREN).each(function(ly){
+                  lyClass = '.checkbox' + ly.LINGYU_ID;
+                  ifLyChecked = $(lyClass).prop('checked');
                   if(ifLyChecked){
                     isAllLyUnChecked = false;
                   }
@@ -896,10 +892,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
                   $(parentLyClass).prop('checked', false);
                   //所有的子都不选的时候，将父也去除
-                  var chd_lyHasInOriginDataDel = _.find(originSelectLingYuArr, function(sLyId){
+                  var chd_lyHasInOriginDataDel = Lazy(originSelectLingYuArr).find(function(sLyId){
                       return sLyId == parentLy.LINGYU_ID;
                     }),
-                    chd_lyHasInChangArrDataDel = _.find(selectLingYuChangedArr, function(cLy){
+                    chd_lyHasInChangArrDataDel = Lazy(selectLingYuChangedArr).find(function(cLy){
                       return cLy.LINGYU_ID == parentLy.LINGYU_ID;
                     });
                   if(chd_lyHasInOriginDataDel){
@@ -910,13 +906,13 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   }
                 }
               }
-              _.each($scope.jgSelectLingYu, function(sly, idx, lst){
+              Lazy($scope.jgSelectLingYu).each(function(sly, idx, lst){
                 if(sly.LINGYU_ID == targetId){
                   $scope.jgSelectLingYu.splice(idx, 1);
                 }
                 else{
                   if(sly.CHILDREN && sly.CHILDREN.length >0){
-                    _.each(sly.CHILDREN, function(secSly, secIdx, secLst){
+                    Lazy(sly.CHILDREN).each(function(secSly, secIdx, secLst){
                       if(secSly.LINGYU_ID == targetId){
                         $scope.jgSelectLingYu[idx].CHILDREN.splice(secIdx, 1);
                       }
@@ -932,9 +928,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               //所选领域不存在原始数据里
               else{
                 if(ifInChangLingYuArr){ //存在于变动数组里面
-                  selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
                     return ly.LINGYU_ID == targetId;
-                  });
+                  }).toArray();
                 }
               }
             }
@@ -956,21 +952,21 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             targetId = sly.LINGYU_ID,
             ifInOriginSelectLy,
             ifInChangSelectLy;
-          ifInOriginSelectLy = _.find(originSelectLingYuArr, function(lyId){
+          ifInOriginSelectLy = Lazy(originSelectLingYuArr).find(function(lyId){
             return lyId == targetId;
           });
           if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
-            ifInChangSelectLy = _.find(selectLingYuChangedArr, function(cgLy){
+            ifInChangSelectLy = Lazy(selectLingYuChangedArr).find(function(cgLy){
               return cgLy.LINGYU_ID == targetId;
             });
           }
           //选择要操作的领域数据
-          _.each($scope.lingyu_list[0].CHILDREN, function(ply){
+          Lazy($scope.lingyu_list[0].CHILDREN).each(function(ply){
             if(ply.LINGYU_ID == sly.LINGYU_ID){
               findLyArr = ply;
             }
             else{
-              _.each(ply.CHILDREN, function(ly){
+              Lazy(ply.CHILDREN).each(function(ly){
                   if(ly.LINGYU_ID == sly.LINGYU_ID){
                     findLyArr = ply;
                   }
@@ -980,7 +976,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           //操作已选的领域数据
           if(findLyArr.CHILDREN.length){
             $('.media').find(targetClass).prop('checked', false);
-            _.each(findLyArr.CHILDREN, function(ly){
+            Lazy(findLyArr.CHILDREN).each(function(ly){
               checkBoxParm = '.checkbox' + ly.LINGYU_ID;
               checkBoxElm = $(checkBoxParm).prop('checked');
               if(checkBoxElm){
@@ -1002,9 +998,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           }
           else{
             if(ifInChangSelectLy){
-              selectLingYuChangedArr = _.reject(selectLingYuChangedArr, function(ly){
+              selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
                 return ly.LINGYU_ID == targetId;
-              });
+              }).toArray();
             }
           }
           $scope.jgSelectLingYu[pIdx].CHILDREN.splice(idx, 1);
@@ -1129,7 +1125,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.saveChooseLingYu = function(){
           $scope.loadingImgShow = true; //rz_selectLingYu.html
           lingYuData.shuju = [];
-          _.each(selectLingYuChangedArr, function(sly){
+          Lazy(selectLingYuChangedArr).each(function(sly){
             var slyObj = {};
             slyObj.JIGOU_ID = jigouid;
             slyObj.LINGYU_ID = sly.LINGYU_ID;
@@ -1147,15 +1143,15 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               if(data.result){
                 saveTiKuFun();
                 alterShiJuanMuLu();
-                _.each(selectLingYuChangedArr, function(sly){
-                  var hasInOriginSelectLy = _.find(originSelectLingYuArr, function(lyId){
+                Lazy(selectLingYuChangedArr).each(function(sly){
+                  var hasInOriginSelectLy = Lazy(originSelectLingYuArr).find(function(lyId){
                     return lyId == sly.LINGYU_ID;
                   });
                   if(hasInOriginSelectLy){
                     if(sly.itemStat && sly.itemStat == 'del'){
-                      originSelectLingYuArr = _.reject(originSelectLingYuArr, function(lyId){
+                      originSelectLingYuArr = Lazy(originSelectLingYuArr).reject(function(lyId){
                         return lyId == sly.LINGYU_ID;
-                      });
+                      }).toArray();
                     }
                   }
                   else{
@@ -1188,8 +1184,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           // 查询领域
           $http.get(qryLingYuUrl).success(function(data) {
             if(data.length){
-              _.each(data[0].CHILDREN, function(sub1, idx1, lst1){
-                _.each(sub1.CHILDREN, function(sub2, idx2, lst2){
+              Lazy(data[0].CHILDREN).each(function(sub1, idx1, lst1){
+                Lazy(sub1.CHILDREN).each(function(sub2, idx2, lst2){
                   lingYuChildArr.push(sub2);
                 });
               });
@@ -1219,16 +1215,16 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             singleZsdData, //存放一条公共知识点数据的变量
             pubZsdList = []; //存放多条公共知识点的变量
           //从已有的公共知识点中减去知识大纲知识点
-          diffZsdIdArr = _.difference(pubZsdIdArr, pubDgZsdIdArr);
+          diffZsdIdArr = Lazy(pubZsdIdArr).without(pubDgZsdIdArr).toArray();
           //得到相对应的公共知识大纲知识点
-          _.each(diffZsdIdArr, function(zsdId, idx, lst){
-            singleZsdData = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: zsdId });
+          Lazy(diffZsdIdArr).each(function(zsdId, idx, lst){
+            singleZsdData = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: zsdId });
             pubZsdList.push(singleZsdData);
           });
-          _.each($scope.pubDaGangList, function(pdg, idx, lst){
-            pubZsdList = _.reject(pubZsdList, function(pzsd){
+          Lazy($scope.pubDaGangList).each(function(pdg, idx, lst){
+            pubZsdList =  Lazy(pubZsdList).reject(function(pzsd){
               return pzsd.ZHISHIDIANMINGCHENG == pdg.ZHISHIDAGANGMINGCHENG ;
-            });
+            }).toArray();
           });
           $scope.publicKnowledge = pubZsdList;
         };
@@ -1248,9 +1244,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                 $scope.loadingImgShow = false; //rz_setDaGang.html
                 publicKnowledgeData = zsd;
                 //得到此领域下的公共知识点id的数组
-                pubZsdIdArr = _.map(zsd, function(szsd){
+                pubZsdIdArr = Lazy(zsd).map(function(szsd){
                   return szsd.ZHISHIDIAN_ID;
-                });
+                }).toArray();
                 if($scope.dgZsdList && $scope.dgZsdList.length > 0){
                   minusZsdFun();
                 }
@@ -1278,7 +1274,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               //有知识大纲
               if(zsdg && zsdg.length > 0){
                 $scope.loadingImgShow = false; //rz_setDaGang.html
-                _.each(zsdg, function(dg, idx, lst){
+                Lazy(zsdg).each(function(dg, idx, lst){
                   if(dg.LEIXING == 1){
                     pubZsdgArr.push(dg);
                   }
@@ -1318,7 +1314,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           function _do(item) {
             pubDgZsdIdArr.push(item.ZHISHIDIAN_ID);
             if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              _.each(item.ZIJIEDIAN, _do);
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
           if(dgId){
@@ -1332,8 +1328,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             $scope.loadingImgShow = true; //rz_setDaGang.html
             $scope.publicKnowledge = ''; //重置公共知识点
             //得到所选的知识大纲的详细信息
-            selectDgDetail = _.findWhere($scope.pubDaGangList, { ZHISHIDAGANG_ID: dgId });
-            if(_.size(selectDgDetail)){
+            selectDgDetail =  Lazy($scope.pubDaGangList).findWhere({ ZHISHIDAGANG_ID: dgId });
+            if(Lazy(selectDgDetail).size()){
               daGangData.shuju.ZHISHIDAGANG_ID = selectDgDetail.ZHISHIDAGANG_ID;
               daGangData.shuju.ZHISHIDAGANGMINGCHENG = selectDgDetail.ZHISHIDAGANGMINGCHENG;
               daGangData.shuju.DAGANGSHUOMING = selectDgDetail.DAGANGSHUOMING;
@@ -1350,20 +1346,20 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                 $scope.dgZsdList = dgZsd;
                 //从公共知识点中去除大纲中已有的知识点
                 //得到知识大纲知识点的数组
-                _.each(dgZsd, _do);
+                Lazy(dgZsd).each(_do);
 
                 //从已有的公共知识点中减去知识大纲知识点
                 minusZsdFun();
-                //diffZsdIdArr = _.difference(pubZsdIdArr, pubDgZsdIdArr);
+                //diffZsdIdArr = Lazy(pubZsdIdArr).without(pubDgZsdIdArr);
                 ////得到相对应的公共知识大纲知识点
-                //_.each(diffZsdIdArr, function(zsdId, idx, lst){
-                //  singleZsdData = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: zsdId });
+                //Lazy(diffZsdIdArr).each(function(zsdId, idx, lst){
+                //  singleZsdData = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: zsdId });
                 //  pubZsdList.push(singleZsdData);
                 //});
-                //_.each($scope.pubDaGangList, function(pdg, idx, lst){
-                //  pubZsdList = _.reject(pubZsdList, function(pzsd){
+                //Lazy($scope.pubDaGangList).each(function(pdg, idx, lst){
+                //  pubZsdList = Lazy(pubZsdList).reject(function(pzsd){
                 //    return pzsd.ZHISHIDIANMINGCHENG == pdg.ZHISHIDAGANGMINGCHENG ;
-                //  });
+                //  }).toArray();
                 //});
                 //$scope.publicKnowledge = pubZsdList;
                 isDaGangSet = true;
@@ -1403,10 +1399,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           var cfmInfo = confirm("确定要删除知识点吗？");
           function getPubZsd(item) {
             if(item.ZHISHIDIAN_ID){
-              var pubZsdObj = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
+              var pubZsdObj = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
               $scope.publicKnowledge.push(pubZsdObj);
               if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-                _.each(item.ZIJIEDIAN, getPubZsd);
+                Lazy(item.ZIJIEDIAN).each(getPubZsd);
               }
             }
           }
@@ -1483,13 +1479,13 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.compareInputVal = function(nd){
           var str  = nd.ZHISHIDIANMINGCHENG;
           str = str.replace(/\s+/g,"");
-          var result = _.findWhere($scope.publicKnowledge, { ZHISHIDIANMINGCHENG: str });
+          var result = Lazy($scope.publicKnowledge).findWhere({ ZHISHIDIANMINGCHENG: str });
           if(result){
             nd.ZHISHIDIAN_ID = result.ZHISHIDIAN_ID;
             nd.ZHISHIDIANMINGCHENG = result.ZHISHIDIANMINGCHENG;
-            $scope.publicKnowledge = _.reject($scope.publicKnowledge, function(pkg){
+            $scope.publicKnowledge = Lazy($scope.publicKnowledge).reject(function(pkg){
               return pkg.ZHISHIDIAN_ID == result.ZHISHIDIAN_ID;
-            });
+            }).toArray();
           }
         };
 
@@ -1546,7 +1542,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               countEmpty = false;
             }
             if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-              _.each(item.ZIJIEDIAN, _do);
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
           if($scope.dgZsdList){
@@ -1555,7 +1551,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             if(!daGangData.shuju.ZHUANGTAI2){
               daGangData.shuju.ZHUANGTAI2 = 1;
             }
-            _.each(daGangData.shuju.JIEDIAN, _do);
+            Lazy(daGangData.shuju.JIEDIAN).each(_do);
             $scope.loadingImgShow = true; //rz_setDaGang.html
             //保存知识大纲
             if(countEmpty){
@@ -1602,9 +1598,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               $http.post(deletePublicDaGangBaseUrl, pubDgDataObj).success(function(data){
                 if(data.result){
                   DataService.alertInfFun('suc', '删除公共知识大纲成功！');
-                  $scope.pubDaGangList = _.reject($scope.pubDaGangList, function(pdg){
+                  $scope.pubDaGangList = Lazy($scope.pubDaGangList).reject(function(pdg){
                     return pdg.ZHISHIDAGANG_ID == $scope.adminParams.selected_dg;
-                  });
+                  }).toArray();
                   $scope.adminParams.selected_dg = '';
                   $scope.dgZsdList = '';
                   $scope.publicKnowledge = ''; //重置公共知识点
@@ -1626,9 +1622,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             childLyArr = [];
           $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
             if(jgLy.length){
-              _.each(jgLy, function(ply, idx, lst){
+              Lazy(jgLy).each(function(ply, idx, lst){
                 if(ply.CHILDREN.length){
-                  _.each(ply.CHILDREN, function(cly, cidx, clst){
+                  Lazy(ply.CHILDREN).each(function(cly, cidx, clst){
                     childLyArr.push(cly);
                   });
                 }
@@ -1669,8 +1665,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             }
             else{
               $scope.kmtxList = data;
-              originKmtx = _.map(data, function(tx){return tx.TIXING_ID});
-              $scope.selectedTxLyStr = _.map(data, function(tx){return 'tx' + tx.TIXING_ID + ';'}).toString();
+              originKmtx = Lazy(data).map(function(tx){return tx.TIXING_ID}).toArray();
+              $scope.selectedTxLyStr = Lazy(data).map(function(tx){return 'tx' + tx.TIXING_ID + ';'}).toArray().join();
             }
           });
         };
@@ -1680,18 +1676,20 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
          */
         $scope.addOrRemoveTiXing = function(event, tx){
           tiXingData.shuju = [];
-          var hasIn = _.contains(originKmtx, tx.TIXING_ID),
+          var hasIn = Lazy(originKmtx).contains(tx.TIXING_ID),
             ifCheckOrNot = $(event.target).prop('checked');
           if(ifCheckOrNot){
             $scope.kmtxList.push(tx);
           }
           else{
             if(hasIn){
-              var indexInOkt = _.indexOf(originKmtx, tx.TIXING_ID);
+              var indexInOkt = Lazy(originKmtx).indexOf(tx.TIXING_ID);
               $scope.kmtxList[indexInOkt].ZHUANGTAI = -1;
             }
             else{
-              $scope.kmtxList = _.reject($scope.kmtxList, function(kmtx){ return kmtx.TIXING_ID == tx.TIXING_ID; });
+              $scope.kmtxList = Lazy($scope.kmtxList).reject(function(kmtx){
+                return kmtx.TIXING_ID == tx.TIXING_ID;
+              }).toArray();
             }
           }
         };
@@ -1702,7 +1700,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.saveSelectTiXing = function(){
           $scope.loadingImgShow = true; //rz_selectTiXing.html
           tiXingData.shuju = [];
-          _.each($scope.kmtxList, function(kmtx, idx, lst){
+          Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
             var txObj = {};
             txObj.TIXING_ID = kmtx.TIXING_ID;
             txObj.JIGOU_ID = jigouid;
@@ -1780,7 +1778,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           $scope.zsdSetZsdData = '';
           if(lyId){
             $scope.adminParams.selectLinYuId = lyId;
-            $scope.selectedKeMu = _.find($scope.setZsdLingYu, function(ly){
+            $scope.selectedKeMu = Lazy($scope.setZsdLingYu).find(function(ly){
               return ly.LINGYU_ID == lyId;
             }).CHILDREN;
           }
@@ -1802,7 +1800,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               $scope.adminParams.selectKeMuName.push(keMu.LINGYUMINGCHENG);
             }
             else{ //此处的keMu数数据为lingyu
-              var hasInAdd = _.find($scope.adminParams.zsdKeMuArr, function(zsdKm, idx, lst){ //判断是不是原有的科目
+              var hasInAdd = Lazy($scope.adminParams.zsdKeMuArr).find(function(zsdKm, idx, lst){ //判断是不是原有的科目
                 if(zsdKm.LINGYU_ID == keMu.LINGYU_ID){
                   idxVal = idx;
                 }
@@ -1818,15 +1816,15 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           }
           else{
             if(isKeMuSelect){  //此处的keMu数数据为lingyu_id
-              $scope.adminParams.selectKeMuIds =  _.reject($scope.adminParams.selectKeMuIds, function(lyId){
+              $scope.adminParams.selectKeMuIds =  Lazy($scope.adminParams.selectKeMuIds).reject(function(lyId){
                 return lyId  == keMu.LINGYU_ID;
-              });
-              $scope.adminParams.selectKeMuName =  _.reject($scope.adminParams.selectKeMuName, function(lyName){
+              }).toArray();
+              $scope.adminParams.selectKeMuName =  Lazy($scope.adminParams.selectKeMuName).reject(function(lyName){
                 return lyName  == keMu.LINGYUMINGCHENG;
-              });
+              }).toArray();
             }
             else{  //此处的keMu数数据为lingyu
-              var hasInDel = _.find($scope.adminParams.zsdKeMuArr, function(zsdKm, idx, lst){ //判断是不是原有的科目
+              var hasInDel = Lazy($scope.adminParams.zsdKeMuArr).find(function(zsdKm, idx, lst){ //判断是不是原有的科目
                 if(zsdKm.LINGYU_ID == keMu.LINGYU_ID){
                   idxVal = idx;
                 }
@@ -1838,9 +1836,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   originSelectData.changeStat = true; //表示原有的科目删除
                 }
                 else{
-                  $scope.adminParams.zsdKeMuArr =  _.reject($scope.adminParams.zsdKeMuArr, function(km){
+                  $scope.adminParams.zsdKeMuArr =  Lazy($scope.adminParams.zsdKeMuArr).reject(function(km){
                     return km.LINGYU_ID  == keMu.LINGYU_ID;
-                  });
+                  }).toArray();
                 }
               }
             }
@@ -1890,7 +1888,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             $('input[name="zsdKeMuCb"]').prop('checked', false);
             $http.get(cxLyOfZsd).success(function(kmData){
               if(kmData){
-                _.each(kmData, function(km, idx, lst){
+                Lazy(kmData).each(function(km, idx, lst){
                   var kmcss = '.keMu' + km.LINGYU_ID;
                   $(kmcss).prop('checked', true);
                   km.origin = true;
@@ -1936,7 +1934,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                     if(data.result){
                       $scope.adminParams.zsdWrapShow = false;
                       $('input[name="zsdKeMuCb"]').prop('checked', false);
-                      $scope.zsdSetZsdData = _.reject($scope.zsdSetZsdData, function(zsd){
+                      $scope.zsdSetZsdData = Lazy($scope.zsdSetZsdData).reject(function(zsd){
                         return zsd.ZHISHIDIAN_ID  == data.id;
                       });
                       $scope.adminParams.pubZsdTabOn = -1;
@@ -1965,7 +1963,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             lingyuid: $scope.adminParams.selectLinYuId,
             shuju: []
           };
-          _.each($scope.adminParams.zsdKeMuArr, function(sltKm){
+          Lazy($scope.adminParams.zsdKeMuArr).each(function(sltKm){
             var mdfObj = {
               ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
               JIGOU_ID: jigouid,
@@ -2004,10 +2002,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.renderTeacherTpl = function(){
           DataService.getData(qryTeacherUrl).then(function(data){
             if(data && data.length){
-              var groupByUid = _.groupBy(data, function(teach){ return teach.UID; }),
-                groupByLy,
-                teachData = [];
-              _.each(groupByUid, function(v, k, lst){
+              var groupByUid = Lazy(data).groupBy(function(teach){ return teach.UID; }).toObject();
+              var groupByLy;
+              var teachData = [];
+              Lazy(groupByUid).each(function(v, k, lst){
                 var teachObj = {
                   JIGOUMINGCHENG: k[0].JIGOUMINGCHENG,
                   JIGOU_ID: v[0].JIGOU_ID,
@@ -2019,12 +2017,12 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
                   YONGHUMING: v[0].YONGHUMING,
                   YOUXIANG: v[0].YOUXIANG
                 };
-                groupByLy = _.groupBy(v, function(tah){ return tah.LINGYU_ID; });
-                _.each(groupByLy, function(sv, sk, slst){
+                groupByLy = Lazy(v).groupBy(function(tah){ return tah.LINGYU_ID; }).toObject();
+                Lazy(groupByLy).each(function(sv, sk, slst){
                   var lyObj = {
                     LINGYU_ID: sk,
                     LINGYUMINGCHENG: sv[0].LINGYUMINGCHENG,
-                    juese: _.map(sv, function(th){return th.JUESEMINGCHENG;}).join(';')
+                    juese: Lazy(sv).map(function(th){return th.JUESEMINGCHENG;}).toArray().join(';')
                   };
                   teachObj.lingyu.push(lyObj);
                 });
@@ -2120,8 +2118,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             $scope.kaoChangList = '';
             $scope.baoMing.baomingxinxi.kemu_id = '';
             DataService.getData(qryLy).then(function(lyData){
-              _.each(lyData, function(ly, idx, lst){
-                _.each(ly.CHILDREN, function(km, kmIdx, kmLst){
+              Lazy(lyData).each(function(ly, idx, lst){
+                Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
                   dataArr.push(km);
                 });
               });
@@ -2140,7 +2138,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
         $scope.getKaoChangList = function(kmId){
           var qryKaoChangDetail, lyData;
           if($scope.kemu_list && $scope.kemu_list.length > 0){
-            lyData = _.find($scope.kemu_list, function(km){ return km.LINGYU_ID == kmId; });
+            lyData = Lazy($scope.kemu_list).find(function(km){ return km.LINGYU_ID == kmId; });
             qryKaoChangDetail = qryKaoChangDetailBaseUrl + lyData.PARENT_LINGYU_ID;
             if($scope.baoMing.baomingxinxi.jigou_id){
               qryKaoChangDetail += '&jigouid=' + $scope.baoMing.baomingxinxi.jigou_id;
@@ -2239,7 +2237,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             baomingkaodianArr.push(bmkdObj);
           }
           else{
-            baomingkaodianArr = _.reject(baomingkaodianArr, function(bmkd){ return bmkd.kaodian_id == kc.KID;});
+            baomingkaodianArr = Lazy(baomingkaodianArr).reject(function(bmkd){ return bmkd.kaodian_id == kc.KID;}).toArray();
           }
         };
 
@@ -2269,7 +2267,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           };
           var errorCount = 0;
           $scope.loadingImgShow = true;
-          _.each($scope.bmkssjArr, function(cc, idx, lst){
+          Lazy($scope.bmkssjArr).each(function(cc, idx, lst){
             cc.kaishishijian = ccStartArr.eq(idx).val();
             cc.jieshushijian = ccEndArr.eq(idx).val();
           });
@@ -2379,11 +2377,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
             $scope.whichChangCiSelect = '全部考生';
           }
           else if(cdt == 'NotApply'){
-            $scope.studentArrs = _.reject(studentData, function(std){
+            $scope.studentArrs = Lazy(studentData).reject(function(std){
               if(std.KAODIANMINGCHENG){
                 return std;
               }
-            });
+            }).toArray();
             $scope.whichChangCiSelect = '未报名';
           }
           else{
@@ -2391,9 +2389,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
               var bmkssj_id = cdt.BAOMINGKAOSHISHIJIAN_ID;
               //cdt.kaoshiDate = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
               $scope.whichChangCiSelect = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
-              $scope.studentArrs = _.filter(studentData, function(std){
+              $scope.studentArrs = Lazy(studentData).filter(function(std){
                 return std.BAOMINGKAOSHISHIJIAN_ID == bmkssj_id;
-              });
+              }).toArray();
             }
             else{
               DataService.alertInfFun('pmt', '请选场次！');
@@ -2415,7 +2413,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'underscore'], function (an
           ksData.sheetName = $scope.whichChangCiSelect.replace(delBlankReg, '');
           ksData.sheetName = ksData.sheetName.replace(/\:/g, '');
           ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '课序号', col6: '座位号'});
-          _.each($scope.studentArrs, function(stu){
+          Lazy($scope.studentArrs).each(function(stu){
             var ksObj = {XUEHAO: '', XINGMING: '', BANJI: '', XUHAO: '',  KEXUHAO: ''};
             ksObj.XUEHAO = stu.XUEHAO;
             ksObj.XINGMING = stu.XINGMING;

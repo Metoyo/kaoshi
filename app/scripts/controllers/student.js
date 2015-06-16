@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'underscore'], function (angular, config, $, _) {
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.StudentCtrl', [])
@@ -49,7 +49,7 @@ define(['angular', 'config', 'jquery', 'underscore'], function (angular, config,
             if(data && data.length){
               var d = new Date();
               var nowTime = d.getTime();
-              _.each(data, function(bmxx, idx, lst){
+              Lazy(data).each(function(bmxx, idx, lst){
                 var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN);
                 var jzp = jz.getTimezoneOffset();
                 var jzTime = jz.getTime() + jzp * 60 * 1000;
@@ -74,10 +74,10 @@ define(['angular', 'config', 'jquery', 'underscore'], function (angular, config,
           queryKaoShi = queryKaoShiBase + ks.BAOMING_ID;
           DataService.getData(queryKaoShi).then(function(data){
             if(data && data.length){
-              bmKs = _.groupBy(data, function(bm){
+              bmKs = Lazy(data).groupBy(function(bm){
                 return bm.KAISHISHIJIAN;
-              });
-              _.each(bmKs, function(v, k, lst){
+              }).toObject();
+              Lazy(bmKs).each(function(v, k, lst){
                 var bmksObj = {
                   ksStart: '',
                   ksEnd: '',
@@ -88,7 +88,7 @@ define(['angular', 'config', 'jquery', 'underscore'], function (angular, config,
                 bmksObj.ksKc = v;
                 bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
                 bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
-                _.each(bmksObj.ksKc, function(kc, idx, lst){
+                Lazy(bmksObj.ksKc).each(function(kc, idx, lst){
                   kc.baomingjiezhishijian = ks.BAOMINGJIEZHISHIJIAN;
                   if(kc.BAOMING_RENSHU >= 0){
                     var sywz = parseInt(kc.KAOWEI) - kc.BAOMING_RENSHU;
@@ -196,7 +196,7 @@ define(['angular', 'config', 'jquery', 'underscore'], function (angular, config,
           qryKsDetail += '&baomingkaosheng_id=' + ks.BAOMINGKAOSHENG_ID;
           DataService.getData(qryKsDetail).then(function(detail){
             if(detail && detail.length){
-              _.each(detail, function(ksd, idx, lst){
+              Lazy(detail).each(function(ksd, idx, lst){
                 ksd.ksShijian = DataService.baoMingDateFormat(ksd.KAISHISHIJIAN, ksd.JIESHUSHIJIAN);
                 ksd.ksName = ks.KAOSHIMINGCHENG;
               });
@@ -269,15 +269,15 @@ define(['angular', 'config', 'jquery', 'underscore'], function (angular, config,
                   if(dfl && dfl.length > 0) {
                     itemDeFenLv = dfl;
                     finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-                    dataDis = _.groupBy(data, 'DATI_XUHAO');
-                    _.each(dataDis, function(val, key, list){
+                    dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
+                    Lazy(dataDis).each(function(val, key, list){
                       var dObj = {
                         tx_id: key,
                         tx_name: val[0].DATIMINGCHENG,
                         tm: ''
                       };
-                      tmVal = _.each(val, function(tm, idx, lst){
-                        var findVal = _.find(itemDeFenLv, function(item){return item.TIMU_ID == tm.TIMU_ID});
+                      tmVal = Lazy(val).each(function(tm, idx, lst){
+                        var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
                         tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
                         if(typeof(tm.TIGAN) == 'string'){
                           tm.TIGAN = JSON.parse(tm.TIGAN);

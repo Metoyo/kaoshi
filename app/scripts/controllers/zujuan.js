@@ -1,5 +1,5 @@
-define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
-  function (angular, config, mathjax, $, _) { // 001
+define(['angular', 'config', 'mathjax', 'jquery', 'lazy'],
+  function (angular, config, mathjax, $, lazy) { // 001
     'use strict';
     angular.module('kaoshiApp.controllers.ZujuanCtrl', [])
       .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',
@@ -14,41 +14,41 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
           /**
            * 声明变量
            */
-          var userInfo = $rootScope.session.userInfo,
-            baseMtAPIUrl = config.apiurl_mt, //mingti的api
-            baseRzAPIUrl = config.apiurl_rz, //renzheng的api
-            token = config.token,
-            caozuoyuan = userInfo.UID,//登录的用户的UID
-            jigouid = userInfo.JIGOU[0].JIGOU_ID,
-            lingyuid = $rootScope.session.defaultLyId,
-            tiKuLingYuId = $rootScope.session.defaultTiKuLyId,
-            chaxunzilingyu = true,
-            qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu,//查询大纲的url
-            qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
-              caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=', //查询知识点基础url
-            qryKnowledge = '', //定义一个空的查询知识点的url
-            selectZsd = [],//定义一个选中知识点的变量（数组)
-            selectZsdName = [],//定义一个选中知识点的变量的名称（数组)
-            tixing_id = '', //用于根据题型id查询题目的字符串
-            nandu_id = '', //用于根据难度查询题目的字符串
-            zhishidian_id = '', //用于根据知识点查询题目的字符串
-            qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-              jigouid + '&lingyuid=', //查询科目包含什么题型的url
-            qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-            qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目详情基础url
-            timudetails,//获得的题目数组
-            tiMuIdArr = [], //获得查询题目ID的数组
-            sjlbIdArrRev = [], //存放所有试卷ID的数组
-            pageArr = [], //根据得到的试题数据定义一个分页数组
-            paperPageArr = [], //定义试卷页码数组
-            totalPage, //符合条件的试题数据一共有多少页
-            totalPaperPage,//符合条件的试卷一共有多少页
-            itemNumPerPage = 10, //每页显示多少条数据
-            paginationLength = 11, //分页部分，页码的长度，目前设定为11
-            shijuanData = { //试卷的数据模型
+          var userInfo = $rootScope.session.userInfo;
+          var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+          var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
+          var token = config.token;
+          var caozuoyuan = userInfo.UID;//登录的用户的UID
+          var jigouid = userInfo.JIGOU[0].JIGOU_ID;
+          var lingyuid = $rootScope.session.defaultLyId;
+          var tiKuLingYuId = $rootScope.session.defaultTiKuLyId;
+          var chaxunzilingyu = true;
+          var qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+              + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu;//查询大纲的url
+          var qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
+              caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid='; //查询知识点基础url
+          var qryKnowledge = ''; //定义一个空的查询知识点的url
+          var selectZsd = [];//定义一个选中知识点的变量（数组)
+          var selectZsdName = [];//定义一个选中知识点的变量的名称（数组)
+          var tixing_id = ''; //用于根据题型id查询题目的字符串
+          var nandu_id = ''; //用于根据难度查询题目的字符串
+          var zhishidian_id = ''; //用于根据知识点查询题目的字符串
+          var qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
+              jigouid + '&lingyuid='; //查询科目包含什么题型的url
+          var qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
+          var qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目详情基础url
+          var timudetails;//获得的题目数组
+          var tiMuIdArr = []; //获得查询题目ID的数组
+          var sjlbIdArrRev = []; //存放所有试卷ID的数组
+          var pageArr = []; //根据得到的试题数据定义一个分页数组
+          var paperPageArr = []; //定义试卷页码数组
+          var totalPage; //符合条件的试题数据一共有多少页
+          var totalPaperPage;//符合条件的试卷一共有多少页
+          var itemNumPerPage = 10; //每页显示多少条数据
+          var paginationLength = 11; //分页部分，页码的长度，目前设定为11
+          var shijuanData = { //试卷的数据模型
               token: token,
               caozuoyuan: caozuoyuan,
               jigouid: jigouid,
@@ -62,9 +62,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 SHIJUAN_TIMU: [],
                 ZHUANGTAI: 1
               }
-            },
-            xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan', //提交试卷数据的URL
-            mubanData = { //模板的数据模型
+            };
+          var xgsjUrl = baseMtAPIUrl + 'xiugai_shijuan'; //提交试卷数据的URL
+          var mubanData = { //模板的数据模型
               token: token,
               caozuoyuan: caozuoyuan,
               jigouid: jigouid,
@@ -84,10 +84,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 TIMU_SUIJI: false,
                 XUANXIANG_SUIJI: false
               }
-            },
-            xgmbUrl = baseMtAPIUrl + 'xiugai_muban', //提交模板数据的URL
-            mbdt_data = [], // 得到模板大题的数组
-            nanduTempData = [ //存放题型难度的数组
+            };
+          var xgmbUrl = baseMtAPIUrl + 'xiugai_muban'; //提交模板数据的URL
+          var mbdt_data = []; // 得到模板大题的数组
+          var nanduTempData = [ //存放题型难度的数组
               {
                 nanduId: '1',
                 nanduName:'容易',
@@ -113,26 +113,26 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 nanduName:'困难',
                 nanduCount: []
               }
-            ],
-            nanduLength = nanduTempData.length, //难度数组的长度
-            deletelsmbData = { //删除临时模板的数据模型
+            ];
+          var nanduLength = nanduTempData.length; //难度数组的长度
+          var deletelsmbData = { //删除临时模板的数据模型
               token: token,
               caozuoyuan: caozuoyuan,
               jigouid: jigouid,
               lingyuid: lingyuid,
               muban_id: []
-            },
-            deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban', //删除临时模板的url
-            kmtxListLength, //获得科目题型的长度
-            qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
-            qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=',//查询试卷列表url
-            paperDetailData, //定义一个存放试卷详情的字段，用于保存试卷详情用于生成答题卡
-            paperDetailId, //用来存放所选试卷的id
-            paperDetailName, //用来存放所选试卷的名称
-            zidongzujuan = baseMtAPIUrl + 'zidongzujuan', //自动组卷的url
-            autoMakePaperData = {
+            };
+          var deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban'; //删除临时模板的url
+          var kmtxListLength; //获得科目题型的长度
+          var qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷列表url
+          var qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=';//查询试卷列表url
+          var paperDetailData; //定义一个存放试卷详情的字段，用于保存试卷详情用于生成答题卡
+          var paperDetailId; //用来存放所选试卷的id
+          var paperDetailName; //用来存放所选试卷的名称
+          var zidongzujuan = baseMtAPIUrl + 'zidongzujuan'; //自动组卷的url
+          var autoMakePaperData = {
               token: token,
               caozuoyuan: caozuoyuan,
               jigouid: jigouid,
@@ -142,21 +142,21 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 ZHISHIDIAN: [],
                 TIXING: []
               }
-            }, //自动组卷的数据格式
-            qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
-            getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //规则组卷
-            guiZeZuJuanUrl = baseMtAPIUrl + 'guizezujuan', //规则组卷的url
-            updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize', //修改选题规则
-            updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize', //更新选题规则使用次数
-            qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan, //更新选题规则使用次数
-            zuJuanRuleStr = '', //存放组卷规则的字符串，有json数据格式转化而来
-            isComeFromRuleList = false, //是否由规则列表点进去的
-            comeFromRuleListData = '', //存放已选组卷规则的变量
-            zsdgZsdArr = [], //存放所有知识大纲知识点的数组
-            qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId, //查询题库
-            qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            }; //自动组卷的数据格式
+          var qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷概要的基础URL
+          var getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //规则组卷
+          var guiZeZuJuanUrl = baseMtAPIUrl + 'guizezujuan'; //规则组卷的url
+          var updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize'; //修改选题规则
+          var updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize'; //更新选题规则使用次数
+          var qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan; //更新选题规则使用次数
+          var zuJuanRuleStr = ''; //存放组卷规则的字符串，有json数据格式转化而来
+          var isComeFromRuleList = false; //是否由规则列表点进去的
+          var comeFromRuleListData = ''; //存放已选组卷规则的变量
+          var zsdgZsdArr = []; //存放所有知识大纲知识点的数组
+          var qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId; //查询题库
+          var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
               + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
 
           /**
@@ -213,11 +213,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             function _do(item) {
               zsdgZsdArr.push(item.ZHISHIDIAN_ID);
               if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-                _.each(item.ZIJIEDIAN, _do);
+                Lazy(item.ZIJIEDIAN).each(_do);
               }
             }
             if(data.length){
-//              _.each(data, function(dg, idx, lst){
+//              Lazy(data).each(function(dg, idx, lst){
 //                if(dg.ZHUANGTAI2 == 2){
 //                  newDgList.push(dg);
 //                }
@@ -232,7 +232,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                     if(zsddata.length){
                       $scope.kowledgeList = zsddata;
                       //得到知识大纲知识点id的函数
-                      _.each(zsddata, _do);
+                      Lazy(zsddata).each(_do);
                     }
                     else{
                       DataService.alertInfFun('err', zsddata.error);
@@ -255,7 +255,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
           $http.get(qryKmTx + lingyuid).success(function(kmtx){ //页面加载的时候调用科目题型
             if(kmtx){
               $scope.ampKmtxWeb = [];
-              $scope.kmtxList = _.each(kmtx, function(txdata, idx, lst){
+              $scope.kmtxList = Lazy(kmtx).each(function(txdata, idx, lst){
                 txdata.itemsNum = 0;
                 var txBoj = {
                   TIXING_ID: '',
@@ -278,7 +278,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            * kmtx.datiScore的值清零
            */
           var restoreKmtxDtscore = function(){
-            _.each($scope.kmtxList, function(kmtx, idx, lst){
+            Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
               kmtx.datiScore = 0;
             });
           };
@@ -480,7 +480,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 $http.get(qrytimuliebiao).success(function(data){
                   if(data.length){
                     $scope.testListId = data;
-                    _.each(data, function(tm, idx, lst){
+                    Lazy(data).each(function(tm, idx, lst){
                       tiMuIdArr.push(tm.TIMU_ID);
                       chuangJianRenUidArr.push(tm.CHUANGJIANREN_UID);
                     });
@@ -491,7 +491,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                     }
                     $scope.lastPageNum = totalPage; //最后一页的数值
                     //得到创建人uid和姓名的数组
-                    chuangJianRenUidArr = _.chain(chuangJianRenUidArr).uniq().sortBy().value().toString();
+                    chuangJianRenUidArr = Lazy(chuangJianRenUidArr).uniq().sortBy().toArray().join();
                     var getUserNameUrl = getUserNameBase + chuangJianRenUidArr;
                     if($scope.zuJuanParam.isFirstEnterZuJuan){
                       $http.get(getUserNameUrl).success(function(users){
@@ -573,10 +573,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
             $http.get(qrytimuxiangqing).success(function(data){
               if(data.length){
-                _.each(data, function(tm, idx, lst){
+                Lazy(data).each(function(tm, idx, lst){
                   DataService.formatDaAn(tm);
                   //件创建人的姓名加入到题目里面
-                  _.each($scope.chuTiRens, function(usr, subidx, sublst){
+                  Lazy($scope.chuTiRens).each(function(usr, subidx, sublst){
                     if(usr.UID == tm.CHUANGJIANREN_UID){
                       tm.chuangjianren = usr.XINGMING;
                     }
@@ -684,7 +684,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
           var getShiJuanMuBanData = function(){
             var deferred = $q.defer();
             mbdt_data = []; // 得到模板大题的数组
-            _.each($scope.kmtxList, function(kmtx, idx, lst){
+            Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
               var mubandatiItem = {
                 MUBANDATI_ID: '',
                 DATIMINGCHENG: '',
@@ -771,7 +771,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             promise.then(function(){
               $scope.isAutoMakePaperDetailSetShow = false; //自动组卷加载的时候，详细设置隐藏
               autoMakePaperKmtx = $scope.kmtxList;
-              _.each(autoMakePaperKmtx, function(aKmtx, idx, lst){
+              Lazy(autoMakePaperKmtx).each(function(aKmtx, idx, lst){
                 aKmtx.tmNum = '';
                 aKmtx.tmNanDu = '';
                 aKmtx.dagangArr = [];
@@ -796,7 +796,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 comeFromRuleListData = zjr;
               }
               else{
-                _.each($scope.ampKmtxWeb, function(ampw, idx, lst){
+                Lazy($scope.ampKmtxWeb).each(function(ampw, idx, lst){
                   ampw.txTotalNum = 0;
                   ampw.zsdXuanTiArr = [];
                 });
@@ -815,11 +815,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
           var findWhichRuleHasNoItem = function(ruleData, tiMuTjData, itemData){
             var txArrs = [], groupObj;
             $scope.zuJuanParam.xuanTiError = [];
-            _.each(ruleData, function(rl, idx, lst){
+            Lazy(ruleData).each(function(rl, idx, lst){
               if(rl.txTotalNum > 0 && (rl.txTotalNum != tiMuTjData[idx].itemsNum)){
-                txArrs = _.filter(itemData, function(item){ return item.TIXING_ID == rl.TIXING_ID; });
-                groupObj = _.groupBy(txArrs, function(tm){ return tm.NANDU_ID; });
-                _.each(rl.zsdXuanTiArr, function(xt, subIdx, subLst){
+                txArrs = Lazy(itemData).filter(function(item){ return item.TIXING_ID == rl.TIXING_ID; }).toArray();
+                groupObj = Lazy(txArrs).groupBy(function(tm){ return tm.NANDU_ID; }).toObject();
+                Lazy(rl.zsdXuanTiArr).each(function(xt, subIdx, subLst){
                   var errorTx = {
                     errTxName: '',
                     errNanDu: '',
@@ -861,7 +861,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               //去选题
               var directRuleMakePaperData = JSON.parse(dzjr.GUIZEBIANMA),
                 totalTiMuNums;
-              _.each(dzjr.txTongJi, function(txArr, idx, lst){
+              Lazy(dzjr.txTongJi).each(function(txArr, idx, lst){
                 if(txArr.zsdXuanTiArr.length){
                   totalTiMuNums += txArr.txTotalNum;
                 }
@@ -871,9 +871,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
                   $http.get(qrytimuxiangqing).success(function(stdata){
                     if(stdata.length){
-                      _.each(stdata, function(tm, idx, lst){
+                      Lazy(stdata).each(function(tm, idx, lst){
                         //将试题详情添加到mabandData
-                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+                        Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, subIdx, lst){
                           if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
                             mbdt.TIMUARR.push(tm);
                           }
@@ -886,7 +886,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                         }
                       });
                       //统计每种题型的数量和百分比
-                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+                      Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
                         tixingStatistics(idx, kmtxListLength);
                       });
                       nanduPercent(); //难度统计
@@ -928,7 +928,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            * 返回到组卷的3中情形页面
            */
           $scope.ruleBackToZuJuanHome = function(){
-            _.each($scope.ampKmtxWeb, function(ampw, idx, lst){
+            Lazy($scope.ampKmtxWeb).each(function(ampw, idx, lst){
               ampw.txTotalNum = 0;
               ampw.zsdXuanTiArr = [];
             });
@@ -943,12 +943,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
             shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
-            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+            Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
               ndkmtx.ndPercentNum = '0%';
               return ndkmtx;
             });
-            _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+            Lazy($scope.kmtxList).each(function(tjkmtx, idx, lst){ //清除科目题型的统计数据
               tjkmtx.itemsNum = 0;
               tjkmtx.txPercentNum = '0%';
               return tjkmtx;
@@ -1009,7 +1009,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                     targetTx.NANDU = coefftRule;
                     targetTx.ZHISHIDIAN = selectZsd;
                     targetTx.zsdNameArr = selectZsdName;
-                    _.each($scope.ampKmtxWeb, function(txw, idx, lst){
+                    Lazy($scope.ampKmtxWeb).each(function(txw, idx, lst){
                       if(txw.TIXING_ID == targetTx.TIXING[0].TIXING_ID){
                         txw.zsdXuanTiArr.push(targetTx);
                         txw.txTotalNum += targetTx.TIXING[0].COUNT;//统计题目数量
@@ -1138,10 +1138,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             $http.get(qryXuanTiRule).success(function(data){
               if(data){
                 $scope.loadingImgShow = false; //zj_ruleList.html
-                _.each(data, function(rule, idx, lst){
+                Lazy(data).each(function(rule, idx, lst){
                   //给查询出来的数组重新赋值
                   rule.txTongJi = [];
-                  _.each($scope.ampKmtxWeb, function(wcont, idx1, lst1){
+                  Lazy($scope.ampKmtxWeb).each(function(wcont, idx1, lst1){
                     var txTotalObj = {
                       TIXING_ID: '',
                       TIXINGMINGCHENG: '',
@@ -1154,8 +1154,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                   });
                   //统计具体的数字
                   var ruleObj = JSON.parse(rule.GUIZEBIANMA);
-                  _.each(ruleObj.shuju.items, function(it, subIdx, subLst){
-                    _.each(rule.txTongJi, function(ampw, idx3, lst3){
+                  Lazy(ruleObj.shuju.items).each(function(it, subIdx, subLst){
+                    Lazy(rule.txTongJi).each(function(ampw, idx3, lst3){
                       if(ampw.TIXING_ID == it.TIXING[0].TIXING_ID){
                         ampw.txTotalNum += it.TIXING[0].COUNT;
                         ampw.zsdXuanTiArr.push(it);
@@ -1211,10 +1211,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               totalTiMuNums = 0; //规则组卷出题的总数量
             $scope.ruleMakePaperSaveBtnDisabled = true;
             //得到题型数量和难度的数组
-            _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
+            Lazy($scope.ampKmtxWeb).each(function(txArr, idx, lst){
               if(txArr.zsdXuanTiArr.length){
                 totalTiMuNums += txArr.txTotalNum;
-                _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
+                Lazy(txArr.zsdXuanTiArr).each(function(ntx, subIdx, subLst){
                   distAutoMakePaperData.shuju.items.push(ntx);
                 });
               }
@@ -1234,9 +1234,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                   var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
                   $http.get(qrytimuxiangqing).success(function(stdata){
                     if(stdata.length){
-                      _.each(stdata, function(tm, idx, lst){
+                      Lazy(stdata).each(function(tm, idx, lst){
                         //将试题详情添加到mabandData
-                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+                        Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, subIdx, lst){
                           if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
                             mbdt.TIMUARR.push(tm);
                           }
@@ -1249,7 +1249,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                         }
                       });
                       //统计每种题型的数量和百分比
-                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+                      Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
                         tixingStatistics(idx, kmtxListLength);
                       });
                       nanduPercent(); //难度统计
@@ -1302,16 +1302,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
 //              totalTiMuNums = 0; //规则组卷出题的总数量
 //            $scope.ruleMakePaperSaveBtnDisabled = true;
 //            //得到题型数量和难度的数组
-//            _.each($scope.ampKmtxWeb, function(txArr, idx, lst){
+//            Lazy($scope.ampKmtxWeb).each(function(txArr, idx, lst){
 //              if(txArr.zsdXuanTiArr.length){
 //                totalTiMuNums += txArr.txTotalNum;
-//                _.each(txArr.zsdXuanTiArr, function(ntx, subIdx, subLst){
+//                Lazy(txArr.zsdXuanTiArr).each(function(ntx, subIdx, subLst){
 //                  var tiMuNum = ntx.TIXING[0].COUNT, //题目数量
 //                    zsdLength = ntx.ZHISHIDIAN.length, //知识点数量
 //                    divideResult = parseInt(tiMuNum)/parseInt(zsdLength), //题目数量除以知识点数量所得得到的值
 //                    floorVal = Math.floor(divideResult); //得到向下的整数值，用做题目数量
 //                  if(divideResult >= 1){
-//                    _.each(ntx.ZHISHIDIAN, function(zsd, thdIdx, thdLst){
+//                    Lazy(ntx.ZHISHIDIAN).each(function(zsd, thdIdx, thdLst){
 //                      var gzObj = { //组卷规则所需要的数据格式
 //                        NANDU: ntx.NANDU,
 //                        PIPEIDU: ntx.PIPEIDU,
@@ -1354,9 +1354,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
 //                  var qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmIdsData.toString(); //查询详情url
 //                  $http.get(qrytimuxiangqing).success(function(stdata){
 //                    if(stdata.length){
-//                      _.each(stdata, function(tm, idx, lst){
+//                      Lazy(stdata).each(function(tm, idx, lst){
 //                        //将试题详情添加到mabandData
-//                        _.each(mubanData.shuju.MUBANDATI, function(mbdt, subIdx, lst){
+//                        Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, subIdx, lst){
 //                          if(mbdt.MUBANDATI_ID == tm.TIXING_ID){
 //                            mbdt.TIMUARR.push(tm);
 //                          }
@@ -1369,7 +1369,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
 //                        }
 //                      });
 //                      //统计每种题型的数量和百分比
-//                      _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+//                      Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
 //                        tixingStatistics(idx, kmtxListLength);
 //                      });
 //                      nanduPercent(); //难度统计
@@ -1419,7 +1419,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             countnum = 0;
             autoMakePaperData.shuju.TIXING = [];
             autoMakePaperData.shuju.ZHISHIDIAN = [];
-            _.each($scope.ampKmtx, function(tpTx, idx, lst){
+            Lazy($scope.ampKmtx).each(function(tpTx, idx, lst){
               var tixing = {TIXING_ID: '', COUNT: ''};
               if(tpTx.tmNum >= 1){
                 tixing.TIXING_ID = tpTx.TIXING_ID;
@@ -1442,11 +1442,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                       var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
                       //将自动组卷生成的数据，添加到试卷模板中 TIXING_TIMU  MUBANDATI_ID
                       //组卷成功后显示试题的代码
-                      _.each(sjData.TIXING_TIMU, function(value, key, list){
+                      Lazy(sjData.TIXING_TIMU).each(function(value, key, list){
                         for(var i = 0; i < mbdtdLength; i++){
                           if(mubanData.shuju.MUBANDATI[i].MUBANDATI_ID == key){
                             //将本题加入试卷
-                            _.each(value, function(tmId, idx, list){
+                            Lazy(value).each(function(tmId, idx, list){
                               var sjtm = {
                                 TIMU_ID: '',
                                 MUBANDATI_ID: key,
@@ -1464,7 +1464,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                                 if(data.length){
                                   countnum ++ ;
                                   mubanData.shuju.MUBANDATI[index].TIMUARR = data;
-                                  _.each(data, function(tm, idx, lst){
+                                  Lazy(data).each(function(tm, idx, lst){
                                     //难度统计  nanduTempData NANDU_ID
                                     for(var j = 0; j < nanduLength; j++){
                                       if(nanduTempData[j].nanduId == tm.NANDU_ID){
@@ -1497,8 +1497,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
 
                             //二级控制面板上的分数统计
                             restoreKmtxDtscore();
-                            _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
-                              _.each($scope.kmtxList, function(kmtx, idx, lst){
+                            Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
+                              Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
                                 if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
                                   kmtx.datiScore = mbdt.datiScore;
                                 }
@@ -1582,16 +1582,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                       tiXingTiMuArr.push(data);
                       if(times == tmIdsChoLen -1){
                         //得到调用数据（object格式）
-                        _.each(tiXingTiMuArr, function(txtma, idx, lst){
-                          _.each(txtma.TIXING_TIMU, function(value, key, list){
+                        Lazy(tiXingTiMuArr).each(function(txtma, idx, lst){
+                          Lazy(txtma.TIXING_TIMU).each(function(value, key, list){
                             tiXingTiMuObj[key] = value;
                           });
                         });
-                        _.each(tiXingTiMuObj, function(value, key, list){
+                        Lazy(tiXingTiMuObj).each(function(value, key, list){
                           for(var k = 0; k < mbdtdLength; k++){
                             if(mubanData.shuju.MUBANDATI[k].MUBANDATI_ID == key){
                               //将本题加入试卷
-                              _.each(value, function(tmId, idx, list){
+                              Lazy(value).each(function(tmId, idx, list){
                                 var sjtm = {
                                   TIMU_ID: '',
                                   MUBANDATI_ID: key,
@@ -1608,7 +1608,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                                 $http.get(qrytimuxiangqing).success(function(stdata){
                                   if(stdata.length){
                                     mubanData.shuju.MUBANDATI[index].TIMUARR = stdata;
-                                    _.each(stdata, function(tm, idx, lst){
+                                    Lazy(stdata).each(function(tm, idx, lst){
                                       //难度统计  nanduTempData NANDU_ID
                                       for(var j = 0; j < nanduLength; j++){
                                         if(nanduTempData[j].nanduId == tm.NANDU_ID){
@@ -1638,8 +1638,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                               addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
                               //二级控制面板上的分数统计
                               restoreKmtxDtscore();
-                              _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
-                                _.each($scope.kmtxList, function(kmtx, idx, lst){
+                              Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
+                                Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
                                   if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
                                     kmtx.datiScore = mbdt.datiScore;
                                   }
@@ -1696,7 +1696,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               if(mubanData.shuju.MUBANDATI[lv1].MUBANDATI_ID == $scope.kmtxList[lp].TIXING_ID){
                 $scope.kmtxList[lp].itemsNum =  mubanData.shuju.MUBANDATI[lv1].TIMUARR.length;
                 //得到总题量
-                var tixingSum = _.reduce($scope.kmtxList, function(memo, itm){
+                var tixingSum = Lazy($scope.kmtxList).reduce(function(memo, itm){
                   var itemNumVal = itm.itemsNum ? itm.itemsNum : 0;
                   return memo + itemNumVal;
                 },0);
@@ -1705,7 +1705,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 $scope.totalSelectedItmes = tixingSum;
 
                 //计算每种题型的百分比
-                _.each($scope.kmtxList, function(tjkmtx, idx, lst){
+                Lazy($scope.kmtxList).each( function(tjkmtx, idx, lst){
                   var itemNumVal = tjkmtx.itemsNum ? tjkmtx.itemsNum : 0,
                     percentVal = ((itemNumVal/tixingSum)*100).toFixed(0) + '%';
                   return tjkmtx.txPercentNum = percentVal;
@@ -1739,7 +1739,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               };
             if(!isChangeItem){ //添加试题时的代码
               //判断这道试题的大题存不存在
-              ifMbdtIdIsExist = _.find(mubanData.shuju.MUBANDATI, function(mbdtItem){
+              ifMbdtIdIsExist = Lazy(mubanData.shuju.MUBANDATI).find(function(mbdtItem){
                 return mbdtItem.MUBANDATI_ID == tm.TIXING_ID;
               });
 
@@ -1747,7 +1747,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 mbdtdLength = mubanData.shuju.MUBANDATI.length; //现有题目类型的长度
               }
               else{
-                _.each($scope.kmtxList, function(kmtx, idx, lst){
+                Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
                   if(kmtx.TIXING_ID == tm.TIXING_ID){
                     mubandatiItem.MUBANDATI_ID = tm.TIXING_ID;
                     mubandatiItem.DATIMINGCHENG = kmtx.TIXINGMINGCHENG;
@@ -1773,14 +1773,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             else{ //替换试题时的代码 cg_mbdt_idx, cg_timuId, cg_thisItem_idx
               mubanData.shuju.MUBANDATI[cg_mbdt_idx].TIMUARR.splice(cg_thisItem_idx, 1, tm);
               //从试卷中删除被替换的题目
-              shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(sjtm){
+              shijuanData.shuju.SHIJUAN_TIMU = Lazy(shijuanData.shuju.SHIJUAN_TIMU).reject(function(sjtm){
                 return sjtm.TIMU_ID == cg_timuId;
-              });
+              }).toArray();
               //从难度中删除要替换的题目
-              _.each(nanduTempData, function(ndtd, idx, lst){
-                ndtd.nanduCount = _.reject(ndtd.nanduCount, function(ndct){
+              Lazy(nanduTempData).each(function(ndtd, idx, lst){
+                ndtd.nanduCount = Lazy(ndtd.nanduCount).reject(function(ndct){
                   return ndct == cg_timuId;
-                });
+                }).toArray();
               });
               //均分大题分数
               $scope.divideDatiScore(mubanData.shuju.MUBANDATI[cg_mbdt_idx]);
@@ -1819,9 +1819,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            */
           $scope.removeOutPaper = function(tm){
             var mbdtdLength = mubanData.shuju.MUBANDATI.length;
-            shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(shtm){
+            shijuanData.shuju.SHIJUAN_TIMU = Lazy(shijuanData.shuju.SHIJUAN_TIMU).reject(function(shtm){
               return shtm.TIMU_ID  == tm.TIMU_ID;
-            });
+            }).toArray();
             //加入试卷按钮和移除试卷按钮的显示和隐藏
             addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU);
 
@@ -1863,7 +1863,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            */
           var addOrRemoveItemToPaper = function(arr){
             var selectTestStr = '';
-            _.each(arr, function(shtm, idx, lst){
+            Lazy(arr).each(function(shtm, idx, lst){
               selectTestStr += 'selectTest' + shtm.TIMU_ID + ',';
             });
             $scope.selectTestStr = selectTestStr;
@@ -1873,12 +1873,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            *  计算难度的百分比
            */
           var nanduPercent = function(){
-            var nanduSum = _.reduce($scope.nanduTempData, function(memo, ndItm){
+            var nanduSum = Lazy($scope.nanduTempData).reduce(function(memo, ndItm){
               var ndItemNumVal = ndItm.nanduCount.length;
               return memo + ndItemNumVal;
             },0);
 
-            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){
+            Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){
               var ndItemNumVal = ndkmtx.nanduCount.length,
                 percentVal = ((ndItemNumVal/nanduSum)*100).toFixed(0) + '%';
               return ndkmtx.ndPercentNum = percentVal;
@@ -1893,10 +1893,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               newCont,
               tgReg = new RegExp('<\%{.*?}\%>', 'g');
             //删除数据为空的模板大题
-            _.each(mubanData.shuju.MUBANDATI, function(mbdt, idx, lst){
+            Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
               if(mbdt.TIMUARR.length){
                 if(mbdt.MUBANDATI_ID == 6){
-                  _.each(mbdt.TIMUARR, function(tm, subIdx, subLst){
+                  Lazy(mbdt.TIMUARR).each(function(tm, subIdx, subLst){
                     //修改填空题的题干
                     newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
                       var text = arg.slice(2, -2), //提起内容
@@ -1937,13 +1937,13 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             if(biLvVal < 1){
               if(biLvVal == 0.5){
                 xiaotiAverageScore = 0.5; //每小题的分数
-                _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+                Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
                   xiaoti.xiaotiScore = xiaotiAverageScore;
                 });
               }
               else{
                 xiaotiAverageScore = 1; //每小题的分数
-                _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+                Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
                   if( idx < datiTotalScore){
                     xiaoti.xiaotiScore = xiaotiAverageScore;
                   }
@@ -1956,7 +1956,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             }
             else{
               xiaotiAverageScore = biLvVal.toFixed(0); //每小题的分数
-              _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+              Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
                 if(idx + 1 < mbdt.TIMUARR.length){
                   xiaoti.xiaotiScore = xiaotiAverageScore;
                   datiTotalScore -= xiaotiAverageScore;
@@ -1974,7 +1974,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            */
           $scope.addXiaotiScore = function(mbdt){
             var datiScore = 0;
-            _.each(mbdt.TIMUARR, function(xiaoti, idx, lst){
+            Lazy(mbdt.TIMUARR).each( function(xiaoti, idx, lst){
               datiScore += parseFloat(xiaoti.xiaotiScore);
             });
             mbdt.datiScore = datiScore;
@@ -1989,9 +1989,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
               i, j, k;
 
             //删除试卷里面对应的数据
-            shijuanData.shuju.SHIJUAN_TIMU = _.reject(shijuanData.shuju.SHIJUAN_TIMU, function(sjtm){
+            shijuanData.shuju.SHIJUAN_TIMU = Lazy(shijuanData.shuju.SHIJUAN_TIMU).reject(function(sjtm){
               return sjtm.MUBANDATI_ID == targetMbdtId;
-            });
+            }).toArray();
 
             //删除$scope.kmtxList中对应的元素,此处不删除的话，试题统计就会有问题
             for(j = 0; j < kmtxListLength; j++){
@@ -2004,8 +2004,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             }
 
             //删除难度中对应的数据 nanduTempData nanduLength
-            _.each(mubanData.shuju.MUBANDATI[idx].TIMUARR, function(dtm, idx, lst){
-              _.each(nanduTempData, function(ndtd, ndidx, ndlst){
+            Lazy(mubanData.shuju.MUBANDATI[idx].TIMUARR).each(function(dtm, idx, lst){
+              Lazy(nanduTempData).each(function(ndtd, ndidx, ndlst){
                 if(ndtd.nanduId == dtm.NANDU_ID){
                   var thisNaduLength = ndtd.nanduCount.length;
                   for(k = 0; k < thisNaduLength; k++){
@@ -2034,8 +2034,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            * 从试题统计中删除大题
            */
           $scope.deleteDaTiArr = function(mbdtid){
-            var mbdtIds = _.map(mubanData.shuju.MUBANDATI, function(mbdt){ return mbdt.MUBANDATI_ID;}),
-                idx = _.indexOf(mbdtIds, mbdtid);
+            var mbdtIds = Lazy(mubanData.shuju.MUBANDATI).map(function(mbdt){ return mbdt.MUBANDATI_ID;}).toArray();
+            var idx = Lazy(mbdtIds).indexOf(mbdtid);
             $scope.deleteDaTi(idx);
           };
           /**
@@ -2063,11 +2063,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            * 保存编辑试卷信息
            */
           $scope.saveEditPaper = function(){
-            _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){
+            Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){
               //均分大题分数
               $scope.divideDatiScore(mbdt);
               //二级控制面板上的分数统计
-              _.each($scope.kmtxList, function(kmtx, idx, lst){
+              Lazy$scope.kmtxList().each(function(kmtx, idx, lst){
                 if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
                  kmtx.datiScore = mbdt.datiScore;
                 }
@@ -2104,7 +2104,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             shijuanData.shuju.SHIJUAN_TIMU = [];
             $scope.paperScore = 0;
 
-            _.each(mubanData.shuju.MUBANDATI, function(dati, idx, lst){
+            Lazy(mubanData.shuju.MUBANDATI).each(function(dati, idx, lst){
               $scope.paperScore += parseInt(dati.datiScore); //将试卷分数转换为整形
               var nanDuObj = { //定义一个存放难度object对象
                   mubandati_id: dati.MUBANDATI_ID,
@@ -2112,7 +2112,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 },
                 thisDaTiTiMuArrLen = dati.TIMUARR.length, //本大题的题目长度
                 dtNanDuAdd = 0; //定义一个难度求和的字段
-              _.each(dati.TIMUARR, function(tm, subidx, lst){
+              Lazy(dati.TIMUARR).each(function(tm, subidx, lst){
                 //统计小题难度
                 dtNanDuAdd += parseInt(tm.NANDU_ID)/5;
                 if(subidx == thisDaTiTiMuArrLen - 1 ){
@@ -2121,7 +2121,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                   nanDuArr.daTiNanDuArr.push(nanDuObj);
                 }
                 //重组试卷数据
-                var  shijuanTimu = {
+                var shijuanTimu = {
                   TIMU_ID: '',
                   MUBANDATI_ID: '',
                   WEIZHIXUHAO: '',
@@ -2297,12 +2297,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
             shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
-            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+            Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
               ndkmtx.ndPercentNum = '0%';
               return ndkmtx;
             });
-            _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+            Lazy($scope.kmtxList).each(function(tjkmtx, idx, lst){ //清除科目题型的统计数据
               tjkmtx.itemsNum = 0;
               tjkmtx.txPercentNum = '0%';
               return tjkmtx;
@@ -2352,9 +2352,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                   paperPageArr.push(i);
                 }
                 $scope.lastPaperPageNum = totalPaperPage; //最后一页的数值
-                sjlbIdArr = _.map(sjlb, function(sj){
+                sjlbIdArr = Lazy(sjlb).map(function(sj){
                   return sj.SHIJUAN_ID;
-                });
+                }).toArray();
                 sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
                 //查询数据开始
                 if(!isDeletePaper){
@@ -2382,12 +2382,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
             shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
-            _.each($scope.nanduTempData, function(ndkmtx, idx, lst){ //清除难度的数据
+            Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
               ndkmtx.ndPercentNum = '0%';
               return ndkmtx;
             });
-            _.each($scope.kmtxList, function(tjkmtx, idx, lst){ //清除科目题型的统计数据
+            Lazy($scope.kmtxList).each(function(tjkmtx, idx, lst){ //清除科目题型的统计数据
               tjkmtx.itemsNum = 0;
               tjkmtx.txPercentNum = '0%';
               return tjkmtx;
@@ -2455,16 +2455,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
             qryShiJuanGaiYao = qryShiJuanGaiYaoBase + timu_id; //查询详情url
             $http.get(qryShiJuanGaiYao).success(function(sjlbgy){
               if(sjlbgy.length){
-                _.each(sjlbgy, function(sj, idx, lst){
+                Lazy(sjlbgy).each(function(sj, idx, lst){
                   sj.NANDU = JSON.parse(sj.NANDU);
                   userIdArr.push(sj.CHUANGJIANREN_UID);
                 });
-                var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+                var userIdStr = Lazy(userIdArr).sortBy().uniq().toArray().join();
                 var getUserNameUrl = getUserNameBase + userIdStr;
                 $http.get(getUserNameUrl).success(function(users){
                   if(users.length){
-                    _.each(sjlbgy, function(sj, idx, lst){
-                      _.each(users, function(usr, subidx, sublst){
+                    Lazy(sjlbgy).each(function(sj, idx, lst){
+                      Lazy(users).each(function(usr, subidx, sublst){
                         if(usr.UID == sj.CHUANGJIANREN_UID){
                           sj.chuangjianren = usr.XINGMING;
                         }
@@ -2520,14 +2520,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 shijuanData.shuju.FUBIAOTI = data.SHIJUAN.FUBIAOTI; //副标题
                 shijuanData.shuju.SHIJUANMUBAN_ID = data.SHIJUAN.SHIJUANMUBAN_ID; //试卷模板id
                 //将模板大题赋值到模板里面
-                _.each(data.MUBANDATI, function(mbdt, indx, lst){
+                Lazy(data.MUBANDATI).each(function(mbdt, indx, lst){
                   mbdt.TIMUARR = []; //自己添加的数组
                   mbdt.datiScore = 0; //自己定义此大题的分数
                   mubanData.shuju.MUBANDATI.push(mbdt);
                 });
                 var mbdtdLength = mubanData.shuju.MUBANDATI.length;//模板大题的长度
                 //将试卷详情放入临时模板的数组中
-                _.each(data.TIMU, function(tm, indx, lst){
+                Lazy(data.TIMU).each(function(tm, indx, lst){
                   // SHIJUAN_TIMU里的元素
                   var sjtm = {
                     TIMU_ID: '',
@@ -2563,8 +2563,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
                 addOrRemoveItemToPaper(shijuanData.shuju.SHIJUAN_TIMU); //添加和删除按钮
                 //二级控制面板上的分数统计
                 restoreKmtxDtscore();
-                _.each(mubanData.shuju.MUBANDATI, function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
-                  _.each($scope.kmtxList, function(kmtx, idx, lst){
+                Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){ //再给kmtx.datiScore赋值
+                  Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
                     if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
                       kmtx.datiScore = mbdt.datiScore;
                     }
@@ -2633,9 +2633,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'underscore'],
            * 上下移动题目
            */
           $scope.moveTM = function(tm, num, mbdtId){
-            var dati = _.where(mubanData.shuju.MUBANDATI, { MUBANDATI_ID: mbdtId })[0];
-            var tmIds = _.map(dati.TIMUARR, function(t){ return t.TIMU_ID;}),
-                index = _.indexOf(tmIds, tm.TIMU_ID),
+            var dati = Lazy(mubanData.shuju.MUBANDATI).where({ MUBANDATI_ID: mbdtId }).toArray()[0];
+            var tmIds = Lazy(dati.TIMUARR).map(function(t){ return t.TIMU_ID;}).toArray(),
+                index = Lazy(tmIds).indexOf(tm.TIMU_ID),
                 toIndex = index + num,
                 item = dati.TIMUARR[index];
             if(num>0){

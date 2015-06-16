@@ -1,5 +1,5 @@
-define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], // 000 开始
-  function (angular, config, $, _, mathjax, datepicker) { // 001 开始
+define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 开始
+  function (angular, config, $, lazy, mathjax, datepicker) { // 001 开始
     'use strict';
 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
@@ -13,52 +13,52 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
           /**
            * 定义变量
            */
-          var userInfo = $rootScope.session.userInfo,
-            baseKwAPIUrl = config.apiurl_kw, //考务的api
-            baseMtAPIUrl = config.apiurl_mt, //mingti的api
-            baseRzAPIUrl = config.apiurl_rz, //renzheng的api
-            token = config.token,
-            caozuoyuan = userInfo.UID,//登录的用户的UID   chaxun_kaoshi_liebiao
-            jigouid = userInfo.JIGOU[0].JIGOU_ID,
-            lingyuid = $rootScope.session.defaultLyId,
-            qryKaoChangListUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang_liebiao?token=' + token + '&caozuoyuan='
-              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考场列表的url
-            qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
-              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考场详细的url
-            qryKaoShiListUrl = baseKwAPIUrl + 'chaxun_kaoshi_liebiao?token=' + token + '&caozuoyuan='
-              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试列表的url
-            qryKaoShiDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaoshi?token=' + token + '&caozuoyuan='
-              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询考试详细的url
-            qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询试卷列表url
-            kaoshi_data, //考试的数据格式
-            kaochang_data, //考场的数据格式
-            xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi', //修改考试的url
-            tongBuShiJuanUrl = baseKwAPIUrl + 'tongbu_shijuan', // 同步试卷信息的url
-            isEditKaoShi = false, //是否为编辑考试
-            isDeleteKaoShi = false, //是否为删除考试
-            isEditKaoChang = false, //是否为编辑考场
-            isDeleteKaoChang = false, //是否为删除考场
-            xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang', //修改考场的url
-            paperPageArr = [], //定义试卷页码数组
-            sjlbIdArrRev = [], //存放所有试卷ID的数组
-            totalPaperPage,//符合条件的试卷一共有多少页
-            itemNumPerPage = 10, //每页显示多少条数据
-            paginationLength = 11, //分页部分，页码的长度，目前设定为11
-            qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷概要的基础URL
-            getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid=', //得到用户名的URL
-            faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id=', //发布考试的url
-            qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=', //查询试卷详情的url
-            kaoShiPageArr = [], //定义考试页码数组
-            kaoShiIdArrRev = [], //存放所有考试ID的数组
-            totalKaoShiPage, //符合条件的考试一共有多少页
-            kaoChangPageArr = [], //定义考场页码数组
-            kaoChangIdArrRev = [], //存放所有考场ID的数组
-            totalKaoChangPage, //符合条件的考场一共有多少页
-            uploadKsUrl = baseMtAPIUrl + 'excel_to_json'; //上传考生信息
+          var userInfo = $rootScope.session.userInfo;
+          var baseKwAPIUrl = config.apiurl_kw; //考务的api
+          var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+          var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
+          var token = config.token;
+          var caozuoyuan = userInfo.UID;//登录的用户的UID   chaxun_kaoshi_liebiao
+          var jigouid = userInfo.JIGOU[0].JIGOU_ID;
+          var lingyuid = $rootScope.session.defaultLyId;
+          var qryKaoChangListUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang_liebiao?token=' + token + '&caozuoyuan='
+              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考场列表的url
+          var qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
+              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考场详细的url
+          var qryKaoShiListUrl = baseKwAPIUrl + 'chaxun_kaoshi_liebiao?token=' + token + '&caozuoyuan='
+              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试列表的url
+          var qryKaoShiDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaoshi?token=' + token + '&caozuoyuan='
+              + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试详细的url
+          var qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷列表url
+          var kaoshi_data; //考试的数据格式
+          var kaochang_data; //考场的数据格式
+          var xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试的url
+          var tongBuShiJuanUrl = baseKwAPIUrl + 'tongbu_shijuan'; // 同步试卷信息的url
+          var isEditKaoShi = false; //是否为编辑考试
+          var isDeleteKaoShi = false; //是否为删除考试
+          var isEditKaoChang = false; //是否为编辑考场
+          var isDeleteKaoChang = false; //是否为删除考场
+          var xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang'; //修改考场的url
+          var paperPageArr = []; //定义试卷页码数组
+          var sjlbIdArrRev = []; //存放所有试卷ID的数组
+          var totalPaperPage;//符合条件的试卷一共有多少页
+          var itemNumPerPage = 10; //每页显示多少条数据
+          var paginationLength = 11; //分页部分，页码的长度，目前设定为11
+          var qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷概要的基础URL
+          var getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
+          var faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id='; //发布考试的url
+          var qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
+              '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷详情的url
+          var kaoShiPageArr = []; //定义考试页码数组
+          var kaoShiIdArrRev = []; //存放所有考试ID的数组
+          var totalKaoShiPage; //符合条件的考试一共有多少页
+          var kaoChangPageArr = []; //定义考场页码数组
+          var kaoChangIdArrRev = []; //存放所有考场ID的数组
+          var totalKaoChangPage; //符合条件的考场一共有多少页
+          var uploadKsUrl = baseMtAPIUrl + 'excel_to_json'; //上传考生信息
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -143,7 +143,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                 for(var i = 1; i <= totalKaoShiPage; i++){
                   kaoShiPageArr.push(i);
                 }
-                kaoShiIdArrRev = _.map(kslst, function(ksid){ return ksid.KAOSHI_ID; });
+                kaoShiIdArrRev = Lazy(kslst).map(function(ksid){ return ksid.KAOSHI_ID; }).toArray();
                 $scope.lastKaoShiPageNum = totalKaoShiPage; //最后一页的数值
                 //查询数据开始
                 $scope.getThisKaoShiPageData();
@@ -184,12 +184,12 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
             $http.get(qryPaperDetail).success(function(data){
               if(data){
                 //给模板大题添加存放题目的数组
-                _.each(data.MUBANDATI, function(mbdt, idx, lst){
+                Lazy(data.MUBANDATI).each(function(mbdt, idx, lst){
                   mbdt.TIMUARR = [];
                   mbdt.datiScore = 0;
                 });
                 //将各个题目添加到对应的模板大题中
-                _.each(data.TIMU, function(tm, idx, lst){
+                Lazy(data.TIMU).each(function(tm, idx, lst){
                   //修改填空题的题干
                   newCont = tm.DETAIL.TIGAN.tiGan.replace(tgReg, function(arg) {
                     var text = arg.slice(2, -2), //提起内容
@@ -202,7 +202,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                     return xhStr;
                   });
                   tm.DETAIL.TIGAN.tiGan = newCont;
-                  _.each(data.MUBANDATI, function(mbdt, subIdx, subLst){
+                  Lazy(data.MUBANDATI).each(function(mbdt, subIdx, subLst){
                     if(mbdt.MUBANDATI_ID == tm.MUBANDATI_ID){
                       mbdt.TIMUARR.push(tm);
                       mbdt.datiScore += parseFloat(tm.FENZHI);
@@ -295,7 +295,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
               kaoshi_data.shuju.XINGZHI = ks.XINGZHI;
               kaoshi_data.shuju.LEIXING = ks.LEIXING;
               kaoshi_data.shuju.XUZHI = ks.XUZHI;
-              kaoshi_data.shuju.SHIJUAN_ID = _.map(ks.SHIJUAN, function(sj, key){ return sj.SHIJUAN_ID; });
+              kaoshi_data.shuju.SHIJUAN_ID = Lazy(ks.SHIJUAN).map(function(sj, key){ return sj.SHIJUAN_ID; }).toArray();
               kaoshi_data.shuju.ZHUANGTAI = -1;
             }
             else{
@@ -344,16 +344,16 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
             qryShiJuanGaiYao = qryShiJuanGaiYaoBase + timu_id; //查询详情url
             $http.get(qryShiJuanGaiYao).success(function(sjlbgy){
               if(sjlbgy.length){
-                _.each(sjlbgy, function(sj, idx, lst){
+                Lazy(sjlbgy).each(function(sj, idx, lst){
                   sj.NANDU = JSON.parse(sj.NANDU);
                   userIdArr.push(sj.CHUANGJIANREN_UID);
                 });
-                var userIdStr = _.chain(userIdArr).sortBy().uniq().value().toString();
+                var userIdStr = Lazy(userIdArr).sortBy().uniq().join();
                 var getUserNameUrl = getUserNameBase + userIdStr;
                 $http.get(getUserNameUrl).success(function(users){
                   if(users.length){
-                    _.each(sjlbgy, function(sj, idx, lst){
-                      _.each(users, function(usr, subidx, sublst){
+                    Lazy(sjlbgy).each(function(sj, idx, lst){
+                      Lazy(users).each(function(usr, subidx, sublst){
                         if(usr.UID == sj.CHUANGJIANREN_UID){
                           sj.chuangjianren = usr.XINGMING;
                         }
@@ -389,9 +389,9 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                   paperPageArr.push(i);
                 }
                 $scope.lastPaperPageNum = totalPaperPage; //最后一页的数值
-                sjlbIdArr = _.map(sjlb, function(sj){
+                sjlbIdArr = Lazy(sjlb).map(function(sj){
                   return sj.SHIJUAN_ID;
-                });
+                }).toArray();
                 sjlbIdArrRev = sjlbIdArr.reverse(); //将数组反转，按照时间倒叙排列
                 //查询数据开始
                 $scope.getThisSjgyPageData();
@@ -420,7 +420,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
            * 将试卷添加到考试，目前只能添加到一个试卷
            */
           $scope.addToKaoShi = function(sj){
-            var ifHasIn = _.find($scope.kwParams.selectShiJuan, function(sjData){
+            var ifHasIn = Lazy($scope.kwParams.selectShiJuan).find(function(sjData){
               return sjData.SHIJUAN_ID == sj.SHIJUAN_ID;
             }),
               selectShiJuanLen;
@@ -435,9 +435,20 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
             selectShiJuanLen = $scope.kwParams.selectShiJuan.length;
             if($scope.kwParams.selectShiJuan && selectShiJuanLen> 0){
               for(var i=0; i < selectShiJuanLen; i++){
-                var idx = _.findIndex($scope.kwParams.selectShiJuan[i].TIXING_DATA, function(dt){
-                  return dt.TIXING_ID > 6;
-                });
+                var idxArr = Lazy($scope.kwParams.selectShiJuan[i].TIXING_DATA).map(function(dt){
+                  return dt.TIXING_ID}
+                ).toArray();
+                var idxArrLen = idxArr.length;
+                var idx;
+                for(var j=0; j < idxArrLen; j++){
+                  if(idxArr[j] > 6){
+                    idx = j;
+                    break;
+                  }
+                }
+                //var idx = _.findIndex($scope.kwParams.selectShiJuan[i].TIXING_DATA, function(dt){
+                //  return dt.TIXING_ID > 6;
+                //});
                 if(idx >= 0){
                   $scope.kwParams.isAllKeGuanTi = false;
                   break;
@@ -450,9 +461,9 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
            * 删除已选试卷
            */
           $scope.deleteSelectShiJuan = function(sjId){
-            $scope.kwParams.selectShiJuan = _.reject($scope.kwParams.selectShiJuan, function(sj){
+            $scope.kwParams.selectShiJuan = Lazy($scope.kwParams.selectShiJuan).reject(function(sj){
               return sj.SHIJUAN_ID == sjId;
-            });
+            }).toArray();
           };
 
           /**
@@ -462,15 +473,15 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
             kaoChangId; //定义一个存放考场的字段
           $scope.selectKaoChang = function(kcId){
             kaoChangId = kcId;
-            var isKaoChangExist = _.find(kaoshi_data.shuju.KAOCHANG, function(kch){
+            var isKaoChangExist = Lazy(kaoshi_data.shuju.KAOCHANG).find( function(kch){
               return kch.KID == kcId;
             }); //查看新添加的考场是否存在
 
             if(isKaoChangExist){
-              var kids = _.map(kaoshi_data.shuju.KAOCHANG, function(kch){
+              var kids = Lazy(kaoshi_data.shuju.KAOCHANG).map(function(kch){
                 return kch.KID;
-              }); //得到本场考试的所有考场ID
-              selectKaoChangIdx = _.indexOf(kids, kcId); //得到新添加的考场位置索引
+              }).toArray(); //得到本场考试的所有考场ID
+              selectKaoChangIdx = Lazy(kids).indexOf(kcId); //得到新添加的考场位置索引
             }
             else{
               var kcInfo = {};
@@ -537,9 +548,9 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                   kaoShengOldArr = result.data.json[item];
                   break;
                 }
-                _.each(kaoShengOldArr, function(ks, idx, list){
+                Lazy(kaoShengOldArr).each(function(ks, idx, list){
                   var ksObj = {XINGMING: '', YONGHUHAO:'', BANJI: ''};
-                  _.each(ks, function(value, key, list){
+                  Lazy(ks).each(function(value, key, list){
                     delBlank = key.replace(trimBlankReg, "");
                     switch (delBlank){
                       case '姓名' :
@@ -708,7 +719,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                     };
                   //将已选择的试卷进行数据处理分别添加的同步试卷和考试信息中
                   if($scope.kwParams.selectShiJuan.length > 0){
-                    _.each($scope.kwParams.selectShiJuan, function(sj){
+                    Lazy($scope.kwParams.selectShiJuan).each(function(sj){
                       shijuan_info.shijuanid.push(sj.SHIJUAN_ID);
                     });
                   }
@@ -864,7 +875,7 @@ define(['angular', 'config', 'jquery', 'underscore', 'mathjax', 'datepicker'], /
                 for(var i = 1; i <= totalKaoChangPage; i++){
                   kaoChangPageArr.push(i);
                 }
-                kaoChangIdArrRev = _.map(kclst, function(kcid){ return kcid.KID; });
+                kaoChangIdArrRev = Lazy(kclst).map(function(kcid){ return kcid.KID; }).toArray();
                 $scope.lastKaoChangPageNum = totalKaoChangPage; //最后一页的数值
                 //查询数据开始
                 $scope.getThisKaoChangPageData();

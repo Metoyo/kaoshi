@@ -1,28 +1,28 @@
-define(['angular', 'config','jquery', 'underscore'], function (angular, config, $, _) {
+define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.RegisterCtrl', [])
     .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'DataService',
       function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
 
-        var baseRzAPIUrl = config.apiurl_rz,
-          baseBmAPIUrl = config.apiurl_bm, //报名的api
-          token = config.token,
-          apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid=', //lingYu 学科领域的api
-          apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid=', //由lingYu id 的具体的学科
-          apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2', //jiGouLeiBie 机构类别的api
-          apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token, //jueSe 查询科目权限的数据的api
-          jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid=', //由机构类别查询机构的url
-          select_juese = [], //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
-          registerDate = {}, // 注册时用到的数据
-          jigouId, //所选的机构ID
-          registerUrl = baseRzAPIUrl + 'zhuce', //提交注册信息的url
-          stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce', //提交学生注册信息的url
-          objAndRightList = [], //已经选择的科目和单位
-          checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token, //检测用户是否存在的url
-          qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token, //检查考生是否在报名表里
-          checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid=', //检查考生是否在报名表里
-          delBlankReg = /\s/g; //去除空格的正则表达
+        var baseRzAPIUrl = config.apiurl_rz;
+        var  baseBmAPIUrl = config.apiurl_bm; //报名的api
+        var  token = config.token;
+        var  apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid='; //lingYu 学科领域的api
+        var  apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid='; //由lingYu id 的具体的学科
+        var  apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2'; //jiGouLeiBie 机构类别的api
+        var  apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token; //jueSe 查询科目权限的数据的api
+        var  jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
+        var  select_juese = []; //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
+        var  registerDate = {}; // 注册时用到的数据
+        var  jigouId; //所选的机构ID
+        var  registerUrl = baseRzAPIUrl + 'zhuce'; //提交注册信息的url
+        var  stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce'; //提交学生注册信息的url
+        var  objAndRightList = []; //已经选择的科目和单位
+        var checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token; //检测用户是否存在的url
+        var  qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
+        var  checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
+        var  delBlankReg = /\s/g; //去除空格的正则表达
         var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
@@ -301,7 +301,7 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
           selectJueseIdArr = [];
           selectJueseNameArr = [];
           var jueseItem = $('input[name=rightName]:checked');
-          _.each(jueseItem,function(js, idx, lst){
+          Lazy(jueseItem).each(function(js, idx, lst){
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
           });
@@ -332,8 +332,8 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
          */
         $scope.goToSubmit = function(){
           select_juese = [];
-          _.each(objAndRightList, function(oar, indx, lst){
-            _.each(oar.juese.jueseId, function(jsid, idx, lst){
+          Lazy(objAndRightList).each(function(oar, indx, lst){
+            Lazy(oar.juese.jueseId).each(function(jsid, idx, lst){
               var jueseObg = {
                 jigou: jigouId,
                 lingyu: '',

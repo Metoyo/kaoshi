@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery'], function (angular, config, $) {
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
   /**
    * @ngdoc service
@@ -110,7 +110,7 @@ define(['angular', 'config', 'jquery'], function (angular, config, $) {
           var tkDaAnArr = [],
             tkDaAn = JSON.parse(tm.DAAN),
             tkDaAnStr;
-          _.each(tkDaAn, function(da, idx, lst){
+          Lazy(tkDaAn).each(function(da, idx, lst){
             tkDaAnArr.push('第' + (idx + 1) + '个空：' + da.answer);
           });
           tkDaAnStr = tkDaAnArr.join(';');

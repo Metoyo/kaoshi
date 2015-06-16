@@ -1,4 +1,4 @@
-define(['angular', 'config','jquery', 'underscore'], function (angular, config, $, _) {
+define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.NavCtrl', [])
@@ -46,10 +46,10 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
             if(data.JIGOU.length){
               $scope.navData.jiGouId = data.JIGOU[0].JIGOU_ID;
               user.LINGYU = [];
-              jueseDist = _.groupBy(data.JUESE, function(js){ return js.LINGYUMINGCHENG; });
-              _.each(data.LINGYU, function(ly){
-                var jsName = _.map(jueseDist[ly.LINGYUMINGCHENG], function(js){ return js.JUESEMINGCHENG; }),
-                  lyObj = {
+              jueseDist = Lazy(data.JUESE).groupBy(function(js){ return js.LINGYUMINGCHENG; }).toObject();
+              Lazy(data.LINGYU).each(function(ly){
+                var jsName = Lazy(jueseDist[ly.LINGYUMINGCHENG]).map(function(js){ return js.JUESEMINGCHENG; }).toArray();
+                var lyObj = {
                     LINGYUMINGCHENG: '',
                     LINGYU_ID: '',
                     jueseStr: ''
@@ -104,10 +104,11 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
           if(lyId){
             $http.get(apiLyKm + lyId).success(function(data) {
               if(data.length){
-                _.each($scope.usr.LINGYU, function(hasLy, idx, lst){
-                  data = _.reject(data, function(ly){ return ly.LINGYU_ID  == hasLy.LINGYU_ID; });
+                var newData;
+                Lazy($scope.usr.LINGYU).each(function(hasLy, idx, lst){
+                  newData = Lazy(data).reject(function(ly){ return ly.LINGYU_ID  == hasLy.LINGYU_ID; }).toArray();
                 });
-                $scope.kemu_list = data;
+                $scope.kemu_list = newData;
                 deleteAllSelectedKmAndJs();
               }
               else{
@@ -161,7 +162,7 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
           selectJueseIdArr = [];
           selectJueseNameArr = [];
           var jueseItem = $('input[name=rightName]:checked');
-          _.each(jueseItem,function(js, idx, lst){
+          Lazy(jueseItem).each(function(js, idx, lst){
             selectJueseIdArr.push(js.value);
             selectJueseNameArr.push(js.nextElementSibling.textContent);
           });
@@ -186,8 +187,8 @@ define(['angular', 'config','jquery', 'underscore'], function (angular, config, 
               UID: userInfo.UID,
               JUESE: ''
             };
-          _.each(objAndRightList, function(oar, indx, lst){
-            _.each(oar.juese.jueseId, function(jsid, idx, lst){
+          Lazy(objAndRightList).each(function(oar, indx, lst){
+            Lazy(oar.juese.jueseId).each(function(jsid, idx, lst){
               var jueseObg = {
                 jigou: $scope.navData.jiGouId,
                 lingyu: '',

@@ -1,42 +1,42 @@
-define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $, mathjax) {
+define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, config, $, lazy, mathjax) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.DagangCtrl', [])
     .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $timeout, DataService) {
         //声明变量
-        var userInfo = $rootScope.session.userInfo,
-          info = $rootScope.session.info,
-          baseAPIUrl = config.apiurl_mt, //renzheng的api
-          baseMtAPIUrl = config.apiurl_mt, //mingti的api
-          token = config.token,
-          caozuoyuan = info.UID,
-          jigouid = userInfo.JIGOU[0].JIGOU_ID,
-          lingyuid = $rootScope.session.defaultLyId,
-          chaxunzilingyu = true,
-          qryPriDgBaseUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=2',
-          qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=1', //查询公共知识大纲的url
-          qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1', //查询默认知识大纲的url
-          qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=',
-          xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang', //修改机构默认大纲
-          submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang', //修改/新建知识大纲
-          dgdata = {
+        var userInfo = $rootScope.session.userInfo;
+        var info = $rootScope.session.info;
+        var baseAPIUrl = config.apiurl_mt; //renzheng的api
+        var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+        var token = config.token;
+        var caozuoyuan = info.UID;
+        var jigouid = userInfo.JIGOU[0].JIGOU_ID;
+        var lingyuid = $rootScope.session.defaultLyId;
+        var chaxunzilingyu = true;
+        var qryPriDgBaseUrl = baseAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=2';
+        var qryPubDgBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&leixing=1'; //查询公共知识大纲的url
+        var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
+        var qryKnowledgeBaseUrl = baseAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid=';
+        var xgMoRenDaGangUrl = baseAPIUrl + 'xiugai_morendagang'; //修改机构默认大纲
+        var submitDataUrl = baseAPIUrl + 'xiugai_zhishidagang'; //修改/新建知识大纲
+        var dgdata = {
             token: token,
             caozuoyuan: caozuoyuan,
             jigouid: jigouid,
             lingyuid: lingyuid,
             shuju:{}
-          },//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
-          daGangJieDianData = [], //定义一个大纲节点的数据
-          qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid + '&leixing=', //查询公共知识点的url
-          publicKnowledgeData = '', //存放领域下的公共知识点
-          publicZsdArr = [], //存放公共知识点id的数组
-          zsdgZsdArr = []; //大纲管理页面，选择自建知识大纲，存放选中的知识大纲知识点id
+          };//定义一个空的object用来存放需要保存的数据；根据api需求设定的字段名称
+        var daGangJieDianData = []; //定义一个大纲节点的数据
+        var qryPubZsdUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&gen=0' + '&lingyuid=' + lingyuid + '&leixing='; //查询公共知识点的url
+        var publicKnowledgeData = ''; //存放领域下的公共知识点
+        var publicZsdArr = []; //存放公共知识点id的数组
+        var zsdgZsdArr = []; //大纲管理页面，选择自建知识大纲，存放选中的知识大纲知识点id
 
         $rootScope.isRenZheng = false; //判读页面是不是认证
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
@@ -111,10 +111,10 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
             needPubZsd, //从已有的公共知识点中找到对应知识点详情
             diffPubZsdArr = []; //存放删除已使用的知识大纲后公共知识大纲
           //从已有的公共知识点中减去知识大纲知识点
-          differentArr = _.difference(publicZsdArr, zsdgZsdArr);
+          differentArr = Lazy(publicZsdArr).difference(zsdgZsdArr);
           //得到相对应的公共知识大纲知识点
-          _.each(differentArr, function(sgzsd, idx, lst){
-            needPubZsd = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: sgzsd });
+          Lazy(differentArr).each(function(sgzsd, idx, lst){
+            needPubZsd = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: sgzsd });
             diffPubZsdArr.push(needPubZsd);
           });
           return diffPubZsdArr;
@@ -137,9 +137,9 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
             //  $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
             //  publicKnowledgeData = ggzsd;
             //  //得到公共知识点id的数组
-            //  publicZsdArr = _.map(ggzsd, function(szsd){
+            //  publicZsdArr = Lazy(ggzsd).map(function(szsd){
             //    return szsd.ZHISHIDIAN_ID;
-            //  });
+            //  }).toArray();
             //  if(zsdgZsdArr && zsdgZsdArr.length > 0){
             //    $scope.publicKnowledge = deleteTheSameZsd();
             //  }
@@ -157,9 +157,9 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 publicKnowledgeData = ggzsd;
                 //得到公共知识点id的数组
-                publicZsdArr = _.map(ggzsd, function(szsd){
+                publicZsdArr = Lazy(ggzsd).map(function(szsd){
                   return szsd.ZHISHIDIAN_ID;
-                });
+                }).toArray();
                 if(zsdgZsdArr && zsdgZsdArr.length > 0){
                   $scope.publicKnowledge = deleteTheSameZsd();
                 }
@@ -240,13 +240,13 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
           function _do(item) {
             zsdgZsdArr.push(item.ZHISHIDIAN_ID);
             if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              _.each(item.ZIJIEDIAN, _do);
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
           if(dgId){
             $scope.currentDgId = dgId;
             //为保存大纲用到的数据赋值
-            var privateDg = _.findWhere($scope.privateZsdgList, { ZHISHIDAGANG_ID: dgId });
+            var privateDg = Lazy($scope.privateZsdgList).findWhere({ ZHISHIDAGANG_ID: dgId });
             dgdata.shuju = {};
             dgdata.shuju.ZHISHIDAGANG_ID = dgId;
             dgdata.shuju.ZHISHIDAGANGMINGCHENG = privateDg.ZHISHIDAGANGMINGCHENG;
@@ -262,7 +262,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
                 $scope.loadingImgShow = false; //daGangPublic.html & daGangPrivate.html
                 $scope.knowledgePr = data;
                 //得到知识大纲知识点id的函数
-                _.each(data, _do);
+                Lazy(data).each(_do);
                 $scope.publicKnowledge = deleteTheSameZsd();
                 $scope.prDgBtnDisabled = false;
               }
@@ -392,9 +392,9 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
             if(confirm("确定要删除此大纲吗？")){
               $http.post(submitDataUrl, deleteZjDgData).success(function(result) {
                 if(result.result){
-                  $scope.privateZsdgList = _.reject($scope.privateZsdgList, function(zjdg){
+                  $scope.privateZsdgList = Lazy($scope.privateZsdgList).reject(function(zjdg){
                     return zjdg.ZHISHIDAGANG_ID == deleteZjDgData.shuju.ZHISHIDAGANG_ID;
-                  });
+                  }).toArray();
                   $scope.knowledgePr = '';
                   $scope.selectZjDgId = '';
                   $scope.daGangParam.selected_dg = '';
@@ -439,10 +439,10 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
         $scope.removeNd = function(parentNd, nd, idx) {
           function getPubZsd(item) {
             if(item.LEIXING){
-              var pubZsdObj = _.findWhere(publicKnowledgeData, { ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
+              var pubZsdObj = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
               $scope.publicKnowledge.push(pubZsdObj);
               if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-                _.each(item.ZIJIEDIAN, getPubZsd);
+                Lazy(item.ZIJIEDIAN).each(getPubZsd);
               }
             }
           }
@@ -468,7 +468,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
         $scope.addToZjDaGang = function(zsd, idx){
           if(targetNd){ //判断聚焦的是那个输入框
             if(targetNd.ZHISHIDIAN_ID){ //判断输入框中是否有知识点
-              var originData = _.find(publicKnowledgeData, function(pkd){
+              var originData = Lazy(publicKnowledgeData).find(function(pkd){
                 return pkd.ZHISHIDIAN_ID == targetNd.ZHISHIDIAN_ID;
               });
               $scope.publicKnowledge.push(originData);
@@ -490,17 +490,17 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
         $scope.compareZjInputVal = function(nd){
           var str  = nd.ZHISHIDIANMINGCHENG;
           str = str.replace(/\s+/g,"");
-          var result = _.findWhere($scope.publicKnowledge, { ZHISHIDIANMINGCHENG: str });
+          var result = Lazy($scope.publicKnowledge).findWhere({ ZHISHIDIANMINGCHENG: str });
           if(result){
             nd.ZHISHIDIAN_ID = result.ZHISHIDIAN_ID;
             nd.ZHISHIDIANMINGCHENG = result.ZHISHIDIANMINGCHENG;
             nd.LEIXING = result.LEIXING;
-            $scope.publicKnowledge = _.reject($scope.publicKnowledge, function(pkg){
+            $scope.publicKnowledge = Lazy($scope.publicKnowledge).reject(function(pkg){
               return pkg.ZHISHIDIAN_ID == result.ZHISHIDIAN_ID;
-            });
+            }).toArray();
             if(oldNdId){
               if(oldNdId !== result.ZHISHIDIAN_ID){
-                var originData = _.find(publicKnowledgeData, function(pkd){
+                var originData = Lazy(publicKnowledgeData).find(function(pkd){
                   return pkd.ZHISHIDIAN_ID == oldNdId;
                 });
                 $scope.publicKnowledge.push(originData);
@@ -526,7 +526,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
               countEmpty = false;
             }
             if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-              _.each(item.ZIJIEDIAN, _do);
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
           if($scope.daGangParam.defaultDaGangId == $scope.currentDgId){
@@ -535,7 +535,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
           if($scope.knowledgePr){
             dgdata.shuju.ZHISHIDAGANGMINGCHENG = $scope.knowledgePr[0].ZHISHIDIANMINGCHENG;
             dgdata.shuju.JIEDIAN = $scope.knowledgePr;
-            _.each(dgdata.shuju.JIEDIAN, _do);
+            Lazy(dgdata.shuju.JIEDIAN).each(_do);
             if(countEmpty){
               $http.post(submitDataUrl, dgdata).success(function(result) {
                 if(result.result){
@@ -609,7 +609,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
           function _do(item) {
             item.JIEDIAN_ID = '';
             if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              _.each(item.ZIJIEDIAN, _do);
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
           //节点数据赋值
@@ -619,7 +619,7 @@ define(['angular', 'config', 'jquery', 'mathjax'], function (angular, config, $,
           if($scope.knowledgePr && $scope.knowledgePr.length > 0){
             saveAdDgData.shuju.JIEDIAN[0].ZIJIEDIAN = $scope.knowledgePr[0].ZIJIEDIAN;
           }
-          _.each(saveAdDgData.shuju.JIEDIAN, _do);//将节点ID去掉
+          Lazy(saveAdDgData.shuju.JIEDIAN).each(_do);//将节点ID去掉
           if($scope.daGangParam.dgSaveAsName){
             saveAdDgData.shuju.ZHISHIDAGANGMINGCHENG = $scope.daGangParam.dgSaveAsName;
             saveAdDgData.shuju.JIEDIAN[0].ZHISHIDIANMINGCHENG = $scope.daGangParam.dgSaveAsName;
