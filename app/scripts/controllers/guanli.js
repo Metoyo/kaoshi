@@ -41,6 +41,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.guanliParams = {
           tabActive: '',
           addNewKxh: '', //添加课序号
+          addNewKxhSetting: '', //添加课序号设置
+          modifyKxh: '', //课序号修改
           singleStuName: '', //学生姓名
           singleStuID: '' //学生学号
         };
@@ -83,6 +85,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $http.get(qryKxhUrl).success(function(data){
             if(data && data.length > 0){
               var dataLength = data.length; //所以二级专业长度
+              Lazy(data).each(function(kxh){
+                kxh.jiaoShiStr = Lazy(kxh.JIAOSHI).map(function(js){
+                  return js.XINGMING;
+                }).toArray().join(';');
+              });
               if(dataLength > 10){
                 var lastPage = Math.ceil(dataLength/numPerPage); //最后一页
                 $scope.lastKxhPageNum = lastPage;
@@ -130,7 +137,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
           if(item == 'modifyKeXuHao'){
             qryJiGouTeachers(data.JIAOSHI, 'modifyKeXuHao');
-            $scope.guanliParams.modifyKxh = data.KEXUHAO_MINGCHENG;
+            $scope.guanliParams.modifyKxh = data;
           }
           if(data){
             $scope.glSelectData = data;
@@ -189,7 +196,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   KEXUHAO_MINGCHENG: $scope.guanliParams.addNewKxh,
                   JIGOU_ID: jigouid,
                   LINGYU_ID: lingyuid,
-                  SETTINGS: '',
+                  SETTINGS: $scope.guanliParams.addNewKxhSetting,
                   UIDS: ''
                 }
               };
@@ -204,7 +211,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   if(data.result){
                     $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                     $scope.guanliParams.addNewKxh = ''; //课序号重置
+                    $scope.guanliParams.addNewKxhSetting = '';
                     $scope.showKeXuHaoManage = false; //课序号重置
+                    $scope.guanliParams.modifyKxh = '';
                     queryKeXuHao();
                     DataService.alertInfFun('suc', '新增课序号成功！');
                   }
@@ -228,10 +237,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 caozuoyuan: caozuoyuan,
                 shuju: {
                   KEXUHAO_ID: '',
-                  KEXUHAO_MINGCHENG: $scope.guanliParams.modifyKxh,
+                  KEXUHAO_MINGCHENG: $scope.guanliParams.modifyKxh.KEXUHAO_MINGCHENG,
                   JIGOU_ID: jigouid,
                   LINGYU_ID: lingyuid,
-                  SETTINGS: '',
+                  SETTINGS: $scope.guanliParams.modifyKxh.SETTINGS,
                   UIDS: ''
                 }
               };
@@ -248,8 +257,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                     if(data.result){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
+                      $scope.guanliParams.addNewKxhSetting = '';
                       $scope.showKeXuHaoManage = false; //课序号重置
                       $scope.glSelectData = '';
+                      $scope.guanliParams.modifyKxh = '';
                       queryKeXuHao();
                       DataService.alertInfFun('suc', '修改成功！');
                     }

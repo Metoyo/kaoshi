@@ -1323,6 +1323,17 @@ label.checkbox{
   z-index: 2;
   background-color: #fff;
 }
+.hover-style{
+  cursor: pointer;
+  &:hover{
+    color: #f60;
+    table{
+      td{
+        border:2px solid #f60;
+      }
+    }
+  }
+}
 //认证样式
 .renzhengWrapper{
   position: relative;
@@ -2042,6 +2053,73 @@ label.checkbox{
 }
 //组卷样式
 .zujuanWrapper{
+  .paper-title{
+    font-size: 24px;
+    padding: 10px 0;
+    margin: 0;
+  }
+  .paper-sub-title{
+    font-size: 20px;
+    margin: 10px 0;
+  }
+  .shijuantimu-list{
+    margin-top: 15px;
+    .btn{
+      margin-left: 5px;
+    }
+    .mubandati{
+      font-weight: bold;
+      line-height: 28px;
+      .dati-name-box{
+        display: inline;
+        .dati-name{
+          cursor: pointer;
+        }
+      }
+      .dati-score-box{
+        display: inline;
+        cursor: pointer;
+        p{
+          display: inline;
+          margin: 0;
+          padding: 0;
+        }
+      }
+      .btn{
+        margin-top: -2px;
+      }
+      .datiMoveBtns{
+        display: none;
+      }
+      &:hover{
+        .datiMoveBtns{
+          display: inline;
+        }
+      }
+    }
+    .testList li{
+      border: none;
+      h5.item-title{
+        position: absolute;
+        top: 0;
+        right: 10px;
+        display: none;
+      }
+      .item-cont{
+        margin-top: 0;
+      }
+      &:hover{
+        border: 1px solid #d8d8d8;
+        background-color: #F5F5F5;
+        h5.item-title{
+          display: block;
+        }
+      }
+      .write-answer-region{
+        height: 150px;
+      }
+    }
+  }
   .nandu-dist{
     h4{
       font-size: 14px;
@@ -2130,15 +2208,6 @@ label.checkbox{
     .secret-mark{
       font-size: 14px;
     }
-    .paper-title{
-      font-size: 24px;
-      padding: 10px 0;
-      margin: 0;
-    }
-    .paper-sub-title{
-      font-size: 24px;
-      margin: 10px 0;
-    }
     .paper-info{
       font-size: 14px;
     }
@@ -2160,17 +2229,6 @@ label.checkbox{
     .attention{
       font-size: 12px;
     }
-    .hover-style{
-      cursor: pointer;
-      &:hover{
-        color: #f60;
-        table{
-          td{
-            border:2px solid #f60;
-          }
-        }
-      }
-    }
     .sj-param-val{
       width: 100%;
       display: block;
@@ -2178,64 +2236,7 @@ label.checkbox{
     .form-paper-type{
       margin-top: 20px;
     }
-    .shijuantimu-list{
-      margin-top: 15px;
-      .btn{
-        margin-left: 5px;
-      }
-      .mubandati{
-        font-weight: bold;
-        line-height: 28px;
-        .dati-name-box{
-          display: inline;
-          .dati-name{
-            cursor: pointer;
-          }
-        }
-        .dati-score-box{
-          display: inline;
-          cursor: pointer;
-          p{
-            display: inline;
-            margin: 0;
-            padding: 0;
-          }
-        }
-        .btn{
-          margin-top: -2px;
-        }
-        .datiMoveBtns{
-          display: none;
-        }
-        &:hover{
-          .datiMoveBtns{
-            display: inline;
-          }
-        }
-      }
-      .testList li{
-        border: none;
-        h5.item-title{
-          position: absolute;
-          top: 0;
-          right: 10px;
-          display: none;
-        }
-        .item-cont{
-          margin-top: 0;
-        }
-        &:hover{
-          border: 1px solid #d8d8d8;
-          background-color: #F5F5F5;
-          h5.item-title{
-            display: block;
-          }
-        }
-        .write-answer-region{
-          height: 150px;
-        }
-      }
-    }
+
     .alter-dati{
       .pwi-body{
         height: 410px;
@@ -2316,10 +2317,10 @@ label.checkbox{
   }
   .fixed-top{
     height: 55px;
-
   }
   .kmTxWrap{
     padding-right: 100px;
+    width: 100%;
   }
   .back-to-zujuan{
     width: 100px;
@@ -2471,22 +2472,14 @@ label.checkbox{
   .pointTree{
     top: 10px;
   }
-//  .pointTitleBox {
-//    margin: 0;
-//    border: 0;
-//    line-height: 40px;
-//    .pointTitle{
-//      font-size: 15px;
-//      width: 100%;
-//      padding: 0 10px;
-//      margin: 0;
-//      text-align: center;
-//    }
-//  }
-//  .pointSelect{
-//    height: 56px;
-//    border-bottom: 1px solid #cfcfcf;
-//  }
+  .randomMakePaperWrap{
+    .fixed-top{
+      left: 300px;
+    }
+    .test-list-wrap{
+      padding-top: 25px;
+    }
+  }
 }
 .paper_hand_form{ //手动组卷样式
   .contentInner{
@@ -4711,5 +4704,8 @@ label.checkbox{
   .radio-inline,
   .checkbox-inline{
     margin-left: 10px;
+  }
+  .keXuHao{
+    width: 220px;
   }
 }

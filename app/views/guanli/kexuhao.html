@@ -1,13 +1,15 @@
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-6">
     <h4 class="bdb pb10">
-      <span>课序号管理</span>
+      <span>{{session.defaultLyName}}课序号管理</span>
       <a href="javascript:void(0)" class="fz14 pull-right" ng-click="showKeXuHaoPop('addKeXuHao')">新增课序号</a>
     </h4>
     <div>
       <ul class="list-unstyled" id="keXuHaoManage">
         <li class="bdbd ptb5" ng-repeat="kxh in keXuHaoData">
-          <span class="keXuHao cursorPointer" ng-bind="kxh.KEXUHAO_MINGCHENG" ng-click="chaXunKxhYongHu(kxh)"></span>
+          <span class="keXuHao cursorPointer pull-left" ng-bind="kxh.KEXUHAO_MINGCHENG"
+                title="{{kxh.SETTINGS}}" ng-click="chaXunKxhYongHu(kxh)"></span>
+          <span ng-bind="kxh.jiaoShiStr" class="ml10"></span>
           <span class="pull-right">
             <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('modifyKeXuHao', kxh)">修改</a>
             <a href="javascript:void(0)" ng-click="deleteKeXuHao(kxh)">删除</a>
@@ -47,15 +49,15 @@
       <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right fz14">
         <a href="javascript:void(0)" class="mr10" ng-click="deleteKxhYh('all')">清空</a>
-        <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('addSingleStu')">新增员工</a>
+        <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('addSingleStu')">新增学生</a>
         <a href="javascript:void(0)" ng-click="showKeXuHaoPop('addBatchStus')">批量新增</a>
       </span>
     </h4>
     <div ng-show="studentsData.length>0">
       <ul class="list-unstyled">
         <li class="bdbd ptb5 pull-left wp100" ng-repeat="stu in studentsData">
-          <span ng-bind="stu.XINGMING"></span>
           <span class="pl10" ng-bind="stu.YONGHUHAO"></span>
+          <span ng-bind="stu.XINGMING" class="ml10"></span>
           <a href="javascript:void(0)" class="pull-right" ng-click="deleteKxhYh(stu)">删除</a>
         </li>
       </ul>
@@ -104,7 +106,7 @@
             <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.addNewKxh"/>
           </div>
         </div>
-        <div class="clearfix">
+        <div class="clearfix mt15">
           <div class="col-md-2 text-right">
             <span class="mt5 dpb">教师</span>
           </div>
@@ -112,6 +114,14 @@
             <label class="checkbox-inline" ng-repeat="tcr in jgLyTeachers">
               <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr.XINGMING}}
             </label>
+          </div>
+        </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
+            <span class="mt5 dpb">备注</span>
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="备注" ng-model="guanliParams.addNewKxhSetting"/>
           </div>
         </div>
       </div>
@@ -122,10 +132,10 @@
             <span class="mt5 dpb">课序号</span>
           </div>
           <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.modifyKxh"/>
+            <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.modifyKxh.KEXUHAO_MINGCHENG"/>
           </div>
         </div>
-        <div class="clearfix">
+        <div class="clearfix mt15">
           <div class="col-md-2 text-right">
             <span class="mt5 dpb">教师</span>
           </div>
@@ -135,8 +145,16 @@
             </label>
           </div>
         </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
+            <span class="mt5 dpb">备注</span>
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="备注" ng-model="guanliParams.modifyKxh.SETTINGS"/>
+          </div>
+        </div>
       </div>
-      <!--添加单个员工-->
+      <!--添加单个学生-->
       <div class="row mt15" ng-if="glEditBoxShow=='addSingleStu'">
         <div class="clearfix">
           <div class="col-md-2 text-right">
@@ -155,7 +173,7 @@
           </div>
         </div>
       </div>
-      <!--批量添加员工-->
+      <!--批量添加学生-->
       <div class="row mt15" ng-if="glEditBoxShow=='addBatchStus'">
         <div class="clearfix">
           <div class="col-md-2 text-right">

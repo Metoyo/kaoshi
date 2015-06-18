@@ -1,7 +1,6 @@
 <div class="paper-content">
   <div class="loading-box text-center" ng-show="loadingImgShow">
     <img src="/images/loading.gif" alt="" width="64" height="64"/>
-
     <p>数据加载中，请耐心等待……</p>
   </div>
   <div class="back-to-paper-list">
@@ -15,52 +14,45 @@
   </div>
   <div id="myPaper" style="background: #FFFFFF">
     <h1 class="paper-title text-center hover-style" title="点击设置">
-            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
-                {{ shijuanData.shuju.SHIJUANMINGCHENG || '点击设置试卷名称'}}
-            </span>
+      <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
+          {{ shijuanData.shuju.SHIJUANMINGCHENG || '点击设置试卷名称'}}
+      </span>
     </h1>
-
     <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-show="shijuanData.shuju.FUBIAOTI">
-            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_fbt_input')">
-                {{ shijuanData.shuju.FUBIAOTI}}
-            </span>
+      <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_fbt_input')">
+          {{ shijuanData.shuju.FUBIAOTI}}
+      </span>
     </h1>
-
     <div class="attention hover-style" title="点击设置" ng-show="mubanData.shuju.ZONGDAOYU">
-            <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dy_input')">
-                {{ mubanData.shuju.ZONGDAOYU }}
-            </span>
+      <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dy_input')">
+          {{ mubanData.shuju.ZONGDAOYU }}
+      </span>
     </div>
     <div class="form-paper-type text-center" ng-hide="sjPreview">
       <button type="button" class="btn btn-primary" ng-click="handMakePaper()">手动组卷</button>
-      <!--<button type="button" class="btn btn-primary" ng-click="autoMakePaper()">自动组卷</button>-->
       <button type="button" class="btn btn-primary" ng-click="ruleMakePaper()">规则组卷</button>
+      <button type="button" class="btn btn-primary" ng-click="randomMakePaper()">随机组卷</button>
     </div>
     <!--用于刷新函数-->
     <div class="shijuantimu-list" ng-show="sjPreview" id="testList">
       <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" repeat-done>
         <div class="mubandati">
-          <div class="dati-name-box" title="点击设置大题名称"
-               ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
+          <div class="dati-name-box" title="点击设置大题名称" ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
             <span>{{cnNumArr[$index]}}、</span>
             <span class="dati-name">{{mbdt.DATIMINGCHENG}}</span>
           </div>
-          <div class="dati-score-box" title="点击设置大题分数"
-               ng-click="editMuBanDaTiNameAndScore('dt_score' + $index)">
+          <div class="dati-score-box" title="点击设置大题分数" ng-click="editMuBanDaTiNameAndScore('dt_score' + $index)">
             <p>
               <span>（本大题共</span>
               <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
               <span>小题，</span>
             </p>
-
             <p ng-hide="mbdt.datiScore">
               <a href="javascript:void(0)">点击设置本大题分数</a><span>）</span>
             </p>
-
             <p ng-show="mbdt.datiScore">
               <span>共</span>
-                            <span class="dati-total-score" ng-bind="mbdt.datiScore >= 0 ? mbdt.datiScore : 'X'">
-                            </span>
+              <span class="dati-total-score" ng-bind="mbdt.datiScore >= 0 ? mbdt.datiScore : 'X'"></span>
               <span>分）</span>
             </p>
           </div>
@@ -99,19 +91,16 @@
                              onafterpaste="if(isNaN(value))execCommand('undo')"/>
                     </div>
                     <div class="pwi-footer plr10 text-center">
-                      <button type="button" class="btn btn-danger mt5"
-                              ng-click="sj_item_score = true; tmd.xiaotiScore = ''">取消
+                      <button type="button" class="btn btn-danger mt5" ng-click="sj_item_score = true; tmd.xiaotiScore = ''">取消
                       </button>
-                      <button type="button" class="btn btn-primary mt5 ml15"
-                              ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定
+                      <button type="button" class="btn btn-primary mt5 ml15" ng-click="addXiaotiScore(mbdt); sj_item_score = true">确定
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="item-tizhi-wrap">
-                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index"
-                   ng-bind-html="'(' + letterArr[$index] + ') ' + tz">
+                <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index" ng-bind-html="'(' + letterArr[$index] + ') ' + tz">
                 </p>
               </div>
             </div>
@@ -184,12 +173,8 @@
           </div>
         </div>
         <div class="pwi-footer plr10 text-center">
-          <button type="button" class="btn btn-danger mt5"
-                  ng-click="cancelEditPaper()">取消
-          </button>
-          <button type="button" class="btn btn-primary mt5 ml15"
-                  ng-click="saveEditPaper()">确定
-          </button>
+          <button type="button" class="btn btn-danger mt5" ng-click="cancelEditPaper()">取消</button>
+          <button type="button" class="btn btn-primary mt5 ml15" ng-click="saveEditPaper()">确定</button>
         </div>
       </div>
     </div>
