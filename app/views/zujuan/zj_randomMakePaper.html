@@ -396,10 +396,38 @@
     <div class="zsdPreviewInner">
     </div>
   </div>
+  <!--保存试卷确认框-->
+  <div class="popup-wrap" ng-show="isSavePaperConfirm">
+    <div class="popup-wrap-inner no-header">
+      <div class="pwi-body">
+        <table class="table-bordered paperConfirmTable">
+          <tr>
+            <th>题型</th>
+            <th>数量</th>
+            <th>分数</th>
+          </tr>
+          <tr ng-repeat="mbdtInfo in mubanData.shuju.MUBANDATI track by $index">
+            <td ng-bind="mbdtInfo.DATIMINGCHENG"></td>
+            <td ng-bind="mbdtInfo.TIMUARR.length"></td>
+            <td ng-bind="mbdtInfo.datiScore"></td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              总分：{{paperScore}}分
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="pwi-footer plr10 text-center">
+        <button type="button" class="btn btn-danger mt5" ng-click="cancelSavePaper()">取消</button>
+        <button type="button" class="btn btn-primary mt5 ml15" ng-click="savePaper()">确定</button>
+      </div>
+    </div>
+  </div>
   <div class="row fixed-bottom" ng-hide="randomTestListShow">
     <table>
       <tr>
-        <td>
+        <!--td>
           <select ng-model="zuJuanParam.selectQuChongNum" class="form-control w200 h28 mr5"
                   ng-change="checkSelectQuChongNum()"
                   ng-options="qct.qcTime as qct.qcName for qct in zuJuanParam.quChong">
@@ -410,10 +438,10 @@
           或输入
           <input type="text" ng-model="zuJuanParam.inputQuChongNum" placeholder="年限" class="w80 mr5 h28"
                  ng-keyup="checkInPutQuChongNum()" onafterpaste="if(isNaN(value))execCommand('undo')">
-        </td>
+        </td-->
         <td>
-          <button type="button" class="btn btn-primary" ng-click="addRuleMakePaperShiJuan()"
-                  ng-disabled="ruleMakePaperSaveBtnDisabled">生成试卷
+          <button type="button" class="btn btn-primary" ng-click="savePaperConfirm('comeFromRandom')"
+                  ng-disabled="ruleMakePaperSaveBtnDisabled">保存试卷
           </button>
         </td>
       </tr>

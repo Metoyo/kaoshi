@@ -329,7 +329,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
             gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
             gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
-
             getTarChbxChild.find('input[name=point]').each(function() {
               if(gitThisChbx.prop("checked")) {
                 this.checked = true;
@@ -337,7 +336,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 this.checked = false;
               }
             });
-
             selectZsd = [];
             selectZsdName = [];
             var cbArray = $('input[name=point]'),
@@ -350,6 +348,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             zhishidian_id = selectZsd.toString();
             if($scope.txTpl == 'views/zujuan/zj_testList.html'){
+              $scope.qryTestFun();
+            }
+            if($scope.randomTestListShow){
               $scope.qryTestFun();
             }
           };
@@ -462,8 +463,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
            */
           $scope.qryTestFun = function(pg){
             $scope.loadingImgShow = true; //zj_testList.html
-            var qrytimuliebiao, //查询题目列表的url
-              chuangJianRenUidArr = []; //创建人UID数组
+            var qrytimuliebiao; //查询题目列表的url
+            var chuangJianRenUidArr = []; //创建人UID数组
             tiMuIdArr = [];
             pageArr = [];
             if(zhishidian_id){
@@ -533,7 +534,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 $scope.loadingImgShow = false; //testList.html loading
               }
             });
-
           };
 
           /**
@@ -1580,7 +1580,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
            * 随机组卷显示试题
            */
           $scope.randomMpShowItem = function(){
-            $scope.getTiXingId();
+            zhishidian_id = '';
+            $scope.qryTestFun();
             $scope.randomTestListShow = true;
           };
 
@@ -1619,13 +1620,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             mubanData.shuju.MUBANDATI = mbdtArr;
             $scope.mubanData = mubanData;
             $scope.randomTestListShow = false;
-          };
-
-          /**
-           * 保存随机组卷规则
-           */
-          $scope.saveRandomMakerPaper = function(){
-
           };
 
           /**
@@ -2045,7 +2039,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           /**
            * 保存试卷前的确认
            */
-          $scope.savePaperConfirm = function(){
+          $scope.savePaperConfirm = function(comeFromWhere){
             var nanDuArr = {
                 paperNanDu: '',
                 daTiNanDuArr:[]
@@ -2055,7 +2049,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               ppNanDuAdd = 0; //定义一个试卷难度相加字段
             shijuanData.shuju.SHIJUAN_TIMU = [];
             $scope.paperScore = 0;
-
             Lazy(mubanData.shuju.MUBANDATI).each(function(dati, idx, lst){
               $scope.paperScore += parseInt(dati.datiScore); //将试卷分数转换为整形
               var nanDuObj = { //定义一个存放难度object对象
@@ -2119,6 +2112,24 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             else{ //11 检查试卷名称
               DataService.alertInfFun('pmt', '给我起个名字吧 ^ _ ^');
             }
+            if(comeFromWhere && (comeFromWhere == 'comeFromRandom')){
+              var totalTiMuNums = 0; //规则组卷出题的总数量
+              var guiZeArr = []; //存放随机规则的数值
+              shijuanData.shuju.SUIJIGUIZE = ''; //试卷里面的随机规则
+              shijuanData.shuju.SHIJUANLEIXING = 1; //试卷类型
+              //得到题型数量和难度的数组
+              Lazy($scope.ampKmtxWeb).each(function(txArr, idx, lst){
+                if(txArr.zsdXuanTiArr.length){
+                  totalTiMuNums += txArr.txTotalNum;
+                  Lazy(txArr.zsdXuanTiArr).each(function(ntx, subIdx, subLst){
+                    guiZeArr.push(ntx);
+                  });
+                }
+              });
+              if(guiZeArr.length > 0){
+                shijuanData.shuju.SUIJIGUIZE = JSON.stringify(guiZeArr);
+              }
+            }
           };
 
           /**
@@ -2145,20 +2156,17 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 }
                 $http.post(xgmbUrl, mubanData).success(function(mbdata){
                   if(mbdata.result){
-//                    isComeFromRuleList = false;//试卷保存成功，显示试卷列表
                     for(var i = 0; i < lsmbIdLenght; i++){
                       if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
                         $rootScope.session.lsmb_id.splice(i, 1);
-//                        deleteTempTemp(); //删除没用的其他目标
                       }
                     }
-                    $scope.showZuJuan();
                     $scope.shijuanyulanBtn = false; //试卷预览的按钮
                     $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
                     $scope.baocunshijuanBtn = false; //保存试卷的按钮
                     $scope.isSavePaperConfirm = false;
                     $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
-                    $scope.zuJuanParam.xuanTiError = []; //
+                    $scope.zuJuanParam.xuanTiError = [];
                     //保存组卷规则
                     if(isComeFromRuleList){
                       comeFromRuleListData.GUIZEBIANMA = zuJuanRuleStr;
@@ -2167,11 +2175,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                     else{
                       $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
                     }
-                    DataService.alertInfFun('suc', '恭喜你！试卷保存成功！');
+                    $scope.showZuJuan();
+                    DataService.alertInfFun('suc', '试卷保存成功！');
                   }
                   else{
                     DataService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
-                  };
+                  }
                 });
               }
             });
@@ -2185,7 +2194,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           };
 
           /**
-           * 将试卷保存为PDF//
+           * 将试卷保存为PDF
            */
           //$scope.exportShiJuanToPdf = function(id){
           //  var idSl = '#' + id;
@@ -2248,6 +2257,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
             shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
+            shijuanData.shuju.SUIJIGUIZE = ''; //试卷随机规则
+            shijuanData.shuju.SHIJUANLEIXING = ''; //试卷类型
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
             Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
@@ -2333,6 +2344,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             shijuanData.shuju.FUBIAOTI = ''; //试卷副标题重置
             shijuanData.shuju.SHIJUANMUBAN_ID = ''; //删除试卷中的试卷模板id
             shijuanData.shuju.SHIJUAN_ID = ''; //清楚试卷id
+            shijuanData.shuju.SUIJIGUIZE = ''; //试卷随机规则
+            shijuanData.shuju.SHIJUANLEIXING = ''; //试卷类型
             mubanData.shuju.ZONGDAOYU = ''; //试卷模板总导语重置
             Lazy($scope.nanduTempData).each(function(ndkmtx, idx, lst){ //清除难度的数据
               ndkmtx.nanduCount = [];
