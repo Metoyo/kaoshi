@@ -151,6 +151,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           var qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan; //更新选题规则使用次数
           var zuJuanRuleStr = ''; //存放组卷规则的字符串，有json数据格式转化而来
           var isComeFromRuleList = false; //是否由规则列表点进去的
+          var comeFromRuleMakePaper = false; //是否由规则列表点进去的
           var comeFromRuleListData = ''; //存放已选组卷规则的变量
           var zsdgZsdArr = []; //存放所有知识大纲知识点的数组
           var qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
@@ -641,7 +642,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.zjDaGangListShow = false;
             $scope.showBackToPaperListBtn = true;
             $scope.dropMakePaper();
-            $scope.zjTpl = 'views/zujuan/paper_preview.html';
+            $scope.zjTpl = 'views/zujuan/zj_addNewShiJuan.html';
           };
 
           /**
@@ -661,7 +662,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
            * 规则组卷
            */
           $scope.ruleMakePaper = function(zjr){
-            $scope.dropMakePaper();
+            //清空数据
+            $scope.totalSelectedItmes = 0; //已选试题的总数量
+            $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+            $scope.zuJuanParam.xuanTiError = [];
+            deleteTempTemp();
+            clearData();
+            restoreKmtxDtscore();
+            //组卷部分
             var promise = getShiJuanMuBanData(); //保存试卷模板成功以后
             isComeFromRuleList = false;
             $scope.zuJuanParam.zjLastNd = '';
@@ -680,6 +688,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 isComeFromRuleList = false;
                 comeFromRuleListData = '';
               }
+              comeFromRuleMakePaper = false; //来自规则组卷
               $scope.ruleMakePaperTx = { selectTx: null };
               $scope.zjDaGangListShow = true; //控制加载规则组卷的css
               $scope.showBackToPaperListBtn = true;
@@ -844,7 +853,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               $scope.zj_tabActive = 'zjRule';
               isComeFromRuleList = false;
               comeFromRuleListData = '';
-              $scope.zjTpl = 'views/zujuan/zj_home.html'; //返回组卷首页
+              //$scope.zjTpl = 'views/zujuan/zj_home.html'; //返回组卷首页
             }
             else{
               $scope.zjTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
@@ -1142,11 +1151,13 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                       //保存规则用到的转化
                       zuJuanRuleStr = JSON.stringify(distAutoMakePaperData);
                       $scope.ruleMakePaperSaveBtnDisabled = false;
+                      comeFromRuleMakePaper = true;
                     }
                     else{
                       $scope.timudetails = null;
                       $scope.loadingImgShow = false;
                       $scope.ruleMakePaperSaveBtnDisabled = false;
+                      comeFromRuleMakePaper = false;
                       DataService.alertInfFun('err', stdata.error);
                     }
                   });
@@ -1893,19 +1904,17 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.dropMakePaper = function(){
             $scope.totalSelectedItmes = 0; //已选试题的总数量
             $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
-            //$scope.autoMakePaperClass = false; //加载自动组卷的样式
             $scope.zuJuanParam.xuanTiError = [];
             deleteTempTemp();
             clearData();
             restoreKmtxDtscore();
+            if(isComeFromRuleList){
+              $scope.showZuJuanRuleList();
+            }
+            if(comeFromRuleMakePaper){
+              $scope.ruleMakePaper();
+            }
           };
-
-          ///**
-          // * 当考试和考试规则列表加载时，变换tab-content的宽度
-          // */
-          //var widthChangeFun = function() {
-          //  $('.tab-content').width($('.sub-nav').width() - 16 + 'px');
-          //};
 
           /**
            *  查询试卷列表的函数，组卷页面加载时，查询数据
@@ -1974,7 +1983,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.paper_hand_form = false;
             $scope.sjPreview = false; //试卷预览
             $scope.showBackToPaperListBtn = false;
-            $scope.zjTpl = 'views/zujuan/zj_home.html';
+            //$scope.zjTpl = 'views/zujuan/zj_home.html';
             $scope.showPaperList();
             deleteTempTemp();
             restoreKmtxDtscore();
@@ -2000,7 +2009,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.showBackToPaperListBtn = false;
             qryZjRule();
             $scope.zjTpl = 'views/zujuan/zj_ruleList.html'; //加载试卷列表模板
-            //$timeout(widthChangeFun, 100);
           };
 
           /**
@@ -2083,7 +2091,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             paperDetailData = '';
             paperDetailId = ''; //用来存放所选试卷的id
             paperDetailName = ''; //用来存放所选试卷的名称
-
             $http.get(qryPaperDetailUrl).success(function(data){
               if(!data.error){
                 paperDetailId = data.SHIJUAN.SHIJUAN_ID; //用来存放所选试卷的id
@@ -2092,7 +2099,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 mubanData.shuju.SHIJUANMUBAN_ID = data.MUBAN.SHIJUANMUBAN_ID; //模板id
                 mubanData.shuju.MUBANMINGCHENG = data.MUBAN.MUBANMINGCHENG; //模板名称
                 mubanData.shuju.ZONGDAOYU = data.MUBAN.ZONGDAOYU; //总导语
-    //            mubanData.shuju.MUBANDATI = data.MUBANDATI; //模板大题数组
                 //给试卷赋值
                 shijuanData.shuju.SHIJUAN_ID = data.SHIJUAN.SHIJUAN_ID; //试卷id
                 shijuanData.shuju.SHIJUANMINGCHENG = data.SHIJUAN.SHIJUANMINGCHENG; //试卷名称
@@ -2154,8 +2160,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
                 $scope.baocunshijuanBtn = true; //保存试卷的按钮
                 paperDetailData = mubanData; //用于答题卡赋值
+                $scope.showBackToPaperListBtn = true;
               }
               else{
+                $scope.showBackToPaperListBtn = false;
                 DataService.alertInfFun('err', data.error);
               }
             });

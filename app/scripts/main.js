@@ -66,6 +66,9 @@ require.config({
       exports: 'mathjax'
     },
     datepicker: {
+      deps: [
+        'jquery'
+      ],
       exports: 'datepicker'
     },
     lazy: {

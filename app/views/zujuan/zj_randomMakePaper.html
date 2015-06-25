@@ -427,18 +427,6 @@
   <div class="row fixed-bottom" ng-hide="randomTestListShow">
     <table>
       <tr>
-        <!--td>
-          <select ng-model="zuJuanParam.selectQuChongNum" class="form-control w200 h28 mr5"
-                  ng-change="checkSelectQuChongNum()"
-                  ng-options="qct.qcTime as qct.qcName for qct in zuJuanParam.quChong">
-            <option value="">请选择题目去重年限</option>
-          </select>
-        </td>
-        <td>
-          或输入
-          <input type="text" ng-model="zuJuanParam.inputQuChongNum" placeholder="年限" class="w80 mr5 h28"
-                 ng-keyup="checkInPutQuChongNum()" onafterpaste="if(isNaN(value))execCommand('undo')">
-        </td-->
         <td>
           <button type="button" class="btn btn-primary" ng-click="savePaperConfirm('comeFromRandom')"
                   ng-disabled="ruleMakePaperSaveBtnDisabled">保存试卷
