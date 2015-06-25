@@ -5,7 +5,6 @@
       放弃本次组卷
     </button>
   </div>
-
   <div id="myPaper" style="background: #FFFFFF">
     <h1 class="paper-title text-center hover-style" title="点击设置">
       <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')">
@@ -22,7 +21,7 @@
           {{ mubanData.shuju.ZONGDAOYU }}
       </span>
     </div>
-    <div class="text-center" ng-init="shiTiLeiXing=false" ng-hide="sjPreview">
+    <div class="text-center" ng-init="shiTiLeiXing=false">
       <p class="cursorPointer" ng-click="shiTiLeiXing=!shiTiLeiXing" ng-hide="shiTiLeiXing">
         <span class="glyphicon glyphicon-plus cBlue"></span>添加试题
       </p>

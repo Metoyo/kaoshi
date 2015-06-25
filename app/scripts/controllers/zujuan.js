@@ -1248,7 +1248,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
            */
           var backToZjHomeFun = function(){
             $scope.paper_hand_form = false; //手动组卷时添加的样式
-            $scope.zjTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
+            if($scope.zj_tabActive == 'addNewShiJuan'){
+              $scope.zjTpl = 'views/zujuan/zj_addNewShiJuan.html'; //加载新增试卷预览模板
+            }
+            else{
+              $scope.zjTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
+            }
           };
           $scope.backToZjHome = function(){
             backToZjHomeFun();
