@@ -19,17 +19,13 @@ requirejs.config({
     'angular-route': '../../bower_components/angular-route/angular-route',
     'angular-sanitize': '../../bower_components/angular-sanitize/angular-sanitize',
     jquery: '../../bower_components/jquery/jquery.min',
-    underscore: '../../bower_components/underscore/underscore',
     charts: '../../bower_components/echarts/echarts-plain',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     setJs: '../../bower_components/markitup/set.min',
-    mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
+    mathjax: '../../bower_components/markitup/MathJax',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    lazy: '../../bower_components/lazy/lazy.min'
-    //'angular-animate': '../../bower_components/angular-animate/angular-animate',
-    //'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
-    //'angular-scenario': '../../bower_components/angular-scenario/angular-scenario'
+    lazy: '../../bower_components/lazy.js/lazy'
   },
 
     shim: {

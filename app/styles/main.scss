@@ -579,9 +579,9 @@ a.add-btn:hover span {
     text-align: center;
   }
 }
-.zj-dbd{
-  display: none;
-}
+//.zj-dbd{
+//  display: none;
+//}
 .dashboard_shown_show{
   display: block;
 }
@@ -1237,14 +1237,6 @@ label.checkbox{
   font-size: 18px;
 }
 /*大纲  结束*/
-.testPaperSummary{
-  width: 221px;
-  height: 100%;
-  position: fixed;
-  z-index: 10;
-  background-color: #f5f5f5;
-  border-right: 1px solid #cfcfcf;
-}
 /**
 *日期选择器的样式
 */
@@ -1319,7 +1311,7 @@ label.checkbox{
   position: fixed;
   top: 0;
   right: 0;
-  left: 520px;
+  left: 300px;
   z-index: 2;
   background-color: #fff;
 }
@@ -1914,10 +1906,10 @@ label.checkbox{
       line-height: 26px;
     }
   }
-  .fixed-top{
-    left: 300px;
-    z-index: 3;
-  }
+//  .fixed-top{
+//    left: 300px;
+//    z-index: 3;
+//  }
   /*main styles end*/
 }
 //命题样式
@@ -2030,9 +2022,9 @@ label.checkbox{
   .contentWraps{
     padding-top: 55px;
   }
-  .fixed-top{
-    left: 300px;
-  }
+//  .fixed-top{
+//    left: 300px;
+//  }
 }
 .tiKong{
   .tizhiWrap{
@@ -2236,7 +2228,6 @@ label.checkbox{
     .form-paper-type{
       margin-top: 20px;
     }
-
     .alter-dati{
       .pwi-body{
         height: 410px;
@@ -2273,8 +2264,8 @@ label.checkbox{
           line-height: 34px;
         }
         input{
-          width: 78%;
-          margin-left: 35px;
+          width: 75%;
+          margin-left: 40px;
         }
       }
       input{
@@ -2312,11 +2303,11 @@ label.checkbox{
     }
     .back-to-paper-list{
       top: 10px;
-      height: 40px;
+      height: 35px;
     }
   }
   .fixed-top{
-    height: 55px;
+    top: 47px;
   }
   .kmTxWrap{
     padding-right: 100px;
@@ -2396,7 +2387,7 @@ label.checkbox{
     border-bottom: 1px solid #ccc;
     padding: 5px;
     background-color: #f5f5f5;
-    margin-top: -10px;
+//    margin-top: -10px;
     table{
       width: 100%;
       th,td{
@@ -2467,40 +2458,46 @@ label.checkbox{
     }
   }
   .sub-nav {
-    margin-top: 0;
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    z-index: 3;
   }
   .pointTree{
     top: 10px;
   }
   .randomMakePaperWrap{
-    .fixed-top{
-      left: 300px;
-    }
+//    .fixed-top{
+//      left: 300px;
+//    }
     .test-list-wrap{
       padding-top: 25px;
     }
   }
-}
-.paper_hand_form{ //手动组卷样式
-  .contentInner{
-    .zj-dbd{
-      display: block;
-    }
-  }
-  .contentWraps{
-    padding-left: 220px;
+  .tab-content{
+    padding-top: 47px;
   }
 }
-.rule_make_paper{ //规则组卷样式
-  .subDashboard{
-    display: none;
-  }
-  .zj-dbd{
-    display: block;
-    left: 80px;
-    bottom: 0;
-  }
-}
+//.paper_hand_form{ //手动组卷样式
+//  .contentInner{
+//    .zj-dbd{
+//      display: block;
+//    }
+//  }
+//  .contentWraps{
+//    padding-left: 220px;
+//  }
+//}
+//.rule_make_paper{ //规则组卷样式
+//  .tiMuTongJi{
+//    display: none;
+//  }
+//  .zj-dbd{
+//    display: block;
+//    left: 80px;
+//    bottom: 0;
+//  }
+//}
 //考务样式
 .kaowuWrapper{
   .active{
@@ -2615,9 +2612,9 @@ label.checkbox{
       margin-right: 15px;
     }
   }
-  .fixed-top{
-    left: 300px;
-  }
+//  .fixed-top{
+//    left: 300px;
+//  }
 }
 //统计样式
 .tongjiWrapper{
