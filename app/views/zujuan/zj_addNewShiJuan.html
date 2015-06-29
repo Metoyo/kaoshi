@@ -29,7 +29,7 @@
         <span ng-click="shiTiLeiXing=!shiTiLeiXing" ng-show="shiTiLeiXing">
           <span class="glyphicon glyphicon-minus cBlue"></span>关闭添加按钮
         </span>
-        <span class="pull-right mr10">总分：80 分</span>
+        <span class="pull-right mr10">总分：{{zuJuanParam.sjzj_zongfen || 0}} 分</span>
       </p>
       <div ng-show="shiTiLeiXing">
         <button type="button" class="btn btn-primary" ng-click="handMakePaper();showGuiZiAddNew=false">固定试题</button>
@@ -81,7 +81,8 @@
     <!--随机组卷规则列表-->
     <div class="row ruleMakePaper-body">
       <div ng-repeat="txw in ampKmtxWeb" ng-show="txw.zsdXuanTiArr.length">
-        <h4><span ng-bind="txw.TIXINGMINGCHENG+'——'+'随机'"></span>
+        <h4>
+          <span ng-bind="txw.TIXINGMINGCHENG+'——'+'随机'"></span>
           <span class="txTotalNum">共<strong ng-bind="txw.txTotalNum"></strong>题</span>
         </h4>
         <table>
@@ -106,17 +107,17 @@
       </div>
     </div>
     <!--用于刷新函数-->
-    <div class="shijuantimu-list" ng-show="sjPreview" id="testList">
-      <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" repeat-done>
+    <div class="shijuantimu-list" id="testList">
+      <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" ng-show="mbdt.daTiNeedShow" repeat-done>
         <div class="mubandati">
           <div class="dati-name-box" title="点击设置大题名称" ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
-            <span>{{cnNumArr[$index]}}、</span>
-            <span class="dati-name">{{mbdt.DATIMINGCHENG}}</span>
+            <span ng-bind="cnNumArr[$index] + '、'"></span>
+            <span class="dati-name" ng-bind="mbdt.DATIMINGCHENG"></span>
           </div>
           <div class="dati-score-box" title="点击设置大题分数" ng-click="editMuBanDaTiNameAndScore('dt_score' + $index)">
             <p>
               <span>（本大题共</span>
-              <span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>
+              <span class="xiaoti-total" ng-bind="mbdt.tiMuTotalNum"></span>
               <span>小题，</span>
             </p>
             <p ng-hide="mbdt.datiScore">
@@ -226,7 +227,7 @@
           </div>
           <div class="item-info-edit">
             <div class="row mt5">
-              <label>大题：</label>
+              <label>固定试题大题分数设置：</label>
             </div>
             <div class="row" ng-repeat="mbdt in mubanData.shuju.MUBANDATI">
               <div class="col-sm-9 dati-box">
@@ -263,7 +264,7 @@
           </tr>
           <tr ng-repeat="mbdtInfo in mubanData.shuju.MUBANDATI track by $index">
             <td ng-bind="mbdtInfo.DATIMINGCHENG"></td>
-            <td ng-bind="mbdtInfo.TIMUARR.length"></td>
+            <td ng-bind="mbdtInfo.tiMuTotalNum"></td>
             <td ng-bind="mbdtInfo.datiScore"></td>
           </tr>
           <tr>

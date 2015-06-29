@@ -131,17 +131,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var paperDetailId; //用来存放所选试卷的id
         var paperDetailName; //用来存放所选试卷的名称
         var zidongzujuan = baseMtAPIUrl + 'zidongzujuan'; //自动组卷的url
-        //var autoMakePaperData = {
-        //    token: token,
-        //    caozuoyuan: caozuoyuan,
-        //    jigouid: jigouid,
-        //    lingyuid: lingyuid,
-        //    shuju: {
-        //      NANDU: '',
-        //      ZHISHIDIAN: [],
-        //      TIXING: []
-        //    }
-        //  }; //自动组卷的数据格式
         var qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷概要的基础URL
         var getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //规则组卷
@@ -199,7 +188,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           goToPageNum: '',
           tiMuId: '', //题目ID
           tiMuAuthorId: '', //出题人ID
-          isFirstEnterZuJuan: true
+          isFirstEnterZuJuan: true,
+          sjzj_zongfen: 0 //随机组卷的总分
         };
         $scope.randomTestListShow = false; //随机组卷题目列表显示和隐藏
         $scope.zjDaGangListShow = false; //规则组卷的显示
@@ -345,7 +335,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.zjNanDuSelect = function(nd){
           $scope.zjNaDuStar = '';
-          if(nd){
+          if(nd >= 0){
             $scope.zjNaDuStar = 'zj-style-star-' + nd;
             $scope.zuJuanParam.zjLastNd = nd;
           }
@@ -920,10 +910,18 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   });
                   //将规则大题添加的模板数组
                   if($scope.zj_tabActive == 'addNewShiJuan'){
-                    var ruleInMbda = Lazy(mubanData.shuju.MUBANDATI).find(function(mbdt){
-                      return mbdt.MUBANDATI_ID == ruleMakePaperSelectTxid;
+                    var idxNum = ''; //符合数据的索引
+                    var mbdtArr = [];
+                    var ruleInMbda = Lazy(mubanData.shuju.MUBANDATI).find(function(mbdt, idx, lst){
+                      if(mbdt.MUBANDATI_ID == ruleMakePaperSelectTxid){
+                        idxNum = idx;
+                        return mbdt;
+                      }
                     });
-                    if(!ruleInMbda){
+                    if(ruleInMbda){
+                      mubanData.shuju.MUBANDATI[idxNum].daTiNeedShow = true;
+                    }
+                    else{
                       var mubandatiItem = {
                         MUBANDATI_ID: ruleMakePaperSelectTxid,
                         DATIMINGCHENG: $scope.tiXingNameArr[parseInt(ruleMakePaperSelectTxid) - 1],
@@ -932,11 +930,30 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                         MEITIFENZHI: '',
                         XUHAO: '',
                         ZHUANGTAI: 1,
-                        TIMUARR:[1, 2], //自己添加的数组
-                        datiScore: '' //自己定义此大题的分数
+                        TIMUARR:[], //自己添加的数组
+                        datiScore: '', //自己定义此大题的分数
+                        daTiNeedShow: true
                       };
                       mubanData.shuju.MUBANDATI.push(mubandatiItem);
                     }
+                    //判断TIMUARR有题或者添加了大题规则
+                    Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt){
+                      mbdt.tiMuTotalNum = mbdt.TIMUARR.length || 0;
+                      if(mbdt.daTiNeedShow || mbdt.TIMUARR.length > 0){
+                        mbdt.daTiNeedShow = true;
+                        var findInRuleArr = Lazy($scope.ampKmtxWeb).find(function(ruleData){
+                          return ruleData.TIXING_ID == mbdt.MUBANDATI_ID;
+                        });
+                        if(findInRuleArr){
+                          mbdt.tiMuTotalNum += findInRuleArr.txTotalNum;
+                        }
+                      }
+                      if(mbdt.tiMuTotalNum > 0){
+                        mbdtArr.push(mbdt);
+                      }
+                      mubanData.shuju.MUBANDATI = mbdtArr;
+                      $scope.mubanData = mubanData;
+                    });
                   }
                   txNumClass.val(''); //重置题目数量
                   $('input[name=point]:checked').prop('checked', false);//重置知识点
@@ -1364,7 +1381,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 //统计每种题型的数量和百分比
                 tixingStatistics(i, kmtxListLength);
                 //均分大题分数
-                $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
+                divideDatiScore(mubanData.shuju.MUBANDATI[i]);
               }
             }
           }
@@ -1381,7 +1398,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               }).toArray();
             });
             //均分大题分数
-            $scope.divideDatiScore(mubanData.shuju.MUBANDATI[cg_mbdt_idx]);
+            divideDatiScore(mubanData.shuju.MUBANDATI[cg_mbdt_idx]);
           }
           //统计难度的数量
           for(var j = 0; j < nanduLength; j++){
@@ -1443,7 +1460,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   //统计每种题型的数量
                   tixingStatistics(i, kmtxListLength);
                   //均分大题分数
-                  $scope.divideDatiScore(mubanData.shuju.MUBANDATI[i]);
+                  divideDatiScore(mubanData.shuju.MUBANDATI[i]);
                   break;
                 }
               }
@@ -1487,7 +1504,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             tgReg = new RegExp('<\%{.*?}\%>', 'g');
           //删除数据为空的模板大题
           Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
-            if(mbdt.TIMUARR.length){
+            mbdt.tiMuTotalNum = mbdt.TIMUARR.length || 0;
+            if(mbdt.TIMUARR.length || mbdt.daTiNeedShow){
+              mbdt.daTiNeedShow = true;
               if(mbdt.MUBANDATI_ID == 6){
                 Lazy(mbdt.TIMUARR).each(function(tm, subIdx, subLst){
                   //修改填空题的题干
@@ -1509,6 +1528,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 mbdtArr.push(mbdt);
               }
             }
+            var findInRuleArr = Lazy($scope.ampKmtxWeb).find(function(ruleData){
+              return ruleData.TIXING_ID == mbdt.MUBANDATI_ID;
+            });
+            if(findInRuleArr){
+              mbdt.tiMuTotalNum += findInRuleArr.txTotalNum;
+            }
           });
           mubanData.shuju.MUBANDATI = mbdtArr;
           $scope.mubanData = mubanData;
@@ -1521,21 +1546,42 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 均分大题的分值
          */
-        $scope.divideDatiScore = function(mbdt){
+        var divideDatiScore = function(mbdt){
           var datiTotalScore = mbdt.datiScore, //本大题总分
-            datiItemNum = mbdt.TIMUARR.length, //得到本大题下的题目数量
+            txLen = mbdt.tiMuTotalNum, //本题型的所有数量
+            tiMuLen = mbdt.TIMUARR.length, //规定试题的数量
+            datiItemNum = txLen || tiMuLen, //得到本大题下的题目数量
             biLvVal = datiTotalScore/datiItemNum, //本大题总分/大题下的题目数量
             xiaotiAverageScore, //每小题的平均分数
-            zeroLen = 0; //记录题目分值为0的个数
+            zeroLen = 0, //记录题目分值为0的个数
+            isInAmpKmTxWeb, //是否在临时的模板题型中
+            idxNum = ''; //符合条件的规则
+          //给规则里面的试题增加分数
+          if($scope.zj_tabActive == 'addNewShiJuan'){
+            isInAmpKmTxWeb = Lazy($scope.ampKmtxWeb).find(function(zjRule, idx, lst){
+              if(zjRule.TIXING_ID == mbdt.MUBANDATI_ID){
+                idxNum = idx;
+                return zjRule;
+              }
+            });
+          }
           if(biLvVal < 1){
             if(biLvVal == 0.5){
               xiaotiAverageScore = 0.5; //每小题的分数
+              //给规则赋分数
+              if(isInAmpKmTxWeb){
+                Lazy($scope.ampKmtxWeb[idxNum].zsdXuanTiArr).each(function(zjr, idx, lst){
+                  zjr.TIXING[0].thisRuleScore = xiaotiAverageScore * zjr.TIXING[0].COUNT;
+                });
+              }
+              //给固定试题赋分
               Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
                 xiaoti.xiaotiScore = xiaotiAverageScore;
               });
             }
             else{
               xiaotiAverageScore = 1; //每小题的分数
+              //给规定试题赋分
               Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
                 if( idx < datiTotalScore){
                   xiaoti.xiaotiScore = xiaotiAverageScore;
@@ -1545,21 +1591,34 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   zeroLen ++;
                 }
               });
+              //给固定试题赋分
+              if(isInAmpKmTxWeb){
+                Lazy($scope.ampKmtxWeb[idxNum].zsdXuanTiArr).each(function(zjr, idx, lst){
+                  zjr.TIXING[0].thisRuleScore = 0;
+                });
+              }
             }
           }
           else{
             xiaotiAverageScore = biLvVal.toFixed(0); //每小题的分数
+            //给规则赋分数
+            if(isInAmpKmTxWeb){
+              Lazy($scope.ampKmtxWeb[idxNum].zsdXuanTiArr).each(function(zjr, idx, lst){
+                zjr.TIXING[0].thisRuleScore = xiaotiAverageScore * zjr.TIXING[0].COUNT;
+              });
+              datiTotalScore -= xiaotiAverageScore * $scope.ampKmtxWeb[idxNum].txTotalNum;
+            }
+            //给固定试题赋分
             Lazy(mbdt.TIMUARR).each(function(xiaoti, idx, lst){
-              if(idx + 1 < mbdt.TIMUARR.length){
+              if(idx + 1 < tiMuLen){
                 xiaoti.xiaotiScore = xiaotiAverageScore;
                 datiTotalScore -= xiaotiAverageScore;
               }
-              if(idx +1 == mbdt.TIMUARR.length){ //给最后一小题赋值
+              if(idx +1 == tiMuLen){ //给最后一小题赋值
                 xiaoti.xiaotiScore = datiTotalScore;
               }
             });
           }
-
         };
 
         /**
@@ -1651,9 +1710,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 保存编辑试卷信息
          */
         $scope.saveEditPaper = function(){
+          $scope.zuJuanParam.sjzj_zongfen = 0;
           Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){
+            $scope.zuJuanParam.sjzj_zongfen += parseInt(mbdt.datiScore);
             //均分大题分数
-            $scope.divideDatiScore(mbdt);
+            divideDatiScore(mbdt);
             //二级控制面板上的分数统计
             Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
               if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
