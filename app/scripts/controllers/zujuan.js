@@ -635,7 +635,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.zj_tabActive = 'addNewShiJuan';
             $scope.zjDaGangListShow = false;
             $scope.showBackToPaperListBtn = true;
-            //$scope.showGuiZiAdd = false;
+            $scope.zuJuanParam.sjzj_zongfen = 0;
             $scope.zjTpl = 'views/zujuan/zj_addNewShiJuan.html';
           });
         };
@@ -1801,11 +1801,21 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(shijuanData.shuju.SHIJUANMINGCHENG){ //11 检查试卷名称
             if(!fenZhiIsNull){// 22 检查每小题是否有分值 开始
               //提交数据
-              if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
-                $scope.isSavePaperConfirm = true;
+              if($scope.zj_tabActive == 'addNewShiJuan'){
+                if(shijuanData.shuju.SHIJUANMUBAN_ID){ // 33
+                  $scope.isSavePaperConfirm = true;
+                }
+                else{ //33
+                  DataService.alertInfFun('pmt', '请检查试卷的完整性！');
+                }
               }
-              else{ //33
-                DataService.alertInfFun('pmt', '请检查试卷的完整性！');
+              else{
+                if(shijuanData.shuju.SHIJUANMUBAN_ID && shijuanData.shuju.SHIJUAN_TIMU.length){ // 33
+                  $scope.isSavePaperConfirm = true;
+                }
+                else{ //33
+                  DataService.alertInfFun('pmt', '请检查试卷的完整性！');
+                }
               }
             }
             else{ // 22 检查每小题是否有分值 结束
