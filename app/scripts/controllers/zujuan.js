@@ -193,7 +193,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
         $scope.randomTestListShow = false; //随机组卷题目列表显示和隐藏
         $scope.zjDaGangListShow = false; //规则组卷的显示
-        //$scope.showGuiZiAdd = false; //显示随机组卷的规则添加页面
 
         /**
          * 获得大纲数据
@@ -649,15 +648,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
           $scope.baocunshijuanBtn = true; //保存试卷的按钮
           zhishidian_id = '';
-          //$scope.showGuiZiAdd = false;
-          //var promise = getShiJuanMuBanData(); //保存试卷模板成功以后r
-          //promise.then(function(){
-          //  $scope.showTestList(txid);
-          //  $scope.shijuanyulanBtn = true; //试卷预览的按钮
-          //  $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
-          //  $scope.baocunshijuanBtn = true; //保存试卷的按钮
-          //  //$scope.showGuiZiAdd = false;
-          //});
         };
 
         /**
@@ -860,13 +850,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.zjTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
           }
         };
-
-        /**
-         * 新增试卷，关闭组卷规则
-         */
-        //$scope.closeAddZuJuanRlueBox = function(){
-        //  $scope.showGuiZiAdd = false;
-        //};
 
         /**
          * 规则组卷得到题型题型信息
@@ -1251,43 +1234,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.qryTestFun();
           $scope.randomTestListShow = true;
         };
-
-        /**
-         * 显示组卷规则和固定题目
-         */
-        //$scope.randomShowGuiZeAndItem = function(){
-        //  var mbdtArr = []; //定义一个空的数组用来存放模板大题
-        //  var newCont;
-        //  var tgReg = new RegExp('<\%{.*?}\%>', 'g');
-        //  //删除数据为空的模板大题
-        //  Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
-        //    if(mbdt.TIMUARR.length){
-        //      if(mbdt.MUBANDATI_ID == 6){
-        //        Lazy(mbdt.TIMUARR).each(function(tm, subIdx, subLst){
-        //          //修改填空题的题干
-        //          newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
-        //            var text = arg.slice(2, -2), //提起内容
-        //              textJson = JSON.parse(text),
-        //              _len = textJson.size,
-        //              i, xhStr = '';
-        //            for(i = 0; i < _len; i ++ ){
-        //              xhStr += '_';
-        //            }
-        //            return xhStr;
-        //          });
-        //          tm.TIGAN.tiGan = newCont;
-        //        });
-        //        mbdtArr.push(mbdt);
-        //      }
-        //      else{
-        //        mbdtArr.push(mbdt);
-        //      }
-        //    }
-        //  });
-        //  mubanData.shuju.MUBANDATI = mbdtArr;
-        //  $scope.mubanData = mubanData;
-        //  $scope.randomTestListShow = false;
-        //};
 
         /**
          * 由收到组卷返回的组卷的首页
