@@ -6,9 +6,10 @@
     </button>
   </div>
   <div id="myPaper" style="background: #FFFFFF">
-    <h1 class="paper-title text-center hover-style" title="点击设置">
-      <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')"
+    <h1 class="paper-title text-center" title="点击设置">
+      <span class="hover-style" ng-click="editMuBanDaTiNameAndScore('sj_dt_input')"
             ng-bind="shijuanData.shuju.SHIJUANMINGCHENG || '点击设置试卷名称'"></span>
+      <span class="pull-right mr10">总分：{{zuJuanParam.sjzj_zongfen || 0}} 分</span>
     </h1>
     <h1 class="paper-sub-title text-center hover-style" title="点击设置" ng-show="shijuanData.shuju.FUBIAOTI">
       <span class="sj-param-val" ng-click="editMuBanDaTiNameAndScore('sj_fbt_input')">
@@ -22,18 +23,17 @@
     </div>
     <!--添加固定试题还是随机试题-->
     <div ng-init="shiTiLeiXing=false">
-      <p class="cursorPointer">
+      <p class="cursorPointer" style="font-size: 20px">
         <span ng-click="shiTiLeiXing=!shiTiLeiXing" ng-hide="shiTiLeiXing">
           <span class="glyphicon glyphicon-plus cBlue"></span>添加试题
         </span>
         <span ng-click="shiTiLeiXing=!shiTiLeiXing" ng-show="shiTiLeiXing">
           <span class="glyphicon glyphicon-minus cBlue"></span>关闭添加按钮
         </span>
-        <span class="pull-right mr10">总分：{{zuJuanParam.sjzj_zongfen || 0}} 分</span>
       </p>
       <div ng-show="shiTiLeiXing">
-        <button type="button" class="btn btn-primary" ng-click="handMakePaper();showGuiZiAddNew=false">固定试题</button>
-        <button type="button" class="btn btn-primary" ng-click="randomMakePaper();showGuiZiAddNew=true">随机试题</button>
+        <button type="button" class="btn btn-primary fz16" ng-click="handMakePaper();showGuiZiAddNew=false">固定试题</button>
+        <button type="button" class="btn btn-primary fz16" ng-click="randomMakePaper();showGuiZiAddNew=true">随机试题</button>
       </div>
     </div>
     <!--随机组卷的规则添加框-->
@@ -253,7 +253,7 @@
     </div>
   </div>
   <!--保存试卷前的确认弹出框-->
-  <div class="popup-wrap" ng-show="isSavePaperConfirm">
+  <div class="popup-wrap popup-wrap-350" ng-show="isSavePaperConfirm">
     <div class="popup-wrap-inner no-header">
       <div class="pwi-body">
         <table class="table-bordered paperConfirmTable">

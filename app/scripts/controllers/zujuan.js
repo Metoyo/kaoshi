@@ -968,6 +968,17 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.deleteRuleCondition = function(txw, idx){
           txw.txTotalNum -= parseInt(txw.zsdXuanTiArr[idx].TIXING[0].COUNT);
+          //删除模板大题里的题目数量统计
+          if($scope.zj_tabActive == 'addNewShiJuan'){
+            Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt){
+              if(mbdt.MUBANDATI_ID == txw.TIXING_ID){
+                mbdt.tiMuTotalNum -= parseInt(txw.zsdXuanTiArr[idx].TIXING[0].COUNT);
+                if(mbdt.tiMuTotalNum == 0){
+                  mbdt.daTiNeedShow = false;
+                }
+              }
+            });
+          }
           txw.zsdXuanTiArr.splice(idx, 1);
         };
 
@@ -1698,6 +1709,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             ppNanDuAdd = 0; //定义一个试卷难度相加字段
           shijuanData.shuju.SHIJUAN_TIMU = [];
           $scope.paperScore = 0;
+          //试卷设置分数后，再做修改后，
+          $scope.saveEditPaper();
           Lazy(mubanData.shuju.MUBANDATI).each(function(dati, idx, lst){
             $scope.paperScore += parseInt(dati.datiScore); //将试卷分数转换为整形
             var nanDuObj = { //定义一个存放难度object对象
@@ -2133,6 +2146,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           paperDetailData = '';
           paperDetailId = ''; //用来存放所选试卷的id
           paperDetailName = ''; //用来存放所选试卷的名称
+          $scope.zuJuanGuiZe = '';
           $http.get(qryPaperDetailUrl).success(function(data){
             if(!data.error){
               paperDetailId = data.SHIJUAN.SHIJUAN_ID; //用来存放所选试卷的id
@@ -2197,6 +2211,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   }
                 });
               });
+              //展示随机试卷的组卷规则
+              if(data.SHIJUAN.SUIJIGUIZE){
+                $scope.zuJuanGuiZe = JSON.parse(data.SHIJUAN.SUIJIGUIZE);
+              }
               $scope.shijuanPreview(); //试卷预览
               $scope.shijuanyulanBtn = false; //试卷预览的按钮
               $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮

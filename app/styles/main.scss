@@ -436,6 +436,23 @@ a.add-btn:hover span {
     }
   }
 }
+.popup-wrap-350{
+  .popup-wrap-inner{
+    height: 350px;
+    margin-top: -175px;
+    .pwi-footer{
+      height: 50px;
+      .btn{
+        font-size: 18px;
+      }
+    }
+  }
+  .no-header{
+    .pwi-body{
+      height: 290px;
+    }
+  }
+}
 .saveStuSelectInfo{
   .popup-wrap-inner{
     height: 300px;

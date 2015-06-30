@@ -24,20 +24,25 @@
           {{ mubanData.shuju.ZONGDAOYU }}
       </span>
     </div>
-    <!--<div class="text-center" ng-init="shiTiLeiXing=false" ng-hide="sjPreview">-->
-      <!--<p class="cursorPointer" ng-click="shiTiLeiXing=!shiTiLeiXing" ng-hide="shiTiLeiXing">-->
-        <!--<span class="glyphicon glyphicon-plus cBlue"></span>添加试题-->
-      <!--</p>-->
-      <!--<p class="cursorPointer" ng-click="shiTiLeiXing=!shiTiLeiXing" ng-show="shiTiLeiXing">-->
-        <!--<span class="glyphicon glyphicon-plus cBlue"></span>关闭添加按钮-->
-      <!--</p>-->
-      <!--<div ng-show="shiTiLeiXing">-->
-        <!--<button type="button" class="btn btn-primary" ng-click="handMakePaper()">固定试题</button>-->
-        <!--<button type="button" class="btn btn-primary" ng-click="randomMakePaper()">随机试题</button>-->
-      <!--</div>-->
-    <!--</div>-->
     <!--用于刷新函数-->
     <div class="shijuantimu-list" ng-show="sjPreview" id="testList">
+      <div ng-show="zuJuanGuiZe.length">
+        <h4>随机试题</h4>
+        <table class="table table-bordered">
+          <tr>
+            <th width="60%">知识点</th>
+            <th width="10%">题型</th>
+            <th width="10%">数量</th>
+            <th width="10%">难度</th>
+          </tr>
+          <tr ng-repeat="gz in zuJuanGuiZe track by $index">
+            <td ng-bind="gz.zsdNameArr.join(';')"></td>
+            <td ng-bind="tiXingNameArr[gz.TIXING[0].TIXING_ID - 1]"></td>
+            <td ng-bind="gz.TIXING[0].COUNT"></td>
+            <td ng-bind="gz.NANDU*4 + 1"></td>
+          </tr>
+        </table>
+      </div>
       <div ng-repeat="mbdt in mubanData.shuju.MUBANDATI" repeat-done>
         <div class="mubandati">
           <div class="dati-name-box" title="点击设置大题名称" ng-click="editMuBanDaTiNameAndScore('dt_name' + $index)">
