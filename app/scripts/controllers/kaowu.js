@@ -59,17 +59,24 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var kaoChangIdArrRev = []; //存放所有考场ID的数组
           var totalKaoChangPage; //符合条件的考场一共有多少页
           var uploadKsUrl = baseMtAPIUrl + 'excel_to_json'; //上传考生信息
+          var keXuHaoPagesArr = []; //存放课序号分页的数组
+          var keXuHaoStore = ''; //存放课序号原始数据
+          var numPerPage = 10; //每页10条数据
+          var kxhManageUrl = baseRzAPIUrl + 'kexuhao'; //课序号管理的url
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
           $rootScope.dashboard_shown = true;
+          $scope.showKeXuHao = false; //显示课序号
+          $scope.keXuHaoData = '';
           $scope.kwParams = { //考务用到的变量
             ksListZt: '', //考试列表的状态
             showKaoShiDetail: false, //考试详细信息
             selectShiJuan: [], //存放已选择试卷的数组
             saveKaoShiBtnStat: false,
-            isAllKeGuanTi: false //判断全部是否为客观题
+            isAllKeGuanTi: false, //判断全部是否为客观题
+            baoMingMethod: '' //报名方式
           };
 
           /**
@@ -120,6 +127,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               qryKaoShiList;
             zt = zt || 'ing';
             $scope.loadingImgShow = true; //kaoShiList.html
+            $scope.kwParams.baoMingMethod = '';
             kaoShiPageArr = []; //定义考试页码数组
             kaoShiIdArrRev = []; //存放所有考试ID的数组
             //先查询所有考试的Id
@@ -250,6 +258,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
             $scope.showPaperDetail = false; //控制试卷详情的显示和隐藏
             $scope.kwParams.selectShiJuan = []; //重置已选择的时间数组
+            $scope.onlineBaoMing = false; //在线报名
+            $scope.unOnlineBaoMing = false; //非在线报名
             kaoshi_data = { //考试的数据格式
               token: token,
               caozuoyuan: caozuoyuan,
@@ -312,6 +322,95 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               });
             };
             $timeout(showDatePicker, 1000);
+          };
+
+          /**
+           * 根据选择的报名方式
+           */
+          $scope.getBaoMingCont = function(){
+            if($scope.kwParams.baoMingMethod == 'true'){ //在线报名
+              $scope.onlineBaoMing = true; //在线报名
+              $scope.unOnlineBaoMing = false; //非在线报名
+            }
+            else{
+              $scope.onlineBaoMing = false; //在线报名
+              $scope.unOnlineBaoMing = true; //非在线报名
+            }
+          };
+
+          /**
+           * 有课序号添加考生
+           */
+          $scope.addStuByKxh = function(){
+            if(keXuHaoStore && keXuHaoStore.length > 0){
+              $scope.showKeXuHao = true;
+            }
+            else{
+              var qryKxhUrl = kxhManageUrl + '?token=' + token + '&JIGOU_ID=' + jigouid + '&LINGYU_ID=' + lingyuid;
+              $http.get(qryKxhUrl).success(function(data){
+                if(data && data.length > 0){
+                  var dataLength = data.length; //所以二级专业长度
+                  Lazy(data).each(function(kxh){
+                    kxh.jiaoShiStr = Lazy(kxh.JIAOSHI).map(function(js){
+                      return js.XINGMING;
+                    }).toArray().join(';');
+                  });
+                  keXuHaoStore = data;
+                  if(dataLength > 10){
+                    var lastPage = Math.ceil(dataLength/numPerPage); //最后一页
+                    $scope.lastKxhPageNum = lastPage;
+                    keXuHaoPagesArr = [];
+                    if(lastPage){
+                      for(var i = 1; i <= lastPage; i++){
+                        keXuHaoPagesArr.push(i);
+                      }
+                    }
+                    $scope.keXuHaoDist(1);
+                  }
+                  else{
+                    $scope.keXuHaoData = data;
+                  }
+                  $scope.showKeXuHao = true;
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          };
+
+          /**
+           * 关闭课序号
+           */
+          $scope.closeKxhList = function(){
+            $scope.showKeXuHao = false;
+          };
+
+          /**
+           * 课序号的分页数据
+           */
+          $scope.keXuHaoDist = function(pg){
+            var startPage = (pg-1) * numPerPage;
+            var endPage = pg * numPerPage;
+            var lastPageNum = $scope.lastKxhPageNum;
+            $scope.currentKxhPageVal = pg;
+            //得到分页数组的代码
+            var currentPageNum = pg ? pg : 1;
+            if(lastPageNum <= paginationLength){
+              $scope.keXuHaoPages = keXuHaoPagesArr;
+            }
+            if(lastPageNum > paginationLength){
+              if(currentPageNum > 0 && currentPageNum <= 4 ){
+                $scope.keXuHaoPages = keXuHaoPagesArr.slice(0, paginationLength);
+              }
+              else if(currentPageNum > lastPageNum - 4 && currentPageNum <= lastPageNum){
+                $scope.keXuHaoPages = keXuHaoPagesArr.slice(lastPageNum - paginationLength);
+              }
+              else{
+                $scope.keXuHaoPages = keXuHaoPagesArr.slice(currentPageNum - 4, currentPageNum + 3);
+              }
+            }
+            $scope.keXuHaoData = keXuHaoStore.slice(startPage, endPage);
           };
 
           /**
