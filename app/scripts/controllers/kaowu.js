@@ -63,12 +63,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var keXuHaoStore = ''; //存放课序号原始数据
           var numPerPage = 10; //每页10条数据
           var kxhManageUrl = baseRzAPIUrl + 'kexuhao'; //课序号管理的url
+          var chaXunStuBaseUrl = baseRzAPIUrl + 'query_student'; //查询机构下面的用户
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
           $rootScope.dashboard_shown = true;
-          $scope.showKeXuHao = false; //显示课序号
+          $scope.showAddStuBox = false; //显示添加考生页面
+          $scope.isAddStuByKxh = false; //判断添加考生类型
           $scope.keXuHaoData = '';
           $scope.kwParams = { //考务用到的变量
             ksListZt: '', //考试列表的状态
@@ -260,6 +262,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.kwParams.selectShiJuan = []; //重置已选择的时间数组
             $scope.onlineBaoMing = false; //在线报名
             $scope.unOnlineBaoMing = false; //非在线报名
+            $scope.studentsData = ''; // 由课序号查出来的分页学生数据
+            $scope.studentsOrgData = ''; //由课序号查出来的所有学生
             kaoshi_data = { //考试的数据格式
               token: token,
               caozuoyuan: caozuoyuan,
@@ -339,11 +343,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 有课序号添加考生
+           * 由课序号添加考生
            */
           $scope.addStuByKxh = function(){
             if(keXuHaoStore && keXuHaoStore.length > 0){
-              $scope.showKeXuHao = true;
+              $scope.showAddStuBox = true;
+              $scope.isAddStuByKxh = true;
             }
             else{
               var qryKxhUrl = kxhManageUrl + '?token=' + token + '&JIGOU_ID=' + jigouid + '&LINGYU_ID=' + lingyuid;
@@ -370,20 +375,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   else{
                     $scope.keXuHaoData = data;
                   }
-                  $scope.showKeXuHao = true;
+                  $scope.showAddStuBox = true;
+                  $scope.isAddStuByKxh = true;
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
                 }
               });
             }
-          };
-
-          /**
-           * 关闭课序号
-           */
-          $scope.closeKxhList = function(){
-            $scope.showKeXuHao = false;
           };
 
           /**
@@ -411,6 +410,57 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               }
             }
             $scope.keXuHaoData = keXuHaoStore.slice(startPage, endPage);
+          };
+
+          /**
+           * 选中课序号
+           */
+          $scope.pickOnKxh = function(kxh){
+            kxh.ckd = !kxh.ckd;
+          };
+
+          /**
+           * 查询课序号学生
+           */
+          $scope.chaXunKxhYongHu = function(){
+            var kxhId = [];
+            Lazy(keXuHaoStore).each(function(kxh){
+              if(kxh.ckd){
+                kxhId.push(kxh.KEXUHAO_ID);
+              }
+            });
+            if(kxhId && kxhId.length > 0){
+              var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxhId.join(',');
+              $http.get(chaXunYongHu).success(function(data){
+                if(data && data.length > 0){
+                  $scope.studentsOrgData = data;
+                  $scope.showAddStuBox = false;
+                }
+                else{
+                  $scope.studentsOrgData = '';
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '您未选择课序号！');
+            }
+          };
+
+          /**
+           * 由Excel文件添加学生
+           */
+          $scope.addStuByExcel = function(){
+            $scope.isAddStuByKxh = false;
+            $scope.showAddStuBox = true;
+          };
+
+          /**
+           * 关闭添加考生页面
+           */
+          $scope.closeAddStuBox = function(){
+            $scope.showAddStuBox = false;
+            $scope.studentsOrgData = '';
+            $scope.uploadFiles = [];
           };
 
           /**
@@ -638,51 +688,57 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             var kaoShengNewArr = [];
             var trimBlankReg = /\s/g;
             var delBlank = '';
-            $scope.loadingImgShow = true;
-            DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
-              $scope.uploadFileUrl = result.data;
-              $scope.uploadFiles = [];
-              if(result.data.json){
-                for(var item in result.data.json){
-                  kaoShengOldArr = result.data.json[item];
-                  break;
-                }
-                Lazy(kaoShengOldArr).each(function(ks, idx, list){
-                  var ksObj = {XINGMING: '', YONGHUHAO:'', BANJI: ''};
-                  Lazy(ks).each(function(value, key, list){
-                    delBlank = key.replace(trimBlankReg, "");
-                    switch (delBlank){
-                      case '姓名' :
-                        ksObj.XINGMING = value;
-                        break;
-                      case '学号':
-                        ksObj.YONGHUHAO = value;
-                        break;
-                      case '班级':
-                        ksObj.BANJI = value;
-                        break;
-                      case '序号':
-                        ksObj.XUHAO = value;
-                        break;
-                      case '课序号':
-                        ksObj.KEXUHAO = value;
-                        break;
-                      case '座位号':
-                        ksObj.ZUOWEIHAO = value;
-                        break;
-                    }
+            if(file && file.length > 0){
+              $scope.loadingImgShow = true;
+              DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
+                $scope.uploadFileUrl = result.data;
+                $scope.uploadFiles = [];
+                if(result.data.json){
+                  for(var item in result.data.json){
+                    kaoShengOldArr = result.data.json[item];
+                    break;
+                  }
+                  Lazy(kaoShengOldArr).each(function(ks, idx, list){
+                    var ksObj = {XINGMING: '', YONGHUHAO:'', BANJI: ''};
+                    Lazy(ks).each(function(value, key, list){
+                      delBlank = key.replace(trimBlankReg, "");
+                      switch (delBlank){
+                        case '姓名' :
+                          ksObj.XINGMING = value;
+                          break;
+                        case '学号':
+                          ksObj.YONGHUHAO = value;
+                          break;
+                        case '班级':
+                          ksObj.BANJI = value;
+                          break;
+                        case '序号':
+                          ksObj.XUHAO = value;
+                          break;
+                        case '课序号':
+                          ksObj.KEXUHAO = value;
+                          break;
+                        case '座位号':
+                          ksObj.ZUOWEIHAO = value;
+                          break;
+                      }
+                    });
+                    kaoShengNewArr.push(ksObj);
                   });
-                  kaoShengNewArr.push(ksObj);
-                });
-                kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
-                $scope.loadingImgShow = false;
-                DataService.alertInfFun('suc', '上传成功！');
-              }
-              else{
-                $scope.loadingImgShow = false;
-                DataService.alertInfFun('err', result.error);
-              }
-            });
+                  kaoshi_data.shuju.KAOCHANG[selectKaoChangIdx].USERS = kaoShengNewArr;
+                  $scope.loadingImgShow = false;
+                  $scope.showAddStuBox = false;
+                  DataService.alertInfFun('suc', '上传成功！');
+                }
+                else{
+                  $scope.loadingImgShow = false;
+                  DataService.alertInfFun('err', result.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '你未选择任何Excel文件！');
+            }
           };
 
           /**
