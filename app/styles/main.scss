@@ -92,6 +92,10 @@ body {
 .h28{
   height: 28px;
 }
+.h300{
+  max-height: 300px;
+  overflow-y: auto;
+}
 .m0{
   margin: 0;
 }
@@ -2596,6 +2600,23 @@ label.checkbox{
   .advanced-set{
     a{
       margin-right: 15px;
+    }
+  }
+  .editKaoShi{
+    .table{
+      td{
+        padding: 0;
+        .checkbox{
+          padding: 0 5px;
+        }
+      }
+      .list-unstyled{
+        padding: 0 5px;
+        margin-bottom: 0;
+      }
+      p{
+        margin-bottom: 5px;
+      }
     }
   }
 }

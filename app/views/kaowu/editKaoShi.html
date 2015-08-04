@@ -52,44 +52,67 @@
       <div class="row">
         <h5 ng-show="studentsOrgData.length">
           <span>考生人数：{{studentsOrgData.length}}</span>
-          <a href="javascript:void(0)" class="ml15">查看名单</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="showKaoShengList()">查看名单</a>
         </h5>
         <table class="table table-bordered">
           <tr>
             <th>时间场次</th>
-            <th>考点</th>
-            <th>试卷</th>
+            <th>考点（已选：5）</th>
+            <th>试卷（已选：1）</th>
           </tr>
           <tr>
             <td>
-              20150630
+              <ul class="list-unstyled h300">
+                <li class="bdb mt10">
+                  <p class="fz16">20150804</p>
+                  <p class="fz14">
+                    2套试卷，50人
+                  </p>
+                </li>
+                <li class="bdb mt10">
+                  <p class="fz16">20150804</p>
+                  <p class="fz14">
+                    2套试卷，50人
+                  </p>
+                </li>
+              </ul>
             </td>
             <td>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">清华大学电教一
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">清华大学电教二
-                </label>
+              <div class="h300">
+                <div class="checkbox" ng-repeat="kcInfo in allKaoChangList">
+                  <label>
+                    <input type="checkbox" value="kcInfo.KID" ng-checked="kcInfo.ckd"> {{kcInfo.KMINGCHENG}}
+                  </label>
+                </div>
               </div>
             </td>
             <td>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">试卷一
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value="">试卷二
-                </label>
+              <div class="h300">
+                <div class="checkbox" ng-repeat="ks in papertListIds">
+                  <label>
+                    <input type="checkbox" value="ks.SHIJUAN_ID" ng-checked="ks.ckd"> {{ks.SHIJUANMINGCHENG}}
+                  </label>
+                </div>
               </div>
             </td>
           </tr>
         </table>
+        <div ng-if="showImportStuds==true">
+          <table class="table table-bordered">
+            <tr>
+              <th>姓名</th>
+              <th>学号</th>
+              <th>班级</th>
+              <th>课序号</th>
+            </tr>
+            <tr ng-repeat="stu in studentsOrgData">
+              <td ng-bind="stu.XINGMING"></td>
+              <td ng-bind="stu.YONGHUHAO"></td>
+              <td ng-bind="stu.BANJI"></td>
+              <td ng-bind="stu.KEXUHAO_MINGCHENG"></td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <!--非在线报名-->
