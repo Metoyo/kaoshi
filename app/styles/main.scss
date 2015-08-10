@@ -2617,6 +2617,15 @@ label.checkbox{
       p{
         margin-bottom: 5px;
       }
+      .addChangCiBtn{
+        padding: 2px 5px;
+        position: absolute;
+        right: 5px;
+        top: 6px;
+      }
+    }
+    .active {
+      color: #f60;
     }
   }
 }
