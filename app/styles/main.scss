@@ -2603,11 +2603,12 @@ label.checkbox{
     }
   }
   .editKaoShi{
-    .table{
+    .table-changci{
       td{
         padding: 0;
         .checkbox{
           padding: 0 5px;
+          margin-top: 5px;
         }
       }
       .list-unstyled{
@@ -2626,6 +2627,9 @@ label.checkbox{
     }
     .active {
       color: #f60;
+    }
+    .popup-percent-inner{
+      overflow-y: auto;
     }
   }
 }

@@ -64,6 +64,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var numPerPage = 10; //每页10条数据
           var kxhManageUrl = baseRzAPIUrl + 'kexuhao'; //课序号管理的url
           var chaXunStuBaseUrl = baseRzAPIUrl + 'query_student'; //查询机构下面的用户
+          var paperListOriginData; //试卷的原始的值
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -87,10 +88,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            *  查询试卷列表的函数
            */
           var qryShiJuanList = function(){
-            $scope.papertListIds = ''; //考试id列表
+            $scope.paperListIds = ''; //考试id列表
             $http.get(qryCxsjlbUrl).success(function(sjlb){
               if(sjlb.length){
-                $scope.papertListIds = sjlb;
+                paperListOriginData = sjlb;
               }
               else{
                 DataService.alertInfFun('err', '没有相关试卷信息！');
@@ -390,6 +391,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               $scope.onlineBaoMing = false; //在线报名
               $scope.unOnlineBaoMing = true; //非在线报名
             }
+            $scope.paperListIds = paperListOriginData.slice(0, 10);
           };
 
           /**
@@ -534,7 +536,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               XUZHI: '',
               SHIJUAN_ID: [],
               ZHUANGTAI: 0,
-              KAOCHANG:[]
+              KAOCHANG:[],
+              tempIdx: ''
             };
             $('.start-date').val('');
             $scope.showAddStuBox = true;
@@ -556,6 +559,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 $scope.changCiObj.KAISHISHIJIAN = kssj;
                 $scope.changCiObj.JIESHUSHIJIAN = DataService.formatDateZh(endDate);
                 $scope.kaoshiData.shuju.CHANGCI.push($scope.changCiObj);
+                //重新给场次命名
+                Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc, idx, lst){
+                  cc.tempIdx = idx;
+                  cc.KAOSHI_MINGCHENG = '场次' + parseInt(idx + 1);
+                });
               }
               else{
                 DataService.alertInfFun('pmt', '开始时间和考试时长不能为空！');
@@ -568,18 +576,22 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 显示场次详情
+           * 显示场次详情//
            */
           $scope.showChangCiInfo = function(cc, idx){
             $scope.selectChangCi = cc;
             $scope.selectChangCiIdx = idx;
             //重置所有的考场和试卷
-            Lazy($scope.allKaoChangList).each(function(kc){
-              kc.ckd = false;
-            });
-            Lazy($scope.papertListIds).each(function(sj){
-              sj.ckd = false;
-            });
+            if(cc.KAOCHANG && cc.KAOCHANG.length > 0){
+              Lazy($scope.allKaoChangList).each(function(kc){
+                kc.ckd = false;
+              });
+            }
+            if(cc.SHIJUAN_ID && cc.SHIJUAN_ID.length > 0){
+              Lazy(paperListOriginData).each(function(sj){
+                sj.ckd = false;
+              });
+            }
             //考场的反选
             Lazy(cc.KAOCHANG).each(function(cckc){
               Lazy($scope.allKaoChangList).each(function(kc){
@@ -590,12 +602,44 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             });
             //试卷的反选
             Lazy(cc.SHIJUAN_ID).each(function(ccsj){
-              Lazy($scope.papertListIds).each(function(sj){
+              Lazy(paperListOriginData).each(function(sj){
                 if(sj.SHIJUAN_ID == ccsj){
                   sj.ckd = true;
                 }
               });
             });
+            //排序把选中的放到最前面
+            $scope.allKaoChangList = Lazy($scope.allKaoChangList).sort(function(akc){return akc.ckd}).reverse().toArray();
+            paperListOriginData = Lazy(paperListOriginData).sortBy(function(asj){return asj.ckd}).reverse().toArray();
+            //不清空上一场考试的数据
+            if(!(cc.KAOCHANG && cc.KAOCHANG.length > 0)){
+              Lazy($scope.allKaoChangList).each(function(kc){
+                if(kc.ckd){
+                  var findIn = Lazy(cc.KAOCHANG).contains(kc.KID);
+                  if(!findIn){
+                    cc.KAOCHANG.push(kc.KID);
+                  }
+                }
+              });
+            }
+            if(!(cc.SHIJUAN_ID && cc.SHIJUAN_ID.length > 0)){
+              Lazy(paperListOriginData).each(function(sj){
+                if(sj.ckd){
+                  var findIn = Lazy(cc.SHIJUAN_ID).contains(sj.SHIJUAN_ID);
+                  if(!findIn){
+                    cc.SHIJUAN_ID.push(sj.SHIJUAN_ID);
+                  }
+                }
+              });
+            }
+            $scope.paperListIds = paperListOriginData.slice(0, 10);
+          };
+
+          /**
+           * 显示试卷个数
+           */
+          $scope.getMoreShiJuan = function(){
+            $scope.paperListIds = paperListOriginData.slice(0);
           };
 
           /**
@@ -622,7 +666,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           $scope.addShiJuanToCc = function(sj){
             var sjIds = [];
             sj.ckd = !sj.ckd;
-            Lazy($scope.papertListIds).each(function(asj){
+            Lazy($scope.paperListIds).each(function(asj){
               if(asj.ckd){
                 sjIds.push(asj.SHIJUAN_ID);
               }
@@ -702,7 +746,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //  sjlbIdArrRev = []; //反转试卷列表id
           //  $http.get(qryCxsjlbUrl).success(function(sjlb){
           //    if(sjlb.length){
-          //      $scope.papertListIds = sjlb;
+          //      $scope.paperListIds = sjlb;
           //      var sjlbIdArr; //试卷id列表数组
           //      totalPaperPage = Math.ceil(sjlb.length/itemNumPerPage); //试卷一共有多少页
           //      for(var i = 1; i <= totalPaperPage; i++){
