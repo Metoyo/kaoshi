@@ -2614,6 +2614,9 @@ label.checkbox{
       .list-unstyled{
         padding: 0 5px;
         margin-bottom: 0;
+        li{
+          position: relative;
+        }
       }
       p{
         margin-bottom: 5px;
@@ -2630,6 +2633,18 @@ label.checkbox{
     }
     .popup-percent-inner{
       overflow-y: auto;
+    }
+    .deleteChangCi{
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      z-index: 1;
+      color: #777;
+    }
+    .cursorPointer{
+      &:hover{
+        color: #f60;
+      }
     }
   }
 }
