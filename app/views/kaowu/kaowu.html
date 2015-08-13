@@ -19,13 +19,18 @@
     <div class="sub-nav fixed-top" ng-init="tabActive = 'ksgl'">
       <ul class="nav nav-tabs">
         <li ng-class="{active: tabActive == 'kcgl' }">
-          <a href="javascript:void(0)" ng-click="tabActive = 'kcgl';showKaoChangList()">
+          <a href="javascript:void(0)" ng-click="showKaoChangList()">
             考场管理
           </a>
         </li>
         <li ng-class="{active: tabActive == 'ksgl'}">
-          <a href="javascript:void(0)" ng-click="tabActive = 'ksgl';showKaoShiList('all')">
+          <a href="javascript:void(0)" ng-click="showKaoShiList('all')">
             考试管理
+          </a>
+        </li>
+        <li ng-class="{active: tabActive == 'anks'}">
+          <a href="javascript:void(0)" ng-click="addNewKaoShi()">
+            新建考试
           </a>
         </li>
       </ul>

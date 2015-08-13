@@ -20,7 +20,7 @@
       <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
       <div class="col-sm-2">
         <input type="text" name="ksTime" class="form-control" placeholder="时长" required maxlength="3"
-               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.shichang"
+               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
                onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
       </div>
       <div class="col-sm-4">
@@ -163,6 +163,14 @@
           </td>
         </tr>
       </table>
+    </div>
+    <!--考试须知-->
+    <div class="form-group">
+      <label class="col-sm-2 control-label">考试须知</label>
+      <div class="col-sm-6">
+        <textarea class="form-control" name="ksXuZhi" rows="5" placeholder="考试须知" ng-model="kaoshiData.shuju.XUZHI">
+        </textarea>
+      </div>
     </div>
     <!-- 考生错误信息展示结束 -->
     <div class="save-box">
