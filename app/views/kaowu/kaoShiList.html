@@ -1,19 +1,18 @@
 <div class="row">
   <!--<button type="button" class="btn btn-primary" ng-click="addNewKaoShi()">新增考试</button>-->
   <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'all' }"
-     ng-click="showKaoShiList('all')">全部考试</a> |
+     ng-click="showKaoShiZuList('all')">全部考试</a> |
   <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'done' }"
-     ng-click="showKaoShiList('done')">已完成考试</a> |
+     ng-click="showKaoShiZuList('done')">已完成考试</a> |
   <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'ing' }"
-     ng-click="showKaoShiList('ing')">未完成考试</a>
+     ng-click="showKaoShiZuList('ing')">未完成考试</a>
 </div>
 <table class="table table-bordered kaowu-table">
   <tr class="active">
     <th>考试组名称</th>
-    <!--<th width="180px">试卷</th>-->
-    <th width="200px">创建时间</th>
-    <!--<th width="80px">考试时长</th>-->
-    <!--<th width="120px">考场</th>-->
+    <th width="100px">报名方式</th>
+    <th width="80px">场次数</th>
+    <th width="100px">报考人数</th>
     <th width="100px">状态</th>
     <th width="200px">操作</th>
   </tr>
@@ -21,17 +20,9 @@
     <td>
       <a href="javascript:void(0)" ng-bind="ks.KAOSHIZU_NAME" ng-click="seeKaoShiDetail(ks)"></a>
     </td>
-    <!--<td>-->
-      <!--<p ng-repeat="sjmc in ks.SHIJUAN">-->
-        <!--{{'[' + letterArr[$index]+ ']' + sjmc.SHIJUAN_MINGCHENG}}-->
-      <!--</p>-->
-    <!--</td>-->
-    <td class="text-center" ng-bind="ks.CREATE_TIME | myLocalDateWithWeek">
-    </td>
-    <!--<td class="text-center" ng-bind="ks.SHICHANG + '分钟'">-->
-    <!--</td>-->
-    <!--<td class="text-center" ng-bind="ks.KAODIANKAOCHANG[0].KMINGCHENG">-->
-    <!--</td>-->
+    <td class="text-center" ng-bind="ks.BAOMINGFANGSHI==1 ? '非在线报名':'在线报名'"></td>
+    <td class="text-center" ng-bind="ks.CHANGCI_COUNT"></td>
+    <td class="text-center" ng-bind="ks.YIBAOMINGRENSHU + '/' + ks.ZONGRENSHU"></td>
     <td class="text-center" ng-bind="ks.ZHUANGTAI | examStatus">
     </td>
     <td class="text-center">
@@ -77,45 +68,30 @@
       <ul class="list-unstyled">
         <li>
           <p class="col-md-3">考试名称：</p>
-
-          <p class="col-md-9" ng-bind="kaoShiDetailData.KAOSHI_MINGCHENG"></p>
+          <p class="col-md-9" ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></p>
         </li>
-        <li>
-          <p class="col-md-3">试卷：</p>
-
-          <p class="col-md-9">
-            <span ng-repeat="sjmc in kaoShiDetailData.SHIJUAN" ng-bind="sjmc.SHIJUAN_MINGCHENG"></span>
-          </p>
-        </li>
-        <li>
-          <p class="col-md-3">开考时间：</p>
-
-          <p class="col-md-9" ng-bind="kaoShiDetailData.KAISHISHIJIAN | myLocalDateWithWeek"></p>
-        </li>
-        <li>
-          <p class="col-md-3">考试时长：</p>
-
-          <p class="col-md-9" ng-bind="kaoShiDetailData.SHICHANG + '分钟'"></p>
-        </li>
-        <li>
-          <p class="col-md-3">考场：</p>
-
-          <p class="col-md-9" ng-bind="kaoShiDetailData.KAODIANKAOCHANG[0].KMINGCHENG"></p>
-        </li>
+        <!--<li>-->
+          <!--<p class="col-md-3">开考时间：</p>-->
+          <!--<p class="col-md-9" ng-bind="kaoShiDetailData.CREATE_TIME | myLocalDateWithWeek"></p>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<p class="col-md-3">考试时长：</p>-->
+          <!--<p class="col-md-9" ng-bind="kaoShiDetailData.SHICHANG + '分钟'"></p>-->
+        <!--</li>-->
       </ul>
-      <h4>考生信息</h4>
+      <h4>场次信息</h4>
       <table class="table table-bordered kaowu-table">
         <tr class="active">
-          <th>学号</th>
-          <th>姓名</th>
-          <th>班级</th>
-          <th>试卷</th>
+          <th>场次</th>
+          <th>考试时间</th>
+          <th>时长</th>
+          <th>考点</th>
         </tr>
-        <tr ng-repeat="stu in kaoShiDetailData.KAODIANKAOCHANG[0].USERS">
-          <td>{{stu.YONGHUHAO}}</td>
-          <td>{{stu.XINGMING}}</td>
-          <td>{{stu.BANJI}}</td>
-          <td>{{stu.SHIJUAN_MINGCHENG}}</td>
+        <tr ng-repeat="cc in kaoShiDetailData.changci">
+          <td>{{cc.KAOSHI_MINGCHENG}}</td>
+          <td>{{cc.kaoShiShiJian}}</td>
+          <td>{{cc.SHICHANG}}</td>
+          <td>{{cc.KMINGCHENG}}</td>
         </tr>
       </table>
     </div>
