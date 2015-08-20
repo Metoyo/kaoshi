@@ -315,7 +315,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             edMinute = '0' + edMinute;
           }
           joinDate = bgYear + '-' + bgMonth + '-' + bgDay + ' ' + weekday[bgWeek] + ' ' + bgHour + ':' + bgMinute
-          + '——' + edHour + ':' + edMinute;
+          + '—' + edHour + ':' + edMinute;
           return joinDate;
         }
         else{

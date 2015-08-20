@@ -60,38 +60,49 @@
 <div class="popup-wrap" ng-show="kwParams.showKaoShiDetail">
   <div class="popup-wrap-inner no-footer">
     <div class="pwi-header plr10">
-      <button type="button" class="btn btn-danger pull-right mt5" ng-click="kwParams.showKaoShiDetail = false">
-        关闭
-      </button>
+      <span class="title" ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></span>
+      <div class="pull-right">
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">报考情况</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiDetailData.BAOMINGFANGSHI==2"
+          ng-click="queryBaoMingStu('no', kaoShiDetailData.KAOSHIZU_ID)">未报名考生</a>
+        <button type="button" class="btn btn-danger mt5" ng-click="kwParams.showKaoShiDetail = false">
+          关闭
+        </button>
+      </div>
     </div>
     <div class="pwi-body plr10">
-      <ul class="list-unstyled">
-        <li>
-          <p class="col-md-3">考试名称：</p>
-          <p class="col-md-9" ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></p>
-        </li>
-        <!--<li>-->
-          <!--<p class="col-md-3">开考时间：</p>-->
-          <!--<p class="col-md-9" ng-bind="kaoShiDetailData.CREATE_TIME | myLocalDateWithWeek"></p>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<p class="col-md-3">考试时长：</p>-->
-          <!--<p class="col-md-9" ng-bind="kaoShiDetailData.SHICHANG + '分钟'"></p>-->
-        <!--</li>-->
-      </ul>
-      <h4>场次信息</h4>
-      <table class="table table-bordered kaowu-table">
+      <!--场次的table-->
+      <table class="table table-bordered kaowu-table" ng-show="kaoChangListShow">
         <tr class="active">
           <th>场次</th>
           <th>考试时间</th>
           <th>时长</th>
           <th>考点</th>
+          <th>考生</th>
         </tr>
-        <tr ng-repeat="cc in kaoShiDetailData.changci">
-          <td>{{cc.KAOSHI_MINGCHENG}}</td>
-          <td>{{cc.kaoShiShiJian}}</td>
-          <td>{{cc.SHICHANG}}</td>
-          <td>{{cc.KMINGCHENG}}</td>
+        <tr class="cursorPointer" ng-repeat="cc in kaoShiDetailData.changci" ng-click="queryBaoMingStu('on', cc)">
+          <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+          <td ng-bind="cc.kaoShiShiJian"></td>
+          <td ng-bind="cc.SHICHANG"></td>
+          <td ng-bind="cc.KMINGCHENG"></td>
+          <td ng-bind="cc.YIBAOMINGRENSHU || 0 + '/' + cc.KAOWEISHULIANG"></td>
+        </tr>
+      </table>
+      <!--学生的table-->
+      <table class="table table-bordered kaowu-table" ng-hide="kaoChangListShow">
+        <tr class="active">
+          <th>姓名</th>
+          <th>学号</th>
+          <th>班级</th>
+          <th>操作</th>
+        </tr>
+        <tr class="cursorPointer" ng-repeat="ks in changCiKaoSheng">
+          <td ng-bind="ks.XINGMING"></td>
+          <td ng-bind="ks.YONGHUHAO"></td>
+          <td ng-bind="ks.BANJI"></td>
+          <td align="center">
+            <button type="button" class="btn btn-danger" ng-click="deleteKaoSheng(ks)">删除</button>
+          </td>
         </tr>
       </table>
     </div>
