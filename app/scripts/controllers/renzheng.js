@@ -198,12 +198,17 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         myUrl: 'chengji',
                         urlName: '成绩'
                       };
+                      var urlObj3 = {
+                        myUrl: 'weiluke',
+                        urlName: '录课'
+                      };
                       var findNongDa = JSON.parse(result[0].JIGOU);
                       var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
                       if(!findNongDaIn){
                         urlArr.push(urlObj2);
                       }
                       urlArr.push(urlObj1);
+                      urlArr.push(urlObj3);
                       $rootScope.urlArrs = urlArr;
                       //cookies代码
                       userCookie = {

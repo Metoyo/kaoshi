@@ -97,6 +97,11 @@ define( "config", [], function () {
         templateUrl: '../views/guanli/guanli.html',
         controller: 'GuanLiCtrl',
         requireLogin: true
+      },
+      '/weiluke': {
+        templateUrl: '../views/student/luke.html',
+        controller: 'StudentCtrl',
+        requireLogin: true
       }
     },
     quanxianObj: [ //得到角色是数组
@@ -147,6 +152,12 @@ define( "config", [], function () {
         targetUrl: '/guanli',
         navName : 'guanli',
         hanName: '管理'
+      },
+      {
+        qxArr: [],
+        targetUrl: '/weiluke',
+        navName : 'weiluke',
+        hanName: '微课'
       }
     ],
     tiXingNameArr: [

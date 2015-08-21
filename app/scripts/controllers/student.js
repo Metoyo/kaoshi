@@ -18,15 +18,15 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var baseBmAPIUrl = config.apiurl_bm; //报名的api
         var token = config.token;
         var queryKaoShiBase = baseBmAPIUrl + 'chaxun_baoming?token=' + token + '&jigouid=' + defaultJg +
-            '&xuehao=' + xuehao + '&baoming_id='; //查询考试考点
+          '&xuehao=' + xuehao + '&baoming_id='; //查询考试考点
         var saveStudentSelect = baseBmAPIUrl + 'modify_baoming_kaosheng'; //保存考生的报名选择
         var qryKaoDianRenShuBase = baseBmAPIUrl + 'query_kaodian_renshu?token=' + token; //查询次考场报了多少人
         var qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg +
-            '&xuehao=' + xuehao; //查询考生有几场考试
+          '&xuehao=' + xuehao; //查询考生有几场考试
         var qryKsDetailBase = baseBmAPIUrl + 'query_kaoshi_detail?token=' + token; //查询考试详情
         var currentPath = $location.$$path;
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + defaultJg
-           + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
+          + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
         var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
 
@@ -44,20 +44,20 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 查询考生有几场考试
          */
-        var chaXunBaoMingChangCi = function(){
-          DataService.getData(qryBmCcBase).then(function(data){
-            if(data && data.length){
+        var chaXunBaoMingChangCi = function () {
+          DataService.getData(qryBmCcBase).then(function (data) {
+            if (data && data.length) {
               var d = new Date();
               var nowTime = d.getTime();
-              Lazy(data).each(function(bmxx, idx, lst){
+              Lazy(data).each(function (bmxx, idx, lst) {
                 var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN);
                 var jzp = jz.getTimezoneOffset();
                 var jzTime = jz.getTime() + jzp * 60 * 1000;
                 bmxx.hasEndBaoMing = false;
-                if(nowTime > jzTime){
+                if (nowTime > jzTime) {
                   bmxx.hasEndBaoMing = true;
                 }
-                else{
+                else {
                   bmxx.hasEndBaoMing = false;
                 }
               });
@@ -69,15 +69,15 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 根据机构和学号查询报名信息
          */
-        $scope.chaXunBaoMing = function(ks){
-          var bmKs, bmKsArr = [],queryKaoShi;
+        $scope.chaXunBaoMing = function (ks) {
+          var bmKs, bmKsArr = [], queryKaoShi;
           queryKaoShi = queryKaoShiBase + ks.BAOMING_ID;
-          DataService.getData(queryKaoShi).then(function(data){
-            if(data && data.length){
-              bmKs = Lazy(data).groupBy(function(bm){
+          DataService.getData(queryKaoShi).then(function (data) {
+            if (data && data.length) {
+              bmKs = Lazy(data).groupBy(function (bm) {
                 return bm.KAISHISHIJIAN;
               }).toObject();
-              Lazy(bmKs).each(function(v, k, lst){
+              Lazy(bmKs).each(function (v, k, lst) {
                 var bmksObj = {
                   ksStart: '',
                   ksEnd: '',
@@ -88,18 +88,18 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 bmksObj.ksKc = v;
                 bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
                 bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
-                Lazy(bmksObj.ksKc).each(function(kc, idx, lst){
+                Lazy(bmksObj.ksKc).each(function (kc, idx, lst) {
                   kc.baomingjiezhishijian = ks.BAOMINGJIEZHISHIJIAN;
-                  if(kc.BAOMING_RENSHU >= 0){
+                  if (kc.BAOMING_RENSHU >= 0) {
                     var sywz = parseInt(kc.KAOWEI) - kc.BAOMING_RENSHU;
-                    if(sywz >= 0){
+                    if (sywz >= 0) {
                       kc.syKaoWei = sywz;
                     }
-                    else{
+                    else {
                       kc.syKaoWei = 0;
                     }
                   }
-                  else{
+                  else {
                     kc.syKaoWei = parseInt(kc.KAOWEI);
                   }
                 });
@@ -109,7 +109,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               $scope.stuParams.hasBaoMing = false;
               $scope.kaoShiDetail = '';
             }
-            else{
+            else {
               DataService.alertInfFun('err', '没有符合的数据！');
             }
           });
@@ -118,15 +118,15 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 获得选择的考点
          */
-        $scope.getSelectKd = function(val){
+        $scope.getSelectKd = function (val) {
           $scope.stuParams.selectKaoDian = val;
         };
 
         /**
          * 保存考生选择的确认信息
          */
-        $scope.saveStudentSelcet = function(){
-          if($scope.stuParams.selectKaoDian){
+        $scope.saveStudentSelcet = function () {
+          if ($scope.stuParams.selectKaoDian) {
             var kdInfo = $scope.stuParams.selectKaoDian;
             $scope.confirmInfo = {
               kaoshiName: '',
@@ -138,7 +138,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.confirmInfo.kaoshiName = kdInfo.KAOSHIMINGCHENG;
             $scope.showStuSelectInfo = true;
           }
-          else{
+          else {
             DataService.alertInfFun('pmt', '请选择考试场次！');
           }
         };
@@ -146,24 +146,24 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 保存考试选择信息
          */
-        $scope.saveStudentSelectFun = function(){
+        $scope.saveStudentSelectFun = function () {
           var kdInfo = $scope.stuParams.selectKaoDian;
           var kddData = {
-              token: token,
-              jigouid: defaultJg,
-              xuehao: xuehao,
-              baoming_id: kdInfo.BAOMING_ID,
-              baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
-              baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID,
-              baomingjiezhishijian: kdInfo.baomingjiezhishijian
+            token: token,
+            jigouid: defaultJg,
+            xuehao: xuehao,
+            baoming_id: kdInfo.BAOMING_ID,
+            baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
+            baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID,
+            baomingjiezhishijian: kdInfo.baomingjiezhishijian
           };
           var qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
           qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
           qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
-          DataService.getData(qryKaoDianRenShu).then(function(kdRenShu){
-            if(kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI){
-              $http.post(saveStudentSelect, kddData).success(function(data){
-                if(data.result){
+          DataService.getData(qryKaoDianRenShu).then(function (kdRenShu) {
+            if (kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI) {
+              $http.post(saveStudentSelect, kddData).success(function (data) {
+                if (data.result) {
                   $scope.bmKaoChang = '';
                   DataService.alertInfFun('suc', '保存成功！');
                   $scope.stuParams.hasBaoMing = true;
@@ -172,7 +172,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 }
               });
             }
-            else{
+            else {
               DataService.alertInfFun('pmt', '此时间段的本考场已没有空余考位，请重新选择！');
             }
           });
@@ -181,22 +181,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 关闭保存考生选择的弹出层
          */
-        $scope.colseSaveBaoMingSelect = function(){
+        $scope.colseSaveBaoMingSelect = function () {
           $scope.showStuSelectInfo = false;
         };
 
         /**
          * 查询考试详情
          */
-        $scope.qryKaoShiDetail = function(ks){
+        $scope.qryKaoShiDetail = function (ks) {
           $scope.kaoShiDetail = '';
           var qryKsDetail = qryKsDetailBase + '&baomingkaoshishijian_id=';
           qryKsDetail += ks.BAOMINGKAOSHISHIJIAN_ID;
           qryKsDetail += '&baomingkaodian_id=' + ks.BAOMINGKAODIAN_ID;
           qryKsDetail += '&baomingkaosheng_id=' + ks.BAOMINGKAOSHENG_ID;
-          DataService.getData(qryKsDetail).then(function(detail){
-            if(detail && detail.length){
-              Lazy(detail).each(function(ksd, idx, lst){
+          DataService.getData(qryKsDetail).then(function (detail) {
+            if (detail && detail.length) {
+              Lazy(detail).each(function (ksd, idx, lst) {
                 ksd.ksShijian = DataService.baoMingDateFormat(ksd.KAISHISHIJIAN, ksd.JIESHUSHIJIAN);
                 ksd.ksName = ks.KAOSHIMINGCHENG;
               });
@@ -209,11 +209,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 查询考试通过考生UID
          */
-        var qryKaoShiByXueHao = function(){
-          if(xuehao){
+        var qryKaoShiByXueHao = function () {
+          if (xuehao) {
             var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;
-            DataService.getData(qryKaoShiByXueHaoUrl).then(function(data) {
-              if(data && data.length > 0){
+            DataService.getData(qryKaoShiByXueHaoUrl).then(function (data) {
+              if (data && data.length > 0) {
                 $scope.ksScoreData = data;
               }
             });
@@ -221,9 +221,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 判断是报名还是成绩
+         * 判断是报名还是成绩//
          */
-        switch (currentPath){
+        switch (currentPath) {
           case '/baoming':
             chaXunBaoMingChangCi();
             break;
@@ -235,51 +235,53 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 作答重现
          */
-        $scope.zuoDaReappear = function(ks){
+        $scope.zuoDaReappear = function (ks) {
           var answerReappearUrl = answerReappearBaseUrl;
-          var  dataDis;
+          var dataDis;
           var tmVal;
           var finaData = {
-              sj_name: '',
-              sj_tm: []
-            };
+            sj_name: '',
+            sj_tm: []
+          };
           var studId = ks.KAOSHENG_UID;
           var examId = ks.KAOSHI_ID;
           var itemDeFenLv = '';
           $scope.kaoShengShiJuan = '';
-          if(studId){
+          if (studId) {
             answerReappearUrl += '&kaoshengid=' + studId;
           }
-          else{
+          else {
             DataService.alertInfFun('pmt', '缺少考生UID');
             return;
           }
-          if(examId){
+          if (examId) {
             answerReappearUrl += '&kaoshiid=' + examId;
           }
-          else{
+          else {
             DataService.alertInfFun('pmt', '缺少考试ID');
             return;
           }
-          DataService.getData(answerReappearUrl).then(function(data) {
-            if(data && data.length > 0){
+          DataService.getData(answerReappearUrl).then(function (data) {
+            if (data && data.length > 0) {
               var qryItemDeFenLvUrl = qryItemDeFenLvBase + examId;
-              if(examId){
-                DataService.getData(qryItemDeFenLvUrl).then(function(dfl) {
-                  if(dfl && dfl.length > 0) {
+              if (examId) {
+                DataService.getData(qryItemDeFenLvUrl).then(function (dfl) {
+                  if (dfl && dfl.length > 0) {
                     itemDeFenLv = dfl;
                     finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
                     dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
-                    Lazy(dataDis).each(function(val, key, list){
+                    Lazy(dataDis).each(function (val, key, list) {
                       var dObj = {
                         tx_id: key,
                         tx_name: val[0].DATIMINGCHENG,
                         tm: ''
                       };
-                      tmVal = Lazy(val).each(function(tm, idx, lst){
-                        var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
+                      tmVal = Lazy(val).each(function (tm, idx, lst) {
+                        var findVal = Lazy(itemDeFenLv).find(function (item) {
+                          return item.TIMU_ID == tm.TIMU_ID
+                        });
                         tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-                        if(typeof(tm.TIGAN) == 'string'){
+                        if (typeof(tm.TIGAN) == 'string') {
                           tm.TIGAN = JSON.parse(tm.TIGAN);
                         }
                         DataService.formatDaAn(tm);
@@ -291,7 +293,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   }
                 });
               }
-              else{
+              else {
                 itemDeFenLv = '';
                 DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
               }
@@ -302,9 +304,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 重新加载mathjax
          */
-        $scope.$on('onRepeatLast', function(scope, element, attrs){
+        $scope.$on('onRepeatLast', function (scope, element, attrs) {
           MathJax.Hub.Config({
-            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$', '$$#']]},
             messageStyle: "none",
             showMathMenu: false,
             processEscapes: true

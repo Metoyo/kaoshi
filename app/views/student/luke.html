@@ -1,0 +1,45 @@
+<div class="studentWrapper">
+  <div class="tab-content wp80 mt50 ml50">
+    <div class="row">
+      微录课
+      <script src="http://static.polyv.net/file/polyvplayer_v2.0.min.js"></script>
+      <div id="plvst"></div>
+      <script>
+        var player = polyvObject('#plvst').videoPlayer({
+          'width': '708',
+          'height': '490',
+          'vid': 'e5dbd8de8ab9b2bb275113a4eee09c52_e'
+        });
+      </script>
+      <span id="stayInVideoTime">当前观看时间是 0 秒</span><br>
+      <span id="getCurrentTime">当前播放进度是 0 秒</span><br>
+      <span id="flow">当前流量: 0 字节 | 0 KB</span><br>
+      <span id="duration">当前视频的时长是 0 秒</span><br>
+
+      <input type="button" onclick="player.j2s_resumeVideo()" value="播放">
+      <input type="button" onclick="player.j2s_pauseVideo()" value="暂停">
+      <input type="button" onclick="player.j2s_seekVideo(30)" value="seek到第30秒">
+      <input type="button" onclick="player.j2s_stopVideo()" value="停止">
+      <input type="button" onclick="nextVideo()" value="切换到下一个视频"><br>
+
+      <script type="text/javascript">
+        function nextVideo() {
+          player.changeVid("d81a899efac42201bcbf4ce9098ad9d8_d");
+        }
+
+        function render() {
+          var sec1 = player.j2s_stayInVideoTime();
+          var sec2 = player.j2s_getCurrentTime();
+          var sec3 = player.j2s_getDuration();
+          var byte = player.j2s_getFlowCount();
+          document.getElementById("stayInVideoTime").innerHTML = "当前观看时间是 <span style='color:#ff0000;'>" + sec1 + "</span> 秒";
+          document.getElementById("getCurrentTime").innerHTML = "当前播放进度是 <span style='color:#ff0000;'>" + sec2 + "</span> 秒";
+          document.getElementById("duration").innerHTML = "当前视频的时长是 <span style='color:#ff0000;'>" + sec3 + "</span> 秒";
+          document.getElementById("flow").innerHTML = "当前流量: <span style='color:#ff0000;'>" + byte + "</span> 字节 | <span style='color:#ff0000;'>" + byte / 1024 + "</span> KB";
+        }
+        var interval = setInterval("render()", 500);
+      </script>
+
+    </div>
+  </div>
+</div>
