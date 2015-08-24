@@ -63,57 +63,44 @@
       <div class="pwi-body plr10">
         <table class="table changePsw">
           <tr>
+            <td>系统账号</td>
+            <td ng-bind="usr.YONGHUMING"></td>
+          </tr>
+          <tr>
+            <td>真实姓名</td>
+            <td ng-bind="usr.XINGMING"></td>
+          </tr>
+          <tr>
+            <td>邮箱</td>
+            <td ng-bind="usr.YOUXIANG"></td>
+          </tr>
+          <tr>
+            <td>手机</td>
+            <td ng-bind="usr.SHOUJI"></td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 20px">单位</td>
+            <td ng-bind="usr.JIGOUMINGCHENG"></td>
+          </tr>
+          <tr>
+            <td>个人简介</td>
             <td>
-              系统账号
-            </td>
-            <td>
-              {{usr.YONGHUMING}}
+              <div ng-init="showGeRenJianLi=false">
+                <a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>
+                <a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>
+              </div>
+              <div ng-show="showGeRenJianLi">
+                <textarea cols="30" rows="5" class="form-control" ng-model="usr.GERENJIANLI"></textarea>
+                <button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>
+              </div>
             </td>
           </tr>
           <tr>
-            <td>
-              真实姓名
-            </td>
-            <td>
-              {{usr.XINGMING}}
-            </td>
+            <th>修改密码</th>
+            <th></th>
           </tr>
           <tr>
-            <td>
-              邮箱
-            </td>
-            <td>
-              {{usr.YOUXIANG}}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              手机
-            </td>
-            <td>
-              {{usr.SHOUJI}}
-            </td>
-          </tr>
-          <tr>
-            <td style="padding-bottom: 20px">
-              单位
-            </td>
-            <td>
-              {{usr.JIGOUMINGCHENG}}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              修改密码
-            </th>
-            <th>
-
-            </th>
-          </tr>
-          <tr>
-            <td style="padding-bottom: 20px">
-              新密码
-            </td>
+            <td style="padding-bottom: 20px">新密码</td>
             <td>
               <input type="text" class="newPassWord" ng-model="navData.newPsd">
               <button type="button" class="btn btn-primary" ng-click="modifyPassWord()"
@@ -122,30 +109,18 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2" class="modifuMiMaInfo clRed">
-
-            </td>
+            <td colspan="2" class="modifuMiMaInfo clRed"></td>
           </tr>
           <tr>
-            <th>
-              科目
-            </th>
-            <th>
-              职务
-            </th>
+            <th>科目</th>
+            <th>职务</th>
           </tr>
           <tr ng-repeat="ly in usr.LINGYU">
-            <td>
-              {{ly.LINGYUMINGCHENG}}
-            </td>
-            <td>
-              {{ly.jueseStr}}
-            </td>
+            <td ng-bind="ly.LINGYUMINGCHENG"></td>
+            <td ng-bind="ly.jueseStr"></td>
           </tr>
           <tr>
-            <th>
-              添加学科领域
-            </th>
+            <th>添加学科领域</th>
             <th>
               <button type="button" class="btn btn-primary pull-right" ng-click="saveNewLingYu()">
                 保存新增学科领域
@@ -153,9 +128,7 @@
             </th>
           </tr>
           <tr>
-            <td>
-              选择领域
-            </td>
+            <td>选择领域</td>
             <td>
               <select class="form-control myField" ng-model="navData.select_ly"
                       ng-change="getKemuList(navData.select_ly)"

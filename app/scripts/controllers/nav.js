@@ -7,16 +7,15 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         /**
          * 定义变量
          */
-        var baseRzAPIUrl = config.apiurl_rz, //renzheng的api
-          token = config.token,
-          currentPath = $location.$$path,
-          alterYongHu = baseRzAPIUrl + 'xiugai_yonghu',
-          apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + config.token + '&jigouid=', //lingYu 学科领域的api
-          apiLyKm = baseRzAPIUrl + 'lingYu?token=' + config.token + '&parentid=', //由lingYu id 的具体的学科
-          apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + config.token, //jueSe 查询科目权限的数据的api
-          xgyhUrl = baseRzAPIUrl + 'xiugai_yonghu', //修改用户的url
-          objAndRightList = [], //已经选择的科目和单位
-          userInfo;
+        var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
+        var token = config.token;
+        var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
+        var apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + config.token + '&jigouid='; //lingYu 学科领域的api
+        var apiLyKm = baseRzAPIUrl + 'lingYu?token=' + config.token + '&parentid='; //由lingYu id 的具体的学科
+        var apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + config.token; //jueSe 查询科目权限的数据的api
+        var objAndRightList = []; //已经选择的科目和单位
+        var userInfo;
+        var selectedLingYuIndex;
 
         $scope.userInfoLayer = false;
         $scope.navData = {
@@ -36,10 +35,10 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         /**
          * 显示个人详情
          */
-        $rootScope.showUserInfo = function(){
-          var user = {},
-            jueseDist,
-            yhxxxxApiUrl = baseRzAPIUrl + 'yonghu_xiangxi_xinxi?token=' + token + '&yonghuid=' +
+        $scope.showUserInfo = function(){
+          var user = {};
+          var jueseDist;
+          var yhxxxxApiUrl = baseRzAPIUrl + 'yonghu_xiangxi_xinxi?token=' + token + '&yonghuid=' +
               $rootScope.session.info.UID; //通过UID查询用户详细的url
           userInfo = $rootScope.session.userInfo;
           $http.get(yhxxxxApiUrl).success(function(data){
@@ -66,6 +65,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
               user.SHOUJI = data.SHOUJI;
               user.JIGOUMINGCHENG = data.JIGOU[0].JIGOUMINGCHENG;
               user.SHOUJI = data.SHOUJI;
+              user.GERENJIANLI = data.GERENJIANLI;
               $('.modifuMiMaInfo').html('');
               //查询领域，去取已有领域;查询父领域的代码
               $http.get(apiUrlLy + data.JIGOU[0].JIGOU_ID).success(function(jgData) {
@@ -146,7 +146,6 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         /**
          * 获得领域lingyu（选择科目）的值
          */
-        var selectedLingYuIndex;
         $scope.getLingYuVal = function(idx){
           selectedLingYuIndex = '';
           selectedLingYuIndex = idx;
@@ -181,8 +180,8 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
          * 保存新增加的领域
          */
         $scope.saveNewLingYu = function(){
-          var select_juese = [],
-            newLingYuDate = {
+          var select_juese = [];
+          var newLingYuDate = {
               token: token,
               UID: userInfo.UID,
               JUESE: ''
@@ -252,6 +251,28 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.reloadModule = function(targUrl){
           if($location.$$url == targUrl){
             $location.path($location.$$absUrl);
+          }
+        };
+
+        /**
+         * 个人简历修改
+         */
+        $scope.saveGenRenJianLi = function(){
+          var newGrjlDate = {
+            token: token,
+            UID: userInfo.UID,
+            GERENJIANLI: ''
+          };
+          if($scope.usr.GERENJIANLI){
+            newGrjlDate.GERENJIANLI = $scope.usr.GERENJIANLI;
+            $http.post(alterYongHu, newGrjlDate).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '个人简历修改成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
           }
         };
 
