@@ -11,9 +11,10 @@ require.config({
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     setJs: '../../bower_components/markitup/set.min',
-    mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
+    mathjax: '../../bower_components/markitup/MathJax',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    lazy: '../../bower_components/lazy.js/lazy'
+    lazy: '../../bower_components/lazy.js/lazy',
+    polyv: 'http://static.polyv.net/file/polyvplayer_v2.0.min'
   },
   shim: {
     angular: {
@@ -60,6 +61,9 @@ require.config({
     },
     lazy: {
       exports: 'lazy'
+    },
+    polyv: {
+      exports: 'polyv'
     }
   },
   priority: [

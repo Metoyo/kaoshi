@@ -1,9 +1,9 @@
-define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
+define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, config, $, lazy, polyv) {
   'use strict';
 
   angular.module('kaoshiApp.controllers.StudentCtrl', [])
-    .controller('StudentCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService',
-      function ($rootScope, $scope, $location, $http, DataService) {
+    .controller('StudentCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService', '$timeout',
+      function ($rootScope, $scope, $location, $http, DataService, $timeout) {
         /**
          * 定义变量
          */
@@ -29,6 +29,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
         var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
+        var nowUrl = $location.$$path;
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -298,6 +299,38 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
               }
             }
+          });
+        };
+
+        /**
+         * 当为微录课是加载视频列表
+         */
+        var loadVideoList = function(){
+          $scope.videoData = '';
+          if(nowUrl == '/weiluke'){
+            $scope.videoData = config.videos;
+            //var getVideoUrl = 'http://v.yunjiaoshou.com:4280/wlk/videos/1180';
+            //$http.get(getVideoUrl).success(function(data){
+            //  if(data && data.length > 0){
+            //    $scope.videoData = data;
+            //  }
+            //  else{
+            //    DataService.alertInfFun('err', data.error);
+            //  }
+            //});
+          }
+        };
+        loadVideoList();
+        /**
+         * 显示视频
+         */
+        $scope.showVideo = function(bid){
+          var player = polyvObject('#videoBox').videoPlayer({
+            'width':'708',
+            'height':'490',
+            //'vid' : '02bfeb00e2ba940698c54cdf517aa9b6_0',
+            'vid' : bid,
+            'flashvars': {"autoplay": "1"}
           });
         };
 

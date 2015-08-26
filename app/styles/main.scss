@@ -2934,6 +2934,66 @@ label.checkbox{
       text-align: center;
     }
   }
+  .media-body, .media-left, .media-right {
+    display: table-cell;
+    vertical-align: top;
+    position: relative;
+  }
+  .media-left, .media>.pull-left {
+    padding-right: 10px;
+  }
+  .videoList {
+    width: 86%;
+    margin-left: 40px;
+    margin-top: 10px;
+    .media {
+      width: 48%;
+      display: inline-table;
+      margin-left: 1%;
+      .media-left {
+        width: 160px;
+        .media-left-a {
+          display: block;
+          padding: 1px;
+          border: 1px solid #7f7f7f;
+        }
+        .shiChang {
+          position: absolute;
+          right: 15px;
+          bottom: 2px;
+          color: #888;
+        }
+        .playIcon{
+          position: absolute;
+          left: 50%;
+          margin-left: -28px;
+          top: 50%;
+          margin-top: -24px;
+        }
+      }
+      .media-body {
+        position: relative;
+        left: 0;
+        .videoInfo {
+          position: absolute;
+          bottom: 0;
+          p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #888;
+          }
+        }
+        .videoName{
+          color: #222;
+          &:hover{
+            color: #e73c31;
+            text-decoration: none;
+          }
+        }
+      }
+
+    }
+  }
 }
 /* -------------------------------------------------------------------
 // markItUp! Universal MarkUp Engine, JQuery plugin
