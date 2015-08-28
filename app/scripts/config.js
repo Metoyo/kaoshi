@@ -238,7 +238,7 @@ define( "config", [], function () {
   "State":0
 },
 {
-  "Owner":3205,
+  "Owner":3206,
   "OwnerName":"尼古拉特斯拉",
   "VideoDesc":"",
   "VideoFile":"20150706151137.wmv",
@@ -255,7 +255,7 @@ define( "config", [], function () {
   "State":0
 },
 {
-  "Owner":3205,
+  "Owner":3206,
   "OwnerName":"尼古拉特斯拉",
   "VideoDesc":"",
   "VideoFile":"20150820163752.wmv",
@@ -272,7 +272,7 @@ define( "config", [], function () {
   "State":0
 },
 {
-  "Owner":3205,
+  "Owner":3206,
   "OwnerName":"尼古拉特斯拉",
   "VideoDesc":"",
   "VideoFile":"20150706143539.wmv",

@@ -114,6 +114,9 @@ body {
 .mt50 {
   margin-top: 50px;
 }
+.mt65 {
+  margin-top: 65px;
+}
 .mb10{
   margin-bottom: 10px;
 }
@@ -159,6 +162,9 @@ body {
 .plr10{
   padding: 0 10px;
 }
+.plr15{
+  padding: 0 15px;
+}
 .ptb5{
   padding: 5px 0;
 }
@@ -196,6 +202,9 @@ body {
 }
 .cYell{
   color: #f60;
+}
+.cWhite{
+  color: #fff;
 }
 .bgcFFF{
   background-color: #fff;
@@ -2942,10 +2951,15 @@ label.checkbox{
   .media-left, .media>.pull-left {
     padding-right: 10px;
   }
+  .shiChang {
+    position: absolute;
+    right: 15px;
+    bottom: 2px;
+    color: #888;
+  }
   .videoList {
     width: 86%;
     margin-left: 40px;
-    margin-top: 10px;
     .media {
       width: 48%;
       display: inline-table;
@@ -2957,12 +2971,6 @@ label.checkbox{
           padding: 1px;
           border: 1px solid #7f7f7f;
         }
-        .shiChang {
-          position: absolute;
-          right: 15px;
-          bottom: 2px;
-          color: #888;
-        }
         .playIcon{
           position: absolute;
           left: 50%;
@@ -2972,8 +2980,6 @@ label.checkbox{
         }
       }
       .media-body {
-        position: relative;
-        left: 0;
         .videoInfo {
           position: absolute;
           bottom: 0;
@@ -2993,6 +2999,47 @@ label.checkbox{
       }
 
     }
+  }
+  .xgspTitle{
+    color: #fff;
+    background: #424242;
+    border-bottom: 1px solid #888;
+    margin: 0;
+    padding: 10px;
+  }
+  .sideVideoList{
+    font-size: 12px;
+    line-height: 18px;
+    color: #ccc;
+    overflow-y: auto;
+    p{
+      margin-bottom: 0;
+    }
+    a{
+      color: #ccc;
+      font-size: 12px;
+    }
+    .media{
+      background: #555;
+      padding: 3px;
+      margin-top: 10px;
+      cursor: pointer;
+      &:hover{
+        background: #777;
+        .videoName{
+          color: #fff;
+          text-decoration: none;
+        }
+      }
+    }
+
+  }
+  .fixed-top{
+    left: 80px;
+  }
+  .videoPlayBox{
+    background: #2d2d2d;
+    border-left: 1px solid #2d2d2d;
   }
 }
 /* -------------------------------------------------------------------

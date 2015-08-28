@@ -29,14 +29,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
         var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
-        var nowUrl = $location.$$path;
+        var originVideoData; //原始视频
+        var itemsPerPage = 8; //每页数据数量
+        var videoPageArr = []; // 视频页码数组
+        var paginationLength = 11; //分页部分，页码的长度，目前设定为11
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
           selectKaoDian: '',
           hasBaoMing: true,
           letterArr: config.letterArr, //题支的序号
-          cnNumArr: config.cnNumArr //汉语的大写数字
+          cnNumArr: config.cnNumArr, //汉语的大写数字
+          noData: '' //没有数据的显示
         };
         $scope.kaoShiArrs = '';
         $scope.kaoShiDetail = '';
@@ -46,8 +50,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          * 查询考生有几场考试
          */
         var chaXunBaoMingChangCi = function () {
-          DataService.getData(qryBmCcBase).then(function (data) {
-            if (data && data.length) {
+          $http.get(qryBmCcBase).success(function (data) {
+            if (data && data.length > 0) {
               var d = new Date();
               var nowTime = d.getTime();
               Lazy(data).each(function (bmxx, idx, lst) {
@@ -64,7 +68,37 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               });
               $scope.kaoShiArrs = data;
             }
+            if(data.error){
+              DataService.alertInfFun('err', data.error);
+            }
           });
+          //var newData = [
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试A',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  },
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试B',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  },
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试C',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  },
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试D',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  },
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试E',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  },
+          //  {
+          //    KAOSHIMINGCHENG: '2015年期中考试F',
+          //    ZUOWEIHAO: 'A考点20号机'
+          //  }
+          //];
+          //$scope.kaoShiArrs = newData;
         };
 
         /**
@@ -73,8 +107,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         $scope.chaXunBaoMing = function (ks) {
           var bmKs, bmKsArr = [], queryKaoShi;
           queryKaoShi = queryKaoShiBase + ks.BAOMING_ID;
-          DataService.getData(queryKaoShi).then(function (data) {
-            if (data && data.length) {
+          $http.get(queryKaoShi).success(function (data) {
+            if (data && data.length > 0) {
               bmKs = Lazy(data).groupBy(function (bm) {
                 return bm.KAISHISHIJIAN;
               }).toObject();
@@ -110,8 +144,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               $scope.stuParams.hasBaoMing = false;
               $scope.kaoShiDetail = '';
             }
-            else {
-              DataService.alertInfFun('err', '没有符合的数据！');
+            else{
+              DataService.alertInfFun('err', data.error);
             }
           });
         };
@@ -213,25 +247,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var qryKaoShiByXueHao = function () {
           if (xuehao) {
             var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;
-            DataService.getData(qryKaoShiByXueHaoUrl).then(function (data) {
+            $http.get(qryKaoShiByXueHaoUrl).success(function (data) {
               if (data && data.length > 0) {
                 $scope.ksScoreData = data;
+              }
+              if(data.error){
+                DataService.alertInfFun('err', data.error);
               }
             });
           }
         };
-
-        /**
-         * 判断是报名还是成绩//
-         */
-        switch (currentPath) {
-          case '/baoming':
-            chaXunBaoMingChangCi();
-            break;
-          case '/chengji':
-            qryKaoShiByXueHao();
-            break;
-        }
 
         /**
          * 作答重现
@@ -307,31 +332,127 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          */
         var loadVideoList = function(){
           $scope.videoData = '';
-          if(nowUrl == '/weiluke'){
-            $scope.videoData = config.videos;
-            //var getVideoUrl = 'http://v.yunjiaoshou.com:4280/wlk/videos/1180';
-            //$http.get(getVideoUrl).success(function(data){
-            //  if(data && data.length > 0){
-            //    $scope.videoData = data;
-            //  }
-            //  else{
-            //    DataService.alertInfFun('err', data.error);
-            //  }
-            //});
+          $scope.videoData = config.videos;
+          var lastVideoPage = '';
+          var videoLen = '';
+          $scope.videoLastPage = '';
+          $scope.showVideodeoPlay = false;
+          videoPageArr = [];
+          $scope.selectVideo = '';
+          //临时数据
+          var data = config.videos;
+          if(data && data.length > 0){
+            originVideoData = data;
+            videoLen = data.length;
+            lastVideoPage = Math.ceil(videoLen/itemsPerPage);
+            $scope.videoLastPage = lastVideoPage;
+            for(var i = 1; i <= lastVideoPage; i ++){
+              videoPageArr.push(i);
+            }
+            if(videoLen <= 8){
+              $scope.videoData = data;
+            }
+            else{
+              $scope.videoDistFun(1);
+            }
           }
+          else{
+            originVideoData = '';
+            DataService.alertInfFun('err', data.error);
+          }
+          //var getVideoUrl = 'http://v.yunjiaoshou.com:4280/wlk/videos/1180';
+          //$http.get(getVideoUrl).success(function(data){
+          //  if(data && data.length > 0){
+          //    originVideoData = data;
+          //    videoLen = data.length;
+          //    lastVideoPage = Math.ceil(videoLen/itemsPerPage);
+          //    $scope.videoLastPage = lastVideoPage;
+          //    for(var i = 1; i <= lastVideoPage; i ++){
+          //      videoPageArr.push(i);
+          //    }
+          //    if(videoLen <= 8){
+          //      $scope.videoData = data;
+          //    }
+          //    else{
+          //      $scope.videoDistFun(1);
+          //    }
+          //  }
+          //  else{
+          //    originVideoData = '';
+          //    DataService.alertInfFun('err', data.error);
+          //  }
+          //});
         };
-        loadVideoList();
+
+        /**
+         * 视频分页
+         */
+        $scope.videoDistFun = function(pg){
+          var pgNum = pg - 1;
+          var currentPage = pgNum ? pgNum : 0;
+          $scope.videoPages = [];
+          //得到分页数组的代码
+          var currentVideoPage = $scope.currentVideoPage = pg ? pg : 1;
+          if($scope.videoLastPage <= paginationLength){
+            $scope.videoPages = videoPageArr;
+          }
+          if($scope.videoLastPage > paginationLength){
+            if(currentVideoPage > 0 && currentVideoPage <= 6 ){
+              $scope.videoPages = videoPageArr.slice(0, paginationLength);
+            }
+            else if(currentVideoPage > $scope.videoLastPage - 5 && currentVideoPage <= $scope.videoLastPage){
+              $scope.videoPages = videoPageArr.slice($scope.videoLastPage - paginationLength);
+            }
+            else{
+              $scope.videoPages = videoPageArr.slice(currentVideoPage - 5, currentVideoPage + 5);
+            }
+          }
+          $scope.videoData = originVideoData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+        };
+
+        /**
+         * 判断是报名还是成绩
+         */
+        switch (currentPath) {
+          case '/baoming':
+            chaXunBaoMingChangCi();
+            break;
+          case '/chengji':
+            qryKaoShiByXueHao();
+            break;
+          case '/weiluke':
+            loadVideoList();
+            break;
+        }
+
         /**
          * 显示视频
          */
-        $scope.showVideo = function(bid){
+        $scope.showVideo = function(vd){
+          $scope.showVideodeoPlay = true;
+          var wd = $('.sub-nav').width();
+          var playH = wd * 0.7 * 0.6;
+          $scope.relatedVideoData = [];
+          $('.sideVideoList').height(playH - 36);
+          Lazy(originVideoData).each(function(v){
+            if(v.Owner == vd.Owner){
+              $scope.relatedVideoData.push(v);
+            }
+          });
           var player = polyvObject('#videoBox').videoPlayer({
-            'width':'708',
-            'height':'490',
-            //'vid' : '02bfeb00e2ba940698c54cdf517aa9b6_0',
-            'vid' : bid,
+            'width': '100%',
+            'height': playH,
+            'vid': vd.VID,
             'flashvars': {"autoplay": "1"}
           });
+          $scope.selectVideo = vd;
+        };
+
+        /**
+         * 返回视频列表
+         */
+        $scope.backToVideoList = function(){
+          $scope.showVideodeoPlay = false;
         };
 
         /**

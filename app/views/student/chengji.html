@@ -1,16 +1,21 @@
 <div class="studentWrapper">
-  <div class="tab-content wp80 mt50 ml50">
+  <h2 class="loading-box" ng-hide="ksScoreData.length">暂无数据</h2>
+  <div class="sub-nav fixed-top">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="javascript:void(0)">
+          考试成绩
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content wp80 mt65 ml50">
     <div class="row">
-      <table class="table table-bordered baoMingTable">
-        <tr>
-          <th>考试名称</th>
-          <th>得分</th>
-          <th>操作</th>
-        </tr>
+      <table class="table table-striped">
         <tr ng-repeat="ks in ksScoreData">
           <td ng-bind="ks.KAOSHI_MINGCHENG"></td>
           <td ng-bind="ks.ZUIHOU_PINGFEN"></td>
-          <td>
+          <td width="80px">
             <a href="javascript:void(0)" ng-click="zuoDaReappear(ks)">作答重现</a>
           </td>
         </tr>
