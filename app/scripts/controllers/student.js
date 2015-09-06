@@ -13,17 +13,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          */
         var userInfo = $rootScope.session.userInfo;
         var defaultJg = userInfo.JIGOU;
+        var caozuoyuan = userInfo.UID;//登录的用户的UID   chaxun_kaoshi_liebiao
         var xuehao = userInfo.xuehao;
         var baseTjAPIUrl = config.apiurl_tj; //统计的api
-        var baseBmAPIUrl = config.apiurl_bm; //报名的api
+        var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var token = config.token;
-        var queryKaoShiBase = baseBmAPIUrl + 'chaxun_baoming?token=' + token + '&jigouid=' + defaultJg +
-          '&xuehao=' + xuehao + '&baoming_id='; //查询考试考点
-        var saveStudentSelect = baseBmAPIUrl + 'modify_baoming_kaosheng'; //保存考生的报名选择
-        var qryKaoDianRenShuBase = baseBmAPIUrl + 'query_kaodian_renshu?token=' + token; //查询次考场报了多少人
-        var qryBmCcBase = baseBmAPIUrl + 'query_baoming_changci?token=' + token + '&jigouid=' + defaultJg +
-          '&xuehao=' + xuehao; //查询考生有几场考试
-        var qryKsDetailBase = baseBmAPIUrl + 'query_kaoshi_detail?token=' + token; //查询考试详情
         var currentPath = $location.$$path;
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + defaultJg
           + '&userType=' + 'student' + '&xuehao='; //查询考试通过考生学号
@@ -33,6 +27,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var itemsPerPage = 8; //每页数据数量
         var videoPageArr = []; // 视频页码数组
         var paginationLength = 11; //分页部分，页码的长度，目前设定为11
+        var queryBaoMingKaoShiUrl = baseKwAPIUrl + 'query_baoming_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
+          '&jigouid=' + defaultJg + '&uid=' + caozuoyuan; //查询考生需要参加的考试
+        var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询场次
+        var zaiXianBaoMingUrl = baseKwAPIUrl + 'zaixianbaoming'; //在线报名的url
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -50,195 +48,155 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          * 查询考生有几场考试
          */
         var chaXunBaoMingChangCi = function () {
-          $http.get(qryBmCcBase).success(function (data) {
+          $scope.kaoShiArrs = '';
+          var kaoShiZu = [];
+          $scope.kaoShiChangCiDetail = false;
+          $http.get(queryBaoMingKaoShiUrl).success(function (data) {
             if (data && data.length > 0) {
-              var d = new Date();
-              var nowTime = d.getTime();
-              Lazy(data).each(function (bmxx, idx, lst) {
-                var jz = new Date(bmxx.BAOMINGJIEZHISHIJIAN);
-                var jzp = jz.getTimezoneOffset();
-                var jzTime = jz.getTime() + jzp * 60 * 1000;
-                bmxx.hasEndBaoMing = false;
-                if (nowTime > jzTime) {
-                  bmxx.hasEndBaoMing = true;
-                }
-                else {
-                  bmxx.hasEndBaoMing = false;
-                }
-              });
-              $scope.kaoShiArrs = data;
-            }
-            if(data.error){
-              DataService.alertInfFun('err', data.error);
-            }
-          });
-          //var newData = [
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试A',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  },
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试B',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  },
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试C',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  },
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试D',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  },
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试E',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  },
-          //  {
-          //    KAOSHIMINGCHENG: '2015年期中考试F',
-          //    ZUOWEIHAO: 'A考点20号机'
-          //  }
-          //];
-          //$scope.kaoShiArrs = newData;
-        };
-
-        /**
-         * 根据机构和学号查询报名信息
-         */
-        $scope.chaXunBaoMing = function (ks) {
-          var bmKs, bmKsArr = [], queryKaoShi;
-          queryKaoShi = queryKaoShiBase + ks.BAOMING_ID;
-          $http.get(queryKaoShi).success(function (data) {
-            if (data && data.length > 0) {
-              bmKs = Lazy(data).groupBy(function (bm) {
-                return bm.KAISHISHIJIAN;
-              }).toObject();
-              Lazy(bmKs).each(function (v, k, lst) {
-                var bmksObj = {
-                  ksStart: '',
-                  ksEnd: '',
-                  ksShiJian: '',
-                  ksKc: ''
+              var kszSort = Lazy(data).groupBy(function(ksz){ return ksz.KAOSHIZU_ID; });
+              Lazy(kszSort).each(function(v, k, l){
+                var kszObj = {
+                  KAOSHIZU_ID: k,
+                  KAOSHIZU_NAME: v[0].KAOSHIZU_NAME,
+                  LINGYU_ID: v[0].LINGYU_ID,
+                  YIBAOMING: 0,
+                  kaoShiShiJian: '',
+                  kaoChangInfo: []
                 };
-                bmksObj.ksStart = k;
-                bmksObj.ksKc = v;
-                bmksObj.ksEnd = v[0].JIESHUSHIJIAN;
-                bmksObj.ksShiJian = DataService.baoMingDateFormat(bmksObj.ksStart, bmksObj.ksEnd);
-                Lazy(bmksObj.ksKc).each(function (kc, idx, lst) {
-                  kc.baomingjiezhishijian = ks.BAOMINGJIEZHISHIJIAN;
-                  if (kc.BAOMING_RENSHU >= 0) {
-                    var sywz = parseInt(kc.KAOWEI) - kc.BAOMING_RENSHU;
-                    if (sywz >= 0) {
-                      kc.syKaoWei = sywz;
+                Lazy(v).each(function(cc){
+                  if(cc.YIBAOMING == 1){
+                    var kci = cc.KMINGCHENG;
+                    if(cc.ZUOWEIHAO){
+                      kci += cc.ZUOWEIHAO;
                     }
-                    else {
-                      kc.syKaoWei = 0;
-                    }
-                  }
-                  else {
-                    kc.syKaoWei = parseInt(kc.KAOWEI);
+                    kszObj.kaoShiShiJian = DataService.baoMingDateFormat(cc.KAISHISHIJIAN, cc.JIESHUSHIJIAN);
+                    kszObj.YIBAOMING = 1;
+                    kszObj.kaoChangInfo.push(kci);
                   }
                 });
-                bmKsArr.push(bmksObj);
+                kaoShiZu.push(kszObj);
               });
-              $scope.bmKaoChang = bmKsArr;
-              $scope.stuParams.hasBaoMing = false;
-              $scope.kaoShiDetail = '';
+              $scope.kaoShiArrs = Lazy(kaoShiZu).reverse().toArray();
             }
-            else{
+            if(data.error){
+              $scope.kaoShiArrs = '';
               DataService.alertInfFun('err', data.error);
             }
           });
         };
 
         /**
-         * 获得选择的考点
+         * 查看考试详情
          */
-        $scope.getSelectKd = function (val) {
-          $scope.stuParams.selectKaoDian = val;
+        $scope.queryKaoShiZuDetail = function(ks){
+          var chaXunChangCi = chaXunChangCiUrl + ks.KAOSHIZU_ID;
+          var ksObj = {
+            KAOSHIZU_ID: ks.KAOSHIZU_ID,
+            KAOSHIZU_NAME: ks.KAOSHIZU_NAME,
+            changci: []
+          };
+          $http.get(chaXunChangCi).success(function(data){
+            if(data && data.length > 0){
+              var disChangCi = Lazy(data).groupBy(function(cc){
+                return cc.KAOSHI_ID;
+              });
+              Lazy(disChangCi).each(function(v, k, l){
+                var fd = v[0];
+                var ccObj = {
+                  KAOSHI_ID: k,
+                  KAOSHI_MINGCHENG: fd.KAOSHI_MINGCHENG,
+                  KAISHISHIJIAN: fd.KAISHISHIJIAN,
+                  JIESHUSHIJIAN: fd.JIESHUSHIJIAN,
+                  SHICHANG: fd.SHICHANG,
+                  LINGYU_ID: ks.LINGYU_ID,
+                  kaoShiShiJian: DataService.baoMingDateFormat(fd.KAISHISHIJIAN, fd.JIESHUSHIJIAN),
+                  kaoDian: []
+                };
+                Lazy(v).each(function(cc){
+                  var kdObj = {
+                    KID: cc.KID,
+                    KMINGCHENG: cc.KMINGCHENG,
+                    KAOWEISHULIANG: cc.KAOWEISHULIANG,
+                    YIBAOMINGRENSHU: cc.YIBAOMINGRENSHU || 0,
+                    ckd: false
+                  };
+                  kdObj.isFull = kdObj.YIBAOMINGRENSHU >= kdObj.KAOWEISHULIANG ? true : false;
+                  ccObj.kaoDian.push(kdObj);
+                });
+                ksObj.changci.push(ccObj);
+              });
+              $scope.kaoShiDetailData = ksObj;
+              $scope.kaoShiChangCiDetail = true;
+            }
+            else{
+              $scope.kaoShiDetailData = '';
+              $scope.kaoShiChangCiDetail = false;
+              DataService.alertInfFun('err', data.error);
+            }
+          });
         };
 
         /**
-         * 保存考生选择的确认信息
+         * 返回报名考试列表
+         */
+        $scope.backToBoMingList = function(){
+          $scope.kaoShiDetailData = '';
+          $scope.kaoShiChangCiDetail = false;
+        };
+
+        /**
+         * 选择考点
+         */
+        $scope.bmKaoDianSelect = function(kd){
+          Lazy($scope.kaoShiDetailData.changci).each(function(cc){
+            Lazy(cc.kaoDian).each(function(kd){
+              kd.ckd = false;
+            });
+          });
+          kd.ckd = !kd.ckd;
+        };
+
+        /**
+         * 保存考生选择信息
          */
         $scope.saveStudentSelcet = function () {
-          if ($scope.stuParams.selectKaoDian) {
-            var kdInfo = $scope.stuParams.selectKaoDian;
-            $scope.confirmInfo = {
-              kaoshiName: '',
-              shijian: '',
-              kaochang: ''
-            };
-            $scope.confirmInfo.shijian = DataService.baoMingDateFormat(kdInfo.KAISHISHIJIAN, kdInfo.JIESHUSHIJIAN);
-            $scope.confirmInfo.kaochang = kdInfo.KAODIANMINGCHENG;
-            $scope.confirmInfo.kaoshiName = kdInfo.KAOSHIMINGCHENG;
-            $scope.showStuSelectInfo = true;
-          }
-          else {
-            DataService.alertInfFun('pmt', '请选择考试场次！');
-          }
-        };
-
-        /**
-         * 保存考试选择信息
-         */
-        $scope.saveStudentSelectFun = function () {
-          var kdInfo = $scope.stuParams.selectKaoDian;
-          var kddData = {
+          var bmObj = {
             token: token,
-            jigouid: defaultJg,
-            xuehao: xuehao,
-            baoming_id: kdInfo.BAOMING_ID,
-            baomingkaodian_id: kdInfo.BAOMINGKAODIAN_ID,
-            baomingkaoshishijian_id: kdInfo.BAOMINGKAOSHISHIJIAN_ID,
-            baomingjiezhishijian: kdInfo.baomingjiezhishijian
+            caozuoyuan: caozuoyuan,
+            uid: caozuoyuan,
+            kid: '',
+            ksid: '',
+            lingyuid: ''
           };
-          var qryKaoDianRenShu = qryKaoDianRenShuBase + '&baoming_id=' + kddData.baoming_id;
-          qryKaoDianRenShu += '&baomingkaodian_id=' + kddData.baomingkaodian_id;
-          qryKaoDianRenShu += '&baomingkaoshishijian_id=' + kddData.baomingkaoshishijian_id;
-          DataService.getData(qryKaoDianRenShu).then(function (kdRenShu) {
-            if (kdRenShu[0].bmNums < $scope.stuParams.selectKaoDian.KAOWEI) {
-              $http.post(saveStudentSelect, kddData).success(function (data) {
-                if (data.result) {
-                  $scope.bmKaoChang = '';
-                  DataService.alertInfFun('suc', '保存成功！');
-                  $scope.stuParams.hasBaoMing = true;
-                  $scope.showStuSelectInfo = false;
+          Lazy($scope.kaoShiDetailData.changci).each(function(cc){
+            Lazy(cc.kaoDian).each(function(kd){
+             if(kd.ckd == true){
+               bmObj.ksid = cc.KAOSHI_ID;
+               bmObj.lingyuid = cc.LINGYU_ID;
+               bmObj.kid = kd.KID;
+             }
+            });
+          });
+          if(bmObj.ksid){
+            if(bmObj.kid){
+              $http.post(zaiXianBaoMingUrl, bmObj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '报名成功！');
+                  $scope.backToBoMingList();
                   chaXunBaoMingChangCi();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
-            else {
-              DataService.alertInfFun('pmt', '此时间段的本考场已没有空余考位，请重新选择！');
+            else{
+              DataService.alertInfFun('pmt', '考点ID不能为空！');
             }
-          });
-        };
-
-        /**
-         * 关闭保存考生选择的弹出层
-         */
-        $scope.colseSaveBaoMingSelect = function () {
-          $scope.showStuSelectInfo = false;
-        };
-
-        /**
-         * 查询考试详情
-         */
-        $scope.qryKaoShiDetail = function (ks) {
-          $scope.kaoShiDetail = '';
-          var qryKsDetail = qryKsDetailBase + '&baomingkaoshishijian_id=';
-          qryKsDetail += ks.BAOMINGKAOSHISHIJIAN_ID;
-          qryKsDetail += '&baomingkaodian_id=' + ks.BAOMINGKAODIAN_ID;
-          qryKsDetail += '&baomingkaosheng_id=' + ks.BAOMINGKAOSHENG_ID;
-          DataService.getData(qryKsDetail).then(function (detail) {
-            if (detail && detail.length) {
-              Lazy(detail).each(function (ksd, idx, lst) {
-                ksd.ksShijian = DataService.baoMingDateFormat(ksd.KAISHISHIJIAN, ksd.JIESHUSHIJIAN);
-                ksd.ksName = ks.KAOSHIMINGCHENG;
-              });
-              $scope.kaoShiDetail = detail;
-              $scope.stuParams.hasBaoMing = true;
-            }
-          });
+          }
+          else{
+            DataService.alertInfFun('pmt', '考试ID不能为空！');
+          }
         };
 
         /**

@@ -10,61 +10,71 @@
     </ul>
   </div>
   <div class="tab-content wp80 mt65 ml50">
-    <div class="row">
+    <div class="row" ng-hide="kaoShiChangCiDetail">
       <table class="table table-striped">
         <tr ng-repeat="ks in kaoShiArrs">
-          <td ng-bind="ks.KAOSHIMINGCHENG"></td>
-          <td ng-bind="ks.ZUOWEIHAO"></td>
+          <td ng-bind="ks.KAOSHIZU_NAME"></td>
+          <td ng-bind="ks.kaoChangInfo.join(';')"></td>
+          <td ng-bind="ks.kaoShiShiJian"></td>
           <td>
-            <span class="clRed">未报名</span>
-            <span class="clGreen">未报名</span>
-            <!--<a href="javascript:void(0)" ng-if="ks.BAOMINGKAODIAN_ID!=null && ks.BAOMINGKAOSHISHIJIAN_ID!=null"-->
-               <!--ng-click="qryKaoShiDetail(ks)">详情</a>-->
-            <!--<a href="javascript:void(0)" ng-if="ks.BAOMINGKAODIAN_ID!=null && ks.BAOMINGKAOSHISHIJIAN_ID!=null"-->
-               <!--ng-click="qryKaoShiDetail(ks)">详情</a>-->
+            <span class="clRed" ng-if="ks.YIBAOMING==0">未报名</span>
+            <span class="clGreen" ng-if="ks.YIBAOMING==1">已报名</span>
           </td>
           <td width="80px">
-            <a href="javascript:void(0)" ng-click="chaXunBaoMing(ks)">点击报名</a>
-            <!--<span ng-if="ks.BAOMINGKAODIAN_ID==null || ks.BAOMINGKAOSHISHIJIAN_ID==null">-->
-              <!--<a href="javascript:void(0)" ng-click="chaXunBaoMing(ks)" ng-if="ks.hasEndBaoMing==false">点击报名</a>-->
-              <!--<span ng-if="ks.hasEndBaoMing==true">-->
-              <!--报名已截止-->
-              <!--</span>-->
-            <!--</span>-->
+            <a href="javascript:void(0)" ng-if="ks.YIBAOMING==0" ng-click="queryKaoShiZuDetail(ks)">点击报名</a>
           </td>
         </tr>
       </table>
     </div>
-    <div class="row" ng-show="kaoShiDetail">
-      <div ng-repeat="dt in kaoShiDetail">
-        <p>考试名称：{{dt.ksName}}</p>
-        <p>考试时间：{{dt.ksShijian}}</p>
-        <p>考场：{{dt.KAODIANMINGCHENG}}</p>
-        <!--<p>座位号：{{dt.ZUOWEIHAO}}</p>-->
-      </div>
-    </div>
-    <div class="row" ng-hide="stuParams.hasBaoMing">
-      <table class="table table-bordered jg-table">
-        <tr>
-          <th class="text-center">时间</th>
-          <th class="text-center" colspan="{{bmKaoChang[0].ksKc.length}}">
-            考场
-          </th>
-        </tr>
-        <tr ng-repeat="bm in bmKaoChang">
-          <td ng-bind="bm.ksShiJian">
-          </td>
-          <td ng-repeat="kd in bm.ksKc">
-            <input type="radio" name="kaoDian" ng-click="getSelectKd(kd)" ng-show="kd.syKaoWei">
-            <span ng-bind="kd.KAODIANMINGCHENG"></span>
-            <span>(考位:{{kd.KAOWEI}})</span>
-            <span>(剩余:{{kd.syKaoWei}})</span>
+    <div class="row" ng-show="kaoShiChangCiDetail">
+      <h4 class="pb10">
+        <span ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></span>
+        <button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">确定报名</button>
+        <button type="button" class="btn btn-danger pull-right mr10" ng-click="backToBoMingList()">返回</button>
+      </h4>
+      <table class="table table-striped">
+        <tr ng-repeat="cc in kaoShiDetailData.changci">
+          <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+          <td ng-bind="cc.kaoShiShiJian"></td>
+          <td class="bmKaoDianBox">
+            <div class="form-body" ng-repeat="kd in cc.kaoDian">
+              <div class="radio" ng-class="{'radio-select':kd.ckd}" ng-click="bmKaoDianSelect(kd)">
+                <span class="glyphicon glyphicon-ok"></span>
+              </div>
+              <span ng-bind="kd.KMINGCHENG"></span>
+            </div>
           </td>
         </tr>
       </table>
-      <button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">
-        保存选择
-      </button>
+      <!--<div ng-repeat="dt in kaoShiDetail">-->
+        <!--<p>考试名称：{{dt.ksName}}</p>-->
+        <!--<p>考试时间：{{dt.ksShijian}}</p>-->
+        <!--<p>考场：{{dt.KAODIANMINGCHENG}}</p>-->
+        <!--&lt;!&ndash;<p>座位号：{{dt.ZUOWEIHAO}}</p>&ndash;&gt;-->
+      <!--</div>-->
+    </div>
+    <!--<div class="row" ng-hide="stuParams.hasBaoMing">-->
+      <!--<table class="table table-bordered jg-table">-->
+        <!--<tr>-->
+          <!--<th class="text-center">时间</th>-->
+          <!--<th class="text-center" colspan="{{bmKaoChang[0].ksKc.length}}">-->
+            <!--考场-->
+          <!--</th>-->
+        <!--</tr>-->
+        <!--<tr ng-repeat="bm in bmKaoChang">-->
+          <!--<td ng-bind="bm.ksShiJian">-->
+          <!--</td>-->
+          <!--<td ng-repeat="kd in bm.ksKc">-->
+            <!--<input type="radio" name="kaoDian" ng-click="getSelectKd(kd)" ng-show="kd.syKaoWei">-->
+            <!--<span ng-bind="kd.KAODIANMINGCHENG"></span>-->
+            <!--<span>(考位:{{kd.KAOWEI}})</span>-->
+            <!--<span>(剩余:{{kd.syKaoWei}})</span>-->
+          <!--</td>-->
+        <!--</tr>-->
+      <!--</table>-->
+      <!--<button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">-->
+        <!--保存选择-->
+      <!--</button>-->
     </div>
   </div>
 </div>

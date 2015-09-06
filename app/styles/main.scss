@@ -315,8 +315,8 @@ a.add-btn:hover span {
     span {
       width: 20px;
       height: 20px;
-      top: 0px;
-      margin-right: 0px;
+      top: 0;
+      margin-right: 0;
       color: #00CC00;
       display: none;
     }
@@ -3040,6 +3040,15 @@ label.checkbox{
   .videoPlayBox{
     background: #2d2d2d;
     border-left: 1px solid #2d2d2d;
+  }
+  .bmKaoDianBox{
+    .form-body{
+      float: left;
+      .radio{
+        margin: 2px 2px 0 10px;
+        float: left;
+      }
+    }
   }
 }
 /* -------------------------------------------------------------------
