@@ -1172,6 +1172,11 @@ label.checkbox{
     }
   }
 }
+.table-striped{
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
 /*大纲  开始*/
 .dagangInput {
   position: relative;
@@ -4852,8 +4857,5 @@ label.checkbox{
   .radio-inline,
   .checkbox-inline{
     margin-left: 10px;
-  }
-  .keXuHao{
-    width: 220px;
   }
 }

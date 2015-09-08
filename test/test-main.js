@@ -25,7 +25,8 @@ requirejs.config({
     setJs: '../../bower_components/markitup/set.min',
     mathjax: '../../bower_components/markitup/MathJax',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    lazy: '../../bower_components/lazy.js/lazy'
+    lazy: '../../bower_components/lazy.js/lazy',
+    polyv: '../../bower_components/polyv/polyvplayer_v2.0.min'
   },
 
     shim: {

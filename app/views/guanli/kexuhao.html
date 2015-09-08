@@ -1,21 +1,30 @@
 <div class="row">
   <div class="col-md-6">
-    <h4 class="bdb pb10">
+    <h4 class="pb10">
       <span>{{session.defaultLyName}}课序号管理</span>
-      <a href="javascript:void(0)" class="fz14 pull-right" ng-click="showKeXuHaoPop('addKeXuHao')">新增课序号</a>
+      <button type="button" class="btn btn-primary fz14 pull-right" ng-click="showKeXuHaoPop('addKeXuHao')">新增课序号</button>
     </h4>
     <div>
-      <ul class="list-unstyled" id="keXuHaoManage">
-        <li class="bdbd ptb5" ng-repeat="kxh in keXuHaoData">
-          <span class="keXuHao cursorPointer pull-left" ng-bind="kxh.KEXUHAO_MINGCHENG"
-                title="{{kxh.SETTINGS}}" ng-click="chaXunKxhYongHu(kxh)"></span>
-          <span ng-bind="kxh.jiaoShiStr" class="ml10"></span>
-          <span class="pull-right">
+      <table class="table table-striped">
+        <tr>
+          <th>课序号名称</th>
+          <th>任课老师</th>
+          <th>操作</th>
+        </tr>
+        <tr ng-repeat="kxh in keXuHaoData">
+          <td>
+            <span class="cursorPointer mr5" title="{{kxh.SETTINGS}}" ng-click="chaXunKxhYongHu(kxh)">
+              {{kxh.KEXUHAO_MINGCHENG}}
+            </span>
+            <span>{{'('+kxh.STUDENTS+'人)'}}</span>
+          </td>
+          <td ng-bind="kxh.jiaoShiStr"></td>
+          <td>
             <a href="javascript:void(0)" class="mr10" ng-click="showKeXuHaoPop('modifyKeXuHao', kxh)">修改</a>
             <a href="javascript:void(0)" ng-click="deleteKeXuHao(kxh)">删除</a>
-          </span>
-        </li>
-      </ul>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="paging text-right" ng-if="keXuHaoPages.length>0">
       <ul class="pagination pagination-sm">
@@ -44,7 +53,7 @@
     </div>
   </div>
   <div class="col-md-5 col-md-offset-1">
-    <h4 class="bdb pb10 h28" ng-show="selectKxh.KEXUHAO_MINGCHENG">
+    <h4 ng-show="selectKxh.KEXUHAO_MINGCHENG">
       <span ng-bind="selectKxh.KEXUHAO_MINGCHENG"></span>
       <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right fz14">
@@ -54,13 +63,18 @@
       </span>
     </h4>
     <div ng-show="studentsData.length>0">
-      <ul class="list-unstyled">
-        <li class="bdbd ptb5 pull-left wp100" ng-repeat="stu in studentsData">
-          <span class="pl10" ng-bind="stu.YONGHUHAO"></span>
-          <span ng-bind="stu.XINGMING" class="ml10"></span>
-          <a href="javascript:void(0)" class="pull-right" ng-click="deleteKxhYh(stu)">删除</a>
-        </li>
-      </ul>
+      <table class="table table-striped">
+        <tr>
+          <th>学号</th>
+          <th>姓名</th>
+          <th>操作</th>
+        </tr>
+        <tr ng-repeat="stu in studentsData">
+          <td ng-bind="stu.YONGHUHAO"></td>
+          <td ng-bind="stu.XINGMING"></td>
+          <td><a href="javascript:void(0)" class="pull-right" ng-click="deleteKxhYh(stu)">删除</a></td>
+        </tr>
+      </table>
     </div>
     <div class="paging text-right" ng-if="studentsPages.length>0">
       <ul class="pagination pagination-sm">

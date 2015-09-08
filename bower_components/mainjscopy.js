@@ -61,7 +61,8 @@ require.config({
     //setJs: '../../bower_components/markitup/set',
     //mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
     //datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    //lazy: '../../bower_components/lazy/lazy'
+    //lazy: '../../bower_components/lazy/lazy',
+    //polyv: 'http://static.polyv.net/file/polyvplayer_v2.0.min'
   },
   shim: {
     angular: {

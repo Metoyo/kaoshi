@@ -85,7 +85,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $http.get(qryKxhUrl).success(function(data){
             if(data && data.length > 0){
               var dataLength = data.length; //所以二级专业长度
-              Lazy(data).each(function(kxh){
+              var sortData = Lazy(data).sortBy(function(stu){
+                return stu.KEXUHAO;
+              }).toArray();
+              Lazy(sortData).each(function(kxh){
                 kxh.jiaoShiStr = Lazy(kxh.JIAOSHI).map(function(js){
                   return js.XINGMING;
                 }).toArray().join(';');
@@ -99,11 +102,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                     keXuHaoPagesArr.push(i);
                   }
                 }
-                keXuHaoStore = data;
+                keXuHaoStore = sortData;
                 $scope.keXuHaoDist(1);
               }
               else{
-                $scope.keXuHaoData = data;
+                $scope.keXuHaoData = sortData;
               }
             }
             else{
@@ -469,7 +472,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 员工分页数码
+         * 学生分页数码
          */
         var studentsPages = function(wks){
           totalStuPage = [];
@@ -492,7 +495,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 员工分页
+         * 学生分页
          */
         $scope.studentPgDist = function(pg){
           var startPage = (pg-1) * numPerPage;
@@ -540,7 +543,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
             if($scope.selectKxh){
               obj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-              if(confirm('确定要删除员工吗？')){
+              if(confirm('确定要删除学生吗？')){
                 $http.post(modifyKxhYh, obj).success(function(data){
                   if(data.result){
                     $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(wk){
@@ -560,7 +563,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               }
             }
             else{
-              DataService.alertInfFun('pmt', '请选择要删除员工的专业！');
+              DataService.alertInfFun('pmt', '请选择要删除学生的专业！');
             }
           }
           else{

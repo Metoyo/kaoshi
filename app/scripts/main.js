@@ -14,6 +14,7 @@ require.config({
     mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
     lazy: '../../bower_components/lazy.js/lazy',
+    //polyv: '../../bower_components/polyv/polyvplayer_v2.0.min'
     polyv: 'http://static.polyv.net/file/polyvplayer_v2.0.min'
   },
   shim: {
