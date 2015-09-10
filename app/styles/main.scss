@@ -2361,9 +2361,6 @@ label.checkbox{
     ul{
       margin: 0;
       padding: 0;
-      li{
-        margin-top: -1px;
-      }
     }
     table{
       margin-bottom: 0;
@@ -2394,6 +2391,16 @@ label.checkbox{
       padding: 10px 0;
       border-top: 1px solid #ddd;
       margin-top: -1px;
+    }
+    .zj_list{
+      border-top: 1px solid #ddd;
+      li{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+      }
+      li:nth-child(odd){
+        background-color: #f9f9f9;
+      }
     }
   }
   .paperConfirmTable{
