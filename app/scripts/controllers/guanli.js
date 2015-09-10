@@ -211,7 +211,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               if(uidArr && uidArr.length > 0){
                 keXuHaoObj.shuju.UIDS = uidArr.join(',');
                 $http.post(kxhManageUrl, keXuHaoObj).success(function(data){
-                  if(data.result){
+                  if(data.result == true){
                     $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                     $scope.guanliParams.addNewKxh = ''; //课序号重置
                     $scope.guanliParams.addNewKxhSetting = '';
@@ -220,7 +220,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                     queryKeXuHao();
                     DataService.alertInfFun('suc', '新增课序号成功！');
                   }
-                  else{
+                  if(data.result == false){
+                    DataService.alertInfFun('pmt', '课序号名称已存在！请修改课序号名称！');
+                  }
+                  if(data.error){
                     DataService.alertInfFun('err', data.error);
                   }
                 });
@@ -366,7 +369,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               }
               $http.post(importUser, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
                 .success(function(data){
-                  if(data){
+                  if(data && data.length > 0){
                     $scope.loadingImgShow = false;
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
@@ -459,6 +462,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $http.get(chaXunYongHu).success(function(data){
               if(data && data.length > 0){
                 $scope.studentsOrgData = data;
+                kxh.STUDENTS = data.length;
                 studentsPages(data);
               }
               else{

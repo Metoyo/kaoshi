@@ -176,76 +176,76 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         /**
          * 试卷统计详情
          */
-        $scope.tjShowItemInfo = function(id, idType, comeForm, tjName){
-          var queryTiMu, newCont,
-            tgReg = new RegExp('<\%{.*?}\%>', 'g');
-          if(idType == 'ksId'){
-            queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
-          }
-          if(idType == 'sjId'){
-            queryTiMu = queryTiMuBase + '&shijuanid=' + id;
-          }
-          $http.get(queryTiMu).success(function(data){
-            if(!data.error){
-              Lazy(data).each(function(tm, idx, lst){
-                tm.TIGAN = JSON.parse(tm.TIGAN);
-                if(tm.TIXING_ID <= 3){
-                  var daanArr = tm.DAAN.split(','),
-                    daanLen = daanArr.length,
-                    daan = [];
-                  for(var i = 0; i < daanLen; i++){
-                    daan.push(letterArr[daanArr[i]]);
-                  }
-                  tm.DAAN = daan.join(',');
-                }
-                else if(tm.TIXING_ID == 4){
-                  if(tm.DAAN == 1){
-                    tm.DAAN = '对';
-                  }
-                  else{
-                    tm.DAAN = '错';
-                  }
-                }
-                else if(tm.TIXING_ID == 6){ //填空题
-                  //修改填空题的答案
-                  var tkDaAnArr = [],
-                    tkDaAn = JSON.parse(tm.DAAN),
-                    tkDaAnStr;
-                  Lazy(tkDaAn).each(function(da, idx, lst){
-                    tkDaAnArr.push(da.answer);
-                  });
-                  tkDaAnStr = tkDaAnArr.join(';');
-                  tm.DAAN = tkDaAnStr;
-                  //修改填空题的题干
-                  newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
-                    var text = arg.slice(2, -2),
-                      textJson = JSON.parse(text),
-                      _len = textJson.size,
-                      i, xhStr = '';
-                    for(i = 0; i < _len; i ++ ){
-                      xhStr += '_';
-                    }
-                    return xhStr;
-                  });
-                  tm.TIGAN.tiGan = newCont;
-                }
-                else{
-                }
-                backToWhere = comeForm;
-              });
-              $scope.tjTmQuantity = 5; //加载是显示的题目数量
-              $scope.letterArr = config.letterArr; //题支的序号
-              $scope.tjTiMuDetail = data;
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
-          $scope.tjItemName = tjName;
-          $scope.isTjDetailShow = true;
-          $scope.myAvgScore = '';
-          $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
-        };
+        //$scope.tjShowItemInfo = function(id, idType, comeForm, tjName){
+        //  var queryTiMu, newCont,
+        //    tgReg = new RegExp('<\%{.*?}\%>', 'g');
+        //  if(idType == 'ksId'){
+        //    queryTiMu = queryTiMuBase + '&kaoshiid=' + id;
+        //  }
+        //  if(idType == 'sjId'){
+        //    queryTiMu = queryTiMuBase + '&shijuanid=' + id;
+        //  }
+        //  $http.get(queryTiMu).success(function(data){
+        //    if(!data.error){
+        //      Lazy(data).each(function(tm, idx, lst){
+        //        tm.TIGAN = JSON.parse(tm.TIGAN);
+        //        if(tm.TIXING_ID <= 3){
+        //          var daanArr = tm.DAAN.split(','),
+        //            daanLen = daanArr.length,
+        //            daan = [];
+        //          for(var i = 0; i < daanLen; i++){
+        //            daan.push(letterArr[daanArr[i]]);
+        //          }
+        //          tm.DAAN = daan.join(',');
+        //        }
+        //        else if(tm.TIXING_ID == 4){
+        //          if(tm.DAAN == 1){
+        //            tm.DAAN = '对';
+        //          }
+        //          else{
+        //            tm.DAAN = '错';
+        //          }
+        //        }
+        //        else if(tm.TIXING_ID == 6){ //填空题
+        //          //修改填空题的答案
+        //          var tkDaAnArr = [],
+        //            tkDaAn = JSON.parse(tm.DAAN),
+        //            tkDaAnStr;
+        //          Lazy(tkDaAn).each(function(da, idx, lst){
+        //            tkDaAnArr.push(da.answer);
+        //          });
+        //          tkDaAnStr = tkDaAnArr.join(';');
+        //          tm.DAAN = tkDaAnStr;
+        //          //修改填空题的题干
+        //          newCont = tm.TIGAN.tiGan.replace(tgReg, function(arg) {
+        //            var text = arg.slice(2, -2),
+        //              textJson = JSON.parse(text),
+        //              _len = textJson.size,
+        //              i, xhStr = '';
+        //            for(i = 0; i < _len; i ++ ){
+        //              xhStr += '_';
+        //            }
+        //            return xhStr;
+        //          });
+        //          tm.TIGAN.tiGan = newCont;
+        //        }
+        //        else{
+        //        }
+        //        backToWhere = comeForm;
+        //      });
+        //      $scope.tjTmQuantity = 5; //加载是显示的题目数量
+        //      $scope.letterArr = config.letterArr; //题支的序号
+        //      $scope.tjTiMuDetail = data;
+        //    }
+        //    else{
+        //      DataService.alertInfFun('err', data.error);
+        //    }
+        //  });
+        //  $scope.tjItemName = tjName;
+        //  $scope.isTjDetailShow = true;
+        //  $scope.myAvgScore = '';
+        //  $scope.tjSubTpl = 'views/tongji/tj_sj_detail.html';
+        //};
 
         /**
          * 显示更多试卷统计详情

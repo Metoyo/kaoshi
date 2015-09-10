@@ -279,7 +279,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 展示设置机构的页面
+         * 展示设置机构的页面//
          */
         $scope.renderJiGouSetTpl = function(){
           $scope.loadingImgShow = true; //rz_setJiGou.html
@@ -430,7 +430,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           whichJiGouAddAdmin = idx;
           var adminObj = {
             UID: '',
-            XINGMING: '',
+            YONGHUMING: '',
             MIMA: '',
             ZHUANGTAI: 1
           };
@@ -446,14 +446,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.saveNewAddAdmin = function(){
           $scope.loadingImgShow = true; //rz_setJiGou.html
-          if(adminData.shuju.ADMINISTRATORS[0].XINGMING){
+          if(adminData.shuju.ADMINISTRATORS[0].YONGHUMING){
             if(adminData.shuju.ADMINISTRATORS[0].MIMA){
               $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
                 if(data.result){
                   $scope.loadingImgShow = false; //rz_setJiGou.html
                   DataService.alertInfFun('suc', '保存成功');
                   $scope.getJgList(jgLeiBieId);
-                  adminData.shuju.ADMINISTRATORS[0].XINGMING = '';
+                  adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
                   adminData.shuju.ADMINISTRATORS[0].MIMA = '';
                 }
                 else{
@@ -478,13 +478,13 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.deleteJiGouAdmin = function(adm){
           adminData.shuju.ADMINISTRATORS[0].UID = adm.UID;
-          adminData.shuju.ADMINISTRATORS[0].XINGMING = adm.XINGMING;
+          adminData.shuju.ADMINISTRATORS[0].YONGHUMING = adm.YONGHUMING;
           adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = -1;
           $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
             if(data.result){
               $scope.getJgList(jgLeiBieId);
               adminData.shuju.ADMINISTRATORS[0].UID = '';
-              adminData.shuju.ADMINISTRATORS[0].XINGMING = '';
+              adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
               adminData.shuju.ADMINISTRATORS[0].MIMA = '';
               adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
             }
@@ -513,16 +513,16 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             psw += Math.floor(Math.random()*10);
           }
           adminData.shuju.ADMINISTRATORS[0].UID = adm.UID;
-          adminData.shuju.ADMINISTRATORS[0].XINGMING = adm.XINGMING;
+          adminData.shuju.ADMINISTRATORS[0].YONGHUMING = adm.YONGHUMING;
           adminData.shuju.ADMINISTRATORS[0].MIMA = psw;
           adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
           $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
             if(data.result){
-              $scope.jgAdminName = adm.XINGMING;
+              $scope.jgAdminName = adm.YONGHUMING;
               $scope.jgAmdinNewPsw = psw;
               $scope.isResetJgAdminPsw = true;
               adminData.shuju.ADMINISTRATORS[0].UID = '';
-              adminData.shuju.ADMINISTRATORS[0].XINGMING = '';
+              adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
               adminData.shuju.ADMINISTRATORS[0].MIMA = '';
               adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
             }
