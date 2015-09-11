@@ -59,6 +59,9 @@ body {
 .wp50 {
   width: 50%;
 }
+.wp56 {
+  width: 56%;
+}
 .wp60 {
   width: 60%;
 }
@@ -128,6 +131,9 @@ body {
 }
 .mlp5{
   margin-left: 5%;
+}
+.mlp4{
+  margin-left: 4%;
 }
 .ml10{
   margin-left: 10px;
@@ -4836,14 +4842,35 @@ label.checkbox{
 }
 /* angular animation */
 .guanLiWrapper{
+  .sub-nav .nav-tabs li:first-child{
+    margin-left: 5%;
+  }
   .fixed-top{
     left: 80px;
   }
   .tab-content{
-    padding: 60px 15px 15px 15px;
+    padding-top: 60px;
+    width: 90%;
+    margin-left: 5%;
   }
   .radio-inline,
   .checkbox-inline{
     margin-left: 10px;
+  }
+  .paging{
+    padding: 0;
+  }
+  .glMoreBtnCont{
+    display: auto;
+    right: 102px;
+    top: 22px;
+    width: 105px;
+    position: absolute;
+    background-color: #FFFFFF;
+    border: 1px solid #AFC1CF;
+    padding: 10px;
+    text-align: right;
+    z-index: 1;
+    overflow: hidden;
   }
 }
