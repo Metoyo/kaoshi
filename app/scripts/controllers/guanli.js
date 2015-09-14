@@ -575,22 +575,5 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
         };
 
-        //$scope.getUrlState = function(){
-        //  var urlPar = 'http://www.baidu.com';
-        //  $http({
-        //    method: "GET",
-        //    url: urlPar,
-        //    headers: {
-        //      'Content-type': undefined,
-        //      "Access-Control-Allow-Origin": '*'
-        //    }
-        //  }).success(function(data, status, headers, config){
-        //    console.log(data);
-        //    console.log(status);
-        //    console.log(headers);
-        //    console.log(config);
-        //  });
-        //};
-
     }]);
 });

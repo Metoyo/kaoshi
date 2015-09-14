@@ -13,7 +13,7 @@
         </tr>
         <tr ng-repeat="kxh in keXuHaoData">
           <td>
-            <span class="cursorPointer mr5" title="{{kxh.SETTINGS}}" ng-click="chaXunKxhYongHu(kxh)">
+            <span class="cursorPointer mr5" ng-click="chaXunKxhYongHu(kxh)">
               {{kxh.KEXUHAO_MINGCHENG}}
             </span>
             <span>{{'('+kxh.STUDENTS+'人)'}}</span>
@@ -68,6 +68,7 @@
         <button type="button" class="btn btn-primary" ng-click="deleteKxhYh('all')">清空学生</button>
         <button type="button" class="btn btn-primary mt10" ng-click="showKeXuHaoPop('addSingleStu')">新增学生</button>
       </span>
+      <span class="promptInfo" ng-bind="selectKxh.SETTINGS"></span>
     </h4>
     <div ng-show="selectKxh.KEXUHAO_MINGCHENG">
       <table class="table table-striped" ng-if="studentsData.length>0">

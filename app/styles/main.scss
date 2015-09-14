@@ -4873,4 +4873,11 @@ label.checkbox{
     z-index: 1;
     overflow: hidden;
   }
+  .promptInfo{
+    font-size: 10px;
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 70%
+  }
 }

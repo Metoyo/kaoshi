@@ -61,7 +61,10 @@
                 添加场次
               </button>
             </th>
-            <th>考点（已选：{{selectChangCi.KAOCHANG.length || 0}}）</th>
+            <th>
+              <span>考点（已选：{{selectChangCi.KAOCHANG.length || 0}}）</span>
+              <span class="pull-right">考位</span>
+            </th>
             <th class="positionRe">
               试卷（已选：{{selectChangCi.SHIJUAN_ID.length || 0}}）
               <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()"
@@ -88,6 +91,7 @@
                     <input type="checkbox" value="kcInfo.KID" ng-click="addKaoChangToCc(kcInfo)" ng-checked="kcInfo.ckd">
                     {{kcInfo.KMINGCHENG}}
                   </label>
+                  <span class="pull-right" ng-bind="kcInfo.KAOWEISHULIANG"></span>
                 </div>
               </div>
             </td>
