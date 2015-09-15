@@ -2,7 +2,7 @@
   <h2 class="loading-box" ng-hide="ksScoreData.length">暂无数据</h2>
   <div class="sub-nav fixed-top">
     <ul class="nav nav-tabs">
-      <li class="active">
+      <li class="active" style="margin-left: 50px">
         <a href="javascript:void(0)">
           考试成绩
         </a>
@@ -11,11 +11,17 @@
   </div>
   <div class="tab-content wp80 mt65 ml50">
     <div class="row">
+      <h4 class="pb10">我的成绩</h4>
       <table class="table table-striped">
+        <tr>
+          <th>考试名称</th>
+          <th class="text-center">成绩</th>
+          <th class="text-center" width="80px">操作</th>
+        </tr>
         <tr ng-repeat="ks in ksScoreData">
           <td ng-bind="ks.KAOSHI_MINGCHENG"></td>
-          <td ng-bind="ks.ZUIHOU_PINGFEN"></td>
-          <td width="80px">
+          <td class="text-center" ng-bind="ks.ZUIHOU_PINGFEN"></td>
+          <td class="text-center">
             <a href="javascript:void(0)" ng-click="zuoDaReappear(ks)">作答重现</a>
           </td>
         </tr>
