@@ -185,7 +185,7 @@
       <button type="button" class="btn btn-primary" ng-click="saveKaoShi()"
               ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid">保存考试
       </button>
-      <button type="button" class="btn btn-danger ml10" ng-click="showKaoShiList()">取消</button>
+      <button type="button" class="btn btn-danger ml10" ng-click="showKaoShiZuList('all')">取消</button>
     </div>
   </form>
   <!--添加考生页面-->
@@ -293,7 +293,7 @@
         <button type="button" class="btn btn-danger mt10 mr10 pull-right" ng-click="hideImportList()">关闭</button>
       </div>
       <div class="row p10">
-        <table class="table table-bordered">
+        <table class="table table-striped">
           <tr>
             <th>姓名</th>
             <th>学号</th>
@@ -310,148 +310,4 @@
       </div>
     </div>
   </div>
-  <!-- 试卷选择 -->
-  <!--<div class="popup-wrap" ng-show="showPopupBox">-->
-    <!--<div class="popup-wrap-inner">-->
-      <!--<div class="pwi-header plr10">-->
-        <!--<button type="button" class="btn btn-danger pull-right mt5" ng-click="closePaperList()">关闭</button>-->
-      <!--</div>-->
-      <!--<div class="pwi-body plr10" ng-show="isShowPaperList">-->
-        <!--<ul class="paper-list">-->
-          <!--<li ng-repeat="pld in paperListData">-->
-            <!--<div class="pull-left paper-name">-->
-              <!--<a href="javascript:void(0)">-->
-                <!--{{pld.SHIJUANMINGCHENG}}-->
-              <!--</a>-->
-            <!--</div>-->
-            <!--<div class="pull-right paper-operate">-->
-              <!--<button type="button" class="btn btn-primary" ng-click="showShiJuanInfo(pld.SHIJUAN_ID)">-->
-                <!--详情-->
-              <!--</button>-->
-              <!--<button type="button" class="btn btn-primary gaiYao" bn-slide-show slid-show-tapon="gaiYao"-->
-                      <!--slide-show-target="more-info" slide-show-text="概要" slide-show-idx="{{$index}}">-->
-                <!--概要-->
-              <!--</button>-->
-              <!--<button type="button" class="btn btn-primary" ng-click="addToKaoShi(pld)">-->
-                <!--添加到考试-->
-              <!--</button>-->
-            <!--</div>-->
-            <!--<div class="more-info">-->
-              <!--<p>-->
-                <!--<span>出卷人：{{pld.chuangjianren}}</span>-->
-                <!--<span>试卷难度：{{pld.NANDU.paperNanDu}}</span>-->
-                <!--<span>出卷日期：{{pld.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'}}</span>-->
-              <!--</p>-->
-              <!--<p>-->
-                <!--题型分布：-->
-                  <!--<span ng-repeat="dati in pld.TIXING_DATA">-->
-                      <!--{{tiXingNameArr[dati.TIXING_ID -1]}}:{{dati.COUNT}}-->
-                  <!--</span>-->
-              <!--</p>-->
-              <!--<p>-->
-                <!--题型难度：-->
-                  <!--<span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">-->
-                      <!--{{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}-->
-                  <!--</span>-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-      <!--<div class="pwi-footer plr10 text-center">-->
-        <!--<ul class="pagination pagination-sm" ng-hide="!papertListIds">-->
-          <!--<li ng-class="{disabled: currentPageVal == 1}">-->
-            <!--<a href ng-click="getThisSjgyPageData(1)">首页</a>-->
-          <!--</li>-->
-          <!--<li ng-class="{disabled: currentPageVal == 1}">-->
-            <!--<a href-->
-               <!--ng-click="getThisSjgyPageData(prevPg = currentPageVal > 1 ? currentPageVal - 1 : 1)">-->
-              <!--上一页-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li ng-repeat="pg in paperPages" ng-class="{active: currentPageVal == pg}">-->
-            <!--<a href ng-click="getThisSjgyPageData(pg)">{{pg}}</a>-->
-          <!--</li>-->
-          <!--<li ng-class="{disabled: currentPageVal == lastPaperPageNum}">-->
-            <!--<a href-->
-               <!--ng-click="getThisSjgyPageData(nextPg = currentPageVal < lastPaperPageNum ? currentPageVal + 1 : lastPaperPageNum)">-->
-              <!--下一页-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li ng-class="{disabled: currentPageVal == lastPaperPageNum}">-->
-            <!--<a href ng-click="getThisSjgyPageData(lastPaperPageNum)">尾页</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--&lt;!&ndash; 试卷详情的 &ndash;&gt;-->
-  <!--<div class="popup-percent" ng-show="showPaperDetail" id="kaoWuPaperDetail">-->
-    <!--<div class="popup-percent-inner">-->
-      <!--<div>-->
-        <!--<button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closePaperDetail()">-->
-          <!--关闭-->
-        <!--</button>-->
-      <!--</div>-->
-      <!--<div class="inner-box">-->
-        <!--<h1 class="paper-title text-center hover-style">-->
-                <!--<span class="sj-param-val">-->
-                    <!--{{ paperDetail.SHIJUAN.SHIJUANMINGCHENG}}-->
-                <!--</span>-->
-        <!--</h1>-->
-        <!--<h1 class="paper-sub-title text-center hover-style">-->
-                <!--<span class="sj-param-val">-->
-                    <!--{{ paperDetail.SHIJUAN.FUBIAOTI}}-->
-                <!--</span>-->
-        <!--</h1>-->
-        <!--<div class="attention hover-style">-->
-                <!--<span class="sj-param-val">-->
-                    <!--{{ paperDetail.MUBAN.ZONGDAOYU}}-->
-                <!--</span>-->
-        <!--</div>-->
-        <!--<div class="shijuantimu-list">-->
-          <!--<div ng-repeat="mbdt in paperDetail.MUBANDATI" repeat-done>-->
-            <!--<div class="mubandati">-->
-              <!--<div class="dati-name-box">-->
-                <!--<span>{{cnNumArr[$index]}}、</span>-->
-                <!--<span class="dati-name">{{mbdt.DATIMINGCHENG}}</span>-->
-              <!--</div>-->
-              <!--<div class="dati-score-box">-->
-                <!--<p>-->
-                  <!--<span>（本大题共</span>-->
-                  <!--<span class="xiaoti-total"> {{mbdt.TIMUARR.length}} </span>-->
-                  <!--<span>小题，</span>-->
-                <!--</p>-->
-                <!--<p>-->
-                  <!--<span>共</span>-->
-                                <!--<span class="dati-total-score" ng-bind="mbdt.datiScore">-->
-                                <!--</span>-->
-                  <!--<span>分）</span>-->
-                <!--</p>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<ul class="list-unstyled testList">-->
-              <!--<li ng-repeat="tmd in mbdt.TIMUARR">-->
-                <!--<div class="item-cont">-->
-                  <!--<h3 class="item-tigan">-->
-                    <!--<div class="item-score">-->
-                      <!--<span ng-bind-html="($index + 1) + '、' + tmd.DETAIL.TIGAN.tiGan"></span>-->
-                      <!--<span>-->
-                          <!--{{'（本小题' + tmd.FENZHI + '分）'}}-->
-                      <!--</span>-->
-                    <!--</div>-->
-                  <!--</h3>-->
-                  <!--<div class="item-tizhi-wrap">-->
-                    <!--<p class="item-tizhi" ng-repeat="tz in tmd.DETAIL.TIGAN.tiZhiNeiRong track by $index"-->
-                       <!--ng-bind-html="'(' + letterArr[$index] + ') ' + tz">-->
-                    <!--</p>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 </div>
