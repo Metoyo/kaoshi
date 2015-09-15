@@ -467,7 +467,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxhId.join(',');
               $http.get(chaXunYongHu).success(function(data){
                 if(data && data.length > 0){
-                  //$scope.studentsOrgData = data;
                   $scope.showAddStuBox = false;
                   //重构考生名单
                   var newKaoShengArr = [];
