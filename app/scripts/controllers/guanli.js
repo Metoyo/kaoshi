@@ -44,7 +44,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           addNewKxhSetting: '', //添加课序号设置
           modifyKxh: '', //课序号修改
           singleStuName: '', //学生姓名
-          singleStuID: '' //学生学号
+          singleStuID: '', //学生学号
+          errorInfo: ''
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgLyTeachers = ''; //本机构和领域下的老师
@@ -153,6 +154,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.closeKeXuHaoManage = function(){
           $scope.showKeXuHaoManage = false;
           $scope.glEditBoxShow = ''; //弹出层显示那一部分重置
+          $scope.guanliParams.errorInfo = '';
         };
 
         /**
@@ -189,6 +191,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var saveType = $scope.glEditBoxShow;
           var keXuHaoObj;
           var uidArr = [];
+          $scope.guanliParams.errorInfo = '';
           if(saveType == 'addKeXuHao'){ //新增课序号
             if($scope.guanliParams.addNewKxh){
               keXuHaoObj = {
@@ -267,6 +270,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                       $scope.showKeXuHaoManage = false; //课序号重置
                       $scope.glSelectData = '';
                       $scope.guanliParams.modifyKxh = '';
+                      $scope.guanliParams.errorInfo = '';
                       queryKeXuHao();
                       DataService.alertInfFun('suc', '修改成功！');
                     }
@@ -274,6 +278,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                       DataService.alertInfFun('err', data.error);
                     }
                   });
+                }
+                else{
+                  $scope.guanliParams.errorInfo = '至少需要选择一个老师！';
                 }
               }
             }
@@ -400,9 +407,14 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           };
           if(kxh){
             keXuHaoObj.shuju.KEXUHAO_ID = kxh.KEXUHAO_ID;
+            console.log(kxh);
             if(confirm('确定要删除此课序号吗？')){
               $http.delete(kxhManageUrl, {params: keXuHaoObj}).success(function(data){
                 if(data.result){
+                  $scope.studentsOrgData = '';
+                  $scope.studentsData = '';
+                  $scope.studentsPages = '';
+                  $scope.selectKxh = '';
                   DataService.alertInfFun('suc', '删除成功！');
                   queryKeXuHao();
                 }
@@ -467,6 +479,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               }
               else{
                 $scope.studentsOrgData = '';
+                $scope.studentsPages = '';
               }
             });
           }
@@ -529,6 +542,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 删除课序号
          */
         $scope.deleteKxhYh = function(yh){
+          var confirmInfo = '';
           if(yh){
             var obj = {
               token: token,
@@ -537,17 +551,19 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             };
             if(yh == 'all'){
               obj.users = [];
-              Lazy($scope.studentsData).each(function(wk){
+              Lazy($scope.studentsOrgData).each(function(wk){
                 var wkObj = {uid: wk.UID, zhuangtai: -1};
                 obj.users.push(wkObj);
               });
+              confirmInfo = '确定要删除此课序号下面的所有学生吗？';
             }
             else{
               obj.users = [{uid: yh.UID, zhuangtai: -1}];
+              confirmInfo = '确定要删除学生吗？';
             }
             if($scope.selectKxh){
               obj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-              if(confirm('确定要删除学生吗？')){
+              if(confirm(confirmInfo)){
                 $http.post(modifyKxhYh, obj).success(function(data){
                   if(data.result){
                     $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(wk){
@@ -556,6 +572,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                     $scope.studentsData = Lazy($scope.studentsData).reject(function(wk){
                       return wk.UID == yh.UID;
                     }).toArray();
+                    Lazy($scope.keXuHaoData).each(function(kxh){
+                      if(kxh.KEXUHAO_ID == $scope.selectKxh.KEXUHAO_ID){
+                        kxh.STUDENTS = 0;
+                      }
+                    });
                     $scope.chaXunKxhYongHu($scope.selectKxh);
                     DataService.alertInfFun('suc', '删除成功！');
                     $scope.showKeXuHaoManage = false;
