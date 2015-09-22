@@ -56,12 +56,12 @@
       </ul>
     </div>
   </div>
-  <div class="pull-right wp40" ng-init="showMoreBtn=false">
+  <div class="pull-right wp40">
     <h4 class="pb10 positionRe" ng-show="selectKxh.KEXUHAO_MINGCHENG">
       <span ng-bind="selectKxh.KEXUHAO_MINGCHENG"></span>
       <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right">
-        <span class="glyphicon glyphicon-align-justify cursorPointer" ng-click="showMoreBtn=!showMoreBtn"></span>
+        <span class="glyphicon glyphicon-align-justify cursorPointer" ng-click="showMoreBtnFun()"></span>
         <button type="button" class="btn btn-primary ml10" ng-click="showKeXuHaoPop('addBatchStus')">批量新增</button>
       </span>
       <span class="glMoreBtnCont" ng-show="showMoreBtn">

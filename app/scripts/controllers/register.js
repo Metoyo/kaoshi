@@ -27,7 +27,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
-        $scope.emailRegexp = /^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/; //验证邮箱的正则表达式
+        $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.xuHaoRegexp = /^.{4,30}$/;//用户名的正则表达式
         $scope.userNameRegexp = /^([a-zA-Z])([a-zA-Z0-9_]){3,29}$/;//用户名的正则表达式
         $scope.realNameRegexp = /(^[A-Za-z]{2,20}$)|(^[\u4E00-\u9FA5]{2,20}$)/;//真实姓名的正则表达式

@@ -37,6 +37,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var singleYhAddToKxh = baseRzAPIUrl + 'add_yonghu_withkxh'; //单个新用户添加课序号
         var importUser = baseRzAPIUrl + 'import_users2'; //大批新增用户
         var totalStuPage = []; //所有的课序号考生的页码数
+        var regKxh = /^[a-zA-Z0-9_-]+$/; //检测课序号
 
         $scope.guanliParams = {
           tabActive: '',
@@ -52,6 +53,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.keXuHaoPgData = ''; //课序号数据
         $scope.glSelectData = ''; //课序号保存是选中的课序号
         $scope.selectKxh = ''; //选中的课序号
+        $scope.showMoreBtn = false; //课序号管理更多按钮
 
         /**
          * 查询本机构下的老师
@@ -85,9 +87,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var qryKxhUrl = kxhManageUrl + '?token=' + token + '&JIGOU_ID=' + jigouid + '&LINGYU_ID=' + lingyuid;
           $http.get(qryKxhUrl).success(function(data){
             if(data && data.length > 0){
+              console.log(data);
               var dataLength = data.length; //所以二级专业长度
               var sortData = Lazy(data).sortBy(function(stu){
-                return stu.KEXUHAO;
+                return stu.KEXUHAO_MINGCHENG;
               }).toArray();
               Lazy(sortData).each(function(kxh){
                 kxh.jiaoShiStr = Lazy(kxh.JIAOSHI).map(function(js){
@@ -130,6 +133,18 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         });
 
         /**
+         * 显示更多按钮
+         */
+        $scope.showMoreBtnFun = function(){
+          $scope.showMoreBtn = !$scope.showMoreBtn;
+        };
+        var showMoreBtnFun = function(){
+          if($scope.showMoreBtn){
+            $scope.showMoreBtn = false;
+          }
+        };
+
+        /**
          * 显示弹出层
          */
         $scope.showKeXuHaoPop = function(item, data){
@@ -146,6 +161,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(data){
             $scope.glSelectData = data;
           }
+          showMoreBtnFun();
         };
 
         /**
@@ -182,6 +198,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
           }
           $scope.keXuHaoData = keXuHaoStore.slice(startPage, endPage);
+          showMoreBtnFun();
         };
 
         /**
@@ -288,66 +305,73 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(saveType == 'addSingleStu'){ //添加单个学生
             if($scope.guanliParams.singleStuName){
               if($scope.guanliParams.singleStuID){
-                //先去查询UID
-                var chaXunStuUrl = chaXunStuBaseUrl + '?token=' + token + '&jigouid=' + jigouid +
-                  '&xuehao=' + $scope.guanliParams.singleStuID + '&xingming=' + $scope.guanliParams.singleStuName;
-                $http.get(chaXunStuUrl).success(function(data){
-                  if(data && data.length > 0){
-                    keXuHaoObj = {
-                      token: token,
-                      kexuhaoid: '',
-                      users: [{uid: data[0].UID, zhuangtai:1}]
-                    };
-                    if($scope.selectKxh){
-                      keXuHaoObj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-                      $http.post(modifyKxhYh, keXuHaoObj).success(function(addKxh){
-                        if(addKxh.result){
-                          DataService.alertInfFun('suc', '添加用户成功!');
+                var matchRule = $scope.guanliParams.singleStuID.match(regKxh);
+                if(matchRule && matchRule.length > 0){
+                  //先去查询UID
+                  var chaXunStuUrl = chaXunStuBaseUrl + '?token=' + token + '&jigouid=' + jigouid +
+                    '&xuehao=' + $scope.guanliParams.singleStuID + '&xingming=' + $scope.guanliParams.singleStuName;
+                  $http.get(chaXunStuUrl).success(function(data){
+                    if(data && data.length > 0){
+                      keXuHaoObj = {
+                        token: token,
+                        kexuhaoid: '',
+                        users: [{uid: data[0].UID, zhuangtai:1}]
+                      };
+                      if($scope.selectKxh){
+                        keXuHaoObj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
+                        $http.post(modifyKxhYh, keXuHaoObj).success(function(addKxh){
+                          if(addKxh.result){
+                            DataService.alertInfFun('suc', '添加用户成功!');
+                            $scope.renYuanAddType = '';
+                            $scope.glSelectData = '';
+                            $scope.showKeXuHaoManage = false;
+                            $scope.guanliParams.singleStuName = '';
+                            $scope.guanliParams.singleStuID = '';
+                            $scope.chaXunKxhYongHu($scope.selectKxh);
+                          }
+                          else{
+                            DataService.alertInfFun('err', addKxh.error);
+                          }
+                        });
+                      }
+                      else{
+                        DataService.alertInfFun('pmt', '课序号ID为空！');
+                      }
+                    }
+                    else if(data && data.length == 0){
+                      var singleYhObj = {
+                        token: token,
+                        YONGHULEIBIE: 2,
+                        YONGHUHAO: $scope.guanliParams.singleStuID,
+                        XINGMING: $scope.guanliParams.singleStuName,
+                        ZHUANGTAI: 1,
+                        JIGOU: [{JIGOU_ID: jigouid, ZHUANGTAI: 1}],
+                        KEXUHAO_ID: $scope.selectKxh.KEXUHAO_ID
+                      };
+                      $http.post(singleYhAddToKxh, singleYhObj).success(function(result){
+                        if(result.result){
                           $scope.renYuanAddType = '';
                           $scope.glSelectData = '';
                           $scope.showKeXuHaoManage = false;
                           $scope.guanliParams.singleStuName = '';
                           $scope.guanliParams.singleStuID = '';
                           $scope.chaXunKxhYongHu($scope.selectKxh);
+                          DataService.alertInfFun('suc', '添加用户成功!');
                         }
                         else{
-                          DataService.alertInfFun('err', addKxh.error);
+                          DataService.alertInfFun('err', result.error);
                         }
                       });
                     }
                     else{
-                      DataService.alertInfFun('pmt', '课序号ID为空！');
+                      DataService.alertInfFun('err', data.error);
                     }
-                  }
-                  else if(data && data.length == 0){
-                    var singleYhObj = {
-                      token: token,
-                      YONGHULEIBIE: 2,
-                      YONGHUHAO: $scope.guanliParams.singleStuID,
-                      XINGMING: $scope.guanliParams.singleStuName,
-                      ZHUANGTAI: 1,
-                      JIGOU: [{JIGOU_ID: jigouid, ZHUANGTAI: 1}],
-                      KEXUHAO_ID: $scope.selectKxh.KEXUHAO_ID
-                    };
-                    $http.post(singleYhAddToKxh, singleYhObj).success(function(result){
-                      if(result.result){
-                        $scope.renYuanAddType = '';
-                        $scope.glSelectData = '';
-                        $scope.showKeXuHaoManage = false;
-                        $scope.guanliParams.singleStuName = '';
-                        $scope.guanliParams.singleStuID = '';
-                        $scope.chaXunKxhYongHu($scope.selectKxh);
-                        DataService.alertInfFun('suc', '添加用户成功!');
-                      }
-                      else{
-                        DataService.alertInfFun('err', result.error);
-                      }
-                    });
-                  }
-                  else{
-                    DataService.alertInfFun('err', data.error);
-                  }
-                });
+                  });
+                  $scope.guanliParams.errorInfo = '';
+                }
+                else{
+                  $scope.guanliParams.errorInfo = '输入的学号格式不正确！';
+                }
               }
               else{
                 DataService.alertInfFun('pmt', '缺少学号！');
@@ -424,6 +448,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               });
             }
           }
+          showMoreBtnFun();
         };
 
         /**
@@ -486,6 +511,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           else{
             DataService.alertInfFun('pmt', '缺少课序号ID！');
           }
+          showMoreBtnFun();
         };
 
         /**
@@ -536,6 +562,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
           }
           $scope.studentsData = $scope.studentsOrgData.slice(startPage, endPage);
+          showMoreBtnFun();
         };
 
         /**
@@ -594,6 +621,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           else{
             DataService.alertInfFun('pmt', '请选择要删除的人员！');
           }
+          showMoreBtnFun();
         };
 
     }]);
