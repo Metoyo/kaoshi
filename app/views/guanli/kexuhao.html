@@ -11,9 +11,9 @@
           <th class="text-right">任课老师</th>
           <th width="80px" class="text-center">操作</th>
         </tr>
-        <tr ng-repeat="kxh in keXuHaoData">
-          <td>
-            <span class="cursorPointer mr5" ng-click="chaXunKxhYongHu(kxh)">
+        <tr ng-repeat="kxh in keXuHaoData" class="cursorPointer">
+          <td ng-click="chaXunKxhYongHu(kxh)">
+            <span class="cursorPointer mr5">
               {{kxh.KEXUHAO_MINGCHENG}}
             </span>
             <span>{{'('+kxh.STUDENTS+'人)'}}</span>
@@ -138,7 +138,7 @@
             <span class="mt5 dpb">教师</span>
           </div>
           <div class="col-md-8 mt5">
-            <label class="checkbox-inline" ng-repeat="tcr in jgLyTeachers">
+            <label class="checkbox-inline wp22" ng-repeat="tcr in jgLyTeachers">
               <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr.XINGMING}}
             </label>
           </div>
