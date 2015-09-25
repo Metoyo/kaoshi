@@ -987,7 +987,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 查看考试详情
+           * 查看考试详情//
            */
           $scope.seeKaoShiDetail = function(ks){
             var chaXunChangCi = chaXunChangCiUrl + ks.KAOSHIZU_ID;
@@ -995,6 +995,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               KAOSHIZU_NAME: ks.KAOSHIZU_NAME,
               BAOMINGFANGSHI: ks.BAOMINGFANGSHI,
               KAOSHIZU_ID: ks.KAOSHIZU_ID,
+              ZHUANGTAI: ks.ZHUANGTAI,
               changci: []
             };
             $scope.changCiKaoSheng = '';
@@ -1206,7 +1207,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "kaoWuPaperDetail"]);
           });
 
-        } // 002 结束
-      ]); //controller 结束
-  } // 001 结束
+        }
+      ]);
+  }
 );

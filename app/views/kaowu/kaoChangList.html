@@ -1,24 +1,25 @@
-<div class="row">
-    <button type="button" class="btn btn-primary" ng-click="addNewKaoChang()">新增考场</button>
-</div>
-<table class="table table-striped kaowu-table kaoChangList">
+<h4 class="pb10 bdb">
+  <span class="cYell">{{session.defaultLyName}}</span><span>考场管理</span>
+  <button type="button" class="btn btn-primary ml15" ng-click="addNewKaoChang()">新增考场</button>
+</h4>
+<table class="table table-striped kaoChangList">
     <tr class="active">
         <th>考场名称</th>
-        <th>考位数量</th>
-        <th>考场地址</th>
-        <th>交通方式</th>
-        <th>联系人</th>
-        <th>联系方式</th>
-        <th width="205px">操作</th>
+        <th class="text-center">考位数量</th>
+        <th class="text-center">考场地址</th>
+        <th class="text-center">交通方式</th>
+        <th class="text-center">联系人</th>
+        <th class="text-center">联系方式</th>
+        <th width="205px" class="text-center">操作</th>
     </tr>
     <tr ng-repeat="kc in kaoChangList">
         <td ng-bind="kc.KMINGCHENG">
         </td>
         <td class="text-center" ng-bind="kc.KAOWEISHULIANG">
         </td>
-        <td ng-bind="kc.XIANGXIDIZHI">
+        <td class="text-center" ng-bind="kc.XIANGXIDIZHI">
         </td>
-        <td ng-bind="kc.JIAOTONGFANGSHI">
+        <td class="text-center" ng-bind="kc.JIAOTONGFANGSHI">
         </td>
         <td class="text-center" ng-bind="kc.LIANXIREN">
         </td>
