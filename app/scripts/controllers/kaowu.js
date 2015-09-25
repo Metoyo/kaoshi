@@ -37,8 +37,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var xiuGaiKaoChangUrl = baseKwAPIUrl + 'xiugai_kaodiankaochang'; //修改考场的url
           var itemNumPerPage = 10; //每页显示多少条数据
           var paginationLength = 11; //分页部分，页码的长度，目前设定为11
-          var faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshi_id='; //发布考试的url
+          var faBuKaoShiBaseUrl = baseKwAPIUrl + 'fabu_kaoshizu?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&kaoshizu_id='; //发布考试的url
           var qryPaperDetailBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷详情的url
           var kaoShiPageArr = []; //定义考试页码数组
@@ -292,7 +292,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 BAOMINGFANGSHI: '', //1固定名单，2是线上报名
                 SHICHANG: '', //考试时长，临时数据，赋值给每个场次
                 XUZHI: '', //考试须知
-                ZHUANGTAI: 0, //等待发布，永于发布考试
+                ZHUANGTAI: 0, //等待发布，用于发布考试
                 CHANGCI: [
                   //{
                   //  KAOSHI_ID: '',
@@ -871,6 +871,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 DataService.alertInfFun('pmt', '请添加考生！');
                 return;
               }
+              $scope.kaoshiData.shuju.ZHUANGTAI = 2;
             }
             $http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
               if(data.result){

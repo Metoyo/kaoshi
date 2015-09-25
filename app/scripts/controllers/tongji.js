@@ -18,14 +18,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var caozuoyuan = userInfo.UID;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
         var lingyuid = $rootScope.session.defaultLyId;
-        var letterArr = config.letterArr;
         var queryKaoShi = baseTjAPIUrl + 'query_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试数据
-        var queryShiJuan = baseTjAPIUrl + 'query_shijuan?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷数据
         var queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token; //查询考生数据
         var queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token; //查询带分数的知识点
-        var queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token; //查询题目数据
+        //var queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token; //查询题目数据
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + jigouid
             + '&lingyuid=' + lingyuid + '&xuehao='; //查询考试通过考生学号
         var dataNumOfPerPage = 10; //每页显示多少条数据
@@ -33,8 +30,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var pagesArr = []; //定义考试页码数组
         var tjNeedData = []; //存放查询出来的统计数数据
         var lastPage; //符合条件的考试一共有多少页
-        var tjKaoShiData = '';
-        var backToWhere = ''; //返回按钮返回到什么列表
+        //var tjKaoShiData = '';
+        //var backToWhere = ''; //返回按钮返回到什么列表
         var tjParaObj = {
             pieBox: '',
             barBox: '',
@@ -89,13 +86,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         $scope.showKaoShiTjList = function(){
           var kaoShiZuDist;
           if(!($scope.tjKaoShiList && $scope.tjKaoShiList.length > 0)){
-            tjKaoShiData = '';
+            //tjKaoShiData = '';
             pagesArr = [];
             tjNeedData = [];
             DataService.getData(queryKaoShi).then(function(data) {
               if(data && data.length > 0){
                 //tjNeedData = data;
-                tjKaoShiData = data;
+                //tjKaoShiData = data;
                 kaoShiZuDist = Lazy(data).groupBy(function(ks, idx, lst){
                   if(!ks.KAOSHIZU_ID){
                     ks.KAOSHIZU_ID = 'others';

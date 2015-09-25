@@ -14,12 +14,15 @@
 </div>
 <!-- 统计的容器 开始-->
 <div class="tab-content wp90 mlp5 ptb10">
+  <h4 class="pb10">
+    <span class="cYell">{{session.defaultLyName}}</span>考试统计
+  </h4>
   <table class="table table-striped">
     <tr>
       <th>考试名称</th>
       <th>试卷名称</th>
       <th width="120px" class="text-center">考试人数</th>
-      <th width="120px" class="text-center">考试时间</th>
+      <th width="240px" class="text-center">考试时间</th>
     </tr>
     <tr ng-repeat="ks in tjKaoShiList" ng-click="tjShowKaoShiChart(ks)">
       <td>

@@ -400,7 +400,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               }
               $http.post(importUser, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
                 .success(function(data){
-                  if(data && data.length > 0){
+                  if(data.result){
                     $scope.loadingImgShow = false;
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
