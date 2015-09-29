@@ -91,7 +91,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.paperListIds = ''; //考试id列表
             $http.get(qryCxsjlbUrl).success(function(sjlb){
               if(sjlb.length){
-                paperListOriginData = sjlb;
+                paperListOriginData = Lazy(sjlb).sortBy(function(sj){
+                  return sj.UPDATE_TIME;
+                }).toArray().reverse();
               }
               else{
                 DataService.alertInfFun('err', '没有相关试卷信息！');
@@ -523,6 +525,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.showAddStuBox = false;
             $scope.studentsOrgData = '';
             $scope.uploadFiles = [];
+            $('input.addFileBtn').val('');
           };
 
           /**
@@ -568,6 +571,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   cc.tempIdx = idx;
                   cc.KAOSHI_MINGCHENG = '场次' + parseInt(idx + 1);
                 });
+                $scope.showChangCiInfo($scope.changCiObj, $scope.kaoshiData.shuju.CHANGCI.length - 1);
               }
               else{
                 DataService.alertInfFun('pmt', '开始时间和考试时长不能为空！');
@@ -585,6 +589,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           $scope.showChangCiInfo = function(cc, idx){
             $scope.selectChangCi = cc;
             $scope.selectChangCiIdx = idx;
+            var selectedKaoWei = 0;
             //重置所有的考场和试卷
             if(cc.KAOCHANG && cc.KAOCHANG.length > 0){
               Lazy($scope.allKaoChangList).each(function(kc){
@@ -601,6 +606,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               Lazy($scope.allKaoChangList).each(function(kc){
                 if(kc.KID == cckc){
                   kc.ckd = true;
+                  selectedKaoWei += kc.KAOWEISHULIANG;
                 }
               });
             });
@@ -623,6 +629,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   if(!findIn){
                     cc.KAOCHANG.push(kc.KID);
                   }
+                  selectedKaoWei += kc.KAOWEISHULIANG;
                 }
               });
             }
@@ -636,6 +643,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 }
               });
             }
+            cc.selectKaoWei = selectedKaoWei;
             $scope.paperListIds = paperListOriginData.slice(0, 10);
           };
 
@@ -651,10 +659,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.addKaoChangToCc = function(kc){
             var kcIds = [];
+            var kaoWeiNum = 0;
             kc.ckd = !kc.ckd;
             Lazy($scope.allKaoChangList).each(function(akc){
               if(akc.ckd){
                 kcIds.push(akc.KID);
+                kaoWeiNum += akc.KAOWEISHULIANG;
               }
             });
             Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
@@ -662,6 +672,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 cc.KAOCHANG = kcIds;
               }
             });
+            $scope.selectChangCi.selectKaoWei = kaoWeiNum;
           };
 
           /**
@@ -718,12 +729,24 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             if(file && file.length > 0){
               $scope.loadingImgShow = true;
               DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
-                $scope.uploadFileUrl = result.data;
                 $scope.uploadFiles = [];
-                if(result.data.json){
-                  for(var item in result.data.json){
-                    kaoShengOldArr = result.data.json[item];
-                    break;
+                $('input.addFileBtn').val('');
+                if(!result.error){
+                  if(result.data && result.data.length >= 2){
+                    Lazy(result.data).each(function(d){
+                      var stuArr;
+                      for(var item in d.json){
+                        stuArr = d.json[item];
+                        break;
+                      }
+                      kaoShengOldArr = Lazy(kaoShengOldArr).union(stuArr);
+                    });
+                  }
+                  if(result.data.json){
+                    for(var item in result.data.json){
+                      kaoShengOldArr = result.data.json[item];
+                      break;
+                    }
                   }
                   Lazy(kaoShengOldArr).each(function(ks, idx, list){
                     var ksObj = {
@@ -813,6 +836,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.cancelAddStudent = function(){
             $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
+          };
+
+          /**
+           * 新建考试删除里面的考生
+           */
+          $scope.addKsDelStu = function(stu){
+            if(confirm('确定要删除此考生吗？')){
+              $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(t){
+                return t.UID == stu.UID;
+              }).toArray();
+            }
           };
 
           /**
@@ -987,7 +1021,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 查看考试详情//
+           * 查看考试详情
            */
           $scope.seeKaoShiDetail = function(ks){
             var chaXunChangCi = chaXunChangCiUrl + ks.KAOSHIZU_ID;

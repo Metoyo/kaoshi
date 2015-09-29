@@ -17,7 +17,7 @@ define(['angular'], function (angular) {
             txtStatus = "测试中";
             break;
           case 2:
-            txtStatus = "已发布报名";
+            txtStatus = "报名中";
             break;
           case 3:
             txtStatus = "考试已发布";

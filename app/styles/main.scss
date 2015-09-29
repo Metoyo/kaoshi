@@ -218,6 +218,18 @@ body {
 .cWhite{
   color: #fff;
 }
+.kssCl0{
+  background-color: #fce3f2;
+}
+.kssCl2{
+  background-color: #c6ebf5;
+}
+.kssCl3{
+  background-color: #f2d46f;
+}
+.kssCl5,kssCl6{
+  background-color: #87c5d6;
+}
 .bgcFFF{
   background-color: #fff;
 }
@@ -393,6 +405,13 @@ a.add-btn:hover span {
   overflow: hidden;
   .mbc-inner{
     width: 172px;
+  }
+}
+.newTable{
+  > thead > tr > td,
+  > tbody > tr > td,
+  > tfoot > tr > td{
+    padding: 3px 8px;
   }
 }
 /*base css end*/

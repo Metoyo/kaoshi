@@ -1,11 +1,13 @@
 <h4 class="pb10">
   <span class="cYell">{{session.defaultLyName}}</span><span>考试管理</span>
-  <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'all' }"
-     ng-click="showKaoShiZuList('all')">全部考试</a> |
-  <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'done' }"
-     ng-click="showKaoShiZuList('done')">已完成考试</a> |
-  <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'ing' }"
-     ng-click="showKaoShiZuList('ing')">未完成考试</a>
+  <span class="fz16">
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'all' }"
+       ng-click="showKaoShiZuList('all')">全部考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'done' }"
+       ng-click="showKaoShiZuList('done')">已完成考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.ksListZt == 'ing' }"
+       ng-click="showKaoShiZuList('ing')">未完成考试</a>
+  </span>
 </h4>
 <table class="table table-striped">
   <tr class="active">
@@ -23,7 +25,7 @@
     <td class="text-center" ng-bind="ks.BAOMINGFANGSHI==1 ? '非在线报名':'在线报名'"></td>
     <td class="text-center" ng-bind="ks.CHANGCI_COUNT"></td>
     <td class="text-center" ng-bind="ks.YIBAOMINGRENSHU + '/' + ks.ZONGRENSHU"></td>
-    <td class="text-center" ng-bind="ks.ZHUANGTAI | examStatus">
+    <td class="text-center {{'kssCl' + ks.ZHUANGTAI}}" ng-bind="ks.ZHUANGTAI | examStatus">
     </td>
     <td class="text-right">
       <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShi(ks.KAOSHIZU_ID)"
