@@ -15,14 +15,14 @@
       <table class="table table-striped">
         <tr>
           <th>考试名称</th>
-          <th class="text-right">考点</th>
+          <th>考点</th>
           <th class="text-center">开考时间</th>
           <th class="text-center">报名状态</th>
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="ks in kaoShiArrs">
           <td ng-bind="ks.KAOSHIZU_NAME"></td>
-          <td class="text-right" ng-bind="ks.kaoChangInfo.join(';')"></td>
+          <td ng-bind="ks.kaoChangInfo.join(';')"></td>
           <td class="text-center" ng-bind="ks.kaoShiShiJian"></td>
           <td class="text-center">
             <span class="clRed" ng-if="ks.YIBAOMING==0">未报名</span>

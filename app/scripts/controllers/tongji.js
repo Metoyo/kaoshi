@@ -22,7 +22,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试数据
         var queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token; //查询考生数据
         var queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token; //查询带分数的知识点
-        //var queryTiMuBase = baseTjAPIUrl + 'query_timu?token=' + token; //查询题目数据
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + jigouid
             + '&lingyuid=' + lingyuid + '&xuehao='; //查询考试通过考生学号
         var dataNumOfPerPage = 10; //每页显示多少条数据
@@ -30,12 +29,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var pagesArr = []; //定义考试页码数组
         var tjNeedData = []; //存放查询出来的统计数数据
         var lastPage; //符合条件的考试一共有多少页
-        //var tjKaoShiData = '';
-        //var backToWhere = ''; //返回按钮返回到什么列表
         var tjParaObj = {
             pieBox: '',
             barBox: '',
             lineBox: '',
+            radarBox: '',
             pieDataAll: '',
             pieDataBanJi: '',
             lineDataAll: '',
@@ -86,13 +84,10 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         $scope.showKaoShiTjList = function(){
           var kaoShiZuDist;
           if(!($scope.tjKaoShiList && $scope.tjKaoShiList.length > 0)){
-            //tjKaoShiData = '';
             pagesArr = [];
             tjNeedData = [];
             DataService.getData(queryKaoShi).then(function(data) {
               if(data && data.length > 0){
-                //tjNeedData = data;
-                //tjKaoShiData = data;
                 kaoShiZuDist = Lazy(data).groupBy(function(ks, idx, lst){
                   if(!ks.KAOSHIZU_ID){
                     ks.KAOSHIZU_ID = 'others';
@@ -682,6 +677,59 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 }
               ]
             };
+          var optRadar = {
+            title : {
+              text: '预算 vs 开销（Budget vs spending）',
+              subtext: '纯属虚构'
+            },
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+              orient : 'vertical',
+              x : 'right',
+              y : 'bottom',
+              data:['预算分配（Allocated Budget）','实际开销（Actual Spending）']
+            },
+            toolbox: {
+              show : true,
+              feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                restore : {show: true},
+                saveAsImage : {show: true}
+              }
+            },
+            polar : [
+              {
+                indicator : [
+                  { text: '销售（sales）', max: 6000},
+                  { text: '管理（Administration）', max: 16000},
+                  { text: '信息技术（Information Techology）', max: 30000},
+                  { text: '客服（Customer Support）', max: 38000},
+                  { text: '研发（Development）', max: 52000},
+                  { text: '市场（Marketing）', max: 25000}
+                ]
+              }
+            ],
+            calculable : true,
+            series : [
+              {
+                name: '预算 vs 开销（Budget vs spending）',
+                type: 'radar',
+                data : [
+                  {
+                    value : [4300, 10000, 28000, 35000, 50000, 19000],
+                    name : '预算分配（Allocated Budget）'
+                  },
+                  {
+                    value : [5000, 14000, 28000, 31000, 42000, 21000],
+                    name : '实际开销（Actual Spending）'
+                  }
+                ]
+              }
+            ]
+          };
           //饼状图数据
           if(kind == 'all'){
             optPie.series[0].data = tjParaObj.pieDataAll;
@@ -706,11 +754,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           tjParaObj.pieBox.setOption(optPie);
           tjParaObj.barBox.setOption(optBar);
           tjParaObj.lineBox.setOption(optLine);
+          tjParaObj.radarBox.setOption(optRadar);
           $timeout(function (){
             window.onresize = function () {
               tjParaObj.pieBox.resize();
               tjParaObj.barBox.resize();
               tjParaObj.lineBox.resize();
+              tjParaObj.radarBox.resize();
             }
           }, 200);
         };
@@ -1057,6 +1107,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
           tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
           tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
+          tjParaObj.radarBox = echarts.init(document.getElementById('chartRadar'));
         };
 
         /**

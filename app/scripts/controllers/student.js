@@ -67,7 +67,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   if(cc.YIBAOMING == 1){
                     var kci = cc.KMINGCHENG;
                     if(cc.ZUOWEIHAO){
-                      kci += cc.ZUOWEIHAO;
+                      kci += '--' + cc.ZUOWEIHAO + '号机';
                     }
                     kszObj.kaoShiShiJian = DataService.baoMingDateFormat(cc.KAISHISHIJIAN, cc.JIESHUSHIJIAN);
                     kszObj.YIBAOMING = 1;
