@@ -469,7 +469,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxhId.join(',');
               $http.get(chaXunYongHu).success(function(data){
                 if(data && data.length > 0){
-                  //$scope.studentsOrgData = data;
                   $scope.showAddStuBox = false;
                   //重构考生名单
                   var newKaoShengArr = [];
@@ -484,18 +483,22 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     };
                     newKaoShengArr.push(nksObj);
                   });
-                  $scope.studentsOrgData = newKaoShengArr;
+                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(newKaoShengArr).uniq('UID').toArray();
+                  //$scope.studentsOrgData = newKaoShengArr;
                   //将名单加入考试数据
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){ //非在线报名
                     Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
                       if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
                         (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
-                        cc.KAOSHENG = newKaoShengArr;
+                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(newKaoShengArr).uniq('UID').toArray();
+                        //cc.KAOSHENG = newKaoShengArr;
                       }
                     });
                   }
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
-                    $scope.kaoshiData.shuju.KAOSHENG = newKaoShengArr;
+                    $scope.kaoshiData.shuju.KAOSHENG = Lazy($scope.kaoshiData.shuju.KAOSHENG).union(newKaoShengArr)
+                      .uniq('UID').toArray();
+                    //$scope.kaoshiData.shuju.KAOSHENG = newKaoShengArr;
                   }
                 }
                 else{
@@ -788,14 +791,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
                       if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
                         (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
-                        cc.KAOSHENG = kaoShengNewArr;
+                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(kaoShengNewArr).uniq('UID').toArray();
+                        //cc.KAOSHENG = kaoShengNewArr;
                       }
                     });
                   }
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
-                    $scope.kaoshiData.shuju.KAOSHENG = kaoShengNewArr;
+                    $scope.kaoshiData.shuju.KAOSHENG = Lazy($scope.kaoshiData.shuju.KAOSHENG).union(kaoShengNewArr)
+                      .uniq('UID').toArray();
+                    //$scope.kaoshiData.shuju.KAOSHENG = kaoShengNewArr;
                   }
-                  $scope.studentsOrgData = kaoShengNewArr;
+                  //$scope.studentsOrgData = kaoShengNewArr;
+                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(kaoShengNewArr).uniq('UID').toArray();
                   $scope.loadingImgShow = false;
                   $scope.showAddStuBox = false;
                   $scope.isAddStuByKxh = false;
@@ -847,6 +854,24 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 return t.UID == stu.UID;
               }).toArray();
             }
+          };
+
+          /**
+           * 清楚已添加的考生//
+           */
+          $scope.clearKaoShengList = function(){
+            if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){
+              Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
+                if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
+                  (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
+                  cc.KAOSHENG = [];
+                }
+              });
+            }
+            else{
+              $scope.kaoshiData.shuju.KAOSHENG = [];
+            }
+            $scope.studentsOrgData = '';
           };
 
           /**

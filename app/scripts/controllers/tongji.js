@@ -678,10 +678,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               ]
             };
           var optRadar = {
-            title : {
-              text: '预算 vs 开销（Budget vs spending）',
-              subtext: '纯属虚构'
-            },
             tooltip : {
               trigger: 'axis'
             },
@@ -689,42 +685,32 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               orient : 'vertical',
               x : 'right',
               y : 'bottom',
-              data:['预算分配（Allocated Budget）','实际开销（Actual Spending）']
-            },
-            toolbox: {
-              show : true,
-              feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                restore : {show: true},
-                saveAsImage : {show: true}
-              }
+              data:['整体','班级']
             },
             polar : [
               {
                 indicator : [
-                  { text: '销售（sales）', max: 6000},
-                  { text: '管理（Administration）', max: 16000},
-                  { text: '信息技术（Information Techology）', max: 30000},
-                  { text: '客服（Customer Support）', max: 38000},
-                  { text: '研发（Development）', max: 52000},
-                  { text: '市场（Marketing）', max: 25000}
+                  { text: '及格率', max: 100},
+                  { text: '优秀率', max: 100},
+                  { text: '考试人数', max: 300},
+                  { text: 'TOP100', max: 100},
+                  { text: '平均分', max: 100}
                 ]
               }
             ],
             calculable : true,
             series : [
               {
-                name: '预算 vs 开销（Budget vs spending）',
+                name: '整体对比',
                 type: 'radar',
                 data : [
                   {
-                    value : [4300, 10000, 28000, 35000, 50000, 19000],
-                    name : '预算分配（Allocated Budget）'
+                    value : [80, 70, 280, 20, 72],
+                    name : '整体'
                   },
                   {
-                    value : [5000, 14000, 28000, 31000, 42000, 21000],
-                    name : '实际开销（Actual Spending）'
+                    value : [70, 75, 80, 14, 70],
+                    name : '班级'
                   }
                 ]
               }
