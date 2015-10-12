@@ -857,7 +857,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 清楚已添加的考生//
+           * 清楚已添加的考生
            */
           $scope.clearKaoShengList = function(){
             if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){
@@ -1082,6 +1082,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.showChangCiToggle = function(){
             $scope.kaoChangListShow = true;
+          };
+
+          /**
+           * 显示场次的试卷信息
+           */
+          $scope.showPaperInfo = function(){
+
           };
 
           /**

@@ -65,6 +65,7 @@
     <div class="pwi-header plr10">
       <span class="title" ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></span>
       <div class="pull-right">
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">报考情况</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiDetailData.BAOMINGFANGSHI==2"
           ng-click="queryBaoMingStu('no', kaoShiDetailData.KAOSHIZU_ID)">未报名考生</a>
