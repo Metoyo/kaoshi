@@ -992,17 +992,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             else{
               ksObj.studentState = 'no';
             }
-            $http.get(deleteChangCiStudent, {params:ksObj}).success(function(data){
-              if(data.result){
-                $scope.changCiKaoSheng = Lazy($scope.changCiKaoSheng).reject(function(ccks){
-                  return ccks.UID == ks.UID;
-                }).toArray();
-                DataService.alertInfFun('suc', '删除成功！')
-              }
-              else{
-                DataService.alertInfFun('err', data.error)
-              }
-            });
+            if(confirm('你确定要删除此考生吗？')){
+              $http.get(deleteChangCiStudent, {params:ksObj}).success(function(data){
+                if(data.result){
+                  $scope.changCiKaoSheng = Lazy($scope.changCiKaoSheng).reject(function(ccks){
+                    return ccks.UID == ks.UID;
+                  }).toArray();
+                  DataService.alertInfFun('suc', '删除成功！')
+                }
+                else{
+                  DataService.alertInfFun('err', data.error)
+                }
+              });
+            }
           };
 
           /**
@@ -1061,11 +1063,25 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.kwParams.kaoShengState = '';
             $http.get(chaXunChangCi).success(function(data){
               if(data && data.length > 0){
-                Lazy(data).each(function(cc){
-                  cc.kaoShiShiJian = DataService.baoMingDateFormat(cc.KAISHISHIJIAN, cc.JIESHUSHIJIAN);
+                var ccArr = [];
+                Lazy(data).groupBy('KAOSHI_ID').each(function(v, k, l){
+                  var ccDist = Lazy(v).groupBy('KID').toObject();
+                  Lazy(ccDist).each(function(v1, k1, l1){
+                    var ccObj = v1[0];
+                    var sjName = Lazy(v1).map(function(cc){
+                      return cc.SHIJUANMINGCHENG;
+                    }).toArray().join('; ');
+                    var sjId = Lazy(v1).map(function(cc){
+                      return cc.SHIJUAN_ID;
+                    }).toArray().join('; ');
+                    ccObj.SHIJUANMINGCHENG = sjName;
+                    ccObj.SHIJUAN_ID = sjId;
+                    ccObj.kaoShiShiJian = DataService.baoMingDateFormat(ccObj.KAISHISHIJIAN, ccObj.JIESHUSHIJIAN);
+                    ccArr.push(ccObj);
+                  });
                 });
-                Lazy(data).sortBy(function(cc){return cc.KAISHISHIJIAN});
-                ksObj.changci = data;
+                Lazy(ccArr).sortBy(function(cc){return cc.KAISHISHIJIAN});
+                ksObj.changci = ccArr;
                 $scope.kaoShiDetailData = ksObj;
                 $scope.kaoChangListShow = true;
                 $scope.kwParams.showKaoShiDetail = true;

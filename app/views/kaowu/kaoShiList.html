@@ -75,41 +75,58 @@
       </div>
     </div>
     <div class="pwi-body plr10">
-      <!--场次的table-->
-      <table class="table table-striped mt15" ng-show="kaoChangListShow">
-        <tr class="active">
-          <th>场次</th>
-          <th class="text-center">考试时间</th>
-          <th class="text-center">时长</th>
-          <th class="text-center">考点</th>
-          <th class="text-center">考生</th>
-        </tr>
-        <tr class="cursorPointer" ng-repeat="cc in kaoShiDetailData.changci" ng-click="queryBaoMingStu('on', cc)">
-          <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
-          <td class="text-center" ng-bind="cc.kaoShiShiJian"></td>
-          <td class="text-center" ng-bind="cc.SHICHANG"></td>
-          <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
-          <td class="text-center">{{cc.YIBAOMINGRENSHU || 0}}/{{cc.KAOWEISHULIANG}}</td>
-        </tr>
-      </table>
-      <!--学生的table-->
-      <table class="table table-striped mt15" ng-hide="kaoChangListShow">
-        <tr class="active">
-          <th>姓名</th>
-          <th class="text-center">学号</th>
-          <th class="text-center">班级</th>
-          <th width="60px" class="text-center">操作</th>
-        </tr>
-        <tr class="cursorPointer" ng-repeat="ks in changCiKaoSheng">
-          <td ng-bind="ks.XINGMING"></td>
-          <td class="text-center" ng-bind="ks.YONGHUHAO"></td>
-          <td class="text-center" ng-bind="ks.BANJI"></td>
-          <td class="text-center">
+      <div>
+        <!--场次的table-->
+        <table class="table table-striped mt15" ng-show="kaoChangListShow">
+          <tr>
+            <th>场次</th>
+            <th class="text-center">考试时间</th>
+            <th class="text-center">时长</th>
+            <th class="text-center">考点</th>
+            <th class="text-center">考生</th>
+          </tr>
+          <tr class="cursorPointer" ng-repeat="cc in kaoShiDetailData.changci" ng-click="queryBaoMingStu('on', cc)">
+            <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+            <td class="text-center" ng-bind="cc.kaoShiShiJian"></td>
+            <td class="text-center" ng-bind="cc.SHICHANG"></td>
+            <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
+            <td class="text-center">{{cc.YIBAOMINGRENSHU || 0}}/{{cc.KAOWEISHULIANG}}</td>
+          </tr>
+        </table>
+        <!--学生的table-->
+        <table class="table table-striped mt15" ng-hide="kaoChangListShow">
+          <tr>
+            <th>姓名</th>
+            <th class="text-center">学号</th>
+            <th class="text-center">班级</th>
+            <th width="60px" class="text-center">操作</th>
+          </tr>
+          <tr ng-repeat="ks in changCiKaoSheng">
+            <td ng-bind="ks.XINGMING"></td>
+            <td class="text-center" ng-bind="ks.YONGHUHAO"></td>
+            <td class="text-center" ng-bind="ks.BANJI"></td>
+            <td class="text-center cursorPointer">
             <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
-              ng-if="kaoShiDetailData.ZHUANGTAI<3"></span>
-          </td>
-        </tr>
-      </table>
+                  ng-if="kaoShiDetailData.ZHUANGTAI<3"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <!--修改试卷table-->
+        <table class="table table-striped mt15">
+          <tr class="active">
+            <th>场次</th>
+            <th class="text-center">考点</th>
+            <th class="text-center">试卷</th>
+          </tr>
+          <tr ng-repeat="cc in kaoShiDetailData.changci">
+            <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+            <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
+            <td class="text-center" ng-bind="cc.SHIJUANMINGCHENG"></td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
