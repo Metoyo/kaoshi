@@ -102,6 +102,10 @@ body {
   max-height: 300px;
   overflow-y: auto;
 }
+.h400{
+  max-height: 400px;
+  overflow-y: auto;
+}
 .m0{
   margin: 0;
 }
@@ -191,8 +195,8 @@ body {
 .bdb{
   border-bottom: 1px solid #cfcfcf;
 }
-.bdbd{
-  border-bottom: 1px dashed #cfcfcf;
+.bd1{
+  border: 1px solid #cfcfcf;
 }
 .bd0{
   border: 0;
