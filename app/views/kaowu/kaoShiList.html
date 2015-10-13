@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="pwi-body plr10">
-      <div>
+      <div ng-hide="showPaperBtn">
         <!--场次的table-->
         <table class="table table-striped mt15" ng-show="kaoChangListShow">
           <tr>
@@ -112,8 +112,11 @@
           </tr>
         </table>
       </div>
-      <div>
+      <div ng-show="showPaperBtn">
         <!--修改试卷table-->
+        <p class="text-right mt10" ng-show="kaoShiDetailData.BAOMINGFANGSHI==2">
+          <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
+        </p>
         <table class="table table-striped mt15">
           <tr class="active">
             <th>场次</th>

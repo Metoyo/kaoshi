@@ -968,6 +968,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 $scope.kaoChangListShow = true;
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.showPaperBtn = false;
             });
           };
 
@@ -1084,6 +1085,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 ksObj.changci = ccArr;
                 $scope.kaoShiDetailData = ksObj;
                 $scope.kaoChangListShow = true;
+                $scope.showPaperBtn = false;
                 $scope.kwParams.showKaoShiDetail = true;
               }
               else{
@@ -1098,13 +1100,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.showChangCiToggle = function(){
             $scope.kaoChangListShow = true;
+            $scope.showPaperBtn = false;
           };
 
           /**
            * 显示场次的试卷信息
            */
           $scope.showPaperInfo = function(){
-
+            $scope.showPaperBtn = true;
           };
 
           /**
