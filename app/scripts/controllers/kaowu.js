@@ -1135,6 +1135,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.alertPaperWrapShow = function(){
             $scope.paperListIds = angular.copy(paperListOriginData);
+            $scope.kwParams.checkedAllChangCi = false;
             $scope.showPaperListBox = true;
           };
 
@@ -1169,25 +1170,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 保存试卷修改
            */
-          //var qMap = function (array, fn) {
-          //  var dfd = $q.defer();
-          //  var index = 0;
-          //  (function next() {
-          //    if ((!array) || (index >= array.length)) {
-          //      dfd.resolve();
-          //      return;
-          //    }
-          //    var item = array[index];
-          //    var promise = fn(item, index, array);
-          //    promise.then(function(){
-          //      next();
-          //    },function(){
-          //      dfd.reject();
-          //    });
-          //    index++;
-          //  })();
-          //  return dfd.promise;
-          //};
           $scope.saveAlertPaper = function(){
             var ccIdArr = [];
             var sjIdArr = [];
@@ -1242,6 +1224,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             else{
               $scope.kwParams.showKaoShiDetail = false;
+              DataService.alertInfFun('suc', '修改成功！');
             }
           };
 
