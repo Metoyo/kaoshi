@@ -84,33 +84,42 @@
             <th class="text-center">时长</th>
             <th class="text-center">考点</th>
             <th class="text-center">考生</th>
+            <th class="text-center">导出考生</th>
           </tr>
-          <tr class="cursorPointer" ng-repeat="cc in kaoShiDetailData.changci" ng-click="queryBaoMingStu('on', cc)">
-            <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+          <tr ng-repeat="cc in kaoShiDetailData.changci">
+            <td  class="cursorPointer" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="queryBaoMingStu('on', cc)"></td>
             <td class="text-center" ng-bind="cc.kaoShiShiJian"></td>
             <td class="text-center" ng-bind="cc.SHICHANG"></td>
             <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
             <td class="text-center">{{cc.YIBAOMINGRENSHU || 0}}/{{cc.KAOWEISHULIANG}}</td>
-          </tr>
-        </table>
-        <!--学生的table-->
-        <table class="table table-striped mt15" ng-hide="kaoChangListShow">
-          <tr>
-            <th>姓名</th>
-            <th class="text-center">学号</th>
-            <th class="text-center">班级</th>
-            <th width="60px" class="text-center">操作</th>
-          </tr>
-          <tr ng-repeat="ks in changCiKaoSheng">
-            <td ng-bind="ks.XINGMING"></td>
-            <td class="text-center" ng-bind="ks.YONGHUHAO"></td>
-            <td class="text-center" ng-bind="ks.BANJI"></td>
-            <td class="text-center cursorPointer">
-            <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
-                  ng-if="kaoShiDetailData.ZHUANGTAI<3"></span>
+            <td class="text-center cursorPointer" title="导出考生" ng-click="exportKsInfo('mdOff', cc)">
+              <span class="glyphicon glyphicon-export"></span>
             </td>
           </tr>
         </table>
+        <!--学生的table-->
+        <div ng-hide="kaoChangListShow">
+          <a href="javascript:void(0)" class="pull-right p10" ng-click="exportKsInfo('mdOn', '')">导出考生</a>
+          <table class="table table-striped mt15">
+            <tr>
+              <th>姓名</th>
+              <th class="text-center">学号</th>
+              <th class="text-center">班级</th>
+              <th class="text-center">座位号</th>
+              <th width="60px" class="text-center">操作</th>
+            </tr>
+            <tr ng-repeat="ks in changCiKaoSheng">
+              <td ng-bind="ks.XINGMING"></td>
+              <td class="text-center" ng-bind="ks.YONGHUHAO"></td>
+              <td class="text-center" ng-bind="ks.BANJI"></td>
+              <td class="text-center" ng-bind="ks.ZUOWEIHAO"></td>
+              <td class="text-center cursorPointer">
+            <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
+                  ng-if="kaoShiDetailData.ZHUANGTAI<3"></span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div ng-show="showPaperBtn">
         <!--修改试卷table-->

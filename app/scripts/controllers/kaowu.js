@@ -17,6 +17,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var baseKwAPIUrl = config.apiurl_kw; //考务的api
           var baseMtAPIUrl = config.apiurl_mt; //mingti的api
           var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
+          var baseTjAPIUrl = config.apiurl_tj; //统计的api
           var token = config.token;
           var caozuoyuan = userInfo.UID;//登录的用户的UID   chaxun_kaoshi_liebiao
           var jigouid = userInfo.JIGOU[0].JIGOU_ID;
@@ -66,6 +67,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询未报名考生
           var deleteChangCiStudent = baseKwAPIUrl + 'delete_changci_student'; //删除场次中的考生
           var xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试
+          var exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel'; //导出excel名单
+          var downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -83,7 +86,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             kaoShengState: '', //判断考生状态
             baoMingMethod: '', //报名方式
             selectKaoShiId: '', // 选中考试的ID
-            checkedAllChangCi: false
+            checkedAllChangCi: false,
+            selectedCc: '' //选中的场次
           };
 
           /**
@@ -950,29 +954,34 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            * 查询报名考生
            */
           $scope.queryBaoMingStu = function(stat, cc){
+            //var deferred = $q.defer();
             var chaXunKaoSheng;
             $scope.changCiKaoSheng = '';
             $scope.kwParams.kaoShengState = stat;
             if(stat == 'no'){ //在线报名未报名人数
               chaXunKaoSheng = qryWeiBaoMingBaseUrl + '&kszid=' + cc;
+              $scope.kwParams.selectedCc = 'weibaoming';
             }
-            if(stat == 'on'){ //非在线报名的人数
+            if(stat == 'on'){ //已报名的人数
               $scope.kwParams.selectKaoShiId = cc.KAOSHI_ID;
               chaXunKaoSheng = qryKaoShengBaseUrl + '&kid=' + cc.KID + '&kaoshiid=' + cc.KAOSHI_ID;
+              $scope.kwParams.selectedCc = cc;
             }
             $http.get(chaXunKaoSheng).success(function(data){
               if(data && data.length > 0){
                 $scope.changCiKaoSheng = data;
                 $scope.kaoChangListShow = false;
-                console.log(data);
+                //deferred.resolve();
               }
               else{
                 $scope.changCiKaoSheng = '';
                 $scope.kaoChangListShow = true;
                 DataService.alertInfFun('err', data.error);
+                //deferred.reject();
               }
               $scope.showPaperBtn = false;
             });
+            //return deferred.promise;
           };
 
           /**
@@ -1009,6 +1018,91 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 }
               });
             }
+          };
+
+          /**
+           * 导出学生,需要的数据为考生列表
+           */
+          function submitFORM(path, params, method) {
+            method = method || "post";
+            var form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+            form._submit_function_ = form.submit;
+            for(var key in params) {
+              if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+                form.appendChild(hiddenField);
+              }
+            }
+            document.body.appendChild(form);
+            form._submit_function_();
+          }
+          $scope.exportKsInfo = function(bmStat, kc){
+            var ksData = {
+              token: token,
+              sheetName: '',
+              data: ''
+            };
+            var ksArr = [];
+            var exportStu;
+            ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '座位号'});
+            var exportFun = function(stuData){
+              exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
+              Lazy(exportStu).each(function(ks){
+                var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUOWEIHAO: ''};
+                ksObj.YONGHUHAO = ks.YONGHUHAO;
+                ksObj.XINGMING = ks.XINGMING;
+                ksObj.BANJI = ks.BANJI;
+                ksObj.ZUOWEIHAO = ks.ZUOWEIHAO;
+                ksArr.push(ksObj);
+              });
+              ksData.data = JSON.stringify(ksArr);
+              //submitFORM(exportStuInfoUrl, ksData, 'POST');
+              $http.post(exportStuInfoUrl, ksData).success(function(data){
+                var downloadTempFile = downloadTempFileBase + data.filename,
+                  aLink = document.createElement('a'),
+                  evt = document.createEvent("HTMLEvents");
+                evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+                aLink.href = downloadTempFile; //url
+                aLink.dispatchEvent(evt);
+              });
+            };
+            if(bmStat == 'mdOff'){ //直接从场次那导出考生
+              var chaXunKaoSheng = qryKaoShengBaseUrl + '&kid=' + kc.KID + '&kaoshiid=' + kc.KAOSHI_ID;
+              $http.get(chaXunKaoSheng).success(function(data){
+                if(data && data.length > 0){
+                  var exlName = kc.KAOSHI_MINGCHENG + '_' + kc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + kc.KMINGCHENG;
+                  ksData.sheetName = exlName.replace(/:/g, '_');
+                  exportFun(data);
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            if(bmStat == 'mdOn'){ //名单列表考生
+              if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc != 'weibaoming'){
+                var exlName = $scope.kwParams.selectedCc.KAOSHI_MINGCHENG + '_' +
+                $scope.kwParams.selectedCc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + $scope.kwParams.selectedCc.KMINGCHENG;
+                ksData.sheetName = exlName.replace(/:/g, '_');
+              }
+              if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc == 'weibaoming'){
+                ksData.sheetName = '未报名考生';
+              }
+              exportFun($scope.changCiKaoSheng);
+            }
+            //$http.post(exportStuInfoUrl, ksData).success(function(data){
+            //  var downloadTempFile = downloadTempFileBase + data.filename,
+            //    aLink = document.createElement('a'),
+            //    evt = document.createEvent("HTMLEvents");
+            //  evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+            //  aLink.href = downloadTempFile; //url
+            //  aLink.dispatchEvent(evt);
+            //});//
           };
 
           /**
@@ -1104,6 +1198,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           $scope.showChangCiToggle = function(){
             $scope.kaoChangListShow = true;
             $scope.showPaperBtn = false;
+            $scope.kwParams.selectedCc = '';
           };
 
           /**
@@ -1226,6 +1321,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               $scope.kwParams.showKaoShiDetail = false;
               DataService.alertInfFun('suc', '修改成功！');
             }
+          };
+
+          /**
+           * 导出考生
+           */
+          $scope.exportKaoSheng = function(){
+
           };
 
           /**

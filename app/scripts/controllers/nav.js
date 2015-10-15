@@ -163,7 +163,10 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           var jueseItem = $('input[name=rightName]:checked');
           Lazy(jueseItem).each(function(js, idx, lst){
             selectJueseIdArr.push(js.value);
-            selectJueseNameArr.push(js.nextElementSibling.textContent);
+            var jsName = js.nextElementSibling;
+            if(jsName){
+              selectJueseNameArr.push(jsName.innerHTML);
+            }
           });
           $scope.jueseValue = selectJueseIdArr.length;
         };
