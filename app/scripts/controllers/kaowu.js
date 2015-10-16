@@ -67,8 +67,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询未报名考生
           var deleteChangCiStudent = baseKwAPIUrl + 'delete_changci_student'; //删除场次中的考生
           var xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试
-          var exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel'; //导出excel名单
-          var downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
+          var exportStuInfoUrl = config.apiurl_gg + 'json2excel?xls_file_name=场次1'; //导出excel名单
+          //var exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel'; //导出excel名单
+          //var downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
@@ -1043,40 +1044,47 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           }
           $scope.exportKsInfo = function(bmStat, kc){
             var ksData = {
-              token: token,
-              sheetName: '',
-              data: ''
+              //token: token,
+              //sheetName: '',
+              //data: ''
             };
+            var sheetName = '';
             var ksArr = [];
             var exportStu;
-            ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '座位号'});
+            //ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '座位号'});
             var exportFun = function(stuData){
               exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
               Lazy(exportStu).each(function(ks){
-                var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUOWEIHAO: ''};
-                ksObj.YONGHUHAO = ks.YONGHUHAO;
-                ksObj.XINGMING = ks.XINGMING;
-                ksObj.BANJI = ks.BANJI;
-                ksObj.ZUOWEIHAO = ks.ZUOWEIHAO;
+                //var ksObj = {YONGHUHAO: '', XINGMING: '', BANJI: '', ZUOWEIHAO: ''};
+                var ksObj = {};
+                ksObj['学号'] = ks.YONGHUHAO;
+                ksObj['姓名'] = ks.XINGMING;
+                ksObj['班级'] = ks.BANJI;
+                ksObj['座位号'] = ks.ZUOWEIHAO;
                 ksArr.push(ksObj);
               });
-              ksData.data = JSON.stringify(ksArr);
-              //submitFORM(exportStuInfoUrl, ksData, 'POST');
-              $http.post(exportStuInfoUrl, ksData).success(function(data){
-                var downloadTempFile = downloadTempFileBase + data.filename,
-                  aLink = document.createElement('a'),
-                  evt = document.createEvent("HTMLEvents");
-                evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-                aLink.href = downloadTempFile; //url
-                aLink.dispatchEvent(evt);
-              });
+
+              ksData[sheetName] = ksArr;
+              //ksData['1234566'] = JSON.stringify(ksArr);
+              //console.log(ksData);
+              submitFORM(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
+              //$http.post(exportStuInfoUrl, ksData).success(function(data){
+              //  var downloadTempFile = downloadTempFileBase + data.filename,
+              //    aLink = document.createElement('a'),
+              //    evt = document.createEvent("HTMLEvents");
+              //  evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+              //  aLink.href = downloadTempFile; //url
+              //  aLink.dispatchEvent(evt);
+              //});
             };
             if(bmStat == 'mdOff'){ //直接从场次那导出考生
               var chaXunKaoSheng = qryKaoShengBaseUrl + '&kid=' + kc.KID + '&kaoshiid=' + kc.KAOSHI_ID;
               $http.get(chaXunKaoSheng).success(function(data){
                 if(data && data.length > 0){
                   var exlName = kc.KAOSHI_MINGCHENG + '_' + kc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + kc.KMINGCHENG;
-                  ksData.sheetName = exlName.replace(/:/g, '_');
+                  sheetName = exlName.replace(/:/g, '_');
+                  //ksData.sheetName = exlName.replace(/:/g, '_');
+                  //ksData[sheetName] = ksArr;
                   exportFun(data);
                 }
                 else{
@@ -1088,10 +1096,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc != 'weibaoming'){
                 var exlName = $scope.kwParams.selectedCc.KAOSHI_MINGCHENG + '_' +
                 $scope.kwParams.selectedCc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + $scope.kwParams.selectedCc.KMINGCHENG;
-                ksData.sheetName = exlName.replace(/:/g, '_');
+                sheetName = exlName.replace(/:/g, '_');
+                //ksData.sheetName = exlName.replace(/:/g, '_');
+                //ksData[sheetName] = ksArr;
               }
               if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc == 'weibaoming'){
-                ksData.sheetName = '未报名考生';
+                sheetName = '未报名考生';
               }
               exportFun($scope.changCiKaoSheng);
             }
