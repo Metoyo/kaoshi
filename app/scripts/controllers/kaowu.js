@@ -66,7 +66,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var qryWeiBaoMingBaseUrl = baseKwAPIUrl + 'query_weibaoming_student?token=' + token + '&caozuoyuan=' + caozuoyuan +
             '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询未报名考生
           var deleteChangCiStudent = baseKwAPIUrl + 'delete_changci_student'; //删除场次中的考生
-          var xiuGaiKaoShiUrl = baseKwAPIUrl + 'xiugai_kaoshi'; //修改考试
+          var xiuGaiKaoShiShiJuanUrl = baseKwAPIUrl + 'xiugai_kaoshi_shijuan'; //修改考试试卷
           var exportStuInfoBase = config.apiurl_gg + 'json2excel?xls_file_name='; //导出excel名单
 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
@@ -1250,6 +1250,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             var ccIdArr = [];
             var sjIdArr = [];
             var err = [];
+            var obj = {
+              token: token,
+              caozuoyuan: caozuoyuan,
+              jigouid: jigouid,
+              lingyuid: lingyuid,
+              kaoshiid: '',
+              shijuanid: ''
+            };
             Lazy($scope.alertPaperCc).each(function(cc){
               if(cc.ckd){
                 ccIdArr.push(cc.KAOSHI_ID);
@@ -1260,48 +1268,68 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 sjIdArr.push(sj.SHIJUAN_ID);
               }
             });
-            function _do(item){
-              var deferred = $q.defer();
-              var obj = {
-                token: token,
-                caozuoyuan: caozuoyuan,
-                jigouid: jigouid,
-                lingyuid: lingyuid,
-                shuju: {
-                  KAOSHI_ID: item,
-                  SHIJUAN_ID: sjIdArr
-                }
-              };
-              $http.post(xiuGaiKaoShiUrl, obj).success(function(data){
-                if(data.result){
-                  deferred.resolve();
-                }
-                else{
-                  err.push(data.error);
-                  deferred.reject();
-                }
-              });
-              return deferred.promise;
+            if(!(ccIdArr && ccIdArr.length > 0)){
+              err.push('请选择考试！');
             }
-            var ccLen = ccIdArr.length;
-            for(var i = 0; i < ccLen; i++){
-              if(ccLen == 1){
-                _do(ccIdArr[i]);
-              }
-              if(ccLen > 1){
-                var promise = _do(ccIdArr[i]);
-                promise.then(function() {
-                  _do(ccIdArr[i + 1]);
-                });
-              }
+            if(!(sjIdArr && sjIdArr.length > 0)){
+              err.push('请选择试卷！');
             }
             if(err && err.length > 0){
-              DataService.alertInfFun('err', err.toString());
+              DataService.alertInfFun('err', err.join(';'));
             }
             else{
-              $scope.kwParams.showKaoShiDetail = false;
-              DataService.alertInfFun('suc', '修改成功！');
+              obj.kaoshiid = ccIdArr;
+              obj.shijuanid = sjIdArr;
+              $http.post(xiuGaiKaoShiShiJuanUrl, obj).success(function(data){
+                if(data.result){
+                  $scope.kwParams.showKaoShiDetail = false;
+                  DataService.alertInfFun('suc', '修改成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
             }
+            //function _do(item){
+            //  var deferred = $q.defer();
+            //  var obj = {
+            //    token: token,
+            //    caozuoyuan: caozuoyuan,
+            //    jigouid: jigouid,
+            //    lingyuid: lingyuid,
+            //    kaoshiid: '',
+            //    shijuanid: ''
+            //  };
+            //  $http.post(xiuGaiKaoShiShiJuanUrl, obj).success(function(data){
+            //    if(data.result){
+            //      deferred.resolve();
+            //    }
+            //    else{
+            //      err.push(data.error);
+            //      deferred.reject();
+            //    }
+            //  });
+            //  return deferred.promise;
+            //}
+            //var ccLen = ccIdArr.length;
+            //for(var i = 0; i < ccLen; i++){
+            //  if(ccLen == 1){
+            //    _do(ccIdArr[i]);
+            //  }
+            //  if(ccLen > 1){
+            //    var promise = _do(ccIdArr[i]);
+            //    promise.then(function() {
+            //      _do(ccIdArr[i + 1]);
+            //    });
+            //  }
+            //}
+            //if(err && err.length > 0){
+            //  DataService.alertInfFun('err', err.toString());
+            //}
+            //else{
+            //  $scope.kwParams.showKaoShiDetail = false;
+            //  DataService.alertInfFun('suc', '修改成功！');
+            //}
           };
 
           /**
