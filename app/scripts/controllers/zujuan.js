@@ -147,6 +147,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId; //查询题库
         var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
             + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
+        var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
+          + '&lingyuid=' + lingyuid; //查询知识点题目数量
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -220,6 +222,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                       $scope.kowledgeList = zsddata;
                       //得到知识大纲知识点id的函数
                       Lazy(zsddata).each(_do);
+                      queryZsdTiMuNum();
                     }
                     else{
                       DataService.alertInfFun('err', zsddata.error);
@@ -235,6 +238,50 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               DataService.alertInfFun('err', '没用相对应的知识大纲!');
             }
           });
+        };
+
+        /**
+         * 查询知识点题目数量
+         */
+        var queryZsdTiMuNum = function(tx){
+          var tiMuNumArr;
+          function _do(item) {
+            var idVal = '';
+            var findItem = Lazy(tiMuNumArr).find(function(v, k, l){
+              if(k == item.ZHISHIDIAN_ID){
+                idVal = k;
+                return v;
+              }
+            });
+            if(findItem >= 0){
+              item.tiMuNum = findItem;
+              tiMuNumArr = Lazy(tiMuNumArr).reject(function(tm){
+                return tm.ZHISHIDIAN_ID == idVal;
+              });
+            }
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          var queryZsdTiMuNumUrl = queryZsdTiMuNumBaseUrl + '&zhishidianid=';
+          if(zsdgZsdArr && zsdgZsdArr.length > 0){
+            queryZsdTiMuNumUrl += zsdgZsdArr;
+            if(tx){
+              queryZsdTiMuNumUrl += '&tixingid=' + tx;
+            }
+            $http.get(queryZsdTiMuNumUrl).success(function(data){
+              if(data.error){
+                DataService.alertInfFun('err', data.error)
+              }
+              else{
+                tiMuNumArr = angular.copy(data);
+                Lazy($scope.kowledgeList).each(_do);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择知识点');
+          }
         };
 
         /**
@@ -857,6 +904,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var ruleMakePaperSelectTxid; //规则组卷，题型ID
         $scope.rmpGetTxId = function(txId){
           ruleMakePaperSelectTxid = txId;
+          queryZsdTiMuNum(txId);
         };
 
         /**

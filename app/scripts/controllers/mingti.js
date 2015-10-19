@@ -106,6 +106,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
         var queryTiMuSource = baseMtAPIUrl + 'query_timusource?token=' + token + '&jigouid=' + jigouid
             + '&lingyuid=' + lingyuid; //查询题目来源
+        var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
+          + '&lingyuid=' + lingyuid; //查询知识点题目数量
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -220,7 +222,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             //getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
           gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
           gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
-
           //getTarChbxChild.find('input[name=point]').each(function() {
           //  if(gitThisChbx.prop("checked")) {
           //    this.checked = true;
