@@ -1745,7 +1745,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 保存试卷前的确认
+         * 保存试卷前的确认//
          */
         $scope.savePaperConfirm = function(comeFromWhere){
           var nanDuArr = {

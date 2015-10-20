@@ -1290,46 +1290,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 }
               });
             }
-            //function _do(item){
-            //  var deferred = $q.defer();
-            //  var obj = {
-            //    token: token,
-            //    caozuoyuan: caozuoyuan,
-            //    jigouid: jigouid,
-            //    lingyuid: lingyuid,
-            //    kaoshiid: '',
-            //    shijuanid: ''
-            //  };
-            //  $http.post(xiuGaiKaoShiShiJuanUrl, obj).success(function(data){
-            //    if(data.result){
-            //      deferred.resolve();
-            //    }
-            //    else{
-            //      err.push(data.error);
-            //      deferred.reject();
-            //    }
-            //  });
-            //  return deferred.promise;
-            //}
-            //var ccLen = ccIdArr.length;
-            //for(var i = 0; i < ccLen; i++){
-            //  if(ccLen == 1){
-            //    _do(ccIdArr[i]);
-            //  }
-            //  if(ccLen > 1){
-            //    var promise = _do(ccIdArr[i]);
-            //    promise.then(function() {
-            //      _do(ccIdArr[i + 1]);
-            //    });
-            //  }
-            //}
-            //if(err && err.length > 0){
-            //  DataService.alertInfFun('err', err.toString());
-            //}
-            //else{
-            //  $scope.kwParams.showKaoShiDetail = false;
-            //  DataService.alertInfFun('suc', '修改成功！');
-            //}
           };
 
           /**

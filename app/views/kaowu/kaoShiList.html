@@ -87,7 +87,7 @@
             <th class="text-center">导出考生</th>
           </tr>
           <tr ng-repeat="cc in kaoShiDetailData.changci">
-            <td  class="cursorPointer" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="queryBaoMingStu('on', cc)"></td>
+            <td  class="cursorPointer cBlue" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="queryBaoMingStu('on', cc)"></td>
             <td class="text-center" ng-bind="cc.kaoShiShiJian"></td>
             <td class="text-center" ng-bind="cc.SHICHANG"></td>
             <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
@@ -123,7 +123,7 @@
       </div>
       <div ng-show="showPaperBtn">
         <!--修改试卷table-->
-        <p class="text-right mt10" ng-show="kaoShiDetailData.ZHUANGTAI==2">
+        <p class="text-right mt10">
           <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
           <a href="javascript:void(0)" class="ml15" ng-click="saveAlertPaper()">提交修改</a>
           <a href="javascript:void(0)" class="ml15" ng-click="showChangCiToggle()">取消修改</a>
