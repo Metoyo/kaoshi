@@ -149,6 +149,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
         var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
           + '&lingyuid=' + lingyuid; //查询知识点题目数量
+        var checkSchoolTiKu = caozuoyuan; //查看学校题库需要传的参数
 
         /**
          * 初始化是DOM元素的隐藏和显示
@@ -550,6 +551,20 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
+         * 查询学校题库，val是true的话表示查询学校题库，否则查询个人题库
+         */
+        $scope.checkSchoolTiMu = function(val){
+          if(val){
+            checkSchoolTiKu = '';
+            $scope.qryTestFun();
+          }
+          else{
+            checkSchoolTiKu = caozuoyuan;
+            $scope.qryTestFun();
+          }
+        };
+
+        /**
          * 通过题目ID查询试题
          */
         $scope.qryTestByTiMuId = function(){
@@ -601,6 +616,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.txSelectenIdx = 0;
           }
           $scope.zuJuanParam.tiMuId = '';
+          queryZsdTiMuNum(qrytxId);
           $scope.qryTestFun();
         };
 
@@ -695,6 +711,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
           $scope.baocunshijuanBtn = true; //保存试卷的按钮
           zhishidian_id = '';
+          $scope.zjDaGangListShow = true; //控制加载规则组卷的css
         };
 
         /**
@@ -2115,10 +2132,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询试卷概要的分页代码
+         * 查询试卷概要的分页代码//
          */
         $scope.getThisSjgyPageData = function(pg){
-          $scope.loadingImgShow = true;  //zj_paperList.html loading
+          $scope.loadingImgShow = true;
           var qryShiJuanGaiYao,
             pgNum = pg - 1,
             timu_id,
@@ -2148,7 +2165,26 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               Lazy(sjlbgy).each(function(sj, idx, lst){
                 sj.NANDU = JSON.parse(sj.NANDU);
                 userIdArr.push(sj.CHUANGJIANREN_UID);
+                var suijiguize = JSON.parse(sj.SUIJIGUIZE);
+                //var txData = sj.TIXING_DATA;
+                Lazy(suijiguize).each(function(gz){
+                  var tmCount = gz.TIXING[0];
+                  var findDt = Lazy(sj.TIXING_DATA).find(function(dt){
+                    return dt.TIXING_ID == tmCount.TIXING_ID;
+                  });
+                  if(findDt){
+                    findDt.sjCount = tmCount.COUNT;
+                  }
+                  else{
+                    var dtObj = {
+                      TIXING_ID: tmCount.TIXING_ID,
+                      sjCount: tmCount.COUNT
+                    };
+                    sj.TIXING_DATA.push(dtObj);
+                  }
+                });
               });
+              console.log(sjlbgy);
               var userIdStr = Lazy(userIdArr).sortBy().uniq().toArray().join();
               var getUserNameUrl = getUserNameBase + userIdStr;
               $http.get(getUserNameUrl).success(function(users){

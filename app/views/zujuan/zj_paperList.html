@@ -33,20 +33,21 @@
           </h5>
           <p>
             <span ng-repeat="dati in pld.TIXING_DATA">
-                {{tiXingNameArr[dati.TIXING_ID -1]}}:{{dati.COUNT}}
+              {{tiXingNameArr[dati.TIXING_ID -1]}}:
+              <b ng-show="dati.COUNT">固定{{dati.COUNT}}</b>  <b ng-show="dati.sjCount">随机{{dati.sjCount}}</b>
             </span>
           </p>
         </div>
-        <div>
-          <h5>
-            题型难度：
-          </h5>
-          <p>
-            <span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">
-                {{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}
-            </span>
-          </p>
-        </div>
+        <!--<div>-->
+          <!--<h5>-->
+            <!--题型难度：-->
+          <!--</h5>-->
+          <!--<p>-->
+            <!--<span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">-->
+                <!--{{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}-->
+            <!--</span>-->
+          <!--</p>-->
+        <!--</div>-->
       </div>
     </li>
   </ul>

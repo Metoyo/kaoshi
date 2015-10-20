@@ -489,21 +489,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     };
                     newKaoShengArr.push(nksObj);
                   });
-                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(newKaoShengArr).uniq('UID').toArray();
+                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(newKaoShengArr).uniq('YONGHUHAO').toArray();
                   //$scope.studentsOrgData = newKaoShengArr;
                   //将名单加入考试数据
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){ //非在线报名
                     Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
                       if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
                         (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
-                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(newKaoShengArr).uniq('UID').toArray();
+                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(newKaoShengArr).uniq('YONGHUHAO').toArray();
                         //cc.KAOSHENG = newKaoShengArr;
                       }
                     });
                   }
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
                     $scope.kaoshiData.shuju.KAOSHENG = Lazy($scope.kaoshiData.shuju.KAOSHENG).union(newKaoShengArr)
-                      .uniq('UID').toArray();
+                      .uniq('YONGHUHAO').toArray();
                     //$scope.kaoshiData.shuju.KAOSHENG = newKaoShengArr;
                   }
                 }
@@ -797,18 +797,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
                       if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
                         (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
-                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(kaoShengNewArr).uniq('UID').toArray();
+                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(kaoShengNewArr).uniq('YONGHUHAO').toArray();
                         //cc.KAOSHENG = kaoShengNewArr;
                       }
                     });
                   }
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
                     $scope.kaoshiData.shuju.KAOSHENG = Lazy($scope.kaoshiData.shuju.KAOSHENG).union(kaoShengNewArr)
-                      .uniq('UID').toArray();
+                      .uniq('YONGHUHAO').toArray();
                     //$scope.kaoshiData.shuju.KAOSHENG = kaoShengNewArr;
                   }
                   //$scope.studentsOrgData = kaoShengNewArr;
-                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(kaoShengNewArr).uniq('UID').toArray();
+                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(kaoShengNewArr).uniq('YONGHUHAO').toArray();
                   $scope.loadingImgShow = false;
                   $scope.showAddStuBox = false;
                   $scope.isAddStuByKxh = false;
@@ -1295,9 +1295,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 导出考生
            */
-          $scope.exportKaoSheng = function(){
-
-          };
+          //$scope.exportKaoSheng = function(){
+          //
+          //};
 
           /**
            * 查询考场数据
