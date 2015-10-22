@@ -28,8 +28,10 @@
     <td class="text-center {{'kssCl' + ks.ZHUANGTAI}}" ng-bind="ks.ZHUANGTAI | examStatus">
     </td>
     <td class="text-right">
-      <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShi(ks.KAOSHIZU_ID)"
-            ng-hide="ks.ZHUANGTAI >= 3" title="发布" style="margin-right: 10px"></span>
+      <span ng-hide="kwParams.forbidBtn">
+        <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShi(ks.KAOSHIZU_ID)"
+              ng-hide="ks.ZHUANGTAI >= 3" title="发布" style="margin-right: 10px"></span>
+      </span>
       <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKaoShi(ks)"
             title="删除" style="margin-right: 10px"></span>
     </td>

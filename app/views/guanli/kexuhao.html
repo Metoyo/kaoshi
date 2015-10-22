@@ -75,11 +75,13 @@
         <tr>
           <th>学号</th>
           <th class="text-right">姓名</th>
+          <th class="text-right">班级</th>
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="stu in studentsData">
           <td ng-bind="stu.YONGHUHAO"></td>
           <td class="text-right" ng-bind="stu.XINGMING"></td>
+          <td class="text-right" ng-bind="stu.BANJI"></td>
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="deleteKxhYh(stu)">
               <span class="glyphicon glyphicon-trash"></span>
@@ -197,6 +199,14 @@
           </div>
           <div class="col-md-8">
             <input type="text" class="form-control" placeholder="学号" ng-model="guanliParams.singleStuID"/>
+          </div>
+        </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
+            <span class="mt5 dpb">班级</span>
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="班级" ng-model="guanliParams.singleStuBanJi"/>
           </div>
         </div>
       </div>

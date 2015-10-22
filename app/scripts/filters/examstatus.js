@@ -7,6 +7,9 @@ define(['angular'], function (angular) {
         var txtStatus;
         switch (stat)
         {
+          case -3:
+            txtStatus = "考试发布中";
+            break;
           case -1:
             txtStatus = "删除";
             break;

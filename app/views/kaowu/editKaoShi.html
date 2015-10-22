@@ -187,7 +187,7 @@
     <!-- 考生错误信息展示结束 -->
     <div class="save-box">
       <button type="button" class="btn btn-primary" ng-click="saveKaoShi()"
-              ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid">保存考试
+              ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || kwParams.forbidBtn">保存考试
       </button>
       <button type="button" class="btn btn-danger ml10" ng-click="showKaoShiZuList('all')">取消</button>
     </div>
@@ -205,7 +205,8 @@
         <!--由Excel添加-->
         <div ng-show="isAddStuByExcel">
           <span class="title">上传Excel文件添加考生</span>
-          <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="uploadXlsFile()">上传</button>
+          <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="uploadXlsFile()"
+                  ng-disabled="kwParams.forbidBtn">上传</button>
           <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
         </div>
         <!--添加考生-->

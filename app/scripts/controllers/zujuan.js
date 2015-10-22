@@ -246,6 +246,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var queryZsdTiMuNum = function(tx){
           var tiMuNumArr;
+          var parentCount = 0;
           function _do(item) {
             var idVal = '';
             var findItem = Lazy(tiMuNumArr).find(function(v, k, l){
@@ -262,6 +263,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
               Lazy(item.ZIJIEDIAN).each(_do);
+            }
+            else{
+              parentCount = 0;
             }
           }
           var queryZsdTiMuNumUrl = queryZsdTiMuNumBaseUrl + '&zhishidianid=';
@@ -1874,6 +1878,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.savePaper = function(){
           //保存试卷
+          if(shijuanData.shuju.SUIJIGUIZE){
+            shijuanData.shuju.SHIJUANLEIXING = 1;
+          }
+          else{
+            shijuanData.shuju.SHIJUANLEIXING = 0;
+          }
           $http.post(xgsjUrl, shijuanData).success(function(data){
             if(data.result){
               //更新数据模板
@@ -1919,6 +1929,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   DataService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
                 }
               });
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
             }
           });
         };
@@ -2165,26 +2178,28 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               Lazy(sjlbgy).each(function(sj, idx, lst){
                 sj.NANDU = JSON.parse(sj.NANDU);
                 userIdArr.push(sj.CHUANGJIANREN_UID);
-                var suijiguize = JSON.parse(sj.SUIJIGUIZE);
-                //var txData = sj.TIXING_DATA;
-                Lazy(suijiguize).each(function(gz){
-                  var tmCount = gz.TIXING[0];
-                  var findDt = Lazy(sj.TIXING_DATA).find(function(dt){
-                    return dt.TIXING_ID == tmCount.TIXING_ID;
+                var suijiguize;
+                if(sj.SUIJIGUIZE){
+                  suijiguize = JSON.parse(sj.SUIJIGUIZE);
+                  //var txData = sj.TIXING_DATA;
+                  Lazy(suijiguize).each(function(gz){
+                    var tmCount = gz.TIXING[0];
+                    var findDt = Lazy(sj.TIXING_DATA).find(function(dt){
+                      return dt.TIXING_ID == tmCount.TIXING_ID;
+                    });
+                    if(findDt){
+                      findDt.sjCount = tmCount.COUNT;
+                    }
+                    else{
+                      var dtObj = {
+                        TIXING_ID: tmCount.TIXING_ID,
+                        sjCount: tmCount.COUNT
+                      };
+                      sj.TIXING_DATA.push(dtObj);
+                    }
                   });
-                  if(findDt){
-                    findDt.sjCount = tmCount.COUNT;
-                  }
-                  else{
-                    var dtObj = {
-                      TIXING_ID: tmCount.TIXING_ID,
-                      sjCount: tmCount.COUNT
-                    };
-                    sj.TIXING_DATA.push(dtObj);
-                  }
-                });
+                }
               });
-              console.log(sjlbgy);
               var userIdStr = Lazy(userIdArr).sortBy().uniq().toArray().join();
               var getUserNameUrl = getUserNameBase + userIdStr;
               $http.get(getUserNameUrl).success(function(users){

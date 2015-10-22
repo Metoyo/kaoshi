@@ -17,7 +17,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var baseKwAPIUrl = config.apiurl_kw; //考务的api
           var baseMtAPIUrl = config.apiurl_mt; //mingti的api
           var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
-          var baseTjAPIUrl = config.apiurl_tj; //统计的api
           var token = config.token;
           var caozuoyuan = userInfo.UID;//登录的用户的UID   chaxun_kaoshi_liebiao
           var jigouid = userInfo.JIGOU[0].JIGOU_ID;
@@ -86,7 +85,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             baoMingMethod: '', //报名方式
             selectKaoShiId: '', // 选中考试的ID
             checkedAllChangCi: false,
-            selectedCc: '' //选中的场次
+            selectedCc: '', //选中的场次
+            forbidBtn: false //提交后的禁止按钮
           };
 
           /**
@@ -736,6 +736,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             var trimBlankReg = /\s/g;
             var delBlank = '';
             if(file && file.length > 0){
+              $scope.kwParams.forbidBtn = true;
               $scope.loadingImgShow = true;
               DataService.uploadFileAndFieldsToUrl(file, fields, uploadKsUrl).then(function(result){
                 $scope.uploadFiles = [];
@@ -820,6 +821,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   $scope.loadingImgShow = false;
                   DataService.alertInfFun('err', result.error);
                 }
+                $scope.kwParams.forbidBtn = false;
               });
             }
             else{
@@ -938,6 +940,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               }
               $scope.kaoshiData.shuju.ZHUANGTAI = 2;
             }
+            $scope.kwParams.forbidBtn = true;
+            $scope.loadingImgShow = true;
             $http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
               if(data.result){
                 $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
@@ -946,6 +950,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.kwParams.forbidBtn = false;
+              $scope.loadingImgShow = false;
             });
           };
 
@@ -1114,6 +1120,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             var faBuKaoShiUrl = faBuKaoShiBaseUrl + ksId;
             var confirmInfo = confirm('确定要发布本次考试吗？');
             if(confirmInfo){
+              $scope.loadingImgShow = true;
               $http.get(faBuKaoShiUrl).success(function(data){
                 if(data.result){
                   $scope.showKaoShiZuList();
@@ -1122,6 +1129,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 else{
                   DataService.alertInfFun('err', '考试发布失败！');
                 }
+                $scope.loadingImgShow = false;
               });
             }
           };

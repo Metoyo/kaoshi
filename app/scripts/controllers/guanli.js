@@ -46,6 +46,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           modifyKxh: '', //课序号修改
           singleStuName: '', //学生姓名
           singleStuID: '', //学生学号
+          singleStuBanJi: '', //学生班级
           errorInfo: ''
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
@@ -327,6 +328,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                             $scope.showKeXuHaoManage = false;
                             $scope.guanliParams.singleStuName = '';
                             $scope.guanliParams.singleStuID = '';
+                            $scope.guanliParams.singleStuBanJi = '';
                             $scope.chaXunKxhYongHu($scope.selectKxh);
                           }
                           else{
@@ -344,6 +346,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                         YONGHULEIBIE: 2,
                         YONGHUHAO: $scope.guanliParams.singleStuID,
                         XINGMING: $scope.guanliParams.singleStuName,
+                        BANJI: $scope.guanliParams.singleStuBanJi,
                         ZHUANGTAI: 1,
                         JIGOU: [{JIGOU_ID: jigouid, ZHUANGTAI: 1}],
                         KEXUHAO_ID: $scope.selectKxh.KEXUHAO_ID
@@ -355,6 +358,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                           $scope.showKeXuHaoManage = false;
                           $scope.guanliParams.singleStuName = '';
                           $scope.guanliParams.singleStuID = '';
+                          $scope.guanliParams.singleStuBanJi = '';
                           $scope.chaXunKxhYongHu($scope.selectKxh);
                           DataService.alertInfFun('suc', '添加用户成功!');
                         }
