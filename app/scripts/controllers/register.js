@@ -48,7 +48,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.jigou_list = '';
 
         /**
-         * 注册信息的第一步，个人详情信息//
+         * 注册信息的第一步，个人详情信息
          */
         $scope.personalInfo = {
           yonghuming: '',
@@ -303,7 +303,10 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           var jueseItem = $('input[name=rightName]:checked');
           Lazy(jueseItem).each(function(js, idx, lst){
             selectJueseIdArr.push(js.value);
-            selectJueseNameArr.push(js.nextElementSibling.textContent);
+            var ne = js.nextElementSibling;
+            if(ne){
+              selectJueseNameArr.push(ne.innerText);
+            }
           });
           $scope.jueseValue = selectJueseIdArr.length;
         };
@@ -364,6 +367,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
          */
         $scope.submitRegisterInfo = function(){
           registerDate.token = token;
+          registerDate.YONGHULEIBIE = 1;
           $http.post(registerUrl, registerDate).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '提交成功！');
