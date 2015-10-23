@@ -112,12 +112,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   kaoShiShiJian: DataService.baoMingDateFormat(fd.KAISHISHIJIAN, fd.JIESHUSHIJIAN),
                   kaoDian: []
                 };
-                Lazy(v).each(function(cc){
+                var disChangCiSec = Lazy(v).groupBy(function(ccs){ return ccs.KID; });
+                Lazy(disChangCiSec).each(function(v1, k1, l1){
                   var kdObj = {
-                    KID: cc.KID,
-                    KMINGCHENG: cc.KMINGCHENG,
-                    KAOWEISHULIANG: cc.KAOWEISHULIANG,
-                    YIBAOMINGRENSHU: cc.YIBAOMINGRENSHU || 0,
+                    KID: k1,
+                    KMINGCHENG: v1[0].KMINGCHENG,
+                    KAOWEISHULIANG: v1[0].KAOWEISHULIANG,
+                    YIBAOMINGRENSHU: v1[0].YIBAOMINGRENSHU || 0,
                     ckd: false
                   };
                   kdObj.isFull = kdObj.YIBAOMINGRENSHU >= kdObj.KAOWEISHULIANG ? true : false;

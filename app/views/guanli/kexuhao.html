@@ -73,15 +73,17 @@
     <div ng-show="selectKxh.KEXUHAO_MINGCHENG">
       <table class="table table-striped" ng-if="studentsData.length>0">
         <tr>
+          <th class="text-center">序号</th>
           <th>学号</th>
-          <th class="text-right">姓名</th>
-          <th class="text-right">班级</th>
+          <th>姓名</th>
+          <th class="text-center">班级</th>
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="stu in studentsData">
+          <td class="text-center" ng-bind="stu.XUHAO"></td>
           <td ng-bind="stu.YONGHUHAO"></td>
-          <td class="text-right" ng-bind="stu.XINGMING"></td>
-          <td class="text-right" ng-bind="stu.BANJI"></td>
+          <td ng-bind="stu.XINGMING"></td>
+          <td class="text-center" ng-bind="stu.BANJI"></td>
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="deleteKxhYh(stu)">
               <span class="glyphicon glyphicon-trash"></span>
