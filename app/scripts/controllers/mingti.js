@@ -218,18 +218,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
         };
 
         $scope.toggleSelection = function(zsdId) {
-          var onSelect = '.select' + zsdId,
-            gitThisChbx = $(onSelect);//得到那个展开和隐藏按钮被点击了
-            //getTarChbxChild = gitThisChbx.closest('li').find('>ul');//得到要隐藏的ul;
+          var onSelect = '.select' + zsdId;
+          var gitThisChbx = $(onSelect);//得到那个展开和隐藏按钮被点击了
           gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
           gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
-          //getTarChbxChild.find('input[name=point]').each(function() {
-          //  if(gitThisChbx.prop("checked")) {
-          //    this.checked = true;
-          //  } else {
-          //    this.checked = false;
-          //  }
-          //});
           selectZsdFun();
           if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
             $scope.qryTestFun();
@@ -364,9 +356,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             pgNum = pg - 1,
             timu_id,
             currentPage = pgNum ? pgNum : 0;
-            //newCont,
-            //tgReg = new RegExp('<\%{.*?}\%>', 'g');
-
           //得到分页数组的代码
           var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
           if(totalPage <= paginationLength){
@@ -741,7 +730,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             dataTpl.shuju.TIXING_ID = 2;
             dataTpl.shuju.TIMULEIXING_ID = 2;
           }
-          //var tiZhiArr = $('.tizhiWrap').find('input.tiZhi');
           var tizhineirong = []; //存放题支内容
           var daAn = []; //存放答案
           //整理题支
@@ -813,7 +801,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             }
           }
           else{
-            DataService.alertInfFun('pmt', '请输入题干！'); //
+            DataService.alertInfFun('pmt', '请输入题干！');
             deferred.reject();
           }
 
@@ -1020,35 +1008,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
         };
 
         /**
-         * 单选题选择答案的效果的代码
-         */
-        //$scope.chooseDanxuanDaan = function(idx){
-        //  var tgt = '.answer' + idx;
-        //  var tgtElement = $(tgt);
-        //  $('div.radio').removeClass('radio-select');
-        //  tgtElement.addClass('radio-select');
-        //  tgtElement.find("input[name='rightAnswer']").prop('checked',true);
-        //  danxuan_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
-        //};
-
-        /**
          * 多选题选择答案的效果的代码
          */
         $scope.chooseDaAn = function(da){
           da.ckd = !da.ckd;
-          //var rightAnswerStr = [],
-          //  tgtElement = $('div.radio').eq(idx);
-          //tgtElement.toggleClass('radio-select');
-          //if(tgtElement.find('input[name=rightAnswer]').prop('checked')){
-          //  tgtElement.find('input[name=rightAnswer]').prop('checked',false);
-          //}
-          //else{
-          //  tgtElement.find('input[name=rightAnswer]').prop('checked',true);
-          //}
-          //Lazy($('input[name=rightAnswer]:checked')).each(function(rasw, idx, lst){
-          //  rightAnswerStr.push(rasw.value);
-          //});
-          //duoxuan_data.shuju.DAAN = rightAnswerStr.join();
         };
 
         /**
@@ -1144,15 +1107,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
           while(offset != -1);
           return count;
         };
-
-        /**
-         * 填空题编辑keyup后执行的函数
-         */
-        //$scope.reloadTkTiGanCont = function(){
-        //  var tgVal = $('.formulaEditTiGan').val();
-        //  $('#prevDoc').html(tgVal);
-        //  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
-        //};
 
         /**
          * loopArr
@@ -1381,13 +1335,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
               var daLetter = Lazy(letterArr).indexOf(da);
               loopArr[daLetter].ckd = true;
             });
-            //var daAnArray = tmxq.DAAN.split(",");
-            ////处理答案的代码将字母转换为数字
-            //Lazy(daAnArray).each(function(da, idx, lst){
-            //  var daLetter = Lazy(letterArr).indexOf(da);
-            //  editDaAnArr.push(daLetter);
-            //});
-            //tmxq.DAAN = editDaAnArr.join();
           }
           //单选题
           if(tmxq.TIXING_ID == 1){
@@ -1579,27 +1526,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
           onceMakeWord = false;
           $timeout(nanDuSelectFun, 500);
         };
-
-        /**
-         * 修改题目的增加一项
-         */
-        //$scope.editAddOneItem = function(){
-        //  $scope.timudetail.TIGAN.tiZhiNeiRong.push('');
-        //};
-
-        /**
-         * 修改题目删除一项
-         */
-        //$scope.editDeleteOneItem = function(idx){
-        //  var daAnArrOne = $scope.timudetail.DAAN.split(','),
-        //    ifHasIn = Lazy(daAnArrOne).contains(idx.toString());
-        //  if(ifHasIn){
-        //    DataService.alertInfFun('pmt', '此项为正确答案不能删除！');
-        //  }
-        //  else{
-        //    $scope.timudetail.TIGAN.tiZhiNeiRong.splice(idx, 1);
-        //  }
-        //};
 
         /**
          * 修改单选题
