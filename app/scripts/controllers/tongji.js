@@ -472,15 +472,17 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                   tx_name: val[0].DATIMINGCHENG,
                   tm: ''
                 };
-                tmVal = Lazy(val).each(function(tm, idx, lst){
+                Lazy(val).each(function(tm, idx, lst){
                   var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
-                  tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
+                  if(findVal){
+                    tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
+                  }
                   if(typeof(tm.TIGAN) == 'string'){
                     tm.TIGAN = JSON.parse(tm.TIGAN);
                   }
                   DataService.formatDaAn(tm);
                 });
-                dObj.tm = tmVal;
+                dObj.tm = val;
                 finaData.sj_tm.push(dObj);
               });
               $scope.showKaoShengList = false;

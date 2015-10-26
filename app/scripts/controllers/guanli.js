@@ -88,7 +88,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var qryKxhUrl = kxhManageUrl + '?token=' + token + '&JIGOU_ID=' + jigouid + '&LINGYU_ID=' + lingyuid;
           $http.get(qryKxhUrl).success(function(data){
             if(data && data.length > 0){
-              console.log(data);
               var dataLength = data.length; //所以二级专业长度
               var sortData = Lazy(data).sortBy(function(stu){
                 return stu.KEXUHAO_MINGCHENG;
@@ -402,18 +401,18 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               for(var key in stusData){
                 fd.append(key, stusData[key]);
               }
-              $http.post(importUser, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
+              $scope.loadingImgShow = true;
+              $http.post(modifyKxhYh, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
                 .success(function(data){
                   if(data.result){
-                    $scope.loadingImgShow = false;
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
                     $scope.chaXunKxhYongHu($scope.selectKxh);
                   }
                   else{
-                    $scope.loadingImgShow = false;
                     DataService.alertInfFun('err', data.error);
                   }
+                  $scope.loadingImgShow = false;
                 });
             }
             else{
@@ -502,7 +501,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxh.KEXUHAO_ID;
             $http.get(chaXunYongHu).success(function(data){
               if(data && data.length > 0){
-                $scope.studentsOrgData = data;
+                $scope.studentsOrgData = Lazy(data).sortBy('XUHAO').toArray();
                 kxh.STUDENTS = data.length;
                 studentsPages(data);
               }
