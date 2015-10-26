@@ -87,7 +87,7 @@
                     </div>
                     <div class="col-sm-8 col-sm-offset-1 assignment-box">
                         <span>将题支编辑器的内容赋值给选项：</span>
-                        <label class="radio-inline" ng-repeat="num in timudetail.TIGAN.tiZhiNeiRong track by $index">
+                        <label class="radio-inline" ng-repeat="num in loopArr">
                             <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFun($index)'>
                             {{letterArr[$index]}}
                         </label>
@@ -104,26 +104,22 @@
                         正确答案
                     </div>
                 </div>
-                <div class="form-group tizhiWrap" ng-repeat="tizhi in timudetail.TIGAN.tiZhiNeiRong track by $index">
+                <div class="form-group tizhiWrap" ng-repeat="tznr in loopArr">
                     <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control tiZhi" placeholder="请输入选项" value="{{tizhi}}">
+                        <input type="text" class="form-control tiZhi" placeholder="请输入选项" ng-model="tznr.itemVal">
                     </div>
                     <div class="col-sm-2">
-                        <span class="glyphicon glyphicon-minus-sign delete-this-tiem"
-                              ng-click="editDeleteOneItem($index)"></span>
-                        <div class="radio {{'answer' + $index}}"  ng-click="chooseDuoxuanDaan($index)"
-                             ng-class="{'radio-select':timudetail.DAAN.indexOf($index) >= 0}">
-                            <input class="hidden" type="checkbox" name="rightAnswer" value="{{$index}}"
-                                   ng-checked="timudetail.DAAN.indexOf($index) >= 0" ng-model="duoXuanData.shuju.DAAN">
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </div>
+                      <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem($index, tznr)"></span>
+                      <div class="radio {{'answer' + $index}}" ng-class="{'radio-select':tznr.ckd}" ng-click="chooseDaAn(tznr)">
+                        <span class="glyphicon glyphicon-ok"></span>
+                      </div>
                     </div>
                 </div>
             </div>
             <div class="form-footer">
                 <div class="form-group">
-                    <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="editAddOneItem()"
+                    <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="addOneItem()"
                        class="col-sm-1 control-label text-right add-btn">
                         <span class="glyphicon glyphicon-plus-sign"></span> </a>
                 </div>

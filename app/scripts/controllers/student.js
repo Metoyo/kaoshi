@@ -146,7 +146,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
-         * 选择考点
+         * 选择考点//
          */
         $scope.bmKaoDianSelect = function(kd){
           Lazy($scope.kaoShiDetailData.changci).each(function(cc){

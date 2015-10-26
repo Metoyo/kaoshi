@@ -45,11 +45,11 @@
           <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
           <td ng-bind="cc.kaoShiShiJian"></td>
           <td class="bmKaoDianBox">
-            <div class="form-body" ng-repeat="kd in cc.kaoDian">
-              <div class="radio" ng-class="{'radio-select':kd.ckd}" ng-click="bmKaoDianSelect(kd)">
+            <div class="form-body mr5" ng-repeat="kd in cc.kaoDian">
+              <div class="radio" ng-class="{'radio-select':kd.ckd}" ng-hide="kd.isFull" ng-click="bmKaoDianSelect(kd)">
                 <span class="glyphicon glyphicon-ok"></span>
               </div>
-              <span ng-bind="kd.KMINGCHENG"></span>
+              <span ng-bind="kd.KMINGCHENG"></span><span ng-show="kd.isFull">(<b class="co676767">已满</b>)</span>
             </div>
           </td>
         </tr>
