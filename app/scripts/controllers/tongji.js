@@ -31,7 +31,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var tjNeedData = []; //存放查询出来的统计数数据
         var lastPage; //符合条件的考试一共有多少页
         var tjParaObj = {
-            pieBox: '',
+            pieBoxAll: '',
+            pieBoxBj: '',
             barBox: '',
             lineBox: '',
             radarBox: '',
@@ -354,16 +355,16 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 $scope.tjParas.classCount = true;
               }
               break;
-            case 'kexuhao' : //课序号排序
+            case 'xuhao' : //课序号排序
               if($scope.tjParas.stuIdCount){
                 $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
-                  return stu.KEXUHAO;
+                  return stu.XUHAO;
                 }).toArray();
                 $scope.tjParas.stuIdCount = false;
               }
               else{
                 $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
-                  return stu.KEXUHAO;
+                  return stu.XUHAO;
                 }).toArray().reverse();
                 $scope.tjParas.stuIdCount = true;
               }
@@ -565,143 +566,288 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          * 统计函数
          */
         var chartShowFun = function(kind){
-          var optPie = { // 饼状图图
-              tooltip : {
-                trigger : 'item',
-                formatter : "{a} <br/>{b} : {c} ({d}%)"
-              },
-              legend : {
-                orient : 'vertical',
-                x : 'left',
-                //data : '' //数组
-                data : ['不及格', '差', '中', '良', '优']
-              },
-              calculable : true,
-              series : [{
-                name : '成绩等级',
-                type : 'pie',
-                radius : '55%',
-                center: ['50%', '50%'],
-                itemStyle : {
-                  normal : {
-                    label : {
-                      position : 'outter',
-                      formatter: '{b}:{d}%'
-                    },
-                    labelLine : {
-                      show : true
-                    }
-                  }
+          var dataStyle = {
+            normal: {
+              label: {
+                show: true,
+                position : 'inner',
+                formatter : function (params) {
+                  return (params.percent - 0).toFixed(0) + '%';
+                  //return params.name + (params.percent - 0).toFixed(0) + '%'
                 },
-                data : ''
-              }]
-            };
-          var optBar = {
-              tooltip : {
-                trigger : 'axis',
-                axisPointer : {
-                  type : 'shadow'
+                textStyle : {
+                  fontSize : 14
                 }
               },
-              legend : {
-                data : ['班级平均分']
-              },
-              calculable : true,
-              xAxis : [{
-                type : 'category',
-                data : [] //此处为变量表示班级数据
-              }],
-              yAxis : [{
-                type : 'value',
-                splitArea : {
-                  show : true
-                }
-              }],
-              grid : {
-                x : 30,
-                x2 : 30,
-                y : 30
-              },
-              dataZoom : {
-                show : true,
-                realtime : true,
-                start : 0,
-                end : '' //此处为变量，是下面表示拖拽的功能
-              },
-              series : [{
-                name : '班级平均分',
-                type : 'bar',
-                barWidth: 30, //柱子的宽度
-                itemStyle : {
-                  normal: {
-                    label : {show: true, position: 'top'},
-                    color:'#7FB06B' //柱子的颜色
-                  }
-                },
-                data : [], //此处为变量
-                markLine : { //平均值直线
-                  itemStyle:{
-                    normal:{
-                      color:'#9F79EE'
-                    }
+              labelLine: {show:false}
+            }
+          };
+          var placeHolderStyle = {
+            normal : {
+              color: 'rgba(0,0,0,0)',
+              label: {show:false},
+              labelLine: {show:false}
+            },
+            emphasis : {
+              color: 'rgba(0,0,0,0)'
+            }
+          };
+          var optPieAll = { // 环形图
+            title: {
+              text: '全部考生',
+              subtext: '',
+              sublink: '',
+              x: 'center',
+              y: 'center',
+              itemGap: 20,
+              textStyle : {
+                color : 'rgba(30,144,255,0.8)',
+                fontFamily : '微软雅黑',
+                fontSize : 24,
+                fontWeight : 'bolder'
+              }
+            },
+            tooltip : {
+              show: false,
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+              orient : 'vertical',
+              //x : document.getElementById('chartPie').offsetWidth / 2,
+              x : '52%',
+              y : 30,
+              itemGap:12,
+              data:['及格率1','优秀率2']
+            },
+            toolbox: {
+              show : false,
+              feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                restore : {show: true},
+                saveAsImage : {show: true}
+              }
+            },
+            series : [
+              {
+                name:'1',
+                type:'pie',
+                clockWise:false,
+                radius : [100, 120],
+                itemStyle : dataStyle,
+                data:[
+                  {
+                    value:68,
+                    name:'及格率1'
                   },
-                  data : [
-                    [
-                      {name: '平均值起点', xAxis: -1, yAxis: $scope.tjKaoShiPublicData.ksAvgScore, value: $scope.tjKaoShiPublicData.ksAvgScore},
-                      {name: '平均值终点', xAxis: 1000, yAxis: $scope.tjKaoShiPublicData.ksAvgScore}
-                    ]
-                  ]
-                }
-              }]
-            };
-          var optLine = {
-              tooltip : {
-                trigger: 'axis',
-                formatter: function (params,ticket,callback) {
-                  return params.seriesName + '</br>' + params.data[0] + '分：' +  params.data[1] + '人';
-                }
-              },
-              legend: {
-                data:['所有考生','本班考生']
-              },
-              grid : {
-                x : 40,
-                x2 : 30,
-                y : 30,
-                y2 : 30
-              },
-              calculable : true,
-              xAxis : [
-                {
-                  type : 'value',
-                  scale:true,
-                  axisLabel : {
-                    formatter: '{value}分'
+                  {
+                    value:32,
+                    name:'invisible',
+                    itemStyle : placeHolderStyle
                   }
-                }
-              ],
-              yAxis : [
-                {
-                  type : 'value',
-                  scale:false,
-                  axisLabel : {
-                    formatter: '{value}人'
+                ]
+              },
+              {
+                name:'2',
+                type:'pie',
+                clockWise:false,
+                radius : [80, 100],
+                itemStyle : dataStyle,
+                data:[
+                  {
+                    value:29,
+                    name:'优秀率2'
+                  },
+                  {
+                    value:71,
+                    name:'invisible',
+                    itemStyle : placeHolderStyle
                   }
+                ]
+              }
+            ]
+          };
+          var optPieBj = { // 环形图
+            title: {
+              text: '信计一班',
+              subtext: '',
+              sublink: '',
+              x: 'center',
+              y: 'center',
+              itemGap: 20,
+              textStyle : {
+                color : 'rgba(30,144,255,0.8)',
+                fontFamily : '微软雅黑',
+                fontSize : 24,
+                fontWeight : 'bolder'
+              }
+            },
+            tooltip : {
+              show: false,
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+              orient : 'vertical',
+              //x : document.getElementById('chartPie').offsetWidth / 2,
+              x : '52%',
+              y : 30,
+              itemGap:12,
+              data:['及格率1','优秀率2']
+            },
+            toolbox: {
+              show : false,
+              feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                restore : {show: true},
+                saveAsImage : {show: true}
+              }
+            },
+            series : [
+              {
+                name:'1',
+                type:'pie',
+                clockWise:false,
+                radius : [100, 120],
+                itemStyle : dataStyle,
+                data:[
+                  {
+                    value:68,
+                    name:'及格率1'
+                  },
+                  {
+                    value:32,
+                    name:'invisible',
+                    itemStyle : placeHolderStyle
+                  }
+                ]
+              },
+              {
+                name:'2',
+                type:'pie',
+                clockWise:false,
+                radius : [80, 100],
+                itemStyle : dataStyle,
+                data:[
+                  {
+                    value:29,
+                    name:'优秀率2'
+                  },
+                  {
+                    value:71,
+                    name:'invisible',
+                    itemStyle : placeHolderStyle
+                  }
+                ]
+              }
+            ]
+          };
+          var optBar = {
+            tooltip : {
+              trigger : 'axis',
+              axisPointer : {
+                type : 'shadow'
+              }
+            },
+            legend : {
+              data : ['班级平均分']
+            },
+            calculable : true,
+            xAxis : [{
+              type : 'category',
+              data : [] //此处为变量表示班级数据
+            }],
+            yAxis : [{
+              type : 'value',
+              splitArea : {
+                show : true
+              }
+            }],
+            grid : {
+              x : 30,
+              x2 : 30,
+              y : 30
+            },
+            dataZoom : {
+              show : true,
+              realtime : true,
+              start : 0,
+              end : '' //此处为变量，是下面表示拖拽的功能
+            },
+            series : [{
+              name : '班级平均分',
+              type : 'bar',
+              barWidth: 30, //柱子的宽度
+              itemStyle : {
+                normal: {
+                  label : {show: true, position: 'top'},
+                  color:'#7FB06B' //柱子的颜色
                 }
-              ],
-              series : [
-                {
-                  name: '所有考生',
-                  type: 'line',
-                  data: tjParaObj.lineDataAll
+              },
+              data : [], //此处为变量
+              markLine : { //平均值直线
+                itemStyle:{
+                  normal:{
+                    color:'#9F79EE'
+                  }
                 },
-                {
-                  name: '本班考生',
-                  type: 'line',
-                  data: ''
+                data : [
+                  [
+                    {name: '平均值起点', xAxis: -1, yAxis: $scope.tjKaoShiPublicData.ksAvgScore, value: $scope.tjKaoShiPublicData.ksAvgScore},
+                    {name: '平均值终点', xAxis: 1000, yAxis: $scope.tjKaoShiPublicData.ksAvgScore}
+                  ]
+                ]
+              }
+            }]
+          };
+          var optLine = {
+            tooltip : {
+              trigger: 'axis',
+              formatter: function (params,ticket,callback) {
+                return params.seriesName + '</br>' + params.data[0] + '分：' +  params.data[1] + '人';
+              }
+            },
+            legend: {
+              data:['所有考生','本班考生']
+            },
+            grid : {
+              x : 40,
+              x2 : 30,
+              y : 30,
+              y2 : 30
+            },
+            calculable : true,
+            xAxis : [
+              {
+                type : 'value',
+                scale:true,
+                axisLabel : {
+                  formatter: '{value}分'
                 }
-              ]
-            };
+              }
+            ],
+            yAxis : [
+              {
+                type : 'value',
+                scale:false,
+                axisLabel : {
+                  formatter: '{value}人'
+                }
+              }
+            ],
+            series : [
+              {
+                name: '所有考生',
+                type: 'line',
+                data: tjParaObj.lineDataAll
+              },
+              {
+                name: '本班考生',
+                type: 'line',
+                data: ''
+              }
+            ]
+          };
           var optRadar = {
             tooltip : {
               trigger: 'axis'
@@ -730,11 +876,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 type: 'radar',
                 data : [
                   {
-                    value : [80, 70, 280, 20, 72],
+                    value : [80, 70, 280, 80, 72],
                     name : '整体'
                   },
                   {
-                    value : [70, 75, 80, 14, 70],
+                    value : [70, 75, 80, 65, 70],
                     name : '班级'
                   }
                 ]
@@ -743,11 +889,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           };
           //饼状图数据
           if(kind == 'all'){
-            optPie.series[0].data = tjParaObj.pieDataAll;
+            //optPie.series[0].data = tjParaObj.pieDataAll;
             optLine.series[1].data = '';
           }
           else{
-            optPie.series[0].data = tjParaObj.pieDataBanJi;
+            //optPie.series[0].data = tjParaObj.pieDataBanJi;
             optLine.series[1].data = tjParaObj.lineDataBanJi;
           }
           //柱状图数据
@@ -762,13 +908,15 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           else{
             optBar.dataZoom.end = (5 / tjBarData.length) * 100;
           }
-          tjParaObj.pieBox.setOption(optPie);
+          tjParaObj.pieBoxAll.setOption(optPieAll);
+          tjParaObj.pieBoxBj.setOption(optPieBj);
           tjParaObj.barBox.setOption(optBar);
           tjParaObj.lineBox.setOption(optLine);
           tjParaObj.radarBox.setOption(optRadar);
           $timeout(function (){
             window.onresize = function () {
-              tjParaObj.pieBox.resize();
+              tjParaObj.pieBoxAll.resize();
+              tjParaObj.pieBoxBj.resize();
               tjParaObj.barBox.resize();
               tjParaObj.lineBox.resize();
               tjParaObj.radarBox.resize();
@@ -1116,7 +1264,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           if(tjType == 'banJi'){
             banJiDateManage($scope.tjParas.allStudents);
           }
-          tjParaObj.pieBox = echarts.init(document.getElementById('chartPie'));
+          tjParaObj.pieBoxAll = echarts.init(document.getElementById('chartPieAll'));
+          tjParaObj.pieBoxBj = echarts.init(document.getElementById('chartPieBj'));
           tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
           tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
           tjParaObj.radarBox = echarts.init(document.getElementById('chartRadar'));

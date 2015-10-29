@@ -344,7 +344,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
-         * 视频分页
+         * 视频分页//
          */
         $scope.videoDistFun = function(pg){
           var pgNum = pg - 1;

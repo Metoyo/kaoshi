@@ -480,12 +480,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   var newKaoShengArr = [];
                   Lazy(data).each(function(ks){
                     var nksObj = {
-                      UID: ks.UID || '',
-                      XINGMING: ks.XINGMING || '',
-                      YONGHUHAO: ks.YONGHUHAO || '',
-                      KEXUHAO_ID: ks.KEXUHAO_ID || '',
-                      KEXUHAO_MINGCHENG: ks.KEXUHAO_MINGCHENG || '',
-                      BANJI: ks.BANJI || ''
+                      UID: ks.UID || ''
+                      //XINGMING: ks.XINGMING || '',
+                      //YONGHUHAO: ks.YONGHUHAO || '',
+                      //KEXUHAO_ID: ks.KEXUHAO_ID || '',
+                      //KEXUHAO_MINGCHENG: ks.KEXUHAO_MINGCHENG || '',
+                      //BANJI: ks.BANJI || ''
                     };
                     newKaoShengArr.push(nksObj);
                   });
@@ -942,17 +942,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             $scope.kwParams.forbidBtn = true;
             $scope.loadingImgShow = true;
-            $http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
-              if(data.result){
-                $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
-                DataService.alertInfFun('suc', '新建成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-              $scope.kwParams.forbidBtn = false;
-              $scope.loadingImgShow = false;
-            });
+            $scope.kaoshiData.shuju = JSON.stringify($scope.kaoshiData.shuju);
+            submitFORM(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
+            //$http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
+            //  if(data.result){
+            //    $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
+            //    DataService.alertInfFun('suc', '新建成功！');
+            //  }
+            //  else{
+            //    DataService.alertInfFun('err', data.error);
+            //  }
+            //  $scope.kwParams.forbidBtn = false;
+            //  $scope.loadingImgShow = false;
+            //});
           };
 
           /**
