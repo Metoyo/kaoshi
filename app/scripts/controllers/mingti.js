@@ -140,6 +140,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
           zsdgZsdArr = [];
           //得到知识大纲知识点的递归函数
           function _do(item) {
+            item.ckd = false;
+            item.fld = true;
             zsdgZsdArr.push(item.ZHISHIDIAN_ID);
             if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
               Lazy(item.ZIJIEDIAN).each(_do);
@@ -189,42 +191,87 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
         /**
          * 点击展开和收起的按钮子一级显示和隐藏
          */
-        $scope.toggleChildNode = function(idx) {
-          var onClass = '.node' + idx,//得到那个button被点击了
-            gitThisBtn = $(onClass),//得到那个展开和隐藏按钮被点击了
-            getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
-          gitThisBtn.toggleClass('unfoldBtn');
-          getTargetChild.toggle();//实现子元素的显示和隐藏
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd.ZIJIEDIAN).each(_do);
         };
 
         /**
-         点击checkbox得到checkbox的值
+         整理选中的知识点的ID和名称
          */
         var selectZsdFun = function(){ //用于将选择的知识点变成字符串
+          var zsdName = [];
+          var zsdNameStr = '';
           selectZsd = [];
-          var cbArray = $('input[name=point]'),
-            cbl = cbArray.length,
-            zsdName = [],
-            zsdNameStr = '';
-          for( var i = 0; i < cbl; i++) {
-            if(cbArray.eq(i).prop("checked")) {
-              selectZsd.push(cbArray[i].value);
-              zsdName.push(cbArray[i].labels[0].innerText);
+          function _do(item) {
+            if(item.ckd){
+              selectZsd.push(item.ZHISHIDIAN_ID);
+              zsdName.push(item.ZHISHIDIANMINGCHENG);
+            }
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
             }
           }
+          Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(_do);
           zhishidian_id = selectZsd.toString();
           zsdNameStr = zsdName.join('】【');
           $scope.selectZhiShiDian = zsdNameStr;
         };
 
-        $scope.toggleSelection = function(zsdId) {
-          var onSelect = '.select' + zsdId;
-          var gitThisChbx = $(onSelect);//得到那个展开和隐藏按钮被点击了
-          gitThisChbx.closest('li').find('div.foldBtn').addClass('unfoldBtn'); //得到相邻的foldBtn元素,添加unfoldBtn样式
-          gitThisChbx.closest('li').find('ul').show();//下面的子元素全部展开
-          selectZsdFun();
-          if($scope.kmTxWrap){ // 判断是出题阶段还是查题阶段
+        /**
+         点击checkbox得到checkbox的值
+         */
+        $scope.toggleSelection = function(zsd) {
+          function _do(item) {
+            item.ckd = zsd.ckd;
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          if($scope.kmTxWrap){ //查题阶段
+            zsd.ckd = !zsd.ckd;
+            Lazy(zsd.ZIJIEDIAN).each(_do);
+            selectZsdFun();
             $scope.qryTestFun();
+          }
+          else{ //出题阶段
+            zsd.ckd = !zsd.ckd;
+            Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(function(nd2){
+              if(nd2.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                $scope.kowledgeList[0].ckd = zsd.ckd;
+              }
+              else{
+                if(nd2.ZIJIEDIAN && nd2.ZIJIEDIAN.length > 0){
+                  Lazy(nd2.ZIJIEDIAN).each(function(nd3){
+                    if(nd3.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                      $scope.kowledgeList[0].ckd = zsd.ckd;
+                      nd2.ckd = zsd.ckd;
+                    }
+                    else{
+                      if(nd3.ZIJIEDIAN && nd3.ZIJIEDIAN.length > 0){
+                        Lazy(nd3.ZIJIEDIAN).each(function(nd4){
+                          if(nd4.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                            $scope.kowledgeList[0].ckd = zsd.ckd;
+                            nd2.ckd = zsd.ckd;
+                            nd3.ckd = zsd.ckd;
+                          }
+                        })
+                      }
+                      else{
+
+                      }
+                    }
+                  })
+                }
+              }
+            });
+            selectZsdFun();
           }
         };
 

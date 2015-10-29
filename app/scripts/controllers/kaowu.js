@@ -489,7 +489,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     };
                     newKaoShengArr.push(nksObj);
                   });
-                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(newKaoShengArr).uniq('YONGHUHAO').toArray();
+                  $scope.studentsOrgData = Lazy($scope.studentsOrgData).union(newKaoShengArr).uniq('UID').toArray();
                   //$scope.studentsOrgData = newKaoShengArr;
                   //将名单加入考试数据
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){ //非在线报名
