@@ -885,6 +885,42 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 保存考试
            */
+          function submitFORMPost(path, params, method) {
+            method = method || "post";
+            var form = document.createElement("form");
+            form.setAttribute("id", 'flowControlForm');
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+            for(var key in params) {
+              if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+                form.appendChild(hiddenField);
+              }
+            }
+            document.body.appendChild(form);
+            var formData=$("#flowControlForm").serialize();
+            $.ajax({
+              type: "POST",
+              url: path,
+              processData: true,
+              data: formData,
+              success: function(data){
+                if(data.result){
+                  $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
+                  DataService.alertInfFun('suc', '新建成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              },
+              error: function(data) {
+                DataService.alertInfFun("err", data.responseText);
+              }
+            });
+          }
           $scope.saveKaoShi = function(){
             $scope.kaoShengErrorInfo = '';
             var errInfo = [];
@@ -943,7 +979,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.kwParams.forbidBtn = true;
             $scope.loadingImgShow = true;
             $scope.kaoshiData.shuju = JSON.stringify($scope.kaoshiData.shuju);
-            submitFORM(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
+            submitFORMPost(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
             //$http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
             //  if(data.result){
             //    $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
@@ -1030,7 +1066,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 导出学生,需要的数据为考生列表
            */
-          function submitFORM(path, params, method) {
+          function submitFORMDownload(path, params, method) {
             method = method || "post";
             var form = document.createElement("form");
             form.setAttribute("method", method);
@@ -1066,7 +1102,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               });
               ksData[sheetName] = ksArr;
               exportStuInfoUrl = exportStuInfoBase + sheetName;
-              submitFORM(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
+              submitFORMDownload(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
             };
             if(bmStat == 'mdOff'){ //直接从场次那导出考生
               var chaXunKaoSheng = qryKaoShengBaseUrl + '&kid=' + kc.KID + '&kaoshiid=' + kc.KAOSHI_ID;
