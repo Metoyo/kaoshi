@@ -61,7 +61,8 @@
         <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeUserInfoLayer()">关闭</button>
       </div>
       <div class="pwi-body plr10">
-        <table class="table changePsw">
+        <!--教师修改密码-->
+        <table class="table changePsw" ng-if="usr.YONGHULEIBIE==1">
           <tr>
             <td>系统账号</td>
             <td ng-bind="usr.YONGHUMING"></td>
@@ -147,7 +148,6 @@
                       <span>科目：</span>
                       <span class="objectName">{{oar.lingyu[0].LINGYUMINGCHENG}}</span>
                     </p>
-
                     <p class="kemuquanxian">
                       <span>职务：</span>
                       <span class="rightName">{{oar.juese.jueseName.toString()}}</span>
@@ -168,7 +168,6 @@
               <div ng-show="kemu_list.length">
                 <div class="form-group col-md-12">
                   <label>科目</label>
-
                   <div class="chooseObject">
                     <label class="radio-inline" ng-repeat="km in kemu_list">
                       <input type="radio" name="objectName" value="{{km.LINGYU_ID}}"
@@ -179,7 +178,6 @@
                 </div>
                 <div class="form-group col-md-12">
                   <label>职务</label>
-
                   <div class="chooseRight">
                     <label class="checkbox-inline" ng-repeat="js in juese_list">
                       <input type="checkbox" name="rightName" value="{{js.JUESE_ID}}"
@@ -195,6 +193,51 @@
                   </button>
                 </div>
               </div>
+            </td>
+          </tr>
+        </table>
+        <!--学生修改密码-->
+        <table class="table changePsw" ng-if="usr.YONGHULEIBIE==2">
+          <tr>
+            <td>用户编号</td>
+            <td ng-bind="usr.UID"></td>
+          </tr>
+          <tr>
+            <td>真实姓名</td>
+            <td ng-bind="usr.XINGMING"></td>
+          </tr>
+          <tr>
+            <td>邮箱</td>
+            <td ng-bind="usr.YOUXIANG"></td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 20px">学校</td>
+            <td ng-bind="usr.JIGOUMINGCHENG"></td>
+          </tr>
+          <tr>
+            <td>个人简介</td>
+            <td>
+              <div ng-init="showGeRenJianLi=false">
+                <a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>
+                <a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>
+              </div>
+              <div ng-show="showGeRenJianLi">
+                <textarea cols="30" rows="5" class="form-control" ng-model="usr.GERENJIANLI"></textarea>
+                <button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>修改密码</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 20px">新密码</td>
+            <td>
+              <input type="text" class="newPassWord" ng-model="navData.newPsd">
+              <button type="button" class="btn btn-primary" ng-click="modifyPassWord()"
+                      ng-disabled="!navData.newPsd">修改
+              </button>
             </td>
           </tr>
         </table>

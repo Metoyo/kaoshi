@@ -42,8 +42,8 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
               $rootScope.session.info.UID; //通过UID查询用户详细的url
           userInfo = $rootScope.session.userInfo;
           $http.get(yhxxxxApiUrl).success(function(data){
-            if(data.JIGOU.length){
-              $scope.navData.jiGouId = data.JIGOU[0].JIGOU_ID;
+            var queryLy;
+            if(data.JIGOU && data.JIGOU.length >= 0){
               user.LINGYU = [];
               jueseDist = Lazy(data.JUESE).groupBy(function(js){ return js.LINGYUMINGCHENG; }).toObject();
               Lazy(data.LINGYU).each(function(ly){
@@ -59,24 +59,30 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
                 user.LINGYU.push(lyObj);
               });
               //基本信息
-              user.XINGMING = data.XINGMING;
-              user.XINGMING = data.XINGMING;
-              user.YOUXIANG = data.YOUXIANG;
-              user.SHOUJI = data.SHOUJI;
-              user.JIGOUMINGCHENG = data.JIGOU[0].JIGOUMINGCHENG;
-              user.SHOUJI = data.SHOUJI;
-              user.GERENJIANLI = data.GERENJIANLI;
+              user.XINGMING = data.XINGMING || '';
+              user.YOUXIANG = data.YOUXIANG || '';
+              user.SHOUJI = data.SHOUJI || '';
+              user.GERENJIANLI = data.GERENJIANLI || '';
+              user.YONGHULEIBIE = data.YONGHULEIBIE;
+              user.UID = $rootScope.session.info.UID;
               $('.modifuMiMaInfo').html('');
               //查询领域，去取已有领域;查询父领域的代码
-              $http.get(apiUrlLy + data.JIGOU[0].JIGOU_ID).success(function(jgData) {
-                if(jgData && jgData.length){
-                  $scope.lingYuList = jgData;
-                }
-                else{
-                  $scope.lingYuList = '';
-                  DataService.alertInfFun('err', '没有相关领域！');
-                }
-              });
+              if(data.JIGOU[0]){
+                $scope.navData.jiGouId = data.JIGOU[0].JIGOU_ID;
+                user.JIGOUMINGCHENG = data.JIGOU[0].JIGOUMINGCHENG;
+                $http.get(apiUrlLy + data.JIGOU[0].JIGOU_ID).success(function(jgData) {
+                  if(jgData && jgData.length){
+                    $scope.lingYuList = jgData;
+                  }
+                  else{
+                    $scope.lingYuList = '';
+                    DataService.alertInfFun('err', '没有相关领域！');
+                  }
+                });
+              }
+              else{
+                user.JIGOUMINGCHENG = '';
+              }
               //查询角色的代码
               $http.get(apiUrlJueSe).success(function(jsData) {
                 if(jsData && jsData.length > 0){
@@ -233,6 +239,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           $('.modifuMiMaInfo').html('');
           $http.post(alterYongHu, newPsdData).success(function(data){
             if(data.result){
+              $scope.navData.newPsd = '';
               DataService.alertInfFun('suc', '密码修改成功！');
             }
             else{

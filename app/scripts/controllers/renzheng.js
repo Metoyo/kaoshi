@@ -47,7 +47,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //$scope.stuDengluInfo = false;
 
         /**
-         * 登录程序
+         * 登录程序//
          */
         $scope.signIn = function() {
           urlArr = [];
@@ -75,8 +75,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                  *查询过用户的详细信息，得到jigouid,lingyuid等等 JUESE
                  */
                 $http.get(yhxxxxApiUrl).success(function(data){
-                  if(data.JIGOU.length){
-                    if(data.JUESE){
+                  if(data.JIGOU && data.JIGOU.length > 0){
+                    if(data.JUESE && data.JUESE.length > 0){
                       session.userInfo = data;
                       jsArr = Lazy(data.JUESE)
                         .sortBy(function(js){ return js.JUESE_ID; })
@@ -276,6 +276,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
             else{
               $scope.youxiangExist = true;
+              DataService.alertInfFun('err', '邮箱不存在！')
             }
           });
         };

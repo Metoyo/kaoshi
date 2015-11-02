@@ -496,14 +496,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                     Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(cc){
                       if((cc.tempIdx == $scope.selectChangCi.tempIdx) &&
                         (cc.KAOSHI_MINGCHENG == $scope.selectChangCi.KAOSHI_MINGCHENG)){
-                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(newKaoShengArr).uniq('YONGHUHAO').toArray();
+                        cc.KAOSHENG = Lazy(cc.KAOSHENG).union(newKaoShengArr).uniq('UID').toArray();
                         //cc.KAOSHENG = newKaoShengArr;
                       }
                     });
                   }
                   if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
                     $scope.kaoshiData.shuju.KAOSHENG = Lazy($scope.kaoshiData.shuju.KAOSHENG).union(newKaoShengArr)
-                      .uniq('YONGHUHAO').toArray();
+                      .uniq('UID').toArray();
                     //$scope.kaoshiData.shuju.KAOSHENG = newKaoShengArr;
                   }
                 }
