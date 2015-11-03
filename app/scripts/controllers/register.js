@@ -6,24 +6,25 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
       function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
 
         var baseRzAPIUrl = config.apiurl_rz;
-        var  baseBmAPIUrl = config.apiurl_bm; //报名的api
-        var  token = config.token;
-        var  apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid='; //lingYu 学科领域的api
-        var  apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid='; //由lingYu id 的具体的学科
-        var  apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2'; //jiGouLeiBie 机构类别的api
-        var  apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token; //jueSe 查询科目权限的数据的api
-        var  jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        var  select_juese = []; //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
-        var  registerDate = {}; // 注册时用到的数据
-        var  jigouId; //所选的机构ID
-        var  registerUrl = baseRzAPIUrl + 'zhuce'; //提交注册信息的url
-        var  stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce'; //提交学生注册信息的url
-        var  objAndRightList = []; //已经选择的科目和单位
+        var baseBmAPIUrl = config.apiurl_bm; //报名的api
+        var token = config.token;
+        var apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid='; //lingYu 学科领域的api
+        var apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid='; //由lingYu id 的具体的学科
+        var apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2'; //jiGouLeiBie 机构类别的api
+        var apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token; //jueSe 查询科目权限的数据的api
+        var jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
+        var select_juese = []; //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
+        var registerDate = {}; // 注册时用到的数据
+        var jigouId; //所选的机构ID
+        var registerUrl = baseRzAPIUrl + 'zhuce'; //提交注册信息的url
+        var stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce'; //提交学生注册信息的url
+        var objAndRightList = []; //已经选择的科目和单位
         var checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token; //检测用户是否存在的url
-        var  qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
-        var  checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
-        var  delBlankReg = /\s/g; //去除空格的正则表达
+        var qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
+        var checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
+        var delBlankReg = /\s/g; //去除空格的正则表达
         var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
+        var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
 
         $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
@@ -401,7 +402,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         //var qryUserIfRegister = function(){
         //  var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
         //  checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-        //  checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+        //  //checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
         //  $http.get(checkStuInYhxxUrl).success(function(student){
         //    if(student && student.length > 0){
         //      $scope.studentInfo = student;
@@ -422,6 +423,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
           if($scope.stuRegisterInfo.jigouid){
             chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
+            checkStuInYhxxBaseUrl += $scope.stuRegisterInfo.jigouid;
             if($scope.stuRegisterInfo.xuehao){
               $scope.stuRegisterInfo.xuehao = $scope.stuRegisterInfo.xuehao.replace(delBlankReg, '');
               chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
@@ -458,13 +460,14 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.confirmTheStuIn = function(){
           //查询用户信息表
           checkUserData = '';
+          $scope.studentInfo = [];
           var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
           checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+          //checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
           $http.get(checkStuInYhxxUrl).success(function(student){
             if(student && student.length > 0){
               if(student[0].YOUXIANG && student[0].MIMA){
-                $scope.studentInfo = student;
+                $scope.studentInfo.push(student[0]);
                 $('.tab-pane').removeClass('active').eq(2).addClass('active');
                 DataService.alertInfFun('pmt', '用户已存在，请登录！');
               }
@@ -475,7 +478,9 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
             }
             else{
               $scope.studentInfo = '';
-              qryUserIfInBmksb();
+              //qryUserIfInBmksb();
+              //qryUserIfRegister();
+              DataService.alertInfFun('err', student.error || '用户不存在！');
             }
           });
         };
@@ -493,25 +498,30 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.saveStudentInfo = function(){
           $scope.stuRegisterInfo.youxiang = $scope.stuRegisterInfo.youxiang.replace(delBlankReg,'');
           $scope.stuRegisterInfo.mima = $scope.stuRegisterInfo.mima.replace(delBlankReg,'');
-          var stuData = {
-            token: token,
-            YONGHULEIBIE: 2,
-            UID: checkUserData.UID || '',
-            YONGHUHAO: $scope.stuRegisterInfo.xuehao,
-            XINGMING: $scope.stuRegisterInfo.xingming,
-            YOUXIANG: $scope.stuRegisterInfo.youxiang,
-            JIGOU:  [{JIGOU_ID:$scope.stuRegisterInfo.jigouid, ZHUANGTAI: 1}],
-            MIMA: $scope.stuRegisterInfo.mima
-          };
-          $http.post(stuRegisterUrl, stuData).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('suc', '提交成功！');
-              urlRedirect.goTo($location.$$path, '/renzheng');
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
+          if(checkUserData.UID){
+            var stuData = {
+              token: token,
+              YONGHULEIBIE: 2,
+              UID: checkUserData.UID,
+              YONGHUHAO: $scope.stuRegisterInfo.xuehao,
+              XINGMING: $scope.stuRegisterInfo.xingming,
+              YOUXIANG: $scope.stuRegisterInfo.youxiang,
+              JIGOU:  [{JIGOU_ID:$scope.stuRegisterInfo.jigouid, ZHUANGTAI: 1}],
+              MIMA: $scope.stuRegisterInfo.mima
+            };
+            $http.post(alterYongHu, stuData).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '提交成功！');
+                urlRedirect.goTo($location.$$path, '/renzheng');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('err', '缺少UID！');
+          }
         };
 
     }]);
