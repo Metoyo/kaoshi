@@ -833,9 +833,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                       }
                     });
                     //统计每种题型的数量和百分比
-                    Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
-                      tixingStatistics(idx, kmtxListLength);
-                    });
+                    //Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
+                    //  tixingStatistics(idx, kmtxListLength);
+                    //});
                     nanduPercent(); //难度统计
                     //判读是否执行完成
                     $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
@@ -936,7 +936,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               NANDU: '', // 难度系数
               ZHISHIDIAN: [], //知识点ID, 数组
               zsdNameArr: [], //知识点名称, 数组
-              PIPEIDU: 0.6, //匹配度
+              PIPEIDU: 1, //匹配度
               TIXING: [{
                 TIXING_ID: '',
                 COUNT: ''
@@ -1252,9 +1252,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                       }
                     });
                     //统计每种题型的数量和百分比
-                    Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
-                      tixingStatistics(idx, kmtxListLength);
-                    });
+                    //Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, idx, lst){
+                    //  tixingStatistics(idx, kmtxListLength);
+                    //});
                     nanduPercent(); //难度统计
                     //判读是否执行完成
                     $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
@@ -1335,26 +1335,26 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 题型统计的函数
          */
-        var tixingStatistics = function(lv1, lv2){
-          for(var lp = 0; lp < lv2; lp++){
-            if(mubanData.shuju.MUBANDATI[lv1].MUBANDATI_ID == $scope.kmtxList[lp].TIXING_ID){
-              $scope.kmtxList[lp].itemsNum =  mubanData.shuju.MUBANDATI[lv1].TIMUARR.length;
-              //得到总题量
-              var tixingSum = Lazy($scope.kmtxList).reduce(function(memo, itm){
-                var itemNumVal = itm.itemsNum ? itm.itemsNum : 0;
-                return memo + itemNumVal;
-              },0);
-              //得到已选试题的总量
-              $scope.totalSelectedItmes = tixingSum;
-              //计算每种题型的百分比
-              Lazy($scope.kmtxList).each( function(tjkmtx, idx, lst){
-                var itemNumVal = tjkmtx.itemsNum ? tjkmtx.itemsNum : 0,
-                  percentVal = ((itemNumVal/tixingSum)*100).toFixed(0) + '%';
-                return tjkmtx.txPercentNum = percentVal;
-              });
-            }
-          }
-        };
+        //var tixingStatistics = function(lv1, lv2){
+        //  for(var lp = 0; lp < lv2; lp++){
+        //    if(mubanData.shuju.MUBANDATI[lv1].MUBANDATI_ID == $scope.kmtxList[lp].TIXING_ID){
+        //      $scope.kmtxList[lp].itemsNum =  mubanData.shuju.MUBANDATI[lv1].TIMUARR.length;
+        //      //得到总题量
+        //      var tixingSum = Lazy($scope.kmtxList).reduce(function(memo, itm){
+        //        var itemNumVal = itm.itemsNum ? itm.itemsNum : 0;
+        //        return memo + itemNumVal;
+        //      },0);
+        //      //得到已选试题的总量
+        //      $scope.totalSelectedItmes = tixingSum;
+        //      //计算每种题型的百分比
+        //      Lazy($scope.kmtxList).each( function(tjkmtx, idx, lst){
+        //        var itemNumVal = tjkmtx.itemsNum ? tjkmtx.itemsNum : 0,
+        //          percentVal = ((itemNumVal/tixingSum)*100).toFixed(0) + '%';
+        //        return tjkmtx.txPercentNum = percentVal;
+        //      });
+        //    }
+        //  }
+        //};
 
         /**
          * 将题加入试卷
@@ -1405,7 +1405,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 tm.xiaotiScore = '';
                 mubanData.shuju.MUBANDATI[i].TIMUARR.push(tm);
                 //统计每种题型的数量和百分比
-                tixingStatistics(i, kmtxListLength);
+                //tixingStatistics(i, kmtxListLength);
                 //均分大题分数
                 divideDatiScore(mubanData.shuju.MUBANDATI[i]);
               }
@@ -1484,7 +1484,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 if(mubanData.shuju.MUBANDATI[i].TIMUARR[j].TIMU_ID == tm.TIMU_ID){ //找到要删除的对应数据
                   mubanData.shuju.MUBANDATI[i].TIMUARR.splice(j, 1);
                   //统计每种题型的数量
-                  tixingStatistics(i, kmtxListLength);
+                  //tixingStatistics(i, kmtxListLength);
                   //均分大题分数
                   divideDatiScore(mubanData.shuju.MUBANDATI[i]);
                   break;
@@ -1696,9 +1696,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           mubanData.shuju.MUBANDATI.splice(idx, 1); //删除大图数据,放在最后
           mubandatiLength = mubanData.shuju.MUBANDATI.length; //给删除所选项后的模板大题的长度
           //统计每种题型的数量和百分比
-          for(i = 0; i < mubandatiLength; i++){
-            tixingStatistics(i, kmtxListLength);
-          }
+          //for(i = 0; i < mubandatiLength; i++){
+          //  tixingStatistics(i, kmtxListLength);
+          //}
           //难度统计
           nanduPercent();
         };
@@ -1739,14 +1739,22 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.zuJuanParam.sjzj_zongfen = 0;
           Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){
             $scope.zuJuanParam.sjzj_zongfen += parseInt(mbdt.datiScore);
-            //均分大题分数
-            divideDatiScore(mbdt);
-            //二级控制面板上的分数统计
-            Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
-              if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
-               kmtx.datiScore = mbdt.datiScore;
+            var xiaoTiNumIsNull = false;
+            Lazy(mbdt.TIMUARR).each(function(xt){
+              if(!(xt.xiaotiScore && xt.xiaotiScore > 0)){
+                xiaoTiNumIsNull = true;
               }
             });
+            if(xiaoTiNumIsNull){
+              //均分大题分数
+              divideDatiScore(mbdt);
+            }
+            //二级控制面板上的分数统计
+            //Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
+            //  if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
+            //   kmtx.datiScore = mbdt.datiScore;
+            //  }
+            //});
           });
           //试卷编辑层隐藏
           $scope.shijuan_edit = false;
@@ -2290,7 +2298,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                     mubanData.shuju.MUBANDATI[i].datiScore += tm.FENZHI;
                   }
                   //统计每种题型的数量和百分比
-                  tixingStatistics(i, kmtxListLength);
+                  //tixingStatistics(i, kmtxListLength);
                 }
                 //难度统计  nanduTempData NANDU_ID
                 for(var j = 0; j < nanduLength; j++){
