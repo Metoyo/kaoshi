@@ -16,9 +16,9 @@
         <td width="20%">考试名称</td>
         <td ng-init="showMoreKaoShi=false">
           <div ng-bind="tjKaoShiPublicData.ksname" class="wordBreak pull-left"></div>
-          <a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">
-            <span class="glyphicon glyphicon-plus-sign"></span>
-          </a>
+          <!--<a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">-->
+            <!--<span class="glyphicon glyphicon-plus-sign"></span>-->
+          <!--</a>-->
         </td>
       </tr>
       <tr class="success">
@@ -36,8 +36,10 @@
       <tr>
         <td>参数设置</td>
         <td>
-          优秀分值：<input type="text" ng-model="tjParas.youXiuFenZhi" class="w40"/>
-          及格分值：<input type="text" ng-model="tjParas.jiGeFenZhi" class="w40"/>
+          优秀分值：<input type="text" ng-model="tjParas.youXiuFenZhi" class="w40" ng-disabled="needToXgYxJgLv"/>
+          及格分值：<input type="text" ng-model="tjParas.jiGeFenZhi" class="w40" ng-disabled="needToXgYxJgLv"/>
+          <a href="javascript:void(0)" class="ml15" ng-click="changYouXiuJiGeLv()" ng-show="needToXgYxJgLv">修改</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="tjShowKaoShiChart(selectKsz)" ng-hide="needToXgYxJgLv">确定</a>
         </td>
       </tr>
     </table>
@@ -55,19 +57,19 @@
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
-            <li ng-class="{active: tjParas.lastSelectBj.banJiIdx == 0}" ng-click="tjByBanJi('all')">
+            <li ng-class="{active: tjParas.lastSelectItem.banJiIdx == 0}" ng-click="tjByBjOrKxh('all')">
               <a href="javascript:void(0)">全部</a>
             </li>
-            <li ng-repeat="bj in tjBanJi" ng-class="{active: bj.bjIdx == tjParas.lastSelectBj.banJiIdx}"
-                ng-click="tjByBanJi(bj)">
+            <li ng-repeat="bj in tjBanJi" ng-class="{active: bj.bjIdx == tjParas.lastSelectItem.banJiIdx}"
+                ng-click="tjByBjOrKxh(bj)">
               <a href="javascript:void(0)" ng-bind="bj.bjName"></a>
             </li>
           </ul>
           <div class="page">
-            <p class="wp50 text-center up" ng-click="banJiPage('up')">
+            <p class="wp50 text-center up" ng-click="bJorKxhPage('up')">
               <span class="glyphicon glyphicon-chevron-up"></span>
             </p>
-            <p class="wp50 text-center down" ng-click="banJiPage('down')">
+            <p class="wp50 text-center down" ng-click="bJorKxhPage('down')">
               <span class="glyphicon glyphicon-chevron-down"></span>
             </p>
           </div>
@@ -111,6 +113,7 @@
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">
         <span>考生名单</span>
+        <span class="ml15" ng-bind="tjParas.selectItemName" ng-if="tjParas.selectItemName!='全部'"></span>
         <button class="btn btn-primary pull-right mt5 mr5" ng-show="studentData.length"
                 ng-click="exportKsInfo(studentData)">导出考生
         </button>
