@@ -17,13 +17,12 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 声明变量
          */
         var userInfo = $rootScope.session.userInfo;
-        var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+        var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
         var token = config.token;
         var caozuoyuan = userInfo.UID ;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
         var lingyuid = $rootScope.session.defaultLyId;
-        var tiKuLingYuId = $rootScope.session.defaultTiKuLyId;
         var kxhManageUrl = baseRzAPIUrl + 'kexuhao'; //课序号管理的url
         var qryTeacherUrl = baseRzAPIUrl + 'query_jgly_teacher?token=' + token + '&jigouid=' + jigouid +
           '&lingyuid=' + lingyuid; //查询本机构下教师
@@ -33,11 +32,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var paginationLength = 7; //分页部分，页码的长度，目前设定为7
         var chaXunStuBaseUrl = baseRzAPIUrl + 'query_student'; //查询机构下面的用户
         var modifyKxhYh = baseRzAPIUrl + 'kexuhao_yonghu'; //修改课序号下面的用户
-        var xiuGaiYh = baseRzAPIUrl + 'xiugai_yonghu'; //修改用户
         var singleYhAddToKxh = baseRzAPIUrl + 'add_yonghu_withkxh'; //单个新用户添加课序号
-        var importUser = baseRzAPIUrl + 'import_users2'; //大批新增用户
         var totalStuPage = []; //所有的课序号考生的页码数
         var regKxh = /^[a-zA-Z0-9_-]+$/; //检测课序号
+        var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='
+          + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试列表的url
 
         $scope.guanliParams = {
           tabActive: '',
@@ -455,6 +454,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
+         * 查询
+         */
+        var glQueryKaoShiZu = function(){
+          var kaoShiState = [-3, 0, 1, 2, 3, 4, 5, 6];
+          var qryKaoShiZuList = qryKaoShiZuListUrl + '&zhuangtai=' + kaoShiState;
+          $http.get(qryKaoShiZuList).success(function(data) {
+            if(data && data.length > 0){
+              $scope.glKaoShiZuList = data;
+            }
+            else{
+              $scope.glKaoShiZuList = '';
+              DataService.alertInfFun('err', data.error)
+            }
+          });
+        };
+        /**
          * 考生内容切换
          */
         $scope.guanLiTabSlide = function (tab) {
@@ -488,8 +503,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           //  $scope.guanLiTpl = 'views/guanli/bumen.html';
           //  getJgList();
           //}
+          if (tab == 'tongji') {
+            glQueryKaoShiZu();
+            $scope.guanliParams.tabActive = 'tongji';
+            $scope.guanLiTpl = 'views/guanli/tongjiset.html';
+          }
         };
-        $scope.guanLiTabSlide('kexuhao');
+        $scope.guanLiTabSlide('tongji');
 
         /**
          * 查询课序号学生
