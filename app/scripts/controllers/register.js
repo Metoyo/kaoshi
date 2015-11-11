@@ -463,7 +463,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           $scope.studentInfo = [];
           var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
           checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-          //checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
+          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
           $http.get(checkStuInYhxxUrl).success(function(student){
             if(student && student.length > 0){
               if(student[0].YOUXIANG && student[0].MIMA){
