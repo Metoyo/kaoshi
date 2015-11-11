@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
+define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, config, $, lazy, mathjax) {
   'use strict';
 
   /**
@@ -9,8 +9,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
    * Controller of the kaoshiApp
    */
   angular.module('kaoshiApp.controllers.GuanLiCtrl', [])
-    .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http',
-      function ($rootScope, $scope, DataService, $http) {
+    .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$timeout',
+      function ($rootScope, $scope, DataService, $http, $timeout) {
 
         $rootScope.isRenZheng = false; //判读页面是不是认证
         /**
@@ -19,6 +19,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var userInfo = $rootScope.session.userInfo;
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
+        var baseMtAPIUrl = config.apiurl_mt; //mingti的api
         var token = config.token;
         var caozuoyuan = userInfo.UID ;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
@@ -35,8 +36,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var singleYhAddToKxh = baseRzAPIUrl + 'add_yonghu_withkxh'; //单个新用户添加课序号
         var totalStuPage = []; //所有的课序号考生的页码数
         var regKxh = /^[a-zA-Z0-9_-]+$/; //检测课序号
+        var chaxunzilingyu = true;
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='
           + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试列表的url
+        var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+          + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
+        var qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
+          caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid='; //查询知识点基础url
 
         $scope.guanliParams = {
           tabActive: '',
@@ -54,6 +60,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.glSelectData = ''; //课序号保存是选中的课序号
         $scope.selectKxh = ''; //选中的课序号
         $scope.showMoreBtn = false; //课序号管理更多按钮
+
+        /**
+         * 导航页的高度
+         */
+        var pageHeight = $('.dashboard').height() - 180;
 
         /**
          * 查询本机构下的老师
@@ -454,7 +465,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 查询
+         * 查询考试组
          */
         var glQueryKaoShiZu = function(){
           var kaoShiState = [-3, 0, 1, 2, 3, 4, 5, 6];
@@ -462,6 +473,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $http.get(qryKaoShiZuList).success(function(data) {
             if(data && data.length > 0){
               $scope.glKaoShiZuList = data;
+              $('.glZsdgWrap').css({height: pageHeight, 'overflow-y': 'auto'});
             }
             else{
               $scope.glKaoShiZuList = '';
@@ -469,6 +481,44 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
           });
         };
+
+        /**
+         * 获得大纲数据
+         */
+        var getDaGangData = function(){
+          //var zsdgZsdArr = [];
+          //得到知识大纲知识点的递归函数
+          function _do(item) {
+            item.ckd = false;
+            item.fld = true;
+            //zsdgZsdArr.push(item.ZHISHIDIAN_ID);
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          $http.get(qryMoRenDgUrl).success(function(mrDg){
+            if(mrDg && mrDg.length > 0){
+              $scope.glDgList = mrDg;
+              //获取大纲知识点
+              var qryKnowledge = qryKnowledgeBaseUrl + mrDg[0].ZHISHIDAGANG_ID;
+              $http.get(qryKnowledge).success(function(zsddata){
+                if(zsddata.length){
+                  $scope.glKowledgeList = zsddata;
+                  //得到知识大纲知识点id的函数
+                  Lazy(zsddata).each(_do);
+                  $('.glZsdgWrap').css({height: pageHeight, 'overflow-y': 'auto'});
+                }
+                else{
+                  DataService.alertInfFun('err', '查询大纲失败！错误信息为：' + zsddata.error); // '查询大纲失败！错误信息为：' + data.error
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', mrDg.error);
+            }
+          });
+        };
+
         /**
          * 考生内容切换
          */
@@ -505,6 +555,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           //}
           if (tab == 'tongji') {
             glQueryKaoShiZu();
+            getDaGangData();
             $scope.guanliParams.tabActive = 'tongji';
             $scope.guanLiTpl = 'views/guanli/tongjiset.html';
           }
@@ -647,5 +698,17 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           showMoreBtnFun();
         };
 
+        /**
+         * 重新加载mathjax
+         */
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "glDaGangList"]);
+        });
     }]);
 });

@@ -577,6 +577,36 @@ a.add-btn:hover span {
   }
 }
 /* dashboard styles begin*/
+.pointTree {
+  width: 100%;
+  overflow-y: auto;
+  .checkbox {
+    margin-bottom: 2px;
+    margin-top: 2px;
+    input[type="checkbox"]{
+      margin-left: -15px;
+    }
+  }
+  .levelOne li {
+    padding-left: 12px;
+    position: relative;
+  }
+  //    .levelFour {
+  //      display: none;
+  //    }
+  .foldBtn {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    top: 5px;
+    cursor: pointer;
+    background: url('../images/mingti/icon/tree_icon.png') no-repeat 0 0;
+  }
+  .unfoldBtn {
+    background-position: 0 bottom;
+  }
+}
 .dashboard {
   width: 80px;
   height: 100%;
@@ -645,6 +675,13 @@ a.add-btn:hover span {
   .sj-preview-btns{
     padding: 10px 0;
     text-align: center;
+  }
+  .pointTree{
+    padding: 0 10px;
+    position: absolute;
+    bottom: 0;
+    top: 140px;
+    left: 0;
   }
 }
 .dashboard_shown_show{
@@ -895,41 +932,6 @@ a.add-btn:hover span {
           font-weight: normal;
         }
       }
-    }
-  }
-  .pointTree {
-    padding: 0 10px;
-    position: absolute;
-    bottom: 0;
-    top: 140px;
-    left: 0;
-    width: 100%;
-    overflow-y: auto;
-    .checkbox {
-      margin-bottom: 2px;
-      margin-top: 2px;
-      input[type="checkbox"]{
-        margin-left: -15px;
-      }
-    }
-    .levelOne li {
-      padding-left: 12px;
-      position: relative;
-    }
-//    .levelFour {
-//      display: none;
-//    }
-    .foldBtn {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      left: 0;
-      top: 5px;
-      cursor: pointer;
-      background: url('../images/mingti/icon/tree_icon.png') no-repeat 0 0;
-    }
-    .unfoldBtn {
-      background-position: 0 bottom;
     }
   }
   /*sub dashboard styles end*/

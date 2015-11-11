@@ -107,8 +107,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
         var queryTiMuSource = baseMtAPIUrl + 'query_timusource?token=' + token + '&jigouid=' + jigouid
             + '&lingyuid=' + lingyuid; //查询题目来源
-        var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
-          + '&lingyuid=' + lingyuid; //查询知识点题目数量
+        //var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
+        //  + '&lingyuid=' + lingyuid; //查询知识点题目数量
 
         /**
          * 初始化是DOM元素的隐藏和显示
