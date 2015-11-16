@@ -3,17 +3,21 @@
     <h4 class="pb10">
       考试组
     </h4>
-    <div class="glZsdgWrap">
+    <div class="glZsdgWrap pl10 bd1">
       <div class="radio" ng-repeat="ksz in glKaoShiZuList">
         <label>
-          <input type="radio" name="rdKaoShiZu" value="{{ksz.KAOSHIZU_ID}}"> {{ksz.KAOSHIZU_NAME}}
+          <input type="radio" name="rdKaoShiZu" ng-model="guanliParams.selectKsz" value="{{ksz.KAOSHIZU_ID}}"
+                 ng-click="glQueryZsd()">{{ksz.KAOSHIZU_NAME}}
         </label>
       </div>
     </div>
   </div>
   <div class="pull-right wp56">
-    <h4 class="pb10">知识大纲</h4>
-    <div class="pointTree glZsdgWrap">
+    <h4 class="pb10">
+      <span>知识大纲</span>
+      <!--<button type="button" class="btn btn-default pull-right" ng-click="glKaoWuGetZsd()">获取知识点</button>-->
+    </h4>
+    <div class="pointTree glZsdgWrap pl10 bd1">
       <ul class="list-unstyled levelOne" id="glDaGangList">
         <li ng-repeat="zsd in glKowledgeList" repeat-done>
           <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd.ZIJIEDIAN.length" ng-click="toggleChildNode(zsd)"></div>
@@ -54,5 +58,8 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary mt15 pull-right" ng-click="glSaveTongJiSet()">保存修改</button>
   </div>
 </div>

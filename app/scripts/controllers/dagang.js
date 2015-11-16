@@ -440,7 +440,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           function getPubZsd(item) {
             if(item.LEIXING){
               var pubZsdObj = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
-              $scope.publicKnowledge.push(pubZsdObj);
+              if($scope.publicKnowledge){
+                $scope.publicKnowledge.push(pubZsdObj);
+              }
               if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
                 Lazy(item.ZIJIEDIAN).each(getPubZsd);
               }

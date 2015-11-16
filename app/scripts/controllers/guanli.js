@@ -20,6 +20,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
         var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+        var baseTjAPIUrl = config.apiurl_tj; //统计的api
         var token = config.token;
         var caozuoyuan = userInfo.UID ;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
@@ -43,6 +44,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
         var qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
           caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid='; //查询知识点基础url
+        var kaoShiZuZhiShiDianUrl = baseTjAPIUrl + 'kaoshizu_zhishidian'; //保存考试组知识点
+        var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
 
         $scope.guanliParams = {
           tabActive: '',
@@ -52,7 +55,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           singleStuName: '', //学生姓名
           singleStuID: '', //学生学号
           singleStuBanJi: '', //学生班级
-          errorInfo: ''
+          errorInfo: '',
+          selectKsz: '' //选中的考试组
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgLyTeachers = ''; //本机构和领域下的老师
@@ -710,5 +714,152 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           });
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "glDaGangList"]);
         });
+
+        /**
+         * 点击展开和收起的按钮子一级显示和隐藏
+         */
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd.ZIJIEDIAN).each(_do);
+        };
+
+        /**
+         点击checkbox得到checkbox的值
+         */
+        $scope.toggleSelection = function(zsd) {
+          zsd.ckd = !zsd.ckd;
+        };
+
+        /**
+         * 查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
+         */
+        //var glKaoWuGetZsd = function(){
+        //  if($scope.guanliParams.selectKsz){
+        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
+        //    $http({method: 'GET',url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
+        //      if(data && data.length > 0){
+        //
+        //      }
+        //      else{
+        //
+        //      }
+        //    });
+        //  }
+        //  else{
+        //    DataService.alertInfFun('pmt', '请选择考试组！');
+        //  }
+        //};
+
+        /**
+         * 查询知识点，在统计表里
+         */
+        $scope.glQueryZsd = function(){
+          var pObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            kaoshizuid: ''
+          };
+          var selectData = '';
+          function _do(item) {
+            item.ckd = false;
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          function _doCheck(item) {
+            if(item.ZHISHIDIAN_ID == selectData.ZHISHIDIAN_ID){
+              item.ckd = true;
+            }
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_doCheck);
+            }
+          }
+          Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_do);
+          if($scope.guanliParams.selectKsz){
+            pObj.kaoshizuid = $scope.guanliParams.selectKsz;
+            $http({method: 'GET',url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
+              if(data && data.length > 0){
+                //知识点反选
+                Lazy(data).each(function(kszzsd1){
+                  selectData = kszzsd1;
+                  Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheck);
+                });
+              }
+              else{
+                selectData = '';
+                //查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
+                $http({method: 'GET',url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata){
+                  if(zsddata && zsddata.length > 0){
+                    //知识点反选
+                    Lazy(zsddata).each(function(kszzsd2){
+                      selectData = kszzsd2;
+                      Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheck);
+                    });
+                  }
+                  else{
+                    DataService.alertInfFun('err', zsddata.error);
+                  }
+                });
+                if(data.error){
+                  DataService.alertInfFun('err', data.error);
+                }
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
+
+        /**
+         * 保存统计设定的值
+         */
+        $scope.glSaveTongJiSet = function(){
+          var kszZsdObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            kszzsd: [],
+            kaoshizuid: ''
+          };
+          function _do(item) {
+            if(item.ckd){
+              var obj = {
+                KAOSHIZU_ID: $scope.guanliParams.selectKsz,
+                ZHISHIDIAN_ID: item.ZHISHIDIAN_ID
+              };
+              kszZsdObj.kszzsd.push(obj);
+            }
+            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+              Lazy(item.ZIJIEDIAN).each(_do);
+            }
+          }
+          if($scope.guanliParams.selectKsz){
+            Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_do);
+            kszZsdObj.kaoshizuid = $scope.guanliParams.selectKsz;
+            if(kszZsdObj.kszzsd && kszZsdObj.kszzsd.length > 0){
+              $http.post(kaoShiZuZhiShiDianUrl, kszZsdObj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '保存成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选择需要的数据！');
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
+
     }]);
 });

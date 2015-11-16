@@ -915,6 +915,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 else{
                   DataService.alertInfFun('err', data.error);
                 }
+                $scope.kwParams.forbidBtn = false;
+                $scope.loadingImgShow = false;
               },
               error: function(data) {
                 DataService.alertInfFun("err", data.responseText);

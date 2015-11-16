@@ -535,7 +535,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               x : '52%',
               y : 30,
               itemGap:12,
-              data:['及格率:' + tj.KAOSHIZU.JGLV*100 + '%', '优秀率:' + tj.KAOSHIZU.YXLV*100 + '%']
+              data:['及格率:' + (tj.KAOSHIZU.JGLV*100).toFixed(1) + '%', '优秀率:' + (tj.KAOSHIZU.YXLV*100).toFixed(1) + '%']
             },
             toolbox: {
               show : false,
@@ -555,11 +555,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 itemStyle : dataStyle,
                 data:[
                   {
-                    value: tj.KAOSHIZU.JGLV*100,
-                    name: '及格率:' + tj.KAOSHIZU.JGLV*100 + '%'
+                    value: (tj.KAOSHIZU.JGLV*100).toFixed(1),
+                    name: '及格率:' + (tj.KAOSHIZU.JGLV*100).toFixed(1) + '%'
                   },
                   {
-                    value: 100 - tj.KAOSHIZU.JGLV*100,
+                    value: 100 - (tj.KAOSHIZU.JGLV*100).toFixed(1),
                     name:'invisible',
                     itemStyle : placeHolderStyle
                   }
@@ -573,11 +573,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 itemStyle : dataStyle,
                 data:[
                   {
-                    value: tj.KAOSHIZU.YXLV*100,
-                    name: '优秀率:' + tj.KAOSHIZU.YXLV*100 + '%'
+                    value: (tj.KAOSHIZU.YXLV*100).toFixed(1),
+                    name: '优秀率:' + (tj.KAOSHIZU.YXLV*100).toFixed(1) + '%'
                   },
                   {
-                    value: 100 - tj.KAOSHIZU.YXLV*100,
+                    value: 100 - (tj.KAOSHIZU.YXLV*100).toFixed(1),
                     name:'invisible',
                     itemStyle : placeHolderStyle
                   }
@@ -813,17 +813,17 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           else{
             optLine.series[1].data = tjParaObj.lineDataBK;
             optPieBj.title.text = $scope.tjParas.selectItemName;
-            optPieBj.legend.data = ['及格率:' + sg.JGLV*100 + '%', '优秀率:' + sg.YXLV*100 + '%'];
-            optPieBj.series[0].data[0].value = sg.JGLV*100;
-            optPieBj.series[0].data[0].name = '及格率:' + sg.JGLV*100 + '%';
-            optPieBj.series[0].data[1].value = 100 - sg.JGLV*100;
-            optPieBj.series[1].data[0].value = sg.YXLV*100;
-            optPieBj.series[1].data[0].name = '优秀率:' + sg.YXLV*100 + '%';
-            optPieBj.series[1].data[1].value = 100 - sg.YXLV*100;
+            optPieBj.legend.data = ['及格率:' + (sg.JGLV*100).toFixed(1) + '%', '优秀率:' + (sg.YXLV*100).toFixed(1) + '%'];
+            optPieBj.series[0].data[0].value = (sg.JGLV*100).toFixed(1);
+            optPieBj.series[0].data[0].name = '及格率:' + (sg.JGLV*100).toFixed(1) + '%';
+            optPieBj.series[0].data[1].value = 100 - (sg.JGLV*100).toFixed(1);
+            optPieBj.series[1].data[0].value = (sg.YXLV*100).toFixed(1);
+            optPieBj.series[1].data[0].name = '优秀率:' + (sg.YXLV*100).toFixed(1) + '%';
+            optPieBj.series[1].data[1].value = 100 - (sg.YXLV*100).toFixed(1);
           }
           if(sg){
-            radarBj[0] = sg.JGLV*100;
-            radarBj[1] = sg.YXLV*100;
+            radarBj[0] = (sg.JGLV*100).toFixed(1);
+            radarBj[1] = (sg.YXLV*100).toFixed(1);
             radarBj[2] = sg.SKRS;
             radarBj[3] = sg.TOP100;
             radarBj[4] = sg.PJF;
