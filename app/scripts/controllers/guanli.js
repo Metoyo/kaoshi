@@ -46,6 +46,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid='; //查询知识点基础url
         var kaoShiZuZhiShiDianUrl = baseTjAPIUrl + 'kaoshizu_zhishidian'; //保存考试组知识点
         var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
+        var selectData = ''; //考试组和知识点用到变量
 
         $scope.guanliParams = {
           tabActive: '',
@@ -564,7 +565,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             $scope.guanLiTpl = 'views/guanli/tongjiset.html';
           }
         };
-        $scope.guanLiTabSlide('tongji');
+        $scope.guanLiTabSlide('kexuhao');
 
         /**
          * 查询课序号学生
@@ -739,22 +740,50 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         /**
          * 查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
          */
-        //var glKaoWuGetZsd = function(){
-        //  if($scope.guanliParams.selectKsz){
-        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
-        //    $http({method: 'GET',url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
-        //      if(data && data.length > 0){
-        //
-        //      }
-        //      else{
-        //
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组！');
-        //  }
-        //};
+        function _doKszZsd(item) {
+          item.ckd = false;
+          if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+            Lazy(item.ZIJIEDIAN).each(_doKszZsd);
+          }
+        }
+        function _doCheckKszZsd(item) {
+          if(item.ZHISHIDIAN_ID == selectData.ZHISHIDIAN_ID){
+            item.ckd = true;
+          }
+          if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
+            Lazy(item.ZIJIEDIAN).each(_doCheckKszZsd);
+          }
+        }
+        $scope.glKaoWuGetZsd = function(){
+          var pObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            kaoshizuid: ''
+          };
+          Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doKszZsd);
+          if($scope.guanliParams.selectKsz){
+            pObj.kaoshizuid = $scope.guanliParams.selectKsz;
+            //查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
+            $http({method: 'GET', url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata){
+              if(zsddata && zsddata.length > 0){
+                //知识点反选
+                Lazy(zsddata).each(function(kszzsd){
+                  selectData = kszzsd;
+                  Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheckKszZsd);
+                });
+              }
+              else{
+                DataService.alertInfFun('err', zsddata.error);
+              }
+            });
+            if(data.error){
+              DataService.alertInfFun('err', data.error);
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
 
         /**
          * 查询知识点，在统计表里
@@ -765,50 +794,20 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             caozuoyuan: caozuoyuan,
             kaoshizuid: ''
           };
-          var selectData = '';
-          function _do(item) {
-            item.ckd = false;
-            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              Lazy(item.ZIJIEDIAN).each(_do);
-            }
-          }
-          function _doCheck(item) {
-            if(item.ZHISHIDIAN_ID == selectData.ZHISHIDIAN_ID){
-              item.ckd = true;
-            }
-            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              Lazy(item.ZIJIEDIAN).each(_doCheck);
-            }
-          }
-          Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_do);
+          selectData = '';
           if($scope.guanliParams.selectKsz){
             pObj.kaoshizuid = $scope.guanliParams.selectKsz;
-            $http({method: 'GET',url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
+            $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
               if(data && data.length > 0){
+                Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doKszZsd);
                 //知识点反选
-                Lazy(data).each(function(kszzsd1){
-                  selectData = kszzsd1;
-                  Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheck);
+                Lazy(data).each(function(kszzsd){
+                  selectData = kszzsd;
+                  Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheckKszZsd);
                 });
               }
               else{
-                selectData = '';
-                //查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
-                $http({method: 'GET',url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata){
-                  if(zsddata && zsddata.length > 0){
-                    //知识点反选
-                    Lazy(zsddata).each(function(kszzsd2){
-                      selectData = kszzsd2;
-                      Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheck);
-                    });
-                  }
-                  else{
-                    DataService.alertInfFun('err', zsddata.error);
-                  }
-                });
-                if(data.error){
-                  DataService.alertInfFun('err', data.error);
-                }
+                $scope.glKaoWuGetZsd();
               }
             });
           }
