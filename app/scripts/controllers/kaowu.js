@@ -909,6 +909,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               data: formData,
               success: function(data){
                 if(data.result){
+                  var node = document.getElementById("flowControlForm");
+                  node.parentNode.removeChild(node);
                   $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
                   DataService.alertInfFun('suc', '新建成功！');
                 }
@@ -1071,6 +1073,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           function submitFORMDownload(path, params, method) {
             method = method || "post";
             var form = document.createElement("form");
+            form.setAttribute("id", 'formDownload');
             form.setAttribute("method", method);
             form.setAttribute("action", path);
             form._submit_function_ = form.submit;
@@ -1104,6 +1107,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               });
               ksData[sheetName] = ksArr;
               exportStuInfoUrl = exportStuInfoBase + sheetName;
+              var node = document.getElementById('formDownload');
+              if(node){
+                node.parentNode.removeChild(node);
+              }
               submitFORMDownload(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
             };
             if(bmStat == 'mdOff'){ //直接从场次那导出考生

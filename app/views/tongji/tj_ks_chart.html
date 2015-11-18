@@ -23,7 +23,7 @@
       </tr>
       <tr class="success">
         <td>平均分数</td>
-        <td ng-bind="tjKaoShiPublicData.ksAvgScore"></td>
+        <td ng-bind="tjKaoShiPublicData.ksAvgScore.toFixed(1)"></td>
       </tr>
       <tr>
         <td>考试人数</td>
@@ -84,7 +84,7 @@
   </div>
   <div class="row">
     <div class="tj-ks-box wp48">
-      <h4 class="title">班级平均分布</h4>
+      <h4 class="title">课序号平均分分布<span>（课序号：{{tjKaoShiPublicData.kxh}}-）</span></h4>
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>

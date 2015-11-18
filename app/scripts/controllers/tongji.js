@@ -41,8 +41,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             lineDataBK: ''
           }; //存放统计参数的Object
         var tjBarData = []; //柱状图数据
-        var exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel'; //导出excel名单
-        var downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/';
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
         var qryItemDeFenLvBase = baseTjAPIUrl + 'query_timu_defenlv?token=' + token + '&kaoshiid='; //查询每道题目的得分率
         var itemDeFenLv = ''; //存放考生得分率的变量
@@ -53,6 +51,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var queryKaoShiZuTongJi = baseTjAPIUrl + 'query_kaoshizu_tongji'; //查询统计数据
         var queryKaoShengByBanji = baseTjAPIUrl + 'query_kaosheng_of_banji?token=' + token + '&kaoshizuid='; //查询班级下面的考试
         var tjAllStutents = ''; //统计所有考生数据
+        var exportStuInfoBase = config.apiurl_gg + 'json2excel?xls_file_name='; //导出excel名单
+        var kaoShiZuZhiShiDianUrl = baseTjAPIUrl + 'kaoshizu_zhishidian'; //保存考试组知识点
+        var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
 
         $scope.tjKaoShiList = []; //试卷列表
         $scope.tjParas = { //统计用到的参数
@@ -142,7 +143,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             }
           }
           //查询数据的代码
-          //$scope.tjKaoShiList = tjNeedData.slice((currentPage-1)*10, currentPage*10);
           var pageKsz = tjNeedData.slice((currentPage-1)*10, currentPage*10);
           if(pageKsz && pageKsz.length > 0){
             var pageKszId = Lazy(pageKsz).map(function(ksz){return ksz.KAOSHIZU_ID;}).join();
@@ -350,35 +350,50 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         /**
          * 导出学生,需要的数据为考生列表
          */
+        function submitFORMDownload(path, params, method) {
+          method = method || "post";
+          var form = document.createElement("form");
+          form.setAttribute("id", 'formDownload');
+          form.setAttribute("method", method);
+          form.setAttribute("action", path);
+          form._submit_function_ = form.submit;
+          for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+              var hiddenField = document.createElement("input");
+              hiddenField.setAttribute("type", "hidden");
+              hiddenField.setAttribute("name", key);
+              hiddenField.setAttribute("value", params[key]);
+              form.appendChild(hiddenField);
+            }
+          }
+          document.body.appendChild(form);
+          form._submit_function_();
+        }
         $scope.exportKsInfo = function(stuData){
-          var ksData = {
-              token: token,
-              sheetName: $scope.tjItemName + '考生信息',
-              data: ''
-            };
+          var ksData = {};
           var ksArr = [];
           var exportStu;
-          ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
+          var exportStuInfoUrl;
+          var sheetName = $scope.tjKaoShiPublicData.ksname + '考生信息';
+          //ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
           exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
           Lazy(exportStu).each(function(ks){
-            var ksObj = {XUHAO: '', YONGHUHAO: '', XINGMING: '', BANJI: '', KEXUHAO: '', ZUIHOU_PINGFEN: ''};
-            ksObj.XUHAO = ks.XUHAO;
-            ksObj.YONGHUHAO = ks.YONGHUHAO;
-            ksObj.XINGMING = ks.XINGMING;
-            ksObj.BANJI = ks.BANJI;
-            ksObj.KEXUHAO = ks.KEXUHAO;
-            ksObj.ZUIHOU_PINGFEN = ks.ZUIHOU_PINGFEN;
+            var ksObj = {};
+            ksObj['序号'] = ks.XUHAO;
+            ksObj['学号'] = ks.YONGHUHAO;
+            ksObj['姓名'] = ks.XINGMING;
+            ksObj['班级'] = ks.BANJI;
+            ksObj['课序号'] = ks.KEXUHAO;
+            ksObj['成绩'] = ks.ZUIHOU_PINGFEN;
             ksArr.push(ksObj);
           });
-          ksData.data = JSON.stringify(ksArr);
-          $http.post(exportStuInfoUrl, ksData).success(function(data){
-            var downloadTempFile = downloadTempFileBase + data.filename,
-              aLink = document.createElement('a'),
-              evt = document.createEvent("HTMLEvents");
-            evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-            aLink.href = downloadTempFile; //url
-            aLink.dispatchEvent(evt);
-          });
+          ksData[sheetName] = ksArr;
+          exportStuInfoUrl = exportStuInfoBase + sheetName;
+          var node = document.getElementById('formDownload');
+          if(node){
+            node.parentNode.removeChild(node);
+          }
+          submitFORMDownload(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
         };
 
         /**
@@ -668,12 +683,12 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
             },
             legend : {
-              data : ['班级平均分']
+              data : ['课序号平均分']
             },
             calculable : true,
             xAxis : [{
               type : 'category',
-              data : [] //此处为变量表示班级数据
+              data : [] //此处为变量表示课序号数据
             }],
             yAxis : [{
               type : 'value',
@@ -694,7 +709,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             //  end : '' //此处为变量，是下面表示拖拽的功能
             //},
             series : [{
-              name : '班级平均分',
+              name : '课序号平均分',
               type : 'bar',
               barWidth: 30, //柱子的宽度
               itemStyle : {
@@ -712,8 +727,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 },
                 data : [
                   [
-                    {name: '平均值起点', xAxis: -1, yAxis: tj.KAOSHIZU.PJF, value: tj.KAOSHIZU.PJF},
-                    {name: '平均值终点', xAxis: 1000, yAxis: tj.KAOSHIZU.PJF}
+                    {name: '平均值起点', xAxis: -1, yAxis: (tj.KAOSHIZU.PJF).toFixed(1), value: (tj.KAOSHIZU.PJF).toFixed(1)},
+                    {name: '平均值终点', xAxis: 1000, yAxis: (tj.KAOSHIZU.PJF).toFixed(1)}
                   ]
                 ]
               }
@@ -829,12 +844,20 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             radarBj[4] = sg.PJF;
             optRadar.series[0].data[1].value = radarBj;
           }
-          //柱状图数据
-          tjBarData = Lazy(tj.BANJI).sortBy(function(bj){return -bj.PJF;}).toArray();
-          Lazy(tjBarData).each(function(bj, idx, lst){
-            optBar.xAxis[0].data.push(bj.BANJI);
-            optBar.series[0].data.push(bj.PJF);
-          });
+          //柱状图数据 tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-');
+          if(tj.KEXUHAO){
+            $scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
+            tjBarData = Lazy(tj.KEXUHAO).sortBy(function(kxh){return -kxh.PJF;}).toArray();
+            Lazy(tjBarData).each(function(kxh, idx, lst){
+              if(kxh.KEXUHAO_MINGCHENG != '空'){
+                optBar.xAxis[0].data.push(kxh.KEXUHAO_MINGCHENG.split('-')[1]);
+              }
+              else{
+                optBar.xAxis[0].data.push(kxh.KEXUHAO_MINGCHENG);
+              }
+              optBar.series[0].data.push((kxh.PJF).toFixed(1));
+            });
+          }
           //if(tjBarData.length <= 5){
           //  optBar.dataZoom.end = 100;
           //}
@@ -879,6 +902,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             bjOrKxhArray.push(banJiObj);
             idxCount ++;
           });
+          bjOrKxhArray = Lazy(bjOrKxhArray).sortBy(function(stu){ return stu.bjName;}).toArray();
           tjBarData = bjOrKxhArray;
           $scope.tjKaoShiPublicData.bjOrKxh = bjOrKxhArray;
           $scope.tjBanJi = bjOrKxhArray.slice(0, 5);
@@ -894,6 +918,57 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         /**
          * 查询知识点
          */
+        //$scope.glKaoWuGetZsd = function(){
+        //  var pObj = {
+        //    token: token,
+        //    caozuoyuan: caozuoyuan,
+        //    kaoshizuid: ''
+        //  };
+        //  if($scope.guanliParams.selectKsz){
+        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
+        //    //查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
+        //    $http({method: 'GET', url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata){
+        //      if(zsddata && zsddata.length > 0){
+        //        //知识点反选
+        //        console.log(zsddata);
+        //      }
+        //      else{
+        //        DataService.alertInfFun('err', zsddata.error);
+        //      }
+        //    });
+        //    if(data.error){
+        //      DataService.alertInfFun('err', data.error);
+        //    }
+        //  }
+        //  else{
+        //    DataService.alertInfFun('pmt', '请选择考试组！');
+        //  }
+        //};
+
+        /**
+         * 查询知识点，在统计表里
+         */
+        //$scope.glQueryZsd = function(){
+        //  var pObj = {
+        //    token: token,
+        //    caozuoyuan: caozuoyuan,
+        //    kaoshizuid: ''
+        //  };
+        //  if($scope.guanliParams.selectKsz){
+        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
+        //    $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
+        //      if(data && data.length > 0){
+        //        console.log(data);
+        //      }
+        //      else{
+        //        $scope.glKaoWuGetZsd();
+        //      }
+        //    });
+        //  }
+        //  else{
+        //    DataService.alertInfFun('pmt', '请选择考试组！');
+        //  }
+        //};
         //var tjQryZsd = function(lx){
         //  var zsdAllArr = []; //存放所有知识点数组
         //  var queryZsd = queryZsdBase + '&kaoshiid=' + tjKaoShiIds.toString() + '&qrytype=' + lx;
@@ -987,7 +1062,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           ksAvgScore: 0,
           ksRenShu: 0,
           kaikaodate: '',
-          bjOrKxh: []
+          bjOrKxh: [],
+          kxh: ''
         };
         $scope.tjShowKaoShiChart = function(ks){
           $scope.singleBjOrKhxData = '';
@@ -1001,6 +1077,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             jigefen: $scope.tjParas.jiGeFenZhi || 60,
             zhishidianid: ''
           };
+          var pObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            kaoshizuid: ''
+          };
           tjBarData = [];
           $scope.tjZsdDataUd = '';
           $scope.tjZsdDataDu = '';
@@ -1008,6 +1089,47 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           $scope.tjParas.tongJiType = 'keXuHao';
           $scope.showKaoShengList = true;
           $scope.tjKaoShiPublicData.ksRenShu = 0;
+          var getTjData = function(zsd){
+            needParam.zhishidianid = Lazy(zsd).map(function(z){
+              return z.ZHISHIDIAN_ID;
+            }).join(',');
+            $http({url: queryKaoShiZuTongJi, method:'GET', params: needParam}).success(function(data){
+              if(data){
+                var queryKsBj = queryKaoShengByBanji + needParam.kaoshizuid;
+                $http.get(queryKsBj).success(function(students){
+                  if(students && students.length > 0){
+                    var skks = [];
+                    Lazy(students).each(function(xs){
+                      if(xs.ZUIHOU_PINGFEN && xs.ZUIHOU_PINGFEN >= 0){
+                        skks.push(xs);
+                      }
+                      else{
+                        xs.ZUIHOU_PINGFEN = '无成绩';
+                      }
+                    });
+                    tjParaObj.pieData = data;
+                    tjAllStutents = angular.copy(students);
+                    $scope.studentData = students;
+                    $scope.tjParas.allStudents = skks;
+                    $scope.tjKaoShiPublicData.ksAvgScore = data.KAOSHIZU.PJF;
+                    $scope.needToXgYxJgLv = true;
+                    $scope.switchTongJiType('keXuHao');
+                    /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
+                    tjParaObj.lineDataAll = lineDataDealFun(students);
+                  }
+                  else{
+                    $scope.studentData = '';
+                    $scope.tjParas.allStudents = '';
+                    $scope.needToXgYxJgLv = false;
+                    DataService.alertInfFun('err', students.error);
+                  }
+                });
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          };
           if(isArr){
             Lazy(ks).each(function(item, idx, lst){
               tjKaoShiZuIds.push(item.KAOSHIZU_ID); //考试组id
@@ -1028,64 +1150,32 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             DataService.alertInfFun('err', '请选择考试组！');
             return ;
           }
-          //查询统计需要的数据
-          $http({url: queryKaoShiZuTongJi, method:'GET', params: needParam}).success(function(data){
-            if(data){
-              var queryKsBj = queryKaoShengByBanji + needParam.kaoshizuid;
-              $http.get(queryKsBj).success(function(students){
-                if(students && students.length > 0){
-                  var skks = [];
-                  Lazy(students).each(function(xs){
-                    if(xs.ZUIHOU_PINGFEN && xs.ZUIHOU_PINGFEN >= 0){
-                      skks.push(xs);
-                    }
-                    else{
-                      xs.ZUIHOU_PINGFEN = '无成绩';
-                    }
-                  });
-                  tjParaObj.pieData = data;
-                  tjAllStutents = angular.copy(students);
-                  $scope.studentData = students;
-                  $scope.tjParas.allStudents = skks;
-                  $scope.tjKaoShiPublicData.ksAvgScore = data.KAOSHIZU.PJF;
-                  $scope.needToXgYxJgLv = true;
-                  $scope.switchTongJiType('keXuHao');
-                  /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
-                  tjParaObj.lineDataAll = lineDataDealFun(students);
-                }
-                else{
-                  $scope.studentData = '';
-                  $scope.tjParas.allStudents = '';
-                  $scope.needToXgYxJgLv = false;
-                  DataService.alertInfFun('err', students.error);
-                }
-              });
+          pObj.kaoshizuid = ks.KAOSHIZU_ID;
+          $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata1){
+            if(zsddata1 && zsddata1.length > 0){
+              getTjData(zsddata1);
             }
             else{
-              DataService.alertInfFun('err', data.error);
+              if(zsddata1.error){
+                DataService.alertInfFun('err', zsddata1.error);
+              }
+              else{
+                $http({method: 'GET', url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata2){
+                  if(zsddata2 && zsddata2.length > 0){
+                    //知识点反选
+                    getTjData(zsddata2);
+                  }
+                  else{
+                    DataService.alertInfFun('err', zsddata2.error);
+                  }
+                });
+              }
             }
           });
+          //查询统计需要的数据
+
           //查询考生
-          //ksIdStr = tjKaoShiIds.toString();
-          //queryKaoSheng = queryKaoShengBase + '&kaoshiid=' + ksIdStr;
-          //$http.get(queryKaoSheng).success(function(data) {
-          //  if(data && data.length > 0){
-          //    $scope.studentData = data;
-          //    $scope.tjParas.allStudents = data;
-          //    /* 饼图用到的数据，全部班级 */
-          //    tjParaObj.pieData = pieDataDealFun(data); //饼图统计数据，全部班级考生
-          //    /* 按课序号分组统计数据，用在按课序号统计柱状图中 */
-          //    $scope.tjParas.tongJiType = 'keXuHao';
-          //    $scope.switchTongJiType('keXuHao');
-          //    /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
-          //    tjParaObj.lineDataAll = lineDataDealFun(data);
-          //    qryItemDeFenLv(ksIdStr);
-          //  }
-          //  else{
-          //    $scope.studentData = '';
-          //    $scope.tjParas.allStudents = '';
-          //  }
-          //});
+          $scope.selectKsz = '';
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
         };
