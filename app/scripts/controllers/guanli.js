@@ -776,9 +776,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 DataService.alertInfFun('err', zsddata.error);
               }
             });
-            if(data.error){
-              DataService.alertInfFun('err', data.error);
-            }
           }
           else{
             DataService.alertInfFun('pmt', '请选择考试组！');
