@@ -7,10 +7,10 @@
         <th>考场名称</th>
         <th class="text-center">考位数量</th>
         <th class="text-center">考场地址</th>
-        <th class="text-center">交通方式</th>
+        <!--<th class="text-center">交通方式</th>-->
         <th class="text-center">联系人</th>
-        <th class="text-center">联系方式</th>
-        <th width="205px" class="text-center">操作</th>
+        <th class="text-center">激活码</th>
+        <th width="140px" class="text-center">操作</th>
     </tr>
     <tr ng-repeat="kc in kaoChangList">
         <td ng-bind="kc.KMINGCHENG">
@@ -19,22 +19,22 @@
         </td>
         <td class="text-center" ng-bind="kc.XIANGXIDIZHI">
         </td>
-        <td class="text-center" ng-bind="kc.JIAOTONGFANGSHI">
-        </td>
+        <!--<td class="text-center" ng-bind="kc.JIAOTONGFANGSHI">-->
+        <!--</td>-->
         <td class="text-center" ng-bind="kc.LIANXIREN">
         </td>
-        <td class="text-center" ng-bind="kc.LIANXIFANGSHI">
+        <td class="text-center" ng-bind="kc.JIHUOMA">
         </td>
         <td class="text-center positionRe">
             <button type="button" class="btn btn-default" ng-click="deleteKaoChang(kc)">删除</button>
             <button type="button" class="btn btn-primary" ng-click="editKaoChang(kc)">修改</button>
-            <button type="button" class="btn btn-primary jiHuoMa" bn-slide-show slid-show-tapon="jiHuoMa" slide-show-target="moreBtnCont"
-                    slide-show-dirt="left" slide-show-idx="{{$index}}">激活码</button>
-            <div class="moreBtnCont">
-                <div class="mbc-inner" ng-bind="kc.JIHUOMA">
+            <!--<button type="button" class="btn btn-primary jiHuoMa" bn-slide-show slid-show-tapon="jiHuoMa" slide-show-target="moreBtnCont"-->
+                    <!--slide-show-dirt="left" slide-show-idx="{{$index}}">激活码</button>-->
+            <!--<div class="moreBtnCont">-->
+                <!--<div class="mbc-inner" ng-bind="kc.JIHUOMA">-->
 
-                </div>
-            </div>
+                <!--</div>-->
+            <!--</div>-->
         </td>
     </tr>
 </table>

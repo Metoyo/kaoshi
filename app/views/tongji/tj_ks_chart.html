@@ -146,92 +146,18 @@
       </div>
     </div>
   </div>
-  <!--<div class="row">-->
-    <!--<div class="tj-ks-box wp48">-->
-      <!--<h4 class="title">-->
-        <!--<span>知识点统计<em>(得分率顺序)</em></span>-->
-        <!--<span class="explain pl40">-->
-          <!--<span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班-->
-        <!--</span>-->
-      <!--</h4>-->
-      <!--<div class="chart zsd-list-chart" ng-init="moreBtnShow=false">-->
-        <!--<ul class="list-unstyled zsd-list">-->
-          <!--<li class="row">-->
-            <!--<div class="col-sm-3">-->
-              <!--知识点名称-->
-            <!--</div>-->
-            <!--<div class="col-sm-3">-->
-              <!--题目数量-->
-            <!--</div>-->
-            <!--<div class="col-sm-6">-->
-              <!--得分率-->
-            <!--</div>-->
-          <!--</li>-->
-          <!--<li class="row" ng-repeat="zsd in tjZsdData">-->
-            <!--<div class="col-sm-3" ng-bind="zsd.zsd_name">-->
-            <!--</div>-->
-            <!--<div class="col-sm-3">-->
-              <!--<p ng-bind="zsd.zsd_timu_num + '题'"></p>-->
-              <!--<p ng-bind="zsd.zsd_timu_num_bj  + '题'" ng-show="zsd.zsd_timu_num_bj"></p>-->
-            <!--</div>-->
-            <!--<div class="col-sm-6">-->
-              <!--<p class="pull-left">-->
-                <!--<span class="zsd-all" ng-bind="zsd.zsd_dfl_all + '%'" style="width: {{zsd.zsd_dfl_all + '%'}}"></span>-->
-              <!--</p>-->
-              <!--<p class="pull-left" ng-show="zsd.zsd_dfl_bj">-->
-                <!--<span class="zsd-bj" ng-bind="zsd.zsd_dfl_bj + '%'" style="width: {{zsd.zsd_dfl_bj + '%'}}"></span>-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-        <!--<div ng-if="tjZsdDataUd.length>5">-->
-          <!--<a href="javascript:void(0)" class="pull-right" ng-hide="moreBtnShow"-->
-             <!--ng-click="moreBtnShow=true;getMoreZsd()">更多</a>-->
-          <!--<a href="javascript:void(0)" class="pull-right" ng-show="moreBtnShow"-->
-             <!--ng-click="moreBtnShow=false;closeMoreZsd()">收起</a>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;div class="tj-ks-box wp48 ml15">-->
-      <!--<h4 class="title">-->
-        <!--<span>知识点统计<em>(得分率倒序)</em></span>-->
-        <!--<span class="explain pl40">-->
-          <!--<span class="all ml15 plr10"> </span>  全部 <span class="bj ml15 plr10"> </span>  本班-->
-        <!--</span>-->
-      <!--</h4>-->
-      <!--<div class="chart">-->
-        <!--<ul class="list-unstyled zsd-list">-->
-          <!--<li class="row">-->
-            <!--<div class="col-sm-3">-->
-              <!--知识点名称-->
-            <!--</div>-->
-            <!--<div class="col-sm-3">-->
-              <!--题目数量-->
-            <!--</div>-->
-            <!--<div class="col-sm-6">-->
-              <!--得分率-->
-            <!--</div>-->
-          <!--</li>-->
-          <!--<li class="row" ng-repeat="zsd in tjZsdDataDu">-->
-            <!--<div class="col-sm-3" ng-bind="zsd.zsd_name">-->
-            <!--</div>-->
-            <!--<div class="col-sm-3">-->
-              <!--<p ng-bind="zsd.zsd_timu_num + '次'"></p>-->
-              <!--<p ng-bind="zsd.zsd_timu_num_bj  + '次'" ng-show="zsd.zsd_timu_num_bj"></p>-->
-            <!--</div>-->
-            <!--<div class="col-sm-6">-->
-              <!--<p class="pull-left">-->
-                <!--<span class="zsd-all" ng-bind="zsd.zsd_dfl_all + '%'" style="width: {{zsd.zsd_dfl_all + '%'}}"></span>-->
-              <!--</p>-->
-              <!--<p class="pull-left" ng-show="zsd.zsd_dfl_bj">-->
-                <!--<span class="zsd-bj" ng-bind="zsd.zsd_dfl_bj + '%'" style="width: {{zsd.zsd_dfl_bj + '%'}}"></span>-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    <!--</div&ndash;&gt;-->
-  <!--</div>-->
+  <div class="row">
+    <div class="tj-ks-box wp48">
+      <h4 class="title">
+        <span>知识点统计</span>
+        <button type="button" class="btn btn-primary pull-right mt5 mr5">获得统计数据</button>
+      </h4>
+      <div class="chart">
+        <div id="chartRadarZsd" style="height:100%;width: 100%">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!--考试选择-->
 <div class="popup-wrap" ng-show="showMoreKaoShi">
@@ -329,7 +255,7 @@
                 <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
                 (本小题  <b ng-bind="xtm.XIAOTI_FENZHI"></b>  分)
                 (最后得分：<b class="clRed" ng-bind="xtm.ZUIHOUDEFEN"></b>  分)
-                (本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)
+                <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
               </h4>
               <!-- 单选题 -->
               <div class="ar-tzs" ng-if="xtm.TIXING_ID == 1">

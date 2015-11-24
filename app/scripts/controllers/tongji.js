@@ -19,10 +19,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var caozuoyuan = userInfo.UID;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
         var lingyuid = $rootScope.session.defaultLyId;
-        //var queryKaoShi = baseTjAPIUrl + 'query_kaoshi?token=' + token + '&caozuoyuan=' + caozuoyuan
-        //    + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试数据
         var queryKaoShengBase = baseTjAPIUrl + 'query_kaosheng?token=' + token; //查询考生数据
-        var queryZsdBase = baseTjAPIUrl + 'query_zhishidian?token=' + token; //查询带分数的知识点
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + jigouid
             + '&lingyuid=' + lingyuid + '&xuehao='; //查询考试通过考生学号
         var dataNumOfPerPage = 10; //每页显示多少条数据
@@ -36,6 +33,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             barBox: '',
             lineBox: '',
             radarBox: '',
+            radarBoxZsd: '',
             pieData: '',
             lineDataAll: '',
             lineDataBK: ''
@@ -348,7 +346,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         };
 
         /**
-         * 导出学生,需要的数据为考生列表
+         * 导出学生,需要的数据为考生列表//
          */
         function submitFORMDownload(path, params, method) {
           method = method || "post";
@@ -824,6 +822,45 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
             ]
           };
+          var optRadarZsd = {
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+              orient : 'vertical',
+              x : 'right',
+              y : 'bottom',
+              data:['整体','班级']
+            },
+            polar : [
+              {
+                indicator : [
+                  { text: '知识点一', max: 100},
+                  { text: '知识点二', max: 100},
+                  { text: '知识点三', max: 100},
+                  { text: '知识点四', max: 100},
+                  { text: '知识点五', max: 100}
+                ]
+              }
+            ],
+            calculable : true,
+            series : [
+              {
+                name: '整体对比',
+                type: 'radar',
+                data : [
+                  {
+                    value : [90, 90, 90, 90, 90],
+                    name : '整体'
+                  },
+                  {
+                    value : [0, 0, 0, 0, 0],
+                    name : '班级'
+                  }
+                ]
+              }
+            ]
+          };
           //饼状图数据
           if(kind == 'all'){
             optLine.series[1].data = '';
@@ -872,6 +909,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           tjParaObj.radarBox.setOption(optRadar);
           tjParaObj.barBox.setOption(optBar);
           tjParaObj.lineBox.setOption(optLine);
+          tjParaObj.radarBoxZsd.setOption(optRadarZsd);
           $timeout(function (){
             window.onresize = function () {
               tjParaObj.pieBoxAll.resize();
@@ -879,6 +917,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               tjParaObj.barBox.resize();
               tjParaObj.lineBox.resize();
               tjParaObj.radarBox.resize();
+              tjParaObj.radarBoxZsd.resize();
             }
           }, 200);
         };
@@ -928,8 +967,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             return stu.KEXUHAO_MINGCHENG;
           }).toObject();
           tidyDivideData(disByKeXuHao);
-          //查询知识点
-          //tjQryZsd('kexuhao');
         };
 
         /**
@@ -945,8 +982,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             return stu.BANJI;
           }).toObject();
           tidyDivideData(disByBanJi);
-          //查询知识点
-          //tjQryZsd('banji');
         };
 
         /**
@@ -978,8 +1013,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             kaoshizuid: ''
           };
           tjBarData = [];
-          $scope.tjZsdDataUd = '';
-          $scope.tjZsdDataDu = '';
           $scope.tjParas.selectItemName = '全部';
           $scope.tjParas.tongJiType = 'keXuHao';
           $scope.showKaoShengList = true;
@@ -1052,6 +1085,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata1){
             if(zsddata1 && zsddata1.length > 0){
               getTjData(zsddata1);
+
             }
             else{
               if(zsddata1.error){
@@ -1070,10 +1104,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
             }
           });
-          //查询统计需要的数据
-
-          //查询考生
-          //$scope.selectKsz = '';
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
         };
@@ -1131,11 +1161,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             pageNum: $scope.tjParas.tjBjPgOn,
             banJiIdx: ''
           };
-          //知识点数据,初始化班级数据
-          //Lazy($scope.tjZsdDataUd).each(function(zsd, idx, lst){
-          //  zsd.zsd_dfl_bj = '';
-          //  zsd.zsd_timu_num_bj = 0;
-          //});
           if(bj == 'all'){
             $scope.tjParas.selectItemName = '全部';
             $scope.tjParas.lastSelectItem.banJiIdx = 0;
@@ -1148,12 +1173,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             $timeout(addActiveFun, 100);
           }
           else{
-            //var disByBj, banJiZsd, disByZsd, sumAll, sumSgl, posIdx;
             $scope.tjParas.selectItemName = bj.bjName;
             $scope.tjParas.lastSelectItem.banJiIdx = bj.bjIdx;
             $scope.singleBjOrKhxData = bj.bjOrg;
-            //饼状图数据，单个班级
-            //tjParaObj.pieDataBanJi = pieDataDealFun(bj.bjStu);
             //折线图，班级数据
             if($scope.tjParas.tongJiType && $scope.tjParas.tongJiType == 'keXuHao'){
               stuDis = Lazy(tjAllStutents).filter(function(st){
@@ -1183,37 +1205,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               chartShowFun();
             };
             $timeout(addActiveFun, 100);
-            //知识点数据
-            //if($scope.tjParas.tongJiType && $scope.tjParas.tongJiType == 'banJi'){
-            //  disByBj = Lazy($scope.tjParas.zsdOriginData).groupBy(function(zsd){
-            //    if(!zsd.BANJI){
-            //      zsd.BANJI = '其他';
-            //    }
-            //    return zsd.BANJI;
-            //  }).toObject();
-            //}
-            //if($scope.tjParas.tongJiType && $scope.tjParas.tongJiType == 'keXuHao'){
-            //  disByBj = Lazy($scope.tjParas.zsdOriginData).groupBy(function(zsd){
-            //    if(!zsd.KEXUHAO){
-            //      zsd.KEXUHAO = '其他';
-            //    }
-            //    return zsd.KEXUHAO;
-            //  }).toObject();
-            //}
-            //banJiZsd = disByBj[bj.bjName];
-            //if(banJiZsd){
-            //  disByZsd = Lazy(banJiZsd).groupBy(function(zsd){ return zsd.ZHISHIDIANMINGCHENG; }).toObject(); //用知识点把数据分组
-            //  Lazy(disByZsd).each(function(v, k, l) {
-            //    posIdx = Lazy($scope.tjParas.zsdIdArr).indexOf(v[0].ZHISHIDIAN_ID);
-            //    $scope.tjZsdDataUd[posIdx].zsd_timu_num_bj = v[0].TIMUSHULIANG;
-            //    if(v[0].DEFENLV && v[0].DEFENLV > 0){
-            //      $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = (v[0].DEFENLV * 100).toFixed(1);
-            //    }
-            //    else{
-            //      $scope.tjZsdDataUd[posIdx].zsd_dfl_bj = 0;
-            //    }
-            //  });
-            //}
           }
         };
 
@@ -1232,6 +1223,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
           tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
           tjParaObj.radarBox = echarts.init(document.getElementById('chartRadar'));
+          tjParaObj.radarBoxZsd = echarts.init(document.getElementById('chartRadarZsd'));
         };
 
         /**
@@ -1271,20 +1263,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           else{
             DataService.alertInfFun('pmt', '缺少考试ID');
           }
-        };
-
-        /**
-         * 点击更多，查看更多知识点
-         */
-        $scope.getMoreZsd = function(){
-          $scope.tjZsdData = $scope.tjZsdDataUd;
-        };
-
-        /**
-         * 点击收起，收起更多知识点
-         */
-        $scope.closeMoreZsd = function(){
-          $scope.tjZsdData = $scope.tjZsdDataUd.slice(0, 5);
         };
 
         /**
