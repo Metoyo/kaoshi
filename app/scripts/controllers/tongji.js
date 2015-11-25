@@ -36,7 +36,12 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             radarBoxZsd: '',
             pieData: '',
             lineDataAll: '',
-            lineDataBK: ''
+            lineDataBK: '',
+            radarDataZsd: {
+              zsdName: [],
+              zsdPerAll: [],
+              zsdPerBk: []
+            }
           }; //存放统计参数的Object
         var tjBarData = []; //柱状图数据
         var answerReappearBaseUrl = baseTjAPIUrl + 'answer_reappear?token=' + token; //作答重现的url
@@ -500,15 +505,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var pjrs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.SKRS}).toArray().reverse()[0].SKRS;
           var pjfs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.PJF}).toArray().reverse()[0].PJF;
           var pjfsMax = Math.ceil(pjfs);
-          var radarAll = [(tj.KAOSHIZU.JGLV*100).toFixed(1), (tj.KAOSHIZU.YXLV*100).toFixed(1), (tj.KAOSHIZU.SKRS/tj.KEXUHAO.length).toFixed(0), (tj.KAOSHIZU.PJF).toFixed(1)];
+          var radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/tj.KEXUHAO.length, tj.KAOSHIZU.PJF];
           var dataStyle = {
             normal: {
               label: {
                 show: false,
                 position : 'inner',
                 formatter : function (params) {
-                  return (params.percent - 0).toFixed(0) + '%';
-                  //return params.name + (params.percent - 0).toFixed(0) + '%'
+                  return params.percent + '%';
                 },
                 textStyle : {
                   fontSize : 14
@@ -552,7 +556,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               x : '52%',
               y : 30,
               itemGap:12,
-              data:['及格率:' + (tj.KAOSHIZU.JGLV*100).toFixed(1) + '%', '优秀率:' + (tj.KAOSHIZU.YXLV*100).toFixed(1) + '%']
+              data:['及格率:' + tj.KAOSHIZU.JGLV + '%', '优秀率:' + tj.KAOSHIZU.YXLV + '%']
             },
             toolbox: {
               show : false,
@@ -572,11 +576,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 itemStyle : dataStyle,
                 data:[
                   {
-                    value: (tj.KAOSHIZU.JGLV*100).toFixed(1),
-                    name: '及格率:' + (tj.KAOSHIZU.JGLV*100).toFixed(1) + '%'
+                    value: tj.KAOSHIZU.JGLV,
+                    name: '及格率:' + tj.KAOSHIZU.JGLV + '%'
                   },
                   {
-                    value: 100 - (tj.KAOSHIZU.JGLV*100).toFixed(1),
+                    value: 100 - tj.KAOSHIZU.JGLV,
                     name:'invisible',
                     itemStyle : placeHolderStyle
                   }
@@ -590,11 +594,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 itemStyle : dataStyle,
                 data:[
                   {
-                    value: (tj.KAOSHIZU.YXLV*100).toFixed(1),
-                    name: '优秀率:' + (tj.KAOSHIZU.YXLV*100).toFixed(1) + '%'
+                    value: tj.KAOSHIZU.YXLV,
+                    name: '优秀率:' + tj.KAOSHIZU.YXLV + '%'
                   },
                   {
-                    value: 100 - (tj.KAOSHIZU.YXLV*100).toFixed(1),
+                    value: 100 - tj.KAOSHIZU.YXLV,
                     name:'invisible',
                     itemStyle : placeHolderStyle
                   }
@@ -729,8 +733,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 },
                 data : [
                   [
-                    {name: '平均值起点', xAxis: -1, yAxis: (tj.KAOSHIZU.PJF).toFixed(1), value: (tj.KAOSHIZU.PJF).toFixed(1)},
-                    {name: '平均值终点', xAxis: 1000, yAxis: (tj.KAOSHIZU.PJF).toFixed(1)}
+                    {name: '平均值起点', xAxis: -1, yAxis: tj.KAOSHIZU.PJF, value: tj.KAOSHIZU.PJF},
+                    {name: '平均值终点', xAxis: 1000, yAxis: tj.KAOSHIZU.PJF}
                   ]
                 ]
               }
@@ -739,7 +743,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var optLine = {
             tooltip : {
               trigger: 'axis',
-              formatter: function (params,ticket,callback) {
+              formatter: function (params, ticket, callback) {
                 return params.seriesName + '</br>' + params.data[0] + '分：' +  params.data[1] + '人';
               }
             },
@@ -834,13 +838,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             },
             polar : [
               {
-                indicator : [
-                  { text: '知识点一', max: 100},
-                  { text: '知识点二', max: 100},
-                  { text: '知识点三', max: 100},
-                  { text: '知识点四', max: 100},
-                  { text: '知识点五', max: 100}
-                ]
+                indicator : tjParaObj.radarDataZsd.zsdName
               }
             ],
             calculable : true,
@@ -850,11 +848,11 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 type: 'radar',
                 data : [
                   {
-                    value : [90, 90, 90, 90, 90],
+                    value : tjParaObj.radarDataZsd.zsdPerAll,
                     name : '整体'
                   },
                   {
-                    value : [0, 0, 0, 0, 0],
+                    value : tjParaObj.radarDataZsd.zsdPerBk,
                     name : '班级'
                   }
                 ]
@@ -868,19 +866,19 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           else{
             optLine.series[1].data = tjParaObj.lineDataBK;
             optPieBj.title.text = $scope.tjParas.selectItemName;
-            optPieBj.legend.data = ['及格率:' + (sg.JGLV*100).toFixed(1) + '%', '优秀率:' + (sg.YXLV*100).toFixed(1) + '%'];
-            optPieBj.series[0].data[0].value = (sg.JGLV*100).toFixed(1);
-            optPieBj.series[0].data[0].name = '及格率:' + (sg.JGLV*100).toFixed(1) + '%';
-            optPieBj.series[0].data[1].value = 100 - (sg.JGLV*100).toFixed(1);
-            optPieBj.series[1].data[0].value = (sg.YXLV*100).toFixed(1);
-            optPieBj.series[1].data[0].name = '优秀率:' + (sg.YXLV*100).toFixed(1) + '%';
-            optPieBj.series[1].data[1].value = 100 - (sg.YXLV*100).toFixed(1);
+            optPieBj.legend.data = ['及格率:' + sg.JGLV + '%', '优秀率:' + sg.YXLV + '%'];
+            optPieBj.series[0].data[0].value = sg.JGLV;
+            optPieBj.series[0].data[0].name = '及格率:' + sg.JGLV + '%';
+            optPieBj.series[0].data[1].value = 100 - sg.JGLV;
+            optPieBj.series[1].data[0].value = sg.YXLV;
+            optPieBj.series[1].data[0].name = '优秀率:' + sg.YXLV + '%';
+            optPieBj.series[1].data[1].value = 100 - sg.YXLV;
           }
           if(sg){
-            radarBj[0] = (sg.JGLV*100).toFixed(1);
-            radarBj[1] = (sg.YXLV*100).toFixed(1);
+            radarBj[0] = sg.JGLV;
+            radarBj[1] = sg.YXLV;
             radarBj[2] = sg.SKRS;
-            radarBj[3] = (sg.PJF).toFixed(1);
+            radarBj[3] = sg.PJF;
             optRadar.series[0].data[1].value = radarBj;
           }
           //柱状图数据 tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-');
@@ -889,8 +887,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             tjBarData = Lazy(tj.KEXUHAO).sortBy(function(kxh){return -kxh.PJF;}).toArray();
             Lazy(tjBarData).each(function(kxh, idx, lst){
               if(kxh.KEXUHAO_MINGCHENG != '空'){
-                optBar.xAxis[0].data.push(kxh.KEXUHAO_MINGCHENG.split('-')[1]);
-                optBar.series[0].data.push((kxh.PJF).toFixed(1));
+                var kxhArr = kxh.KEXUHAO_MINGCHENG.split('-');
+                if(kxhArr && kxhArr.length >=2){
+                  optBar.xAxis[0].data.push(kxhArr[kxhArr.length - 1]);
+                }
+                else{
+                  optBar.xAxis[0].data.push(kxhArr[0]);
+                }
+                optBar.series[0].data.push(kxh.PJF);
               }
               else{
                 optBar.xAxis[0].data.push(kxh.KEXUHAO_MINGCHENG);
@@ -907,9 +911,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           tjParaObj.pieBoxAll.setOption(optPieAll);
           tjParaObj.pieBoxBj.setOption(optPieBj);
           tjParaObj.radarBox.setOption(optRadar);
-          tjParaObj.barBox.setOption(optBar);
-          tjParaObj.lineBox.setOption(optLine);
           tjParaObj.radarBoxZsd.setOption(optRadarZsd);
+          tjParaObj.lineBox.setOption(optLine);
+          tjParaObj.barBox.setOption(optBar);
           $timeout(function (){
             window.onresize = function () {
               tjParaObj.pieBoxAll.resize();
@@ -939,7 +943,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             banJiObj.bjName = k;
             banJiObj.bjOrg = v[0];
             banJiObj.bjIdx = idxCount;
-            banJiObj.bjAvgScore = v[0].PJF;
+            banJiObj.bjAvgScore = v[0].PJF || 0;
             totalScore += parseInt(banJiObj.bjAvgScore);
             bjOrKxhArray.push(banJiObj);
             idxCount ++;
@@ -1012,6 +1016,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             caozuoyuan: caozuoyuan,
             kaoshizuid: ''
           };
+          tjParaObj.radarDataZsd.zsdName = [];
+          tjParaObj.radarDataZsd.zsdPerAll = [];
+          tjParaObj.radarDataZsd.zsdPerBk = [];
           tjBarData = [];
           $scope.tjParas.selectItemName = '全部';
           $scope.tjParas.tongJiType = 'keXuHao';
@@ -1026,6 +1033,20 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 data.KEXUHAO = Lazy(data.KEXUHAO).reject(function(kxh){
                   return !kxh.KEXUHAO_MINGCHENG
                 }).toArray();
+                Lazy(data.BANJI).each(function(bj){
+                  bj.JGLV = bj.JGLV ? Number((bj.JGLV*100).toFixed(1)) : 0;
+                  bj.YXLV = bj.YXLV ? Number((bj.YXLV*100).toFixed(1)) : 0;
+                  bj.PJF = bj.PJF ? Number((bj.PJF).toFixed(1)) : 0;
+                });
+                Lazy(data.KEXUHAO).each(function(kxh){
+                  kxh.JGLV = kxh.JGLV ? Number((kxh.JGLV*100).toFixed(1)) : 0;
+                  kxh.YXLV = kxh.YXLV ? Number((kxh.YXLV*100).toFixed(1)) : 0;
+                  kxh.PJF = kxh.PJF ? Number((kxh.PJF).toFixed(1)) : 0;
+                });
+                data.KAOSHIZU.JGLV = data.KAOSHIZU.JGLV ? Number((data.KAOSHIZU.JGLV*100).toFixed(1)) : 0;
+                data.KAOSHIZU.YXLV = data.KAOSHIZU.YXLV ? Number((data.KAOSHIZU.YXLV*100).toFixed(1)) : 0;
+                data.KAOSHIZU.PJF = data.KAOSHIZU.PJF ? Number((data.KAOSHIZU.PJF).toFixed(1)) : 0;
+                console.log(data);
                 var queryKsBj = queryKaoShengByBanji + needParam.kaoshizuid;
                 $http.get(queryKsBj).success(function(students){
                   if(students && students.length > 0){
@@ -1084,8 +1105,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           pObj.kaoshizuid = ks.KAOSHIZU_ID;
           $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata1){
             if(zsddata1 && zsddata1.length > 0){
+              //知识点统计
+              Lazy(zsddata1).each(function(tjzsd){
+                var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
+                tjParaObj.radarDataZsd.zsdName.push(zsdNameObj);
+                tjParaObj.radarDataZsd.zsdPerAll.push(90);
+                tjParaObj.radarDataZsd.zsdPerBk.push(0);
+              });
               getTjData(zsddata1);
-
             }
             else{
               if(zsddata1.error){
