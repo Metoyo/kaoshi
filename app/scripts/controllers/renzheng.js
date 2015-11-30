@@ -47,7 +47,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //$scope.stuDengluInfo = false;
 
         /**
-         * 登录程序//
+         * 登录程序
          */
         $scope.signIn = function() {
           urlArr = [];
@@ -202,12 +202,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         myUrl: 'weiluke',
                         urlName: '录课'
                       };
-                      var findNongDa = JSON.parse(result[0].JIGOU);
-                      var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
-                      if(!findNongDaIn){
-                        urlArr.push(urlObj2);
-                      }
+                      //var findNongDa = JSON.parse(result[0].JIGOU);
+                      //var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
+                      //if(!findNongDaIn){
+                      //  urlArr.push(urlObj2);
+                      //}
                       urlArr.push(urlObj1);
+                      urlArr.push(urlObj2);
                       urlArr.push(urlObj3);
                       $rootScope.urlArrs = urlArr;
                       //cookies代码

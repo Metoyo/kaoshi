@@ -17,6 +17,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var xuehao = userInfo.xuehao;
         var baseTjAPIUrl = config.apiurl_tj; //统计的api
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
+        var baseRzAPIUrl = config.apiurl_rz; //认证的api
         var token = config.token;
         var currentPath = $location.$$path;
         var qryKaoShiByXueHaoBase = baseTjAPIUrl + 'query_kaoshi_by_xuehao?token=' + token + '&jigouid=' + defaultJg
@@ -31,6 +32,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           '&jigouid=' + defaultJg + '&uid=' + caozuoyuan; //查询考生需要参加的考试
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询场次
         var zaiXianBaoMingUrl = baseKwAPIUrl + 'zaixianbaoming'; //在线报名的url
+        var jiGouConf = baseRzAPIUrl + 'jigou_conf?token=' + token + '&jigouid=' + defaultJg; //查询机构配置
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -204,17 +206,41 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          * 查询考试通过考生UID
          */
         var qryKaoShiByXueHao = function () {
-          if (xuehao) {
-            var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;
-            $http.get(qryKaoShiByXueHaoUrl).success(function (data) {
-              if (data && data.length > 0) {
-                $scope.ksScoreData = data;
+          $http.get(jiGouConf).success(function(conf){
+            if(!conf.error){
+              var confObj = '';
+              if(conf && conf.length > 0){
+                confObj = JSON.parse(conf[0].JIGOU_CONFI);
               }
-              if(data.error){
-                DataService.alertInfFun('err', data.error);
+              if(xuehao) {
+                var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;
+                $http.get(qryKaoShiByXueHaoUrl).success(function (data) {
+                  if (data && data.length > 0) {
+                    Lazy(data).each(function(ks){
+                      ks.score = true;
+                      ks.zuoda = true;
+                      if(confObj){
+                        var findTar = Lazy(confObj.chengji.lingyu).find(function(ly){
+                          return ly.val == ks.LINGYU_ID;
+                        });
+                        if(findTar){
+                          ks.score = findTar.score;
+                          ks.zuoda = findTar.zuoda;
+                        }
+                      }
+                    });
+                    $scope.ksScoreData = data;
+                  }
+                  if(data.error){
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
               }
-            });
-          }
+            }
+            else{
+              DataService.alertInfFun('err', conf.error);
+            }
+          });
         };
 
         /**
@@ -228,7 +254,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             sj_name: '',
             sj_tm: []
           };
-          var studId = ks.KAOSHENG_UID;
+          var studId = ks.UID;
           var examId = ks.KAOSHI_ID;
           var itemDeFenLv = '';
           $scope.kaoShengShiJuan = '';
@@ -247,41 +273,65 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             return;
           }
           DataService.getData(answerReappearUrl).then(function (data) {
-            if (data && data.length > 0) {
-              var qryItemDeFenLvUrl = qryItemDeFenLvBase + examId;
-              if (examId) {
-                DataService.getData(qryItemDeFenLvUrl).then(function (dfl) {
-                  if (dfl && dfl.length > 0) {
-                    itemDeFenLv = dfl;
-                    finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-                    dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
-                    Lazy(dataDis).each(function (val, key, list) {
-                      var dObj = {
-                        tx_id: key,
-                        tx_name: val[0].DATIMINGCHENG,
-                        tm: ''
-                      };
-                      tmVal = Lazy(val).each(function (tm, idx, lst) {
-                        var findVal = Lazy(itemDeFenLv).find(function (item) {
-                          return item.TIMU_ID == tm.TIMU_ID
-                        });
-                        tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-                        if (typeof(tm.TIGAN) == 'string') {
-                          tm.TIGAN = JSON.parse(tm.TIGAN);
-                        }
-                        DataService.formatDaAn(tm);
-                      });
-                      dObj.tm = tmVal;
-                      finaData.sj_tm.push(dObj);
-                    });
-                    $scope.kaoShengShiJuan = finaData;
+            //if (data && data.length > 0) {
+            //  var qryItemDeFenLvUrl = qryItemDeFenLvBase + examId;
+            //  if (examId) {
+            //    DataService.getData(qryItemDeFenLvUrl).then(function (dfl) {
+            //      if (dfl && dfl.length > 0) {
+            //        itemDeFenLv = dfl;
+            //        finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
+            //        dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
+            //        Lazy(dataDis).each(function (val, key, list) {
+            //          var dObj = {
+            //            tx_id: key,
+            //            tx_name: val[0].DATIMINGCHENG,
+            //            tm: ''
+            //          };
+            //          tmVal = Lazy(val).each(function (tm, idx, lst) {
+            //            var findVal = Lazy(itemDeFenLv).find(function (item) {
+            //              return item.TIMU_ID == tm.TIMU_ID
+            //            });
+            //            tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
+            //            if (typeof(tm.TIGAN) == 'string') {
+            //              tm.TIGAN = JSON.parse(tm.TIGAN);
+            //            }
+            //            DataService.formatDaAn(tm);
+            //          });
+            //          dObj.tm = tmVal;
+            //          finaData.sj_tm.push(dObj);
+            //        });
+            //        $scope.kaoShengShiJuan = finaData;
+            //      }
+            //    });
+            //  }
+            //  else {
+            //    itemDeFenLv = '';
+            //    DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
+            //  }
+            //}
+            if(data && data.length > 0){
+              finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
+              dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
+              Lazy(dataDis).each(function(val, key, list){
+                var dObj = {
+                  tx_id: key,
+                  tx_name: val[0].DATIMINGCHENG,
+                  tm: ''
+                };
+                Lazy(val).each(function(tm, idx, lst){
+                  var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
+                  if(findVal){
+                    tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
                   }
+                  if(typeof(tm.TIGAN) == 'string'){
+                    tm.TIGAN = JSON.parse(tm.TIGAN);
+                  }
+                  DataService.formatDaAn(tm);
                 });
-              }
-              else {
-                itemDeFenLv = '';
-                DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
-              }
+                dObj.tm = val;
+                finaData.sj_tm.push(dObj);
+              });
+              $scope.kaoShengShiJuan = finaData;
             }
           });
         };
@@ -412,6 +462,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
          */
         $scope.backToVideoList = function(){
           $scope.showVideodeoPlay = false;
+          //var param = {
+          //  baoming: '',
+          //  chengji: {
+          //    lingyu: [
+          //      {val: 1001, score: true, zuoda: false},
+          //      {val: 1002, score: true, zuoda: false},
+          //      {val: 1003, score: true, zuoda: false}
+          //    ]
+          //  },
+          //  lvke: ''
+          //}
         };
 
         /**
