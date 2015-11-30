@@ -351,7 +351,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         };
 
         /**
-         * 导出学生,需要的数据为考生列表//
+         * 导出学生,需要的数据为考生列表
          */
         function submitFORMDownload(path, params, method) {
           method = method || "post";
@@ -1046,7 +1046,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 data.KAOSHIZU.JGLV = data.KAOSHIZU.JGLV ? Number((data.KAOSHIZU.JGLV*100).toFixed(1)) : 0;
                 data.KAOSHIZU.YXLV = data.KAOSHIZU.YXLV ? Number((data.KAOSHIZU.YXLV*100).toFixed(1)) : 0;
                 data.KAOSHIZU.PJF = data.KAOSHIZU.PJF ? Number((data.KAOSHIZU.PJF).toFixed(1)) : 0;
-                console.log(data);
                 var queryKsBj = queryKaoShengByBanji + needParam.kaoshizuid;
                 $http.get(queryKsBj).success(function(students){
                   if(students && students.length > 0){
@@ -1297,6 +1296,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          */
         $scope.changYouXiuJiGeLv = function(){
           $scope.needToXgYxJgLv = false;
+        };
+
+        /**
+         * 查询知识点统计的数据 $scope.selectKsz
+         */
+        $scope.tjGetZsdData = function(){
+
         };
 
         /**
