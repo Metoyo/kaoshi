@@ -33,6 +33,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询场次
         var zaiXianBaoMingUrl = baseKwAPIUrl + 'zaixianbaoming'; //在线报名的url
         var jiGouConf = baseRzAPIUrl + 'jigou_conf?token=' + token + '&jigouid=' + defaultJg; //查询机构配置
+        var deleteChangCiStudent = baseKwAPIUrl + 'delete_changci_student'; //删除场次中的考生
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -63,7 +64,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   LINGYU_ID: v[0].LINGYU_ID,
                   YIBAOMING: 0,
                   kaoShiShiJian: '',
-                  kaoChangInfo: []
+                  kaoChangInfo: [],
+                  baoMingChangCi: '',
+                  ZHUANGTAI:v[0].ZHUANGTAI
                 };
                 Lazy(v).each(function(cc){
                   if(cc.YIBAOMING == 1){
@@ -73,6 +76,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                     //}
                     kszObj.kaoShiShiJian = DataService.baoMingDateFormat(cc.KAISHISHIJIAN, cc.JIESHUSHIJIAN);
                     kszObj.YIBAOMING = 1;
+                    kszObj.baoMingChangCi = cc;
                     kszObj.kaoChangInfo.push(kci);
                   }
                 });
@@ -148,7 +152,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
-         * 选择考点//
+         * 选择考点
          */
         $scope.bmKaoDianSelect = function(kd){
           Lazy($scope.kaoShiDetailData.changci).each(function(cc){
@@ -160,7 +164,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
-         * 保存考生选择信息
+         * 保存考生选择信息，考生报名
          */
         $scope.saveStudentSelcet = function () {
           var bmObj = {
@@ -199,6 +203,41 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           }
           else{
             DataService.alertInfFun('pmt', '考试ID不能为空！');
+          }
+        };
+
+        /**
+         * 取消报名
+         */
+        $scope.cancelBaoMing = function (ks) {
+          var ksObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            jigouid: defaultJg,
+            lingyuid: '',
+            uid: caozuoyuan,
+            kszid: '',
+            kaoshiid: '',
+            studentState: 'on'
+          };
+          if(ks.baoMingChangCi){
+            ksObj.lingyuid = ks.baoMingChangCi.LINGYU_ID;
+            ksObj.kszid = ks.baoMingChangCi.KAOSHIZU_ID;
+            ksObj.kaoshiid = ks.baoMingChangCi.KAOSHI_ID;
+          }
+          else{
+            return;
+          }
+          if(confirm('你确定要取消报名吗？')){
+            $http.get(deleteChangCiStudent, {params:ksObj}).success(function(data){
+              if(data.result){
+                chaXunBaoMingChangCi();
+                DataService.alertInfFun('suc', '取消成功！')
+              }
+              else{
+                DataService.alertInfFun('err', data.error)
+              }
+            });
           }
         };
 
@@ -394,7 +433,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
-         * 视频分页//
+         * 视频分页
          */
         $scope.videoDistFun = function(pg){
           var pgNum = pg - 1;
