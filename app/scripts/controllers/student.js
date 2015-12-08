@@ -408,11 +408,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               orient : 'vertical',
               x : 'right',
               y : 'bottom',
-              data:['整体','班级']
+              data:['整体','班级'],
+              selected: {
+                '整体' : false
+              }
             },
             polar : [
               {
-                indicator : tjParaObj.radarDataZsd.zsdName
+                indicator : tjParaObj.radarDataZsd.zsdName,
+                radius : 80,
+                center: ['50%', '50%']
               }
             ],
             calculable : true,
@@ -420,6 +425,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               {
                 name: '整体对比',
                 type: 'radar',
+                itemStyle: {
+                  normal: {
+                    areaStyle: {
+                      type: 'default'
+                    }
+                  }
+                },
                 data : [
                   {
                     value : tjParaObj.radarDataZsd.zsdPerAll,
@@ -445,33 +457,48 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               var zsdParam = {
                 token: token,
                 caozuoyuan: caozuoyuan,
-                kaoshizuid: pObj.kaoshizuid
+                kaoshizuid: pObj.kaoshizuid,
+                uid: ''
               };
-              $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(data){
-                if(data && data.length > 0){
-                  //知识点统计
-                  Lazy(zsddata1).each(function(tjzsd){
-                    var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
-                    tjParaObj.radarDataZsd.zsdName.push(zsdNameObj);
-                    tjParaObj.radarDataZsd.zsdPerBk.push(0);
-                    var findTar = Lazy(data).find(function(zsdObj){
-                      return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
-                    });
-                    if(findTar){
-                      var zsdDeFenLv = findTar.defenlv ? (findTar.defenlv*100).toFixed(1) : 0;
-                      tjParaObj.radarDataZsd.zsdPerAll.push(zsdDeFenLv);
+              $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(kszdata){
+                if(kszdata && kszdata.length > 0){
+                  zsdParam.uid = caozuoyuan;
+                  $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(grdata){
+                    if(kszdata && kszdata.length > 0){
+                      //知识点统计
+                      Lazy(zsddata1).each(function(tjzsd){
+                        var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
+                        tjParaObj.radarDataZsd.zsdName.push(zsdNameObj);
+                        var findTarKsz = Lazy(kszdata).find(function(zsdObj){
+                          return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
+                        });
+                        var findTarGr = Lazy(grdata).find(function(zsdObj){
+                          return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
+                        });
+                        if(findTarKsz){
+                          var zsdDeFenLvKsz = findTarKsz.defenlv ? (findTarKsz.defenlv*100).toFixed(1) : 0;
+                          tjParaObj.radarDataZsd.zsdPerAll.push(zsdDeFenLvKsz);
+                        }
+                        if(findTarGr){
+                          var zsdDeFenLvGr = findTarGr.defenlv ? (findTarGr.defenlv*100).toFixed(1) : 0;
+                          tjParaObj.radarDataZsd.zsdPerBk.push(zsdDeFenLvGr);
+                        }
+                      });
+                      tjParaObj.radarBoxZsd.setOption(optRadarZsd);
+                      $scope.stuParams.zsdTjShow = true;
+                      $timeout(function (){
+                        window.onresize = function () {
+                          tjParaObj.radarBoxZsd.resize();
+                        }
+                      }, 200);
+                    }
+                    else{
+                      DataService.alertInfFun('err', grdata.error);
                     }
                   });
-                  tjParaObj.radarBoxZsd.setOption(optRadarZsd);
-                  $scope.stuParams.zsdTjShow = true;
-                  $timeout(function (){
-                    window.onresize = function () {
-                      tjParaObj.radarBoxZsd.resize();
-                    }
-                  }, 200);
                 }
                 else{
-                  DataService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', kszdata.error);
                 }
               });
             }
