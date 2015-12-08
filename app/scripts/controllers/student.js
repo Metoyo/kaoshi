@@ -57,6 +57,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         $scope.kaoShiArrs = '';
         $scope.kaoShiDetail = '';
         $scope.showStuSelectInfo = false;
+        $scope.showKaoShengList = true;
 
         /**
          * 查询考生有几场考试
@@ -281,6 +282,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                     });
                     $scope.ksScoreData = data;
                     tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
+                    $scope.showKaoShengList = true;
                   }
                   if(data.error){
                     DataService.alertInfFun('err', data.error);
@@ -309,6 +311,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           var examId = ks.KAOSHI_ID;
           var itemDeFenLv = '';
           $scope.kaoShengShiJuan = '';
+          $scope.showKaoShengList = true;
           if (studId) {
             answerReappearUrl += '&kaoshengid=' + studId;
           }
@@ -382,6 +385,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 dObj.tm = val;
                 finaData.sj_tm.push(dObj);
               });
+              $scope.showKaoShengList = false;
               $scope.kaoShengShiJuan = finaData;
             }
           });
@@ -520,6 +524,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               //}, 200);
             }
           });
+        };
+
+        /**
+         * 关闭作答重新内容
+         */
+        $scope.closeZuoDaReappear = function(){
+          $scope.showKaoShengList = true;
         };
 
         /**

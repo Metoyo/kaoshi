@@ -1148,7 +1148,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             needParam.kaoshizuid = tjKaoShiZuIds.join(',');
           }
           else{
-            DataService.alertInfFun('err', '请选择考试！');
+            DataService.alertInfFun('err', '请选择考试组！');
             return ;
           }
           pObj.kaoshizuid = ks.KAOSHIZU_ID;
