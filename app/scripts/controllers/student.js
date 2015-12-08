@@ -34,6 +34,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var zaiXianBaoMingUrl = baseKwAPIUrl + 'zaixianbaoming'; //在线报名的url
         var jiGouConf = baseRzAPIUrl + 'jigou_conf?token=' + token + '&jigouid=' + defaultJg; //查询机构配置
         var deleteChangCiStudent = baseKwAPIUrl + 'delete_changci_student'; //删除场次中的考生
+        var tjParaObj = {
+          radarBoxZsd: '',
+          radarDataZsd: {
+            zsdName: [],
+            zsdPerAll: [],
+            zsdPerBk: []
+          }
+        }; //存放统计参数的Object
+        var kaoShiZuZhiShiDianUrl = baseTjAPIUrl + 'kaoshizu_zhishidian'; //保存考试组知识点
+        var getZhiShiDianScoreUrl = baseTjAPIUrl + 'zhishidian_defen'; //查询知识点得分
 
         $scope.bmKaoChang = '';
         $scope.stuParams = {
@@ -41,7 +51,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           hasBaoMing: true,
           letterArr: config.letterArr, //题支的序号
           cnNumArr: config.cnNumArr, //汉语的大写数字
-          noData: '' //没有数据的显示
+          noData: '', //没有数据的显示
+          zsdTjShow: false //是否显示考生的知识点
         };
         $scope.kaoShiArrs = '';
         $scope.kaoShiDetail = '';
@@ -269,6 +280,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                       }
                     });
                     $scope.ksScoreData = data;
+                    tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
                   }
                   if(data.error){
                     DataService.alertInfFun('err', data.error);
@@ -371,6 +383,114 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 finaData.sj_tm.push(dObj);
               });
               $scope.kaoShengShiJuan = finaData;
+            }
+          });
+        };
+
+        /**
+         * 考生知识点分析
+         */
+        $scope.studentZsdFenXi = function(ks){
+          var pObj = {
+            token: token,
+            caozuoyuan: caozuoyuan,
+            kaoshizuid: ''
+          };
+          tjParaObj.radarDataZsd.zsdName = [];
+          tjParaObj.radarDataZsd.zsdPerAll = [];
+          tjParaObj.radarDataZsd.zsdPerBk = [];
+          $scope.stuParams.zsdTjShow = false;
+          var optRadarZsd = {
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+              orient : 'vertical',
+              x : 'right',
+              y : 'bottom',
+              data:['整体','班级']
+            },
+            polar : [
+              {
+                indicator : tjParaObj.radarDataZsd.zsdName
+              }
+            ],
+            calculable : true,
+            series : [
+              {
+                name: '整体对比',
+                type: 'radar',
+                data : [
+                  {
+                    value : tjParaObj.radarDataZsd.zsdPerAll,
+                    name : '整体'
+                  },
+                  {
+                    value : tjParaObj.radarDataZsd.zsdPerBk,
+                    name : '班级'
+                  }
+                ]
+              }
+            ]
+          };
+          if(ks.KAOSHIZU_ID){
+            pObj.kaoshizuid = ks.KAOSHIZU_ID;
+          }
+          else{
+            DataService.alertInfFun('err', '请选择考试！');
+            return;
+          }
+          $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata1){
+            if(zsddata1 && zsddata1.length > 0){
+              var zsdParam = {
+                token: token,
+                caozuoyuan: caozuoyuan,
+                kaoshizuid: pObj.kaoshizuid
+              };
+              $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(data){
+                if(data && data.length > 0){
+                  //知识点统计
+                  Lazy(zsddata1).each(function(tjzsd){
+                    var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
+                    tjParaObj.radarDataZsd.zsdName.push(zsdNameObj);
+                    tjParaObj.radarDataZsd.zsdPerBk.push(0);
+                    var findTar = Lazy(data).find(function(zsdObj){
+                      return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
+                    });
+                    if(findTar){
+                      var zsdDeFenLv = findTar.defenlv ? (findTar.defenlv*100).toFixed(1) : 0;
+                      tjParaObj.radarDataZsd.zsdPerAll.push(zsdDeFenLv);
+                    }
+                  });
+                  tjParaObj.radarBoxZsd.setOption(optRadarZsd);
+                  $scope.stuParams.zsdTjShow = true;
+                  $timeout(function (){
+                    window.onresize = function () {
+                      tjParaObj.radarBoxZsd.resize();
+                    }
+                  }, 200);
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              if(zsddata1.error){
+                DataService.alertInfFun('err', zsddata1.error);
+              }
+              else{
+                DataService.alertInfFun('err', '没有知识点！');
+              }
+              //tjParaObj.radarDataZsd.zsdName = [{text: '数据为空', max: 100}];
+              //tjParaObj.radarDataZsd.zsdPerAll = [0];
+              //tjParaObj.radarDataZsd.zsdPerBk = [0];
+              //tjParaObj.radarBoxZsd.setOption(optRadarZsd);
+              //$timeout(function (){
+              //  window.onresize = function () {
+              //    tjParaObj.radarBoxZsd.resize();
+              //  }
+              //}, 200);
             }
           });
         };
