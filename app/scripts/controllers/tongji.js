@@ -2,8 +2,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
   function (angular, config, charts, mathjax, $, lazy) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
-      function ($rootScope, $scope, $http, $timeout, DataService) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location',
+      function ($rootScope, $scope, $http, $timeout, DataService, $location) {
         /**
          * 操作title
          */
@@ -59,6 +59,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var getZhiShiDianScoreUrl = baseTjAPIUrl + 'zhishidian_defen'; //查询知识点得分
         var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
         var tjZsdOriginData = ''; //存放知识点原始数据的
+        var currentPath = $location.$$path;
 
         $scope.tjKaoShiList = []; //试卷列表
         $scope.tjParas = { //统计用到的参数
@@ -1420,6 +1421,21 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList1"]);
         });
+
+        /**
+         * 下载作答重现试卷
+         */
+        var loadDownloadZuoDa = function(){
+          var urlArray = currentPath.split('/');
+          if(urlArray[1] == 'downloadZuoDa' && urlArray[2] > 0 && urlArray[3] > 0){
+            var pObj = {
+              KAOSHI_ID: urlArray[2],
+              UID: urlArray[3]
+            };
+            $scope.zuoDaReappear(pObj);
+          }
+        };
+        loadDownloadZuoDa();
 
     }]);
 });

@@ -104,6 +104,11 @@ define( "config", [], function () {
         templateUrl: '../views/student/luke.html',
         controller: 'StudentCtrl',
         requireLogin: true
+      },
+      '/downloadZuoDa/:kaoshiid/:uid': {
+        templateUrl: '../views/tongji/downloadZuoDa.html',
+        controller: 'TongjiCtrl',
+        requireLogin: false
       }
     },
     quanxianObj: [ //得到角色是数组
