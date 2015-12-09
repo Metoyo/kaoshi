@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class="no-js" ng-app="zuodaApp">
+<head lang="zh">
+  <meta charset="UTF-8">
+  <title>作答重现下载</title>
+  <link rel="stylesheet" href="../../styles/vendor.524898b9.css"/>
+  <link rel="stylesheet" href="../../styles/main.fd8aac8d.css"/>
+  <script src="../../../bower_components/angular/angular.min.js"></script>
+  <!--<script src="angular.min.js"></script>-->
+</head>
+<body ng-controller="ZuoDaDownloadCtrl">
+  <ul>
+    <li ng-repeat="phone in phones">
+      <span>{{phone.name}}</span>
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
+  <script src="../../scripts/controllers/zuodadownload.js"></script>
+</body>
+</html>

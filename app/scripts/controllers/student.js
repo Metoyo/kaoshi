@@ -412,7 +412,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               orient : 'vertical',
               x : 'right',
               y : 'bottom',
-              data:['整体','班级'],
+              data:['整体','个人'],
               selected: {
                 '整体' : false
               }
@@ -443,7 +443,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   },
                   {
                     value : tjParaObj.radarDataZsd.zsdPerBk,
-                    name : '班级'
+                    name : '个人'
                   }
                 ]
               }
