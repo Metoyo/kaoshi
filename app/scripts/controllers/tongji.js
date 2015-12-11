@@ -12,10 +12,10 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         /**
          * 声明变量
          */
-        var userInfo = $rootScope.session.userInfo;
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseTjAPIUrl = config.apiurl_tj; //统计的api
         var token = config.token;
+        var userInfo = $rootScope.session.userInfo;
         var caozuoyuan = userInfo.UID;//登录的用户的UID
         var jigouid = userInfo.JIGOU[0].JIGOU_ID;
         var lingyuid = $rootScope.session.defaultLyId;
@@ -1432,6 +1432,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               KAOSHI_ID: urlArray[2],
               UID: urlArray[3]
             };
+            var elementDash = document.getElementById('dashboard');
+            elementDash.parentNode.removeChild(elementDash);
             $scope.zuoDaReappear(pObj);
           }
         };
