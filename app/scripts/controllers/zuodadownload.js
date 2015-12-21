@@ -173,10 +173,6 @@ zuodaApp.controller('ZuoDaDownloadCtrl', ['$scope', '$http', '$sce',
               tm: ''
             };
             Lazy(val).each(function(tm, idx, lst){
-              //var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
-              //if(findVal){
-              //  tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-              //}
               if(typeof(tm.TIGAN) == 'string'){
                 tm.TIGAN = JSON.parse(tm.TIGAN);
               }
@@ -186,15 +182,6 @@ zuodaApp.controller('ZuoDaDownloadCtrl', ['$scope', '$http', '$sce',
             finaData.sj_tm.push(dObj);
           });
           $scope.kaoShengShiJuan = finaData;
-          setTimeout(function(){
-            MathJax.Hub.Config({
-              tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
-              messageStyle: "none",
-              showMathMenu: false,
-              processEscapes: true
-            });
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
-          }, 1000);
         }
       });
     };
@@ -203,6 +190,8 @@ zuodaApp.controller('ZuoDaDownloadCtrl', ['$scope', '$http', '$sce',
      * 重新加载mathjax
      */
     $scope.$on('onRepeatLast', function(scope, element, attrs){
+      //document.getElementById('mybutton').click();
+      //$('#mybutton').click();
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
         messageStyle: "none",
@@ -211,18 +200,4 @@ zuodaApp.controller('ZuoDaDownloadCtrl', ['$scope', '$http', '$sce',
       });
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
     });
-  //$scope.phones = [
-  //  {
-  //    'name': 'Nexus S',
-  //    'snippet': 'Fast just got faster with Nexus S.'
-  //  },
-  //  {
-  //    'name': 'Motorola XOOM™ with Wi-Fi',
-  //    'snippet': 'The Next, Next Generation tablet.'
-  //  },
-  //  {
-  //    'name': 'MOTOROLA XOOM™',
-  //    'snippet': 'The Next, Next Generation tablet.'
-  //  }
-  //];
 }]);
