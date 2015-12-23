@@ -1886,62 +1886,63 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.savePaper = function(){
           //保存试卷
-          if(shijuanData.shuju.SUIJIGUIZE){
-            shijuanData.shuju.SHIJUANLEIXING = 1;
+          //更新数据模板
+          var lsmbIdLenght = $rootScope.session.lsmb_id.length;
+          mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
+          if($scope.zuJuanParam.tiMuSuiJi){
+            mubanData.shuju.TIMU_SUIJI = true;
           }
           else{
-            shijuanData.shuju.SHIJUANLEIXING = 0;
+            mubanData.shuju.TIMU_SUIJI = false;
           }
-          $http.post(xgsjUrl, shijuanData).success(function(data){
-            if(data.result){
-              //更新数据模板
-              var lsmbIdLenght = $rootScope.session.lsmb_id.length;
-              mubanData.shuju.SHIJUANMUBAN_ID = shijuanData.shuju.SHIJUANMUBAN_ID;
-              if($scope.zuJuanParam.tiMuSuiJi){
-                mubanData.shuju.TIMU_SUIJI = true;
+          if($scope.zuJuanParam.xuanXiangSuiJi){
+            mubanData.shuju.XUANXIANG_SUIJI = true;
+          }
+          else{
+            mubanData.shuju.XUANXIANG_SUIJI = false;
+          }
+          $http.post(xgmbUrl, mubanData).success(function(mbdata){
+            if(mbdata.result){
+              for(var i = 0; i < lsmbIdLenght; i++){
+                if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
+                  $rootScope.session.lsmb_id.splice(i, 1);
+                }
+              }
+              $scope.shijuanyulanBtn = false; //试卷预览的按钮
+              $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
+              $scope.baocunshijuanBtn = false; //保存试卷的按钮
+              $scope.isSavePaperConfirm = false;
+              $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
+              $scope.zuJuanParam.xuanTiError = [];
+              //保存组卷规则
+              if(isComeFromRuleList){
+                comeFromRuleListData.GUIZEBIANMA = zuJuanRuleStr;
+                $scope.saveZjRule(comeFromRuleListData, 'upd', true);
               }
               else{
-                mubanData.shuju.TIMU_SUIJI = false;
+                $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
               }
-              if($scope.zuJuanParam.xuanXiangSuiJi){
-                mubanData.shuju.XUANXIANG_SUIJI = true;
+              if(shijuanData.shuju.SUIJIGUIZE){
+                shijuanData.shuju.SHIJUANLEIXING = 1;
               }
               else{
-                mubanData.shuju.XUANXIANG_SUIJI = false;
+                shijuanData.shuju.SHIJUANLEIXING = 0;
               }
-              $http.post(xgmbUrl, mubanData).success(function(mbdata){
-                if(mbdata.result){
-                  for(var i = 0; i < lsmbIdLenght; i++){
-                    if($rootScope.session.lsmb_id[i] == shijuanData.shuju.SHIJUANMUBAN_ID){
-                      $rootScope.session.lsmb_id.splice(i, 1);
-                    }
-                  }
-                  $scope.shijuanyulanBtn = false; //试卷预览的按钮
-                  $scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
-                  $scope.baocunshijuanBtn = false; //保存试卷的按钮
-                  $scope.isSavePaperConfirm = false;
-                  $scope.addMoreTiMuBtn = false; //添加试卷按钮隐藏
-                  $scope.zuJuanParam.xuanTiError = [];
-                  //保存组卷规则
-                  if(isComeFromRuleList){
-                    comeFromRuleListData.GUIZEBIANMA = zuJuanRuleStr;
-                    $scope.saveZjRule(comeFromRuleListData, 'upd', true);
-                  }
-                  else{
-                    $scope.saveZjRule(zuJuanRuleStr, 'sav', true);
-                  }
+              $http.post(xgsjUrl, shijuanData).success(function(data){
+                if(data.result){
                   $scope.showZuJuan();
                   DataService.alertInfFun('suc', '试卷保存成功！');
                 }
                 else{
-                  DataService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
+                  DataService.alertInfFun('err', data.error);
                 }
               });
             }
             else{
-              DataService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', '更新试卷模板是错误！错误信息为：' + mbdata.error);
             }
           });
+
         };
 
         /**
