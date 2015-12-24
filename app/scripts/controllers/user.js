@@ -2095,14 +2095,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 学生报名设定
          */
-        $scope.renderBaoMingSetTpl = function(){
+        $scope.renderScannerSetTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             DataService.getData(qryJiGouUrl + '1').then(function(data){
               $scope.jigou_list = data;
             });
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
-          $scope.adminSubWebTpl = 'views/renzheng/rz_baoMing.html';
+          $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
           //显示时间选择器
           $timeout(showDatePicker, 1000);
         };
@@ -2311,14 +2311,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 学生报名设定
          */
-        $scope.renderBaoMingChaKanTpl = function(){
+        $scope.renderPdfTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             DataService.getData(qryJiGouUrl + '1').then(function(data){
               $scope.jigou_list = data;
             });
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
-          $scope.adminSubWebTpl = 'views/renzheng/rz_chaKanBaoMing.html';
+          $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
         };
 
         /**
