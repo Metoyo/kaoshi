@@ -14,114 +14,105 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 定义变量
          */
-        var userInfo = $rootScope.session.userInfo,
-          baseRzAPIUrl = config.apiurl_rz, //renzheng的api;
-          baseMtAPIUrl = config.apiurl_mt, //mingti的api
-          baseKwAPIUrl = config.apiurl_kw, //考务的api
-          baseTjAPIUrl = config.apiurl_tj, //统计的api
-          baseBmAPIUrl = config.apiurl_bm, //报名的api
-          token = config.token, //token的值
-          caozuoyuan = userInfo.UID,//登录的用户的UID
-          jigouid = userInfo.JIGOU[0].JIGOU_ID,
-          lingyuid = $rootScope.session.defaultLyId,
-          session = $rootScope.session,
-          dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + session.info.UID, //待审核用户角色url
-          shyhjsUrl = baseRzAPIUrl + 'shenhe_yonghu_juese', //审核用户角色
-          qryJglbUrl = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token, //jiGouLeiBie 机构类别的api
-          qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid=', //由机构类别查询机构的url
-          qryJiGouAdminBase = baseRzAPIUrl + 'get_jigou_admin?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=', // 查询机构管理员
-          modifyJiGouUrl = baseRzAPIUrl + 'modify_jigou', //修改机构数据
-          qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token, //查询领域的url
-          modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu', //修改领域数据
-          modifyJiGouLingYuUrl = baseRzAPIUrl + 'modify_jigou_lingyu', //修改机构领域
-          jiGouData = { //新增机构的数据
+        var userInfo = $rootScope.session.userInfo;
+        var baseRzAPIUrl = config.apiurl_rz; //renzheng的api;
+        var baseMtAPIUrl = config.apiurl_mt; //mingti的api
+        var baseKwAPIUrl = config.apiurl_kw; //考务的api
+        var baseTjAPIUrl = config.apiurl_tj; //统计的api
+        var baseSmAPIUrl = config.apiurl_sm; //扫描的api
+        var token = config.token; //token的值
+        var caozuoyuan = userInfo.UID;//登录的用户的UID
+        var jigouid = userInfo.JIGOU[0].JIGOU_ID;
+        var lingyuid = $rootScope.session.defaultLyId;
+        var session = $rootScope.session;
+        var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + session.info.UID; //待审核用户角色url
+        var shyhjsUrl = baseRzAPIUrl + 'shenhe_yonghu_juese'; //审核用户角色
+        var qryJglbUrl = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token; //jiGouLeiBie 机构类别的api
+        var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
+        var qryJiGouAdminBase = baseRzAPIUrl + 'get_jigou_admin?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='; // 查询机构管理员
+        var modifyJiGouUrl = baseRzAPIUrl + 'modify_jigou'; //修改机构数据
+        var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
+        var modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu'; //修改领域数据
+        var modifyJiGouLingYuUrl = baseRzAPIUrl + 'modify_jigou_lingyu'; //修改机构领域
+        var jiGouData = { //新增机构的数据
             token: token,
             caozuoyuan: caozuoyuan,
             shuju:[]
-          },
-          jgLeiBieId, //机构列表id
-          modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin', //修改机构管理员
-          adminData = { //新增机构管理员的数据
+          };
+        var jgLeiBieId; //机构列表id
+        var modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin'; //修改机构管理员
+        var adminData = { //新增机构管理员的数据
             token: token,
             caozuoyuan: caozuoyuan,
             shuju:{}
-          },
-          whichJiGouAddAdmin = '', //那个机构添加管理员
-          lingYuData = { //定义一个空的object用来存放需要保存的领域数据
+          };
+        var whichJiGouAddAdmin = ''; //那个机构添加管理员
+        var lingYuData = { //定义一个空的object用来存放需要保存的领域数据
             token: token,
             caozuoyuan: caozuoyuan,
             shuju:[]
-          },
-          selectedLyStr = '', //已选择的领域ID
-          selectedLyArr = [], //已选择的领域ID
-          qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token, //查询全部题型的url
-          qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-            jigouid + '&lingyuid=', //查询科目包含什么题型的url
-          modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu', //修改题型机构领域
-          tiXingData = { //定义一个空的object用来存放需要保存的题型数据
+          };
+        var selectedLyStr = ''; //已选择的领域ID
+        var selectedLyArr = []; //已选择的领域ID
+        var qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token; //查询全部题型的url
+        var qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
+            jigouid + '&lingyuid='; //查询科目包含什么题型的url
+        var modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu'; //修改题型机构领域
+        var tiXingData = { //定义一个空的object用来存放需要保存的题型数据
             token: token,
             caozuoyuan: caozuoyuan,
             shuju:[]
-          },
-          qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid=', //查询公共知识点的url
-          qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&lingyuid=', //查询公共知识大纲的url
-          deletePublicDaGangBaseUrl = baseMtAPIUrl + 'shanchu_gonggong_zhishidagang', //删除公共知识大纲的url
-          qryZsdgZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=', //查询知识大纲知识点的url
-          daGangData = { //定义一个空的大纲数据
+          };
+        var qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
+            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid='; //查询公共知识点的url
+        var qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&lingyuid='; //查询公共知识大纲的url
+        var deletePublicDaGangBaseUrl = baseMtAPIUrl + 'shanchu_gonggong_zhishidagang'; //删除公共知识大纲的url
+        var qryZsdgZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid='; //查询知识大纲知识点的url
+        var daGangData = { //定义一个空的大纲数据
             token: token,
             caozuoyuan: caozuoyuan,
             jigouid: jigouid,
             shuju:{}
+          };
+        var daGangJieDianData = []; //定义一个大纲节点的数据
+        var modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang'; //保存知识大纲
+        var queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&chaxunzilingyu=false' + '&lingyuid='; //查询题目
+        var xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku'; //修改题库的url
+        var alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu'; //修改试卷目录
+        var queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
+            + '&jigouid=' + jigouid + '&lingyuid='; //查询试卷目录
+        var isDaGangSet = false; //是否是大纲设置
+        var isLingYuSet = false; //是否是领域设置
+        var qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
+        var alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian'; //修改知识点的url
+        var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
+        var cxLyOfZsdBase = baseMtAPIUrl + 'chaxun_lingyu_of_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan +
+            '&jigouid=' + jigouid + '&zhishidianid='; //根据知识点查科目
+        var modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu'; //修改知识点领域
+        var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
+        var originSelectLingYuArr = []; //存放本机构所选领域的原始数据
+        var selectLingYuChangedArr = []; //存放本机构变动的领域数据
+        var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
+        var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
+        var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid=';
+        var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
+        var scannerInfo = { //扫描设定数据
+          selectInfo: {
+            jgid: '',
+            kmid: '',
+            kszid: '',
+            ksid: ''
           },
-          daGangJieDianData = [], //定义一个大纲节点的数据
-          modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang', //保存知识大纲
-          queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&chaxunzilingyu=false' + '&lingyuid=', //查询题目
-          xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku', //修改题库的url
-          alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu', //修改试卷目录
-          queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid=', //查询试卷目录
-          isDaGangSet = false, //是否是大纲设置
-          isLingYuSet = false, //是否是领域设置
-          qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid, //查询题目列表的url
-          alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian', //修改知识点的url
-          alterYongHu = baseRzAPIUrl + 'xiugai_yonghu',
-          cxLyOfZsdBase = baseMtAPIUrl + 'chaxun_lingyu_of_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&zhishidianid=', //根据知识点查科目
-          modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu', //修改知识点领域
-          qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid=', //查询此题目
-          originSelectLingYuArr = [], //存放本机构所选领域的原始数据
-          selectLingYuChangedArr = [], //存放本机构变动的领域数据
-          qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid, //查询本机构下教师
-          qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
-            + caozuoyuan + '&lingyuid=', //查询考场详细的url
-          baoming = { //报名信息表
-            baomingxinxi: {
-              baoming_id: '',
-              jigou_id: '',
-              kemu_id: '',
-              kaoshimingcheng: '',
-              kaoshishichang: '',
-              baomingjiezhishijian: '',
-              zhuangtai: 1
-            },
-            baomingkaoshishijian: [],
-            baomingkaodian: []
-          },
-          studentData = '', //存放报名考试查出来的考试
-          uploadKsUrl = baseBmAPIUrl + 'excel_to_json', //上传考生信息
-          saveBaoMingUrl = baseBmAPIUrl + 'save_baoming_set', //保存报名信息
-          qryBmByJgBase = baseBmAPIUrl + 'query_baoming_byjg?token=' + token + '&jigouid=', //由机构查询报名
-          qryStudentByBmIdBase = baseBmAPIUrl + 'query_mingdan_bybmid?token=' + token + '&baoming_id=', //由报名ID查询考生
-          qryBaoMingShiJianBase = baseBmAPIUrl + 'query_baoming_shijian?token=' + token + '&baoming_id=', //由报名ID查询考试时间
-          exportStuInfoUrl = baseTjAPIUrl + 'export_to_excel', //导出excel名单
-          downloadTempFileBase = config.apiurl_tj_ori + 'download_temp_file/', //下载文件
-          closeBaoMingBase = baseBmAPIUrl + 'close_baoming?token=' + token + '&baoming_id=', //结束报名
-          delBlankReg = /\s/g; //去除空格的正则表达
+          inputInfo: {
+            omrksid: '',
+            sjaid: '',
+            sjbid: ''
+          }
+        };
 
         $scope.adminParams = {
           selected_dg: '',
@@ -137,17 +128,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           fakePlaceHolder: '请选择科目',
           selectZsdId: '',
           zsdOldName: '', //知识
-          zsdNewName: '', //知识点修改新名称
-          datePickerIdx: '', //时间选择器的索引
-          selectBaoMing: '' //存放选中的报名信息
+          zsdNewName: '' //知识点修改新名称
         };
         $scope.selectedKeMu = '';
-        $scope.baoMing = baoming;
+        $scope.scanner = scannerInfo;
         $scope.cnNumArr = config.cnNumArr; //题支的序号
-        $scope.studentArrs = ''; //查询出来的报名考生
-        $scope.baoMingArrs = ''; //报名数据
-        $scope.baoMingShiJianArrs = ''; //有报名ID查出来的报名时间数据
-        $scope.whichChangCiSelect = '全部考生'; //那个场次被选中
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
@@ -1211,7 +1196,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           pubDgZsdIdArr = [], //存放公共知识大纲知识点的数据
           pubZsdIdArr = []; //存放公共知识点id的数组
         var minusZsdFun = function(){
-          var  diffZsdIdArr, //存放不同知识点id的变量
+          var diffZsdIdArr, //存放不同知识点id的变量
             singleZsdData, //存放一条公共知识点数据的变量
             pubZsdList = []; //存放多条公共知识点的变量
           //从已有的公共知识点中减去知识大纲知识点
@@ -2071,29 +2056,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 时间设定
-         */
-        var showDatePicker = function() {
-          $('.datePickerJz').intimidatetime({
-            buttons: [
-              { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
-            ]
-          });
-          $('.datePicker').intimidatetime({
-            buttons: [
-              { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
-            ],
-            events: {
-              change: function(e, date, inst){
-                calculateEndDate(inst);
-                return;
-              }
-            }
-          });
-        };
-
-        /**
-         * 学生报名设定
+         *  扫描设定
          */
         $scope.renderScannerSetTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
@@ -2103,8 +2066,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
-          //显示时间选择器
-          $timeout(showDatePicker, 1000);
         };
 
         /**
@@ -2116,7 +2077,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
               dataArr = [];
             $scope.kemu_list = '';
             $scope.kaoChangList = '';
-            $scope.baoMing.baomingxinxi.kemu_id = '';
+            $scope.scanner.selectInfo.kmid = '';
             DataService.getData(qryLy).then(function(lyData){
               Lazy(lyData).each(function(ly, idx, lst){
                 Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
@@ -2133,183 +2094,142 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 由所选科目，查询考场
+         * 由所选科目，查询考试组 + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid
          */
-        $scope.getKaoChangList = function(kmId){
-          var qryKaoChangDetail, lyData;
-          if($scope.kemu_list && $scope.kemu_list.length > 0){
-            lyData = Lazy($scope.kemu_list).find(function(km){ return km.LINGYU_ID == kmId; });
-            qryKaoChangDetail = qryKaoChangDetailBaseUrl + lyData.PARENT_LINGYU_ID;
-            if($scope.baoMing.baomingxinxi.jigou_id){
-              qryKaoChangDetail += '&jigouid=' + $scope.baoMing.baomingxinxi.jigou_id;
-              DataService.getData(qryKaoChangDetail).then(function(data){
-                $scope.kaoChangList = data;
-              });
+        $scope.getKaoShiZuList = function(kmId){
+          var kaoShiZuListUrl = qryKaoShiZuListUrl;
+          if($scope.scanner.selectInfo.jgid){
+            kaoShiZuListUrl += '&jigouid=' + $scope.scanner.selectInfo.jgid;
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择机构！');
+            return ;
+          }
+          if(kmId){
+            kaoShiZuListUrl += '&lingyuid=' + kmId;
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择科目！');
+            return ;
+          }
+          kaoShiZuListUrl += '&zhuangtai=' + [0, 1, 2, 3, 4, 5, 6];
+          $http.get(kaoShiZuListUrl).success(function(data){
+            if(data && data.length >0){
+              $scope.kaoshizu_list = data;
             }
             else{
-              DataService.alertInfFun('pmt', '请选择机构！');
+              $scope.kaoshizu_list = '';
+              DataService.alertInfFun('err', data.error);
             }
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择科目');
-          }
-        };
-
-        /**
-         * 有场次和截止时间分配场次
-         */
-        $scope.distChangCi = function(cc){
-          if(cc){
-            $scope.bmkssjArr = [];
-            for(var i=0; i < cc; i++){
-              var bmksshj = {
-                baomingkaoshishijian_id: '',
-                baoming_id: '',
-                kaishishijian: '',
-                jieshushijian: '',
-                count: ''
-              };
-              bmksshj.count = i;
-              $scope.bmkssjArr.push(bmksshj);
-            }
-            //显示时间选择器
-            $timeout(showDatePicker, 1000);
-          }
-        };
-
-        /**
-         * 计算结束时间
-        */
-        var calculateEndDate = function(startTime){
-          var idx = $scope.adminParams.datePickerIdx;
-          if(idx >= 0){
-            var ccStart = $('.changCiStart').eq(idx).val(),
-              ccEnd = $('.changCiEnd').eq(idx),
-              ksLong = parseInt($scope.baoMing.baomingxinxi.kaoshishichang),
-              bmEnd = $('.datePickerJz').val(),
-              endDate, endDateFormate, startDate;
-            if(ccStart){
-              if(ksLong){
-                if(bmEnd){
-                  startDate = Date.parse(startTime); //开始时间
-                  if(startDate > Date.parse(bmEnd)){
-                    endDate = startDate + ksLong * 60 * 1000; //结束时间
-                    endDateFormate = DataService.formatDateZh(endDate); //结束时间格式化
-                    ccEnd.val(endDateFormate);
-                  }
-                  else{
-                    DataService.alertInfFun('pmt', '开考时间不能早于报名截止时间!');
-                  }
-                }
-                else{
-                  DataService.alertInfFun('pmt', '报名截止时间不能为空！');
-                }
-              }
-              else{
-                DataService.alertInfFun('pmt', '考试时长不能为空！');
-              }
-            }
-          }
-        };
-        $scope.getChangCiInx = function(idx){
-          $scope.adminParams.datePickerIdx = idx;
-        };
-
-        /**
-         * 考场的选择
-         */
-        var baomingkaodianArr = [];
-        $scope.selectKaoChang = function(kc){
-          var targetClass = '.kcZw' + kc.KID,
-            isChecked,
-            bmkdObj = {
-              baomingkaodian_id: '',
-              baoming_id: '',
-              kaodian_id: '',
-              kaodianmingcheng: '',
-              kaowei: ''
-            };
-          isChecked = $(targetClass).prop('checked');
-          if(isChecked){
-            bmkdObj.kaodian_id = kc.KID;
-            bmkdObj.kaodianmingcheng = kc.KMINGCHENG;
-            bmkdObj.kaowei = kc.KAOWEISHULIANG;
-            baomingkaodianArr.push(bmkdObj);
-          }
-          else{
-            baomingkaodianArr = Lazy(baomingkaodianArr).reject(function(bmkd){ return bmkd.kaodian_id == kc.KID;}).toArray();
-          }
-        };
-
-        /**
-         * 文件上传
-         */
-          //存放上传文件的数组
-        $scope.uploadFiles = [];
-
-        //将选择的文件加入到数组
-        $scope.$on("fileSelected", function (event, args) {
-          $scope.$apply(function () {
-            $scope.uploadFiles.push(args.file);
           });
-        });
+        };
+
+        /**
+         * 由所选考试组，查询考试
+         */
+        $scope.getKaoShiList = function(kszid){
+          if(kszid){
+            var chaXunChangCi = chaXunChangCiUrl + kszid;
+            $http.get(chaXunChangCi).success(function(data) {
+              if (data && data.length > 0) {
+                var ccArr = [];
+                Lazy(data).groupBy('KAOSHI_ID').each(function(v, k, l){
+                  var ccDist = Lazy(v).groupBy('KID').toObject();
+                  Lazy(ccDist).each(function(v1, k1, l1){
+                    var ccObj = v1[0];
+                    var sjName = [];
+                    var sjId = [];
+                    var sjArr = [];
+                    Lazy(v1).each(function(cc){
+                      var sjObj = {
+                        SHIJUANMINGCHENG: cc.SHIJUANMINGCHENG,
+                        SHIJUAN_ID: cc.SHIJUAN_ID
+                      };
+                      sjName.push(cc.SHIJUANMINGCHENG);
+                      sjId.push(cc.SHIJUAN_ID);
+                      sjArr.push(sjObj);
+                    });
+                    ccObj.SHIJUANMINGCHENG = sjName.join(';');
+                    ccObj.SHIJUAN_ID = sjId.join(';');
+                    ccObj.shijuans = sjArr;
+                    ccObj.kaoShiShiJian = DataService.baoMingDateFormat(ccObj.KAISHISHIJIAN, ccObj.JIESHUSHIJIAN);
+                    ccArr.push(ccObj);
+                  });
+                });
+                Lazy(ccArr).sortBy(function(cc){return cc.KAISHISHIJIAN});
+                $scope.kaoshi_list = ccArr;
+              }
+              else {
+                DataService.alertInfFun('err', data.error);
+              }
+            })
+          }
+          else{
+            $scope.kaoshi_list = '';
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
+
+        /**
+         * 由考试得到试卷
+         */
+        $scope.getShiJuanList = function(ksid){
+          var selectKs = Lazy($scope.kaoshi_list).find(function(ks){
+            return ks.KAOSHI_ID == ksid;
+          });
+          if(selectKs){
+            $scope.shijuan_list = selectKs.shijuans;
+          }
+          else{
+            $scope.shijuan_list = '';
+            DataService.alertInfFun('pmt', '没有试卷信息！');
+          }
+        };
 
         /**
          * 保存报名信息
          */
-        $scope.saveBaoMingInfo = function(){
-          var ccStartArr = $('.changCiStart');
-          var ccEndArr = $('.changCiEnd');
-          var file = $scope.uploadFiles;
-          var bmData = {
-            token: token,
-            shuju: baoming
+        $scope.saveScannerSet = function(){
+          var omr_set = {
+            "考试组ID": $scope.scanner.selectInfo.kszid,
+            "考试ID": $scope.scanner.selectInfo.ksid,
+            "OMR考试ID": $scope.scanner.inputInfo.omrksid,
+            "试卷映射":[]
           };
-          var errorCount = 0;
-          $scope.loadingImgShow = true;
-          Lazy($scope.bmkssjArr).each(function(cc, idx, lst){
-            cc.kaishishijian = ccStartArr.eq(idx).val();
-            cc.jieshushijian = ccEndArr.eq(idx).val();
-          });
-          baoming.baomingxinxi.baomingjiezhishijian = $('.datePickerJz').val();
-          baoming.baomingkaoshishijian = $scope.bmkssjArr;
-          baoming.baomingkaodian = baomingkaodianArr;
-          bmData.shuju = JSON.stringify(bmData.shuju);
-
-          //if(errorCount > 0){
-          //
-          //}
-          //else{
-          //
-          //}
-          var fd = new FormData();
-          for(var j = 1; j <= file.length; j++){
-            fd.append('file' + j, file[j - 1]);
+          if($scope.scanner.inputInfo.sjaid){
+            var obja = {"OMR试卷编号":"A","试卷ID": $scope.scanner.inputInfo.sjaid};
+            omr_set['试卷映射'].push(obja);
           }
-          for(var key in bmData){
-            fd.append(key, bmData[key])
+          else{
+            DataService.alertInfFun('pmt', '请填写A卷的试卷ID！');
+            return ;
           }
+          if($scope.scanner.inputInfo.sjbid){
+            var objb = {"OMR试卷编号":"B","试卷ID": $scope.scanner.inputInfo.sjbid};
+            omr_set['试卷映射'].push(objb);
+          }
+          if($scope.scanner.selectInfo.kszid && $scope.scanner.selectInfo.ksid){
+            var scannerUrl = scannerBaseUrl + JSON.stringify(omr_set);
+            console.log(scannerUrl);
+            $http.get(scannerUrl).then(function successCallback(response) {
+              if(response){
 
-          $http.post(saveBaoMingUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('suc', '保存成功！');
-              $scope.baoMing.baomingxinxi.jigou_id = '';
-              $scope.baoMing.baomingxinxi.kemu_id = '';
-              $scope.baoMing.baomingxinxi.kaoshimingcheng = '';
-              $scope.baoMing.baomingxinxi.kaoshishichang = '';
-              $scope.baoMing.baomingxinxi.baomingjiezhishijian = '';
-              $scope.jigou_list = '';
-              $scope.bmkssjArr = '';
-              $scope.kemu_list = '';
-              $scope.kaoChangList = '';
-              $scope.closeShenheBox();
-              $scope.loadingImgShow = false;
-            }
-          });
+              }
+              console.log(response);
+            }, function errorCallback(response) {
+              if(response){
+
+              }
+              console.log(response);
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组和考试！');
+          }
         };
 
         /**
-         * 学生报名设定
+         * pdf设定
          */
         $scope.renderPdfTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
@@ -2319,141 +2239,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
-        };
-
-        /**
-         * 查看机构下的所有报名信息
-         */
-        $scope.chaXunBaoMing = function(jgId){
-          if(jgId){
-            var qryBmByJgUrl = qryBmByJgBase + jgId;
-            DataService.getData(qryBmByJgUrl).then(function(data){
-              $scope.baoMingArrs = data;
-            });
-          }
-          else{
-            $scope.baoMingArrs = '';
-            DataService.alertInfFun('pmt', '请选择机构！')
-          }
-        };
-
-        /**
-         * 查看本次报名的所有考生
-         */
-        $scope.qryKaoShengByBaoMing = function(bmId){
-          if(bmId){
-            $scope.adminParams.selectBaoMing = bmId;
-            var qryBaoMingShiJian = qryBaoMingShiJianBase + bmId,
-              qryStudentByBmId =  qryStudentByBmIdBase + bmId;
-            DataService.getData(qryBaoMingShiJian).then(function(sjData){
-              if(sjData && sjData.length > 0){
-                $scope.baoMingShiJianArrs = sjData;
-                DataService.getData(qryStudentByBmId).then(function(data){
-                  studentData = data;
-                  $scope.studentArrs = angular.copy(data);
-                });
-              }
-              else{
-                $scope.baoMingShiJianArrs = '';
-              }
-            });
-
-          }
-          else{
-            $scope.studentArrs = '';
-            $scope.baoMingShiJianArrs = '';
-            DataService.alertInfFun('pmt', '请选择考试！');
-          }
-        };
-
-        /**
-         * 有不同的查询条件得到考生
-         */
-        $scope.distBaoMingKaoSheng = function(cdt, idx){
-          $('.baoMingChaKanChangCi li').removeClass('active').eq(idx).addClass('active');
-          $scope.whichChangCiSelect = '';
-          if(cdt == 'All'){
-            $scope.studentArrs = angular.copy(studentData);
-            $scope.whichChangCiSelect = '全部考生';
-          }
-          else if(cdt == 'NotApply'){
-            $scope.studentArrs = Lazy(studentData).reject(function(std){
-              if(std.KAODIANMINGCHENG){
-                return std;
-              }
-            }).toArray();
-            $scope.whichChangCiSelect = '未报名';
-          }
-          else{
-            if(cdt){
-              var bmkssj_id = cdt.BAOMINGKAOSHISHIJIAN_ID;
-              //cdt.kaoshiDate = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
-              $scope.whichChangCiSelect = DataService.baoMingDateFormat(cdt.KAISHISHIJIAN, cdt.JIESHUSHIJIAN);
-              $scope.studentArrs = Lazy(studentData).filter(function(std){
-                return std.BAOMINGKAOSHISHIJIAN_ID == bmkssj_id;
-              }).toArray();
-            }
-            else{
-              DataService.alertInfFun('pmt', '请选场次！');
-            }
-          }
-        };
-
-        /**
-         * 导出考生名单
-         */
-        $scope.exportKsInfo = function(stuData){
-          var ksData = {
-              token: token,
-              sheetName: '',
-              data: ''
-            },
-            ksArr = [];
-          $scope.loadingImgShow = true;
-          ksData.sheetName = $scope.whichChangCiSelect.replace(delBlankReg, '');
-          ksData.sheetName = ksData.sheetName.replace(/\:/g, '');
-          ksArr.push({col1: '学号', col2: '姓名', col3: '班级', col4: '序号', col5: '课序号', col6: '座位号'});
-          Lazy($scope.studentArrs).each(function(stu){
-            var ksObj = {XUEHAO: '', XINGMING: '', BANJI: '', XUHAO: '',  KEXUHAO: ''};
-            ksObj.XUEHAO = stu.XUEHAO;
-            ksObj.XINGMING = stu.XINGMING;
-            ksObj.BANJI = stu.BANJI;
-            ksObj.XUHAO = stu.XUHAO;
-            ksObj.KEXUHAO = stu.KEXUHAO;
-            ksObj.ZUOWEIHAO = stu.ZUOWEIHAO;
-            ksArr.push(ksObj);
-          });
-          ksData.data = JSON.stringify(ksArr);
-          $http.post(exportStuInfoUrl, ksData).success(function(data){
-            var downloadTempFile = downloadTempFileBase + data.filename,
-              aLink = document.createElement('a'),
-              evt = document.createEvent("HTMLEvents");
-            evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-            aLink.href = downloadTempFile; //url
-            aLink.dispatchEvent(evt);
-            $scope.loadingImgShow = false;
-          });
-        };
-
-        /**
-         * 结束报名
-         */
-        $scope.endBaoMing = function(){
-          var bmId = $scope.adminParams.selectBaoMing;
-          if(bmId){
-            $scope.loadingImgShow = true;
-            var closeBaoMing = closeBaoMingBase + bmId;
-            $http.get(closeBaoMing).success(function(data){
-              if(data.result){
-                $scope.qryKaoShengByBaoMing(bmId);
-                $scope.loadingImgShow = false;
-              }
-            });
-          }
-          else{
-            $scope.loadingImgShow = false;
-            DataService.alertInfFun('pmt', '请选择要结束的考试！');
-          }
         };
 
     }]);
