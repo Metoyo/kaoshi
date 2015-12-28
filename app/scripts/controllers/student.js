@@ -185,7 +185,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             uid: caozuoyuan,
             kid: '',
             ksid: '',
-            lingyuid: ''
+            lingyuid: '',
+            kszid: $scope.kaoShiDetailData.KAOSHIZU_ID
           };
           Lazy($scope.kaoShiDetailData.changci).each(function(cc){
             Lazy(cc.kaoDian).each(function(kd){

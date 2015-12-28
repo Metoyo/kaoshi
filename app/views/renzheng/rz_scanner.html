@@ -85,4 +85,11 @@
   <div class="form-group text-right">
     <button type="button" class="btn btn-primary" ng-click="saveScannerSet()">提交</button>
   </div>
+  <div class="form-group" ng-if="scannerResInfo">
+    <p>scannerResInfo['主观题答题数']</p>
+    <p>scannerResInfo['客观题答题数']</p>
+    <p>scannerResInfo['考生人数']</p>
+    <p>scannerResInfo['试卷数']</p>
+    <p>scannerResInfo['题目数']</p>
+  </div>
 </div>

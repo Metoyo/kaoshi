@@ -98,8 +98,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var selectLingYuChangedArr = []; //存放本机构变动的领域数据
         var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
-        var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid=';
+        var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
         var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
+        var createPdfUrl = '/create_pdf'; //创建PDF
         var scannerInfo = { //扫描设定数据
           selectInfo: {
             jgid: '',
@@ -2187,7 +2188,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 保存报名信息
+         * 保存扫描仪设定信息
          */
         $scope.saveScannerSet = function(){
           var omr_set = {
@@ -2196,6 +2197,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             "OMR考试ID": $scope.scanner.inputInfo.omrksid,
             "试卷映射":[]
           };
+          $scope.scannerResInfo = '';
           if($scope.scanner.inputInfo.sjaid){
             var obja = {"OMR试卷编号":"A","试卷ID": $scope.scanner.inputInfo.sjaid};
             omr_set['试卷映射'].push(obja);
@@ -2210,18 +2212,21 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
           if($scope.scanner.selectInfo.kszid && $scope.scanner.selectInfo.ksid){
             var scannerUrl = scannerBaseUrl + JSON.stringify(omr_set);
-            console.log(scannerUrl);
-            $http.get(scannerUrl).then(function successCallback(response) {
-              if(response){
-
+            $http.get(scannerUrl).success(function(data){
+              if(data.result){
+                $scope.scannerResInfo = data.message;
               }
-              console.log(response);
-            }, function errorCallback(response) {
-              if(response){
-
+              else{
+                DataService.alertInfFun('err', data.error);
               }
-              console.log(response);
             });
+            //$http.get(scannerUrl).then(function successCallback(response) {
+            //  if(response){
+            //  }
+            //}, function errorCallback(response) {
+            //  if(response){
+            //  }
+            //});
           }
           else{
             DataService.alertInfFun('pmt', '请选择考试组和考试！');
@@ -2239,6 +2244,41 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
+        };
+
+        /**
+         * 生成pdf
+         */
+        $scope.createPdf = function(stat){
+          var obj = {
+            token: token,
+            kaozhizuid: '',
+            xuexiaoname: '',
+            kaoshizuname: '',
+            pfdtype: stat
+          };
+          if($scope.scanner.selectInfo.kszid){
+            obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
+            var findKaoShiZi = Lazy($scope.jigou_list).find(function(jg){
+              return jg.JIGOU_ID == $scope.scanner.selectInfo.jgid;
+            });
+            var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
+              return ksz.KAOSHIZU_ID == $scope.scanner.selectInfo.kszid;
+            });
+            obj.xuexiaoname = findKaoShiZi.JIGOUMINGCHENG;
+            obj.kaoshizuname = findKaoShiZu.KAOSHIZU_NAME;
+            $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '生成成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组!');
+          }
         };
 
     }]);

@@ -135,7 +135,10 @@
       <span>{{sj_name}}</span>
     </h2>
     <h4 class="studentInfo">
-      <span>姓名:何欣悦</span><span>学号:2015011996</span><span>班级:生54</span><span>成绩:75</span>
+      <span>姓名:{{stu_obj.XINGMING}}</span>
+      <span>学号:{{stu_obj.YONGHUHAO}}</span>
+      <span>班级:{{stu_obj.BANJI}}</span>
+      <span>成绩:{{stu_obj.ZUIHOU_PINGFEN}}</span>
     </h4>
     <div id="answerReappearShiJuan">
       {{each sj_tm as dati i}}
@@ -150,7 +153,7 @@
             <h4 class="ar-tiGan itemHasImg">
               <span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>
               (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
-              (最后得分：<b class="clRed">{{xtm.ZUIHOUDEFEN}}</b>  分)
+              (最后得分：<b class="clRed">{{xtm.ZUIHOU_PINGFEN}}</b>  分)
               <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
             </h4>
             <div class="ar-tzs itemHasImg">
