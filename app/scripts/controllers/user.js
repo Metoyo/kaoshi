@@ -111,7 +111,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           inputInfo: {
             omrksid: '',
             sjaid: '',
-            sjbid: ''
+            sjbid: '',
+            xuehao: ''
           }
         };
 
@@ -2066,6 +2067,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             });
           }
           $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
         };
 
@@ -2210,25 +2212,29 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             var objb = {"OMR试卷编号":"B","试卷ID": $scope.scanner.inputInfo.sjbid};
             omr_set['试卷映射'].push(objb);
           }
+          if($scope.scanner.inputInfo.xuehao && $scope.scanner.inputInfo.xuehao.length > 0){
+            var newStr = $scope.scanner.inputInfo.xuehao.replace(/，/g, ',');
+            var xuehaoArr = newStr.split(',');
+            var xhObj = {'学号': ''};
+            xhObj['学号'] = xuehaoArr;
+            omr_set['筛选'] = xhObj;
+          }
           if($scope.scanner.selectInfo.kszid && $scope.scanner.selectInfo.ksid){
             var scannerUrl = scannerBaseUrl + JSON.stringify(omr_set);
+            $scope.loadingImgShow = true;
             $http.get(scannerUrl).success(function(data){
               if(data.result){
                 $scope.scannerResInfo = data.message;
+                $scope.loadingImgShow = false;
               }
               else{
+                $scope.loadingImgShow = false;
                 DataService.alertInfFun('err', data.error);
               }
             });
-            //$http.get(scannerUrl).then(function successCallback(response) {
-            //  if(response){
-            //  }
-            //}, function errorCallback(response) {
-            //  if(response){
-            //  }
-            //});
           }
           else{
+            $scope.loadingImgShow = false;
             DataService.alertInfFun('pmt', '请选择考试组和考试！');
           }
         };
