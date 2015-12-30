@@ -262,7 +262,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             if(!conf.error){
               var confObj = '';
               if(conf && conf.length > 0){
-                confObj = JSON.parse(conf[0].JIGOU_CONFI);
+                confObj = JSON.parse(conf[0].JIGOU_CONF);
               }
               if(xuehao) {
                 var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + xuehao;

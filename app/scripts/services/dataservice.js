@@ -105,7 +105,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             tm.DAAN = '错';
           }
         }
-        else if(tm.TIXING_ID == 6){ //填空题
+        else if(tm.TIXING_ID == 6 || tm.TIXING_ID == 19){ //填空题
           //修改填空题的答案
           var tkDaAnArr = [],
             tkDaAn = JSON.parse(tm.DAAN),

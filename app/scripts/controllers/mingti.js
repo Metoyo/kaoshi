@@ -721,6 +721,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
                 tx.ntxClass = 'jieda';
                 newShiTiTiXingArr.push(tx);
                 break;
+              case '19':
+                tx.ntxClass = 'bidatiankong';
+                newShiTiTiXingArr.push(tx);
+                break;
             }
           });
           testListStepZst = selectZsd; //保存选题阶段的知识点
@@ -1142,6 +1146,26 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
         };
 
         /**
+         * 笔答填空题模板添加
+         */
+        $scope.addTianKongBiDa = function(tpl){
+          $scope.selectZhiShiDian = ''; //知识大纲名称清空
+          tiankong_data = timu_data;
+          tkLoopArr = [];
+          renderTpl(tpl);
+          $('.patternList li').removeClass('active');
+          $('li.bidatiankong').addClass('active');
+          tiankong_data.shuju.TIXING_ID = 19;
+          tiankong_data.shuju.TIMULEIXING_ID = 6;
+          $scope.tianKongData = tiankong_data;
+          $scope.loadingImgShow = false; //panduan.html
+          var addTianKongFun = function() {
+            $('.formulaEditTiGan').markItUp(mySettings);
+          };
+          $timeout(addTianKongFun, 500);
+        };
+
+        /**
          * 查找字符串出现的次数
          */
         var countInstances = function(mainStr, subStr) {
@@ -1461,7 +1485,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             $timeout(daAnSelectFun, 500);
           }
           //填空题
-          if(tmxq.TIXING_ID == 6){
+          if(tmxq.TIXING_ID == 6 || tmxq.TIXING_ID == 19){
             var tkEdReg = new RegExp('<%{.*?}%>', 'g'),
               dataFirst,
               tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
@@ -1508,7 +1532,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
             tiankong_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
             tiankong_data.shuju.REMARK = tmxq.REMARK;
-            $scope.alterTiMuTiXing = '填空题';
+            if(tmxq.TIXING_ID == 6){
+              $scope.alterTiMuTiXing = '填空题';
+            }
+            else{
+              $scope.alterTiMuTiXing = '笔答填空题';
+            }
             renderTpl(tpl); //render 修改过模板
             var addTianKongFun = function() {
               $('.formulaEditTiGan').markItUp(mySettings);
@@ -1672,69 +1701,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             case '17':
               $scope.addJieDa('views/mingti/jieda.html');
               break;
+            case '19':
+              $scope.addTianKongBiDa('views/mingti/tiankong.html');
+              break;
           }
         };
-
-        /**
-         * dagangListWrap宽度可拖拽
-         */
-        //var resize = function(el){
-        //  //初始化参数
-        //  var els = document.getElementById('dagangListWrap').style,
-        //    x = 0; //鼠标的 X 和 Y 轴坐标
-        //
-        //  $(el).mousedown(function(e) {
-        //    //按下元素后，计算当前鼠标与对象计算后的坐标
-        //    x = e.clientX - el.offsetWidth - $("#dagangListWrap").width();
-        //
-        //    //在支持 setCapture 做些东东
-        //    el.setCapture ? (
-        //      //捕捉焦点
-        //      el.setCapture(),
-        //        //设置事件
-        //        el.onmousemove = function(ev) {
-        //          mouseMove(ev || event);
-        //        }, el.onmouseup = mouseUp
-        //      ) : (
-        //      //绑定事件
-        //      $(document).bind("mousemove", mouseMove).bind("mouseup", mouseUp)
-        //      );
-        //    //防止默认事件发生
-        //    e.preventDefault();
-        //  });
-        //  //移动事件
-        //  function mouseMove(e) {
-        //    var subDbWidth = $(".dagangListWrap").width();
-        //    if(subDbWidth < 220){
-        //      els.width = '221px';
-        //      $('.content').css('padding-left',els.width);
-        //      $(document).unbind("mousemove", mouseMove);
-        //    }
-        //    if(subDbWidth >= 220 && subDbWidth <= 400){
-        //      els.width = e.clientX - x + 'px';
-        //      $('.content').css('padding-left',els.width);
-        //    }
-        //    if(subDbWidth > 400){
-        //      els.width = '399px';
-        //      $('.content').css('padding-left',els.width);
-        //      $(document).unbind("mousemove", mouseMove);
-        //    }
-        //  }
-        //  //停止事件
-        //  function mouseUp() {
-        //    //在支持 releaseCapture 做些东东
-        //    el.releaseCapture ? (
-        //      //释放焦点
-        //      el.releaseCapture(),
-        //        //移除事件
-        //        el.onmousemove = el.onmouseup = null
-        //      ) : (
-        //      //卸载事件
-        //      $(document).unbind("mousemove", mouseMove).unbind("mouseup", mouseUp)
-        //      );
-        //  }
-        //};
-        //resize(document.getElementById('dragBtn'));//初始化拖拽
 
         /**
          * 文件上传
