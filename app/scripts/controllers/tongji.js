@@ -1422,22 +1422,22 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList1"]);
         });
 
-        /**
-         * 下载作答重现试卷
-         */
-        var loadDownloadZuoDa = function(){
-          var urlArray = currentPath.split('/');
-          if(urlArray[1] == 'downloadZuoDa' && urlArray[2] > 0 && urlArray[3] > 0){
-            var pObj = {
-              KAOSHI_ID: urlArray[2],
-              UID: urlArray[3]
-            };
-            var elementDash = document.getElementById('dashboard');
-            elementDash.parentNode.removeChild(elementDash);
-            $scope.zuoDaReappear(pObj);
-          }
-        };
-        loadDownloadZuoDa();
+        ///**
+        // * 下载作答重现试卷
+        // */
+        //var loadDownloadZuoDa = function(){
+        //  var urlArray = currentPath.split('/');
+        //  if(urlArray[1] == 'downloadZuoDa' && urlArray[2] > 0 && urlArray[3] > 0){
+        //    var pObj = {
+        //      KAOSHI_ID: urlArray[2],
+        //      UID: urlArray[3]
+        //    };
+        //    var elementDash = document.getElementById('dashboard');
+        //    elementDash.parentNode.removeChild(elementDash);
+        //    $scope.zuoDaReappear(pObj);
+        //  }
+        //};
+        //loadDownloadZuoDa();
 
     }]);
 });
