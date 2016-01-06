@@ -52,10 +52,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.signIn = function() {
           urlArr = [];
           if(login.userName && login.password) {
-            /**
-             * 构建登陆回传参数，token, 用户名， 密码
-             * @type {{token: (config.token|*), yonghuming: string, mima: string}}
-             */
             loginPostParams = {
               token : config.token,
               yonghuming : login.userName,

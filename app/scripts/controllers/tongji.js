@@ -2,8 +2,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
   function (angular, config, charts, mathjax, $, lazy) {
   'use strict';
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
-    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location',
-      function ($rootScope, $scope, $http, $timeout, DataService, $location) {
+    .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location', '$cookieStore',
+      function ($rootScope, $scope, $http, $timeout, DataService, $location, $cookieStore) {
         /**
          * 操作title
          */
@@ -14,6 +14,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          */
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseTjAPIUrl = config.apiurl_tj; //统计的api
+        var baseRzAPIUrl = config.apiurl_rz;
         var token = config.token;
         var userInfo = $rootScope.session.userInfo;
         var caozuoyuan = userInfo.UID;//登录的用户的UID
@@ -59,7 +60,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var getZhiShiDianScoreUrl = baseTjAPIUrl + 'zhishidian_defen'; //查询知识点得分
         var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
         var tjZsdOriginData = ''; //存放知识点原始数据的
-        var currentPath = $location.$$path;
+        var quanXianIds = $cookieStore.get('quanXianCk');
+        var jiaoShiKeXunHaoUrl = baseRzAPIUrl + 'jiaoshi_kexuhao'; //由UID查询科学号
+        var kaoShiZuTongJiOriginData = ''; //考试组统计数据原始数据
 
         $scope.tjKaoShiList = []; //试卷列表
         $scope.tjParas = { //统计用到的参数
@@ -88,6 +91,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         };
         $scope.selectKsz = ''; //选中考试组
         $scope.needToXgYxJgLv = true; //允许修改优秀和及格率
+        $scope.isRenKeJiaoShi = false; //是否是任课教师
 
         /**
          * 判断是否为数组
@@ -508,7 +512,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var pjrs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.SKRS}).toArray().reverse()[0].SKRS;
           var pjfs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.PJF}).toArray().reverse()[0].PJF;
           var pjfsMax = Math.ceil(pjfs);
-          var radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/tj.KEXUHAO.length, tj.KAOSHIZU.PJF];
+          var radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/kaoShiZuTongJiOriginData.KEXUHAO.length, tj.KAOSHIZU.PJF];
           var dataStyle = {
             normal: {
               label: {
@@ -1039,6 +1043,39 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         //};
 
         /**
+         * 由UID查询课序号
+         */
+        var jiaoShiKeXunHaoData = '';
+        var getJiaoShiKeXunHao = function(){
+          var jsObj = {
+            token: token,
+            uid: caozuoyuan
+          };
+          $http({method: 'GET', url: jiaoShiKeXunHaoUrl, params: jsObj}).success(function(jsKxh){
+            if(jsKxh && jsKxh.length > 0){
+              jiaoShiKeXunHaoData = jsKxh;
+            }
+            else{
+              //jiaoShiKeXunHaoData = '';
+              jiaoShiKeXunHaoData = [
+                {
+                  KEXUHAO_ID: 1071,
+                  UID: 1180,
+                  KEXUHAO_MINGCHENG: "171201"
+                },
+                {
+                  KEXUHAO_ID: 1072,
+                  UID: 1180,
+                  KEXUHAO_MINGCHENG: "171202"
+                }
+              ];
+              DataService.alertInfFun('err', jsKxh.error);
+            }
+          });
+        };
+        getJiaoShiKeXunHao();
+
+        /**
          * 显示考试统计的首页
          */
         $scope.tjKaoShiPublicData = {
@@ -1050,6 +1087,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           kxh: ''
         };
         $scope.tjShowKaoShiChart = function(ks){
+          $scope.isRenKeJiaoShi = false;
           $scope.singleBjOrKhxData = '';
           $scope.selectKsz = ks;
           var isArr = isArray(ks); //判读传入的参数是否为数组
@@ -1081,6 +1119,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             }).join(',');
             $http({url: queryKaoShiZuTongJi, method:'GET', params: needParam}).success(function(data){
               if(!data.error){
+                kaoShiZuTongJiOriginData = angular.copy(data);
                 data.KEXUHAO = Lazy(data.KEXUHAO).reject(function(kxh){
                   return !kxh.KEXUHAO_MINGCHENG
                 }).toArray();
@@ -1101,7 +1140,32 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 $http.get(queryKsBj).success(function(students){
                   if(students && students.length > 0){
                     var skks = [];
-                    Lazy(students).each(function(xs){
+                    //判断命题教师
+                    //判断命题教师
+                    var studentArray;
+                    var rkjsKxh;
+                    var isMingTiJiaoShi = Lazy(quanXianIds.quanXianId).contains('3002');
+                    if(isMingTiJiaoShi){
+                      studentArray = [];
+                      rkjsKxh = [];
+                      $scope.isRenKeJiaoShi = true;
+                      var disStu = Lazy(students).groupBy('KEXUHAO_ID').toObject();
+                      Lazy(jiaoShiKeXunHaoData).each(function(jsKxh){
+                        var thisKxhStu = disStu[jsKxh.KEXUHAO_ID];
+                        if(thisKxhStu && thisKxhStu.length > 0){
+                          studentArray = Lazy(studentArray).union(thisKxhStu).toArray();
+                        }
+                        var findKxh = Lazy(data.KEXUHAO).find(function(kxh){
+                          return kxh.KEXUHAO_ID == jsKxh.KEXUHAO_ID;
+                        });
+                        rkjsKxh.push(findKxh);
+                      });
+                      data.KEXUHAO = rkjsKxh;
+                    }
+                    else{
+                      studentArray = angular.copy(students);
+                    }
+                    Lazy(studentArray).each(function(xs){
                       if(xs.ZUIHOU_PINGFEN && xs.ZUIHOU_PINGFEN >= 0){
                         skks.push(xs);
                       }
@@ -1110,14 +1174,17 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                       }
                     });
                     tjParaObj.pieData = data;
-                    tjAllStutents = angular.copy(students);
-                    $scope.studentData = students;
+                    //tjAllStutents = angular.copy(students);
+                    //$scope.studentData = students;
+                    tjAllStutents = angular.copy(studentArray);
+                    $scope.studentData = studentArray;
                     $scope.tjParas.allStudents = skks;
                     $scope.tjKaoShiPublicData.ksAvgScore = data.KAOSHIZU.PJF;
                     $scope.needToXgYxJgLv = true;
                     $scope.switchTongJiType('keXuHao');
                     /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
-                    tjParaObj.lineDataAll = lineDataDealFun(students);
+                    //tjParaObj.lineDataAll = lineDataDealFun(students);
+                    tjParaObj.lineDataAll = lineDataDealFun(studentArray);
                   }
                   else{
                     $scope.studentData = '';
@@ -1128,6 +1195,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 });
               }
               else{
+                kaoShiZuTongJiOriginData = '';
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -1422,22 +1490,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList1"]);
         });
 
-        ///**
-        // * 下载作答重现试卷
-        // */
-        //var loadDownloadZuoDa = function(){
-        //  var urlArray = currentPath.split('/');
-        //  if(urlArray[1] == 'downloadZuoDa' && urlArray[2] > 0 && urlArray[3] > 0){
-        //    var pObj = {
-        //      KAOSHI_ID: urlArray[2],
-        //      UID: urlArray[3]
-        //    };
-        //    var elementDash = document.getElementById('dashboard');
-        //    elementDash.parentNode.removeChild(elementDash);
-        //    $scope.zuoDaReappear(pObj);
-        //  }
-        //};
-        //loadDownloadZuoDa();
 
     }]);
 });

@@ -42,7 +42,6 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
               $rootScope.session.info.UID; //通过UID查询用户详细的url
           userInfo = $rootScope.session.userInfo;
           $http.get(yhxxxxApiUrl).success(function(data){
-            var queryLy;
             if(data.JIGOU && data.JIGOU.length >= 0){
               user.LINGYU = [];
               jueseDist = Lazy(data.JUESE).groupBy(function(js){ return js.LINGYUMINGCHENG; }).toObject();
