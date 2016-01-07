@@ -44,7 +44,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
-        //$scope.stuDengluInfo = false;
 
         /**
          * 登录程序
@@ -89,9 +88,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         urlRedirect.goTo(currentPath, profileUrl);
                       }
                       else{
-                        /**
-                         * 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
-                         */
+                         // 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
                         var permissions = data.QUANXIAN,
                           find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
                           quanxianArr = [],
@@ -124,9 +121,9 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                               };
                             $cookieStore.put('quanXianCk', quanXianCookie);
                             $cookieStore.put('tiKuCk', tiKuCookie);
-                            //根据权限判断导向
+                            //根据角色判断要显示的模块
                             Lazy(config.quanxianObj).each(function(qx, idx, lst){
-                              var navName = Lazy(qx.qxArr).intersection(quanxianArr).toArray().length;
+                              var navName = Lazy(qx.jsArr).intersection(jsArr).toArray().length;
                               var urlObj = {
                                 myUrl: '',
                                 urlName: ''

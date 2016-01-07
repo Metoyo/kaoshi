@@ -60,7 +60,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var getZhiShiDianScoreUrl = baseTjAPIUrl + 'zhishidian_defen'; //查询知识点得分
         var kwKaoShiZuZhiShiDianUrl = baseKwAPIUrl + 'get_ksz_zsd'; //考位查询试组知识点
         var tjZsdOriginData = ''; //存放知识点原始数据的
-        var quanXianIds = $cookieStore.get('quanXianCk');
+        var jueSeIds = $cookieStore.get('logged');
         var jiaoShiKeXunHaoUrl = baseRzAPIUrl + 'jiaoshi_kexuhao'; //由UID查询科学号
         var kaoShiZuTongJiOriginData = ''; //考试组统计数据原始数据
 
@@ -1047,31 +1047,22 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          */
         var jiaoShiKeXunHaoData = '';
         var getJiaoShiKeXunHao = function(){
-          var jsObj = {
-            token: token,
-            uid: caozuoyuan
-          };
-          $http({method: 'GET', url: jiaoShiKeXunHaoUrl, params: jsObj}).success(function(jsKxh){
-            if(jsKxh && jsKxh.length > 0){
-              jiaoShiKeXunHaoData = jsKxh;
-            }
-            else{
-              jiaoShiKeXunHaoData = '';
-              //jiaoShiKeXunHaoData = [
-              //  {
-              //    KEXUHAO_ID: 1071,
-              //    UID: 1180,
-              //    KEXUHAO_MINGCHENG: "171201"
-              //  },
-              //  {
-              //    KEXUHAO_ID: 1072,
-              //    UID: 1180,
-              //    KEXUHAO_MINGCHENG: "171202"
-              //  }
-              //];
-              DataService.alertInfFun('err', jsKxh.error);
-            }
-          });
+          var jsArr = jueSeIds.JUESE;
+          if(jsArr && jsArr.length == 1 && jsArr[0] == '11'){
+            var jsObj = {
+              token: token,
+              uid: caozuoyuan
+            };
+            $http({method: 'GET', url: jiaoShiKeXunHaoUrl, params: jsObj}).success(function(jsKxh){
+              if(jsKxh && jsKxh.length > 0){
+                jiaoShiKeXunHaoData = jsKxh;
+              }
+              else{
+                jiaoShiKeXunHaoData = '';
+                DataService.alertInfFun('err', jsKxh.error);
+              }
+            });
+          }
         };
         getJiaoShiKeXunHao();
 
@@ -1144,8 +1135,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     //判断命题教师
                     var studentArray;
                     var rkjsKxh;
-                    var isMingTiJiaoShi = Lazy(quanXianIds.quanXianId).contains('3002');
-                    if(isMingTiJiaoShi){
+                    var jsArr = jueSeIds.JUESE;
+                    //var isMingTiJiaoShi = Lazy(jueSeIds.JUESE).contains('11');
+                    if(jsArr && jsArr.length == 1 && jsArr[0] == '11'){
                       studentArray = [];
                       rkjsKxh = [];
                       $scope.isRenKeJiaoShi = true;

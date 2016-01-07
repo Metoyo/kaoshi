@@ -1,23 +1,23 @@
 define( "config", [], function () {
   return {
     token: '12345',
-    apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
-    apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
-    apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
-    apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
-    apiurl_tj_ori: "http://test.taianting.com:4300/",//统计的原始url
-    apiurl_bm: "http://test.taianting.com:4400/api/",//报名的url
-    apiurl_gg: "http://test.taianting.com:5500/",//公共的url
-    apiurl_sm: "http://test.taianting.com:4280/",//扫描的url
+    //apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
+    //apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
+    //apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
+    //apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
+    //apiurl_tj_ori: "http://test.taianting.com:4300/",//统计的原始url
+    //apiurl_bm: "http://test.taianting.com:4400/api/",//报名的url
+    //apiurl_gg: "http://test.taianting.com:5500/",//公共的url
+    //apiurl_sm: "http://test.taianting.com:4280/",//扫描的url
 
-    //apiurl_rz: "http://www.zhifz.com:3000/api/",//认证的url
-    //apiurl_mt: "http://www.zhifz.com:4000/api/",//命题的url
-    //apiurl_kw: "http://www.zhifz.com:4100/api/",//考务的url
-    //apiurl_tj: "http://www.zhifz.com:4300/api/",//统计的url
-    //apiurl_tj_ori: "http://www.zhifz.com:4300/",//统计的原始url
-    //apiurl_bm: "http://www.zhifz.com:4400/api/",//报名的url
-    //apiurl_gg: "http://www.zhifz.com:5500/",//公共的url
-    //apiurl_sm: "http://www.zhifz.com:4280/",//扫描的url
+    apiurl_rz: "http://www.zhifz.com:3000/api/",//认证的url
+    apiurl_mt: "http://www.zhifz.com:4000/api/",//命题的url
+    apiurl_kw: "http://www.zhifz.com:4100/api/",//考务的url
+    apiurl_tj: "http://www.zhifz.com:4300/api/",//统计的url
+    apiurl_tj_ori: "http://www.zhifz.com:4300/",//统计的原始url
+    apiurl_bm: "http://www.zhifz.com:4400/api/",//报名的url
+    apiurl_gg: "http://www.zhifz.com:5500/",//公共的url
+    apiurl_sm: "http://www.zhifz.com:4280/",//扫描的url
 
     //apiurl_rz: "/renzheng/",//认证的url
     //apiurl_mt: "/mingti/",//命题的url
@@ -116,30 +116,35 @@ define( "config", [], function () {
     quanxianObj: [ //得到角色是数组
       {
         qxArr: ['2006', '2007'],
+        jsArr: ['4'],
         targetUrl: '/dagang',
         navName : 'dagang',
         hanName: '大纲'
       },
       {
         qxArr: ['2010', '2011', '2012', '2013', '2031', '2032'],
+        jsArr: ['4', '5'],
         targetUrl: '/mingti',
         navName : 'mingti',
         hanName: '命题'
       },
       {
         qxArr: ['2017', '2020', '2021', '2022', '2023', '2030', '2033', '2034'],
+        jsArr: ['4', '6'],
         targetUrl: '/zujuan',
         navName : 'zujuan',
         hanName: '组卷'
       },
       {
         qxArr: ['3001'],
+        jsArr: ['4', '8'],
         targetUrl: '/kaowu',
         navName : 'kaowu',
         hanName: '考务'
       },
       {
         qxArr: ['4001', '4002', '3002'],
+        jsArr: ['4', '8', '11'],
         targetUrl: '/tongji',
         navName : 'tongji',
         hanName: '统计'
@@ -158,6 +163,7 @@ define( "config", [], function () {
       },
       {
         qxArr: ['3001'],
+        jsArr: ['4', '8'],
         targetUrl: '/guanli',
         navName : 'guanli',
         hanName: '管理'
