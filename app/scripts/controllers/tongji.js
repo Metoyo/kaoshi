@@ -1056,19 +1056,19 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               jiaoShiKeXunHaoData = jsKxh;
             }
             else{
-              //jiaoShiKeXunHaoData = '';
-              jiaoShiKeXunHaoData = [
-                {
-                  KEXUHAO_ID: 1071,
-                  UID: 1180,
-                  KEXUHAO_MINGCHENG: "171201"
-                },
-                {
-                  KEXUHAO_ID: 1072,
-                  UID: 1180,
-                  KEXUHAO_MINGCHENG: "171202"
-                }
-              ];
+              jiaoShiKeXunHaoData = '';
+              //jiaoShiKeXunHaoData = [
+              //  {
+              //    KEXUHAO_ID: 1071,
+              //    UID: 1180,
+              //    KEXUHAO_MINGCHENG: "171201"
+              //  },
+              //  {
+              //    KEXUHAO_ID: 1072,
+              //    UID: 1180,
+              //    KEXUHAO_MINGCHENG: "171202"
+              //  }
+              //];
               DataService.alertInfFun('err', jsKxh.error);
             }
           });
