@@ -12,7 +12,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
     .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$timeout',
       function ($rootScope, $scope, DataService, $http, $timeout) {
 
-        $rootScope.isRenZheng = false; //判读页面是不是认证
         /**
          * 声明变量
          */

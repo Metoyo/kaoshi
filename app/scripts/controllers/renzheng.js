@@ -27,7 +27,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
 
         $rootScope.session = session;
-        $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.login = login;
         $scope.stuLogin = stuLogin;
         $rootScope.isPromiseAlterOthersTimu = false;
@@ -44,6 +43,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
+        $rootScope.urlArrs = '';
 
         /**
          * 登录程序

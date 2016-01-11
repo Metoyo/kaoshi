@@ -4,10 +4,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
   angular.module('kaoshiApp.controllers.TongjiCtrl', [])
     .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location', '$cookieStore',
       function ($rootScope, $scope, $http, $timeout, DataService, $location, $cookieStore) {
-        /**
-         * 操作title
-         */
-        $rootScope.isRenZheng = false; //判读页面是不是认证
 
         /**
          * 声明变量

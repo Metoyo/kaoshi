@@ -38,7 +38,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var publicZsdArr = []; //存放公共知识点id的数组
         var zsdgZsdArr = []; //大纲管理页面，选择自建知识大纲，存放选中的知识大纲知识点id
 
-        $rootScope.isRenZheng = false; //判读页面是不是认证
         $scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
         $scope.publicZsdgList = []; //存放公共知识大纲的数组
         $scope.privateZsdgList = []; //存放自建知识大纲的数组

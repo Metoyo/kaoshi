@@ -4,10 +4,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
   angular.module('kaoshiApp.controllers.StudentCtrl', [])
     .controller('StudentCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService', '$timeout',
       function ($rootScope, $scope, $location, $http, DataService, $timeout) {
-        /**
-         * 定义变量
-         */
-        $rootScope.isRenZheng = false; //判读页面是不是认证
+
         /**
          * 声明变量
          */

@@ -11,7 +11,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) { // 00
         var session = $rootScope.session;
         var lingyu = $cookieStore.get('lingyuCk');
         var urlArr = [];
-        $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.linyuInfo = lingyu.lingyu;
 
         /**

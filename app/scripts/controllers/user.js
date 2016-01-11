@@ -5,7 +5,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$timeout',
       function ($rootScope, $scope, $http, $location, DataService, $timeout) {
 
-        $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.addedContainerClass = 'userBox';
         $scope.shenheList = [];
         $scope.showShenhe = false;

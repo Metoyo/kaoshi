@@ -26,7 +26,6 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
         var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
 
-        $rootScope.isRenZheng = true; //判读页面是不是认证
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.xuHaoRegexp = /^.{4,30}$/;//用户名的正则表达式

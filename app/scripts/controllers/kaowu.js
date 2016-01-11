@@ -5,10 +5,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
     angular.module('kaoshiApp.controllers.KaowuCtrl', []) //controller 开始
       .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$q',
         function ($rootScope, $scope, $http, $timeout, DataService, $q) { // 002 开始
-          /**
-           * 操作title
-           */
-          $rootScope.isRenZheng = false; //判读页面是不是认证
 
           /**
            * 定义变量
@@ -71,7 +67,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
-          $rootScope.dashboard_shown = true;
+          //$rootScope.dashboard_shown = true;
           $scope.showAddStuBox = false; //显示添加考生页面
           $scope.isAddStuByKxh = false; //判断添加考生类型
           $scope.isAddStuByExcel = false; //判断添加考生类型

@@ -5,10 +5,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
   angular.module('kaoshiApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $q, $timeout, DataService) {
-        /**
-         * 操作title
-         */
-        $rootScope.isRenZheng = false; //判读页面是不是认证
 
         /**
          * 声明变量
