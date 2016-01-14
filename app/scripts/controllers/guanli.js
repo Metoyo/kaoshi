@@ -329,7 +329,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                       keXuHaoObj = {
                         token: token,
                         kexuhaoid: '',
-                        users: [{uid: data[0].UID, zhuangtai:1}]
+                        users: [{uid: data[0].UID, zhuangtai: 1}]
                       };
                       if($scope.selectKxh){
                         keXuHaoObj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
@@ -855,6 +855,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             DataService.alertInfFun('pmt', '请选择考试组！');
           }
         };
+
+        //$scope.getAvalue = function(){
+        //  $http.get('/geta').success(function(data){
+        //    if(data){
+        //      console.log(data);
+        //    }
+        //    else{
+        //      console(error);
+        //    }
+        //  });
+        //};
 
     }]);
 });
