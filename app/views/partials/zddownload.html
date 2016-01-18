@@ -53,6 +53,10 @@
       width: 80%;
       border: 1px solid #ccc;
     }
+    .itemHasImg .itemHasImgWith120 img {
+      height: 120px;
+      border: 1px solid #ccc;
+    }
     .clRed {
       color: red;
     }
@@ -153,8 +157,10 @@
             <h4 class="ar-tiGan itemHasImg">
               <span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>
               (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
-              (最后得分：<b class="clRed">{{xtm.ZUIHOU_PINGFEN}}</b>  分  |
-              阅卷教师：<b>{{xtm.YUEJUANJIAOSHI}}</b>)
+              (最后得分：<b class="clRed">{{xtm.ZUIHOU_PINGFEN}}</b>  分
+              {{if xtm.TIXING_ID > 4}}
+              |  阅卷教师：<b>{{xtm.YUEJUANJIAOSHI}}</b>
+              {{/if}})
               <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
             </h4>
             <div class="ar-tzs itemHasImg">
@@ -189,8 +195,12 @@
 				<input type="radio" name="{{'pdRadio' + j}}" value="错" style="margin: 0 0 0 20px" {{xtm.KAOSHENGDAAN==0 ? 'checked' : ''}}/>  <span class="{{xtm.KAOSHENGDAAN==0 ? 'bdBottom' : ''}}">错</span>
 				</span>
               {{/if}}
+              <!-- 笔答题填空题 -->
+              {{if xtm.TIXING_ID == 19}}
+              <p class="itemHasImgWith120" style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>
+              {{/if}}
               <!-- 笔答题 -->
-              {{if xtm.TIXING_ID >= 9}}
+              {{if xtm.TIXING_ID >= 9 && xtm.TIXING_ID <= 18}}
               <p style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>
               {{/if}}
             </div>

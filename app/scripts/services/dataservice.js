@@ -130,7 +130,12 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             _len = finalDaAn.length;
             newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
               var xhStr = '';
-              xhStr = '<span class="ar-tk-da">' + finalDaAn[count] + '</span>';
+              if(tm.TIXING_ID == 6){
+                xhStr = '<span class="ar-tk-da">' + finalDaAn[count] + '</span>';
+              }
+              else{
+                xhStr = '<span class="ar-tk-da">' + '        ' + '</span>';
+              }
               count ++;
               return xhStr;
             });

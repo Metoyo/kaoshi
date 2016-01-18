@@ -288,8 +288,11 @@
                        ng-model="xtm.KAOSHENGDAAN" disabled/>  错
               </span>
               </div>
-              <!-- 题型ID大于等于9的 -->
-              <div class="ar-tzs itemHasImg" ng-if="xtm.TIXING_ID >= 9" ng-bind-html="xtm.KAOSHENGDAAN">
+              <!-- 题型ID等于19，笔答填空题 -->
+              <div class="ar-tzs itemHasImgWith120" ng-if="xtm.TIXING_ID == 19" ng-bind-html="xtm.KAOSHENGDAAN">
+              </div>
+              <!-- 题型ID大于等于9,小于等级18 -->
+              <div class="ar-tzs itemHasImg" ng-if="xtm.TIXING_ID >= 9 && xtm.TIXING_ID <= 18" ng-bind-html="xtm.KAOSHENGDAAN">
               </div>
               <h5>标准答案：<span ng-bind-html="xtm.DAAN"></span></h5>
             </li>

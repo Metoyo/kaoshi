@@ -1154,7 +1154,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                       studentArray = angular.copy(students);
                     }
                     Lazy(studentArray).each(function(xs){
-                      if(xs.ZUIHOU_PINGFEN && xs.ZUIHOU_PINGFEN >= 0){
+                      if(xs.ZUIHOU_PINGFEN !== null && xs.ZUIHOU_PINGFEN >= 0){
                         skks.push(xs);
                       }
                       else{
