@@ -1044,7 +1044,10 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         var jiaoShiKeXunHaoData = '';
         var getJiaoShiKeXunHao = function(){
           var jsArr = jueSeIds.JUESE;
-          if(jsArr && jsArr.length == 1 && jsArr[0] == '11'){
+          var contain4 = Lazy(jsArr).contains('4');
+          var contain8 = Lazy(jsArr).contains('8');
+          var contain11 =  Lazy(jsArr).contains('11');
+          if(jsArr && !(contain4 || contain8) && contain11){
             var jsObj = {
               token: token,
               uid: caozuoyuan
@@ -1128,12 +1131,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                   if(students && students.length > 0){
                     var skks = [];
                     //判断命题教师
-                    //判断命题教师
                     var studentArray;
                     var rkjsKxh;
                     var jsArr = jueSeIds.JUESE;
-                    //var isMingTiJiaoShi = Lazy(jueSeIds.JUESE).contains('11');
-                    if(jsArr && jsArr.length == 1 && jsArr[0] == '11'){
+                    var contain4 = Lazy(jsArr).contains('4');
+                    var contain8 = Lazy(jsArr).contains('8');
+                    var contain11 =  Lazy(jsArr).contains('11');
+                    if(jsArr && !(contain4 || contain8) && contain11){
                       studentArray = [];
                       rkjsKxh = [];
                       $scope.isRenKeJiaoShi = true;

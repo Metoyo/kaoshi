@@ -2286,6 +2286,24 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
         };
 
+        /**
+         * 教师管理设定
+         */
+        $scope.teacherManange = function(){
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGouTeacher.html';
+        };
+
+        /**
+         * 学校权限设置
+         */
+        $scope.schoolePowerSet = function(){
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_setSchoolPower.html';
+        };
+
     }]);
 });
 //'/create_pdf_single?token=12345&uid=8058&kaoshiid=1875&xingming=包宗源&yonghuhao=2015110867&banji=经济学&defen=83&pfdtype=zuoda'pfdtype

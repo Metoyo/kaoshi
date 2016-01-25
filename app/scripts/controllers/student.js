@@ -402,6 +402,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           tjParaObj.radarDataZsd.zsdPerAll = [];
           tjParaObj.radarDataZsd.zsdPerBk = [];
           $scope.stuParams.zsdTjShow = false;
+          tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
           var optRadarZsd = {
             tooltip : {
               trigger: 'axis'
@@ -417,7 +418,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             },
             polar : [
               {
-                indicator : tjParaObj.radarDataZsd.zsdName,
+                indicator : '',
                 radius : 80,
                 center: ['50%', '50%']
               }
@@ -436,11 +437,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 },
                 data : [
                   {
-                    value : tjParaObj.radarDataZsd.zsdPerAll,
+                    value : '',
                     name : '整体'
                   },
                   {
-                    value : tjParaObj.radarDataZsd.zsdPerBk,
+                    value : '',
                     name : '个人'
                   }
                 ]
@@ -466,7 +467,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 if(kszdata && kszdata.length > 0){
                   zsdParam.uid = caozuoyuan;
                   $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(grdata){
-                    if(kszdata && kszdata.length > 0){
+                    if(grdata && grdata.length > 0){
                       //知识点统计
                       Lazy(zsddata1).each(function(tjzsd){
                         var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
@@ -486,6 +487,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                           tjParaObj.radarDataZsd.zsdPerBk.push(zsdDeFenLvGr);
                         }
                       });
+                      var personalLen = tjParaObj.radarDataZsd.zsdPerBk.length;
+                      tjParaObj.radarDataZsd.zsdName.splice(personalLen);
+                      tjParaObj.radarDataZsd.zsdPerAll.splice(personalLen);
+                      tjParaObj.radarDataZsd.zsdPerBk.splice(personalLen);
+                      optRadarZsd.polar[0].indicator = tjParaObj.radarDataZsd.zsdName;
+                      optRadarZsd.series[0].data[0].value = tjParaObj.radarDataZsd.zsdPerAll;
+                      optRadarZsd.series[0].data[1].value = tjParaObj.radarDataZsd.zsdPerBk;
                       tjParaObj.radarBoxZsd.setOption(optRadarZsd);
                       $scope.stuParams.zsdTjShow = true;
                       $timeout(function (){
@@ -511,15 +519,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               else{
                 DataService.alertInfFun('err', '没有知识点！');
               }
-              //tjParaObj.radarDataZsd.zsdName = [{text: '数据为空', max: 100}];
-              //tjParaObj.radarDataZsd.zsdPerAll = [0];
-              //tjParaObj.radarDataZsd.zsdPerBk = [0];
-              //tjParaObj.radarBoxZsd.setOption(optRadarZsd);
-              //$timeout(function (){
-              //  window.onresize = function () {
-              //    tjParaObj.radarBoxZsd.resize();
-              //  }
-              //}, 200);
             }
           });
         };
