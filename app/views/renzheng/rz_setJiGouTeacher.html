@@ -1,13 +1,54 @@
 <h4 class="admin-title">
-    <span>学校教师管理</span>
+  <span>学校教师管理</span>
 </h4>
 <div class="dagangInput setDaGangBox">
-    <div class="row">
-        <div class="col-md-6">
-            学校
-        </div>
-        <div class="col-md-6">
-            教师
-        </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div>
+        <a href="javascript:void(0)" class="plr10" onclick="document.getElementById('A-E').scrollIntoView();">A-E</a>
+        <a href="javascript:void(0)" class="plr10" onclick="document.getElementById('F-J').scrollIntoView();">F-J</a>
+        <a href="javascript:void(0)" class="plr10" onclick="document.getElementById('K-O').scrollIntoView();">K-O</a>
+        <a href="javascript:void(0)" class="plr10" onclick="document.getElementById('P-T').scrollIntoView();">P-T</a>
+        <a href="javascript:void(0)" class="plr10" onclick="document.getElementById('U-Z').scrollIntoView();">U-Z</a>
+      </div>
+      <div class="row" style="max-height: 500px; overflow-y: auto; margin-top: 5px">
+        <ul class="list-unstyled  pull-left wp100" ng-repeat="item in schoolData" id="{{item.distName}}">
+          <li class="wp50 pull-left" ng-repeat="sh in item.distData">
+            <a href="javascript:void(0)" ng-class="{cYell: sh.classCheck}" ng-bind="sh.JIGOUMINGCHENG" ng-click="getJiGouTeacher(sh)"></a>
+          </li>
+        </ul>
+      </div>
     </div>
+    <div class="col-md-4" style="border-left: 1px dashed #cfcfcf;">
+      <div>
+        当前学校：<span class="cYell" ng-bind="selectedSchool.JIGOUMINGCHENG"></span>
+      </div>
+      <ul class="list-unstyled" style="max-height: 500px; overflow-y: auto;">
+        <li class="row ptb5" style="border-bottom: 1px dashed #cfcfcf" ng-repeat="tech in teacherData">
+          <div class="col-sm-10" ng-bind="tech.XINGMING"></div>
+          <div class="col-sm-2 cursorPointer" ng-click="deleteThisTeacher(tech)">
+            <span class="glyphicon glyphicon-remove clRed"></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--<div class="row">-->
+    <!--<div class="col-md-6" style="height: 200px; overflow-y: auto">-->
+      <!--<div class="row" ng-repeat="item in schoolData">-->
+        <!--<div class="col-md-2 cursorPointer" ng-bind="item.distName">-->
+        <!--</div>-->
+        <!--<div class="col-md-10">-->
+          <!--<ul class="list-unstyled">-->
+            <!--<li ng-repeat="sh in item.distData">-->
+              <!--<a href="javascript:void(0)" ng-bind="sh.JIGOUMINGCHENG"></a>-->
+            <!--</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-6">-->
+      <!--教师-->
+    <!--</div>-->
+  <!--</div>-->
 </div>

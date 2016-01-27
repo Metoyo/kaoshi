@@ -95,7 +95,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
         var originSelectLingYuArr = []; //存放本机构所选领域的原始数据
         var selectLingYuChangedArr = []; //存放本机构变动的领域数据
-        var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
+        var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid='; //查询本机构下教师
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
         var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
@@ -1986,7 +1986,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 本机构下教师管理
          */
         $scope.renderTeacherTpl = function(){
-          DataService.getData(qryTeacherUrl).then(function(data){
+          var getTeacherUrl = qryTeacherUrl + jigouid;
+          DataService.getData(getTeacherUrl).then(function(data){
             if(data && data.length){
               var groupByUid = Lazy(data).groupBy(function(teach){ return teach.UID; }).toObject();
               var groupByLy;
@@ -2290,9 +2291,79 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 教师管理设定
          */
         $scope.teacherManange = function(){
-          $scope.isShenHeBox = false; //判断是不是审核页面
-          $scope.loadingImgShow = false;
-          $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGouTeacher.html';
+          $scope.schoolData = '';
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            DataService.getData(qryJiGouUrl + '1').then(function(data){
+              $scope.jigou_list = data;
+              $scope.schoolData = DataService.schoolDistFun(data);
+              $scope.isShenHeBox = false; //判断是不是审核页面
+              $scope.loadingImgShow = false;
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGouTeacher.html';
+            });
+          }
+        };
+
+        /**
+         * 得到本机构下的教师数据
+         */
+        $scope.getJiGouTeacher = function(jg){
+          $scope.selectedSchool = '';
+          $scope.teacherData = '';
+          var getTeacherUrl = qryTeacherUrl + jg.JIGOU_ID;
+          $http.get(getTeacherUrl).success(function(data){
+            if(data && data.length){
+              var groupByUid = Lazy(data).groupBy(function(teach){ return teach.UID; }).toObject();
+              var groupByLy;
+              var teachData = [];
+              Lazy(groupByUid).each(function(v, k, lst){
+                var teachObj = {
+                  JIGOUMINGCHENG: k[0].JIGOUMINGCHENG,
+                  JIGOU_ID: v[0].JIGOU_ID,
+                  lingyu: [],
+                  SHOUJI: v[0].SHOUJI,
+                  UID: k,
+                  XINGMING: v[0].XINGMING,
+                  YONGHUHAO: v[0].YONGHUHAO,
+                  YONGHUMING: v[0].YONGHUMING,
+                  YOUXIANG: v[0].YOUXIANG
+                };
+                groupByLy = Lazy(v).groupBy(function(tah){ return tah.LINGYU_ID; }).toObject();
+                Lazy(groupByLy).each(function(sv, sk, slst){
+                  var lyObj = {
+                    LINGYU_ID: sk,
+                    LINGYUMINGCHENG: sv[0].LINGYUMINGCHENG,
+                    juese: Lazy(sv).map(function(th){return th.JUESEMINGCHENG;}).toArray().join(';')
+                  };
+                  teachObj.lingyu.push(lyObj);
+                });
+                teachData.push(teachObj);
+              });
+              $scope.teacherData = teachData;
+              $scope.selectedSchool = jg;
+            }
+          });
+        };
+
+        /**
+         * 删除选择的教师
+         */
+        $scope.deleteThisTeacher = function(th){
+          var userObj = {
+            token: token,
+            UID: th.UID,
+            ZHUANGTAI: -1
+          };
+          if(confirm('确定要删除' + th.XINGMING + '吗？')){
+            $http.post(alterYongHu, userObj).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '用户删除成功!');
+                $scope.getJiGouTeacher($scope.selectedSchool);
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
         };
 
         /**
