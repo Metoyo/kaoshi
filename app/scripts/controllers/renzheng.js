@@ -44,6 +44,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
         $rootScope.urlArrs = '';
+        $rootScope.lingYuArr = '';
 
         /**
          * 登录程序
@@ -167,14 +168,15 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         JIGOU: session.userInfo.JIGOU,
                         JUESE: jsArr
                       };
-                      lingyuCookie = {
-                        lingyu: data.LINGYU
-                      };
+                      //lingyuCookie = {
+                      //  lingyu: data.LINGYU
+                      //};
                       myUrlCookie = {
                         myUrl: $rootScope.urlArrs
                       };
                       $cookieStore.put('logged', userCookie);
-                      $cookieStore.put('lingyuCk', lingyuCookie);
+                      //$cookieStore.put('lingyuCk', lingyuCookie);
+                      $rootScope.lingYuArr = data.LINGYU;
                       $cookieStore.put('myUrlCk', myUrlCookie);
                     }
                     else{
@@ -215,14 +217,15 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         JUESE: jsArr,
                         xuehao: session.info.YONGHUHAO
                       };
-                      lingyuCookie = {
-                        lingyu: data.LINGYU
-                      };
+                      //lingyuCookie = {
+                      //  lingyu: data.LINGYU
+                      //};
                       myUrlCookie = {
                         myUrl: $rootScope.urlArrs
                       };
                       $cookieStore.put('logged', userCookie);
-                      $cookieStore.put('lingyuCk', lingyuCookie);
+                      //$cookieStore.put('lingyuCk', lingyuCookie);
+                      $rootScope.lingYuArr = data.LINGYU;
                       $cookieStore.put('myUrlCk', myUrlCookie);
                       urlRedirect.goTo(currentPath, '/baoming');
                     }

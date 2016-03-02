@@ -76,8 +76,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
       //退出登录
       this.logout = function(){
         delete $rootScope.session;
+        delete $rootScope.lingYuArr;
         $cookieStore.remove('logged');
-        $cookieStore.remove('lingyuCk');
+        //$cookieStore.remove('lingyuCk');
         $cookieStore.remove('lastUrl');
         $cookieStore.remove('quanXianCk');
         urlRedirect.goTo($location.$$path, '/renzheng');

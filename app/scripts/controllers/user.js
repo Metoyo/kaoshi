@@ -114,6 +114,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             xuehao: ''
           }
         };
+        var sspInfo = { //学校权限设置obj
+          jgid: '',
+          mokuai: 'chengji'
+        };
+        var jiGouConf = baseRzAPIUrl + 'jigou_conf?token=' + token + '&jigouid='; //查询机构配置
 
         $scope.adminParams = {
           selected_dg: '',
@@ -133,6 +138,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
         $scope.selectedKeMu = '';
         $scope.scanner = scannerInfo;
+        $scope.sspInfo = sspInfo;
         $scope.cnNumArr = config.cnNumArr; //题支的序号
 
         /**
@@ -149,6 +155,17 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             $scope.shenHeTpl = 'views/renzheng/rz_shenHeRen.html';
             break;
         }
+
+        /**
+         * 得到结构列表
+         */
+        var getJiGouList = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            DataService.getData(qryJiGouUrl + '1').then(function(data){
+              $scope.jigou_list = data;
+            });
+          }
+        };
 
         /**
          * 退出程序
@@ -2061,11 +2078,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          *  扫描设定
          */
         $scope.renderScannerSetTpl = function(){
-          if(!($scope.jigou_list && $scope.jigou_list.length)){
-            DataService.getData(qryJiGouUrl + '1').then(function(data){
-              $scope.jigou_list = data;
-            });
-          }
+          getJiGouList();
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.loadingImgShow = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
@@ -2076,8 +2089,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.getKeMuList = function(jgid){
           if(jgid){
-            var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
-              dataArr = [];
+            var qryLy = qryLingYuUrl + '&jigouid=' + jgid;
+            var dataArr = [];
+            var lingyuArr = [];
+            $scope.sspLingYu = '';
             $scope.kemu_list = '';
             $scope.kaoChangList = '';
             $scope.scanner.selectInfo.kmid = '';
@@ -2087,11 +2102,57 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                   dataArr.push(km);
                 });
               });
+              if($scope.sspInfo.mokuai == 'chengji'){
+                var jiGouConfUrl = jiGouConf + $scope.sspInfo.jgid;
+                $http.get(jiGouConfUrl).success(function(conf){
+                  if(!conf.error){
+                    if(conf && conf.length > 0){
+                      var jgConf = JSON.parse(conf[0].JIGOU_CONF);
+                      var jgConfCjLy = jgConf.chengji.lingyu;
+                      Lazy(jgConfCjLy).each(function(c, i, l){
+                        var findTar = Lazy(dataArr).find(function(ly){return ly.LINGYU_ID == c.val});
+                        if(findTar){
+                          c.lyName = findTar.LINGYUMINGCHENG;
+                          if(c.score){
+                            c.score = 'true';
+                          }
+                          else{
+                            c.score = 'false';
+                          }
+                          if(c.zuoda){
+                            c.zuoda = 'true';
+                          }
+                          else{
+                            c.zuoda = 'false';
+                          }
+                        }
+                      });
+                      $scope.sspLingYu = jgConfCjLy;
+                    }
+                    else{
+                      Lazy(dataArr).each(function(k, kIdx, kLst){
+                        var setObj = {
+                          val: k.LINGYU_ID,
+                          score: 'true',
+                          zuoda: 'true',
+                          lyName: k.LINGYUMINGCHENG
+                        };
+                        lingyuArr.push(setObj);
+                      });
+                      $scope.sspLingYu = lingyuArr;
+                    }
+                  }
+                  else{
+                    DataService.alertInfFun('err', conf.error);
+                  }
+                });
+              }
               $scope.kemu_list = dataArr;
             });
           }
           else{
             $scope.kemu_list = '';
+            $scope.sspLingYu = '';
             DataService.alertInfFun('pmt', '请选择机构ID');
           }
         };
@@ -2243,11 +2304,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * pdf设定
          */
         $scope.renderPdfTpl = function(){
-          if(!($scope.jigou_list && $scope.jigou_list.length)){
-            DataService.getData(qryJiGouUrl + '1').then(function(data){
-              $scope.jigou_list = data;
-            });
-          }
+          getJiGouList();
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
         };
@@ -2292,15 +2349,11 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.teacherManange = function(){
           $scope.schoolData = '';
-          if(!($scope.jigou_list && $scope.jigou_list.length)){
-            DataService.getData(qryJiGouUrl + '1').then(function(data){
-              $scope.jigou_list = data;
-              $scope.schoolData = DataService.schoolDistFun(data);
-              $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.loadingImgShow = false;
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGouTeacher.html';
-            });
-          }
+          getJiGouList();
+          $scope.schoolData = DataService.schoolDistFun($scope.jigou_list);
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGouTeacher.html';
         };
 
         /**
@@ -2370,11 +2423,60 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 学校权限设置
          */
         $scope.schoolePowerSet = function(){
+          getJiGouList();
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.loadingImgShow = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_setSchoolPower.html';
         };
 
+        /**
+         * 保存学校权限设置
+         */
+        $scope.saveSchoolSet = function(){
+          var dataObj = {
+            token: token,
+            JIGOU_ID: '',
+            JIGOU_CONF: ''
+          };
+          var pz = {
+            baoming: '',
+            chengji: {
+              lingyu: []
+            },
+            lvke: ''
+          };
+          if($scope.sspInfo.jgid){
+            dataObj.JIGOU_ID = $scope.sspInfo.jgid;
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择机构！');
+            return ;
+          }
+          if($scope.sspLingYu && $scope.sspLingYu.length > 0){
+            Lazy($scope.sspLingYu).each(function(ly){
+              var setObj = {};
+              setObj.val = parseInt(ly.val);
+              setObj.score = ly.score == 'true' ? true : false;
+              setObj.zuoda = ly.zuoda == 'true' ? true : false;
+              pz.chengji.lingyu.push(setObj);
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '配置为空！');
+            return ;
+          }
+          dataObj.JIGOU_CONF = JSON.stringify(pz);
+          var saveSspUrl = baseRzAPIUrl + 'jigou_conf';
+          $http.post(saveSspUrl, dataObj).success(function(data) {
+            if(data.result) {
+              DataService.alertInfFun('suc', '保存成功！');
+              $scope.schoolePowerSet();
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        }
+
     }]);
 });
-//'/create_pdf_single?token=12345&uid=8058&kaoshiid=1875&xingming=包宗源&yonghuhao=2015110867&banji=经济学&defen=83&pfdtype=zuoda'pfdtype

@@ -1,16 +1,63 @@
 <h4 class="admin-title">
     <span>学校权限设置</span>
 </h4>
-<div class="dagangInput setDaGangBox">
-    <div class="row">
-        <div class="col-md-6">
-            学校
-        </div>
-        <div class="col-md-6">
-            教师
-        </div>
+<div class="form-horizontal dagangInput setDaGangBox">
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      机构选择
+    </label>
+    <div class="col-md-10">
+      <select class="form-control" ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list"
+        ng-model="sspInfo.jgid" ng-change="getKeMuList(sspInfo.jgid)">
+        <option value="">请选择</option>
+      </select>
     </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      模块选择
+    </label>
+    <div class="col-md-10">
+      <label class="radio-inline">
+        <input type="radio" ng-model="sspInfo.mokuai" value="baoming"> 报名
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="sspInfo.mokuai" value="chengji"> 成绩
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="sspInfo.mokuai" value="lvke"> 录课
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <table class="table table-bordered" ng-if="sspInfo.mokuai=='chengji'">
+      <tr>
+        <th>领域</th>
+        <th>考试成绩</th>
+        <th>作答重现</th>
+      </tr>
+      <tr ng-repeat="ly in sspLingYu">
+        <td ng-bind="ly.lyName"></td>
+        <td>
+          <label class="radio-inline">
+            <input type="radio" ng-model="ly.score" value="true"> true
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="ly.score" value="false"> false
+          </label>
+        </td>
+        <td>
+          <label class="radio-inline">
+            <input type="radio" ng-model="ly.zuoda" value="true"> true
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="ly.zuoda" value="false"> false
+          </label>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 <div class="save-box">
-    <button class="btn btn-primary">保存</button>
+    <button class="btn btn-primary" ng-click="saveSchoolSet()">保存</button>
 </div>
