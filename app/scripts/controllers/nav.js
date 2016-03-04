@@ -106,24 +106,34 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
          * 有父领域查询子领域领域（即科目）
          */
         $scope.getKemuList = function(lyId){
+          var clyUrl = '';
           if(lyId){
-            $http.get(apiLyKm + lyId).success(function(data) {
-              if(data.length){
-                var newData;
-                Lazy($scope.usr.LINGYU).each(function(hasLy, idx, lst){
-                  newData = Lazy(data).reject(function(ly){ return ly.LINGYU_ID  == hasLy.LINGYU_ID; }).toArray();
-                });
-                $scope.kemu_list = newData;
-                deleteAllSelectedKmAndJs();
-              }
-              else{
-                $scope.kemu_list = '';
-                DataService.alertInfFun('err', '没有对应的科目！');
-              }
-            });
+            clyUrl = apiLyKm + lyId;
+            if($scope.navData.jiGouId){
+              clyUrl += '&jigouid=' + $scope.navData.jiGouId;
+              $http.get(clyUrl).success(function(data) {
+                if(data.length){
+                  var newData;
+                  Lazy($scope.usr.LINGYU).each(function(hasLy, idx, lst){
+                    newData = Lazy(data).reject(function(ly){ return ly.LINGYU_ID  == hasLy.LINGYU_ID; }).toArray();
+                  });
+                  $scope.kemu_list = newData;
+                  deleteAllSelectedKmAndJs();
+                }
+                else{
+                  $scope.kemu_list = '';
+                  DataService.alertInfFun('err', '没有对应的科目！');
+                }
+              });
+            }
+            else{
+              $scope.kemu_list = '';
+              DataService.alertInfFun('pmt', '机构ID为空！');
+            }
           }
           else{
             $scope.kemu_list = '';
+            DataService.alertInfFun('pmt', '请选择领域！');
           }
         };
 
