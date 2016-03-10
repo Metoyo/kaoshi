@@ -1048,27 +1048,29 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             lyLength = $scope.jgSelectLingYu.length,
             count = 0;
           var chaXunTiKu = function(lyData){
-            queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
-            $http.get(queryTiKuUrl).success(function(data){
-              if(count < lyLength){
-                if(data.length){
-                  chaXunTiKu($scope.jgSelectLingYu[count]);
+            if(lyData.LINGYU_ID){
+              queryTiKuUrl = queryTiKuBaseUrl + lyData.LINGYU_ID;
+              $http.get(queryTiKuUrl).success(function(data){
+                if(count < lyLength){
+                  count ++;
+                  if(data && data.length > 0){
+                    chaXunTiKu($scope.jgSelectLingYu[count]);
+                  }
+                  else{
+                    tiKuObj.lingyuid = lyData.LINGYU_ID;
+                    tiKuObj.shuju.TIKUMINGCHENG = lyData.LINGYUMINGCHENG;
+                    $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
+                      if(tiku.error){
+                        DataService.alertInfFun('err', tiku.error);
+                      }
+                      else{
+                        chaXunTiKu($scope.jgSelectLingYu[count]);
+                      }
+                    });
+                  }
                 }
-                else{
-                  tiKuObj.lingyuid = lyData.LINGYU_ID;
-                  tiKuObj.shuju.TIKUMINGCHENG = lyData.LINGYUMINGCHENG;
-                  $http.post(xiuGaiTiKuUrl, tiKuObj).success(function(tiku){
-                    if(tiku.error){
-                      DataService.alertInfFun('err', tiku.error);
-                    }
-                    else{
-                      chaXunTiKu($scope.jgSelectLingYu[count]);
-                    }
-                  });
-                }
-              }
-              count ++;
-            });
+              });
+            }
           };
           if($scope.jgSelectLingYu && $scope.jgSelectLingYu.length > 0){
             chaXunTiKu($scope.jgSelectLingYu[0]);
@@ -1126,7 +1128,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 保存已选的领域
          */
         $scope.saveChooseLingYu = function(){
-          $scope.loadingImgShow = true; //rz_selectLingYu.html
           lingYuData.shuju = [];
           Lazy(selectLingYuChangedArr).each(function(sly){
             var slyObj = {};
@@ -1142,6 +1143,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             lingYuData.shuju.push(slyObj);
           });
           if(lingYuData.shuju && lingYuData.shuju.length > 0){
+            $scope.loadingImgShow = true; //rz_selectLingYu.html
             $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
               if(data.result){
                 saveTiKuFun();
@@ -1164,15 +1166,16 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                   }
                 });
                 DataService.alertInfFun('suc', '保存成功！');
-                $scope.loadingImgShow = false; //rz_selectLingYu.html
               }
               else{
-                $scope.loadingImgShow = false; //rz_selectLingYu.html
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false; //rz_selectLingYu.html
             });
           }
-
+          else{
+            saveTiKuFun();
+          }
         };
 
         /**
