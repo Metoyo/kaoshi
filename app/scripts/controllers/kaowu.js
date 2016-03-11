@@ -156,7 +156,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             //先查询所有考试的Id
             switch (zt) {
               case 'all':
-                ztArr = [];
+                ztArr = [-3, 0, 1, 2, 3, 4, 5, 6];
                 break;
               case 'ing':
                 ztArr = [0, 1, 2, 3, 4];
@@ -297,6 +297,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 SHICHANG: '', //考试时长，临时数据，赋值给每个场次
                 XUZHI: '', //考试须知
                 ZHUANGTAI: 0, //等待发布，用于发布考试
+                KAOSHIZU_CONF: {
+                  tiankongtiyuejuan: 0
+                },
                 CHANGCI: [
                   //{
                   //  KAOSHI_ID: '',
@@ -978,6 +981,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             $scope.kwParams.forbidBtn = true;
             $scope.loadingImgShow = true;
+            console.log($scope.kaoshiData);
             $scope.kaoshiData.shuju = JSON.stringify($scope.kaoshiData.shuju);
             submitFORMPost(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
             //$http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){

@@ -32,13 +32,21 @@
     </div>
     <div class="form-group">
       <label class="col-sm-2 control-label">在线报名<i>*</i></label>
-      <div class="col-sm-6">
+      <div class="col-sm-3">
         <label class="radio-inline">
           <input type="radio" value="2" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>是
         </label>
         <label class="radio-inline">
           <input type="radio" value="1" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>否
         </label>
+      </div>
+      <div class="col-sm-3">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="kaoshiData.shuju.KAOSHIZU_CONF.tiankongtiyuejuan"
+                   ng-true-value="1" ng-false-value="0"> 填空题人工阅卷
+          </label>
+        </div>
       </div>
     </div>
     <!--在线报名-->
