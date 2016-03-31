@@ -1586,6 +1586,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             isInAmpKmTxWeb = Lazy($scope.ampKmtxWeb).find(function(zjRule, idx, lst){
               if(zjRule.TIXING_ID == mbdt.MUBANDATI_ID){
                 idxNum = idx;
+                zjRule.dtTotalScore = parseInt(mbdt.datiScore);
                 return zjRule;
               }
             });
@@ -1625,7 +1626,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
           }
           else{
-            xiaotiAverageScore = biLvVal.toFixed(0); //每小题的分数
+            xiaotiAverageScore = parseInt(biLvVal.toFixed(0)); //每小题的分数
             //给规则赋分数
             if(isInAmpKmTxWeb){
               Lazy($scope.ampKmtxWeb[idxNum].zsdXuanTiArr).each(function(zjr, idx, lst){
@@ -1734,26 +1735,25 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 保存编辑试卷信息
          */
-        $scope.saveEditPaper = function(){
+        $scope.saveEditPaper = function(para){
           $scope.zuJuanParam.sjzj_zongfen = 0;
           Lazy(mubanData.shuju.MUBANDATI).each(function(mbdt, indx, lst){
             $scope.zuJuanParam.sjzj_zongfen += parseInt(mbdt.datiScore);
-            var xiaoTiNumIsNull = false;
-            Lazy(mbdt.TIMUARR).each(function(xt){
-              if(!(xt.xiaotiScore && xt.xiaotiScore > 0)){
-                xiaoTiNumIsNull = true;
+            if(para && para == 'savePaper'){
+              var xiaoTiNumIsNull = false;
+              Lazy(mbdt.TIMUARR).each(function(xt){
+                if(!(xt.xiaotiScore && xt.xiaotiScore > 0)){
+                  xiaoTiNumIsNull = true;
+                }
+              });
+              if(xiaoTiNumIsNull){
+                //均分大题分数
+                divideDatiScore(mbdt);
               }
-            });
-            if(xiaoTiNumIsNull){
-              //均分大题分数
+            }
+            else{
               divideDatiScore(mbdt);
             }
-            //二级控制面板上的分数统计
-            //Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
-            //  if(kmtx.TIXING_ID == mbdt.MUBANDATI_ID){
-            //   kmtx.datiScore = mbdt.datiScore;
-            //  }
-            //});
           });
           //试卷编辑层隐藏
           $scope.shijuan_edit = false;
@@ -1786,7 +1786,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           shijuanData.shuju.SHIJUAN_TIMU = [];
           $scope.paperScore = 0;
           //试卷设置分数后，再做修改后，
-          $scope.saveEditPaper();
+          $scope.saveEditPaper('savePaper');
           Lazy(mubanData.shuju.MUBANDATI).each(function(dati, idx, lst){
             $scope.paperScore += parseInt(dati.datiScore); //将试卷分数转换为整形
             var nanDuObj = { //定义一个存放难度object对象

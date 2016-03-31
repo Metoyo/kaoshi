@@ -479,12 +479,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                   var newKaoShengArr = [];
                   Lazy(data).each(function(ks){
                     var nksObj = {
-                      UID: ks.UID || ''
-                      //XINGMING: ks.XINGMING || '',
-                      //YONGHUHAO: ks.YONGHUHAO || '',
+                      UID: ks.UID || '',
+                      XINGMING: ks.XINGMING || '',
+                      YONGHUHAO: ks.YONGHUHAO || '',
                       //KEXUHAO_ID: ks.KEXUHAO_ID || '',
-                      //KEXUHAO_MINGCHENG: ks.KEXUHAO_MINGCHENG || '',
-                      //BANJI: ks.BANJI || ''
+                      KEXUHAO_MINGCHENG: ks.KEXUHAO_MINGCHENG || '',
+                      BANJI: ks.BANJI || ''
                     };
                     newKaoShengArr.push(nksObj);
                   });
@@ -860,6 +860,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(t){
                 return t.UID == stu.UID;
               }).toArray();
+              if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 1){
+                $scope.selectChangCi.KAOSHENG = $scope.studentsOrgData;
+              }
             }
           };
 

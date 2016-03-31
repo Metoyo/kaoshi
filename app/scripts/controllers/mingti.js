@@ -717,10 +717,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
                 tx.ntxClass = 'jieda';
                 newShiTiTiXingArr.push(tx);
                 break;
-              case '19':
-                tx.ntxClass = 'bidatiankong';
-                newShiTiTiXingArr.push(tx);
-                break;
+              //case '19':
+              //  tx.ntxClass = 'bidatiankong';
+              //  newShiTiTiXingArr.push(tx);
+              //  break;
             }
           });
           testListStepZst = selectZsd; //保存选题阶段的知识点
@@ -1697,9 +1697,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
             case '17':
               $scope.addJieDa('views/mingti/jieda.html');
               break;
-            case '19':
-              $scope.addTianKongBiDa('views/mingti/tiankong.html');
-              break;
+            //case '19':
+            //  $scope.addTianKongBiDa('views/mingti/tiankong.html');
+            //  break;
           }
         };
 
