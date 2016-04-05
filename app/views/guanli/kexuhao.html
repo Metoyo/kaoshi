@@ -119,6 +119,9 @@
       </ul>
     </div>
   </div>
+  <div ng-show="notSure">
+    {{notSure}}
+  </div>
 </div>
 <!--弹出层-->
 <div class="popup-wrap" ng-if="showKeXuHaoManage == true">
@@ -209,6 +212,14 @@
           </div>
           <div class="col-md-8">
             <input type="text" class="form-control" placeholder="班级" ng-model="guanliParams.singleStuBanJi"/>
+          </div>
+        </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
+            <span class="mt5 dpb">序号</span>
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="序号" ng-model="guanliParams.singleStuXuHao"/>
           </div>
         </div>
       </div>

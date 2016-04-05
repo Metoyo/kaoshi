@@ -55,6 +55,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           singleStuName: '', //学生姓名
           singleStuID: '', //学生学号
           singleStuBanJi: '', //学生班级
+          singleStuXuHao: '', //学生序号
           errorInfo: '',
           selectKsz: '' //选中的考试组
         };
@@ -222,6 +223,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var saveType = $scope.glEditBoxShow;
           var keXuHaoObj;
           var uidArr = [];
+          $scope.notSure = '';
           $scope.guanliParams.errorInfo = '';
           if(saveType == 'addKeXuHao'){ //新增课序号
             if($scope.guanliParams.addNewKxh){
@@ -342,6 +344,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                             $scope.guanliParams.singleStuName = '';
                             $scope.guanliParams.singleStuID = '';
                             $scope.guanliParams.singleStuBanJi = '';
+                            $scope.guanliParams.singleStuXuHao = '';
                             $scope.chaXunKxhYongHu($scope.selectKxh);
                           }
                           else{
@@ -360,6 +363,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                         YONGHUHAO: $scope.guanliParams.singleStuID,
                         XINGMING: $scope.guanliParams.singleStuName,
                         BANJI: $scope.guanliParams.singleStuBanJi,
+                        XUHAO: $scope.guanliParams.singleStuXuHao,
                         ZHUANGTAI: 1,
                         JIGOU: [{JIGOU_ID: jigouid, ZHUANGTAI: 1}],
                         KEXUHAO_ID: $scope.selectKxh.KEXUHAO_ID
@@ -372,6 +376,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                           $scope.guanliParams.singleStuName = '';
                           $scope.guanliParams.singleStuID = '';
                           $scope.guanliParams.singleStuBanJi = '';
+                          $scope.guanliParams.singleStuXuHao = '';
                           $scope.chaXunKxhYongHu($scope.selectKxh);
                           DataService.alertInfFun('suc', '添加用户成功!');
                         }
@@ -419,6 +424,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               $http.post(modifyKxhYh, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
                 .success(function(data){
                   if(data.result){
+                    if(data.notsure){
+                      $scope.notSure = data.notsure;
+                      console.log(data.notsure);
+                    }
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
                     $scope.chaXunKxhYongHu($scope.selectKxh);
@@ -571,6 +580,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          */
         $scope.chaXunKxhYongHu = function(kxh){
           $scope.studentsData = '';
+          $scope.notSure = '';
           if(kxh){
             $scope.selectKxh = kxh;
             var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxh.KEXUHAO_ID;
