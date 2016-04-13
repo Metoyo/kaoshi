@@ -345,7 +345,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                             $scope.guanliParams.singleStuID = '';
                             $scope.guanliParams.singleStuBanJi = '';
                             $scope.guanliParams.singleStuXuHao = '';
-                            $scope.chaXunKxhYongHu($scope.selectKxh);
+                            $scope.chaXunKxhYongHu($scope.selectKxh, 'kxhg');
                           }
                           else{
                             DataService.alertInfFun('err', addKxh.error);
@@ -377,7 +377,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                           $scope.guanliParams.singleStuID = '';
                           $scope.guanliParams.singleStuBanJi = '';
                           $scope.guanliParams.singleStuXuHao = '';
-                          $scope.chaXunKxhYongHu($scope.selectKxh);
+                          $scope.chaXunKxhYongHu($scope.selectKxh, 'kxhg');
                           DataService.alertInfFun('suc', '添加用户成功!');
                         }
                         else{
@@ -430,7 +430,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     }
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
-                    $scope.chaXunKxhYongHu($scope.selectKxh);
+                    $scope.chaXunKxhYongHu($scope.selectKxh, 'kxhg');
                   }
                   else{
                     DataService.alertInfFun('err', data.error);
@@ -578,10 +578,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         /**
          * 查询课序号学生
          */
-        $scope.chaXunKxhYongHu = function(kxh){
+        $scope.chaXunKxhYongHu = function(kxh, come){
           $scope.studentsData = '';
-          $scope.notSure = '';
           if(kxh){
+            if(come != 'kxhg'){
+              $scope.notSure = '';
+            }
             $scope.selectKxh = kxh;
             var chaXunYongHu = chaXunStuBaseUrl + '?token=' + token + '&kexuhaoid=' + kxh.KEXUHAO_ID;
             $http.get(chaXunYongHu).success(function(data){

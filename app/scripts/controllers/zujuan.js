@@ -947,7 +947,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(selectZsd.length){
             if(ruleMakePaperSelectTxid){
               if(txNum){
-                if(coefftRule){
+                if(coefftRule >= 0){
                   targetTx.TIXING[0].TIXING_ID = ruleMakePaperSelectTxid;
                   targetTx.TIXING[0].COUNT = txNum;
                   targetTx.NANDU = coefftRule;

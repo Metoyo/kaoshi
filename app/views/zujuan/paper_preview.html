@@ -87,7 +87,7 @@
                      （<a href="javascript:void(0)">点击设置本小题分数</a>）
                   </span>
                   <span ng-show="tmd.xiaotiScore">
-                      {{'（本小题' + (tmd.xiaotiScore >= 0 ? tmd.xiaotiScore : 'X') + '分）'}}
+                      {{'（本小题' + (tmd.xiaotiScore >= 0 ? tmd.xiaotiScore : 'X') + '分）'}} ({{tmd.TIMU_ID}})
                   </span>
                 </div>
                 <div class="popup-wrap" ng-hide="sj_item_score">
@@ -110,6 +110,7 @@
               <div class="item-tizhi-wrap">
                 <p class="item-tizhi" ng-repeat="tz in tmd.TIGAN.tiZhiNeiRong track by $index" ng-bind-html="'(' + letterArr[$index] + ') ' + tz">
                 </p>
+                <div ng-bind-html="tmd.DAAN"></div>
               </div>
             </div>
             <div class="write-answer-region" ng-show="tmd.TIMULEIXING_ID == 9">

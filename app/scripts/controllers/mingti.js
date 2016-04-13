@@ -127,6 +127,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'],
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 9, txName: '计算题'},
+          {txId: 15, txName: '证明题'},
           {txId: 17, txName: '解答题'}
         ];
 
