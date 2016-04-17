@@ -49,10 +49,10 @@
           <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="keXuHao"
                  ng-change="switchTongJiType(tjParas.tongJiType)"> 按课序号统计
         </label>
-        <label class="radio-inline" ng-hide="isRenKeJiaoShi">
-          <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"
-                 ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计
-        </label>
+        <!--<label class="radio-inline" ng-hide="isRenKeJiaoShi">-->
+          <!--<input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"-->
+                 <!--ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计-->
+        <!--</label>-->
       </h4>
       <div class="selectBanJi">
         <div class="banJiList">
@@ -256,6 +256,7 @@
                 (本小题  <b ng-bind="xtm.XIAOTI_FENZHI"></b>  分)
                 (最后得分：<b class="clRed" ng-bind="xtm.ZUIHOU_PINGFEN"></b>  分)
                 <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
+                (本题得分率：<b class="clRed" ng-bind="xtm.DEFENLV + '%'"></b>)
               </h4>
               <!-- 单选题 -->
               <div class="ar-tzs" ng-if="xtm.TIXING_ID == 1">

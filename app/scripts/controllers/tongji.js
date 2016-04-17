@@ -97,9 +97,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
         };
 
         /**
-         * 显示考试统计列表
+         * 查询考试组
          */
-        $scope.showKaoShiTjList = function(){
+        var qryKaoShiZu = function(){
           var kaoShiState = [0, 1, 2, 3, 4, 5, 6];
           //var kaoShiState = [3, 4, 5, 6];
           if(!($scope.tjKaoShiList && $scope.tjKaoShiList.length > 0)){
@@ -122,6 +122,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
             });
           }
+        };
+
+        /**
+         * 显示考试统计列表
+         */
+        $scope.showKaoShiTjList = function(){
+          qryKaoShiZu();
           $scope.tj_tabActive = 'kaoshiTj';
           $scope.isTjDetailShow = false;
           $scope.studentData = '';
@@ -169,7 +176,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          * 显示考生首页
          */
         $scope.showKaoShengTjList = function(){
+          qryKaoShiZu();
           $scope.tj_tabActive = 'kaoshengTj';
+          $scope.isTjDetailShow = false;
           $scope.studentData = '';
           $scope.tjKaoShiData = '';
           $scope.tjSubTpl = 'views/tongji/tj_student.html';
@@ -179,6 +188,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          * 初始化运行的程序
          */
         $scope.showKaoShiTjList();
+        //$scope.showKaoShengTjList();
 
         /**
          * 试卷统计详情
@@ -460,6 +470,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                   if(findVal){
                     tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
                   }
+                  tm.DEFENLV = parseInt((tm.DEFENLV * 100).toFixed(1));
                   if(typeof(tm.TIGAN) == 'string'){
                     tm.TIGAN = JSON.parse(tm.TIGAN);
                   }
@@ -505,10 +516,23 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var tj = tjParaObj.pieData; //统计数据
           var sg = $scope.singleBjOrKhxData || ''; //单个班级或者课序号
           var radarBj = [0, 0, 0, 0];
-          var pjrs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.SKRS}).toArray().reverse()[0].SKRS;
-          var pjfs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.PJF}).toArray().reverse()[0].PJF;
+          //var pjrs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.SKRS}).toArray().reverse()[0].SKRS;
+          //var pjfs = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.PJF}).toArray().reverse()[0].PJF;
+          var pjrsTmp = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.SKRS}).toArray().reverse()[0];
+          var pjfsTpm = Lazy(tj.KEXUHAO).sortBy(function(kxh){return kxh.PJF}).toArray().reverse()[0];
+          var pjrs = pjrsTmp ? pjrsTmp.SKRS : parseInt($scope.tjKaoShiPublicData.ksRenShu);
+          var pjfs = pjfsTpm ? pjfsTpm.PJF : parseInt($scope.tjKaoShiPublicData.ksAvgScore.toFixed(0));
+
           var pjfsMax = Math.ceil(pjfs);
-          var radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/kaoShiZuTongJiOriginData.KEXUHAO.length, tj.KAOSHIZU.PJF];
+          //var radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/kaoShiZuTongJiOriginData.KEXUHAO.length, tj.KAOSHIZU.PJF];
+          var radarAll = [];
+          if(kaoShiZuTongJiOriginData.KEXUHAO){
+            radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, tj.KAOSHIZU.SKRS/kaoShiZuTongJiOriginData.KEXUHAO.length, tj.KAOSHIZU.PJF];
+          }
+          else{
+            radarAll = [tj.KAOSHIZU.JGLV, tj.KAOSHIZU.YXLV, 0, tj.KAOSHIZU.PJF];
+          }
+
           var dataStyle = {
             normal: {
               label: {
@@ -886,7 +910,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           }
           //柱状图数据 tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-');
           if(tj.KEXUHAO){
-            $scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
+            //$scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
+            if(tj.KEXUHAO[0]){
+              $scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
+            }
+            else{
+              $scope.tjKaoShiPublicData.kxh = '空'
+            }
+
             tjBarData = Lazy(tj.KEXUHAO).sortBy(function(kxh){return -kxh.PJF;}).toArray();
             Lazy(tjBarData).each(function(kxh, idx, lst){
               if(kxh.KEXUHAO_MINGCHENG != '空'){
@@ -1080,6 +1111,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           $scope.isRenKeJiaoShi = false;
           $scope.singleBjOrKhxData = '';
           $scope.selectKsz = ks;
+          $scope.loadingImgShow = true;
           var isArr = isArray(ks); //判读传入的参数是否为数组
           var tjKaoShiZuIds = [];
           var needParam = {
@@ -1129,6 +1161,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 var queryKsBj = queryKaoShengByBanji + needParam.kaoshizuid;
                 $http.get(queryKsBj).success(function(students){
                   if(students && students.length > 0){
+                    //新增代码，有学生统计出课序号
+                    var keXuHao = [];
+                    var stuTmp1 = Lazy(students).groupBy('KEXUHAO_ID').toObject();
+                    Lazy(stuTmp1).each(function(v, k, l){
+                      var tmpObj = {KEXUHAO_ID: k, KEXUHAO_MINGCHENG: v[0].KEXUHAO_MINGCHENG};
+                      keXuHao.push(tmpObj);
+                    });
+                    data.KEXUHAO = keXuHao;
                     var skks = [];
                     //判断命题教师
                     var studentArray;
@@ -1177,17 +1217,20 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     /* 按分数分组统计数据，用在按分数和人数统计的折线图 */
                     //tjParaObj.lineDataAll = lineDataDealFun(students);
                     tjParaObj.lineDataAll = lineDataDealFun(studentArray);
+                    $scope.loadingImgShow = false;
                   }
                   else{
                     $scope.studentData = '';
                     $scope.tjParas.allStudents = '';
                     $scope.needToXgYxJgLv = false;
+                    $scope.loadingImgShow = false;
                     DataService.alertInfFun('err', students.error);
                   }
                 });
               }
               else{
                 kaoShiZuTongJiOriginData = '';
+                $scope.loadingImgShow = false;
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -1444,14 +1487,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
          */
         $scope.qryKaoSheng = function(id){
           if(id){
-            var qryKaoShengUrl = queryKaoShengBase + '&kaoshiid=' + id;
+            //var qryKaoShengUrl = queryKaoShengBase + '&kaoshiid=' + id;
+            var qryKaoShengUrl = queryKaoShengByBanji + id;
             $scope.tjParas.zdcxKaoShiId = id;
             DataService.getData(qryKaoShengUrl).then(function(data) {
               if(data && data.length > 0) {
                 $scope.studentData = data;
                 $scope.tjKaoShiData = '';
                 $scope.showKaoShengList = true;
-                qryItemDeFenLv(id);
                 $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
               }
             });

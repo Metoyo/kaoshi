@@ -72,7 +72,7 @@ require.config({
   packages: [
 
   ],
-  waitSeconds: 15
+  waitSeconds: 60
 });
 //http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
 window.name = 'NG_DEFER_BOOTSTRAP!';

@@ -26,7 +26,7 @@
           </td>
           <td>
             <a href="javascript:void(0)" ng-if="tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"
-               ng-click="zuoDaReappear(ksd.KAOSHENG_UID, tjParas.zdcxKaoShiId)"></a>
+               ng-click="zuoDaReappear(ksd)"></a>
             <span ng-if="!tjParas.zdcxKaoShiId" ng-bind="ksd.XINGMING"></span>
           </td>
           <td ng-bind="ksd.BANJI">
@@ -61,7 +61,8 @@
               <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
               (本小题  <b ng-bind="xtm.XIAOTI_FENZHI"></b>  分)
               (最后得分：<b class="clRed" ng-bind="xtm.ZUIHOU_PINGFEN"></b>  分)
-              (本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)
+              <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
+              (本题得分率：<b class="clRed" ng-bind="xtm.DEFENLV + '%'"></b>)
             </h4>
             <!-- 单选题 -->
             <div class="ar-tzs" ng-if="xtm.TIXING_ID == 1">

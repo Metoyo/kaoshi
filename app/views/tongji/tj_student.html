@@ -40,10 +40,15 @@
         </tr>
         <tr ng-repeat="ks in tjKaoShiList">
           <td>
-            <a href="javascript:void(0)" ng-click="qryKaoSheng(ks.KAOSHI_ID)" ng-bind="ks.KAOSHI_MINGCHENG"></a>
+            <a href="javascript:void(0)" ng-bind="ks.KAOSHIZU_NAME" ng-click="qryKaoSheng(ks.KAOSHIZU_ID)"></a>
           </td>
-          <td class="text-center" ng-bind="ks.KSRS"></td>
-          <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>
+          <td class="text-center" ng-bind="ks.ZONGRENSHU"></td>
+          <td class="text-center" ng-bind="ks.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'"></td>
+          <!--<td>-->
+            <!--<a href="javascript:void(0)" ng-click="qryKaoSheng(ks.KAOSHI_ID)" ng-bind="ks.KAOSHI_MINGCHENG"></a>-->
+          <!--</td>-->
+          <!--<td class="text-center" ng-bind="ks.KSRS"></td>-->
+          <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>-->
         </tr>
       </table>
       <div class="paging text-right">

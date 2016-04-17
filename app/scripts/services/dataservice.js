@@ -126,7 +126,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               tkKsDa = JSON.parse(tkKsDa);
             }
             for(var key in tkKsDa){
-              finalDaAn.push(tkKsDa[key]);
+              var daObj = JSON.parse(tkKsDa[key]);
+              finalDaAn.push(daObj['用户答案']);
             }
             _len = finalDaAn.length;
             newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
@@ -197,7 +198,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               jstKsDa = JSON.parse(jstKsDa);
             }
             for(var key in jstKsDa){
-              jstKsFinalDaAn.push('<img src="' + jstKsDa[key] + '"/>');
+              var bdDaObj = JSON.parse(jstKsDa[key]);
+              jstKsFinalDaAn.push('<img src="' + bdDaObj['用户答案'] + '"/>');
             }
             tm.KAOSHENGDAAN = jstKsFinalDaAn.join(' ');
           }
