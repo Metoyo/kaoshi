@@ -84,20 +84,30 @@
   </div>
   <div class="row">
     <div class="tj-ks-box wp48">
-      <h4 class="title">课序号平均分分布<span>（课序号：{{tjKaoShiPublicData.kxh}}-）</span></h4>
+      <h4 class="title">课序号平均分分布<span><!--（课序号：{{tjKaoShiPublicData.kxh}}-）--></span></h4>
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>
       </div>
     </div>
+    <!--<div class="tj-ks-box wp48 ml15">-->
+      <!--<h4 class="title">考生成绩分布</h4>-->
+      <!--<div class="chart1 pull-left">-->
+        <!--<div id="chartPieAll" style="height:100%;width: 100%">-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="chart1 pull-right">-->
+        <!--<div id="chartPieBj" style="height:100%;width: 100%">-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="tj-ks-box wp48 ml15">
-      <h4 class="title">考生成绩分布</h4>
-      <div class="chart1 pull-left">
-        <div id="chartPieAll" style="height:100%;width: 100%">
-        </div>
-      </div>
-      <div class="chart1 pull-right">
-        <div id="chartPieBj" style="height:100%;width: 100%">
+      <h4 class="title">
+        <span>知识点统计</span>
+        <!--<button type="button" class="btn btn-primary pull-right mt5 mr5" ng-click="tjGetZsdData()">查询知识点统计数据</button>-->
+      </h4>
+      <div class="chart">
+        <div id="chartRadarZsd" style="height:100%;width: 100%">
         </div>
       </div>
     </div>
@@ -147,16 +157,16 @@
     </div>
   </div>
   <div class="row">
-    <div class="tj-ks-box wp48">
-      <h4 class="title">
-        <span>知识点统计</span>
-        <!--<button type="button" class="btn btn-primary pull-right mt5 mr5" ng-click="tjGetZsdData()">查询知识点统计数据</button>-->
-      </h4>
-      <div class="chart">
-        <div id="chartRadarZsd" style="height:100%;width: 100%">
-        </div>
-      </div>
-    </div>
+    <!--<div class="tj-ks-box wp48">-->
+      <!--<h4 class="title">-->
+        <!--<span>知识点统计</span>-->
+        <!--&lt;!&ndash;<button type="button" class="btn btn-primary pull-right mt5 mr5" ng-click="tjGetZsdData()">查询知识点统计数据</button>&ndash;&gt;-->
+      <!--</h4>-->
+      <!--<div class="chart">-->
+        <!--<div id="chartRadarZsd" style="height:100%;width: 100%">-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </div>
 <!--考试选择-->

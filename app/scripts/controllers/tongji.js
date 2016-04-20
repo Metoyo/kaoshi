@@ -401,6 +401,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             ksObj['班级'] = ks.BANJI;
             ksObj['课序号'] = ks.KEXUHAO;
             ksObj['成绩'] = ks.ZUIHOU_PINGFEN;
+            ksObj['课序号'] = ks.KEXUHAO_MINGCHENG;
+            ksObj['考试ID'] = parseInt(ks.KAOSHI_ID);
             ksArr.push(ksObj);
           });
           ksData[sheetName] = ksArr;
@@ -558,156 +560,156 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               color: 'rgba(0,0,0,0)'
             }
           };
-          var optPieAll = { // 环形图
-            title: {
-              text: '全部考生',
-              subtext: '',
-              sublink: '',
-              x: 'center',
-              y: 'center',
-              itemGap: 20,
-              textStyle : {
-                color : 'rgba(30,144,255,0.8)',
-                fontFamily : '微软雅黑',
-                fontSize : 24,
-                fontWeight : 'bolder'
-              }
-            },
-            tooltip : {
-              show: false,
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-              orient : 'vertical',
-              //x : document.getElementById('chartPie').offsetWidth / 2,
-              x : '52%',
-              y : 30,
-              itemGap:12,
-              data:['及格率:' + tj.KAOSHIZU.JGLV + '%', '优秀率:' + tj.KAOSHIZU.YXLV + '%']
-            },
-            toolbox: {
-              show : false,
-              feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                restore : {show: true},
-                saveAsImage : {show: true}
-              }
-            },
-            series : [
-              {
-                name:'1',
-                type:'pie',
-                clockWise:false,
-                radius : [100, 120],
-                itemStyle : dataStyle,
-                data:[
-                  {
-                    value: tj.KAOSHIZU.JGLV,
-                    name: '及格率:' + tj.KAOSHIZU.JGLV + '%'
-                  },
-                  {
-                    value: 100 - tj.KAOSHIZU.JGLV,
-                    name:'invisible',
-                    itemStyle : placeHolderStyle
-                  }
-                ]
-              },
-              {
-                name:'2',
-                type:'pie',
-                clockWise:false,
-                radius : [80, 100],
-                itemStyle : dataStyle,
-                data:[
-                  {
-                    value: tj.KAOSHIZU.YXLV,
-                    name: '优秀率:' + tj.KAOSHIZU.YXLV + '%'
-                  },
-                  {
-                    value: 100 - tj.KAOSHIZU.YXLV,
-                    name:'invisible',
-                    itemStyle : placeHolderStyle
-                  }
-                ]
-              }
-            ]
-          };
-          var optPieBj = { // 环形图
-            title: {
-              text: '',
-              subtext: '',
-              sublink: '',
-              x: 'center',
-              y: 'center',
-              itemGap: 20,
-              textStyle : {
-                color : 'rgba(30,144,255,0.8)',
-                fontFamily : '微软雅黑',
-                fontSize : 24,
-                fontWeight : 'bolder'
-              }
-            },
-            tooltip : {
-              show: false,
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-              orient : 'vertical',
-              //x : document.getElementById('chartPie').offsetWidth / 2,
-              x : '52%',
-              y : 30,
-              itemGap:12,
-              data: []
-            },
-            toolbox: {
-              show : false,
-              feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                restore : {show: true},
-                saveAsImage : {show: true}
-              }
-            },
-            series : [
-              {
-                name:'1',
-                type:'pie',
-                clockWise:false,
-                radius : [100, 120],
-                itemStyle : dataStyle,
-                data:[
-                  {
-                    value: '',
-                    name: ''
-                  },
-                  {
-                    value: '',
-                    name:'invisible',
-                    itemStyle : placeHolderStyle
-                  }
-                ]
-              },
-              {
-                name:'2',
-                type:'pie',
-                clockWise:false,
-                radius : [80, 100],
-                itemStyle : dataStyle,
-                data:[
-                  {
-                    value: '',
-                    name: ''
-                  },
-                  {
-                    value: '',
-                    name:'invisible',
-                    itemStyle : placeHolderStyle
-                  }
-                ]
-              }
-            ]
-          };
+          //var optPieAll = { // 环形图
+          //  title: {
+          //    text: '全部考生',
+          //    subtext: '',
+          //    sublink: '',
+          //    x: 'center',
+          //    y: 'center',
+          //    itemGap: 20,
+          //    textStyle : {
+          //      color : 'rgba(30,144,255,0.8)',
+          //      fontFamily : '微软雅黑',
+          //      fontSize : 24,
+          //      fontWeight : 'bolder'
+          //    }
+          //  },
+          //  tooltip : {
+          //    show: false,
+          //    formatter: "{a} <br/>{b} : {c} ({d}%)"
+          //  },
+          //  legend: {
+          //    orient : 'vertical',
+          //    //x : document.getElementById('chartPie').offsetWidth / 2,
+          //    x : '52%',
+          //    y : 30,
+          //    itemGap:12,
+          //    data:['及格率:' + tj.KAOSHIZU.JGLV + '%', '优秀率:' + tj.KAOSHIZU.YXLV + '%']
+          //  },
+          //  toolbox: {
+          //    show : false,
+          //    feature : {
+          //      mark : {show: true},
+          //      dataView : {show: true, readOnly: false},
+          //      restore : {show: true},
+          //      saveAsImage : {show: true}
+          //    }
+          //  },
+          //  series : [
+          //    {
+          //      name:'1',
+          //      type:'pie',
+          //      clockWise:false,
+          //      radius : [100, 120],
+          //      itemStyle : dataStyle,
+          //      data:[
+          //        {
+          //          value: tj.KAOSHIZU.JGLV,
+          //          name: '及格率:' + tj.KAOSHIZU.JGLV + '%'
+          //        },
+          //        {
+          //          value: 100 - tj.KAOSHIZU.JGLV,
+          //          name:'invisible',
+          //          itemStyle : placeHolderStyle
+          //        }
+          //      ]
+          //    },
+          //    {
+          //      name:'2',
+          //      type:'pie',
+          //      clockWise:false,
+          //      radius : [80, 100],
+          //      itemStyle : dataStyle,
+          //      data:[
+          //        {
+          //          value: tj.KAOSHIZU.YXLV,
+          //          name: '优秀率:' + tj.KAOSHIZU.YXLV + '%'
+          //        },
+          //        {
+          //          value: 100 - tj.KAOSHIZU.YXLV,
+          //          name:'invisible',
+          //          itemStyle : placeHolderStyle
+          //        }
+          //      ]
+          //    }
+          //  ]
+          //};
+          //var optPieBj = { // 环形图
+          //  title: {
+          //    text: '',
+          //    subtext: '',
+          //    sublink: '',
+          //    x: 'center',
+          //    y: 'center',
+          //    itemGap: 20,
+          //    textStyle : {
+          //      color : 'rgba(30,144,255,0.8)',
+          //      fontFamily : '微软雅黑',
+          //      fontSize : 24,
+          //      fontWeight : 'bolder'
+          //    }
+          //  },
+          //  tooltip : {
+          //    show: false,
+          //    formatter: "{a} <br/>{b} : {c} ({d}%)"
+          //  },
+          //  legend: {
+          //    orient : 'vertical',
+          //    //x : document.getElementById('chartPie').offsetWidth / 2,
+          //    x : '52%',
+          //    y : 30,
+          //    itemGap:12,
+          //    data: []
+          //  },
+          //  toolbox: {
+          //    show : false,
+          //    feature : {
+          //      mark : {show: true},
+          //      dataView : {show: true, readOnly: false},
+          //      restore : {show: true},
+          //      saveAsImage : {show: true}
+          //    }
+          //  },
+          //  series : [
+          //    {
+          //      name:'1',
+          //      type:'pie',
+          //      clockWise:false,
+          //      radius : [100, 120],
+          //      itemStyle : dataStyle,
+          //      data:[
+          //        {
+          //          value: '',
+          //          name: ''
+          //        },
+          //        {
+          //          value: '',
+          //          name:'invisible',
+          //          itemStyle : placeHolderStyle
+          //        }
+          //      ]
+          //    },
+          //    {
+          //      name:'2',
+          //      type:'pie',
+          //      clockWise:false,
+          //      radius : [80, 100],
+          //      itemStyle : dataStyle,
+          //      data:[
+          //        {
+          //          value: '',
+          //          name: ''
+          //        },
+          //        {
+          //          value: '',
+          //          name:'invisible',
+          //          itemStyle : placeHolderStyle
+          //        }
+          //      ]
+          //    }
+          //  ]
+          //};
           var optBar = {
             tooltip : {
               trigger : 'axis',
@@ -892,14 +894,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           }
           else{
             optLine.series[1].data = tjParaObj.lineDataBK;
-            optPieBj.title.text = $scope.tjParas.selectItemName;
-            optPieBj.legend.data = ['及格率:' + sg.JGLV + '%', '优秀率:' + sg.YXLV + '%'];
-            optPieBj.series[0].data[0].value = sg.JGLV;
-            optPieBj.series[0].data[0].name = '及格率:' + sg.JGLV + '%';
-            optPieBj.series[0].data[1].value = 100 - sg.JGLV;
-            optPieBj.series[1].data[0].value = sg.YXLV;
-            optPieBj.series[1].data[0].name = '优秀率:' + sg.YXLV + '%';
-            optPieBj.series[1].data[1].value = 100 - sg.YXLV;
+            //optPieBj.title.text = $scope.tjParas.selectItemName;
+            //optPieBj.legend.data = ['及格率:' + sg.JGLV + '%', '优秀率:' + sg.YXLV + '%'];
+            //optPieBj.series[0].data[0].value = sg.JGLV;
+            //optPieBj.series[0].data[0].name = '及格率:' + sg.JGLV + '%';
+            //optPieBj.series[0].data[1].value = 100 - sg.JGLV;
+            //optPieBj.series[1].data[0].value = sg.YXLV;
+            //optPieBj.series[1].data[0].name = '优秀率:' + sg.YXLV + '%';
+            //optPieBj.series[1].data[1].value = 100 - sg.YXLV;
           }
           if(sg){
             radarBj[0] = sg.JGLV;
@@ -911,13 +913,12 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           //柱状图数据 tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-');
           if(tj.KEXUHAO){
             //$scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
-            if(tj.KEXUHAO[0]){
-              $scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
-            }
-            else{
-              $scope.tjKaoShiPublicData.kxh = '空'
-            }
-
+            //if(tj.KEXUHAO[0]){
+            //  $scope.tjKaoShiPublicData.kxh = tj.KEXUHAO[0].KEXUHAO_MINGCHENG.split('-')[0];
+            //}
+            //else{
+            //  $scope.tjKaoShiPublicData.kxh = '空'
+            //}
             tjBarData = Lazy(tj.KEXUHAO).sortBy(function(kxh){return -kxh.PJF;}).toArray();
             Lazy(tjBarData).each(function(kxh, idx, lst){
               if(kxh.KEXUHAO_MINGCHENG != '空'){
@@ -928,6 +929,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 else{
                   optBar.xAxis[0].data.push(kxhArr[0]);
                 }
+                //optBar.xAxis[0].data.push(kxh.KEXUHAO_MINGCHENG);
                 optBar.series[0].data.push(kxh.PJF);
               }
               else{
@@ -942,16 +944,16 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           //else{
           //  optBar.dataZoom.end = (5 / tjBarData.length) * 100;
           //}
-          tjParaObj.pieBoxAll.setOption(optPieAll);
-          tjParaObj.pieBoxBj.setOption(optPieBj);
+          //tjParaObj.pieBoxAll.setOption(optPieAll);
+          //tjParaObj.pieBoxBj.setOption(optPieBj);
           tjParaObj.radarBox.setOption(optRadar);
           tjParaObj.radarBoxZsd.setOption(optRadarZsd);
           tjParaObj.lineBox.setOption(optLine);
           tjParaObj.barBox.setOption(optBar);
           $timeout(function (){
             window.onresize = function () {
-              tjParaObj.pieBoxAll.resize();
-              tjParaObj.pieBoxBj.resize();
+              //tjParaObj.pieBoxAll.resize();
+              //tjParaObj.pieBoxBj.resize();
               tjParaObj.barBox.resize();
               tjParaObj.lineBox.resize();
               tjParaObj.radarBox.resize();
@@ -1165,7 +1167,18 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     var keXuHao = [];
                     var stuTmp1 = Lazy(students).groupBy('KEXUHAO_ID').toObject();
                     Lazy(stuTmp1).each(function(v, k, l){
-                      var tmpObj = {KEXUHAO_ID: k, KEXUHAO_MINGCHENG: v[0].KEXUHAO_MINGCHENG};
+                      //新加
+                      var kxhZf = Lazy(v).reduce(function(memo, num){
+                        return memo + parseInt(num.ZUIHOU_PINGFEN || 0);
+                      }, 0);
+                      var kxhPjf;
+                      if(v && v.length > 0){
+                        kxhPjf = (kxhZf/v.length).toFixed(1);
+                      }
+                      else{
+                        kxhPjf = 0;
+                      }
+                      var tmpObj = {KEXUHAO_ID: k, KEXUHAO_MINGCHENG: v[0].KEXUHAO_MINGCHENG, PJF:kxhPjf};
                       keXuHao.push(tmpObj);
                     });
                     data.KEXUHAO = keXuHao;
@@ -1457,8 +1470,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           if(tjType == 'banJi'){
             banJiDateManage(tjParaObj.pieData.BANJI);
           }
-          tjParaObj.pieBoxAll = echarts.init(document.getElementById('chartPieAll'));
-          tjParaObj.pieBoxBj = echarts.init(document.getElementById('chartPieBj'));
+          //tjParaObj.pieBoxAll = echarts.init(document.getElementById('chartPieAll'));
+          //tjParaObj.pieBoxBj = echarts.init(document.getElementById('chartPieBj'));
           tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
           tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
           tjParaObj.radarBox = echarts.init(document.getElementById('chartRadar'));
