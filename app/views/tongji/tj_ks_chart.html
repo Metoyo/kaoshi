@@ -148,7 +148,10 @@
               </td>
               <td ng-bind="ksd.BANJI">
               </td>
-              <td ng-bind="ksd.ZUIHOU_PINGFEN">
+              <td ng-bind="ksd.ZUIHOU_PINGFEN" ng-if="ksd.ZUIHOU_PINGFEN > -1">
+              </td>
+              <td ng-if="ksd.ZUIHOU_PINGFEN == -1">
+                无成绩
               </td>
             </tr>
           </table>

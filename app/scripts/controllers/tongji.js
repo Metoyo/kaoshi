@@ -391,7 +391,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var exportStu;
           var exportStuInfoUrl;
           var sheetName = $scope.tjKaoShiPublicData.ksname + '考生信息';
-          //ksArr.push({col1: '序号', col2: '学号', col3: '姓名', col4: '班级', col5: '课序号', col6: '成绩'});
           exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
           Lazy(exportStu).each(function(ks){
             var ksObj = {};
@@ -400,7 +399,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             ksObj['姓名'] = ks.XINGMING;
             ksObj['班级'] = ks.BANJI;
             ksObj['课序号'] = ks.KEXUHAO;
-            ksObj['成绩'] = ks.ZUIHOU_PINGFEN;
+            ksObj['成绩'] = ks.ZUIHOU_PINGFEN > -1 ? ks.ZUIHOU_PINGFEN : '无成绩';
             ksObj['课序号'] = ks.KEXUHAO_MINGCHENG;
             ksObj['考试ID'] = parseInt(ks.KAOSHI_ID);
             ksArr.push(ksObj);
@@ -1168,12 +1167,16 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     var stuTmp1 = Lazy(students).groupBy('KEXUHAO_ID').toObject();
                     Lazy(stuTmp1).each(function(v, k, l){
                       //新加
+                      var renShu = 0;
                       var kxhZf = Lazy(v).reduce(function(memo, num){
+                        if(num.ZUIHOU_PINGFEN != null){
+                          renShu += 1;
+                        }
                         return memo + parseInt(num.ZUIHOU_PINGFEN || 0);
                       }, 0);
                       var kxhPjf;
-                      if(v && v.length > 0){
-                        kxhPjf = (kxhZf/v.length).toFixed(1);
+                      if(renShu > 0){
+                        kxhPjf = (kxhZf/renShu).toFixed(1);
                       }
                       else{
                         kxhPjf = 0;
@@ -1215,7 +1218,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                         skks.push(xs);
                       }
                       else{
-                        xs.ZUIHOU_PINGFEN = '无成绩';
+                        xs.ZUIHOU_PINGFEN = -1;
                       }
                     });
                     tjParaObj.pieData = data;
