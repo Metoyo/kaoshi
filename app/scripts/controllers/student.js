@@ -405,7 +405,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
           var optRadarZsd = {
             tooltip : {
-              trigger: 'axis'
+              trigger: 'axis',
+              show: false
             },
             legend: {
               orient : 'vertical',

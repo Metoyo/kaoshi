@@ -1575,7 +1575,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           var datiTotalScore = mbdt.datiScore, //本大题总分
             txLen = mbdt.tiMuTotalNum, //本题型的所有数量
             tiMuLen = mbdt.TIMUARR.length, //规定试题的数量
-            datiItemNum = txLen || tiMuLen, //得到本大题下的题目数量
+            datiItemNum = tiMuLen || txLen, //得到本大题下的题目数量
             biLvVal = datiTotalScore/datiItemNum, //本大题总分/大题下的题目数量
             xiaotiAverageScore, //每小题的平均分数
             zeroLen = 0, //记录题目分值为0的个数

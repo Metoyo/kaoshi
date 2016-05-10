@@ -482,7 +482,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                       UID: ks.UID || '',
                       XINGMING: ks.XINGMING || '',
                       YONGHUHAO: ks.YONGHUHAO || '',
-                      //KEXUHAO_ID: ks.KEXUHAO_ID || '',
+                      KEXUHAO_ID: ks.KEXUHAO_ID || '',
                       KEXUHAO_MINGCHENG: ks.KEXUHAO_MINGCHENG || '',
                       BANJI: ks.BANJI || ''
                     };
@@ -936,6 +936,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(kc){
                 var kaoWei = 0;
                 if(kc.KAOSHENG && kc.KAOSHENG.length > 0){
+                  var tempStu = [];
+                  Lazy(kc.KAOSHENG).each(function(stu){
+                    var tmpObj = {UID: stu.UID, KEXUHAO_ID: stu.KEXUHAO_ID};
+                    tempStu.push(tmpObj);
+                  });
+                  if(tempStu && tempStu.length > 0){
+                    kc.KAOSHENG = tempStu;
+                  }
                   Lazy(kc.KAOCHANG).each(function(kd){
                     var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
                       return dkd.KID == kd;
@@ -962,7 +970,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             if($scope.kaoshiData.shuju.BAOMINGFANGSHI == 2){ //在线报名
               //添加考生名单
               if($scope.studentsOrgData && $scope.studentsOrgData.length > 0){
-                $scope.kaoshiData.shuju.KAOSHENG = $scope.studentsOrgData;
+                //$scope.kaoshiData.shuju.KAOSHENG = $scope.studentsOrgData;
+                var tempStu = [];
+                Lazy($scope.studentsOrgData).each(function(stu){
+                  var tmpObj = {UID: stu.UID, KEXUHAO_ID: stu.KEXUHAO_ID};
+                  tempStu.push(tmpObj);
+                });
+                if(tempStu && tempStu.length > 0){
+                  $scope.kaoshiData.shuju.KAOSHENG = tempStu;
+                }
+                else{
+                  $scope.kaoshiData.shuju.KAOSHENG = $scope.studentsOrgData;
+                }
                 Lazy($scope.kaoshiData.shuju.CHANGCI).each(function(kc){
                   Lazy(kc.KAOCHANG).each(function(kd){
                     var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
@@ -984,7 +1003,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             $scope.kwParams.forbidBtn = true;
             $scope.loadingImgShow = true;
-            console.log($scope.kaoshiData);
             $scope.kaoshiData.shuju = JSON.stringify($scope.kaoshiData.shuju);
             submitFORMPost(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
             //$http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){

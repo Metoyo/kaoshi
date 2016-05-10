@@ -426,7 +426,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                   if(data.result){
                     if(data.notsure){
                       $scope.notSure = data.notsure;
-                      console.log(data.notsure);
                     }
                     $scope.showKeXuHaoManage = '';
                     DataService.alertInfFun('suc', '批量新增成功！');
