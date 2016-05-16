@@ -1164,6 +1164,12 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                   if(students && students.length > 0){
                     //新增代码，有学生统计出课序号
                     var keXuHao = [];
+                    Lazy(students).each(function(stu){
+                      if(!stu.KEXUHAO_ID){
+                        stu.KEXUHAO_ID = '0000';
+                        stu.KEXUHAO_MINGCHENG = '无';
+                      }
+                    });
                     var stuTmp1 = Lazy(students).groupBy('KEXUHAO_ID').toObject();
                     Lazy(stuTmp1).each(function(v, k, l){
                       //新加

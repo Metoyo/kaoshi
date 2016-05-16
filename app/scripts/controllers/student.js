@@ -266,8 +266,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 $http.get(qryKaoShiByXueHaoUrl).success(function (data) {
                   if (data && data.length > 0) {
                     Lazy(data).each(function(ks){
-                      ks.score = true;
-                      ks.zuoda = true;
+                      ks.score = false;
+                      ks.zuoda = false;
                       if(confObj){
                         var findTar = Lazy(confObj.chengji.lingyu).find(function(ly){
                           return ly.val == ks.LINGYU_ID;

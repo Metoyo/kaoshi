@@ -2136,8 +2136,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                       Lazy(dataArr).each(function(k, kIdx, kLst){
                         var setObj = {
                           val: k.LINGYU_ID,
-                          score: 'true',
-                          zuoda: 'true',
+                          score: 'false',
+                          zuoda: 'false',
                           lyName: k.LINGYUMINGCHENG
                         };
                         lingyuArr.push(setObj);
